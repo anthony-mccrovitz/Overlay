@@ -3,9 +3,11 @@ import Stripe from "stripe";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join } from "path";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-03-25.dahlia",
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-03-25.dahlia",
+  });
+}
 
 // Write subscriber emails to a JSON file in the repo.
 // MVP: no database, no auth system. Just email → subscription status.
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = getStripe().webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
@@ -67,7 +69,7 @@ export async function POST(req: NextRequest) {
     const sub = event.data.object as Stripe.Subscription;
     // Find by customer ID — requires looking up customer email
     try {
-      const customer = await stripe.customers.retrieve(sub.customer as string) as Stripe.Customer;
+      const customer = await getStripe().customers.retrieve(sub.customer as string) as Stripe.Customer;
       const email = customer.email;
       if (email) {
         const subs = loadSubscribers();
