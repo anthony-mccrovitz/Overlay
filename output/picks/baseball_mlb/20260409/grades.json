@@ -1,0 +1,83 @@
+{
+  "date": "2026-04-09",
+  "total_picks": 5,
+  "moneyline_picks": 5,
+  "spread_picks": 0,
+  "total_picks_ou": 0,
+  "graded": 5,
+  "pending": 0,
+  "wins": 3,
+  "losses": 2,
+  "win_rate": 0.6,
+  "total_staked": 500.0,
+  "total_profit": 11.21665806229565,
+  "roi": 2.24333161245913,
+  "details": [
+    {
+      "team": "Cincinnati Reds",
+      "opponent": "Miami Marlins",
+      "odds": 170.0,
+      "model_prob": 0,
+      "edge": 2.16,
+      "won": false,
+      "profit": -100.0,
+      "score": "Cincinnati Reds 1, Miami Marlins 8",
+      "status": "loss",
+      "game_id": "mlb_20260409_Cincinnati_Reds",
+      "bet_type": "spread"
+    },
+    {
+      "team": "Athletics",
+      "opponent": "New York Yankees",
+      "odds": -125.0,
+      "model_prob": 0,
+      "edge": 1.38,
+      "won": true,
+      "profit": 80.0,
+      "score": "Athletics 1, New York Yankees 0",
+      "status": "win",
+      "game_id": "mlb_20260409_Athletics",
+      "bet_type": "spread"
+    },
+    {
+      "team": "Colorado Rockies",
+      "opponent": "San Diego Padres",
+      "odds": 170.0,
+      "model_prob": 0,
+      "edge": 0.114,
+      "won": false,
+      "profit": -100.0,
+      "score": "Colorado Rockies 3, San Diego Padres 7",
+      "status": "loss",
+      "game_id": "mlb_20260409_Colorado_Rockies",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Arizona Diamondbacks",
+      "opponent": "New York Mets",
+      "odds": -156.0,
+      "model_prob": 0,
+      "edge": 0.87,
+      "won": true,
+      "profit": 64.1025641025641,
+      "score": "Arizona Diamondbacks 7, New York Mets 1",
+      "status": "win",
+      "game_id": "mlb_20260409_Arizona_Diamondbacks",
+      "bet_type": "spread"
+    },
+    {
+      "team": "Minnesota Twins",
+      "opponent": "Detroit Tigers",
+      "odds": -149.0,
+      "model_prob": 0,
+      "edge": 1.27,
+      "won": true,
+      "profit": 67.11409395973155,
+      "score": "Detroit Tigers 1, Minnesota Twins 3",
+      "status": "win",
+      "game_id": "mlb_20260409_Minnesota_Twins",
+      "bet_type": "spread"
+    }
+  ],
+  "graded_at": "2026-04-10T12:54:03.052488+00:00"
+}

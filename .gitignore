@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+
+# Environment
+.env
+
+# Data (large datasets — download separately)
+data/kaggle/
+data/kenpom/
+data/cache/
+
+# Generated output — exclude large files, keep JSON picks for website
+output/**/*.png
+output/**/*.html
+output/**/*.md
+output/**/caption_*.txt
+# Keep: picks.json, props.json, nrfi.json, picks_card.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model artifacts
+models/*.pkl
+models/*.joblib
+models/*.cbm
+catboost_info/
+
+# Node / Next.js
+web/node_modules/
+web/.next/
+web/.env.local
+
+# Jupyter
+.ipynb_checkpoints/
+
+# gstack / claude local settings
+.claude/
+.gstack/

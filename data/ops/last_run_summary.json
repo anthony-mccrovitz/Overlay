@@ -1,0 +1,30 @@
+{
+  "tz": "America/New_York",
+  "today": "2026-04-13",
+  "picks_file_exists": true,
+  "picks_count_today": 10,
+  "pnl": {
+    "total_picks": 96,
+    "settled": 25,
+    "wins": 12,
+    "losses": 13,
+    "win_rate": 0.48,
+    "roi": 0.0,
+    "units_profit": 0.35050000000000114
+  },
+  "clv": {
+    "total_picks": 31,
+    "with_closing_line": 24,
+    "clv_mean_cents": 1.59
+  },
+  "days_with_picks": 12,
+  "last_event": {
+    "local_time": "2026-04-13T10:34:24.604133-04:00",
+    "tz": "America/New_York",
+    "action_taken": null,
+    "skipped": null,
+    "error": "name 'min_edge' is not defined",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/anthonymccrovitz/march-madness/src/paper_trade_autopilot.py\", line 248, in run_tick\n    _run_morning(min_edge)\n  File \"/Users/anthonymccrovitz/march-madness/src/paper_trade_autopilot.py\", line 128, in _run_morning\n    class A:\n  File \"/Users/anthonymccrovitz/march-madness/src/paper_trade_autopilot.py\", line 129, in A\n    min_edge = min_edge\n               ^^^^^^^^\nNameError: name 'min_edge' is not defined\n",
+    "ts_utc": "2026-04-13T14:34:24.606846+00:00"
+  }
+}

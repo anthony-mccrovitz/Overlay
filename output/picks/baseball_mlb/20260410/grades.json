@@ -1,0 +1,57 @@
+{
+  "date": "2026-04-10",
+  "total_picks": 5,
+  "moneyline_picks": 5,
+  "spread_picks": 0,
+  "total_picks_ou": 0,
+  "graded": 3,
+  "pending": 0,
+  "wins": 1,
+  "losses": 2,
+  "win_rate": 0.3333333333333333,
+  "total_staked": 300.0,
+  "total_profit": -124.24242424242425,
+  "roi": -41.41414141414141,
+  "details": [
+    {
+      "team": "Arizona Diamondbacks",
+      "opponent": "Philadelphia Phillies",
+      "odds": -132.0,
+      "model_prob": 0.61,
+      "edge": 3.2,
+      "won": true,
+      "profit": 75.75757575757575,
+      "score": "Arizona Diamondbacks 5, Philadelphia Phillies 4",
+      "status": "win",
+      "game_id": "mlb_20260410_Arizona_Diamondbacks",
+      "bet_type": "spread"
+    },
+    {
+      "team": "Minnesota Twins",
+      "opponent": "Toronto Blue Jays",
+      "odds": -168.0,
+      "model_prob": 0.602,
+      "edge": 3.07,
+      "won": false,
+      "profit": -100.0,
+      "score": "Minnesota Twins 4, Toronto Blue Jays 10",
+      "status": "loss",
+      "game_id": "mlb_20260410_Minnesota_Twins",
+      "bet_type": "spread"
+    },
+    {
+      "team": "Colorado Rockies",
+      "opponent": "San Diego Padres",
+      "odds": -136.0,
+      "model_prob": 0.542,
+      "edge": 2.14,
+      "won": false,
+      "profit": -100.0,
+      "score": "Colorado Rockies 2, San Diego Padres 5",
+      "status": "loss",
+      "game_id": "mlb_20260410_Colorado_Rockies",
+      "bet_type": "spread"
+    }
+  ],
+  "graded_at": "2026-04-11T17:49:30.697676+00:00"
+}

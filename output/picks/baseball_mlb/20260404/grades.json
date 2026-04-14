@@ -1,0 +1,534 @@
+{
+  "date": "2026-04-04",
+  "total_picks": 74,
+  "moneyline_picks": 23,
+  "spread_picks": 28,
+  "total_picks_ou": 23,
+  "graded": 9,
+  "pending": 65,
+  "wins": 7,
+  "losses": 2,
+  "win_rate": 0.7777777777777778,
+  "total_staked": 900.0,
+  "total_profit": 240.74550011392117,
+  "roi": 26.749500012657908,
+  "details": [
+    {
+      "team": "Toronto Blue Jays",
+      "opponent": "Chicago White Sox",
+      "odds": 2200.0,
+      "model_prob": 0.5612307967,
+      "edge": 0.5177525358,
+      "won": false,
+      "profit": -100.0,
+      "score": "Toronto Blue Jays 3, Chicago White Sox 6",
+      "status": "loss",
+      "game_id": "mlb_20260404_Toronto_Blue_Jays",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Kansas City Royals",
+      "opponent": "Milwaukee Brewers",
+      "odds": 1700.0,
+      "model_prob": 0.4617450067,
+      "status": "pending",
+      "game_id": "mlb_20260404_Kansas_City_Royals"
+    },
+    {
+      "team": "Washington Nationals",
+      "opponent": "Los Angeles Dodgers",
+      "odds": 1500.0,
+      "model_prob": 0.4483609818,
+      "status": "pending",
+      "game_id": "mlb_20260404_Washington_Nationals"
+    },
+    {
+      "team": "Athletics",
+      "opponent": "Houston Astros",
+      "odds": 400.0,
+      "model_prob": 0.5062385846,
+      "status": "pending",
+      "game_id": "mlb_20260404_Athletics"
+    },
+    {
+      "team": "Colorado Rockies",
+      "opponent": "Philadelphia Phillies",
+      "odds": 204.0,
+      "model_prob": 0.4942851683,
+      "status": "pending",
+      "game_id": "mlb_20260404_Colorado_Rockies"
+    },
+    {
+      "team": "Miami Marlins",
+      "opponent": "New York Yankees",
+      "odds": 240.0,
+      "model_prob": 0.4545028888,
+      "status": "pending",
+      "game_id": "mlb_20260404_Miami_Marlins"
+    },
+    {
+      "team": "San Diego Padres",
+      "opponent": "Boston Red Sox",
+      "odds": 139.0,
+      "model_prob": 0.5366798881,
+      "status": "pending",
+      "game_id": "mlb_20260404_San_Diego_Padres"
+    },
+    {
+      "team": "San Diego Padres",
+      "opponent": "Boston Red Sox",
+      "odds": 125.0,
+      "model_prob": 0.5366798881,
+      "status": "pending",
+      "game_id": "mlb_20260404_San_Diego_Padres"
+    },
+    {
+      "team": "Washington Nationals",
+      "opponent": "Los Angeles Dodgers",
+      "odds": 180.0,
+      "model_prob": 0.4483609818,
+      "status": "pending",
+      "game_id": "mlb_20260404_Washington_Nationals"
+    },
+    {
+      "team": "Miami Marlins",
+      "opponent": "New York Yankees",
+      "odds": 175.0,
+      "model_prob": 0.4545028888,
+      "status": "pending",
+      "game_id": "mlb_20260404_Miami_Marlins"
+    },
+    {
+      "team": "Colorado Rockies",
+      "opponent": "Philadelphia Phillies",
+      "odds": 147.0,
+      "model_prob": 0.4942851683,
+      "status": "pending",
+      "game_id": "mlb_20260404_Colorado_Rockies"
+    },
+    {
+      "team": "Minnesota Twins",
+      "opponent": "Tampa Bay Rays",
+      "odds": -102.0,
+      "model_prob": 0.5926066372,
+      "status": "pending",
+      "game_id": "mlb_20260404_Minnesota_Twins"
+    },
+    {
+      "team": "Atlanta Braves",
+      "opponent": "Arizona Diamondbacks",
+      "odds": 104.0,
+      "model_prob": 0.5754531328,
+      "status": "pending",
+      "game_id": "mlb_20260404_Atlanta_Braves"
+    },
+    {
+      "team": "Detroit Tigers",
+      "opponent": "St. Louis Cardinals",
+      "odds": 0.0,
+      "model_prob": 0.5690002967,
+      "edge": 0.0690002967,
+      "won": true,
+      "profit": 90.9090909090909,
+      "score": "St. Louis Cardinals 6, Detroit Tigers 11",
+      "status": "win",
+      "game_id": "mlb_20260404_Detroit_Tigers",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "New York Mets",
+      "opponent": "San Francisco Giants",
+      "odds": 104.0,
+      "model_prob": 0.5588039725,
+      "status": "pending",
+      "game_id": "mlb_20260404_New_York_Mets"
+    },
+    {
+      "team": "Milwaukee Brewers",
+      "opponent": "Kansas City Royals",
+      "odds": 112.0,
+      "model_prob": 0.5382549933,
+      "status": "pending",
+      "game_id": "mlb_20260404_Milwaukee_Brewers"
+    },
+    {
+      "team": "Minnesota Twins",
+      "opponent": "Tampa Bay Rays",
+      "odds": -113.0,
+      "model_prob": 0.5926066372,
+      "status": "pending",
+      "game_id": "mlb_20260404_Minnesota_Twins"
+    },
+    {
+      "team": "Los Angeles Angels",
+      "opponent": "Seattle Mariners",
+      "odds": 145.0,
+      "model_prob": 0.462031022,
+      "status": "pending",
+      "game_id": "mlb_20260404_Los_Angeles_Angels"
+    },
+    {
+      "team": "New York Mets",
+      "opponent": "San Francisco Giants",
+      "odds": -104.0,
+      "model_prob": 0.5588039725,
+      "status": "pending",
+      "game_id": "mlb_20260404_New_York_Mets"
+    },
+    {
+      "team": "Los Angeles Angels",
+      "opponent": "Seattle Mariners",
+      "odds": 141.0,
+      "model_prob": 0.462031022,
+      "status": "pending",
+      "game_id": "mlb_20260404_Los_Angeles_Angels"
+    },
+    {
+      "team": "Cincinnati Reds",
+      "opponent": "Texas Rangers",
+      "odds": 126.0,
+      "model_prob": 0.4834191718,
+      "status": "pending",
+      "game_id": "mlb_20260404_Cincinnati_Reds"
+    },
+    {
+      "team": "Milwaukee Brewers",
+      "opponent": "Kansas City Royals",
+      "odds": 100.0,
+      "model_prob": 0.5382549933,
+      "status": "pending",
+      "game_id": "mlb_20260404_Milwaukee_Brewers"
+    },
+    {
+      "team": "Athletics",
+      "opponent": "Houston Astros",
+      "odds": 110.0,
+      "model_prob": 0.5062385846,
+      "status": "pending",
+      "game_id": "mlb_20260404_Athletics"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Los Angeles Dodgers",
+      "status": "pending",
+      "game_id": "mlb_20260404_Los_Angeles_Dodgers_spread_cb5d1798"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Detroit Tigers",
+      "opponent": "St. Louis Cardinals",
+      "odds": -550.0,
+      "won": true,
+      "profit": 18.181818181818183,
+      "score": "St. Louis Cardinals 6 @ Detroit Tigers 11",
+      "status": "win",
+      "game_id": "mlb_20260404_Detroit_Tigers_spread_2f55ab25",
+      "market_spread": -4.5
+    },
+    {
+      "bet_type": "spread",
+      "team": "Milwaukee Brewers",
+      "status": "pending",
+      "game_id": "mlb_20260404_Milwaukee_Brewers_spread_fea2e776"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Houston Astros",
+      "status": "pending",
+      "game_id": "mlb_20260404_Houston_Astros_spread_bb76dc66"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Atlanta Braves",
+      "status": "pending",
+      "game_id": "mlb_20260404_Atlanta_Braves_spread_312f9e53"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Detroit Tigers",
+      "opponent": "St. Louis Cardinals",
+      "odds": 138.0,
+      "won": true,
+      "profit": 138.0,
+      "score": "St. Louis Cardinals 6 @ Detroit Tigers 11",
+      "status": "win",
+      "game_id": "mlb_20260404_Detroit_Tigers_spread_1c62c9b0",
+      "market_spread": -1.5
+    },
+    {
+      "bet_type": "spread",
+      "team": "Toronto Blue Jays",
+      "opponent": "Chicago White Sox",
+      "odds": 114.0,
+      "won": false,
+      "profit": -100.0,
+      "score": "Toronto Blue Jays 3 @ Chicago White Sox 6",
+      "status": "loss",
+      "game_id": "mlb_20260404_Toronto_Blue_Jays_spread_318f813f",
+      "market_spread": 1.5
+    },
+    {
+      "bet_type": "spread",
+      "team": "New York Mets",
+      "status": "pending",
+      "game_id": "mlb_20260404_New_York_Mets_spread_415818bc"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Los Angeles Dodgers",
+      "status": "pending",
+      "game_id": "mlb_20260404_Los_Angeles_Dodgers_spread_11db8321"
+    },
+    {
+      "bet_type": "spread",
+      "team": "New York Yankees",
+      "status": "pending",
+      "game_id": "mlb_20260404_New_York_Yankees_spread_41fa4cec"
+    },
+    {
+      "bet_type": "spread",
+      "team": "New York Yankees",
+      "status": "pending",
+      "game_id": "mlb_20260404_New_York_Yankees_spread_6cfb88cf"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Milwaukee Brewers",
+      "status": "pending",
+      "game_id": "mlb_20260404_Milwaukee_Brewers_spread_b3e6bdc5"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Seattle Mariners",
+      "status": "pending",
+      "game_id": "mlb_20260404_Seattle_Mariners_spread_a17bc682"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Seattle Mariners",
+      "status": "pending",
+      "game_id": "mlb_20260404_Seattle_Mariners_spread_f9328a73"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Chicago Cubs",
+      "status": "pending",
+      "game_id": "mlb_20260404_Chicago_Cubs_spread_fc7bf2ae"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Chicago Cubs",
+      "status": "pending",
+      "game_id": "mlb_20260404_Chicago_Cubs_spread_29fe7472"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Texas Rangers",
+      "status": "pending",
+      "game_id": "mlb_20260404_Texas_Rangers_spread_b8f46c33"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Philadelphia Phillies",
+      "status": "pending",
+      "game_id": "mlb_20260404_Philadelphia_Phillies_spread_2c78d22f"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Philadelphia Phillies",
+      "status": "pending",
+      "game_id": "mlb_20260404_Philadelphia_Phillies_spread_91cb43db"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Chicago White Sox",
+      "opponent": "Toronto Blue Jays",
+      "odds": -266.0,
+      "won": true,
+      "profit": 37.59398496240601,
+      "score": "Toronto Blue Jays 3 @ Chicago White Sox 6",
+      "status": "win",
+      "game_id": "mlb_20260404_Chicago_White_Sox_spread_489e828d",
+      "market_spread": -2.5
+    },
+    {
+      "bet_type": "spread",
+      "team": "Houston Astros",
+      "status": "pending",
+      "game_id": "mlb_20260404_Houston_Astros_spread_ac0a6ca9"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Baltimore Orioles",
+      "status": "pending",
+      "game_id": "mlb_20260404_Baltimore_Orioles_spread_2b9ccede"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Cincinnati Reds",
+      "status": "pending",
+      "game_id": "mlb_20260404_Cincinnati_Reds_spread_4c267806"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Pittsburgh Pirates",
+      "status": "pending",
+      "game_id": "mlb_20260404_Pittsburgh_Pirates_spread_da18e0ca"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Boston Red Sox",
+      "status": "pending",
+      "game_id": "mlb_20260404_Boston_Red_Sox_spread_a9050169"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Kansas City Royals",
+      "status": "pending",
+      "game_id": "mlb_20260404_Kansas_City_Royals_spread_6e92e438"
+    },
+    {
+      "bet_type": "spread",
+      "team": "San Francisco Giants",
+      "status": "pending",
+      "game_id": "mlb_20260404_San_Francisco_Giants_spread_f546541a"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Boston Red Sox",
+      "status": "pending",
+      "game_id": "mlb_20260404_Boston_Red_Sox_spread_376d4054"
+    },
+    {
+      "bet_type": "total",
+      "direction": "UNDER",
+      "line": 17.5,
+      "won": true,
+      "profit": 18.181818181818183,
+      "total_runs": 17,
+      "status": "win",
+      "game_id": "mlb_20260404_total_2f55ab259200"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_a90501690931"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_fea2e7764568"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_b3e6bdc5fabe"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_6e92e4380327"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_91cb43db006f"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_2c78d22f888a"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_41fa4cec7f51"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_376d4054f049"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_aa08785add4f"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_cb5d17981ace"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_a17bc682d534"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_e7c8fd226080"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_f9328a738af7"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_6cfb88cfd2f0"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_da18e0cacf20"
+    },
+    {
+      "bet_type": "total",
+      "direction": "UNDER",
+      "line": 9.5,
+      "won": true,
+      "profit": 37.878787878787875,
+      "total_runs": 9,
+      "status": "win",
+      "game_id": "mlb_20260404_total_489e828d67b8"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_bb76dc664e8c"
+    },
+    {
+      "bet_type": "total",
+      "direction": "OVER",
+      "line": 8.0,
+      "won": true,
+      "profit": 100.0,
+      "total_runs": 17,
+      "status": "win",
+      "game_id": "mlb_20260404_total_1c62c9b04fe7"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_11db83213350"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_312f9e53b1d6"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_ac0a6ca9e9cf"
+    },
+    {
+      "bet_type": "total",
+      "status": "pending",
+      "game_id": "mlb_20260404_total_2b9ccede64da"
+    }
+  ],
+  "graded_at": "2026-04-04T21:02:09.461854+00:00"
+}

@@ -1,0 +1,47 @@
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  CLOSING LINE SNAPSHOT — baseball_mlb
+======================================================================
+
+  Fetching closing lines from sportsbooks...
+  ✓  Live odds fetched at 15:30:10. API requests remaining: 241
+  Got lines for 26 games.
+  Closing lines saved to data/clv/closing/baseball_mlb_2026-04-14.json
+
+  Computing CLV against opening lines...
+
+════════════════════════════════════════════════════════════
+  CLV REPORT — CLOSING LINE VALUE
+════════════════════════════════════════════════════════════
+  Total picks tracked : 40
+  Picks with CLV data : 14
+  Avg CLV             : -2.69%
+  % bets positive CLV : 50.0%
+
+  VERDICT: EARLY DATA — 14 picks with CLV (need 50+ for significance)
+
+  CLV by Edge Tier:
+  Tier        Count   Avg CLV
+  ──────────────────────────────
+  UNKNOWN        14    -2.69%
+
+  Recent picks:
+  Date         Team                           Open   Close      CLV
+  ──────────────────────────────────────────────────────────────
+  2026-04-13   New York Mets                  +140    +168    -4.4%
+  2026-04-13   Athletics                      +118    +112    +1.3%
+  2026-04-13   Arizona Diamondbacks           -190    +124   -20.9%
+  2026-04-13   Cleveland Guardians            -115    -120    +1.1%
+  2026-04-13   New York Yankees               +116    -194   +19.7%
+  2026-04-14   Chicago Cubs                   +160    +120    +7.0%
+  2026-04-14   New York Mets                  +153    +184    -4.3%
+  2026-04-14   Pittsburgh Pirates             +105    -184   +16.0%
+  2026-04-14   Arizona Diamondbacks           -182    +141   -23.0%
+  2026-04-14   St. Louis Cardinals            -171    +102   -13.6%
+════════════════════════════════════════════════════════════
+

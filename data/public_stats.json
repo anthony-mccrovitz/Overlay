@@ -1,0 +1,122 @@
+{
+  "updated_at": "2026-04-14T02:58:19.642259+00:00",
+  "summary": {
+    "total_picks": 59,
+    "settled": 25,
+    "pending": 34,
+    "wins": 12,
+    "losses": 13,
+    "win_rate": 0.48,
+    "units_profit": 0.35,
+    "roi": 0.014,
+    "streak": -2
+  },
+  "backtest_mlb": [
+    {
+      "season": 2025,
+      "accuracy": 0.541,
+      "high_conf": 0.583,
+      "games": 2432,
+      "edge_pct": 8
+    },
+    {
+      "season": 2024,
+      "accuracy": 0.538,
+      "high_conf": 0.571,
+      "games": 2430,
+      "edge_pct": 8
+    }
+  ],
+  "recent_picks": [
+    {
+      "date": "2026-04-10",
+      "team": "Colorado Rockies",
+      "opponent": "San Diego Padres",
+      "odds": -136.0,
+      "result": "loss",
+      "profit": -1.0,
+      "edge": null
+    },
+    {
+      "date": "2026-04-10",
+      "team": "Minnesota Twins",
+      "opponent": "Toronto Blue Jays",
+      "odds": -168.0,
+      "result": "loss",
+      "profit": -1.0,
+      "edge": null
+    },
+    {
+      "date": "2026-04-10",
+      "team": "Arizona Diamondbacks",
+      "opponent": "Philadelphia Phillies",
+      "odds": -132.0,
+      "result": "win",
+      "profit": 0.76,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "Colorado Rockies",
+      "opponent": "San Diego Padres",
+      "odds": 170.0,
+      "result": "loss",
+      "profit": -1.0,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "Minnesota Twins",
+      "opponent": "Detroit Tigers",
+      "odds": -149.0,
+      "result": "win",
+      "profit": 0.67,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "UNDER 9.0",
+      "opponent": "Chicago White Sox @ Kansas City Royals",
+      "odds": -102.0,
+      "result": "win",
+      "profit": 0.98,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "OVER 8.0",
+      "opponent": "Detroit Tigers @ Minnesota Twins",
+      "odds": 100.0,
+      "result": "loss",
+      "profit": -1.0,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "Arizona Diamondbacks",
+      "opponent": "New York Mets",
+      "odds": -156.0,
+      "result": "win",
+      "profit": 0.64,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "Athletics",
+      "opponent": "New York Yankees",
+      "odds": -125.0,
+      "result": "win",
+      "profit": 0.8,
+      "edge": null
+    },
+    {
+      "date": "2026-04-09",
+      "team": "Cincinnati Reds",
+      "opponent": "Miami Marlins",
+      "odds": -124.0,
+      "result": "loss",
+      "profit": -1.0,
+      "edge": null
+    }
+  ]
+}

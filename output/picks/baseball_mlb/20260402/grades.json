@@ -1,0 +1,97 @@
+{
+  "date": "2026-04-02",
+  "total_picks": 7,
+  "moneyline_picks": 1,
+  "spread_picks": 3,
+  "total_picks_ou": 3,
+  "graded": 7,
+  "pending": 0,
+  "wins": 3,
+  "losses": 4,
+  "win_rate": 0.42857142857142855,
+  "total_staked": 700.0,
+  "total_profit": -33.09090909090909,
+  "roi": -4.7272727272727275,
+  "details": [
+    {
+      "team": "Minnesota Twins",
+      "opponent": "Kansas City Royals",
+      "odds": 136,
+      "model_prob": 0.4915533749,
+      "edge": 0.0678245614,
+      "won": true,
+      "profit": 136.0,
+      "score": "Minnesota Twins 5, Kansas City Royals 1",
+      "status": "win",
+      "game_id": "mlb_20260402_Minnesota_Twins",
+      "bet_type": "moneyline"
+    },
+    {
+      "bet_type": "spread",
+      "team": "Atlanta Braves",
+      "opponent": "Arizona Diamondbacks",
+      "odds": 140.0,
+      "won": true,
+      "profit": 140.0,
+      "score": "Atlanta Braves 17 @ Arizona Diamondbacks 2",
+      "status": "win",
+      "game_id": "mlb_20260402_Atlanta_Braves_spread_e55dd97c",
+      "market_spread": 1.5
+    },
+    {
+      "bet_type": "spread",
+      "team": "New York Mets",
+      "opponent": "San Francisco Giants",
+      "odds": 145.0,
+      "won": false,
+      "profit": -100.0,
+      "score": "New York Mets 2 @ San Francisco Giants 7",
+      "status": "loss",
+      "game_id": "mlb_20260402_New_York_Mets_spread_c7e9785b",
+      "market_spread": 1.5
+    },
+    {
+      "bet_type": "spread",
+      "team": "Kansas City Royals",
+      "opponent": "Minnesota Twins",
+      "odds": 135.0,
+      "won": false,
+      "profit": -100.0,
+      "score": "Minnesota Twins 5 @ Kansas City Royals 1",
+      "status": "loss",
+      "game_id": "mlb_20260402_Kansas_City_Royals_spread_b69acd5d",
+      "market_spread": -1.5
+    },
+    {
+      "bet_type": "total",
+      "direction": "UNDER",
+      "line": 7.5,
+      "won": false,
+      "profit": -100.0,
+      "total_runs": 9,
+      "status": "loss",
+      "game_id": "mlb_20260402_total_c7e9785b27cf"
+    },
+    {
+      "bet_type": "total",
+      "direction": "UNDER",
+      "line": 9.5,
+      "won": true,
+      "profit": 90.9090909090909,
+      "total_runs": 6,
+      "status": "win",
+      "game_id": "mlb_20260402_total_b69acd5d2b74"
+    },
+    {
+      "bet_type": "total",
+      "direction": "UNDER",
+      "line": 9.0,
+      "won": false,
+      "profit": -100.0,
+      "total_runs": 19,
+      "status": "loss",
+      "game_id": "mlb_20260402_total_e55dd97cbbe9"
+    }
+  ],
+  "graded_at": "2026-04-03T17:48:37.737458+00:00"
+}
