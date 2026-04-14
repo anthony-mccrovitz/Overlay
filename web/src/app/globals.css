@@ -1,35 +1,53 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #09090b;
-  --bg-raised: #18181b;
-  --bg-overlay: #27272a;
-  --border: #27272a;
-  --border-hover: #3f3f46;
-  --text: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --green: #22c55e;
-  --green-dim: rgba(34, 197, 94, 0.12);
-  --red: #ef4444;
-  --red-dim: rgba(239, 68, 68, 0.12);
-  --amber: #f59e0b;
-  --amber-dim: rgba(245, 158, 11, 0.12);
-  --blue: #3b82f6;
-  --blue-dim: rgba(59, 130, 246, 0.12);
-  --accent: #2dd4bf;
-  --accent-dim: rgba(45, 212, 191, 0.08);
+  --bg:          #000000;
+  --bg-raised:   #080808;
+  --bg-overlay:  #0e0e10;
+  --bg-panel:    #0a0a0c;
+
+  --border:       #1a1a1e;
+  --border-hi:    #282830;
+
+  --text:          #c4c4cc;
+  --text-bright:   #e8e8f0;
+  --text-secondary:#7a7a88;
+  --text-muted:    #3c3c48;
+
+  --green:    #00ff41;
+  --green-hi: #39ff78;
+  --green-dim: rgba(0, 255, 65, 0.07);
+
+  --red:     #ff3b3b;
+  --red-dim: rgba(255, 59, 59, 0.08);
+
+  --amber:     #ffb800;
+  --amber-dim: rgba(255, 184, 0, 0.09);
+
+  --cyan:     #00d4ff;
+  --cyan-dim: rgba(0, 212, 255, 0.07);
+
+  --blue:     #4a9eff;
+  --blue-dim: rgba(74, 158, 255, 0.09);
+
+  --purple:     #b44fff;
+  --purple-dim: rgba(180, 79, 255, 0.09);
+
+  /* aliases */
+  --accent:     var(--cyan);
+  --accent-dim: var(--cyan-dim);
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono-jetbrains);
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
 }
 
 html {
@@ -39,51 +57,114 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-mono-jetbrains), "JetBrains Mono", "Courier New", monospace;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
+  font-size: 13px;
 }
 
-/* Skeleton shimmer */
+/* ── Terminal cursor blink ── */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: var(--cyan);
+  vertical-align: text-bottom;
+  animation: cursor-blink 1.1s step-end infinite;
+}
+
+/* ── Live dot ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.live-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ── Skeleton shimmer ── */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
+  0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 .skeleton {
   background: linear-gradient(90deg, var(--bg-raised) 25%, var(--bg-overlay) 50%, var(--bg-raised) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 8px;
 }
 
-/* Subtle pulse for live indicators */
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+/* ── Terminal row hover ── */
+.t-row {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.08s;
 }
-.live-dot {
-  animation: pulse-dot 2s ease-in-out infinite;
+.t-row:hover {
+  background: var(--bg-overlay);
+}
+.t-row:last-child {
+  border-bottom: none;
 }
 
-/* Hide scrollbar but keep functionality */
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Safe area padding for mobile */
+/* ── Panel header ── */
+.panel-header {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-hi);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Probability bar ── */
+.prob-bar {
+  transition: width 0.4s ease;
+}
+
+/* ── Safe area ── */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 }
 
-/* Probability bar fill */
-.prob-bar {
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+/* ── Pressable ── */
+.pressable {
+  transition: opacity 0.1s ease;
+}
+.pressable:active { opacity: 0.75; }
+
+/* ── Expand transition ── */
+.expand-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.2s ease;
+}
+.expand-content.open {
+  max-height: 500px;
 }
 
-/* Active press state for touch */
-.pressable {
-  transition: transform 0.1s ease, opacity 0.1s ease;
-}
-.pressable:active {
-  transform: scale(0.98);
-  opacity: 0.9;
+/* ── CRT scanline effect (subtle) ── */
+.crt::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
 }

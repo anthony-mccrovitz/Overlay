@@ -1,18 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  TrendingUp,
-  TrendingDown,
-  Target,
-  BarChart3,
-  Activity,
-  CheckCircle,
-  Clock,
-  AlertTriangle,
-  Zap,
-} from "lucide-react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -50,160 +38,105 @@ interface ValidationData {
   recent_picks: any[];
 }
 
-function VerdictBadge({ verdict }: { verdict: string }) {
-  const colors: Record<string, string> = {
-    "EDGE CONFIRMED": "bg-[var(--green-dim)] text-[var(--green)] border-[var(--green)]",
-    "LIKELY EDGE": "bg-[var(--green-dim)] text-[var(--green)] border-[var(--green)]",
-    "PROMISING": "bg-[var(--blue-dim)] text-[var(--blue)] border-[var(--blue)]",
-    "CAUTIOUSLY POSITIVE": "bg-[var(--blue-dim)] text-[var(--blue)] border-[var(--blue)]",
-    "EARLY SIGNAL": "bg-[var(--amber-dim)] text-[var(--amber)] border-[var(--amber)]",
-    "TOO EARLY": "bg-[var(--bg-overlay)] text-[var(--text-muted)] border-[var(--border)]",
-    "INCONCLUSIVE": "bg-[var(--amber-dim)] text-[var(--amber)] border-[var(--amber)]",
-    "NO EDGE DETECTED": "bg-[var(--red-dim)] text-[var(--red)] border-[var(--red)]",
-  };
-  const cls = colors[verdict] || colors["TOO EARLY"];
-  return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${cls}`}>
-      {verdict}
-    </span>
-  );
-}
-
-function Stat({
-  label,
-  value,
-  sub,
-  positive,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-  positive?: boolean;
-}) {
-  return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-4">
-      <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-medium mb-1">
-        {label}
-      </div>
-      <div
-        className={`text-xl font-bold font-mono ${
-          positive === undefined
-            ? "text-[var(--accent)]"
-            : positive
-              ? "text-[var(--green)]"
-              : "text-[var(--red)]"
-        }`}
-      >
-        {value}
-      </div>
-      {sub && <div className="text-[10px] text-[var(--text-muted)] mt-0.5">{sub}</div>}
-    </div>
-  );
+function verdictColor(v: string) {
+  if (v.includes("CONFIRMED") || v.includes("LIKELY")) return "text-[var(--green)] border-[var(--green)]/30 bg-[var(--green-dim)]";
+  if (v.includes("PROMISING") || v.includes("POSITIVE")) return "text-[var(--blue)] border-[var(--blue)]/30 bg-[var(--blue-dim)]";
+  if (v.includes("SIGNAL") || v.includes("EARLY")) return "text-[var(--amber)] border-[var(--amber)]/30 bg-[var(--amber-dim)]";
+  if (v.includes("NO EDGE")) return "text-[var(--red)] border-[var(--red)]/30 bg-[var(--red-dim)]";
+  return "text-[var(--text-muted)] border-[var(--border-hi)] bg-[var(--bg-overlay)]";
 }
 
 function PnlChart({ series }: { series: DaySeries[] }) {
   if (series.length === 0) return null;
-
-  const max = Math.max(...series.map((d) => d.cumulative_profit), 0);
-  const min = Math.min(...series.map((d) => d.cumulative_profit), 0);
+  const max = Math.max(...series.map(d => d.cumulative_profit), 0);
+  const min = Math.min(...series.map(d => d.cumulative_profit), 0);
   const range = max - min || 1;
-  const h = 140;
-  const w = 100;
+  const H = 120, W = 500;
 
-  const points = series
-    .map((d, i) => {
-      const x = (i / Math.max(series.length - 1, 1)) * w;
-      const y = h - ((d.cumulative_profit - min) / range) * h;
-      return `${x},${y}`;
-    })
-    .join(" ");
+  const points = series.map((d, i) => {
+    const x = (i / Math.max(series.length - 1, 1)) * W;
+    const y = H - ((d.cumulative_profit - min) / range) * H;
+    return `${x},${y}`;
+  }).join(" ");
 
-  const lastProfit = series[series.length - 1]?.cumulative_profit ?? 0;
-  const color = lastProfit >= 0 ? "var(--green)" : "var(--red)";
+  const last = series[series.length - 1]?.cumulative_profit ?? 0;
+  const strokeColor = last >= 0 ? "var(--green)" : "var(--red)";
+  const zeroY = H - ((0 - min) / range) * H;
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-medium">
-          Cumulative P&L
-        </div>
-        <div className={`text-sm font-mono font-bold ${lastProfit >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}`}>
-          ${lastProfit >= 0 ? "+" : ""}{lastProfit.toFixed(0)}
-        </div>
+    <div className="border border-[var(--border-hi)]">
+      <div className="panel-header">
+        <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ CUMULATIVE P&L</span>
+        <span className={`ml-auto text-sm font-bold font-mono ${last >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}`}>
+          {last >= 0 ? "+" : ""}${last.toFixed(0)}
+        </span>
       </div>
-      <svg viewBox={`0 0 ${w} ${h}`} className="w-full" preserveAspectRatio="none" style={{ height: 140 }}>
-        {min < 0 && (
-          <line
-            x1="0" y1={h - ((0 - min) / range) * h}
-            x2={w} y2={h - ((0 - min) / range) * h}
-            stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,2"
+      <div className="px-3 pt-2 pb-1">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full" preserveAspectRatio="none" style={{ height: 120 }}>
+          {/* Zero line */}
+          {min < 0 && (
+            <line x1="0" y1={zeroY} x2={W} y2={zeroY}
+              stroke="var(--border-hi)" strokeWidth="1" strokeDasharray="4,4" />
+          )}
+          {/* Grid lines */}
+          {[0.25, 0.5, 0.75].map(f => (
+            <line key={f} x1="0" y1={H * f} x2={W} y2={H * f}
+              stroke="var(--border)" strokeWidth="0.5" />
+          ))}
+          {/* PnL line */}
+          <polyline fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinejoin="round" points={points} />
+          {/* Fill */}
+          <polygon
+            fill={strokeColor}
+            fillOpacity="0.06"
+            points={`0,${H} ${points} ${W},${H}`}
           />
-        )}
-        <polyline fill="none" stroke={color} strokeWidth="1.5" strokeLinejoin="round" points={points} />
-      </svg>
-      <div className="flex justify-between text-[9px] text-[var(--text-muted)] mt-1">
-        <span>{series[0]?.date}</span>
-        <span>{series[series.length - 1]?.date}</span>
+        </svg>
+        <div className="flex justify-between text-[9px] text-[var(--text-muted)] mt-1">
+          <span>{series[0]?.date}</span>
+          <span>{series[series.length - 1]?.date}</span>
+        </div>
       </div>
     </div>
   );
 }
 
-function ProgressBar({ current, target, label }: { current: number; target: number; label: string }) {
+function StatCell({ label, value, sub, color = "text-[var(--cyan)]" }: {
+  label: string; value: string; sub?: string; color?: string;
+}) {
+  return (
+    <div className="border-r border-b border-[var(--border-hi)] last:border-r-0 px-3 py-3">
+      <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-1">{label}</div>
+      <div className={`text-base font-bold font-mono ${color}`}>{value}</div>
+      {sub && <div className="text-[9px] text-[var(--text-muted)] mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+function ProgressBar({ current, target, label, color = "bg-[var(--cyan)]" }: {
+  current: number; target: number; label: string; color?: string;
+}) {
   const pct = Math.min(current / target, 1) * 100;
   return (
-    <div>
-      <div className="flex justify-between text-[10px] text-[var(--text-muted)] mb-1">
-        <span>{label}</span>
-        <span className="font-mono">{current}/{target}</span>
+    <div className="border-b border-[var(--border)] last:border-b-0 px-3 py-2.5">
+      <div className="flex justify-between text-[9px] text-[var(--text-muted)] mb-1.5">
+        <span className="tracking-wider">{label}</span>
+        <span className="font-mono">{current} / {target}</span>
       </div>
-      <div className="h-1.5 rounded-full bg-[var(--bg-overlay)] overflow-hidden">
-        <div
-          className="h-full rounded-full bg-[var(--accent)] prob-bar"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-function RecentPick({ pick }: { pick: any }) {
-  const won = pick.won;
-  const clv = pick.clv_cents;
-  return (
-    <div className="flex items-center justify-between py-2.5 border-b border-[var(--border)] last:border-b-0">
-      <div className="flex items-center gap-2">
-        {won === true && <CheckCircle size={14} className="text-[var(--green)]" />}
-        {won === false && <AlertTriangle size={14} className="text-[var(--red)]" />}
-        {won === null && <Clock size={14} className="text-[var(--text-muted)]" />}
-        <div>
-          <div className="text-sm font-medium">{pick.team}</div>
-          <div className="text-[10px] text-[var(--text-muted)]">
-            {pick.pick_odds > 0 ? "+" : ""}{pick.pick_odds} @ {pick.sportsbook}
-          </div>
-        </div>
-      </div>
-      <div className="text-right">
-        {clv !== null && clv !== undefined && (
-          <div className={`text-xs font-mono ${clv > 0 ? "text-[var(--green)]" : "text-[var(--red)]"}`}>
-            {clv > 0 ? "+" : ""}{clv.toFixed(1)}c CLV
-          </div>
-        )}
-        <div className="text-[10px] text-[var(--text-muted)]">
-          {pick.model_prob ? `${(pick.model_prob * 100).toFixed(0)}% model` : ""}
-        </div>
+      <div className="h-1 bg-[var(--bg-overlay)] overflow-hidden">
+        <div className={`h-full ${color} prob-bar`} style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
 }
 
 export default function PaperTradePage() {
-  const [data, setData] = useState<ValidationData | null>(null);
+  const [data, setData]       = useState<ValidationData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${API}/paper-trade/summary`)
-      .then((r) => r.json())
+      .then(r => r.json())
       .then(setData)
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -211,30 +144,26 @@ export default function PaperTradePage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 md:pt-8">
-        <div className="skeleton h-8 w-48 mb-4" />
-        <div className="grid grid-cols-2 gap-2">
-          {[...Array(4)].map((_, i) => <div key={i} className="skeleton h-20 rounded-2xl" />)}
-        </div>
-        <div className="skeleton h-40 rounded-2xl mt-4" />
+      <div className="max-w-5xl mx-auto px-3 py-4 space-y-px">
+        {[40, 120, 200, 140].map((h, i) => (
+          <div key={i} className="skeleton border border-[var(--border-hi)]" style={{ height: h }} />
+        ))}
       </div>
     );
   }
 
   if (!data || data.total_bets === 0) {
     return (
-      <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 md:pt-8">
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Paper Trading</h1>
-        <p className="text-xs text-[var(--text-muted)] mb-6">
-          Validating model edge before risking real money.
-        </p>
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-6 text-center">
-          <Activity size={32} className="text-[var(--text-muted)] mx-auto mb-3" />
-          <div className="text-sm font-medium mb-1">No paper trades yet</div>
-          <div className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
-            Run <code className="bg-[var(--bg-overlay)] px-1.5 py-0.5 rounded text-[var(--accent)]">
-            python -m src.paper_trade morning</code> to generate today&apos;s picks
-            and start tracking.
+      <div className="max-w-5xl mx-auto px-3 py-4 space-y-px">
+        <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3">
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER</div>
+          <div className="text-sm font-bold text-[var(--text-bright)]">PAPER TRADING VALIDATOR</div>
+        </div>
+        <div className="border border-[var(--border-hi)] px-4 py-8 text-center">
+          <div className="text-[10px] text-[var(--text-muted)] tracking-widest mb-3">STATUS: AWAITING DATA</div>
+          <div className="text-sm text-[var(--text-secondary)] mb-3">No paper trades recorded yet.</div>
+          <div className="text-[10px] text-[var(--text-muted)] font-mono">
+            RUN: python -m src.paper_trade morning
           </div>
         </div>
       </div>
@@ -242,115 +171,135 @@ export default function PaperTradePage() {
   }
 
   const betsTarget = data.bets_needed > 0 ? data.total_bets + data.bets_needed : 200;
+  const vc = verdictColor(data.verdict);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 md:pt-8">
-      <div className="flex items-center justify-between mb-1">
-        <h1 className="text-2xl font-bold tracking-tight">Paper Trading</h1>
-        <VerdictBadge verdict={data.verdict} />
-      </div>
-      <p className="text-xs text-[var(--text-muted)] mb-5">
-        Day {data.days_tracked} &middot; {data.total_bets} bets tracked &middot; Validating model edge
-      </p>
+    <div className="max-w-5xl mx-auto px-3 py-4 space-y-px">
 
-      {/* Core stats */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid grid-cols-2 gap-2 mb-4"
-      >
-        <Stat
-          label="Record"
-          value={`${data.wins}W-${data.losses}L`}
-          sub={`${(data.win_rate * 100).toFixed(1)}% (baseline 53.7%)`}
-        />
-        <Stat
-          label="ROI"
-          value={`${data.roi >= 0 ? "+" : ""}${(data.roi * 100).toFixed(1)}%`}
-          sub={`CI: [${(data.roi_ci_lower * 100).toFixed(1)}%, ${(data.roi_ci_upper * 100).toFixed(1)}%]`}
-          positive={data.roi >= 0}
-        />
-        <Stat
-          label="P-Value"
-          value={data.binom_p_value.toFixed(4)}
-          sub={data.binom_significant ? "Significant (p < 0.05)" : "Not yet significant"}
-          positive={data.binom_significant ? true : undefined}
-        />
-        <Stat
-          label="CLV"
-          value={`${data.clv_mean >= 0 ? "+" : ""}${data.clv_mean.toFixed(1)}c`}
-          sub={`${data.clv_picks_with_closing} picks with closing lines`}
-          positive={data.clv_mean > 0}
-        />
-      </motion.div>
+      {/* Header */}
+      <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3 flex items-center justify-between">
+        <div>
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER · DAY {data.days_tracked}</div>
+          <div className="text-sm font-bold text-[var(--text-bright)]">PAPER TRADING VALIDATOR</div>
+        </div>
+        <span className={`border px-2.5 py-1 text-[10px] font-bold tracking-widest ${vc}`}>
+          {data.verdict}
+        </span>
+      </div>
+
+      {/* Core stats grid */}
+      <div className="border border-[var(--border-hi)]">
+        <div className="panel-header">
+          <span className="text-[10px] font-bold tracking-widest text-[var(--cyan)]">▌ CORE METRICS</span>
+          <span className="ml-2 text-[9px] text-[var(--text-muted)]">{data.total_bets} bets tracked</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4">
+          <StatCell
+            label="RECORD"
+            value={`${data.wins}W-${data.losses}L`}
+            sub={`${(data.win_rate * 100).toFixed(1)}% (base 53.7%)`}
+          />
+          <StatCell
+            label="ROI"
+            value={`${data.roi >= 0 ? "+" : ""}${(data.roi * 100).toFixed(1)}%`}
+            sub={`CI: [${(data.roi_ci_lower * 100).toFixed(1)}%, ${(data.roi_ci_upper * 100).toFixed(1)}%]`}
+            color={data.roi >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}
+          />
+          <StatCell
+            label="P-VALUE"
+            value={data.binom_p_value.toFixed(4)}
+            sub={data.binom_significant ? "SIG: p < 0.05" : "NOT YET SIGNIFICANT"}
+            color={data.binom_significant ? "text-[var(--green)]" : "text-[var(--amber)]"}
+          />
+          <StatCell
+            label="CLV MEAN"
+            value={`${data.clv_mean >= 0 ? "+" : ""}${data.clv_mean.toFixed(1)}c`}
+            sub={`${data.clv_picks_with_closing} picks w/ closing`}
+            color={data.clv_mean > 0 ? "text-[var(--green)]" : "text-[var(--red)]"}
+          />
+        </div>
+        <div className="grid grid-cols-2 border-t border-[var(--border-hi)]">
+          <StatCell
+            label="SHARPE RATIO"
+            value={data.sharpe_ratio.toFixed(2)}
+            sub={data.sharpe_ratio > 1 ? "STRONG" : data.sharpe_ratio > 0.5 ? "MODERATE" : "WEAK"}
+            color={data.sharpe_ratio > 0.5 ? "text-[var(--green)]" : "text-[var(--amber)]"}
+          />
+          <StatCell
+            label="MAX DRAWDOWN"
+            value={`$${data.max_drawdown.toFixed(0)}`}
+            sub={`${(data.max_drawdown_pct * 100).toFixed(1)}% of peak`}
+            color="text-[var(--red)]"
+          />
+        </div>
+      </div>
 
       {/* P&L Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="mb-4"
-      >
-        <PnlChart series={data.daily_series} />
-      </motion.div>
-
-      {/* Progress + Risk */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
-        className="grid grid-cols-2 gap-2 mb-4"
-      >
-        <Stat
-          label="Sharpe Ratio"
-          value={data.sharpe_ratio.toFixed(2)}
-          sub={data.sharpe_ratio > 1 ? "Strong" : data.sharpe_ratio > 0.5 ? "Moderate" : "Weak"}
-          positive={data.sharpe_ratio > 0.5 ? true : data.sharpe_ratio > 0 ? undefined : false}
-        />
-        <Stat
-          label="Max Drawdown"
-          value={`$${data.max_drawdown.toFixed(0)}`}
-          sub={`${(data.max_drawdown_pct * 100).toFixed(1)}% of peak`}
-          positive={false}
-        />
-      </motion.div>
+      <PnlChart series={data.daily_series} />
 
       {/* Validation progress */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-4 mb-4"
-      >
-        <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-medium mb-3">
-          Validation Progress
+      <div className="border border-[var(--border-hi)]">
+        <div className="panel-header">
+          <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ VALIDATION PROGRESS</span>
         </div>
-        <div className="space-y-3">
-          <ProgressBar current={data.total_bets} target={betsTarget} label="Bets tracked" />
-          <ProgressBar current={data.clv_picks_with_closing} target={Math.max(data.total_bets, 50)} label="Closing lines captured" />
-          <ProgressBar current={data.days_tracked} target={28} label="Days tracked" />
+        <ProgressBar current={data.total_bets} target={betsTarget} label="BETS TRACKED" color="bg-[var(--cyan)]" />
+        <ProgressBar current={data.clv_picks_with_closing} target={Math.max(data.total_bets, 50)} label="CLOSING LINES CAPTURED" color="bg-[var(--purple)]" />
+        <ProgressBar current={data.days_tracked} target={28} label="DAYS TRACKED" color="bg-[var(--amber)]" />
+        <div className="px-3 py-2.5">
+          <div className="text-[10px] text-[var(--text-secondary)]">{data.verdict_detail}</div>
         </div>
-        <div className="mt-3 text-xs text-[var(--text-secondary)]">
-          {data.verdict_detail}
-        </div>
-      </motion.div>
+      </div>
 
       {/* Recent picks */}
       {data.recent_picks.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] px-4 py-2"
-        >
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-medium py-2">
-            Recent Picks
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--cyan)]">▌ RECENT PICKS</span>
           </div>
-          {data.recent_picks.slice(-10).reverse().map((pick, i) => (
-            <RecentPick key={i} pick={pick} />
-          ))}
-        </motion.div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border-hi)]">
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">STATUS</th>
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">TEAM</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ODDS</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">MODEL</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">CLV</th>
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">BOOK</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.recent_picks.slice(-10).reverse().map((p: any, i: number) => (
+                  <tr key={i} className="t-row">
+                    <td className="px-3 py-2">
+                      {p.won === true  && <span className="text-[var(--green)] font-bold text-xs">WIN</span>}
+                      {p.won === false && <span className="text-[var(--red)] font-bold text-xs">LOSS</span>}
+                      {p.won === null  && <span className="text-[var(--text-muted)] text-xs">PENDING</span>}
+                    </td>
+                    <td className="px-3 py-2 text-xs text-[var(--text-bright)] font-medium">{p.team}</td>
+                    <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)]">
+                      {p.pick_odds > 0 ? "+" : ""}{p.pick_odds}
+                    </td>
+                    <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden sm:table-cell">
+                      {p.model_prob ? `${(p.model_prob * 100).toFixed(0)}%` : "—"}
+                    </td>
+                    <td className="px-3 py-2 text-right font-mono text-[11px] hidden md:table-cell">
+                      {p.clv_cents != null
+                        ? <span className={p.clv_cents > 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                            {p.clv_cents > 0 ? "+" : ""}{p.clv_cents.toFixed(1)}c
+                          </span>
+                        : <span className="text-[var(--text-muted)]">—</span>
+                      }
+                    </td>
+                    <td className="px-3 py-2 text-[10px] text-[var(--text-muted)] hidden sm:table-cell">{p.sportsbook || "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
+
     </div>
   );
 }

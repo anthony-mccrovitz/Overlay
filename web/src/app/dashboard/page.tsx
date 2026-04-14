@@ -1,21 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Zap,
-  TrendingUp,
-  RefreshCw,
-  ChevronDown,
-  ChevronUp,
-  Shield,
-  DollarSign,
-  Target,
-  BarChart3,
-  Activity,
-} from "lucide-react";
 
 const API = "/api";
+
+// ── Types ──────────────────────────────────────────────────────────────
 
 interface Game {
   game_id: string;
@@ -25,6 +14,7 @@ interface Game {
   home_pitcher: string;
   away_pitcher: string;
   edge_drivers: string[];
+  time?: string;
 }
 
 interface Pick {
@@ -87,343 +77,423 @@ interface PicksData {
 }
 
 const SPORTS = [
-  { key: "mlb", label: "MLB", emoji: "⚾" },
-  { key: "nba", label: "NBA", emoji: "🏀" },
-  { key: "ncaab", label: "NCAAB", emoji: "🏈" },
-  { key: "nfl", label: "NFL", emoji: "🏈" },
+  { key: "mlb",   label: "MLB",   f: "F1" },
+  { key: "nba",   label: "NBA",   f: "F5" },
+  { key: "nfl",   label: "NFL",   f: "F6" },
+  { key: "ncaab", label: "NCAAB", f: "F7" },
 ];
 
-function Skeleton({ className = "" }: { className?: string }) {
-  return <div className={`skeleton ${className}`} />;
-}
-
-function teamAbbr(name: string): string {
-  const abbrs: Record<string, string> = {
-    "Arizona Diamondbacks": "ARI", "Atlanta Braves": "ATL", "Baltimore Orioles": "BAL",
-    "Boston Red Sox": "BOS", "Chicago Cubs": "CHC", "Chicago White Sox": "CWS",
-    "Cincinnati Reds": "CIN", "Cleveland Guardians": "CLE", "Colorado Rockies": "COL",
-    "Detroit Tigers": "DET", "Houston Astros": "HOU", "Kansas City Royals": "KC",
-    "Los Angeles Angels": "LAA", "Los Angeles Dodgers": "LAD", "Miami Marlins": "MIA",
-    "Milwaukee Brewers": "MIL", "Minnesota Twins": "MIN", "New York Mets": "NYM",
-    "New York Yankees": "NYY", "Oakland Athletics": "OAK", "Philadelphia Phillies": "PHI",
-    "Pittsburgh Pirates": "PIT", "San Diego Padres": "SD", "San Francisco Giants": "SF",
-    "Seattle Mariners": "SEA", "St. Louis Cardinals": "STL", "Tampa Bay Rays": "TB",
-    "Texas Rangers": "TEX", "Toronto Blue Jays": "TOR", "Washington Nationals": "WSH",
-    "Athletics": "OAK",
-  };
-  return abbrs[name] || name.split(" ").pop()?.slice(0, 3).toUpperCase() || "???";
-}
-
-function ProbBar({ prob }: { prob: number }) {
-  const pct = Math.round(prob * 100);
-  const isStrong = pct >= 58;
-  return (
-    <div className="flex items-center gap-2">
-      <span className="text-xs text-[var(--text-muted)] w-8 text-right font-mono">{pct}%</span>
-      <div className="flex-1 h-1.5 rounded-full bg-[var(--bg-overlay)] overflow-hidden">
-        <div
-          className={`h-full rounded-full ${isStrong ? "bg-[var(--accent)]" : "bg-[var(--text-muted)]"}`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-function EdgePill({ edge, isRaw = false }: { edge: number; isRaw?: boolean }) {
-  // isRaw = edge is already a percentage (like 36.8 for props)
-  const pct = isRaw ? edge.toFixed(1) : (edge * 100).toFixed(1);
-  const val = isRaw ? edge : edge * 100;
-  if (val >= 8)
-    return (
-      <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold bg-[var(--green-dim)] text-[var(--green)]">
-        <Zap size={10} /> +{pct}%
-      </span>
-    );
-  if (val >= 5)
-    return (
-      <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold bg-[var(--amber-dim)] text-[var(--amber)]">
-        +{pct}%
-      </span>
-    );
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold bg-[var(--blue-dim)] text-[var(--blue)]">
-      +{pct}%
-    </span>
-  );
-}
-
-const MARKET_LABEL: Record<string, string> = { moneyline: "ML", total: "O/U", spread: "RL" };
-const MARKET_COLOR: Record<string, string> = {
-  moneyline: "bg-[var(--accent-dim)] text-[var(--accent)]",
-  total:     "bg-[var(--blue-dim)] text-[var(--blue)]",
-  spread:    "bg-[#39FF7820] text-[#39FF78]",
+const ABBR: Record<string, string> = {
+  "Arizona Diamondbacks": "ARI", "Atlanta Braves": "ATL", "Baltimore Orioles": "BAL",
+  "Boston Red Sox": "BOS", "Chicago Cubs": "CHC", "Chicago White Sox": "CWS",
+  "Cincinnati Reds": "CIN", "Cleveland Guardians": "CLE", "Colorado Rockies": "COL",
+  "Detroit Tigers": "DET", "Houston Astros": "HOU", "Kansas City Royals": "KC",
+  "Los Angeles Angels": "LAA", "Los Angeles Dodgers": "LAD", "Miami Marlins": "MIA",
+  "Milwaukee Brewers": "MIL", "Minnesota Twins": "MIN", "New York Mets": "NYM",
+  "New York Yankees": "NYY", "Oakland Athletics": "OAK", "Philadelphia Phillies": "PHI",
+  "Pittsburgh Pirates": "PIT", "San Diego Padres": "SD", "San Francisco Giants": "SF",
+  "Seattle Mariners": "SEA", "St. Louis Cardinals": "STL", "Tampa Bay Rays": "TB",
+  "Texas Rangers": "TEX", "Toronto Blue Jays": "TOR", "Washington Nationals": "WSH",
+  "Athletics": "OAK",
 };
 
-function MarketBadge({ market }: { market?: string }) {
-  const key = market ?? "moneyline";
+function abbr(name: string) {
+  return ABBR[name] || name.split(" ").slice(-1)[0]?.slice(0, 3).toUpperCase() || "???";
+}
+
+function fmtOdds(o: number) {
+  return o > 0 ? `+${o}` : `${o}`;
+}
+
+function fmtEdge(e: number, raw = false) {
+  const v = raw ? e : e * 100;
+  const s = `+${v.toFixed(1)}%`;
+  if (v >= 8) return <span className="text-[var(--green)] font-bold">{s}</span>;
+  if (v >= 5) return <span className="text-[var(--amber)]">{s}</span>;
+  return <span className="text-[var(--blue)]">{s}</span>;
+}
+
+function edgeBg(e: number, raw = false) {
+  const v = raw ? e : e * 100;
+  if (v >= 8) return "bg-[var(--green-dim)]";
+  if (v >= 5) return "bg-[var(--amber-dim)]";
+  return "";
+}
+
+function MktLabel({ mkt }: { mkt: string }) {
+  const map: Record<string, { label: string; cls: string }> = {
+    moneyline: { label: "ML",   cls: "text-[var(--cyan)] border-[var(--cyan)]/30" },
+    spread:    { label: "RL",   cls: "text-[var(--green-hi)] border-[var(--green-hi)]/30" },
+    total:     { label: "O/U",  cls: "text-[var(--blue)] border-[var(--blue)]/30" },
+  };
+  const m = map[mkt.toLowerCase()] ?? { label: mkt.toUpperCase().slice(0, 3), cls: "text-[var(--text-muted)] border-[var(--border-hi)]" };
   return (
-    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider ${MARKET_COLOR[key] ?? "bg-[var(--bg-overlay)] text-[var(--text-muted)]"}`}>
-      {MARKET_LABEL[key] ?? key.toUpperCase()}
+    <span className={`border px-1.5 py-px text-[9px] font-bold tracking-wider ${m.cls}`}>
+      {m.label}
     </span>
   );
 }
 
-// ── Card types ─────────────────────────────────────────────────────────
+// ── Table row components ────────────────────────────────────────────────
 
-function PickCard({ pick, bankroll, index }: { pick: Pick; bankroll: number; index: number }) {
-  const odds = pick.BestOdds > 0 ? `+${pick.BestOdds}` : `${pick.BestOdds}`;
-  const isTotal = pick.Market === "total";
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.04, duration: 0.3 }}
-      className={`rounded-2xl border bg-[var(--bg-raised)] p-4 ${isTotal ? "border-[var(--blue)]/20" : "border-[var(--green)]/20"}`}
-    >
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex-1 min-w-0 mr-2">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-semibold">{pick.Team}</span>
-            <MarketBadge market={pick.Market} />
-          </div>
-          <div className="text-[11px] text-[var(--text-muted)] mt-0.5 truncate">{pick.Opponent}</div>
-        </div>
-        <EdgePill edge={pick.Edge} />
-      </div>
-      <div className="grid grid-cols-3 gap-3 mt-3">
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">{isTotal ? "Book %" : "Model"}</div>
-          <div className="text-sm font-mono font-semibold text-[var(--accent)]">{(pick.ModelProb * 100).toFixed(1)}%</div>
-        </div>
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Implied</div>
-          <div className="text-sm font-mono font-semibold">{(pick.ImpliedProb * 100).toFixed(1)}%</div>
-        </div>
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Best Odds</div>
-          <div className="text-sm font-mono font-semibold">{odds}</div>
-        </div>
-      </div>
-      {pick.Sportsbook && (
-        <div className="mt-2 text-[11px] text-[var(--text-muted)]">Best at {pick.Sportsbook}</div>
-      )}
-      {bankroll > 0 && pick.BetSize && pick.BetSize > 0 && (
-        <div className="mt-3 pt-3 border-t border-[var(--border)] flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)]">
-            <DollarSign size={12} />
-            Bet ${pick.BetSize.toFixed(0)}
-          </div>
-          <div className="text-xs font-mono text-[var(--green)]">+${pick.ExpectedProfit?.toFixed(2)} EV</div>
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-function PropCard({ prop, bankroll, index }: { prop: Prop; bankroll: number; index: number }) {
-  const odds = prop.BestOdds > 0 ? `+${prop.BestOdds}` : `${prop.BestOdds}`;
-  const marketLabel = prop.market.replace("pitcher_", "").replace("_", " ");
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.04, duration: 0.3 }}
-      className="rounded-2xl border border-[#B44FFF]/20 bg-[var(--bg-raised)] p-4"
-    >
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex-1 min-w-0 mr-2">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-semibold">{prop.player}</span>
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider bg-[#B44FFF20] text-[#B44FFF]">
-              {prop.direction} {prop.line} {marketLabel}
-            </span>
-          </div>
-          <div className="text-[11px] text-[var(--text-muted)] mt-0.5">{prop.team} vs {prop.opponent}</div>
-        </div>
-        <EdgePill edge={prop.EdgePct} isRaw />
-      </div>
-      <div className="grid grid-cols-3 gap-3 mt-3">
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Model</div>
-          <div className="text-sm font-mono font-semibold text-[#B44FFF]">{(prop.ModelProb * 100).toFixed(1)}%</div>
-        </div>
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Projected</div>
-          <div className="text-sm font-mono font-semibold">{prop.projected != null ? prop.projected.toFixed(1) : "—"}</div>
-        </div>
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Best Odds</div>
-          <div className="text-sm font-mono font-semibold">{odds}</div>
-        </div>
-      </div>
-      {prop.Sportsbook && (
-        <div className="mt-2 text-[11px] text-[var(--text-muted)]">Best at {prop.Sportsbook}</div>
-      )}
-      {bankroll > 0 && prop.BetSize && prop.BetSize > 0 && (
-        <div className="mt-3 pt-3 border-t border-[var(--border)] flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)]">
-            <DollarSign size={12} />
-            Bet ${prop.BetSize.toFixed(0)}
-          </div>
-          <div className="text-xs font-mono text-[var(--green)]">+${prop.ExpectedProfit?.toFixed(2)} EV</div>
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-function NrfiCard({ game, index }: { game: NrfiGame; index: number }) {
-  const odds = game.BestOdds != null
-    ? (game.BestOdds > 0 ? `+${game.BestOdds}` : `${game.BestOdds}`)
-    : null;
-  const projPct = game.projected_nrfi != null ? (game.projected_nrfi * 100).toFixed(0) : null;
-  const isNrfi = game.direction === "NRFI";
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.04, duration: 0.3 }}
-      className="rounded-2xl border border-[#B44FFF]/20 bg-[var(--bg-raised)] p-4"
-    >
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex-1 min-w-0 mr-2">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-semibold">{game.away_team} @ {game.home_team}</span>
-            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider ${isNrfi ? "bg-[#39FF7820] text-[#39FF78]" : "bg-[var(--red-dim)] text-[var(--red)]"}`}>
-              {game.direction}
-            </span>
-          </div>
-          <div className="text-[11px] text-[var(--text-muted)] mt-0.5">
-            {game.away_sp} vs {game.home_sp}
-          </div>
-        </div>
-        {game.EdgePct != null
-          ? <EdgePill edge={game.EdgePct} isRaw />
-          : projPct && (
-            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-[var(--bg-overlay)] text-[var(--text-secondary)]">
-              {projPct}% NRFI
-            </span>
-          )
-        }
-      </div>
-      <div className="grid grid-cols-3 gap-3 mt-3">
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Proj NRFI</div>
-          <div className="text-sm font-mono font-semibold text-[#B44FFF]">{projPct ? `${projPct}%` : "—"}</div>
-        </div>
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Implied</div>
-          <div className="text-sm font-mono font-semibold">
-            {game.implied_nrfi != null ? `${(game.implied_nrfi * 100).toFixed(0)}%` : "—"}
-          </div>
-        </div>
-        <div>
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">Best Odds</div>
-          <div className="text-sm font-mono font-semibold">{odds ?? "—"}</div>
-        </div>
-      </div>
-      {game.Sportsbook && (
-        <div className="mt-2 text-[11px] text-[var(--text-muted)]">Best at {game.Sportsbook}</div>
-      )}
-    </motion.div>
-  );
-}
-
-function GameCard({ game, index }: { game: Game; index: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const homeProb = game.home_win_prob;
-  const awayProb = 1 - homeProb;
-  const fav = homeProb >= 0.5 ? "home" : "away";
+function PickRow({ pick, bankroll }: { pick: Pick; bankroll: number }) {
+  const [open, setOpen] = useState(false);
+  const e = pick.Edge;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.03, duration: 0.3 }}
-      className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] overflow-hidden pressable"
-      onClick={() => setExpanded(!expanded)}
-    >
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className={`flex items-center gap-2 flex-1 min-w-0 ${fav === "away" ? "" : "opacity-60"}`}>
-              <div className={`flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold ${fav === "away" ? "bg-[var(--accent-dim)] text-[var(--accent)]" : "bg-[var(--bg-overlay)] text-[var(--text-muted)]"}`}>
-                {teamAbbr(game.away_team)}
+    <>
+      <tr
+        className={`t-row cursor-pointer ${edgeBg(e)}`}
+        onClick={() => setOpen(!open)}
+      >
+        {/* Team */}
+        <td className="px-3 py-2 whitespace-nowrap">
+          <div className="text-xs font-semibold text-[var(--text-bright)]">{pick.Team}</div>
+          <div className="text-[10px] text-[var(--text-muted)] truncate max-w-[120px]">{pick.Opponent}</div>
+        </td>
+        {/* Market */}
+        <td className="px-2 py-2 hidden sm:table-cell">
+          <MktLabel mkt={pick.Market ?? "moneyline"} />
+        </td>
+        {/* Model prob */}
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden md:table-cell">
+          {(pick.ModelProb * 100).toFixed(1)}%
+        </td>
+        {/* Implied */}
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)] hidden lg:table-cell">
+          {(pick.ImpliedProb * 100).toFixed(1)}%
+        </td>
+        {/* Edge */}
+        <td className="px-2 py-2 text-right font-mono text-[11px]">
+          {fmtEdge(e)}
+        </td>
+        {/* Odds */}
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-bright)]">
+          {fmtOdds(pick.BestOdds)}
+        </td>
+        {/* Book */}
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden sm:table-cell">
+          {pick.Sportsbook || "—"}
+        </td>
+        {/* Kelly */}
+        <td className="px-2 py-2 text-right font-mono text-[10px] text-[var(--text-muted)] hidden lg:table-cell">
+          {pick.KellyFraction != null ? `${(pick.KellyFraction * 100).toFixed(1)}%` : "—"}
+        </td>
+        {/* Expand */}
+        <td className="px-2 py-2 text-[var(--text-muted)] text-center w-6">
+          <span className="text-[10px]">{open ? "▲" : "▼"}</span>
+        </td>
+      </tr>
+      {open && (
+        <tr className="bg-[var(--bg-panel)]">
+          <td colSpan={9} className="px-4 py-3 border-b border-[var(--border-hi)]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px]">
+              <div>
+                <div className="text-[var(--text-muted)] tracking-wider mb-0.5">MODEL PROB</div>
+                <div className="text-[var(--cyan)] font-mono font-bold text-sm">{(pick.ModelProb * 100).toFixed(2)}%</div>
               </div>
-              <div className="min-w-0">
-                <div className="text-sm font-semibold truncate">{game.away_team.split(" ").pop()}</div>
-                <div className="text-[11px] text-[var(--text-muted)] truncate">{game.away_pitcher || "TBD"}</div>
+              <div>
+                <div className="text-[var(--text-muted)] tracking-wider mb-0.5">IMPLIED PROB</div>
+                <div className="text-[var(--text-bright)] font-mono font-bold text-sm">{(pick.ImpliedProb * 100).toFixed(2)}%</div>
+              </div>
+              <div>
+                <div className="text-[var(--text-muted)] tracking-wider mb-0.5">KELLY FRACTION</div>
+                <div className="text-[var(--amber)] font-mono font-bold text-sm">
+                  {pick.KellyFraction != null ? `${(pick.KellyFraction * 100).toFixed(2)}%` : "N/A"}
+                </div>
+              </div>
+              {bankroll > 0 && pick.BetSize != null && pick.BetSize > 0 && (
+                <div>
+                  <div className="text-[var(--text-muted)] tracking-wider mb-0.5">BET SIZE ($BKR={bankroll})</div>
+                  <div className="text-[var(--green)] font-mono font-bold text-sm">
+                    ${pick.BetSize.toFixed(0)}
+                    {pick.ExpectedProfit != null && pick.ExpectedProfit > 0 && (
+                      <span className="ml-2 text-[10px] font-normal text-[var(--text-muted)]">+${pick.ExpectedProfit.toFixed(2)} EV</span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+function PropRow({ prop, bankroll }: { prop: Prop; bankroll: number }) {
+  const [open, setOpen] = useState(false);
+  const mktLabel = prop.market.replace("pitcher_", "").replace(/_/g, " ").toUpperCase();
+  return (
+    <>
+      <tr className={`t-row cursor-pointer ${edgeBg(prop.EdgePct, true)}`} onClick={() => setOpen(!open)}>
+        <td className="px-3 py-2 whitespace-nowrap">
+          <div className="text-xs font-semibold text-[var(--text-bright)]">{prop.player}</div>
+          <div className="text-[10px] text-[var(--text-muted)]">{prop.team} vs {prop.opponent}</div>
+        </td>
+        <td className="px-2 py-2 hidden sm:table-cell">
+          <span className="border border-[var(--purple)]/30 px-1.5 py-px text-[9px] font-bold tracking-wider text-[var(--purple)]">
+            {prop.direction} {prop.line}
+          </span>
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden md:table-cell">
+          {(prop.ModelProb * 100).toFixed(1)}%
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)] hidden lg:table-cell">
+          {(prop.ImpliedProb * 100).toFixed(1)}%
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px]">
+          {fmtEdge(prop.EdgePct, true)}
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-bright)]">
+          {fmtOdds(prop.BestOdds)}
+        </td>
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden sm:table-cell">
+          {prop.Sportsbook || "—"}
+        </td>
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden lg:table-cell">
+          {prop.projected != null ? `proj ${prop.projected.toFixed(1)}` : "—"}
+        </td>
+        <td className="px-2 py-2 text-center w-6 text-[10px] text-[var(--text-muted)]">
+          {open ? "▲" : "▼"}
+        </td>
+      </tr>
+      {open && (
+        <tr className="bg-[var(--bg-panel)]">
+          <td colSpan={9} className="px-4 py-3 border-b border-[var(--border-hi)]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-[10px]">
+              <div>
+                <div className="text-[var(--text-muted)] mb-0.5">MARKET</div>
+                <div className="text-[var(--purple)] font-semibold">{mktLabel}</div>
+              </div>
+              <div>
+                <div className="text-[var(--text-muted)] mb-0.5">PROJECTED</div>
+                <div className="text-[var(--text-bright)] font-mono">{prop.projected != null ? prop.projected.toFixed(2) : "N/A"}</div>
+              </div>
+              {bankroll > 0 && prop.BetSize != null && prop.BetSize > 0 && (
+                <div>
+                  <div className="text-[var(--text-muted)] mb-0.5">BET SIZE</div>
+                  <div className="text-[var(--green)] font-mono">${prop.BetSize.toFixed(0)}</div>
+                </div>
+              )}
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+function NrfiRow({ g }: { g: NrfiGame }) {
+  const [open, setOpen] = useState(false);
+  const isNrfi = g.direction === "NRFI";
+  return (
+    <>
+      <tr className="t-row cursor-pointer" onClick={() => setOpen(!open)}>
+        <td className="px-3 py-2 whitespace-nowrap">
+          <div className="text-xs font-semibold text-[var(--text-bright)]">{g.away_team} @ {g.home_team}</div>
+          <div className="text-[10px] text-[var(--text-muted)]">{g.away_sp || "TBD"} vs {g.home_sp || "TBD"}</div>
+        </td>
+        <td className="px-2 py-2 hidden sm:table-cell">
+          <span className={`border px-1.5 py-px text-[9px] font-bold tracking-wider ${isNrfi ? "border-[var(--green-hi)]/30 text-[var(--green-hi)]" : "border-[var(--red)]/30 text-[var(--red)]"}`}>
+            {g.direction}
+          </span>
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden md:table-cell">
+          {g.projected_nrfi != null ? `${(g.projected_nrfi * 100).toFixed(0)}%` : "—"}
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)] hidden lg:table-cell">
+          {g.implied_nrfi != null ? `${(g.implied_nrfi * 100).toFixed(0)}%` : "—"}
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px]">
+          {g.EdgePct != null ? fmtEdge(g.EdgePct, true) : <span className="text-[var(--text-muted)]">—</span>}
+        </td>
+        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-bright)]">
+          {g.BestOdds != null ? fmtOdds(g.BestOdds) : "—"}
+        </td>
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden sm:table-cell">
+          {g.Sportsbook || "—"}
+        </td>
+        <td className="px-2 py-2 hidden lg:table-cell" />
+        <td className="px-2 py-2 text-center w-6 text-[10px] text-[var(--text-muted)]">
+          {open ? "▲" : "▼"}
+        </td>
+      </tr>
+      {open && (
+        <tr className="bg-[var(--bg-panel)]">
+          <td colSpan={9} className="px-4 py-3 border-b border-[var(--border-hi)]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px]">
+              <div>
+                <div className="text-[var(--text-muted)] mb-0.5">PROJ NRFI %</div>
+                <div className="text-[var(--cyan)] font-mono">{g.projected_nrfi != null ? `${(g.projected_nrfi * 100).toFixed(1)}%` : "N/A"}</div>
+              </div>
+              <div>
+                <div className="text-[var(--text-muted)] mb-0.5">IMPLIED NRFI %</div>
+                <div className="text-[var(--text-bright)] font-mono">{g.implied_nrfi != null ? `${(g.implied_nrfi * 100).toFixed(1)}%` : "N/A"}</div>
+              </div>
+              <div>
+                <div className="text-[var(--text-muted)] mb-0.5">HOME SP</div>
+                <div className="text-[var(--text-secondary)]">{g.home_sp || "TBD"}</div>
+              </div>
+              <div>
+                <div className="text-[var(--text-muted)] mb-0.5">AWAY SP</div>
+                <div className="text-[var(--text-secondary)]">{g.away_sp || "TBD"}</div>
               </div>
             </div>
-            <div className="text-[11px] text-[var(--text-muted)] font-medium px-2">@</div>
-            <div className={`flex items-center gap-2 flex-1 min-w-0 justify-end text-right ${fav === "home" ? "" : "opacity-60"}`}>
-              <div className="min-w-0">
-                <div className="text-sm font-semibold truncate">{game.home_team.split(" ").pop()}</div>
-                <div className="text-[11px] text-[var(--text-muted)] truncate">{game.home_pitcher || "TBD"}</div>
-              </div>
-              <div className={`flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold ${fav === "home" ? "bg-[var(--accent-dim)] text-[var(--accent)]" : "bg-[var(--bg-overlay)] text-[var(--text-muted)]"}`}>
-                {teamAbbr(game.home_team)}
-              </div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+function GameRow({ g }: { g: Game }) {
+  const [open, setOpen] = useState(false);
+  const homePct = Math.round(g.home_win_prob * 100);
+  const awayPct = 100 - homePct;
+  const fav = homePct >= 50 ? "home" : "away";
+
+  return (
+    <>
+      <tr className="t-row cursor-pointer" onClick={() => setOpen(!open)}>
+        <td className="px-3 py-2">
+          <div className="flex items-center gap-2">
+            <span className={`font-mono text-[10px] font-bold ${fav === "away" ? "text-[var(--cyan)]" : "text-[var(--text-secondary)]"}`}>
+              {abbr(g.away_team)}
+            </span>
+            <span className="text-[var(--text-muted)] text-[10px]">@</span>
+            <span className={`font-mono text-[10px] font-bold ${fav === "home" ? "text-[var(--cyan)]" : "text-[var(--text-secondary)]"}`}>
+              {abbr(g.home_team)}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 mt-1">
+            <div className="flex-1 h-1 bg-[var(--bg-overlay)] overflow-hidden">
+              <div className="h-full bg-[var(--cyan)] prob-bar" style={{ width: `${awayPct}%` }} />
             </div>
           </div>
-        </div>
-        <div className="space-y-1.5">
-          <ProbBar prob={awayProb} />
-          <ProbBar prob={homeProb} />
-        </div>
-      </div>
-      <AnimatePresence>
-        {expanded && game.edge_drivers.length > 0 && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="px-4 pb-3 pt-1 border-t border-[var(--border)]">
-              {game.edge_drivers.map((d, i) => (
-                <div key={i} className="text-xs text-[var(--text-secondary)] py-0.5 flex items-start gap-1.5">
-                  <Target size={10} className="mt-0.5 text-[var(--accent)] flex-shrink-0" />
+        </td>
+        <td className="px-2 py-2 font-mono text-[11px] text-[var(--text-secondary)] hidden sm:table-cell">
+          {awayPct}% / {homePct}%
+        </td>
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden md:table-cell">
+          {g.away_pitcher || "TBD"}
+        </td>
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden md:table-cell">
+          {g.home_pitcher || "TBD"}
+        </td>
+        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden lg:table-cell">
+          {g.edge_drivers.length > 0 ? `${g.edge_drivers.length} signal${g.edge_drivers.length > 1 ? "s" : ""}` : "—"}
+        </td>
+        <td className="px-2 py-2 text-center w-6 text-[10px] text-[var(--text-muted)]">
+          {open ? "▲" : "▼"}
+        </td>
+      </tr>
+      {open && g.edge_drivers.length > 0 && (
+        <tr className="bg-[var(--bg-panel)]">
+          <td colSpan={6} className="px-4 py-3 border-b border-[var(--border-hi)]">
+            <div className="space-y-1">
+              {g.edge_drivers.map((d, i) => (
+                <div key={i} className="text-[10px] text-[var(--text-secondary)] flex items-start gap-2">
+                  <span className="text-[var(--cyan)] mt-px">›</span>
                   {d}
                 </div>
               ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 
-function SectionHeader({ icon, label, count, color = "text-[var(--accent)]" }: {
-  icon: React.ReactNode; label: string; count: number; color?: string;
+// ── Section table ──────────────────────────────────────────────────────
+
+function PicksTable({ data, bankroll, section }: {
+  data: PicksData;
+  bankroll: number;
+  section: "moneyline" | "spread" | "totals" | "props" | "nrfi" | "games";
 }) {
-  return (
-    <div className="flex items-center gap-2 mb-3">
-      <span className={color}>{icon}</span>
-      <h2 className="text-base font-semibold">{label}</h2>
-      <span className="text-xs text-[var(--text-muted)] bg-[var(--bg-overlay)] px-2 py-0.5 rounded-full">
-        {count}
-      </span>
-    </div>
-  );
-}
+  const picks   = section === "moneyline" ? data.moneyline
+    : section === "spread"   ? data.spread
+    : section === "totals"   ? data.totals
+    : [];
+  const props   = section === "props" ? data.props : [];
+  const nrfi    = section === "nrfi" ? data.nrfi : [];
+  const games   = section === "games" ? data.games : [];
 
-function EmptySection({ label }: { label: string }) {
-  return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-5 text-center">
-      <div className="text-xs text-[var(--text-muted)]">No {label} edges found today</div>
-    </div>
-  );
-}
+  const labels: Record<string, { title: string; color: string; count: number }> = {
+    moneyline: { title: "MONEYLINE SIGNALS", color: "text-[var(--cyan)]",     count: data.moneyline.length },
+    spread:    { title: "RUN LINE SIGNALS",  color: "text-[var(--green-hi)]", count: data.spread.length },
+    totals:    { title: "OVER/UNDER SIGNALS",color: "text-[var(--blue)]",     count: data.totals.length },
+    props:     { title: "PLAYER PROPS",      color: "text-[var(--purple)]",   count: data.props.length },
+    nrfi:      { title: "NRFI / YRFI",       color: "text-[var(--amber)]",    count: data.nrfi.length },
+    games:     { title: "ALL GAMES",         color: "text-[var(--text-secondary)]", count: data.games.length },
+  };
 
-function DashboardSkeleton() {
+  const { title, color, count } = labels[section];
+
+  // Column headers differ by section
+  const isGames = section === "games";
+  const isProps = section === "props";
+  const isNrfi  = section === "nrfi";
+
   return (
-    <div className="space-y-4">
-      {[1, 2, 3, 4].map((i) => (
-        <Skeleton key={i} className="h-32 w-full" />
-      ))}
+    <div className="border border-[var(--border-hi)]">
+      {/* Section header */}
+      <div className="panel-header flex items-center">
+        <span className={`text-[10px] font-bold tracking-widest ${color}`}>▌ {title}</span>
+        <span className="ml-2 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1.5 py-px">{count}</span>
+        {count === 0 && (
+          <span className="ml-auto text-[9px] text-[var(--text-muted)]">NO SIGNALS TODAY</span>
+        )}
+      </div>
+
+      {count === 0 ? (
+        <div className="px-4 py-5 text-center text-[10px] text-[var(--text-muted)] tracking-wider">
+          — NO {title} FOUND FOR THIS DATE —
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-[var(--border-hi)]">
+                {isGames ? <>
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">MATCHUP</th>
+                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">WIN PROB</th>
+                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">AWAY SP</th>
+                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">HOME SP</th>
+                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">SIGNALS</th>
+                  <th className="w-6" />
+                </> : <>
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">
+                    {isProps ? "PLAYER" : isNrfi ? "MATCHUP" : "TEAM"}
+                  </th>
+                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">
+                    {isProps ? "BET" : isNrfi ? "DIRECTION" : "MKT"}
+                  </th>
+                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">
+                    {isNrfi ? "PROJ%" : "MODEL"}
+                  </th>
+                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">IMPLIED</th>
+                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">EDGE</th>
+                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ODDS</th>
+                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">BOOK</th>
+                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">
+                    {isProps ? "PROJ" : "KELLY%"}
+                  </th>
+                  <th className="w-6" />
+                </>}
+              </tr>
+            </thead>
+            <tbody>
+              {picks.map((p, i) => <PickRow key={i} pick={p} bankroll={bankroll} />)}
+              {props.map((p, i) => <PropRow key={i} prop={p} bankroll={bankroll} />)}
+              {nrfi.map((g, i) => <NrfiRow key={i} g={g} />)}
+              {games.map((g) => <GameRow key={g.game_id} g={g} />)}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
@@ -431,221 +501,168 @@ function DashboardSkeleton() {
 // ── Page ───────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const [data, setData] = useState<PicksData | null>(null);
-  const [sport, setSport] = useState("mlb");
+  const [data, setData]       = useState<PicksData | null>(null);
+  const [sport, setSport]     = useState("mlb");
   const [bankroll, setBankroll] = useState(500);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [showBankroll, setShowBankroll] = useState(false);
+  const [bkrEdit, setBkrEdit]  = useState(false);
+  const [loading, setLoading]  = useState(true);
+  const [error, setError]      = useState("");
+  const [ts, setTs]            = useState("");
 
   const fetchData = useCallback(() => {
     setLoading(true);
     setError("");
     fetch(`${API}/picks/${sport}?bankroll=${bankroll}&min_edge=0.03`)
       .then((r) => r.json())
-      .then((d) => { setData(d); setLoading(false); })
+      .then((d) => {
+        setData(d);
+        setLoading(false);
+        setTs(new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC");
+      })
       .catch((e) => { setError(e.message); setLoading(false); });
   }, [sport, bankroll]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const today = data?.display_date ?? new Date().toLocaleDateString("en-US", {
-    weekday: "short", month: "short", day: "numeric",
-  });
+  const totalSignals = data
+    ? data.moneyline.length + data.spread.length + data.totals.length + data.props.length + data.nrfi.length
+    : 0;
 
-  const hasAnyData = data && (
-    data.moneyline.length + data.spread.length + data.totals.length +
-    data.props.length + data.nrfi.length + data.games.length > 0
-  );
+  const avgEdge = data && totalSignals > 0
+    ? (() => {
+        const picks = [...data.moneyline, ...data.spread, ...data.totals];
+        const props = data.props;
+        if (picks.length + props.length === 0) return null;
+        const total = picks.reduce((a, p) => a + p.Edge * 100, 0)
+                    + props.reduce((a, p) => a + p.EdgePct, 0);
+        return (total / (picks.length + props.length)).toFixed(1);
+      })()
+    : null;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 md:pt-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-1">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Today&apos;s Picks</h1>
-          <div className="flex items-center gap-2 mt-0.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot" />
-            <span className="text-xs text-[var(--text-muted)]">{today}</span>
-          </div>
-        </div>
-        <button
-          onClick={fetchData}
-          className="p-2 rounded-xl hover:bg-[var(--bg-overlay)] transition-colors pressable"
-          title="Refresh"
-        >
-          <RefreshCw size={18} className={`text-[var(--text-muted)] ${loading ? "animate-spin" : ""}`} />
-        </button>
-      </div>
+    <div className="flex flex-col">
 
-      {/* Sport pills + bankroll */}
-      <div className="flex items-center gap-2 mt-4 mb-6">
-        <div className="flex gap-1 flex-1 overflow-x-auto no-scrollbar">
-          {SPORTS.map((s) => (
-            <button
-              key={s.key}
-              onClick={() => setSport(s.key)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all pressable ${
-                sport === s.key
-                  ? "bg-[var(--accent)] text-black"
-                  : "bg-[var(--bg-raised)] text-[var(--text-secondary)] border border-[var(--border)]"
-              }`}
-            >
-              <span className="text-xs">{s.emoji}</span>
-              {s.label}
-            </button>
-          ))}
-        </div>
-        <button
-          onClick={() => setShowBankroll(!showBankroll)}
-          className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all pressable border ${
-            showBankroll
-              ? "border-[var(--accent)] text-[var(--accent)]"
-              : "border-[var(--border)] text-[var(--text-secondary)] bg-[var(--bg-raised)]"
-          }`}
-        >
-          <DollarSign size={14} />
-          <span className="hidden sm:inline">{bankroll > 0 ? `$${bankroll}` : "Set"}</span>
-        </button>
-      </div>
+      {/* ── Control bar ── */}
+      <div className="border-b border-[var(--border-hi)] bg-[var(--bg-panel)] sticky top-9 z-40">
+        <div className="max-w-6xl mx-auto px-3">
+          {/* Sport tabs */}
+          <div className="flex items-center h-9 gap-0 overflow-x-auto no-scrollbar">
+            {SPORTS.map((s) => (
+              <button
+                key={s.key}
+                onClick={() => setSport(s.key)}
+                className={`flex items-center gap-1 px-3 h-9 text-[11px] font-medium tracking-wider border-b-2 transition-colors whitespace-nowrap pressable ${
+                  sport === s.key
+                    ? "border-[var(--cyan)] text-[var(--cyan)] bg-[var(--cyan-dim)]"
+                    : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-overlay)]"
+                }`}
+              >
+                <span className="text-[9px] text-[var(--text-muted)] hidden sm:inline">{s.f}</span>
+                {s.label}
+              </button>
+            ))}
 
-      {/* Bankroll input */}
-      <AnimatePresence>
-        {showBankroll && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="mb-4 p-3 rounded-xl bg-[var(--bg-raised)] border border-[var(--border)]">
-              <label className="text-xs text-[var(--text-muted)] mb-1.5 block">Bankroll for Kelly sizing</label>
-              <div className="flex items-center gap-2">
-                <span className="text-[var(--text-muted)]">$</span>
-                <input
-                  type="number"
-                  value={bankroll}
-                  onChange={(e) => setBankroll(Number(e.target.value))}
-                  className="flex-1 bg-transparent text-lg font-mono font-semibold outline-none"
-                  placeholder="500"
-                />
-              </div>
+            {/* Status strip */}
+            <div className="ml-auto flex items-center gap-3 text-[10px] flex-shrink-0">
+              {ts && <span className="text-[var(--text-muted)] hidden md:block">{ts}</span>}
+              {data?.display_date && (
+                <span className="text-[var(--text-secondary)]">{data.display_date.toUpperCase()}</span>
+              )}
+              <span className="text-[var(--text-muted)]">
+                SIGNALS: <span className="text-[var(--cyan)] font-bold">{totalSignals}</span>
+              </span>
+              {avgEdge && (
+                <span className="text-[var(--text-muted)] hidden sm:block">
+                  AVG EDGE: <span className="text-[var(--green)] font-bold">+{avgEdge}%</span>
+                </span>
+              )}
+              {/* Bankroll */}
+              <button
+                onClick={() => setBkrEdit(!bkrEdit)}
+                className={`border px-2 py-0.5 text-[9px] tracking-wider transition-colors pressable ${
+                  bkrEdit ? "border-[var(--cyan)] text-[var(--cyan)]" : "border-[var(--border-hi)] text-[var(--text-muted)] hover:border-[var(--border-hi)] hover:text-[var(--text-secondary)]"
+                }`}
+              >
+                BKR: ${bankroll}
+              </button>
+              {/* Refresh */}
+              <button
+                onClick={fetchData}
+                className="border border-[var(--border-hi)] px-2 py-0.5 text-[9px] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--cyan)] tracking-wider transition-colors pressable"
+                title="Refresh"
+              >
+                {loading ? "..." : "↻ REFRESH"}
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Error */}
-      {error && (
-        <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 p-4 flex items-start gap-2">
-          <Shield size={16} className="text-red-400 mt-0.5 flex-shrink-0" />
-          <div>
-            <div className="text-sm font-medium text-red-400">Connection Error</div>
-            <div className="text-xs text-[var(--text-secondary)] mt-0.5">{error}</div>
           </div>
-        </div>
-      )}
 
-      {loading && <DashboardSkeleton />}
-
-      {data && !loading && !hasAnyData && (
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-8 text-center">
-          <div className="text-4xl mb-3">⚾</div>
-          <div className="text-sm font-medium mb-1">No games found</div>
-          <div className="text-xs text-[var(--text-muted)]">{data.message ?? "Check back tomorrow."}</div>
-        </div>
-      )}
-
-      {data && !loading && hasAnyData && (
-        <div className="space-y-8">
-
-          {/* 1. Moneyline */}
-          <section>
-            <SectionHeader
-              icon={<Zap size={16} />}
-              label="Moneyline"
-              count={data.moneyline.length}
-              color="text-[var(--accent)]"
-            />
-            {data.moneyline.length > 0
-              ? <div className="space-y-3">{data.moneyline.map((p, i) => <PickCard key={i} pick={p} bankroll={bankroll} index={i} />)}</div>
-              : <EmptySection label="moneyline" />
-            }
-          </section>
-
-          {/* 2. Run Line (Spread) */}
-          <section>
-            <SectionHeader
-              icon={<TrendingUp size={16} />}
-              label="Run Line"
-              count={data.spread.length}
-              color="text-[#39FF78]"
-            />
-            {data.spread.length > 0
-              ? <div className="space-y-3">{data.spread.map((p, i) => <PickCard key={i} pick={p} bankroll={bankroll} index={i} />)}</div>
-              : <EmptySection label="run line" />
-            }
-          </section>
-
-          {/* 3. Over / Under */}
-          <section>
-            <SectionHeader
-              icon={<BarChart3 size={16} />}
-              label="Over / Under"
-              count={data.totals.length}
-              color="text-[var(--blue)]"
-            />
-            {data.totals.length > 0
-              ? <div className="space-y-3">{data.totals.map((p, i) => <PickCard key={i} pick={p} bankroll={bankroll} index={i} />)}</div>
-              : <EmptySection label="totals" />
-            }
-          </section>
-
-          {/* 4. Player Props */}
-          <section>
-            <SectionHeader
-              icon={<Activity size={16} />}
-              label="Player Props"
-              count={data.props.length}
-              color="text-[#B44FFF]"
-            />
-            {data.props.length > 0
-              ? <div className="space-y-3">{data.props.map((p, i) => <PropCard key={i} prop={p} bankroll={bankroll} index={i} />)}</div>
-              : <EmptySection label="player props" />
-            }
-          </section>
-
-          {/* 5. NRFI / YRFI */}
-          <section>
-            <SectionHeader
-              icon={<Target size={16} />}
-              label="NRFI / YRFI"
-              count={data.nrfi.length}
-              color="text-[#B44FFF]"
-            />
-            {data.nrfi.length > 0
-              ? <div className="space-y-3">{data.nrfi.map((g, i) => <NrfiCard key={i} game={g} index={i} />)}</div>
-              : <EmptySection label="NRFI" />
-            }
-          </section>
-
-          {/* 6. All Games */}
-          {data.games.length > 0 && (
-            <section>
-              <SectionHeader
-                icon={<BarChart3 size={16} />}
-                label="All Games"
-                count={data.games.length}
-                color="text-[var(--text-secondary)]"
+          {/* Bankroll editor */}
+          {bkrEdit && (
+            <div className="border-t border-[var(--border-hi)] py-2 flex items-center gap-3">
+              <span className="text-[9px] text-[var(--text-muted)] tracking-widest">BANKROLL INPUT ($):</span>
+              <input
+                type="number"
+                value={bankroll}
+                onChange={(e) => setBankroll(Number(e.target.value))}
+                className="bg-transparent border-b border-[var(--cyan)] text-[var(--cyan)] font-mono text-sm outline-none w-24 pb-px"
+                autoFocus
               />
-              <div className="space-y-2">
-                {data.games.map((g, i) => <GameCard key={g.game_id} game={g} index={i} />)}
-              </div>
-            </section>
+              <span className="text-[9px] text-[var(--text-muted)]">KELLY SIZING ACTIVE WHEN SET</span>
+            </div>
           )}
-
         </div>
-      )}
+      </div>
+
+      {/* ── Content ── */}
+      <div className="max-w-6xl mx-auto w-full px-3 py-4 space-y-px">
+
+        {/* Error */}
+        {error && (
+          <div className="border border-[var(--red)]/30 bg-[var(--red-dim)] px-4 py-3 text-[11px] text-[var(--red)] font-mono">
+            ERROR: {error}
+          </div>
+        )}
+
+        {/* Loading skeleton */}
+        {loading && (
+          <div className="space-y-px">
+            {[80, 200, 160, 200, 80].map((h, i) => (
+              <div key={i} className="skeleton border border-[var(--border-hi)]" style={{ height: h }} />
+            ))}
+          </div>
+        )}
+
+        {/* No data */}
+        {!loading && data && totalSignals === 0 && data.games.length === 0 && (
+          <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-8 text-center">
+            <div className="text-[10px] text-[var(--text-muted)] tracking-widest mb-2">NO DATA</div>
+            <div className="text-sm text-[var(--text-secondary)]">
+              {data.message ?? `No picks found for ${sport.toUpperCase()}. Check back during the season.`}
+            </div>
+          </div>
+        )}
+
+        {/* Data tables */}
+        {!loading && data && (totalSignals > 0 || data.games.length > 0) && (
+          <>
+            <PicksTable data={data} bankroll={bankroll} section="moneyline" />
+            <PicksTable data={data} bankroll={bankroll} section="spread" />
+            <PicksTable data={data} bankroll={bankroll} section="totals" />
+            <PicksTable data={data} bankroll={bankroll} section="props" />
+            <PicksTable data={data} bankroll={bankroll} section="nrfi" />
+            {data.games.length > 0 && (
+              <PicksTable data={data} bankroll={bankroll} section="games" />
+            )}
+          </>
+        )}
+
+        {/* Footer */}
+        {!loading && (
+          <div className="pt-2 pb-4 text-[9px] text-[var(--text-muted)] tracking-wider text-center">
+            NOT FINANCIAL ADVICE · BET RESPONSIBLY · 21+ · CLICK ANY ROW TO EXPAND
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -3,114 +3,102 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BarChart3,
-  Home,
-  Trophy,
-  Zap,
-  CreditCard,
-  Activity,
-  Menu,
-  X,
-} from "lucide-react";
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import "./globals.css";
 
-const sans = Inter({ variable: "--font-geist-sans", subsets: ["latin"] });
-const mono = JetBrains_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const mono = JetBrains_Mono({ variable: "--font-mono-jetbrains", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 const NAV = [
-  { href: "/", label: "Home", icon: Home, mobileOnly: true },
-  { href: "/dashboard", label: "Picks", icon: Zap, mobileOnly: false },
-  { href: "/paper-trade", label: "Validate", icon: Activity, mobileOnly: false },
-  { href: "/record", label: "Record", icon: Trophy, mobileOnly: false },
-  { href: "/pricing", label: "Pricing", icon: CreditCard, mobileOnly: true },
+  { href: "/dashboard", label: "PICKS",    key: "F1" },
+  { href: "/record",    label: "RECORD",   key: "F2" },
+  { href: "/paper-trade", label: "VALIDATE", key: "F3" },
+  { href: "/pricing",   label: "PRICING",  key: "F4" },
 ];
 
-function DesktopNav({ pathname }: { pathname: string }) {
+function TopBar({ pathname }: { pathname: string }) {
   return (
-    <nav className="hidden md:block border-b border-[var(--border)] bg-[var(--bg-raised)]/80 backdrop-blur-xl sticky top-0 z-50">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-1.5 font-bold text-base tracking-tight">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--accent)] text-black text-xs font-black">
-            E
-          </div>
-          <span>Edge<span className="text-[var(--accent)]">Finder</span></span>
+    <header className="sticky top-0 z-50 border-b border-[var(--border-hi)] bg-[var(--bg-panel)]">
+      {/* Primary nav row */}
+      <div className="flex items-center h-9 px-3 gap-0 overflow-x-auto no-scrollbar">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-1.5 mr-4 flex-shrink-0">
+          <span className="text-[var(--cyan)] font-bold text-sm tracking-widest">EDGE</span>
+          <span className="text-[var(--text-muted)] text-sm">FINDER</span>
+          <span className="ml-1 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1 py-px">v6.1</span>
         </Link>
-        <div className="flex items-center gap-1">
-          {NAV.filter((n) => !n.mobileOnly).map((item) => {
-            const active = pathname === item.href;
+
+        {/* Nav items */}
+        <div className="flex items-center gap-px flex-shrink-0">
+          {NAV.map((item) => {
+            const active = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1 px-2.5 h-9 text-[11px] font-medium tracking-wider border-b-2 transition-colors ${
                   active
-                    ? "bg-[var(--accent-dim)] text-[var(--accent)]"
-                    : "text-[var(--text-secondary)] hover:text-white hover:bg-[var(--bg-overlay)]"
+                    ? "border-[var(--cyan)] text-[var(--cyan)] bg-[var(--cyan-dim)]"
+                    : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-overlay)]"
                 }`}
               >
-                <item.icon size={15} />
+                <span className="text-[var(--text-muted)] text-[9px] hidden sm:inline">{item.key}</span>
                 {item.label}
               </Link>
             );
           })}
         </div>
+
+        {/* Right: status */}
+        <div className="ml-auto flex items-center gap-2 flex-shrink-0">
+          <span className="hidden md:flex items-center gap-1.5 text-[10px] text-[var(--text-muted)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot inline-block" />
+            MODEL ONLINE
+          </span>
+          <span className="text-[10px] text-[var(--text-muted)] hidden lg:block">
+            MLB · NBA · NFL · NCAAB
+          </span>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 }
 
-function MobileNav({ pathname }: { pathname: string }) {
-  return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[var(--border)] bg-[var(--bg-raised)]/95 backdrop-blur-xl safe-bottom">
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
-        {NAV.map((item) => {
-          const active = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-colors pressable ${
-                active ? "text-[var(--accent)]" : "text-[var(--text-muted)]"
-              }`}
-            >
-              <item.icon size={20} strokeWidth={active ? 2.5 : 1.5} />
-              <span className="text-[10px] font-medium">{item.label}</span>
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
-  );
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${mono.variable} h-full`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#09090b" />
-        <title>EdgeFinder — AI Sports Betting Edge Detection</title>
-        <meta
-          name="description"
-          content="Find mathematically proven edges against sportsbook lines using ML models with verified track records."
-        />
+        <meta name="theme-color" content="#000000" />
+        <title>EdgeFinder — ML Sports Betting Edge Detection</title>
+        <meta name="description" content="Find mathematically proven edges against sportsbook lines. XGBoost ensemble, 91 features, walk-forward validated." />
       </head>
-      <body className="min-h-full flex flex-col">
-        <DesktopNav pathname={pathname} />
-        <main className="flex-1 pb-20 md:pb-0">{children}</main>
-        <MobileNav pathname={pathname} />
+      <body className="min-h-full flex flex-col crt">
+        <TopBar pathname={pathname} />
+        <main className="flex-1">{children}</main>
+        {/* Mobile bottom nav */}
+        <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[var(--border-hi)] bg-[var(--bg-panel)] safe-bottom">
+          <div className="flex items-center h-12">
+            {NAV.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full text-[9px] tracking-widest font-medium transition-colors ${
+                    active ? "text-[var(--cyan)] bg-[var(--cyan-dim)]" : "text-[var(--text-muted)]"
+                  }`}
+                >
+                  <span className="text-[8px] text-[var(--text-muted)]">{item.key}</span>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+        {/* Mobile nav spacer */}
+        <div className="h-12 md:hidden" />
       </body>
     </html>
   );

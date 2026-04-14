@@ -2,34 +2,36 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Check, Zap, ArrowRight, Loader2 } from "lucide-react";
 
 const FREE_FEATURES = [
-  "Daily picks (delayed 30 min)",
-  "Public track record",
-  "MLB moneyline picks",
-  "Kelly sizing reference",
+  { f: "Daily picks (30 min delay)",      avail: true  },
+  { f: "Public track record",              avail: true  },
+  { f: "MLB moneyline picks",              avail: true  },
+  { f: "Market-open access",               avail: false },
+  { f: "Full Kelly bet sizing",            avail: false },
+  { f: "All markets (ML, RL, O/U, Props)", avail: false },
+  { f: "Verified prediction hashes",       avail: false },
 ];
 
 const PRO_FEATURES = [
-  "Picks at market open",
-  "Full Kelly bet sizing",
-  "All markets (ML, Run Line, O/U)",
-  "Verified prediction hashes",
-  "Early access to new sports",
-  "Email picks recap",
+  { f: "Picks at market open",             avail: true },
+  { f: "Full Kelly bet sizing",            avail: true },
+  { f: "All markets (ML, RL, O/U, Props)", avail: true },
+  { f: "Verified prediction hashes",       avail: true },
+  { f: "Early access to new sports",       avail: true },
+  { f: "Email picks recap",                avail: true },
+  { f: "Daily picks (30 min delay)",       avail: true },
 ];
 
 export default function PricingPage() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError]     = useState("");
 
   async function startTrial() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/stripe/checkout", {
+      const res  = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({}),
@@ -38,120 +40,111 @@ export default function PricingPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        setError("Something went wrong. Try again.");
+        setError("CHECKOUT_ERROR: Failed to create session. Retry.");
         setLoading(false);
       }
     } catch {
-      setError("Network error. Try again.");
+      setError("NETWORK_ERROR: Connection failed. Retry.");
       setLoading(false);
     }
   }
 
   return (
-    <div className="mx-auto max-w-xl px-4 pt-8 pb-6 md:pt-16">
-      <div className="mb-10 text-center">
-        <h1 className="text-2xl font-bold mb-2">Simple pricing</h1>
-        <p className="text-sm text-[var(--text-secondary)]">
-          Free picks daily. Pro gets you there first.
-        </p>
+    <div className="max-w-4xl mx-auto px-3 py-4 space-y-px">
+
+      {/* Header */}
+      <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3 flex items-center justify-between">
+        <div>
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER</div>
+          <div className="text-sm font-bold text-[var(--text-bright)]">ACCESS TIERS</div>
+        </div>
+        <div className="text-[9px] text-[var(--text-muted)]">7-DAY FREE TRIAL ON PRO</div>
       </div>
 
-      <div className="space-y-3">
-        {/* Free plan */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-6"
-        >
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h2 className="text-lg font-bold">Free</h2>
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                See the model work. Picks drop 30 min after market open.
-              </p>
+      {/* Comparison table */}
+      <div className="border border-[var(--border-hi)]">
+        <div className="panel-header">
+          <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ FEATURE COMPARISON</span>
+        </div>
+
+        {/* Column headers */}
+        <div className="grid grid-cols-3 border-b border-[var(--border-hi)]">
+          <div className="px-4 py-3 border-r border-[var(--border-hi)]">
+            <div className="text-[9px] text-[var(--text-muted)] tracking-widest">FEATURE</div>
+          </div>
+          <div className="px-4 py-3 border-r border-[var(--border-hi)] text-center">
+            <div className="text-[10px] font-bold text-[var(--text-secondary)] tracking-wider">FREE</div>
+            <div className="text-[9px] text-[var(--text-muted)]">$0 / mo</div>
+          </div>
+          <div className="px-4 py-3 text-center bg-[var(--cyan-dim)]">
+            <div className="text-[10px] font-bold text-[var(--cyan)] tracking-wider">PRO</div>
+            <div className="text-[9px] text-[var(--text-muted)]">$35 / mo</div>
+          </div>
+        </div>
+
+        {/* Feature rows */}
+        {FREE_FEATURES.map((item, i) => (
+          <div key={i} className="grid grid-cols-3 border-b border-[var(--border)] last:border-b-0 t-row">
+            <div className="px-4 py-2.5 border-r border-[var(--border-hi)]">
+              <span className="text-[11px] text-[var(--text-secondary)]">{item.f}</span>
             </div>
-            <div className="text-right">
-              <span className="text-3xl font-bold">$0</span>
-              <span className="text-sm text-[var(--text-muted)]"> forever</span>
+            <div className="px-4 py-2.5 border-r border-[var(--border-hi)] text-center">
+              <span className={`text-sm font-bold ${item.avail ? "text-[var(--green)]" : "text-[var(--text-muted)]"}`}>
+                {item.avail ? "■" : "·"}
+              </span>
+            </div>
+            <div className="px-4 py-2.5 text-center bg-[var(--cyan-dim)]">
+              <span className="text-sm font-bold text-[var(--green)]">■</span>
             </div>
           </div>
-          <ul className="space-y-2 mb-5">
-            {FREE_FEATURES.map((f) => (
-              <li key={f} className="flex items-center gap-2 text-sm">
-                <Check size={14} className="text-[var(--text-muted)]" />
-                <span className="text-[var(--text-secondary)]">{f}</span>
-              </li>
-            ))}
-          </ul>
+        ))}
+      </div>
+
+      {/* Pricing panels */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 border border-[var(--border-hi)]">
+
+        {/* Free */}
+        <div className="border-r border-[var(--border-hi)] p-5">
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-1">TIER_01</div>
+          <div className="text-xl font-bold text-[var(--text-bright)]">FREE</div>
+          <div className="text-2xl font-bold font-mono text-[var(--text-secondary)] mt-1">$0</div>
+          <div className="text-[9px] text-[var(--text-muted)] mb-4">PERPETUAL ACCESS</div>
           <Link
             href="/dashboard"
-            className="flex items-center justify-center gap-2 w-full rounded-xl py-2.5 text-sm font-semibold transition-all pressable border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)] hover:text-white"
+            className="block text-center border border-[var(--border-hi)] text-[var(--text-secondary)] px-4 py-2.5 text-[11px] font-semibold tracking-widest hover:border-[var(--border-hi)] hover:text-[var(--text)] hover:bg-[var(--bg-overlay)] transition-colors pressable"
           >
-            Get Started
-            <ArrowRight size={14} />
+            [ENTER TERMINAL]
           </Link>
-        </motion.div>
+        </div>
 
-        {/* Pro plan */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="rounded-2xl border border-[var(--accent)]/40 bg-[var(--bg-raised)] p-6"
-        >
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold">Pro</h2>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[var(--accent)] px-2 py-0.5 text-[10px] font-semibold text-black">
-                  <Zap size={10} /> Popular
-                </span>
-              </div>
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                Full access at market open. Kelly sizing. All markets.
-              </p>
-            </div>
-            <div className="text-right">
-              <span className="text-3xl font-bold">$35</span>
-              <span className="text-sm text-[var(--text-muted)]">/mo</span>
-            </div>
-          </div>
-          <ul className="space-y-2 mb-5">
-            {PRO_FEATURES.map((f) => (
-              <li key={f} className="flex items-center gap-2 text-sm">
-                <Check size={14} className="text-[var(--accent)]" />
-                <span className="text-[var(--text-secondary)]">{f}</span>
-              </li>
-            ))}
-          </ul>
+        {/* Pro */}
+        <div className="p-5 bg-[var(--cyan-dim)]">
+          <div className="text-[9px] text-[var(--cyan)] tracking-widest mb-1 font-semibold">TIER_02 · RECOMMENDED</div>
+          <div className="text-xl font-bold text-[var(--text-bright)]">PRO</div>
+          <div className="text-2xl font-bold font-mono text-[var(--cyan)] mt-1">$35</div>
+          <div className="text-[9px] text-[var(--text-muted)] mb-4">PER MONTH · 7-DAY FREE TRIAL</div>
           {error && (
-            <p className="text-xs text-[var(--red)] mb-3 text-center">{error}</p>
+            <div className="text-[10px] text-[var(--red)] font-mono mb-2 border border-[var(--red)]/30 px-2 py-1 bg-[var(--red-dim)]">
+              {error}
+            </div>
           )}
           <button
             onClick={startTrial}
             disabled={loading}
-            className="flex items-center justify-center gap-2 w-full rounded-xl py-2.5 text-sm font-semibold transition-all pressable bg-[var(--accent)] text-black hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full border border-[var(--cyan)] text-[var(--cyan)] px-4 py-2.5 text-[11px] font-semibold tracking-widest hover:bg-[var(--cyan)] hover:text-black transition-colors pressable disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? (
-              <>
-                <Loader2 size={14} className="animate-spin" />
-                Redirecting...
-              </>
-            ) : (
-              <>
-                Start 7-Day Free Trial
-                <ArrowRight size={14} />
-              </>
-            )}
+            {loading ? "REDIRECTING..." : "[START FREE TRIAL]"}
           </button>
-        </motion.div>
+        </div>
       </div>
 
-      <div className="mt-8 text-center text-xs text-[var(--text-muted)]">
-        7-day free trial. Cancel anytime. No questions asked.
-        <br />
-        Powered by Stripe. Card required to start trial.
+      {/* Footer note */}
+      <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3">
+        <div className="text-[9px] text-[var(--text-muted)] tracking-wider text-center">
+          POWERED BY STRIPE · 7-DAY FREE TRIAL · CANCEL ANYTIME · NO QUESTIONS ASKED · NOT FINANCIAL ADVICE · 21+
+        </div>
       </div>
+
     </div>
   );
 }

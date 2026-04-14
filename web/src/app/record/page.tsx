@@ -1,16 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Trophy,
-  TrendingUp,
-  TrendingDown,
-  Target,
-  BarChart3,
-  Shield,
-  Flame,
-} from "lucide-react";
 
 const API = "/api";
 
@@ -37,232 +27,219 @@ interface BacktestRow {
   Lift?: number;
 }
 
-function StatBlock({
-  label,
-  value,
-  icon: Icon,
-  positive,
-}: {
-  label: string;
-  value: string;
-  icon: React.ElementType;
-  positive?: boolean;
-}) {
+function StatCell({ label, value, color = "text-[var(--cyan)]" }: { label: string; value: string; color?: string }) {
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <Icon
-          size={14}
-          className={
-            positive === undefined
-              ? "text-[var(--accent)]"
-              : positive
-                ? "text-[var(--green)]"
-                : "text-[var(--red)]"
-          }
-        />
-        <span className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-medium">
-          {label}
-        </span>
-      </div>
-      <div
-        className={`text-2xl font-bold font-mono ${
-          positive === undefined
-            ? "text-[var(--accent)]"
-            : positive
-              ? "text-[var(--green)]"
-              : "text-[var(--red)]"
-        }`}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function BacktestCard({ row, sport }: { row: BacktestRow; sport: "mlb" | "ncaab" }) {
-  const year = row.Season || row.Year || 0;
-  const acc = row.Accuracy;
-  const threshold = sport === "ncaab" ? 0.70 : 0.54;
-  const isGood = acc >= threshold;
-
-  return (
-    <div className="flex items-center justify-between py-3 border-b border-[var(--border)] last:border-b-0">
-      <div className="flex items-center gap-3">
-        <span className="text-sm font-mono font-semibold w-12">{year}</span>
-        <div className="w-24 h-1.5 rounded-full bg-[var(--bg-overlay)] overflow-hidden">
-          <div
-            className={`h-full rounded-full prob-bar ${isGood ? "bg-[var(--green)]" : "bg-[var(--amber)]"}`}
-            style={{ width: `${acc * 100}%` }}
-          />
-        </div>
-      </div>
-      <div className="flex items-center gap-4">
-        <span className={`text-sm font-mono font-semibold ${isGood ? "text-[var(--green)]" : ""}`}>
-          {(acc * 100).toFixed(1)}%
-        </span>
-        {row.Lift !== undefined && (
-          <span className="text-xs text-[var(--text-muted)] font-mono">
-            {row.Lift >= 0 ? "+" : ""}{(row.Lift * 100).toFixed(1)}%
-          </span>
-        )}
-        <span className="text-xs text-[var(--text-muted)]">
-          {row.Games?.toLocaleString()} games
-        </span>
-      </div>
+    <div className="border-r border-[var(--border-hi)] last:border-r-0 px-4 py-3">
+      <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-1">{label}</div>
+      <div className={`text-lg font-bold font-mono ${color}`}>{value}</div>
     </div>
   );
 }
 
 export default function RecordPage() {
   const [summary, setSummary] = useState<Summary | null>(null);
-  const [mlb, setMlb] = useState<BacktestRow[]>([]);
-  const [ncaab, setNcaab] = useState<BacktestRow[]>([]);
+  const [mlb, setMlb]         = useState<BacktestRow[]>([]);
+  const [ncaab, setNcaab]     = useState<BacktestRow[]>([]);
 
   useEffect(() => {
-    fetch(`${API}/record`).then((r) => r.json()).then((d) => setSummary(d.summary)).catch(() => {});
-    fetch(`${API}/backtest/mlb`).then((r) => r.json()).then((d) => setMlb(d.results || [])).catch(() => {});
-    fetch(`${API}/backtest/ncaab`).then((r) => r.json()).then((d) => setNcaab(d.results || [])).catch(() => {});
+    fetch(`${API}/record`).then(r => r.json()).then(d => setSummary(d.summary)).catch(() => {});
+    fetch(`${API}/backtest/mlb`).then(r => r.json()).then(d => setMlb(d.results || [])).catch(() => {});
+    fetch(`${API}/backtest/ncaab`).then(r => r.json()).then(d => setNcaab(d.results || [])).catch(() => {});
   }, []);
 
+  const avgMlb  = mlb.length  ? (mlb.reduce((a, r)  => a + r.Accuracy, 0) / mlb.length * 100).toFixed(1)  : null;
+  const avgNcaab= ncaab.length? (ncaab.reduce((a, r) => a + r.Accuracy, 0) / ncaab.length * 100).toFixed(1): null;
+
   return (
-    <div className="mx-auto max-w-2xl px-4 pt-4 pb-6 md:pt-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Track Record</h1>
-        <p className="text-xs text-[var(--text-muted)] mt-0.5">
-          Every pick. Every result. Fully transparent.
-        </p>
+    <div className="max-w-5xl mx-auto px-3 py-4 space-y-px">
+
+      {/* Header */}
+      <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3 flex items-center justify-between">
+        <div>
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER</div>
+          <div className="text-sm font-bold text-[var(--text-bright)]">TRACK RECORD</div>
+        </div>
+        <div className="text-right text-[9px] text-[var(--text-muted)]">
+          <div>METHODOLOGY: WALK-FORWARD CV</div>
+          <div className="mt-0.5 flex items-center gap-1.5 justify-end">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot inline-block" />
+            <span className="text-[var(--green)]">VERIFICATION ACTIVE</span>
+          </div>
+        </div>
       </div>
 
       {/* Live record */}
       {summary && (
-        <motion.section
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot" />
-            <h2 className="text-sm font-semibold">Live Record</h2>
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--cyan)]">▌ LIVE RECORD</span>
+            <span className="ml-2 text-[9px] text-[var(--text-muted)]">{summary.settled_picks} settled</span>
+            {summary.settled_picks === 0 && (
+              <span className="ml-auto text-[9px] text-[var(--amber)]">PAPER TRADING — PRE-SEASON</span>
+            )}
           </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <StatBlock
-              label="Record"
+          <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-[var(--border-hi)]">
+            <StatCell
+              label="RECORD"
               value={`${summary.wins}W-${summary.losses}L`}
-              icon={Trophy}
             />
-            <StatBlock
-              label="Win Rate"
+            <StatCell
+              label="WIN RATE"
               value={`${(summary.win_rate * 100).toFixed(1)}%`}
-              icon={Target}
-              positive={summary.win_rate >= 0.52}
+              color={summary.win_rate >= 0.52 ? "text-[var(--green)]" : "text-[var(--red)]"}
             />
-            <StatBlock
+            <StatCell
               label="ROI"
               value={`${summary.roi >= 0 ? "+" : ""}${(summary.roi * 100).toFixed(1)}%`}
-              icon={summary.roi >= 0 ? TrendingUp : TrendingDown}
-              positive={summary.roi >= 0}
+              color={summary.roi >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}
             />
-            <StatBlock
-              label="Streak"
-              value={
-                summary.streak > 0
-                  ? `${summary.streak}W`
-                  : summary.streak < 0
-                    ? `${Math.abs(summary.streak)}L`
-                    : "—"
-              }
-              icon={Flame}
-              positive={summary.streak > 0}
+            <StatCell
+              label="STREAK"
+              value={summary.streak > 0 ? `${summary.streak}W` : summary.streak < 0 ? `${Math.abs(summary.streak)}L` : "—"}
+              color={summary.streak > 0 ? "text-[var(--green)]" : summary.streak < 0 ? "text-[var(--red)]" : "text-[var(--text-muted)]"}
             />
           </div>
-
-          {summary.settled_picks === 0 && (
-            <div className="mt-3 rounded-xl bg-[var(--bg-raised)] border border-[var(--border)] p-3 text-center">
-              <div className="text-xs text-[var(--text-muted)]">
-                Paper trading in progress. Live picks start when the season opens.
-              </div>
-            </div>
-          )}
-        </motion.section>
+        </div>
       )}
 
       {/* MLB Backtest */}
       {mlb.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold flex items-center gap-2">
-              <span>\u26be</span> MLB Backtest
-            </h2>
-            <span className="text-[10px] text-[var(--text-muted)] bg-[var(--bg-overlay)] px-2 py-0.5 rounded-full">
-              Walk-forward validated
-            </span>
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ MLB BACKTEST</span>
+            <span className="ml-2 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1.5 py-px">WALK-FORWARD VALIDATED</span>
+            {avgMlb && (
+              <span className="ml-auto text-[10px] text-[var(--green)] font-bold">AVG: {avgMlb}%</span>
+            )}
           </div>
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] px-4 py-2">
-            {mlb.map((r) => (
-              <BacktestCard key={r.Season} row={r} sport="mlb" />
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border-hi)]">
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">SEASON</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ACCURACY</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">VS BASELINE</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">GAMES</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">BRIER</th>
+                  <th className="px-20 py-1.5 hidden sm:table-cell" />
+                </tr>
+              </thead>
+              <tbody>
+                {mlb.map((r) => {
+                  const acc = r.Accuracy * 100;
+                  const isGood = acc >= 54;
+                  return (
+                    <tr key={r.Season} className="t-row">
+                      <td className="px-3 py-2 font-mono text-sm font-semibold text-[var(--text-bright)]">
+                        {r.Season}
+                      </td>
+                      <td className="px-3 py-2 text-right">
+                        <span className={`font-mono text-sm font-bold ${isGood ? "text-[var(--green)]" : "text-[var(--amber)]"}`}>
+                          {acc.toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)] hidden sm:table-cell">
+                        {r.Lift !== undefined
+                          ? <span className={r.Lift >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                              {r.Lift >= 0 ? "+" : ""}{(r.Lift * 100).toFixed(1)}%
+                            </span>
+                          : r.HomeBaseline !== undefined
+                            ? <span className="text-[var(--text-muted)]">base: {(r.HomeBaseline * 100).toFixed(1)}%</span>
+                            : "—"
+                        }
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden md:table-cell">
+                        {r.Games?.toLocaleString() ?? "—"}
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden lg:table-cell">
+                        {r.BrierScore?.toFixed(4) ?? "—"}
+                      </td>
+                      <td className="px-3 py-2 hidden sm:table-cell">
+                        <div className="w-full max-w-[120px] h-1 bg-[var(--bg-overlay)] overflow-hidden ml-auto">
+                          <div
+                            className={`h-full prob-bar ${isGood ? "bg-[var(--green)]" : "bg-[var(--amber)]"}`}
+                            style={{ width: `${Math.min(acc, 100)}%` }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        </motion.section>
+        </div>
       )}
 
       {/* NCAAB Backtest */}
       {ncaab.length > 0 && (
-        <motion.section
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-8"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold flex items-center gap-2">
-              <span>\ud83c\udfc0</span> NCAAB Tournament Backtest
-            </h2>
-            <span className="text-[10px] text-[var(--text-muted)] bg-[var(--bg-overlay)] px-2 py-0.5 rounded-full">
-              15-year walk-forward
-            </span>
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--purple)]">▌ NCAAB TOURNAMENT BACKTEST</span>
+            <span className="ml-2 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1.5 py-px">15-YEAR WALK-FORWARD</span>
+            {avgNcaab && (
+              <span className="ml-auto text-[10px] text-[var(--green)] font-bold">AVG: {avgNcaab}%</span>
+            )}
           </div>
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] px-4 py-2">
-            {ncaab.map((r) => (
-              <BacktestCard key={r.Year} row={r} sport="ncaab" />
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border-hi)]">
+                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">YEAR</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ACCURACY</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">GAMES</th>
+                  <th className="px-20 py-1.5 hidden sm:table-cell" />
+                </tr>
+              </thead>
+              <tbody>
+                {ncaab.map((r) => {
+                  const acc = r.Accuracy * 100;
+                  const isGood = acc >= 70;
+                  return (
+                    <tr key={r.Year} className="t-row">
+                      <td className="px-3 py-2 font-mono text-sm font-semibold text-[var(--text-bright)]">{r.Year}</td>
+                      <td className="px-3 py-2 text-right">
+                        <span className={`font-mono text-sm font-bold ${isGood ? "text-[var(--green)]" : "text-[var(--amber)]"}`}>
+                          {acc.toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden md:table-cell">
+                        {r.Games?.toLocaleString() ?? "—"}
+                      </td>
+                      <td className="px-3 py-2 hidden sm:table-cell">
+                        <div className="w-full max-w-[120px] h-1 bg-[var(--bg-overlay)] overflow-hidden ml-auto">
+                          <div className={`h-full prob-bar ${isGood ? "bg-[var(--purple)]" : "bg-[var(--amber)]"}`}
+                            style={{ width: `${Math.min(acc, 100)}%` }} />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-          <div className="mt-2 text-center text-xs text-[var(--text-muted)]">
-            Average:{" "}
-            <span className="font-semibold text-[var(--accent)]">
-              {((ncaab.reduce((a, b) => a + b.Accuracy, 0) / ncaab.length) * 100).toFixed(1)}%
-            </span>
-            {" "}across {ncaab.length} tournaments
-          </div>
-        </motion.section>
+        </div>
       )}
 
-      {/* Methodology */}
-      <motion.section
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <Shield size={16} className="text-[var(--accent)]" />
-            <h2 className="text-sm font-semibold">Verification</h2>
-          </div>
-          <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-            All backtests use walk-forward validation — the model only sees data
-            available before each prediction. MLB replays 16 seasons (2008-2024)
-            game-by-game with expanding training windows. NCAAB trains on prior
-            years, tests on the next tournament. Live picks are SHA-256 hashed
-            before games start.
-          </p>
+      {/* Verification */}
+      <div className="border border-[var(--border-hi)]">
+        <div className="panel-header">
+          <span className="text-[10px] font-bold tracking-widest text-[var(--green)]">▌ VERIFICATION PROTOCOL</span>
         </div>
-      </motion.section>
+        <div className="px-4 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { label: "WALK-FORWARD CV", detail: "Expanding training window. No look-ahead bias. Model only sees historical data at prediction time." },
+            { label: "SHA-256 PRE-COMMIT", detail: "Every pick is hashed before game start. Track record cannot be retroactively altered or cherry-picked." },
+            { label: "CLV TRACKING", detail: "Closing line value measured against where lines close. Gold standard for real-edge verification." },
+          ].map(({ label, detail }) => (
+            <div key={label}>
+              <div className="text-[9px] text-[var(--green)] tracking-widest mb-1 font-semibold">{label}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] leading-relaxed">{detail}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }
