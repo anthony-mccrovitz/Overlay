@@ -765,7 +765,7 @@ def _run_mlb_daily(args, sport: str):
                     "Opponent": matchup,
                     "Matchup": matchup,
                     "Market": "total",
-                    "ModelProb": 0.0,
+                    "ModelProb": e.get("model_prob", 0.0),
                     "ImpliedProb": 0.5,
                     "Edge": e["edge_runs"],
                     "BestOdds": e["best_odds"],
@@ -945,7 +945,7 @@ def _run_mlb_daily(args, sport: str):
         prop_edges = find_prop_edges(prop_matchup_inputs, game_date=target_date)
         if prop_edges:
             print(f"  Found {len(prop_edges)} prop edge(s):")
-            for pe in prop_edges[:5]:
+            for pe in prop_edges[:10]:
                 print(f"    {pe['label']}  edge={pe['edge_pct']}%  odds={pe['odds']:+d}  [{pe['book']}]")
             # Save props to output
             import json as _json
@@ -1013,6 +1013,13 @@ def _run_mlb_daily(args, sport: str):
             nrfi_dir = Path("output/picks") / sport / ts
             nrfi_dir.mkdir(parents=True, exist_ok=True)
             (nrfi_dir / "nrfi.json").write_text(_json.dumps(nrfi_plays, indent=2))
+            # Log NRFI picks to pnl tracker (graded tonight by --grade)
+            try:
+                from src.grading.auto_grade import _update_pnl_nrfi
+                _update_pnl_nrfi(nrfi_plays[:5], [], _game_date)
+                print(f"  NRFI picks logged to pnl ({len(nrfi_plays[:5])} picks)")
+            except Exception as _pnl_err:
+                print(f"  [nrfi pnl] {_pnl_err}")
             # Render card
             try:
                 from src.output.card_html import render_nrfi_card_html
@@ -1033,6 +1040,7 @@ def _run_mlb_daily(args, sport: str):
             print("  No NRFI plays generated.")
     except Exception as _nrfi_err:
         print(f"  [nrfi] Skipped: {_nrfi_err}")
+
 
 
 def _save_model_only_picks(game_preds, sport: str, args):
@@ -1182,14 +1190,18 @@ def _print_daily_summary(picks_df: pd.DataFrame, sport: str, target_date=None) -
 _PNL_FILE = Path("data/pnl/picks.json")
 
 
-def _auto_log_picks(picks_list: list[dict]) -> int:
+def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> int:
     """
-    Auto-log generated picks to data/pnl/picks.json.
-    Skips duplicates by (date + team). Returns count of new picks added.
+    Auto-log generated picks to data/pnl/picks.json using canonical schema.
+    Deduplicates on pick_id. Returns count of new picks added.
+
+    game_date: the actual game date — critical when picks are generated a day
+    in advance (--tomorrow) or grading runs the morning after.
     """
+    from src.tracking.schema import make_pick_id
+
     _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
 
-    # Load existing log
     if _PNL_FILE.exists():
         try:
             existing = json.loads(_PNL_FILE.read_text())
@@ -1200,45 +1212,76 @@ def _auto_log_picks(picks_list: list[dict]) -> int:
     else:
         existing = {"picks": []}
 
-    today = date.today().isoformat()
+    today  = (game_date or date.today()).isoformat()
     now_ts = datetime.now(tz=timezone.utc).isoformat()
 
-    # Build a set of (date, team) for dedup
-    existing_keys = {
-        (p.get("date", ""), p.get("team", "").lower().strip())
-        for p in existing["picks"]
-    }
+    # Dedup on pick_id — robust against all field variations
+    existing_ids = {p.get("pick_id", "") for p in existing["picks"]}
 
     added = 0
     for rank, pick in enumerate(picks_list):
         team = str(pick.get("Team", "")).strip()
         if not team:
             continue
-        key = (today, team.lower().strip())
-        if key in existing_keys:
+
+        market    = str(pick.get("Market", "moneyline")).lower().strip()
+        direction = str(pick.get("Direction", "")).upper().strip()
+        if not direction:
+            direction = "WIN" if market == "moneyline" else "COVER" if market == "spread" else "OVER"
+
+        pick_id = make_pick_id("mlb", today, team, market, direction)
+        if pick_id in existing_ids:
             continue
 
-        odds = float(pick.get("BestOdds", 0) or 0)
+        odds_raw  = pick.get("BestOdds", 0) or 0
+        try:
+            odds = int(float(odds_raw))
+        except (ValueError, TypeError):
+            odds = None
+
+        # Extract line for spread/total picks
+        line: float | None = None
+        if market in ("spread", "total"):
+            try:
+                line = float(pick.get("BetLine") or pick.get("MarketLine") or 0) or None
+            except (ValueError, TypeError):
+                line = None
+
+        matchup  = str(pick.get("Matchup", "") or pick.get("Opponent", "")).strip()
+        edge_raw = pick.get("Edge")
+        try:
+            edge_pct = float(edge_raw) if edge_raw is not None else None
+        except (ValueError, TypeError):
+            edge_pct = None
+
+        card_pick = rank < 5
+        # ModelAgreement: True = Pythagorean + XGBoost both agree on direction
+        agreement = pick.get("ModelAgreement")
+        if agreement is None:
+            agreement = pick.get("model_agreement")
         entry = {
-            "date":         today,
-            "team":         team,
-            "opponent":     str(pick.get("Opponent", "?")).strip(),
-            "market":       str(pick.get("Market", "moneyline")).strip(),
-            "odds":         odds,
-            # Top 5 = paper bets (stake 1u). Rest logged for analytics, stake 0.
-            "stake":        1.0 if rank < 5 else 0.0,
-            "card_pick":    rank < 5,   # True = on the posted pick card
-            "rank":         rank + 1,
-            "result":       None,
-            "profit":       None,
-            "recorded_at":  now_ts,
-            "resulted_at":  None,
-            "model_prob":   pick.get("ModelProb"),
-            "edge":         pick.get("Edge"),
-            "auto_logged":  True,
+            "pick_id":          pick_id,
+            "date":             today,
+            "sport":            "mlb",
+            "market":           market,
+            "direction":        direction,
+            "team":             team,
+            "matchup":          matchup,
+            "odds":             odds,
+            "line":             line,
+            "sportsbook":       pick.get("Sportsbook"),
+            "model_prob":       pick.get("ModelProb"),
+            "edge_pct":         edge_pct,
+            "model_agreement":  bool(agreement) if agreement is not None else None,
+            "stake":            1.0 if card_pick else 0.0,
+            "card_pick":        card_pick,
+            "result":           None,
+            "profit":           None,
+            "recorded_at":      now_ts,
+            "resulted_at":      None,
         }
         existing["picks"].append(entry)
-        existing_keys.add(key)
+        existing_ids.add(pick_id)
         added += 1
 
     if added > 0:
@@ -1289,10 +1332,12 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     text = generate_pick_card_text(picks_list, sport=sport, card_date=_game_date)
     (out_dir / "picks.md").write_text(text, encoding="utf-8")
 
-    # Save picks_card.json — exactly the top 5 picks shown on the card.
+    # Save picks_card.json — top 5 moneyline picks only (no spreads/totals on the card).
     # Grader reads this instead of picks.json so they always match.
     import json as _json
-    card_picks = picks_list[:5]
+    card_picks = [p for p in picks_list if str(p.get("Market", "moneyline")).lower() == "moneyline"][:5]
+    if not card_picks:
+        card_picks = picks_list[:5]  # fallback: no ML edges today, show whatever we have
     (out_dir / "picks_card.json").write_text(_json.dumps(card_picks, indent=2, default=str))
 
     # ── Moneyline card — always generate, fall back to top model confidence picks ─
@@ -1431,8 +1476,36 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     except Exception as _e:
         print(f"  [captions] {_e}")
 
-    # Auto-log picks to pnl tracker
-    n_logged = _auto_log_picks(picks_list)
+    # ── Pick of the Day card ──────────────────────────────────────────────────
+    try:
+        from src.output.card_html import render_pick_of_day_card_html
+        ml_picks_for_pod = [p for p in picks_list if str(p.get("Market", "moneyline")).lower() == "moneyline"]
+        best_pick = max(ml_picks_for_pod, key=lambda x: float(x.get("Edge") or 0)) if ml_picks_for_pod else (picks_list[0] if picks_list else None)
+        if best_pick:
+            pod_path = render_pick_of_day_card_html(best_pick, sport=sport, card_date=_game_date)
+            if pod_path:
+                print(f"  Pick of day card → {pod_path}")
+    except Exception as _pod_err:
+        print(f"  [pick of day card] {_pod_err}")
+
+    # ── Slate card (all picks overview) ───────────────────────────────────────
+    try:
+        from src.output.card_html import render_slate_card_html
+        slate_picks = []
+        for p in picks_list[:5]:
+            mkt = str(p.get("Market", "moneyline")).lower()
+            slate_picks.append({"type": mkt, "team": p.get("Team", ""), "opponent": p.get("Opponent", ""),
+                                 "odds": p.get("BestOdds", 0), "edge": p.get("Edge", 0),
+                                 "book": p.get("Sportsbook", ""), "label": p.get("Team", "")})
+        if slate_picks:
+            slate_path = render_slate_card_html(slate_picks, sport=sport, card_date=_game_date)
+            if slate_path:
+                print(f"  Slate card → {slate_path}")
+    except Exception as _slate_err:
+        print(f"  [slate card] {_slate_err}")
+
+    # Auto-log picks to pnl tracker — pass game_date so grading matches the right entries
+    n_logged = _auto_log_picks(picks_list, game_date=_game_date)
     if n_logged > 0:
         print(f"  Auto-logged {n_logged} pick(s) to {_PNL_FILE}")
     elif picks_list:

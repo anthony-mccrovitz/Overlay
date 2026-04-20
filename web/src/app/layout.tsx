@@ -9,9 +9,9 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-mono-jetbrains", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 const NAV = [
+  { href: "/",          label: "HOME",     key: "~"  },
   { href: "/dashboard", label: "PICKS",    key: "F1" },
   { href: "/record",    label: "RECORD",   key: "F2" },
-  { href: "/paper-trade", label: "VALIDATE", key: "F3" },
   { href: "/pricing",   label: "PRICING",  key: "F4" },
 ];
 
@@ -22,15 +22,14 @@ function TopBar({ pathname }: { pathname: string }) {
       <div className="flex items-center h-9 px-3 gap-0 overflow-x-auto no-scrollbar">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1.5 mr-4 flex-shrink-0">
-          <span className="text-[var(--cyan)] font-bold text-sm tracking-widest">EDGE</span>
-          <span className="text-[var(--text-muted)] text-sm">FINDER</span>
-          <span className="ml-1 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1 py-px">v6.1</span>
+          <span className="text-[var(--cyan)] font-bold text-sm tracking-widest">CHEF</span>
+          <span className="text-[var(--text-muted)] text-sm">TONYBETS</span>
         </Link>
 
         {/* Nav items */}
         <div className="flex items-center gap-px flex-shrink-0">
           {NAV.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(item.href + "/");
+            const active = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link
                 key={item.href}
@@ -71,8 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#000000" />
-        <title>EdgeFinder — ML Sports Betting Edge Detection</title>
-        <meta name="description" content="Find mathematically proven edges against sportsbook lines. XGBoost ensemble, 91 features, walk-forward validated." />
+        <title>ChefTonyBets — Daily Sports Betting Picks</title>
+        <meta name="description" content="Live MLB and NBA picks powered by ML models. Real results, no cherry-picking. Full track record published daily." />
       </head>
       <body className="min-h-full flex flex-col crt">
         <TopBar pathname={pathname} />

@@ -1,0 +1,636 @@
+"""
+NBA Daily Picks Pipeline — ChefTonyBets
+
+Generates picks + player props for today's NBA slate and saves to:
+    output/picks/basketball_nba/YYYYMMDD/picks.json
+    output/picks/basketball_nba/YYYYMMDD/props.json
+
+Run:
+    python3 run_nba.py
+    python3 run_nba.py --refresh     # force-refresh odds cache
+    python3 run_nba.py --date 20260415
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+from datetime import date, datetime, timezone
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
+sys.path.insert(0, str(Path(__file__).parent))
+
+from src.data.nba_stats import fetch_team_ratings, fetch_player_stats
+from src.models.nba_model import find_nba_edges, project_game
+from src.data.nba_props import find_nba_prop_edges
+from src.output.card_html import render_nba_pick_card_html, render_nba_props_card_html
+from src.output.captions import nba_picks_caption, nba_props_caption, print_nba_captions
+
+import requests
+
+API_BASE = "https://api.the-odds-api.com/v4"
+CACHE_DIR = Path("data/cache/odds")
+
+
+def fetch_nba_odds(refresh: bool = False) -> list[dict]:
+    """Fetch today's NBA odds from The Odds API."""
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        print("  ⚠  No ODDS_API_KEY in env. Using cached data.")
+        cache = CACHE_DIR / "basketball_nba_latest.json"
+        if cache.exists():
+            with open(cache) as f:
+                return json.load(f)
+        return []
+
+    cache = CACHE_DIR / "basketball_nba_latest.json"
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    if cache.exists() and not refresh:
+        age = (datetime.now(timezone.utc).timestamp() - cache.stat().st_mtime)
+        if age < 1800:
+            with open(cache) as f:
+                return json.load(f)
+
+    try:
+        resp = requests.get(
+            f"{API_BASE}/sports/basketball_nba/odds",
+            params={
+                "apiKey": key,
+                "regions": "us",
+                "markets": "h2h,spreads,totals",
+                "oddsFormat": "american",
+                "bookmakers": "draftkings,fanduel,betmgm,betrivers",
+            },
+            timeout=20,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        with open(cache, "w") as f:
+            json.dump(data, f)
+        remaining = resp.headers.get("x-requests-remaining", "?")
+        print(f"  ✓  Live NBA odds fetched. API requests remaining: {remaining}")
+        return data
+    except Exception as e:
+        print(f"  [run_nba] Odds fetch error: {e}")
+        if cache.exists():
+            with open(cache) as f:
+                return json.load(f)
+        return []
+
+
+def _format_time(iso: str) -> str:
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        local = dt.astimezone()
+        return local.strftime("%I:%M %p ET")
+    except Exception:
+        return iso
+
+
+def print_picks_table(edges: list[dict], props: list[dict]) -> None:
+    line = "─" * 72
+    print(f"\n{'NBA PICKS — ChefTonyBets':^72}")
+    print(f"{date.today().strftime('%B %d, %Y'):^72}")
+    print(line)
+
+    if edges:
+        print("\n  GAME PICKS (Model vs Market)")
+        print(f"  {'GAME':<32} {'BET':<22} {'EDGE':>6}  {'ODDS':>6}  {'BOOK'}")
+        print(f"  {'─'*68}")
+        for e in edges[:8]:
+            game = e["matchup"][:31]
+            bet  = e["team"][:21]
+            edge = f"{e['edge_pct']:+.1f}%"
+            odds = f"{e['best_odds']:+d}"
+            book = e["sportsbook"]
+            proj = f"  [proj total {e['proj_total']:.0f}]" if e["market"] == "total" else ""
+            print(f"  {game:<32} {bet:<22} {edge:>6}  {odds:>6}  {book}{proj}")
+    else:
+        print("\n  No game edges found at current threshold.")
+
+    if props:
+        print(f"\n  PLAYER PROPS (Top 10 by edge)")
+        print(f"  {'PLAYER':<22} {'BET':<28} {'PROJ':>6} {'EDGE':>6}  {'ODDS':>6}  {'BOOK'}")
+        print(f"  {'─'*68}")
+        for p in props[:10]:
+            player = p["player"][:21]
+            bet    = f"{p['direction']} {p['line']} {p['market'].split('_')[-1].upper()}"[:27]
+            proj   = f"{p['projected']:.1f}"
+            edge   = f"{p['edge_pct']:+.1f}%"
+            odds   = f"{p['odds']:+d}"
+            book   = p["book"]
+            print(f"  {player:<22} {bet:<28} {proj:>6} {edge:>6}  {odds:>6}  {book}")
+    else:
+        print("\n  No prop edges found — NBA stats cache may be loading.")
+
+    print(f"\n{line}")
+
+
+# Play-in / Playoffs date ranges for 2025-26 season
+_PLAYIN_DATES  = {"20260415", "20260416", "20260417", "20260418"}
+_PLAYOFF_START = "20260419"
+
+
+def _context_label(today: str, events: list[dict]) -> str:
+    """Return PLAY-IN TOURNAMENT, NBA PLAYOFFS, or NBA based on date/events."""
+    if today in _PLAYIN_DATES:
+        return "PLAY-IN TOURNAMENT"
+    if today >= _PLAYOFF_START:
+        return "NBA PLAYOFFS"
+    return "NBA"
+
+
+def main(refresh: bool = False, target_date: str | None = None) -> None:
+    today = date.today().strftime("%Y%m%d") if not target_date else target_date
+    out_dir = Path(f"output/picks/basketball_nba/{today}")
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    print("\n  ChefTonyBets — NBA Picks Pipeline")
+    print(f"  Date: {today}")
+    print("  Fetching NBA team ratings...")
+
+    # Pre-warm stats caches
+    all_teams = fetch_team_ratings()
+    print(f"  ✓  Team ratings loaded: {len(all_teams)} teams")
+
+    all_players = fetch_player_stats()
+    print(f"  ✓  Player stats loaded: {len(all_players)} players")
+
+    print("  Fetching NBA odds...")
+    events = fetch_nba_odds(refresh=refresh)
+
+    # Filter to games whose local Eastern Time date matches target_date.
+    # NBA tip-offs run 7 PM – midnight ET; late games cross into next UTC day
+    # so we can't compare UTC date strings directly. Instead convert to ET.
+    from zoneinfo import ZoneInfo
+    ET = ZoneInfo("America/New_York")
+    target_dt = date(int(today[:4]), int(today[4:6]), int(today[6:]))
+
+    def _et_date(iso: str) -> date:
+        try:
+            return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(ET).date()
+        except Exception:
+            return date.min
+
+    upcoming = [e for e in events if _et_date(e.get("commence_time", "")) == target_dt]
+
+    if not upcoming:
+        now_utc = datetime.now(timezone.utc)
+        upcoming = [
+            e for e in events
+            if datetime.fromisoformat(
+                e.get("commence_time", "2000-01-01T00:00:00Z").replace("Z", "+00:00")
+            ) > now_utc
+        ]
+
+    print(f"  Found {len(upcoming)} upcoming games")
+    for ev in upcoming:
+        ct = _format_time(ev.get("commence_time", ""))
+        print(f"    {ev['away_team']} @ {ev['home_team']}  {ct}")
+
+    # ── Game edges ─────────────────────────────────────────────────────────
+    print("\n  Running NBA model...")
+    edges = find_nba_edges(upcoming, min_edge_pct=3.0)
+    print(f"  ✓  {len(edges)} game edges found")
+
+    # ── Project each matchup ───────────────────────────────────────────────
+    print("\n  Game projections:")
+    for ev in upcoming[:4]:
+        proj = project_game(ev["away_team"], ev["home_team"], all_teams)
+        ct = _format_time(ev.get("commence_time", ""))
+        print(
+            f"    {ev['away_team']} @ {ev['home_team']}  {ct}\n"
+            f"      Proj: {proj['away_proj']} - {proj['home_proj']}  "
+            f"| Total: {proj['projected_total']}  "
+            f"| Away ML: {proj['away_win_prob']*100:.0f}%  "
+            f"| Home ML: {proj['home_win_prob']*100:.0f}%"
+        )
+
+    # ── Player props ───────────────────────────────────────────────────────
+    print("\n  Fetching NBA player props...")
+    props = find_nba_prop_edges(upcoming[:4])   # tonight's 2 play-in games
+    print(f"  ✓  {len(props)} prop edges found")
+
+    # ── Context label (Play-In / Playoffs / NBA) ──────────────────────────
+    context = _context_label(today, upcoming)
+    print(f"\n  Context: {context}")
+
+    # ── Save outputs ───────────────────────────────────────────────────────
+    picks_path = out_dir / "picks.json"
+    props_path = out_dir / "props.json"
+
+    with open(picks_path, "w") as f:
+        json.dump(edges, f, indent=2)
+    with open(props_path, "w") as f:
+        json.dump(props, f, indent=2)
+
+    print(f"\n  Saved → {picks_path}")
+    print(f"  Saved → {props_path}")
+
+    # ── Log picks to central pnl tracker ──────────────────────────────────
+    _auto_log_nba_picks(edges, today)
+
+    # ── Terminal display ───────────────────────────────────────────────────
+    print_picks_table(edges, props)
+
+    # ── Generate pick cards ────────────────────────────────────────────────
+    card_date_obj = date(int(today[:4]), int(today[4:6]), int(today[6:]))
+
+    # Filter top positive-edge picks for cards (spread + ML + total, best 6)
+    top_picks = [e for e in edges if e.get("edge_pct", 0) > 0][:6]
+    if top_picks:
+        print("\n  Generating NBA pick card...")
+        pick_card_path = render_nba_pick_card_html(
+            top_picks, card_date=card_date_obj, context_label=context,
+            top_props=props[:4] if props else None,
+        )
+        if pick_card_path:
+            print(f"  ✓  Pick card → {pick_card_path}")
+        else:
+            print("  ⚠  Pick card render failed (is Playwright installed?)")
+
+    # Props card
+    if props:
+        print("\n  Generating NBA props card...")
+        props_card_path = render_nba_props_card_html(
+            props, card_date=card_date_obj, context_label=context
+        )
+        if props_card_path:
+            print(f"  ✓  Props card → {props_card_path}")
+        else:
+            print("  ⚠  Props card render failed")
+
+    # ── Generate captions ──────────────────────────────────────────────────
+    print("\n  Generating captions...")
+    cap_picks = nba_picks_caption(top_picks, card_date=card_date_obj, context_label=context)
+    cap_props = nba_props_caption(props, card_date=card_date_obj, context_label=context) if props else ""
+
+    (out_dir / "caption_picks.txt").write_text(cap_picks, encoding="utf-8")
+    if cap_props:
+        (out_dir / "caption_props.txt").write_text(cap_props, encoding="utf-8")
+
+    print_nba_captions(top_picks, props, card_date=card_date_obj, context_label=context)
+
+
+_PNL_FILE = Path("data/pnl/picks.json")
+
+
+def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
+    """Log NBA edge picks to data/pnl/picks.json using canonical schema."""
+    from src.tracking.schema import make_pick_id
+
+    _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        data = json.loads(_PNL_FILE.read_text()) if _PNL_FILE.exists() else {"picks": []}
+        if "picks" not in data:
+            data = {"picks": []}
+    except (json.JSONDecodeError, ValueError):
+        data = {"picks": []}
+
+    now_ts   = datetime.now(timezone.utc).isoformat()
+    date_str = f"{today[:4]}-{today[4:6]}-{today[6:]}"
+
+    # Dedup on pick_id
+    existing_ids = {p.get("pick_id", "") for p in data["picks"]}
+
+    added = 0
+    for rank, e in enumerate(edges):
+        team      = str(e.get("team", "")).strip()
+        market    = str(e.get("market", "spread")).lower()
+        direction = str(e.get("direction", "")).upper()
+        matchup   = str(e.get("matchup", "")).strip()
+
+        if not direction:
+            direction = "WIN" if market == "moneyline" else "COVER" if market == "spread" else "OVER"
+
+        if not team:
+            continue
+
+        pick_id = make_pick_id("nba", date_str, team, market, direction)
+        if pick_id in existing_ids:
+            continue
+
+        odds_raw = e.get("best_odds", 0) or 0
+        try:
+            odds = int(float(odds_raw))
+        except (ValueError, TypeError):
+            odds = None
+
+        line: float | None = e.get("bet_line")
+        if line is not None:
+            try:
+                line = float(line)
+            except (ValueError, TypeError):
+                line = None
+
+        card_pick = rank < 6
+        data["picks"].append({
+            "pick_id":     pick_id,
+            "date":        date_str,
+            "sport":       "nba",
+            "market":      market,
+            "direction":   direction,
+            "team":        team,
+            "matchup":     matchup,
+            "odds":        odds,
+            "line":        line,
+            "sportsbook":  e.get("sportsbook"),
+            "model_prob":  e.get("model_prob") or e.get("win_prob"),
+            "edge_pct":    e.get("edge_pct"),
+            "stake":       1.0 if card_pick else 0.0,
+            "card_pick":   card_pick,
+            "result":      None,
+            "profit":      None,
+            "recorded_at": now_ts,
+            "resulted_at": None,
+        })
+        existing_ids.add(pick_id)
+        added += 1
+
+    if added > 0:
+        _PNL_FILE.write_text(json.dumps(data, indent=2))
+        print(f"  ✓  {added} NBA pick(s) logged to pnl")
+    return added
+
+
+def fetch_nba_scores(game_date: date) -> list[dict]:
+    """
+    Fetch NBA final scores from ESPN API.
+
+    Returns list of dicts: {home_team, away_team, home_score, away_score, state}.
+    Uses ESPN's public scoreboard endpoint — no auth needed.
+    """
+    date_str = game_date.strftime("%Y%m%d")
+    url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={date_str}"
+    try:
+        resp = requests.get(url, timeout=20)
+        resp.raise_for_status()
+        data = resp.json()
+        results = []
+        for event in data.get("events", []):
+            comp = event.get("competitions", [{}])[0]
+            status = comp.get("status", {}).get("type", {})
+            state = "Final" if status.get("completed") else status.get("description", "Scheduled")
+            competitors = comp.get("competitors", [])
+            home = next((c for c in competitors if c.get("homeAway") == "home"), None)
+            away = next((c for c in competitors if c.get("homeAway") == "away"), None)
+            if not home or not away:
+                continue
+            home_name = home.get("team", {}).get("displayName", "")
+            away_name = away.get("team", {}).get("displayName", "")
+            try:
+                home_score = int(home.get("score", 0) or 0)
+                away_score = int(away.get("score", 0) or 0)
+            except (TypeError, ValueError):
+                home_score, away_score = 0, 0
+            results.append({
+                "home_team":  home_name,
+                "away_team":  away_name,
+                "home_score": home_score,
+                "away_score": away_score,
+                "state":      state,
+            })
+        return results
+    except Exception as e:
+        print(f"  [nba grade] Score fetch error: {e}")
+        return []
+
+
+def _normalize_nba(name: str) -> str:
+    return name.lower().strip()
+
+
+def _team_match(a: str, b: str) -> bool:
+    """Fuzzy team name matching — handles city vs full name differences."""
+    a, b = _normalize_nba(a), _normalize_nba(b)
+    return a == b or a in b or b in a
+
+
+def grade_nba_picks(target_date: str | None = None, flat_stake: float = 1.0, verbose: bool = True) -> dict:
+    """
+    Grade NBA picks for a given date against actual scores.
+
+    Grades ML, spread, and total picks from picks.json.
+    Updates data/pnl/nba_picks.json with per-pick results.
+    """
+    today = target_date or date.today().strftime("%Y%m%d")
+    game_date = date(int(today[:4]), int(today[4:6]), int(today[6:]))
+    out_dir = Path(f"output/picks/basketball_nba/{today}")
+    picks_path = out_dir / "picks.json"
+
+    if not picks_path.exists():
+        if verbose:
+            print(f"  [nba grade] No picks found for {today}")
+        return {"date": today, "picks": 0, "graded": 0}
+
+    with open(picks_path) as f:
+        picks = json.load(f)
+
+    scores = fetch_nba_scores(game_date)
+    final_games = [s for s in scores if s["state"] == "Final"]
+
+    if not final_games:
+        if verbose:
+            print(f"  [nba grade] No final scores yet for {today} ({len(scores)} scheduled)")
+        return {"date": today, "picks": len(picks), "graded": 0, "pending": len(picks)}
+
+    wins = losses = pending = 0
+    total_profit = total_staked = 0.0
+    graded = []
+
+    # Per-category trackers
+    by_type: dict[str, dict] = {}
+
+    def _find_score(team: str) -> dict | None:
+        for s in final_games:
+            if _team_match(team, s["home_team"]) or _team_match(team, s["away_team"]):
+                return s
+        return None
+
+    if verbose:
+        print(f"\n{'='*70}")
+        print(f"  NBA GRADING REPORT — {game_date.strftime('%A, %B %d, %Y')}")
+        print(f"{'='*70}")
+        print(f"  {len(picks)} picks | {len(final_games)} final games\n")
+
+    for pick in picks:
+        market   = str(pick.get("market", "spread")).lower()
+        team     = str(pick.get("team", ""))
+        matchup  = str(pick.get("matchup", ""))
+        odds     = int(pick.get("best_odds", 0) or 0)
+        book     = str(pick.get("sportsbook", ""))
+        edge_pct = float(pick.get("edge_pct", 0) or 0)
+        model_p  = float(pick.get("model_prob") or pick.get("win_prob", 0.5) or 0.5)
+        direction = str(pick.get("direction", "COVER")).upper()
+        bet_line  = float(pick.get("bet_line") or 0)
+
+        # Resolve game
+        score = _find_score(team)
+        if not matchup and score:
+            matchup = f"{score['away_team']} @ {score['home_team']}"
+
+        if not score:
+            pending += 1
+            graded.append({"market": market, "team": team, "status": "pending"})
+            if verbose:
+                print(f"  PEND  {team} — no final score")
+            continue
+
+        hs, aws = score["home_score"], score["away_score"]
+        is_home = _team_match(team, score["home_team"])
+        ts  = hs if is_home else aws   # team score
+        ops = aws if is_home else hs   # opponent score
+
+        if market in ("spread", "runline"):
+            # Team covers if ts + line > ops (team side of the spread)
+            adj_ts = ts + bet_line
+            won = adj_ts > ops
+            if adj_ts == ops:  # push
+                graded.append({"market": market, "team": team, "status": "push"})
+                if verbose:
+                    print(f"  PUSH  {team} {bet_line:+.1f} | {aws}-{hs}")
+                continue
+            label = f"{team} {bet_line:+.1f}"
+        elif market == "total":
+            total = hs + aws
+            if direction == "OVER":
+                won = total > bet_line
+            else:
+                won = total < bet_line
+            if total == bet_line:
+                graded.append({"market": market, "direction": direction, "line": bet_line, "status": "push"})
+                continue
+            label = f"{direction} {bet_line}"
+        else:
+            # moneyline
+            won = ts > ops
+            label = f"{team}"
+
+        profit = (flat_stake * (odds / 100) if odds >= 0 else flat_stake * (100 / abs(odds))) if won else -flat_stake
+        total_profit += profit
+        total_staked += flat_stake
+
+        if won:
+            wins += 1
+        else:
+            losses += 1
+
+        # Per-type tracking
+        if market not in by_type:
+            by_type[market] = {"wins": 0, "losses": 0, "profit": 0.0}
+        if won:
+            by_type[market]["wins"] += 1
+        else:
+            by_type[market]["losses"] += 1
+        by_type[market]["profit"] += profit
+
+        tag = "WIN " if won else "LOSS"
+        score_str = f"{score['away_team']} {aws}, {score['home_team']} {hs}"
+        if verbose:
+            print(f"  {tag:4s}  {label} ({odds:+d} @ {book}) — ${profit:+.0f} | {score_str}")
+
+        graded.append({
+            "market": market, "team": team, "matchup": matchup,
+            "odds": odds, "model_prob": model_p, "edge_pct": edge_pct,
+            "won": won, "profit": profit, "score": score_str,
+            "status": "win" if won else "loss",
+        })
+
+    settled = wins + losses
+    roi = (total_profit / total_staked * 100) if total_staked > 0 else 0
+
+    if verbose and settled > 0:
+        print(f"\n  {'─'*50}")
+        print(f"  RECORD:  {wins}-{losses} ({wins/settled:.1%} win rate)")
+        print(f"  PROFIT:  ${total_profit:+,.0f} on ${total_staked:,.0f} wagered")
+        print(f"  ROI:     {roi:+.1f}%")
+        for mtype, stats in by_type.items():
+            w, l = stats["wins"], stats["losses"]
+            wr = w / (w + l) if (w + l) > 0 else 0
+            print(f"  {mtype.upper():10s} {w}-{l} ({wr:.1%}) ${stats['profit']:+.0f}")
+        if pending > 0:
+            print(f"\n  {pending} game(s) still pending")
+        print(f"  {'='*50}\n")
+
+    # Persist grades
+    out_dir.mkdir(parents=True, exist_ok=True)
+    report = {
+        "date": today,
+        "total_picks": len(picks),
+        "graded": settled,
+        "pending": pending,
+        "wins": wins,
+        "losses": losses,
+        "win_rate": wins / settled if settled > 0 else None,
+        "total_staked": total_staked,
+        "total_profit": total_profit,
+        "roi": roi,
+        "by_type": {
+            k: {
+                "wins": v["wins"], "losses": v["losses"],
+                "profit": round(v["profit"], 2),
+                "win_rate": round(v["wins"] / (v["wins"] + v["losses"]), 4)
+                            if (v["wins"] + v["losses"]) > 0 else None,
+            }
+            for k, v in by_type.items()
+        },
+        "details": graded,
+        "graded_at": datetime.now(timezone.utc).isoformat(),
+    }
+    with open(out_dir / "grades.json", "w") as f:
+        json.dump(report, f, indent=2)
+
+    # Write results back to central pnl file so public_stats tracks NBA too
+    if _PNL_FILE.exists():
+        try:
+            pnl_data = json.loads(_PNL_FILE.read_text())
+        except (json.JSONDecodeError, ValueError):
+            pnl_data = {"picks": []}
+        now_ts = datetime.now(timezone.utc).isoformat()
+        date_str = f"{today[:4]}-{today[4:6]}-{today[6:]}"
+        for g in graded:
+            if g.get("status") not in ("win", "loss"):
+                continue
+            team   = g.get("team", "")
+            market = g.get("market", "spread")
+            won    = g.get("won", False)
+            profit = g.get("profit", 0.0)
+            for p in pnl_data.get("picks", []):
+                if (
+                    p.get("sport") == "nba"
+                    and p.get("date") == date_str
+                    and p.get("team", "").lower() == team.lower()
+                    and p.get("market", "").lower() == market.lower()
+                    and p.get("result") is None
+                ):
+                    p["result"]      = "win" if won else "loss"
+                    p["profit"]      = round(profit, 4)   # already in units (flat_stake=1.0)
+                    p["resulted_at"] = now_ts
+                    break
+        _PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
+
+    # Update public stats
+    try:
+        from src.analytics.public_stats import write_public_stats
+        write_public_stats()
+    except Exception as _e:
+        print(f"  [stats] {_e}")
+
+    return report
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="NBA Picks Pipeline")
+    parser.add_argument("--refresh", action="store_true", help="Force-refresh odds cache")
+    parser.add_argument("--date", type=str, default=None, help="Date YYYYMMDD")
+    parser.add_argument("--grade", action="store_true", help="Grade picks for --date (default: today)")
+    args = parser.parse_args()
+    if args.grade:
+        grade_nba_picks(target_date=args.date)
+    else:
+        main(refresh=args.refresh, target_date=args.date)

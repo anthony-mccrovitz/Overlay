@@ -2,165 +2,220 @@
 
 import { useEffect, useState } from "react";
 
-const API = "/api";
-
 interface Summary {
   total_picks: number;
-  settled_picks: number;
+  settled: number;
+  pending: number;
   wins: number;
   losses: number;
+  pushes: number;
   win_rate: number;
-  units_staked: number;
   units_profit: number;
   roi: number;
   streak: number;
 }
 
-interface BacktestRow {
-  Season?: number;
-  Year?: number;
-  Accuracy: number;
-  Games?: number;
-  BrierScore?: number;
-  LogLoss?: number;
-  HomeBaseline?: number;
-  Lift?: number;
+interface MarketStats {
+  wins: number;
+  losses: number;
+  pushes: number;
+  win_rate: number;
+  units_profit: number;
+  roi: number;
+  total: number;
+  pending: number;
 }
 
-function StatCell({ label, value, color = "text-[var(--cyan)]" }: { label: string; value: string; color?: string }) {
+interface SportStats {
+  wins: number;
+  losses: number;
+  win_rate: number;
+  units_profit: number;
+  roi: number;
+  settled: number;
+  pending: number;
+}
+
+interface NrfiStats {
+  wins: number;
+  losses: number;
+  win_rate: number;
+  streak: number;
+  settled: number;
+  pending: number;
+}
+
+interface RecentPick {
+  date: string | null;
+  sport: string | null;
+  market: string | null;
+  team: string | null;
+  matchup: string | null;
+  odds: number | null;
+  result: string | null;
+  profit: number | null;
+  edge_pct: number | null;
+}
+
+interface StatsData {
+  updated_at: string | null;
+  summary: Summary;
+  nrfi: NrfiStats | null;
+  by_market: Record<string, MarketStats>;
+  by_sport: Record<string, SportStats>;
+  backtest_mlb: { season: number; accuracy: number; high_conf: number; games: number }[];
+  recent_picks: RecentPick[];
+}
+
+function StatCell({ label, value, sub, color = "text-[var(--cyan)]" }: {
+  label: string; value: string; sub?: string; color?: string;
+}) {
   return (
-    <div className="border-r border-[var(--border-hi)] last:border-r-0 px-4 py-3">
+    <div className="px-4 py-3">
       <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-1">{label}</div>
-      <div className={`text-lg font-bold font-mono ${color}`}>{value}</div>
+      <div className={`text-base font-bold font-mono ${color}`}>{value}</div>
+      {sub && <div className="text-[9px] text-[var(--text-muted)] mt-0.5">{sub}</div>}
     </div>
   );
 }
 
+function fmtProfit(p: number) {
+  return `${p >= 0 ? "+" : ""}${p.toFixed(2)}u`;
+}
+
+function fmtRoi(r: number) {
+  return `${r >= 0 ? "+" : ""}${(r * 100).toFixed(1)}%`;
+}
+
+function fmtOdds(o: number | null) {
+  if (o == null) return "—";
+  return o > 0 ? `+${o}` : `${o}`;
+}
+
+const MARKETS: { key: string; label: string }[] = [
+  { key: "moneyline", label: "Moneyline" },
+  { key: "spread",    label: "Spread" },
+  { key: "total",     label: "Totals" },
+  { key: "nrfi",      label: "NRFI" },
+  { key: "prop",      label: "Props" },
+];
+
 export default function RecordPage() {
-  const [summary, setSummary] = useState<Summary | null>(null);
-  const [mlb, setMlb]         = useState<BacktestRow[]>([]);
-  const [ncaab, setNcaab]     = useState<BacktestRow[]>([]);
+  const [data, setData] = useState<StatsData | null>(null);
 
   useEffect(() => {
-    fetch(`${API}/record`).then(r => r.json()).then(d => setSummary(d.summary)).catch(() => {});
-    fetch(`${API}/backtest/mlb`).then(r => r.json()).then(d => setMlb(d.results || [])).catch(() => {});
-    fetch(`${API}/backtest/ncaab`).then(r => r.json()).then(d => setNcaab(d.results || [])).catch(() => {});
+    fetch("/api/record").then(r => r.json()).then(setData).catch(() => {});
   }, []);
 
-  const avgMlb  = mlb.length  ? (mlb.reduce((a, r)  => a + r.Accuracy, 0) / mlb.length * 100).toFixed(1)  : null;
-  const avgNcaab= ncaab.length? (ncaab.reduce((a, r) => a + r.Accuracy, 0) / ncaab.length * 100).toFixed(1): null;
+  const s = data?.summary;
+  const streak = s?.streak ?? 0;
 
   return (
-    <div className="max-w-5xl mx-auto px-3 py-4 space-y-px">
+    <div className="max-w-4xl mx-auto px-3 py-4 space-y-3 pb-20 md:pb-4">
 
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3 flex items-center justify-between">
         <div>
-          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER</div>
-          <div className="text-sm font-bold text-[var(--text-bright)]">TRACK RECORD</div>
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">CHEFTONYBETS</div>
+          <div className="text-sm font-bold text-[var(--text-bright)]">FULL TRACK RECORD</div>
         </div>
         <div className="text-right text-[9px] text-[var(--text-muted)]">
-          <div>METHODOLOGY: WALK-FORWARD CV</div>
+          {data?.updated_at && (
+            <div>UPDATED {new Date(data.updated_at).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</div>
+          )}
           <div className="mt-0.5 flex items-center gap-1.5 justify-end">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot inline-block" />
-            <span className="text-[var(--green)]">VERIFICATION ACTIVE</span>
+            <span className="text-[var(--green)]">GRADED DAILY</span>
           </div>
         </div>
       </div>
 
-      {/* Live record */}
-      {summary && (
+      {/* ── Composite record ── */}
+      {s && (
         <div className="border border-[var(--border-hi)]">
           <div className="panel-header">
-            <span className="text-[10px] font-bold tracking-widest text-[var(--cyan)]">▌ LIVE RECORD</span>
-            <span className="ml-2 text-[9px] text-[var(--text-muted)]">{summary.settled_picks} settled</span>
-            {summary.settled_picks === 0 && (
-              <span className="ml-auto text-[9px] text-[var(--amber)]">PAPER TRADING — PRE-SEASON</span>
-            )}
+            <span className="text-[10px] font-bold tracking-widest text-[var(--cyan)]">▌ OVERALL RECORD</span>
+            <span className="ml-2 text-[9px] text-[var(--text-muted)]">{s.settled} settled · {s.pending} pending</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-[var(--border-hi)]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-[var(--border-hi)] divide-x divide-y sm:divide-y-0 divide-[var(--border-hi)]">
             <StatCell
               label="RECORD"
-              value={`${summary.wins}W-${summary.losses}L`}
+              value={`${s.wins}W-${s.losses}L`}
+              sub={s.pushes > 0 ? `${s.pushes} push` : undefined}
+              color="text-[var(--text-bright)]"
             />
             <StatCell
               label="WIN RATE"
-              value={`${(summary.win_rate * 100).toFixed(1)}%`}
-              color={summary.win_rate >= 0.52 ? "text-[var(--green)]" : "text-[var(--red)]"}
+              value={`${(s.win_rate * 100).toFixed(1)}%`}
+              sub="breakeven ~52.4%"
+              color={s.win_rate >= 0.524 ? "text-[var(--green)]" : s.win_rate < 0.48 ? "text-[var(--red)]" : "text-[var(--text-bright)]"}
             />
             <StatCell
-              label="ROI"
-              value={`${summary.roi >= 0 ? "+" : ""}${(summary.roi * 100).toFixed(1)}%`}
-              color={summary.roi >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}
+              label="UNITS P/L"
+              value={fmtProfit(s.units_profit)}
+              sub={`ROI ${fmtRoi(s.roi)}`}
+              color={s.units_profit >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}
             />
             <StatCell
               label="STREAK"
-              value={summary.streak > 0 ? `${summary.streak}W` : summary.streak < 0 ? `${Math.abs(summary.streak)}L` : "—"}
-              color={summary.streak > 0 ? "text-[var(--green)]" : summary.streak < 0 ? "text-[var(--red)]" : "text-[var(--text-muted)]"}
+              value={streak > 0 ? `${streak}W` : streak < 0 ? `${Math.abs(streak)}L` : "—"}
+              sub="current run"
+              color={streak > 0 ? "text-[var(--green)]" : streak < 0 ? "text-[var(--red)]" : "text-[var(--text-muted)]"}
             />
           </div>
         </div>
       )}
 
-      {/* MLB Backtest */}
-      {mlb.length > 0 && (
+      {/* ── By market ── */}
+      {data?.by_market && (
         <div className="border border-[var(--border-hi)]">
           <div className="panel-header">
-            <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ MLB BACKTEST</span>
-            <span className="ml-2 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1.5 py-px">WALK-FORWARD VALIDATED</span>
-            {avgMlb && (
-              <span className="ml-auto text-[10px] text-[var(--green)] font-bold">AVG: {avgMlb}%</span>
-            )}
+            <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ BY MARKET</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border-hi)]">
-                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">SEASON</th>
-                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ACCURACY</th>
-                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">VS BASELINE</th>
-                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">GAMES</th>
-                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">BRIER</th>
-                  <th className="px-20 py-1.5 hidden sm:table-cell" />
+                  <th className="px-3 py-1.5 text-left  text-[9px] text-[var(--text-muted)] tracking-widest font-medium">MARKET</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">W-L</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">WIN%</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">UNITS P/L</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">ROI</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">TOTAL</th>
                 </tr>
               </thead>
               <tbody>
-                {mlb.map((r) => {
-                  const acc = r.Accuracy * 100;
-                  const isGood = acc >= 54;
+                {MARKETS.map(({ key, label }) => {
+                  const m = data.by_market[key];
+                  if (!m || m.total === 0) return null;
+                  const nonPush = m.wins + m.losses;
                   return (
-                    <tr key={r.Season} className="t-row">
-                      <td className="px-3 py-2 font-mono text-sm font-semibold text-[var(--text-bright)]">
-                        {r.Season}
+                    <tr key={key} className="t-row border-b border-[var(--border)] last:border-0">
+                      <td className="px-3 py-2 text-[11px] font-medium text-[var(--text-secondary)]">{label}</td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-bright)]">
+                        {m.wins}-{m.losses}
                       </td>
-                      <td className="px-3 py-2 text-right">
-                        <span className={`font-mono text-sm font-bold ${isGood ? "text-[var(--green)]" : "text-[var(--amber)]"}`}>
-                          {acc.toFixed(1)}%
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)] hidden sm:table-cell">
-                        {r.Lift !== undefined
-                          ? <span className={r.Lift >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
-                              {r.Lift >= 0 ? "+" : ""}{(r.Lift * 100).toFixed(1)}%
+                      <td className="px-3 py-2 text-right font-mono text-[11px]">
+                        {nonPush > 0
+                          ? <span className={m.win_rate >= 0.524 ? "text-[var(--green)]" : "text-[var(--text-secondary)]"}>
+                              {(m.win_rate * 100).toFixed(1)}%
                             </span>
-                          : r.HomeBaseline !== undefined
-                            ? <span className="text-[var(--text-muted)]">base: {(r.HomeBaseline * 100).toFixed(1)}%</span>
-                            : "—"
+                          : <span className="text-[var(--text-muted)]">—</span>
                         }
                       </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px]">
+                        <span className={m.units_profit >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                          {fmtProfit(m.units_profit)}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] hidden sm:table-cell">
+                        <span className={m.roi >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                          {fmtRoi(m.roi)}
+                        </span>
+                      </td>
                       <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden md:table-cell">
-                        {r.Games?.toLocaleString() ?? "—"}
-                      </td>
-                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden lg:table-cell">
-                        {r.BrierScore?.toFixed(4) ?? "—"}
-                      </td>
-                      <td className="px-3 py-2 hidden sm:table-cell">
-                        <div className="w-full max-w-[120px] h-1 bg-[var(--bg-overlay)] overflow-hidden ml-auto">
-                          <div
-                            className={`h-full prob-bar ${isGood ? "bg-[var(--green)]" : "bg-[var(--amber)]"}`}
-                            style={{ width: `${Math.min(acc, 100)}%` }}
-                          />
-                        </div>
+                        {m.total}
+                        {m.pending > 0 ? <span className="text-[var(--amber)]"> +{m.pending}</span> : ""}
                       </td>
                     </tr>
                   );
@@ -171,46 +226,45 @@ export default function RecordPage() {
         </div>
       )}
 
-      {/* NCAAB Backtest */}
-      {ncaab.length > 0 && (
+      {/* ── By sport ── */}
+      {data?.by_sport && (
         <div className="border border-[var(--border-hi)]">
           <div className="panel-header">
-            <span className="text-[10px] font-bold tracking-widest text-[var(--purple)]">▌ NCAAB TOURNAMENT BACKTEST</span>
-            <span className="ml-2 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1.5 py-px">15-YEAR WALK-FORWARD</span>
-            {avgNcaab && (
-              <span className="ml-auto text-[10px] text-[var(--green)] font-bold">AVG: {avgNcaab}%</span>
-            )}
+            <span className="text-[10px] font-bold tracking-widest text-[var(--blue)]">▌ BY SPORT</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border-hi)]">
-                  <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">YEAR</th>
-                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ACCURACY</th>
-                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">GAMES</th>
-                  <th className="px-20 py-1.5 hidden sm:table-cell" />
+                  <th className="px-3 py-1.5 text-left  text-[9px] text-[var(--text-muted)] tracking-widest font-medium">SPORT</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">W-L</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">WIN%</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">UNITS P/L</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">ROI</th>
                 </tr>
               </thead>
               <tbody>
-                {ncaab.map((r) => {
-                  const acc = r.Accuracy * 100;
-                  const isGood = acc >= 70;
+                {[{ key: "mlb", label: "MLB" }, { key: "nba", label: "NBA" }].map(({ key, label }) => {
+                  const sp = data.by_sport[key];
+                  if (!sp || sp.settled === 0) return null;
                   return (
-                    <tr key={r.Year} className="t-row">
-                      <td className="px-3 py-2 font-mono text-sm font-semibold text-[var(--text-bright)]">{r.Year}</td>
-                      <td className="px-3 py-2 text-right">
-                        <span className={`font-mono text-sm font-bold ${isGood ? "text-[var(--green)]" : "text-[var(--amber)]"}`}>
-                          {acc.toFixed(1)}%
+                    <tr key={key} className="t-row border-b border-[var(--border)] last:border-0">
+                      <td className="px-3 py-2 text-[11px] font-medium text-[var(--text-secondary)]">{label}</td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-bright)]">{sp.wins}-{sp.losses}</td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px]">
+                        <span className={sp.win_rate >= 0.524 ? "text-[var(--green)]" : "text-[var(--text-secondary)]"}>
+                          {(sp.win_rate * 100).toFixed(1)}%
                         </span>
                       </td>
-                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden md:table-cell">
-                        {r.Games?.toLocaleString() ?? "—"}
+                      <td className="px-3 py-2 text-right font-mono text-[11px]">
+                        <span className={sp.units_profit >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                          {fmtProfit(sp.units_profit)}
+                        </span>
                       </td>
-                      <td className="px-3 py-2 hidden sm:table-cell">
-                        <div className="w-full max-w-[120px] h-1 bg-[var(--bg-overlay)] overflow-hidden ml-auto">
-                          <div className={`h-full prob-bar ${isGood ? "bg-[var(--purple)]" : "bg-[var(--amber)]"}`}
-                            style={{ width: `${Math.min(acc, 100)}%` }} />
-                        </div>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] hidden sm:table-cell">
+                        <span className={sp.roi >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                          {fmtRoi(sp.roi)}
+                        </span>
                       </td>
                     </tr>
                   );
@@ -221,16 +275,119 @@ export default function RecordPage() {
         </div>
       )}
 
-      {/* Verification */}
+      {/* ── Recent picks ── */}
+      {data?.recent_picks && data.recent_picks.length > 0 && (
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--green)]">▌ RECENT PICKS</span>
+            <span className="ml-auto text-[9px] text-[var(--text-muted)]">LAST {data.recent_picks.length} SETTLED</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border-hi)]">
+                  <th className="px-3 py-1.5 text-left  text-[9px] text-[var(--text-muted)] tracking-widest font-medium w-6"></th>
+                  <th className="px-3 py-1.5 text-left  text-[9px] text-[var(--text-muted)] tracking-widest font-medium">PICK</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">ODDS</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">EDGE</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">P/L</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.recent_picks.map((p, i) => {
+                  const won  = p.result === "win";
+                  const lost = p.result === "loss";
+                  const date = p.date ? p.date.slice(5) : "—";
+                  return (
+                    <tr key={i} className="t-row border-b border-[var(--border)] last:border-0">
+                      <td className="px-3 py-2">
+                        <span className={`inline-flex items-center justify-center w-5 h-4 text-[8px] font-bold border ${
+                          won  ? "border-[var(--green)] text-[var(--green)]" :
+                          lost ? "border-[var(--red)] text-[var(--red)]" :
+                                 "border-[var(--border-hi)] text-[var(--text-muted)]"
+                        }`}>
+                          {won ? "W" : lost ? "L" : "P"}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2">
+                        <div className="text-[11px] font-medium text-[var(--text-bright)] truncate max-w-[160px] sm:max-w-none">
+                          {p.team ?? "—"}
+                        </div>
+                        <div className="text-[9px] text-[var(--text-muted)]">
+                          {date} · {(p.sport ?? "").toUpperCase()} {p.market ?? ""}
+                        </div>
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-secondary)] hidden sm:table-cell">
+                        {fmtOdds(p.odds)}
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden md:table-cell">
+                        {p.edge_pct != null ? `+${p.edge_pct.toFixed(1)}%` : "—"}
+                      </td>
+                      <td className="px-3 py-2 text-right font-mono text-[11px] font-bold">
+                        {p.profit != null
+                          ? <span className={p.profit >= 0 ? "text-[var(--green)]" : "text-[var(--red)]"}>
+                              {fmtProfit(p.profit)}
+                            </span>
+                          : <span className="text-[var(--text-muted)]">—</span>
+                        }
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── Backtest ── */}
+      {data?.backtest_mlb && data.backtest_mlb.length > 0 && (
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--amber)]">▌ MLB MODEL BACKTEST</span>
+            <span className="ml-2 text-[9px] text-[var(--text-muted)] border border-[var(--border-hi)] px-1.5 py-px">WALK-FORWARD · NO LOOK-AHEAD</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border-hi)]">
+                  <th className="px-3 py-1.5 text-left  text-[9px] text-[var(--text-muted)] tracking-widest font-medium">SEASON</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ACCURACY</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">HIGH CONF</th>
+                  <th className="px-3 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">GAMES</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.backtest_mlb.map((r) => (
+                  <tr key={r.season} className="t-row border-b border-[var(--border)] last:border-0">
+                    <td className="px-3 py-2 font-mono text-sm font-semibold text-[var(--text-bright)]">{r.season}</td>
+                    <td className="px-3 py-2 text-right font-mono text-sm font-bold text-[var(--green)]">
+                      {(r.accuracy * 100).toFixed(1)}%
+                    </td>
+                    <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden sm:table-cell">
+                      {(r.high_conf * 100).toFixed(1)}%
+                    </td>
+                    <td className="px-3 py-2 text-right font-mono text-[11px] text-[var(--text-muted)] hidden md:table-cell">
+                      {r.games.toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── Verification ── */}
       <div className="border border-[var(--border-hi)]">
         <div className="panel-header">
-          <span className="text-[10px] font-bold tracking-widest text-[var(--green)]">▌ VERIFICATION PROTOCOL</span>
+          <span className="text-[10px] font-bold tracking-widest text-[var(--green)]">▌ VERIFICATION</span>
         </div>
         <div className="px-4 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { label: "WALK-FORWARD CV", detail: "Expanding training window. No look-ahead bias. Model only sees historical data at prediction time." },
-            { label: "SHA-256 PRE-COMMIT", detail: "Every pick is hashed before game start. Track record cannot be retroactively altered or cherry-picked." },
-            { label: "CLV TRACKING", detail: "Closing line value measured against where lines close. Gold standard for real-edge verification." },
+            { label: "WALK-FORWARD CV",    detail: "Expanding training window. Model only sees data it had at prediction time. No look-ahead." },
+            { label: "SHA-256 PRE-COMMIT", detail: "Every pick hashed before game starts. Record mathematically impossible to backfill." },
+            { label: "CLV TRACKED",        detail: "Closing line value measured on every pick. Industry gold standard for real edge." },
           ].map(({ label, detail }) => (
             <div key={label}>
               <div className="text-[9px] text-[var(--green)] tracking-widest mb-1 font-semibold">{label}</div>
@@ -240,6 +397,9 @@ export default function RecordPage() {
         </div>
       </div>
 
+      <div className="text-[9px] text-[var(--text-muted)] text-center py-2 tracking-wider">
+        NOT FINANCIAL ADVICE · BET RESPONSIBLY · 21+ · UNITS = FLAT 1 UNIT STAKED PER PICK
+      </div>
     </div>
   );
 }

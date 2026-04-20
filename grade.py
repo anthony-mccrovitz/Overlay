@@ -38,16 +38,20 @@ def _profit(stake: float, odds: float, won: bool) -> float:
     return stake * 100 / abs(odds)
 
 
-def _fetch_scores(date_str: str) -> dict[str, str]:
+def _fetch_scores(date_str: str) -> tuple[dict[str, str], dict[str, dict]]:
     """
-    Fetch completed MLB game winners for a given date (YYYYMMDD).
-    Returns {team_name: winner_name} for every team in every completed game.
+    Fetch completed MLB game results for a given date (YYYYMMDD).
+
+    Returns:
+        winners  — {team_name: winner_name}   (for moneyline grading)
+        games    — {team_name: {home, away, home_score, away_score, total, winner}}
+                   (for totals/spread grading — keyed by BOTH team names)
     """
     try:
         import requests
     except ImportError:
         print("  requests not installed — cannot auto-grade")
-        return {}
+        return {}, {}
 
     api_key = os.getenv("ODDS_API_KEY")
     if not api_key:
@@ -58,49 +62,110 @@ def _fetch_scores(date_str: str) -> dict[str, str]:
                     api_key = line.split("=", 1)[1].strip()
     if not api_key:
         print("  ODDS_API_KEY not found — cannot auto-grade")
+        return {}, {}
+
+    # Try MLB Stats API first for dates older than 3 days (Odds API daysFrom max = 3)
+    date_dashed = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+    mlb_games = _fetch_scores_mlb_api(date_dashed)
+
+    # Also try Odds API (covers last 3 days)
+    odds_games = {}
+    try:
+        resp = requests.get(
+            "https://api.the-odds-api.com/v4/sports/baseball_mlb/scores/",
+            params={"apiKey": api_key, "daysFrom": 2, "dateFormat": "iso"},
+            timeout=10,
+        )
+        if resp.status_code == 200:
+            for game in resp.json():
+                if not game.get("completed") or not game.get("scores"):
+                    continue
+                commence = game.get("commence_time", "")
+                try:
+                    dt_utc = datetime.fromisoformat(commence.replace("Z", "+00:00"))
+                    dt_et  = dt_utc - timedelta(hours=4)
+                    game_date = dt_et.strftime("%Y%m%d")
+                except Exception:
+                    game_date = commence[:10].replace("-", "")
+                if game_date != date_str:
+                    continue
+                scores = {s["name"]: int(s["score"]) for s in game["scores"]}
+                teams  = list(scores.keys())
+                if len(teams) < 2:
+                    continue
+                away_team, home_team = teams[0], teams[1]
+                away_score = scores[away_team]
+                home_score = scores[home_team]
+                winner = away_team if away_score > home_score else home_team
+                game_info = {
+                    "home": home_team, "away": away_team,
+                    "home_score": home_score, "away_score": away_score,
+                    "total": home_score + away_score,
+                    "winner": winner,
+                    "margin": abs(home_score - away_score),
+                }
+                odds_games[home_team] = game_info
+                odds_games[away_team] = game_info
+    except Exception as e:
+        print(f"  [grade] Odds API scores: {e}")
+
+    # Merge: prefer Odds API (more reliable team name format), fallback to MLB API
+    games   = {**mlb_games, **odds_games}
+    winners = {team: info["winner"] for team, info in games.items()}
+    return winners, games
+
+
+def _fetch_scores_mlb_api(date_dashed: str) -> dict[str, dict]:
+    """Fetch scores from MLB Stats API (covers any historical date)."""
+    try:
+        import requests
+        resp = requests.get(
+            "https://statsapi.mlb.com/api/v1/schedule",
+            params={"sportId": 1, "date": date_dashed,
+                    "hydrate": "linescore", "gameType": "R,F,D,L,W,S"},
+            timeout=15,
+        )
+        if resp.status_code != 200:
+            return {}
+        games = {}
+        for date_entry in resp.json().get("dates", []):
+            for g in date_entry.get("games", []):
+                state = g.get("status", {}).get("abstractGameState", "")
+                if state != "Final":
+                    continue
+                away_team  = g["teams"]["away"]["team"]["name"]
+                home_team  = g["teams"]["home"]["team"]["name"]
+                away_score = int(g["teams"]["away"].get("score", 0) or 0)
+                home_score = int(g["teams"]["home"].get("score", 0) or 0)
+                winner = away_team if away_score > home_score else home_team
+                info = {
+                    "home": home_team, "away": away_team,
+                    "home_score": home_score, "away_score": away_score,
+                    "total": home_score + away_score,
+                    "winner": winner,
+                    "margin": abs(home_score - away_score),
+                }
+                games[home_team] = info
+                games[away_team] = info
+        return games
+    except Exception:
         return {}
 
-    # daysFrom=1 returns yesterday + today completed games
-    resp = requests.get(
-        "https://api.the-odds-api.com/v4/sports/baseball_mlb/scores/",
-        params={"apiKey": api_key, "daysFrom": 2, "dateFormat": "iso"},
-        timeout=10,
-    )
-    if resp.status_code != 200:
-        print(f"  Scores API error {resp.status_code}")
-        return {}
 
-    winners = {}
-    for game in resp.json():
-        if not game.get("completed") or not game.get("scores"):
-            continue
-        # Filter to the requested date
-        commence = game.get("commence_time", "")
-        # Convert UTC commence time to ET date (UTC-4 during EDT)
-        try:
-            dt_utc = datetime.fromisoformat(commence.replace("Z", "+00:00"))
-            dt_et  = dt_utc - timedelta(hours=4)
-            game_date = dt_et.strftime("%Y%m%d")
-        except Exception:
-            game_date = commence[:10].replace("-", "")
-
-        if game_date != date_str:
-            continue
-
-        scores = {s["name"]: int(s["score"]) for s in game["scores"]}
-        winner = max(scores, key=lambda t: scores[t])
-        for team in scores:
-            winners[team] = winner
-
-    return winners
+def _norm_date(d: str) -> str:
+    """Normalize a date string to YYYYMMDD regardless of input format."""
+    return d.replace("-", "")
 
 
 def auto_grade(date_str: str):
     """Auto-grade all pending card picks for date_str using Odds API scores."""
+    date_compact = _norm_date(date_str)   # e.g. 20260414
+    date_dashed  = f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:]}"  # 2026-04-14
+
     data   = _load()
     picks  = [
         p for p in data["picks"]
-        if p.get("date") == date_str
+        if _norm_date(p.get("date", "")) == date_compact
         and p["result"] is None
         and float(p.get("stake", p.get("bet_size", 1.0)) or 0) > 0
     ]
@@ -110,7 +175,7 @@ def auto_grade(date_str: str):
         return
 
     print(f"\n  Fetching scores for {date_str}...")
-    winners = _fetch_scores(date_str)
+    winners, games = _fetch_scores(date_str)
 
     if not winners:
         print("  Could not fetch scores. Run with --manual instead.")
@@ -123,27 +188,107 @@ def auto_grade(date_str: str):
 
     graded = 0
     for pick in picks:
-        team = pick["team"]
-        odds = float(pick["odds"])
-        sign = "+" if odds > 0 else ""
-
-        # Find winner for this team's game
-        winner = winners.get(team)
-        if winner is None:
-            print(f"  ⚠️  No score found for {team} — skipping")
+        team     = pick["team"]
+        market   = pick.get("market", "moneyline")
+        opponent = pick.get("opponent", "")
+        if not pick.get("odds"):
+            print(f"  ⚠️  No odds for {team} — skipping")
             continue
+        odds     = float(pick["odds"])
+        if odds == 0:
+            print(f"  ⚠️  Invalid odds (0) for {team} — skipping")
+            continue
+        sign     = "+" if odds > 0 else ""
 
-        won = (winner == team)
-        pick["result"]     = "win" if won else "loss"
-        pick["profit"]     = round(_profit(pick["stake"], odds, won), 4)
-        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+        # ── Totals grading ───────────────────────────────────────────────
+        if market == "total":
+            # Parse direction + line from team field: "UNDER 8.5" or "OVER 9.0"
+            parts = team.upper().split()
+            direction = parts[0] if parts else "UNDER"
+            try:
+                line = float(parts[1]) if len(parts) > 1 else 0.0
+            except ValueError:
+                line = 0.0
 
-        icon  = "🟢 WIN " if won else "🔴 LOSS"
-        prof  = f"+{pick['profit']:.2f}u" if won else f"{pick['profit']:.2f}u"
-        print(f"  {icon}  {team:<30} ({sign}{int(odds)})  →  {prof}")
-        print(f"         Winner: {winner}")
-        print()
-        graded += 1
+            # Find the game via opponent field ("Away @ Home")
+            game_info = None
+            opp_teams = [t.strip() for t in opponent.replace(" @ ", "@").split("@")]
+            for opp_name in opp_teams:
+                if opp_name in games:
+                    game_info = games[opp_name]
+                    break
+            # Fuzzy fallback: partial team name match
+            if not game_info:
+                for gt, gi in games.items():
+                    for opp_name in opp_teams:
+                        if len(opp_name) > 4 and (
+                            opp_name.lower() in gt.lower() or gt.lower() in opp_name.lower()
+                        ):
+                            game_info = gi
+                            break
+                    if game_info:
+                        break
+
+            if not game_info:
+                print(f"  ⚠️  No score found for {team} ({opponent}) — skipping")
+                continue
+
+            actual_total = game_info["total"]
+            won = (actual_total < line) if direction == "UNDER" else (actual_total > line)
+            # Push (exactly on the line)
+            if actual_total == line:
+                print(f"  ⬜ PUSH  {team:<30} ({sign}{int(odds)})  →  0.00u")
+                print(f"         Final: {game_info['away']} {game_info['away_score']} @ "
+                      f"{game_info['home']} {game_info['home_score']}  (total {actual_total})")
+                print()
+                pick["result"] = "push"
+                pick["profit"] = 0.0
+                pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+                graded += 1
+                continue
+
+            pick["result"]      = "win" if won else "loss"
+            pick["profit"]      = round(_profit(pick["stake"], odds, won), 4)
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+
+            icon = "🟢 WIN " if won else "🔴 LOSS"
+            prof = f"+{pick['profit']:.2f}u" if won else f"{pick['profit']:.2f}u"
+            print(f"  {icon}  {team:<30} ({sign}{int(odds)})  →  {prof}")
+            print(f"         Final: {game_info['away']} {game_info['away_score']} @ "
+                  f"{game_info['home']} {game_info['home_score']}"
+                  f"  (total {actual_total} vs line {line})")
+            print()
+            graded += 1
+
+        # ── Moneyline grading ────────────────────────────────────────────
+        else:
+            winner = winners.get(team)
+            if winner is None:
+                # Fuzzy match
+                for gt, w in winners.items():
+                    if len(team) > 4 and (team.lower() in gt.lower() or gt.lower() in team.lower()):
+                        winner = w
+                        break
+            if winner is None:
+                print(f"  ⚠️  No score found for {team} — skipping")
+                continue
+
+            game_info = games.get(team, {})
+            won = (winner == team)
+            pick["result"]      = "win" if won else "loss"
+            pick["profit"]      = round(_profit(pick["stake"], odds, won), 4)
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+
+            icon = "🟢 WIN " if won else "🔴 LOSS"
+            prof = f"+{pick['profit']:.2f}u" if won else f"{pick['profit']:.2f}u"
+            print(f"  {icon}  {team:<30} ({sign}{int(odds)})  →  {prof}")
+            if game_info:
+                print(f"         Final: {game_info.get('away','')} {game_info.get('away_score','')} @ "
+                      f"{game_info.get('home','')} {game_info.get('home_score','')}")
+            else:
+                print(f"         Winner: {winner}")
+            print()
+            graded += 1
 
     _save(data)
     print(f"  Graded {graded}/{len(picks)} picks.")
@@ -408,13 +553,29 @@ def generate_recap_card(grade_date: str) -> Path | None:
     return path
 
 
+def _grade_nba(date_str: str) -> None:
+    """Grade NBA picks for date_str. Imports from run_nba.py."""
+    try:
+        from run_nba import grade_nba_picks
+        grade_nba_picks(target_date=date_str, verbose=True)
+    except ImportError as e:
+        print(f"  [grade] NBA grading unavailable: {e}")
+    except Exception as e:
+        print(f"  [grade] NBA grading error: {e}")
+
+
 def main():
-    parser = argparse.ArgumentParser(prog="grade")
+    parser = argparse.ArgumentParser(
+        prog="grade",
+        description="Grade picks against actual results (MLB + NBA).",
+    )
     parser.add_argument("cmd",    nargs="?", help="win | loss | (blank=auto)")
     parser.add_argument("team",   nargs="?", help="Team name for win/loss")
-    parser.add_argument("--date", help="Date to grade YYYYMMDD (default: yesterday)")
-    parser.add_argument("--manual", action="store_true", help="Interactive W/L mode")
-    parser.add_argument("--recap-card", action="store_true", help="Generate recap card image")
+    parser.add_argument("--date",   help="Date to grade YYYYMMDD (default: yesterday)")
+    parser.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"],
+                        help="Which sport to grade (default: all)")
+    parser.add_argument("--manual",      action="store_true", help="Interactive W/L mode")
+    parser.add_argument("--recap-card",  action="store_true", help="Generate recap card image")
 
     args = parser.parse_args()
 
@@ -425,15 +586,27 @@ def main():
     elif args.manual:
         interactive()
     else:
-        # Default: auto-grade yesterday (or --date), then optionally generate recap card
         if args.date:
             grade_date = args.date
         else:
             yesterday  = datetime.now() - timedelta(days=1)
             grade_date = yesterday.strftime("%Y%m%d")
-        auto_grade(grade_date)
-        if args.recap_card:
-            generate_recap_card(grade_date)
+
+        if args.sport in ("all", "mlb"):
+            auto_grade(grade_date)
+            if args.recap_card:
+                generate_recap_card(grade_date)
+
+        if args.sport in ("all", "nba"):
+            print(f"\n  ── Grading NBA picks for {grade_date} ──")
+            _grade_nba(grade_date)
+
+        # Update public stats after all grading is done
+        try:
+            from src.analytics.public_stats import write_public_stats
+            write_public_stats()
+        except Exception as e:
+            print(f"  [stats] {e}")
 
 
 if __name__ == "__main__":
