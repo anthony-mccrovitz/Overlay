@@ -27,8 +27,17 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.data.nba_stats import fetch_team_ratings, fetch_player_stats
 from src.models.nba_model import find_nba_edges, project_game
 from src.data.nba_props import find_nba_prop_edges
-from src.output.card_html import render_nba_pick_card_html, render_nba_props_card_html
-from src.output.captions import nba_picks_caption, nba_props_caption, print_nba_captions
+from src.output.card_html import (
+    render_nba_pick_card_html, render_nba_props_card_html,
+    render_nba_spread_card_html, render_nba_moneyline_card_html,
+    render_nba_totals_card_html, render_nba_pick_of_day_html,
+    render_nba_slate_card_html,
+)
+from src.output.captions import (
+    nba_picks_caption, nba_props_caption, print_nba_captions,
+    nba_spread_caption, nba_moneyline_caption, nba_totals_caption,
+    nba_pick_of_day_caption, nba_slate_caption,
+)
 
 import requests
 
@@ -213,8 +222,18 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     # ── Player props ───────────────────────────────────────────────────────
     print("\n  Fetching NBA player props...")
-    props = find_nba_prop_edges(upcoming[:4])   # tonight's 2 play-in games
-    print(f"  ✓  {len(props)} prop edges found")
+    raw_props = find_nba_prop_edges(upcoming[:4])
+    print(f"  ✓  {len(raw_props)} prop edges found")
+
+    # Dedupe: one prop per player (best edge), then sort by edge desc
+    # This prevents the same player appearing 3x with PTS/REB/AST all listed
+    _seen_players: dict[str, dict] = {}
+    for prop in sorted(raw_props, key=lambda x: float(x.get("edge_pct", 0)), reverse=True):
+        player = prop.get("player", "")
+        if player and player not in _seen_players:
+            _seen_players[player] = prop
+    props = list(_seen_players.values())[:10]
+    print(f"  ✓  {len(props)} unique-player props after dedup")
 
     # ── Context label (Play-In / Playoffs / NBA) ──────────────────────────
     context = _context_label(today, upcoming)
@@ -254,6 +273,36 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
         else:
             print("  ⚠  Pick card render failed (is Playwright installed?)")
 
+    # ── Individual market cards (same system as MLB) ────────────────────────
+    all_positive = [e for e in edges if e.get("edge_pct", 0) > 0]
+
+    # Spread card
+    sp = render_nba_spread_card_html(all_positive, card_date=card_date_obj, context_label=context)
+    if sp:
+        print(f"  ✓  Spread card → {sp}")
+
+    # Moneyline card
+    ml = render_nba_moneyline_card_html(all_positive, card_date=card_date_obj, context_label=context)
+    if ml:
+        print(f"  ✓  Moneyline card → {ml}")
+
+    # Totals card
+    tt = render_nba_totals_card_html(all_positive, card_date=card_date_obj, context_label=context)
+    if tt:
+        print(f"  ✓  Totals card → {tt}")
+
+    # Pick of the day — best edge pick
+    if all_positive:
+        best = max(all_positive, key=lambda x: float(x.get("edge_pct", 0)))
+        pod = render_nba_pick_of_day_html(best, card_date=card_date_obj, context_label=context)
+        if pod:
+            print(f"  ✓  Pick of day → {pod}")
+
+    # Slate card — top 5 across all markets
+    slate = render_nba_slate_card_html(all_positive, card_date=card_date_obj, context_label=context)
+    if slate:
+        print(f"  ✓  Slate card → {slate}")
+
     # Props card
     if props:
         print("\n  Generating NBA props card...")
@@ -267,13 +316,42 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     # ── Generate captions ──────────────────────────────────────────────────
     print("\n  Generating captions...")
-    cap_picks = nba_picks_caption(top_picks, card_date=card_date_obj, context_label=context)
-    cap_props = nba_props_caption(props, card_date=card_date_obj, context_label=context) if props else ""
 
+    # Main picks caption (all markets)
+    cap_picks = nba_picks_caption(top_picks, card_date=card_date_obj, context_label=context)
     (out_dir / "caption_picks.txt").write_text(cap_picks, encoding="utf-8")
-    if cap_props:
+
+    # Props caption
+    if props:
+        cap_props = nba_props_caption(props, card_date=card_date_obj, context_label=context)
         (out_dir / "caption_props.txt").write_text(cap_props, encoding="utf-8")
 
+    # Per-card captions (matching MLB system)
+    spread_only = [e for e in all_positive if e.get("market") == "spread"]
+    if spread_only:
+        (out_dir / "caption_spread.txt").write_text(
+            nba_spread_caption(spread_only, card_date=card_date_obj, context_label=context), encoding="utf-8")
+
+    ml_only = [e for e in all_positive if e.get("market") in ("moneyline", "h2h")]
+    if ml_only:
+        (out_dir / "caption_ml.txt").write_text(
+            nba_moneyline_caption(ml_only, card_date=card_date_obj, context_label=context), encoding="utf-8")
+
+    totals_only = [e for e in all_positive if e.get("market") == "total"]
+    if totals_only:
+        (out_dir / "caption_totals.txt").write_text(
+            nba_totals_caption(totals_only, card_date=card_date_obj, context_label=context), encoding="utf-8")
+
+    if all_positive:
+        best = max(all_positive, key=lambda x: float(x.get("edge_pct", 0)))
+        (out_dir / "caption_pick_of_day.txt").write_text(
+            nba_pick_of_day_caption(best, card_date=card_date_obj, context_label=context), encoding="utf-8")
+
+    if all_positive:
+        (out_dir / "caption_slate.txt").write_text(
+            nba_slate_caption(all_positive[:5], card_date=card_date_obj, context_label=context), encoding="utf-8")
+
+    # Print all to terminal
     print_nba_captions(top_picks, props, card_date=card_date_obj, context_label=context)
 
 

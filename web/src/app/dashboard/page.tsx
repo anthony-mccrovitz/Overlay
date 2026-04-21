@@ -146,14 +146,23 @@ function PickRow({ pick, bankroll }: { pick: Pick; bankroll: number }) {
         className={`t-row cursor-pointer ${edgeBg(e)}`}
         onClick={() => setOpen(!open)}
       >
-        {/* Team */}
+        {/* BET — primary cell: what to actually bet */}
         <td className="px-3 py-2 whitespace-nowrap">
-          <div className="text-xs font-semibold text-[var(--text-bright)]">{pick.Team}</div>
-          <div className="text-[10px] text-[var(--text-muted)] truncate max-w-[120px]">{pick.Opponent}</div>
-        </td>
-        {/* Market */}
-        <td className="px-2 py-2 hidden sm:table-cell">
-          <MktLabel mkt={pick.Market ?? "moneyline"} />
+          {/* Action line: BET [TEAM] [MKT] */}
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-bold tracking-widest text-[var(--text-muted)] select-none">BET</span>
+            <span className="text-[13px] font-bold text-[var(--text-bright)] leading-tight">{pick.Team}</span>
+            <MktLabel mkt={pick.Market ?? "moneyline"} />
+          </div>
+          {/* Odds + book on same line — the two numbers you need */}
+          <div className="flex items-center gap-2 mt-0.5">
+            <span className="font-mono text-[13px] font-bold text-[var(--amber)]">{fmtOdds(pick.BestOdds)}</span>
+            {pick.Sportsbook && (
+              <span className="text-[10px] text-[var(--text-secondary)]">@ {pick.Sportsbook}</span>
+            )}
+          </div>
+          {/* Opponent small */}
+          <div className="text-[10px] text-[var(--text-muted)] mt-0.5">vs {pick.Opponent}</div>
         </td>
         {/* Model prob */}
         <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--cyan)] hidden md:table-cell">
@@ -164,20 +173,12 @@ function PickRow({ pick, bankroll }: { pick: Pick; bankroll: number }) {
           {(pick.ImpliedProb * 100).toFixed(1)}%
         </td>
         {/* Edge */}
-        <td className="px-2 py-2 text-right font-mono text-[11px]">
+        <td className="px-2 py-2 text-right font-mono text-[12px] font-bold">
           {fmtEdge(e)}
         </td>
-        {/* Odds */}
-        <td className="px-2 py-2 text-right font-mono text-[11px] text-[var(--text-bright)]">
-          {fmtOdds(pick.BestOdds)}
-        </td>
-        {/* Book */}
-        <td className="px-2 py-2 text-[10px] text-[var(--text-muted)] hidden sm:table-cell">
-          {pick.Sportsbook || "—"}
-        </td>
         {/* Kelly */}
-        <td className="px-2 py-2 text-right font-mono text-[10px] text-[var(--text-muted)] hidden lg:table-cell">
-          {pick.KellyFraction != null ? `${(pick.KellyFraction * 100).toFixed(1)}%` : "—"}
+        <td className="px-2 py-2 text-right font-mono text-[10px] text-[var(--text-secondary)] hidden lg:table-cell">
+          {pick.KellyFraction != null ? `${(pick.KellyFraction * 100).toFixed(1)}%k` : "—"}
         </td>
         {/* Expand */}
         <td className="px-2 py-2 text-[var(--text-muted)] text-center w-6">
@@ -291,8 +292,20 @@ function NrfiRow({ g }: { g: NrfiGame }) {
     <>
       <tr className="t-row cursor-pointer" onClick={() => setOpen(!open)}>
         <td className="px-3 py-2 whitespace-nowrap">
-          <div className="text-xs font-semibold text-[var(--text-bright)]">{g.away_team} @ {g.home_team}</div>
-          <div className="text-[10px] text-[var(--text-muted)]">{g.away_sp || "TBD"} vs {g.home_sp || "TBD"}</div>
+          {/* Action line */}
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-bold tracking-widest text-[var(--text-muted)] select-none">BET</span>
+            <span className={`text-[13px] font-bold leading-tight ${isNrfi ? "text-[var(--green-hi)]" : "text-[var(--red)]"}`}>
+              {g.direction}
+            </span>
+            <span className="text-[11px] text-[var(--text-bright)] font-semibold">
+              {abbr(g.away_team)} @ {abbr(g.home_team)}
+            </span>
+            {g.BestOdds != null && (
+              <span className="font-mono text-[12px] font-bold text-[var(--amber)]">{fmtOdds(g.BestOdds)}</span>
+            )}
+          </div>
+          <div className="text-[10px] text-[var(--text-muted)] mt-0.5">{g.away_sp || "TBD"} vs {g.home_sp || "TBD"}</div>
         </td>
         <td className="px-2 py-2 hidden sm:table-cell">
           <span className={`border px-1.5 py-px text-[9px] font-bold tracking-wider ${isNrfi ? "border-[var(--green-hi)]/30 text-[var(--green-hi)]" : "border-[var(--red)]/30 text-[var(--red)]"}`}>
@@ -466,18 +479,23 @@ function PicksTable({ data, bankroll, section }: {
                   <th className="w-6" />
                 </> : <>
                   <th className="px-3 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium">
-                    {isProps ? "PLAYER" : isNrfi ? "MATCHUP" : "TEAM"}
+                    {isProps ? "PLAYER / BET" : isNrfi ? "MATCHUP" : "BET — TEAM · ODDS · BOOK"}
                   </th>
-                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">
-                    {isProps ? "BET" : isNrfi ? "DIRECTION" : "MKT"}
-                  </th>
-                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">
-                    {isNrfi ? "PROJ%" : "MODEL"}
-                  </th>
+                  {!isProps && !isNrfi && (
+                    <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">MODEL</th>
+                  )}
+                  {(isProps || isNrfi) && (
+                    <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">
+                      {isProps ? "BET" : "DIRECTION"}
+                    </th>
+                  )}
+                  {(isProps || isNrfi) && (
+                    <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden md:table-cell">
+                      {isNrfi ? "PROJ%" : "MODEL"}
+                    </th>
+                  )}
                   <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">IMPLIED</th>
                   <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">EDGE</th>
-                  <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium">ODDS</th>
-                  <th className="px-2 py-1.5 text-left text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden sm:table-cell">BOOK</th>
                   <th className="px-2 py-1.5 text-right text-[9px] text-[var(--text-muted)] tracking-widest font-medium hidden lg:table-cell">
                     {isProps ? "PROJ" : "KELLY%"}
                   </th>

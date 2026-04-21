@@ -1,0 +1,111 @@
+{
+  "date": "20260418",
+  "total_picks": 8,
+  "graded": 6,
+  "pending": 2,
+  "wins": 4,
+  "losses": 2,
+  "win_rate": 0.6666666666666666,
+  "total_staked": 6.0,
+  "total_profit": 2.0547619047619046,
+  "roi": 34.24603174603174,
+  "by_type": {
+    "moneyline": {
+      "wins": 2,
+      "losses": 0,
+      "profit": 2.15,
+      "win_rate": 1.0
+    },
+    "spread": {
+      "wins": 2,
+      "losses": 2,
+      "profit": -0.1,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 209.5",
+      "status": "pending"
+    },
+    {
+      "market": "moneyline",
+      "team": "Los Angeles Lakers",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": 175,
+      "model_prob": 0.5413,
+      "edge_pct": 19.02,
+      "won": true,
+      "profit": 1.75,
+      "score": "Houston Rockets 98, Los Angeles Lakers 107",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Los Angeles Lakers +4.5",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": -105,
+      "model_prob": 0.6826,
+      "edge_pct": 18.6,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Houston Rockets 98, Los Angeles Lakers 107",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 218.0",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "Atlanta Hawks +6.0",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -108,
+      "model_prob": 0.5365,
+      "edge_pct": 3.31,
+      "won": false,
+      "profit": -1.0,
+      "score": "Atlanta Hawks 102, New York Knicks 113",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "New York Knicks",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -250,
+      "model_prob": 0.6596,
+      "edge_pct": -3.27,
+      "won": true,
+      "profit": 0.4,
+      "score": "Atlanta Hawks 102, New York Knicks 113",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "New York Knicks -6.5",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -105,
+      "model_prob": 0.447,
+      "edge_pct": -4.96,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Atlanta Hawks 102, New York Knicks 113",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Houston Rockets -5.0",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": -108,
+      "model_prob": 0.3027,
+      "edge_pct": -20.07,
+      "won": false,
+      "profit": -1.0,
+      "score": "Houston Rockets 98, Los Angeles Lakers 107",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-04-20T02:47:34.220467+00:00"
+}

@@ -1,0 +1,49 @@
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+  No picks found for 2026-04-16
+  No slate.json found for 2026-04-16 — run morning.py first.
+  [CLV] No opening-line snapshots for 2026-04-16.
+        Run snapshot_opening_lines() after generating picks.
+  No picks found for 20260416 — skipping results card.
+  [stats] public_stats.json updated — 44W/44 settled, 50.0% win rate, +8.8% ROI
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+  No picks found for 2026-04-18
+  No slate.json found for 2026-04-18 — run morning.py first.
+  [CLV] No opening-line snapshots for 2026-04-18.
+        Run snapshot_opening_lines() after generating picks.
+  No picks found for 20260418 — skipping results card.
+  [stats] public_stats.json updated — 44W/44 settled, 50.0% win rate, +8.8% ROI
+
+  Fetching scores for 20260418...
+  Found 15 completed games.
+
+  ====================================================
+  Auto-grading 20 pick(s) for 20260418
+  ====================================================
+
+  🟢 WIN   Tampa Bay Rays                 (+140)  →  +1.40u
+         Final: Pittsburgh Pirates 7 @ Tampa Bay Rays 8
+
+  ⚠️  No score found for OVER 7.0 () — skipping
+  🔴 LOSS  Chicago White Sox              (+140)  →  -1.00u
+         Final: Athletics 7 @ Chicago White Sox 6
+
+  🟢 WIN   Atlanta Braves                 (-207)  →  +0.48u
+         Final: Philadelphia Phillies 1 @ Atlanta Braves 3
+
+Traceback (most recent call last):
+  File "/Users/anthonymccrovitz/march-madness/grade.py", line 607, in <module>
+    main()
+  File "/Users/anthonymccrovitz/march-madness/grade.py", line 590, in main
+    auto_grade(grade_date)
+  File "/Users/anthonymccrovitz/march-madness/grade.py", line 194, in auto_grade
+    odds     = float(pick["odds"])
+               ^^^^^^^^^^^^^^^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'

@@ -1,64 +1,75 @@
 #!/bin/bash
-# EdgeFinder automated schedule
+# ChefTonyBets — automated daily pipeline
 #
-# Times are Eastern (ET). If your machine is UTC, adjust hour fields:
-#   10am ET = 14:00 UTC (during EDT, UTC-4)
+# Schedule (all times Eastern):
+#   9:00 AM  — fetch odds + generate picks + snapshot opening lines
+#   9:05 AM  — generate social captions (copy-paste ready)
+#   6:45 PM  — closing line snapshot for CLV (before first evening game)
+#  11:45 PM  — grade results + update public stats + write web mirror
 #
-# Usage:
+# HOW TO INSTALL:
 #   chmod +x scripts/setup_cron.sh
 #   ./scripts/setup_cron.sh
 #
-# Remove all EdgeFinder cron lines:
+# HOW TO REMOVE:
 #   crontab -l | grep -v 'march-madness' | crontab -
+#
+# HOW TO VIEW LOGS:
+#   tail -f logs/picks.log
+#   tail -f logs/close.log
+#   tail -f logs/grade.log
+#
+# NOTE: cron runs in UTC. During EDT (Mar-Nov) UTC-4:
+#   9:00 AM ET  = 13:00 UTC
+#   6:45 PM ET  = 22:45 UTC
+#  11:45 PM ET  = 03:45 UTC (next day)
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PYTHON="$(command -v python3)"
 LOG_DIR="$PROJECT_DIR/logs"
-mkdir -p "$LOG_DIR" "$PROJECT_DIR/data/ops" "$PROJECT_DIR/data/odds_history"
+mkdir -p "$LOG_DIR"
 
-# ── Daily picks (night before for best CLV) ───────────────────────────────────
-# 9:30 PM — generate tomorrow's picks, snapshot opening lines
-PICKS="30 21 * * * cd $PROJECT_DIR && $PYTHON predict.py --sport mlb --daily --tomorrow >> $LOG_DIR/picks.log 2>&1"
+# ── 9:00 AM ET (13:00 UTC) — MLB morning picks run ───────────────────────────
+PICKS_MLB="0 13 * * * cd $PROJECT_DIR && $PYTHON chef.py picks mlb >> $LOG_DIR/picks.log 2>&1"
 
-# ── Closing line snapshot (30 min before first pitch) ─────────────────────────
-# 3:30 PM — pre-game closing snapshot (before ~4pm first pitches)
-CLOSE_1="30 15 * * * cd $PROJECT_DIR && $PYTHON predict.py --sport mlb --close >> $LOG_DIR/close.log 2>&1"
+# ── 9:10 AM ET (13:10 UTC) — NBA morning picks run ───────────────────────────
+PICKS_NBA="10 13 * * * cd $PROJECT_DIR && $PYTHON chef.py picks nba >> $LOG_DIR/picks.log 2>&1"
 
-# ── Odds history — line movement tracker (every 2 hours, 10am–10pm) ──────────
-# These build the full line-movement curve for model validation
-SNAP_10="0 10 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
-SNAP_12="0 12 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
-SNAP_14="0 14 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
-SNAP_16="0 16 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
-SNAP_18="0 18 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
-SNAP_20="0 20 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
-SNAP_22="0 22 * * * cd $PROJECT_DIR && $PYTHON scripts/odds_snapshot.py >> $LOG_DIR/odds_snapshot.log 2>&1"
+# ── 9:05 AM ET (13:05 UTC) — generate captions ───────────────────────────────
+# Prints X + IG copy-paste captions to captions.log — check it, copy, post
+CAPTION="5 13 * * * cd $PROJECT_DIR && $PYTHON scripts/gen_caption.py >> $LOG_DIR/captions.log 2>&1"
 
-# ── Grading (after games finish) ──────────────────────────────────────────────
-# 1:00 AM — grade yesterday's picks (west coast games done by ~1am ET)
-GRADE="0 1 * * * cd $PROJECT_DIR && $PYTHON predict.py --sport mlb --grade >> $LOG_DIR/grade.log 2>&1"
+# ── 6:45 PM ET (22:45 UTC) — closing line snapshot ───────────────────────────
+CLOSE="45 22 * * * cd $PROJECT_DIR && $PYTHON predict.py --sport mlb --close >> $LOG_DIR/close.log 2>&1"
 
-echo "Installing EdgeFinder cron jobs..."
+# ── 11:45 PM ET (03:45 UTC next day) — grade + publish stats ─────────────────
+# West coast games finish by ~11:30 PM ET. Grade both sports.
+GRADE="45 3 * * * cd $PROJECT_DIR && $PYTHON chef.py grade >> $LOG_DIR/grade.log 2>&1"
+
+echo "Installing ChefTonyBets cron jobs..."
 echo "  Project: $PROJECT_DIR"
 echo "  Python:  $PYTHON"
 echo ""
 
 (crontab -l 2>/dev/null | grep -v 'march-madness'; \
- echo "$PICKS"; \
- echo "$CLOSE_1"; \
- echo "$SNAP_10"; echo "$SNAP_12"; echo "$SNAP_14"; \
- echo "$SNAP_16"; echo "$SNAP_18"; echo "$SNAP_20"; echo "$SNAP_22"; \
+ echo "# ChefTonyBets daily pipeline"; \
+ echo "$PICKS_MLB"; \
+ echo "$PICKS_NBA"; \
+ echo "$CAPTION"; \
+ echo "$CLOSE"; \
  echo "$GRADE") | crontab -
 
-echo "Cron jobs installed:"
+echo "Installed:"
 echo ""
-crontab -l | grep 'march-madness'
+crontab -l | grep -A1 'ChefTonyBets\|march-madness'
 echo ""
-echo "Logs:"
-echo "  Picks:        $LOG_DIR/picks.log"
-echo "  Close:        $LOG_DIR/close.log"
-echo "  Odds history: $LOG_DIR/odds_snapshot.log"
-echo "  Grade:        $LOG_DIR/grade.log"
+echo "Logs directory: $LOG_DIR"
 echo ""
-echo "View line movement:"
-echo "  python scripts/odds_snapshot.py --show-movement"
+echo "To see today's captions:"
+echo "  cat $LOG_DIR/captions.log"
+echo ""
+echo "To manually generate captions now:"
+echo "  python scripts/gen_caption.py"
+echo ""
+echo "To run the full pipeline right now:"
+echo "  python predict.py --sport mlb --daily && python scripts/gen_caption.py"

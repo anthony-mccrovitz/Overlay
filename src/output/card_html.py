@@ -1816,7 +1816,7 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
   }}
 
   .nba-body {{
-    flex:1; min-width:0; padding:14px 14px 14px 18px;
+    flex:1; min-width:0; overflow:hidden; padding:14px 8px 14px 18px;
     display:flex; flex-direction:column; gap:10px;
   }}
 
@@ -1852,10 +1852,10 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
     flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:0 4px;
   }}
   .proj-score {{
-    font-size:32px; font-weight:900; color:#F2F2FA;
-    letter-spacing:-0.5px; line-height:1;
+    font-size:26px; font-weight:900; color:#F2F2FA;
+    letter-spacing:-0.5px; line-height:1; white-space:nowrap;
   }}
-  .best-nba-card .proj-score {{ font-size:38px; }}
+  .best-nba-card .proj-score {{ font-size:30px; }}
   .vs-at {{ font-size:12px; color:rgba(255,255,255,0.20); font-weight:600; }}
   .proj-label {{
     font-size:9px; font-weight:700; letter-spacing:0.14em;
@@ -1910,13 +1910,15 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
 
   /* Odds column */
   .nba-odds-col {{
-    flex-shrink:0; width:160px; display:flex; flex-direction:column;
-    align-items:flex-end; justify-content:center; padding-right:26px;
+    flex-shrink:0; width:180px; display:flex; flex-direction:column;
+    align-items:flex-end; justify-content:center; padding-right:28px;
+    min-width:0;
   }}
   .nba-odds {{
-    font-size:80px; font-weight:900; letter-spacing:-2px; line-height:1;
+    font-size:58px; font-weight:900; letter-spacing:-1px; line-height:1;
+    white-space:nowrap;
   }}
-  .best-nba-card .nba-odds {{ font-size:90px; }}
+  .best-nba-card .nba-odds {{ font-size:66px; }}
 
   /* ── Props section ── */
   .props-section {{
@@ -2226,6 +2228,117 @@ def render_nba_pick_card_html(
     save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
     return _playwright_render(html, save_dir / "nba_pick_card.html", save_dir / "nba_pick_card.png")
+
+
+def render_nba_spread_card_html(
+    picks: list[dict],
+    card_date: date | None = None,
+    context_label: str = "NBA",
+) -> Path | None:
+    """Render NBA spread picks card to PNG."""
+    d = card_date or date.today()
+    spread_picks = [p for p in picks if p.get("market") == "spread"][:5]
+    if not spread_picks:
+        return None
+    html = _build_nba_html(spread_picks, d, context_label)
+    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "nba_spread_card.html", save_dir / "nba_spread_card.png")
+
+
+def render_nba_moneyline_card_html(
+    picks: list[dict],
+    card_date: date | None = None,
+    context_label: str = "NBA",
+) -> Path | None:
+    """Render NBA moneyline picks card to PNG."""
+    d = card_date or date.today()
+    ml_picks = [p for p in picks if p.get("market") in ("moneyline", "h2h")][:5]
+    if not ml_picks:
+        return None
+    html = _build_nba_html(ml_picks, d, context_label)
+    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "nba_ml_card.html", save_dir / "nba_ml_card.png")
+
+
+def render_nba_totals_card_html(
+    picks: list[dict],
+    card_date: date | None = None,
+    context_label: str = "NBA",
+) -> Path | None:
+    """Render NBA totals (O/U) picks card to PNG."""
+    d = card_date or date.today()
+    total_picks = [p for p in picks if p.get("market") == "total"][:5]
+    if not total_picks:
+        return None
+    html = _build_nba_html(total_picks, d, context_label)
+    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "nba_totals_card.html", save_dir / "nba_totals_card.png")
+
+
+def render_nba_pick_of_day_html(
+    pick: dict,
+    card_date: date | None = None,
+    context_label: str = "NBA",
+) -> Path | None:
+    """Render NBA pick of the day card to PNG."""
+    d = card_date or date.today()
+    # Reuse the NBA card builder with a single pick marked as best
+    pick_copy = dict(pick)
+    pick_copy["is_best"] = True
+    html = _build_nba_html([pick_copy], d, context_label)
+    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "nba_pick_of_day.html", save_dir / "nba_pick_of_day.png")
+
+
+def render_nba_slate_card_html(
+    picks: list[dict],
+    card_date: date | None = None,
+    context_label: str = "NBA",
+) -> Path | None:
+    """Render NBA full slate card (top 5 across all markets) to PNG."""
+    d = card_date or date.today()
+    # Convert NBA edge format to slate format
+    slate_picks = []
+    for p in picks[:5]:
+        mkt = p.get("market", "spread")
+        raw_team = p.get("team", "")
+        matchup = p.get("matchup", "")
+        away, home = _parse_matchup(matchup)
+
+        # Strip bet line from team name: "Toronto Raptors +9.5" -> "Toronto Raptors"
+        if mkt == "total":
+            # Totals: label is "OVER/UNDER line @ matchup"
+            direction = p.get("direction", "OVER")
+            bet_line = p.get("bet_line", "")
+            clean_team = f"{direction} {bet_line}"
+            opponent = matchup
+        else:
+            # Strip trailing spread/line (last token if it looks like +/-number)
+            parts = raw_team.rsplit(" ", 1)
+            if len(parts) == 2 and parts[1] and (parts[1][0] in ("+", "-")) and parts[1][1:].replace(".", "").isdigit():
+                clean_team = parts[0]
+            else:
+                clean_team = raw_team
+            opponent = home if clean_team.lower() in away.lower() else away
+
+        slate_picks.append({
+            "type": mkt if mkt != "h2h" else "moneyline",
+            "label": clean_team,
+            "opponent": opponent,
+            "odds": p.get("best_odds", 0),
+            "edge": p.get("edge_pct", 0) / 100.0 if p.get("edge_pct", 0) > 1 else p.get("edge_pct", 0),
+            "book": p.get("sportsbook", ""),
+        })
+    if not slate_picks:
+        return None
+    html = _build_slate_html(slate_picks, "basketball_nba", d)
+    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "nba_slate_card.html", save_dir / "nba_slate_card.png")
 
 
 def render_nba_props_card_html(
@@ -2733,6 +2846,8 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
         "prop":      "#00BCD4",
     }
 
+    is_nba = sport.lower() in ("basketball_nba", "nba")
+
     rows_html = ""
     for i, p in enumerate(picks):
         ptype   = str(p.get("type", "moneyline")).lower()
@@ -2748,9 +2863,13 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
         edge_color = "#39FF78" if edge_pct >= 5 else ("#FFA514" if edge_pct >= 2 else "#666")
         is_best = i == 0
 
-        # Team logo and hex color
-        team_hex = _MLB_HEX.get(label, "#4080FF")
-        logo_url = _logo_url(label)
+        # Team logo and hex color — use sport-appropriate lookup
+        if is_nba:
+            team_hex = _NBA_HEX.get(label, "#4080FF")
+            logo_url = _nba_logo_url(label)
+        else:
+            team_hex = _MLB_HEX.get(label, "#4080FF")
+            logo_url = _logo_url(label)
         if logo_url:
             logo_html = f'<img class="s-logo" src="{logo_url}" alt="{label}" style="--tc:{team_hex}">'
         else:

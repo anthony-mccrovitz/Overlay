@@ -1,37 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --bg:          #000000;
-  --bg-raised:   #080808;
-  --bg-overlay:  #0e0e10;
-  --bg-panel:    #0a0a0c;
+  /* Slightly off-black bg — easier on the eyes than pure #000 */
+  --bg:          #0a0a0f;
+  --bg-raised:   #111118;
+  --bg-overlay:  #16161e;
+  --bg-panel:    #0e0e14;
 
-  --border:       #1a1a1e;
-  --border-hi:    #282830;
+  /* Borders — visible enough to separate sections */
+  --border:       #22222c;
+  --border-hi:    #30303c;
 
-  --text:          #c4c4cc;
-  --text-bright:   #e8e8f0;
-  --text-secondary:#7a7a88;
-  --text-muted:    #3c3c48;
+  /* Text — all values pass WCAG AA (4.5:1) on --bg */
+  --text:          #c8c8d4;
+  --text-bright:   #eeeef6;   /* primary labels, team names  */
+  --text-secondary:#a0a0b0;   /* win prob, pitcher names      */
+  --text-muted:    #6a6a7c;   /* column headers, book names   */
 
-  --green:    #00ff41;
-  --green-hi: #39ff78;
-  --green-dim: rgba(0, 255, 65, 0.07);
+  /* Accent colors — kept vivid, used sparingly on dark bg */
+  --green:    #00e83a;
+  --green-hi: #3dff7c;
+  --green-dim: rgba(0, 232, 58, 0.09);
 
-  --red:     #ff3b3b;
-  --red-dim: rgba(255, 59, 59, 0.08);
+  --red:     #ff4444;
+  --red-dim: rgba(255, 68, 68, 0.10);
 
-  --amber:     #ffb800;
-  --amber-dim: rgba(255, 184, 0, 0.09);
+  --amber:     #ffc107;
+  --amber-dim: rgba(255, 193, 7, 0.11);
 
-  --cyan:     #00d4ff;
-  --cyan-dim: rgba(0, 212, 255, 0.07);
+  --cyan:     #18d4ff;
+  --cyan-dim: rgba(24, 212, 255, 0.09);
 
-  --blue:     #4a9eff;
-  --blue-dim: rgba(74, 158, 255, 0.09);
+  --blue:     #5aabff;
+  --blue-dim: rgba(90, 171, 255, 0.10);
 
-  --purple:     #b44fff;
-  --purple-dim: rgba(180, 79, 255, 0.09);
+  --purple:     #be6fff;
+  --purple-dim: rgba(190, 111, 255, 0.10);
 
   /* aliases */
   --accent:     var(--cyan);

@@ -1,0 +1,172 @@
+{
+  "date": "20260419",
+  "total_picks": 16,
+  "graded": 9,
+  "pending": 7,
+  "wins": 5,
+  "losses": 4,
+  "win_rate": 0.5555555555555556,
+  "total_staked": 9.0,
+  "total_profit": -0.9595910081204196,
+  "roi": -10.662122312449107,
+  "by_type": {
+    "spread": {
+      "wins": 3,
+      "losses": 3,
+      "profit": -0.18,
+      "win_rate": 0.5
+    },
+    "moneyline": {
+      "wins": 2,
+      "losses": 1,
+      "profit": -0.78,
+      "win_rate": 0.6667
+    }
+  },
+  "details": [
+    {
+      "market": "spread",
+      "team": "Phoenix Suns +14.0",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -108,
+      "model_prob": 0.7088,
+      "edge_pct": 20.19,
+      "won": false,
+      "profit": -1.0,
+      "score": "Phoenix Suns 84, Oklahoma City Thunder 119",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 215.5",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "Philadelphia 76ers +12.5",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -106,
+      "model_prob": 0.6826,
+      "edge_pct": 18.71,
+      "won": false,
+      "profit": -1.0,
+      "score": "Philadelphia 76ers 91, Boston Celtics 123",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 213.5",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "Portland Trail Blazers +10.5",
+      "status": "pending"
+    },
+    {
+      "market": "total",
+      "team": "OVER 219.5",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "Orlando Magic +8.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -108,
+      "model_prob": 0.5662,
+      "edge_pct": 6.28,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Orlando Magic 112, Detroit Pistons 101",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 222.5",
+      "status": "pending"
+    },
+    {
+      "market": "moneyline",
+      "team": "Detroit Pistons",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -325,
+      "model_prob": 0.7063,
+      "edge_pct": -4.26,
+      "won": false,
+      "profit": -1.0,
+      "score": "Orlando Magic 112, Detroit Pistons 101",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Detroit Pistons -8.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -105,
+      "model_prob": 0.4338,
+      "edge_pct": -6.28,
+      "won": false,
+      "profit": -1.0,
+      "score": "Orlando Magic 112, Detroit Pistons 101",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "San Antonio Spurs",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "San Antonio Spurs -11.0",
+      "status": "pending"
+    },
+    {
+      "market": "moneyline",
+      "team": "Boston Celtics",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -800,
+      "model_prob": 0.714,
+      "edge_pct": -14.22,
+      "won": true,
+      "profit": 0.125,
+      "score": "Philadelphia 76ers 91, Boston Celtics 123",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Oklahoma City Thunder",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -1000,
+      "model_prob": 0.7315,
+      "edge_pct": -15.15,
+      "won": true,
+      "profit": 0.1,
+      "score": "Phoenix Suns 84, Oklahoma City Thunder 119",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Boston Celtics -12.5",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -110,
+      "model_prob": 0.3174,
+      "edge_pct": -18.71,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Philadelphia 76ers 91, Boston Celtics 123",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Oklahoma City Thunder -14.5",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -102,
+      "model_prob": 0.277,
+      "edge_pct": -21.6,
+      "won": true,
+      "profit": 0.9803921568627451,
+      "score": "Phoenix Suns 84, Oklahoma City Thunder 119",
+      "status": "win"
+    }
+  ],
+  "graded_at": "2026-04-20T02:55:42.306877+00:00"
+}

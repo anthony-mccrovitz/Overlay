@@ -28,10 +28,13 @@ CACHE_DIR = Path("data/cache/props")
 API_BASE = "https://api.the-odds-api.com/v4"
 
 # Props markets to pull
+# NOTE: batter_hits and batter_total_bases removed — projection uses only avg SP K/9
+# with no individual batter stats, producing identical 1.7 TB for every player.
+# Only pitcher_strikeouts and batter_home_runs use pitcher-specific data.
 PROP_MARKETS = [
     "pitcher_strikeouts",
-    "batter_hits",
-    "batter_home_runs",
+    # batter_home_runs removed: population-level lambda, not batter-specific — identical
+    # probability for every batter facing the same pitcher, produces junk edges
 ]
 
 # Min edge to surface as a pick (raw probability edge over implied)
@@ -174,30 +177,53 @@ def fetch_event_props(event_id: str, market: str) -> list[dict]:
     return list(props.values())
 
 
+import math as _math
+
+
+def _poisson_over(lam: float, line: float) -> float:
+    """P(X > line) where X ~ Poisson(lambda). Floor the line for integer cutoff."""
+    floor_line = int(line)
+    p_under = sum(
+        _math.exp(-lam) * (lam ** k) / _math.factorial(k)
+        for k in range(floor_line + 1)
+    )
+    return max(0.0, min(1.0, 1.0 - p_under))
+
+
 def _project_strikeouts(k9: float, k9_l10: float, lineup_ops: float, innings: float = 5.5) -> float:
     """
     Project expected strikeouts for a starting pitcher.
-
     Uses weighted blend of season K/9 and last-10-starts K/9,
     adjusted for opposing lineup quality (higher OPS = fewer Ks).
-
-    OPS adjustment: league avg OPS ~.720. Each 0.01 above/below = ~0.3% K rate change.
     """
     blended_k9 = k9 * 0.4 + k9_l10 * 0.6
-    # Lineup adjustment: worse lineup (lower OPS) → more Ks
-    ops_delta = 0.720 - lineup_ops  # positive = pitcher-friendly lineup
+    ops_delta = 0.720 - lineup_ops
     k9_adj = blended_k9 * (1 + ops_delta * 1.5)
     return (k9_adj / 9) * innings
 
 
-def _project_hits(ops: float, lineup_ops: float, ab_per_game: float = 3.5) -> float:
-    """Project expected hits for a batter given pitcher quality proxy and AB count."""
-    # Rough: batting average ≈ (OPS - walk_rate) / 2 ≈ OPS * 0.38
-    ba_proxy = ops * 0.38
-    # Adjust for pitcher quality: lineup_ops represents how tough the pitcher is
-    # Higher lineup_ops of opponent = tougher lineup = pitcher works harder = more walks/Ks
-    # For batters, opponent pitcher quality not directly in lineup_ops — use raw
-    return ba_proxy * ab_per_game
+def _project_batter_hits(opp_sp_k9: float, pa_per_game: float = 4.0) -> float:
+    """
+    Project expected hits for an average batter vs a starter of given K/9.
+    League avg BA ~.248. Each 1.0 K/9 above 8.5 suppresses BA by ~2%.
+    Returns expected hits per game.
+    """
+    k9_delta = opp_sp_k9 - 8.5
+    ba = 0.248 * (1.0 - k9_delta * 0.02)
+    ba = max(0.18, min(0.35, ba))
+    return ba * pa_per_game
+
+
+def _project_batter_total_bases(opp_sp_k9: float, pa_per_game: float = 4.0) -> float:
+    """
+    Project expected total bases for an average batter vs a starter of given K/9.
+    League avg SLG ~.410. Each 1.0 K/9 above 8.5 suppresses SLG by ~2.5%.
+    Returns expected TB per game (hits + extra bases).
+    """
+    k9_delta = opp_sp_k9 - 8.5
+    slg = 0.410 * (1.0 - k9_delta * 0.025)
+    slg = max(0.28, min(0.58, slg))
+    return slg * pa_per_game
 
 
 def find_prop_edges(
@@ -244,6 +270,39 @@ def find_prop_edges(
         if not event_id:
             continue
 
+        # ── SP K/9 for use in batter projections ──
+        avg_sp_k9 = (m.get("home_sp_k9", 8.5) + m.get("away_sp_k9", 8.5)) / 2
+
+        def _append_edge(market: str, player: str, team: str, opp: str,
+                         line: float, p_over: float, implied: float,
+                         over_odds: float, under_odds: float, proj,
+                         label_suffix: str):
+            edge = p_over - implied
+            if abs(edge) < min_edge:
+                return
+            bet_dir = "OVER" if edge > 0 else "UNDER"
+            bet_prob   = p_over if edge > 0 else (1 - p_over)
+            bet_implied = implied if edge > 0 else (1 - implied)
+            bet_odds   = over_odds if edge > 0 else under_odds
+            if bet_dir == "OVER" and bet_prob < MIN_OVER_PROB:
+                return
+            edges.append({
+                "type": "prop",
+                "market": market,
+                "player": player,
+                "team": team,
+                "opp": opp,
+                "line": line,
+                "direction": bet_dir,
+                "projected": round(float(proj), 1),
+                "model_prob": round(bet_prob, 3),
+                "implied_prob": round(bet_implied, 3),
+                "edge_pct": round(abs(edge) * 100, 1),
+                "odds": int(bet_odds),
+                "book": prop["book"],
+                "label": f"{player} {bet_dir} {line} {label_suffix}",
+            })
+
         # ── Strikeout props ──
         k_props = fetch_event_props(event_id, "pitcher_strikeouts")
         for prop in k_props:
@@ -251,13 +310,12 @@ def find_prop_edges(
             line = prop["line"]
             implied = prop["implied_over_prob"]
 
-            # Match this player to home or away SP
             sp_stats = None
             if m.get("home_sp_name") and player.lower() in m["home_sp_name"].lower():
                 sp_stats = {
                     "k9": m.get("home_sp_k9", 7.5),
                     "k9_l10": m.get("home_sp_k9_l10", 7.5),
-                    "lineup_ops": m.get("away_lineup_ops", 0.720),  # facing away lineup
+                    "lineup_ops": m.get("away_lineup_ops", 0.720),
                     "team": m["home_team"],
                     "opp": m["away_team"],
                 }
@@ -265,7 +323,7 @@ def find_prop_edges(
                 sp_stats = {
                     "k9": m.get("away_sp_k9", 7.5),
                     "k9_l10": m.get("away_sp_k9_l10", 7.5),
-                    "lineup_ops": m.get("home_lineup_ops", 0.720),  # facing home lineup
+                    "lineup_ops": m.get("home_lineup_ops", 0.720),
                     "team": m["away_team"],
                     "opp": m["home_team"],
                 }
@@ -275,40 +333,31 @@ def find_prop_edges(
             projected = _project_strikeouts(
                 sp_stats["k9"], sp_stats["k9_l10"], sp_stats["lineup_ops"]
             )
+            p_over = _poisson_over(projected, line)
+            _append_edge("pitcher_strikeouts", player,
+                         sp_stats["team"], sp_stats["opp"],
+                         line, p_over, implied,
+                         prop["over_odds"], prop["under_odds"],
+                         projected, "Ks")
 
-            # Poisson probability of hitting over
-            # P(K > line) ≈ 1 - Poisson_CDF(floor(line), lambda=projected)
-            import math
-            lam = projected
-            floor_line = int(line)
-            p_under = 0.0
-            for k in range(floor_line + 1):
-                p_under += math.exp(-lam) * (lam ** k) / math.factorial(k)
-            p_over = 1.0 - p_under
-
-            edge = p_over - implied
-            if abs(edge) >= min_edge and p_over >= MIN_OVER_PROB:
-                bet_dir = "OVER" if edge > 0 else "UNDER"
-                bet_prob = p_over if edge > 0 else (1 - p_over)
-                bet_implied = implied if edge > 0 else (1 - implied)
-                bet_odds = prop["over_odds"] if edge > 0 else prop["under_odds"]
-                if abs(edge) >= min_edge:
-                    edges.append({
-                        "type": "prop",
-                        "market": "pitcher_strikeouts",
-                        "player": player,
-                        "team": sp_stats["team"],
-                        "opp": sp_stats["opp"],
-                        "line": line,
-                        "direction": bet_dir,
-                        "projected": round(projected, 1),
-                        "model_prob": round(bet_prob, 3),
-                        "implied_prob": round(bet_implied, 3),
-                        "edge_pct": round(abs(edge) * 100, 1),
-                        "odds": int(bet_odds),
-                        "book": prop["book"],
-                        "label": f"{player} {bet_dir} {line} Ks",
-                    })
+        # ── Batter HR props ──
+        hr_props = fetch_event_props(event_id, "batter_home_runs")
+        for prop in hr_props:
+            player = prop["player"]
+            line   = prop["line"]   # almost always 0.5
+            implied = prop["implied_over_prob"]
+            # P(HR) ~ 1 - e^(-lambda) where lambda = adj HR rate per game
+            k9_delta = avg_sp_k9 - 8.5
+            lam_hr = 0.115 * (1.0 - k9_delta * 0.025)
+            lam_hr = max(0.05, min(0.22, lam_hr))
+            p_over = 1.0 - _math.exp(-lam_hr)
+            # HR props don't have reliable team assignment without lineup data;
+            # label as home vs away based on which team's pitcher they face
+            _append_edge("batter_home_runs", player,
+                         m["home_team"], m["away_team"],
+                         line, p_over, implied,
+                         prop["over_odds"], prop["under_odds"],
+                         round(lam_hr, 2), "HR")
 
     edges.sort(key=lambda x: x["edge_pct"], reverse=True)
     return edges

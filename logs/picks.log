@@ -1,0 +1,986 @@
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/joblib/externals/loky/backend/context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+[Errno 2] No such file or directory: 'sysctl'
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/joblib/externals/loky/backend/context.py", line 270, in _count_physical_cores
+    cpu_info = subprocess.run(
+               ^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1024, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1917, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  DAILY EDGE FINDER — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 15 games
+    New York Mets (Kodai Senga) @ Chicago Cubs (Edward Cabrera)
+    Baltimore Orioles (Chris Bassitt) @ Cleveland Guardians (Tanner Bibee)
+    Atlanta Braves (Martín Pérez) @ Philadelphia Phillies (Taijuan Walker)
+    San Francisco Giants (Logan Webb) @ Washington Nationals (Zack Littell)
+    Tampa Bay Rays (Nick Martinez) @ Pittsburgh Pirates (Bubba Chandler)
+    Kansas City Royals (Michael Wacha) @ New York Yankees (Cam Schlittler)
+    Milwaukee Brewers (TBD) @ Miami Marlins (Janson Junk)
+    Detroit Tigers (Casey Mize) @ Boston Red Sox (Ranger Suarez)
+    St. Louis Cardinals (Kyle Leahy) @ Houston Astros (TBD)
+    Cincinnati Reds (Brandon Williamson) @ Minnesota Twins (Joe Ryan)
+    Los Angeles Dodgers (Tyler Glasnow) @ Colorado Rockies (Tomoyuki Sugano)
+    San Diego Padres (Matt Waldron) @ Los Angeles Angels (José Soriano)
+    Texas Rangers (Jacob deGrom) @ Seattle Mariners (Logan Gilbert)
+    Toronto Blue Jays (Eric Lauer) @ Arizona Diamondbacks (Michael Soroka)
+    Chicago White Sox (Davis Martin) @ Athletics (Aaron Civale)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  New York Mets @ Chicago Cubs: Chicago Cubs 59.6% [SPLIT]
+    Pyth: 90.0%  XGB: 48.4%  Ens: 59.6%
+  Baltimore Orioles @ Cleveland Guardians: Cleveland Guardians 52.8% [SPLIT]
+    Pyth: 63.7%  XGB: 48.4%  Ens: 52.8%
+  Atlanta Braves @ Philadelphia Phillies: Atlanta Braves 62.8% [AGREE]
+    Pyth: 21.6%  XGB: 42.9%  Ens: 37.2%
+  San Francisco Giants @ Washington Nationals: Washington Nationals 50.9% [SPLIT]
+    Pyth: 70.7%  XGB: 42.9%  Ens: 50.9%
+  Tampa Bay Rays @ Pittsburgh Pirates: Tampa Bay Rays 52.7% [AGREE]
+    Pyth: 44.3%  XGB: 48.4%  Ens: 47.3%
+  Kansas City Royals @ New York Yankees: Kansas City Royals 50.9% [SPLIT]
+    Pyth: 50.9%  XGB: 48.4%  Ens: 49.1%
+  Milwaukee Brewers @ Miami Marlins: Milwaukee Brewers 51.4% [AGREE]
+    Pyth: 48.9%  XGB: 48.4%  Ens: 48.6%
+  Detroit Tigers @ Boston Red Sox: Detroit Tigers 52.9% [AGREE]
+    Pyth: 43.4%  XGB: 48.4%  Ens: 47.1%
+  St. Louis Cardinals @ Houston Astros: Houston Astros 51.2% [SPLIT]
+    Pyth: 58.8%  XGB: 48.4%  Ens: 51.2%
+  Cincinnati Reds @ Minnesota Twins: Minnesota Twins 55.7% [SPLIT]
+    Pyth: 74.1%  XGB: 48.4%  Ens: 55.7%
+  Los Angeles Dodgers @ Colorado Rockies: Colorado Rockies 56.3% [AGREE]
+    Pyth: 51.0%  XGB: 58.2%  Ens: 56.3%
+  San Diego Padres @ Los Angeles Angels: Los Angeles Angels 54.5% [SPLIT]
+    Pyth: 69.7%  XGB: 48.4%  Ens: 54.5%
+  Texas Rangers @ Seattle Mariners: Texas Rangers 54.0% [AGREE]
+    Pyth: 40.1%  XGB: 48.4%  Ens: 46.0%
+  Toronto Blue Jays @ Arizona Diamondbacks: Arizona Diamondbacks 57.3% [SPLIT]
+    Pyth: 81.4%  XGB: 48.4%  Ens: 57.3%
+  Chicago White Sox @ Athletics: Athletics 54.3% [SPLIT]
+    Pyth: 68.9%  XGB: 48.4%  Ens: 54.3%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 21:31:08. API requests remaining: 6
+  ⏱  Filtered 2 game(s) already started — picks only include upcoming games.
+  Odds freshness: LIVE (range 0–2 min old)
+  Dropped 1 ML row(s) with edge > 20% (likely bad odds).
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Atlanta Braves vs Philadelphia Phillies
+    Model: 62.8% | Vegas: 51.0% | Edge: +11.9% *** STRONG ***
+    Best odds: -104 at FanDuel
+
+  Kansas City Royals vs New York Yankees
+    Model: 50.9% | Vegas: 40.8% | Edge: +10.1% *** STRONG ***
+    Best odds: +145 at BetRivers
+
+  Washington Nationals vs San Francisco Giants
+    Model: 50.9% | Vegas: 42.0% | Edge: +8.8% ** GOOD **
+    Best odds: +138 at FanDuel
+
+  Texas Rangers vs Seattle Mariners
+    Model: 54.0% | Vegas: 46.3% | Edge: +7.7% ** GOOD **
+    Best odds: +116 at FanDuel
+
+  Tampa Bay Rays vs Pittsburgh Pirates
+    Model: 52.7% | Vegas: 45.5% | Edge: +7.2% ** GOOD **
+    Best odds: +120 at FanDuel
+
+  Detroit Tigers vs Boston Red Sox
+    Model: 52.9% | Vegas: 46.7% | Edge: +6.2% ** GOOD **
+    Best odds: +114 at FanDuel
+
+  Cincinnati Reds vs Minnesota Twins
+    Model: 44.3% | Vegas: 39.2% | Edge: +5.0% ** GOOD **
+    Best odds: +155 at BetMGM
+
+  Chicago White Sox vs Athletics
+    Model: 45.7% | Vegas: 42.6% | Edge: +3.2%
+    Best odds: +135 at BetMGM
+
+  Total value bets: 8
+  Average edge: +7.5%
+======================================================================
+
+  No moneyline value bets found above minimum edge threshold.
+
+══════════════════════════════════════════════════════════════════════
+  TOMORROW'S TOP PLAYS — MLB · April 17, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   RUN LINE   Colorado Rockies +2.0 RL         +150    +2.96R        —  FanDuel
+  2   TOTAL      UNDER 10.5 (Mets@Cubs)           +108    +2.70R        —  FanDuel
+  3   RUN LINE   Texas Rangers +1.5 RL            -210    +2.10R        —  BetMGM
+  4   TOTAL      OVER 8.0 (Tigers@Sox)            -102    +2.00R        —  DraftKings
+  5   RUN LINE   Tampa Bay Rays +1.5 RL           -181    +1.91R        —  DraftKings
+  6   TOTAL      UNDER 9.0 (Sox@Athletics)        -102    +1.60R        —  DraftKings
+  7   MONEYLINE  Atlanta Braves ML                -104    +11.9%     6.0%  FanDuel
+  8   RUN LINE   Baltimore Orioles +1.5 RL        -186    +1.08R        —  DraftKings
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: Colorado Rockies +2.0 +150 @ FanDuel
+     2.96 run RL edge
+
+  Moneyline: 1  |  Run Line: 4  |  Totals: 3
+══════════════════════════════════════════════════════════════════════
+
+  [CLV] Snapshotted opening lines for 11 pick(s) [2026-04-17]
+  Moneyline card → output/picks/baseball_mlb/20260417/pick_card.png
+  Run line card → output/picks/baseball_mlb/20260417/runline_card.png
+  Totals card → output/picks/baseball_mlb/20260417/totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260417/caption_picks.txt
+  Auto-logged 10 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260417/
+
+Step 6: Scanning player props for edges...
+  [props] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/f396e7f6c0d265d701a8b7123bbcee83/odds?regions=us&markets=batter_home_runs&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  Found 11 prop edge(s):
+    Chris Bassitt UNDER 3.5 Ks  edge=30.4%  odds=+108  [DraftKings]
+    Cam Schlittler OVER 5.5 Ks  edge=29.4%  odds=-112  [FanDuel]
+    Taijuan Walker OVER 2.5 Ks  edge=25.1%  odds=-168  [DraftKings]
+    Michael Wacha UNDER 5.5 Ks  edge=21.5%  odds=-114  [FanDuel]
+    Ranger Suarez UNDER 5.5 Ks  edge=20.8%  odds=-128  [DraftKings]
+  Props saved → output/picks/baseball_mlb/20260417/props.json
+  Props card → output/picks/baseball_mlb/20260417/props_card.png
+  Props caption → output/picks/baseball_mlb/20260417/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/45655eea8b0523564f56d5ba45520388/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/3eb605c9b25ccc2ad16334a2f4a4c17e/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/7067ff8b35400b4b9c0c1b2cf807fe58/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/72adcb72b594dcf90c1756f4f9358d4c/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/534d4f4aa2042d0efb0d307c77b7b0bf/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/a1ab635fdacdca4f7d8f471d141a873f/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  [nrfi] API error: 401 Client Error: Unauthorized for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/events/f396e7f6c0d265d701a8b7123bbcee83/odds?regions=us&markets=h2h_1st_1_innings&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Ccaesars&apiKey=dec2a2126df47d603ca05fa8ba33d5f1
+  Found 15 NRFI/YRFI play(s):
+    Kansas City Royals @ New York Yankees NRFI  proj 53% NRFI
+    San Diego Padres @ Los Angeles Angels NRFI  proj 52% NRFI
+    Chicago White Sox @ Athletics YRFI  proj 48% NRFI
+    Texas Rangers @ Seattle Mariners YRFI  proj 47% NRFI
+    Los Angeles Dodgers @ Colorado Rockies YRFI  proj 46% NRFI
+  NRFI card → output/picks/baseball_mlb/20260417/nrfi_card.png
+  NRFI caption → output/picks/baseball_mlb/20260417/caption_nrfi.txt
+/Library/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/anthonymccrovitz/predict.py': [Errno 2] No such file or directory
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/joblib/externals/loky/backend/context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+[Errno 2] No such file or directory: 'sysctl'
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/joblib/externals/loky/backend/context.py", line 270, in _count_physical_cores
+    cpu_info = subprocess.run(
+               ^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1024, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1917, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  DAILY EDGE FINDER — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 15 games
+    Kansas City Royals (Noah Cameron) @ New York Yankees (Will Warren)
+    Cincinnati Reds (Andrew Abbott) @ Minnesota Twins (Taj Bradley)
+    New York Mets (Freddy Peralta) @ Chicago Cubs (Jameson Taillon)
+    San Francisco Giants (Adrian Houser) @ Washington Nationals (Cade Cavalli)
+    Tampa Bay Rays (Drew Rasmussen) @ Pittsburgh Pirates (Paul Skenes)
+    Chicago White Sox (Erick Fedde) @ Athletics (Luis Severino)
+    Detroit Tigers (Tarik Skubal) @ Boston Red Sox (Brayan Bello)
+    Milwaukee Brewers (Brandon Woodruff) @ Miami Marlins (Sandy Alcantara)
+    Baltimore Orioles (Dean Kremer) @ Cleveland Guardians (Gavin Williams)
+    St. Louis Cardinals (Andre Pallante) @ Houston Astros (Lance McCullers Jr.)
+    Texas Rangers (Nathan Eovaldi) @ Seattle Mariners (George Kirby)
+    Atlanta Braves (Chris Sale) @ Philadelphia Phillies (Cristopher Sánchez)
+    Los Angeles Dodgers (Emmet Sheehan) @ Colorado Rockies (Ryan Feltner)
+    Toronto Blue Jays (Max Scherzer) @ Arizona Diamondbacks (Zac Gallen)
+    San Diego Padres (Germán Márquez) @ Los Angeles Angels (Yusei Kikuchi)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Kansas City Royals @ New York Yankees: New York Yankees 55.4% [SPLIT]
+    Pyth: 71.8%  XGB: 48.4%  Ens: 55.4%
+  Cincinnati Reds @ Minnesota Twins: Minnesota Twins 60.6% [SPLIT]
+    Pyth: 89.1%  XGB: 48.4%  Ens: 60.6%
+  New York Mets @ Chicago Cubs: Chicago Cubs 52.7% [SPLIT]
+    Pyth: 63.4%  XGB: 48.4%  Ens: 52.7%
+  San Francisco Giants @ Washington Nationals: Washington Nationals 53.5% [SPLIT]
+    Pyth: 65.3%  XGB: 48.4%  Ens: 53.5%
+  Tampa Bay Rays @ Pittsburgh Pirates: Tampa Bay Rays 58.3% [AGREE]
+    Pyth: 38.6%  XGB: 42.9%  Ens: 41.7%
+  Chicago White Sox @ Athletics: Chicago White Sox 52.0% [AGREE]
+    Pyth: 46.9%  XGB: 48.4%  Ens: 48.0%
+  Detroit Tigers @ Boston Red Sox: Detroit Tigers 61.6% [AGREE]
+    Pyth: 28.1%  XGB: 42.5%  Ens: 38.4%
+  Milwaukee Brewers @ Miami Marlins: Miami Marlins 51.5% [SPLIT]
+    Pyth: 59.2%  XGB: 48.4%  Ens: 51.5%
+  Baltimore Orioles @ Cleveland Guardians: Cleveland Guardians 53.2% [SPLIT]
+    Pyth: 64.2%  XGB: 48.4%  Ens: 53.2%
+  St. Louis Cardinals @ Houston Astros: St. Louis Cardinals 50.4% [SPLIT]
+    Pyth: 52.6%  XGB: 48.4%  Ens: 49.6%
+  Texas Rangers @ Seattle Mariners: Seattle Mariners 51.8% [SPLIT]
+    Pyth: 59.8%  XGB: 48.4%  Ens: 51.8%
+  Atlanta Braves @ Philadelphia Phillies: Atlanta Braves 53.5% [AGREE]
+    Pyth: 41.7%  XGB: 48.4%  Ens: 46.5%
+  Los Angeles Dodgers @ Colorado Rockies: Los Angeles Dodgers 55.6% [AGREE]
+    Pyth: 34.4%  XGB: 48.4%  Ens: 44.4%
+  Toronto Blue Jays @ Arizona Diamondbacks: Arizona Diamondbacks 54.5% [SPLIT]
+    Pyth: 83.5%  XGB: 42.9%  Ens: 54.5%
+  San Diego Padres @ Los Angeles Angels: San Diego Padres 52.0% [AGREE]
+    Pyth: 47.0%  XGB: 48.4%  Ens: 48.0%
+
+Step 3: Fetching LIVE sportsbook odds...
+Warning: Odds API unreachable (503 Server Error: Service Unavailable for url: https://api.the-odds-api.com/v4/sports/baseball_mlb/odds?apiKey=f57324a365299b10ec3ae1907d262927&regions=us%2Cus2%2Ceu&markets=h2h%2Cspreads%2Ctotals&oddsFormat=american). Using cached odds.
+  Odds freshness: LIVE (range 2–4 min old)
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Tampa Bay Rays vs Pittsburgh Pirates
+    Model: 58.3% | Vegas: 41.7% | Edge: +16.6% *** STRONG ***
+    Best odds: +140 at BetRivers
+
+  Colorado Rockies vs Los Angeles Dodgers
+    Model: 44.4% | Vegas: 29.0% | Edge: +15.4% *** STRONG ***
+    Best odds: +245 at BetRivers
+
+  Chicago White Sox vs Athletics
+    Model: 52.0% | Vegas: 41.7% | Edge: +10.4% *** STRONG ***
+    Best odds: +140 at BetMGM
+
+  St. Louis Cardinals vs Houston Astros
+    Model: 50.4% | Vegas: 44.6% | Edge: +5.7% ** GOOD **
+    Best odds: +124 at FanDuel
+
+  Atlanta Braves vs Philadelphia Phillies
+    Model: 53.5% | Vegas: 48.1% | Edge: +5.4% ** GOOD **
+    Best odds: +108 at FanDuel
+
+  Minnesota Twins vs Cincinnati Reds
+    Model: 60.6% | Vegas: 56.9% | Edge: +3.7%
+    Best odds: -132 at FanDuel
+
+  Washington Nationals vs San Francisco Giants
+    Model: 53.5% | Vegas: 50.5% | Edge: +3.0%
+    Best odds: -102 at FanDuel
+
+  Total value bets: 7
+  Average edge: +8.6%
+======================================================================
+
+  No moneyline value bets found above minimum edge threshold.
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · April 18, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   TOTAL      OVER 7.0 (Tigers@Sox)            +100    +2.80R        —  BetMGM
+  2   RUN LINE   Atlanta Braves +1.5 RL           +168    +2.03R        —  DraftKings
+  3   RUN LINE   Washington Nationals +1.5 RL     -162    +2.03R        —  FanDuel
+  4   TOTAL      UNDER 9.0 (Jays@Diamondback)     -105    +1.90R        —  DraftKings
+  5   MONEYLINE  Tampa Bay Rays ML                +140    +16.6%     7.1%  BetRivers
+  6   MONEYLINE  Colorado Rockies ML              +245    +15.4%     5.4%  BetRivers
+  7   RUN LINE   Miami Marlins +1.2 RL            -183    +1.48R        —  DraftKings
+  8   RUN LINE   Chicago Cubs +1.0 RL             -181    +1.41R        —  DraftKings
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: OVER 7.0 +100 @ BetMGM
+     2.80 run totals edge
+
+  Moneyline: 2  |  Run Line: 4  |  Totals: 2
+══════════════════════════════════════════════════════════════════════
+
+  Moneyline card → output/picks/baseball_mlb/20260418/pick_card.png
+  Run line card → output/picks/baseball_mlb/20260418/runline_card.png
+  Totals card → output/picks/baseball_mlb/20260418/totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260418/caption_picks.txt
+  (All picks already in data/pnl/picks.json — skipped duplicates)
+
+Saved picks to output/picks/baseball_mlb/20260418/
+
+Step 6: Scanning player props for edges...
+  Found 19 prop edge(s):
+    Dean Kremer OVER 4.5 Ks  edge=52.8%  odds=+114  [DraftKings]
+    Tarik Skubal UNDER 7.5 Ks  edge=31.9%  odds=-125  [BetMGM]
+    Chris Sale UNDER 7.5 Ks  edge=28.9%  odds=-125  [BetMGM]
+    Luis Severino OVER 5.5 Ks  edge=26.0%  odds=+121  [DraftKings]
+    George Kirby UNDER 5.5 Ks  edge=23.2%  odds=-105  [BetMGM]
+    Drew Rasmussen OVER 4.5 Ks  edge=21.4%  odds=-105  [BetMGM]
+    Andrew Abbott UNDER 4.5 Ks  edge=20.1%  odds=-147  [DraftKings]
+    Taj Bradley OVER 6.5 Ks  edge=19.7%  odds=+118  [FanDuel]
+    Jameson Taillon OVER 4.5 Ks  edge=19.1%  odds=-110  [BetMGM]
+    Will Warren OVER 4.5 Ks  edge=18.0%  odds=-140  [BetMGM]
+  Props saved → output/picks/baseball_mlb/20260418/props.json
+  Props card → output/picks/baseball_mlb/20260418/props_card.png
+  Props caption → output/picks/baseball_mlb/20260418/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 15 NRFI/YRFI play(s):
+    Baltimore Orioles @ Cleveland Guardians NRFI  proj 52% NRFI
+    Atlanta Braves @ Philadelphia Phillies YRFI  proj 50% NRFI
+    Tampa Bay Rays @ Pittsburgh Pirates YRFI  proj 48% NRFI
+    Kansas City Royals @ New York Yankees YRFI  proj 46% NRFI
+    Cincinnati Reds @ Minnesota Twins YRFI  proj 44% NRFI
+  NRFI picks logged to pnl (5 picks)
+  NRFI card → output/picks/baseball_mlb/20260418/nrfi_card.png
+  NRFI caption → output/picks/baseball_mlb/20260418/caption_nrfi.txt
+  [pick of day card] name 'picks_list' is not defined
+  [slate card] name 'picks_list' is not defined
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/joblib/externals/loky/backend/context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+[Errno 2] No such file or directory: 'sysctl'
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/joblib/externals/loky/backend/context.py", line 270, in _count_physical_cores
+    cpu_info = subprocess.run(
+               ^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1024, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1917, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsotonicRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LogisticRegression from version 1.5.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  DAILY EDGE FINDER — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 9 games
+    Houston Astros (Spencer Arrighetti) @ Cleveland Guardians (Slade Cecconi)
+    Cincinnati Reds (Rhett Lowder) @ Tampa Bay Rays (TBD)
+    St. Louis Cardinals (Michael McGreevy) @ Miami Marlins (Max Meyer)
+    Atlanta Braves (Bryce Elder) @ Washington Nationals (Jake Irvin)
+    Baltimore Orioles (Kyle Bradish) @ Kansas City Royals (Seth Lugo)
+    Philadelphia Phillies (Aaron Nola) @ Chicago Cubs (Colin Rea)
+    Los Angeles Dodgers (Justin Wrobleski) @ Colorado Rockies (Jose Quintana)
+    Toronto Blue Jays (Dylan Cease) @ Los Angeles Angels (Reid Detmers)
+    Athletics (J.T. Ginn) @ Seattle Mariners (Emerson Hancock)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Houston Astros @ Cleveland Guardians: Cleveland Guardians 50.2% [SPLIT]
+    Pyth: 53.4%  XGB: 48.4%  Ens: 50.2%
+  Cincinnati Reds @ Tampa Bay Rays: Cincinnati Reds 53.7% [SPLIT]
+    Pyth: 53.5%  XGB: 42.9%  Ens: 46.3%
+  St. Louis Cardinals @ Miami Marlins: St. Louis Cardinals 53.4% [AGREE]
+    Pyth: 42.7%  XGB: 48.4%  Ens: 46.6%
+  Atlanta Braves @ Washington Nationals: Atlanta Braves 66.3% [AGREE]
+    Pyth: 15.7%  XGB: 42.5%  Ens: 33.7%
+  Baltimore Orioles @ Kansas City Royals: Kansas City Royals 56.3% [SPLIT]
+    Pyth: 72.3%  XGB: 48.4%  Ens: 56.3%
+  Philadelphia Phillies @ Chicago Cubs: Chicago Cubs 59.5% [AGREE]
+    Pyth: 73.4%  XGB: 53.1%  Ens: 59.5%
+  Los Angeles Dodgers @ Colorado Rockies: Los Angeles Dodgers 58.8% [AGREE]
+    Pyth: 25.4%  XGB: 48.4%  Ens: 41.2%
+  Toronto Blue Jays @ Los Angeles Angels: Toronto Blue Jays 50.9% [SPLIT]
+    Pyth: 50.5%  XGB: 48.4%  Ens: 49.1%
+  Athletics @ Seattle Mariners: Seattle Mariners 53.5% [SPLIT]
+    Pyth: 63.9%  XGB: 48.4%  Ens: 53.5%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 13:00:15. API requests remaining: 301
+  ⏱  Filtered 1 game(s) already started — picks only include upcoming games.
+  Odds freshness: LIVE (range 0–2 min old)
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Colorado Rockies vs Los Angeles Dodgers
+    Model: 41.2% | Vegas: 33.3% | Edge: +7.8% ** GOOD **
+    Best odds: +200 at Fliff
+
+  Chicago Cubs vs Philadelphia Phillies
+    Model: 59.5% | Vegas: 52.4% | Edge: +7.1% ** GOOD **
+    Best odds: -110 at FanDuel
+
+  St. Louis Cardinals vs Miami Marlins
+    Model: 53.4% | Vegas: 46.9% | Edge: +6.4% ** GOOD **
+    Best odds: +113 at DraftKings
+
+  Atlanta Braves vs Washington Nationals
+    Model: 66.3% | Vegas: 60.0% | Edge: +6.3% ** GOOD **
+    Best odds: -150 at BetMGM
+
+  Kansas City Royals vs Baltimore Orioles
+    Model: 56.3% | Vegas: 50.0% | Edge: +6.3% ** GOOD **
+    Best odds: +100 at Bally Bet
+
+  Cincinnati Reds vs Tampa Bay Rays
+    Model: 53.7% | Vegas: 48.8% | Edge: +5.0%
+    Best odds: +105 at theScore Bet
+
+  Total value bets: 6
+  Average edge: +6.5%
+======================================================================
+
+  No moneyline value bets found above minimum edge threshold.
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · April 20, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   RUN LINE   Chicago Cubs +1.5 RL             -183    +2.96R        —  DraftKings
+  2   TOTAL      OVER 7.5 (Astros@Guardians)      +102    +2.90R        —  DraftKings
+  3   RUN LINE   Kansas City Royals +1.5 RL       -162    +2.46R        —  Bally Bet
+  4   TOTAL      OVER 8.0 (Braves@Nationals)      +105    +2.40R        —  theScore B
+  5   RUN LINE   St. Louis Cardinals +1.5 RL      -180    +2.02R        —  theScore B
+  6   RUN LINE   Los Angeles Angels +1.5 RL       -165    +1.36R        —  theScore B
+  7   RUN LINE   Athletics +1.5 RL                -160    +0.96R        —  Hard Rock 
+  8   MONEYLINE  Colorado Rockies ML              +200     +7.8%     2.9%  Fliff
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: Chicago Cubs +1.5 -183 @ DraftKings
+     2.96 run RL edge
+
+  Moneyline: 1  |  Run Line: 5  |  Totals: 2
+══════════════════════════════════════════════════════════════════════
+
+  Moneyline card → output/picks/baseball_mlb/20260420/pick_card.png
+  Run line card → output/picks/baseball_mlb/20260420/runline_card.png
+  Totals card → output/picks/baseball_mlb/20260420/totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260420/caption_picks.txt
+  Pick of day card → output/picks/baseball_mlb/20260420/pick_of_day_card.png
+  Slate card → output/picks/baseball_mlb/20260420/slate_card.png
+  (All picks already in data/pnl/picks.json — skipped duplicates)
+
+Saved picks to output/picks/baseball_mlb/20260420/
+
+Step 6: Scanning player props for edges...
+  Found 9 prop edge(s):
+    Spencer Arrighetti OVER 5.5 Ks  edge=46.9%  odds=+120  [BetMGM]
+    Jake Irvin OVER 3.5 Ks  edge=32.4%  odds=-132  [FanDuel]
+    Bryce Elder OVER 4.5 Ks  edge=23.2%  odds=+132  [DraftKings]
+    Slade Cecconi OVER 4.5 Ks  edge=16.2%  odds=+120  [BetMGM]
+    Kyle Bradish OVER 4.5 Ks  edge=15.0%  odds=-155  [BetMGM]
+    Seth Lugo UNDER 5.5 Ks  edge=12.0%  odds=-132  [FanDuel]
+    Aaron Nola OVER 5.5 Ks  edge=11.7%  odds=+116  [FanDuel]
+    Colin Rea OVER 4.5 Ks  edge=9.5%  odds=+116  [FanDuel]
+    Michael McGreevy UNDER 3.5 Ks  edge=4.2%  odds=-159  [DraftKings]
+  Props saved → output/picks/baseball_mlb/20260420/props.json
+  Props card → output/picks/baseball_mlb/20260420/props_card.png
+  Props caption → output/picks/baseball_mlb/20260420/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 9 NRFI/YRFI play(s):
+    Toronto Blue Jays @ Los Angeles Angels NRFI  proj 51% NRFI
+    Houston Astros @ Cleveland Guardians YRFI  proj 48% NRFI
+    Athletics @ Seattle Mariners YRFI  proj 46% NRFI
+    Atlanta Braves @ Washington Nationals YRFI  proj 45% NRFI
+    Baltimore Orioles @ Kansas City Royals YRFI  proj 45% NRFI
+  NRFI picks logged to pnl (5 picks)
+  NRFI card → output/picks/baseball_mlb/20260420/nrfi_card.png
+  NRFI caption → output/picks/baseball_mlb/20260420/caption_nrfi.txt
+
+  ChefTonyBets — NBA Picks Pipeline
+  Date: 20260420
+  Fetching NBA team ratings...
+  ✓  Team ratings loaded: 30 teams
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  Found 3 upcoming games
+    Toronto Raptors @ Cleveland Cavaliers  07:10 PM ET
+    Atlanta Hawks @ New York Knicks  08:10 PM ET
+    Minnesota Timberwolves @ Denver Nuggets  10:40 PM ET
+
+  Running NBA model...
+  ✓  10 game edges found
+
+  Game projections:
+    Toronto Raptors @ Cleveland Cavaliers  07:10 PM ET
+      Proj: 108.1 - 113.6  | Total: 221.7  | Away ML: 38%  | Home ML: 62%
+    Atlanta Hawks @ New York Knicks  08:10 PM ET
+      Proj: 108.9 - 113.6  | Total: 222.6  | Away ML: 34%  | Home ML: 66%
+    Minnesota Timberwolves @ Denver Nuggets  10:40 PM ET
+      Proj: 108.3 - 115.6  | Total: 223.9  | Away ML: 37%  | Home ML: 63%
+
+  Fetching NBA player props...
+  ✓  125 prop edges found
+  ✓  10 unique-player props after dedup
+
+  Context: NBA PLAYOFFS
+
+  Saved → output/picks/basketball_nba/20260420/picks.json
+  Saved → output/picks/basketball_nba/20260420/props.json
+
+                        NBA PICKS — ChefTonyBets                        
+                             April 20, 2026                             
+────────────────────────────────────────────────────────────────────────
+
+  GAME PICKS (Model vs Market)
+  GAME                             BET                      EDGE    ODDS  BOOK
+  ────────────────────────────────────────────────────────────────────
+  Minnesota Timberwolves @ Denver  UNDER 230.5            +19.4%    -110  DraftKings  [proj total 224]
+  Toronto Raptors @ Cleveland Cav  Toronto Raptors +9.5   +18.9%    -110  DraftKings
+  Atlanta Hawks @ New York Knicks  OVER 218.5             +12.8%    -105  BetMGM  [proj total 223]
+  Minnesota Timberwolves @ Denver  Minnesota Timberwolve  +10.1%    -106  FanDuel
+  Atlanta Hawks @ New York Knicks  Atlanta Hawks +6.0      +3.3%    -108  BetRivers
+  Atlanta Hawks @ New York Knicks  New York Knicks -6.5    -5.0%    -105  BetMGM
+  Minnesota Timberwolves @ Denver  Denver Nuggets          -8.7%    -285  DraftKings
+  Minnesota Timberwolves @ Denver  Denver Nuggets -7.5    -11.7%    -105  DraftKings
+
+  PLAYER PROPS (Top 10 by edge)
+  PLAYER                 BET                            PROJ   EDGE    ODDS  BOOK
+  ────────────────────────────────────────────────────────────────────
+  Miles McBride          OVER 11.5 PRA                  16.9 +40.7%    +100  BetMGM
+  Landry Shamet          OVER 7.5 PRA                   12.4 +40.0%    -110  BetMGM
+  Sam Merrill            OVER 12.5 PRA                  17.6 +38.1%    +100  FanDuel
+  Keon Ellis             OVER 3.5 POINTS                 6.6 +32.2%    -126  DraftKings
+  Max Strus              OVER 3.5 REBOUNDS               5.4 +32.2%    +100  BetRivers
+  Immanuel Quickley      OVER 19.5 PRA                  26.0 +31.5%    -115  DraftKings
+  Sandro Mamukelashvili  OVER 13.5 PRA                  17.8 +31.5%    -110  BetMGM
+  Tim Hardaway Jr        OVER 13.5 PRA                  17.3 +27.5%    -120  BetMGM
+  Bruce Brown            OVER 11.5 PRA                  13.8 +27.1%    +110  BetMGM
+  Jakob Poeltl           OVER 16.5 PRA                  19.5 +25.4%    +105  BetMGM
+
+────────────────────────────────────────────────────────────────────────
+
+  Generating NBA pick card...
+  ✓  Pick card → output/picks/basketball_nba/20260420/nba_pick_card.png
+  ✓  Spread card → output/picks/basketball_nba/20260420/nba_spread_card.png
+  ✓  Totals card → output/picks/basketball_nba/20260420/nba_totals_card.png
+  ✓  Pick of day → output/picks/basketball_nba/20260420/nba_pick_of_day.png
+  ✓  Slate card → output/picks/basketball_nba/20260420/nba_slate_card.png
+
+  Generating NBA props card...
+  ✓  Props card → output/picks/basketball_nba/20260420/nba_props_card.png
+
+  Generating captions...
+
+====================================================================
+  NBA PLAYOFFS CAPTIONS — APRIL 20, 2026
+====================================================================
+
+── GAME PICKS ─────────────────────────────────────────────────────
+
+Model projected every matchup. These are the ones worth betting.
+
+Apr 20 NBA PLAYOFFS Picks 🔥
+━━━━━━━━━━━━━━━
+🔒 UNDER 230.5 (MIN vs DEN) -110 — +19.4% edge [DraftKings]
+📌 Toronto Raptors +9.5 -110 — +18.9% edge [DraftKings]
+📌 OVER 218.5 (ATL vs NEW) -105 — +12.8% edge [BetMGM]
+• Minnesota Timberwolves +7.0 -106 — +10.1% edge [FanDuel]
+• Atlanta Hawks +6.0 -108 — +3.3% edge [BetRivers]
+━━━━━━━━━━━━━━━
+
+Picks generated by our efficiency-rating model (ORtg/DRtg/Pace). We track every result publicly — link in bio.
+
+Not financial advice. Bet responsibly. 21+
+
+#NBA #NBAPlayoffs #sportsbetting #NBApicks #NBATwitter #sharpbetting #valuebet #edgebetting #NBAPlayoffs2026 #playoffs #NBAplayoff
+
+── PLAYER PROPS ───────────────────────────────────────────────────
+
+Found fat lines in today's NBA props. Model says bet these.
+
+Apr 20 NBA Player Props 🧮
+━━━━━━━━━━━━━━━
+🔥 Points:
+  • Keon Ellis OVER 3.5 PTS (proj 6.6) -126 [DraftKings]
+💪 Rebounds:
+  • Max Strus OVER 3.5 REB +100 [BetRivers]
+📊 PRA Combo:
+  • Miles McBride OVER 11.5 PRA +100 [BetMGM]
+  • Landry Shamet OVER 7.5 PRA -110 [BetMGM]
+━━━━━━━━━━━━━━━
+
+Model projects each stat using season averages + opponent defensive rating. Only posts when we find real edge vs the book line.
+
+Swipe for game picks 👆
+
+Not financial advice. Bet responsibly. 21+
+
+#NBA #NBAPlayoffs #sportsbetting #NBApicks #NBATwitter #sharpbetting #valuebet #edgebetting #NBAPlayoffs2026 #playoffs #NBAplayoff #NBApropbets #propbets #NBAprops #pointsprop #reboundsprop
+
+====================================================================
+

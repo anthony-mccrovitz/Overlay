@@ -230,6 +230,19 @@ def predict_total(
     X = pd.DataFrame([row])[features].fillna(0)
     raw_total = float(model.predict(X)[0])
 
+    # Sanity check: MLB games essentially never finish outside 4-25 runs total.
+    # If the model produces something impossible, fall back to the simple sum.
+    TOTAL_MIN, TOTAL_MAX = 4.0, 25.0
+    if raw_total < TOTAL_MIN or raw_total > TOTAL_MAX:
+        import warnings
+        warnings.warn(
+            f"predict_total: model output {raw_total:.2f} is outside plausible range "
+            f"[{TOTAL_MIN}, {TOTAL_MAX}]. Falling back to rs_g + ra_g.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+        raw_total = home_stats.get("rs_g", 4.5) + away_stats.get("rs_g", 4.5)
+
     if not home_team:
         return raw_total
 
@@ -330,6 +343,27 @@ def find_totals_edges(
             model, features if model is not None else None,
             home_team=matchup.home_team.name,
         )
+
+        # Lineup quality adjustment — shift prediction based on confirmed lineups.
+        # League avg OPS ≈ 0.720. Each 0.050 OPS above/below avg ≈ +/- 0.3 runs.
+        # Only applies when lineup is confirmed (posted ~2-3h before first pitch).
+        try:
+            from src.data.mlb_stats import fetch_lineup_quality
+            _LEAGUE_OPS = 0.720
+            _OPS_SCALE = 6.0  # runs per unit OPS delta per team
+            home_lq = fetch_lineup_quality(matchup.home_team.team_id, matchup.game_id,
+                                           pitcher_throws=getattr(matchup.away_pitcher, "throws", "R") or "R")
+            away_lq = fetch_lineup_quality(matchup.away_team.team_id, matchup.game_id,
+                                           pitcher_throws=getattr(matchup.home_pitcher, "throws", "R") or "R")
+            if home_lq.get("lineup_confirmed") or away_lq.get("lineup_confirmed"):
+                ops_adj = (
+                    (home_lq["lineup_ops"] - _LEAGUE_OPS) * _OPS_SCALE
+                    + (away_lq["lineup_ops"] - _LEAGUE_OPS) * _OPS_SCALE
+                )
+                pred_total = round(pred_total + ops_adj, 2)
+        except Exception:
+            pass
+
         diff = pred_total - total_line
 
         if abs(diff) >= min_edge_runs:
@@ -346,6 +380,15 @@ def find_totals_edges(
                     best_odds = int(valid.loc[best_idx, odds_col])
                     best_book = valid.loc[best_idx, "Sportsbook"]
 
+            # Convert run-edge to win probability using normal distribution.
+            # MLB game total std dev ≈ 2.8 runs (empirical).
+            from scipy.stats import norm as _norm
+            _STD = 2.8
+            if direction == "OVER":
+                model_prob = float(1 - _norm.cdf((total_line - pred_total) / _STD))
+            else:
+                model_prob = float(_norm.cdf((total_line - pred_total) / _STD))
+            implied_prob = 0.5  # default; overridden below with real vig-adjusted odds
             edges.append({
                 "home_team": home,
                 "away_team": away,
@@ -357,6 +400,7 @@ def find_totals_edges(
                 "sportsbook": best_book,
                 "game_id": game_id,
                 "commence_time": game_rows["CommenceTime"].iloc[0] if "CommenceTime" in game_rows.columns else "",
+                "model_prob": round(model_prob, 4),
             })
 
     edges.sort(key=lambda e: e["edge_runs"], reverse=True)

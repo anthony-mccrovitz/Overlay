@@ -1,0 +1,117 @@
+{
+  "date": "2026-04-18",
+  "total_picks": 4,
+  "moneyline_picks": 4,
+  "spread_picks": 0,
+  "total_picks_ou": 0,
+  "graded": 4,
+  "pending": 0,
+  "wins": 2,
+  "losses": 2,
+  "win_rate": 0.5,
+  "total_staked": 400.0,
+  "total_profit": 188.0,
+  "roi": 47.0,
+  "nrfi_picks": 7,
+  "nrfi_wins": 5,
+  "nrfi_losses": 2,
+  "nrfi_pending": 0,
+  "nrfi_win_rate": 0.7142857142857143,
+  "by_type": {
+    "moneyline": {
+      "wins": 2,
+      "losses": 2,
+      "win_rate": 0.5,
+      "profit": 188.0,
+      "roi": 47.0
+    },
+    "spread": {
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "profit": 0,
+      "roi": null
+    },
+    "total": {
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "profit": 0,
+      "roi": null
+    }
+  },
+  "by_agreement": {
+    "agree": {
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "profit": 0,
+      "roi": null
+    },
+    "split": {
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "profit": 0,
+      "roi": null
+    }
+  },
+  "clv_summary": {
+    "picks_with_clv": 0
+  },
+  "details": [
+    {
+      "team": "Colorado Rockies",
+      "opponent": "Los Angeles Dodgers",
+      "odds": 260.0,
+      "model_prob": 0.4441368185902618,
+      "edge": 0.16635904081248398,
+      "won": true,
+      "profit": 260.0,
+      "score": "Los Angeles Dodgers 3, Colorado Rockies 4",
+      "status": "win",
+      "game_id": "mlb_20260418_Colorado_Rockies",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Toronto Blue Jays",
+      "opponent": "Arizona Diamondbacks",
+      "odds": 138.0,
+      "model_prob": 0.5043910569103184,
+      "edge": 0.08422298968342762,
+      "won": false,
+      "profit": -100.0,
+      "score": "Toronto Blue Jays 2, Arizona Diamondbacks 6",
+      "status": "loss",
+      "game_id": "mlb_20260418_Toronto_Blue_Jays",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "St. Louis Cardinals",
+      "opponent": "Houston Astros",
+      "odds": 128.0,
+      "model_prob": 0.5038176305354068,
+      "edge": 0.0652211393073367,
+      "won": true,
+      "profit": 128.0,
+      "score": "St. Louis Cardinals 7, Houston Astros 5",
+      "status": "win",
+      "game_id": "mlb_20260418_St._Louis_Cardinals",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Texas Rangers",
+      "opponent": "Seattle Mariners",
+      "odds": 126.0,
+      "model_prob": 0.481677149322684,
+      "edge": 0.039199273216489305,
+      "won": false,
+      "profit": -100.0,
+      "score": "Texas Rangers 3, Seattle Mariners 7",
+      "status": "loss",
+      "game_id": "mlb_20260418_Texas_Rangers",
+      "bet_type": "moneyline"
+    }
+  ],
+  "graded_at": "2026-04-19T05:09:44.619094+00:00"
+}

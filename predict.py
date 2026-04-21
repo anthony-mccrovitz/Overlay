@@ -1342,12 +1342,13 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
 
     # ── Moneyline card — always generate, fall back to top model confidence picks ─
     ml_edge_picks = [p for p in picks_list if str(p.get("Market", "moneyline")).lower() == "moneyline"]
-    if ml_edge_picks:
-        ml_card_picks = ml_edge_picks
+    if ml_edge_picks and len(ml_edge_picks) >= 5:
+        ml_card_picks = ml_edge_picks[:5]
     elif ensemble_preds:
-        # No ML edges today — show top 5 by model confidence with real current odds
+        # Fewer than 5 ML edges — pad with top model confidence picks
+        ml_card_picks = list(ml_edge_picks)  # start with what we have
+        existing_teams = {str(p.get("Team","")).lower() for p in ml_card_picks}
         sorted_eps = sorted(ensemble_preds, key=lambda ep: max(ep.ensemble_prob, 1 - ep.ensemble_prob), reverse=True)
-        ml_card_picks = []
 
         # Build odds lookup: team name (lower) → (best_odds, book)
         odds_lookup: dict[str, tuple[int, str]] = {}
@@ -1369,9 +1370,13 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
             except Exception:
                 pass
 
-        for ep in sorted_eps[:5]:
+        for ep in sorted_eps:
+            if len(ml_card_picks) >= 5:
+                break
             fav  = ep.home_team if ep.ensemble_prob >= 0.5 else ep.away_team
             opp  = ep.away_team if ep.ensemble_prob >= 0.5 else ep.home_team
+            if fav.lower() in existing_teams:
+                continue
             prob = ep.ensemble_prob if ep.ensemble_prob >= 0.5 else 1 - ep.ensemble_prob
             best_odds, book = odds_lookup.get(fav.lower(), (0, ""))
             ml_card_picks.append({
@@ -1384,6 +1389,7 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
                 "Sportsbook": book,
                 "Why": ep.edge_drivers[0] if ep.edge_drivers else "",
             })
+            existing_teams.add(fav.lower())
     else:
         ml_card_picks = picks_list[:5]
 

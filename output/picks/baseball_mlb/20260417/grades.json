@@ -1,0 +1,98 @@
+{
+  "date": "2026-04-17",
+  "total_picks": 4,
+  "moneyline_picks": 4,
+  "spread_picks": 0,
+  "total_picks_ou": 0,
+  "graded": 4,
+  "pending": 0,
+  "wins": 2,
+  "losses": 2,
+  "win_rate": 0.5,
+  "total_staked": 400.0,
+  "total_profit": 51.15384615384616,
+  "roi": 12.78846153846154,
+  "nrfi_picks": 15,
+  "nrfi_wins": 8,
+  "nrfi_losses": 7,
+  "nrfi_pending": 0,
+  "nrfi_win_rate": 0.5333333333333333,
+  "by_type": {
+    "moneyline": {
+      "wins": 2,
+      "losses": 2,
+      "win_rate": 0.5,
+      "profit": 51.15,
+      "roi": 12.79
+    },
+    "spread": {
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "profit": 0,
+      "roi": null
+    },
+    "total": {
+      "wins": 0,
+      "losses": 0,
+      "win_rate": null,
+      "profit": 0,
+      "roi": null
+    }
+  },
+  "details": [
+    {
+      "team": "Atlanta Braves",
+      "opponent": "Philadelphia Phillies",
+      "odds": -104.0,
+      "model_prob": 0.6283090381,
+      "edge": 0.1185051165,
+      "won": true,
+      "profit": 96.15384615384616,
+      "score": "Atlanta Braves 9, Philadelphia Phillies 0",
+      "status": "win",
+      "game_id": "mlb_20260417_Atlanta_Braves",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Kansas City Royals",
+      "opponent": "New York Yankees",
+      "odds": 145.0,
+      "model_prob": 0.5087113817,
+      "edge": 0.1005481164,
+      "won": false,
+      "profit": -100.0,
+      "score": "Kansas City Royals 2, New York Yankees 4",
+      "status": "loss",
+      "game_id": "mlb_20260417_Kansas_City_Royals",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Washington Nationals",
+      "opponent": "San Francisco Giants",
+      "odds": 138.0,
+      "model_prob": 0.5085417042,
+      "edge": 0.088373637,
+      "won": false,
+      "profit": -100.0,
+      "score": "San Francisco Giants 10, Washington Nationals 5",
+      "status": "loss",
+      "game_id": "mlb_20260417_Washington_Nationals",
+      "bet_type": "moneyline"
+    },
+    {
+      "team": "Cincinnati Reds",
+      "opponent": "Minnesota Twins",
+      "odds": 155.0,
+      "model_prob": 0.4426210074,
+      "edge": 0.0504641447,
+      "won": true,
+      "profit": 155.0,
+      "score": "Cincinnati Reds 2, Minnesota Twins 1",
+      "status": "win",
+      "game_id": "mlb_20260417_Cincinnati_Reds",
+      "bet_type": "moneyline"
+    }
+  ],
+  "graded_at": "2026-04-18T16:57:54.194873+00:00"
+}

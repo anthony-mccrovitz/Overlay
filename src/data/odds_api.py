@@ -7,7 +7,7 @@ We cache aggressively to stay within limits.
 import json
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -33,17 +33,29 @@ SPREAD_LINE_ABS_MAX = 3.5
 CACHE_DIR = Path("data/cache/odds")
 API_BASE = "https://api.the-odds-api.com/v4"
 
-# US sportsbooks only — what followers realistically have accounts at.
-# BetRivers included as a backup since it operates in most states.
-PREFERRED_BOOKS = {"DraftKings", "FanDuel", "BetMGM", "BetRivers"}
+# US sportsbooks Anthony has accounts at (Indiana).
+# Caesars and bet365 not available via Odds API US regions — excluded.
+# theScore Bet = ESPN Bet rebranded back; API key remains "theScore Bet".
+# Offshore/grey-market books excluded entirely.
+PREFERRED_BOOKS = {
+    "DraftKings", "FanDuel", "BetMGM", "BetRivers",
+    "Hard Rock Bet", "Fliff", "Bally Bet", "theScore Bet",
+}
 
-# Sharp books used for de-vigged consensus probability (Method B).
-# These three set the "true" market price.
-SHARP_BOOKS = frozenset({"DraftKings", "FanDuel", "BetMGM"})
+# Sharp books used for de-vigged true probability (CLV/EV baseline).
+# Pinnacle is the gold standard — never bet there (EU only), use as no-vig reference.
+# Matchbook is a sharp exchange, also useful as reference.
+SHARP_BOOKS = frozenset({"Pinnacle", "Matchbook", "DraftKings", "FanDuel"})
 
-# Tier-1 US-licensed books we recommend to followers.
-# Never surface offshore/grey-market books (MyBookie.ag, LowVig.ag, BetUS, Bovada) on the card.
-TIER1_BOOKS = frozenset({"DraftKings", "FanDuel", "BetMGM", "BetRivers"})
+# Tier-1 books surfaced on cards — same as PREFERRED_BOOKS.
+TIER1_BOOKS = frozenset({
+    "DraftKings", "FanDuel", "BetMGM", "BetRivers",
+    "Hard Rock Bet", "Fliff", "Bally Bet", "theScore Bet",
+})
+
+# Odds API internal keys for the sharp reference books
+# Used when we need to filter API response by specific book key
+SHARP_BOOK_KEYS = frozenset({"pinnacle", "matchbook", "draftkings", "fanduel"})
 
 SUPPORTED_SPORTS = {
     "basketball_ncaab",
@@ -113,7 +125,10 @@ def fetch_odds(
     url = f"{API_BASE}/sports/{sport}/odds"
     params = {
         "apiKey": api_key,
-        "regions": "us",
+        # us = DraftKings/FanDuel/BetMGM/Caesars/BetRivers
+        # us2 = additional US books (PointsBet, ESPN Bet, etc.)
+        # eu = Pinnacle + bet365 — the sharp reference books for CLV/EV baseline
+        "regions": "us,us2,eu",
         "markets": markets,
         "oddsFormat": "american",
     }
@@ -164,12 +179,25 @@ def fetch_odds(
 def _parse_odds_response(data: list[dict], normalize_names: bool = True) -> pd.DataFrame:
     """Parse the-odds-api response into a clean DataFrame."""
     rows = []
+    now_utc = datetime.now(timezone.utc)
+    skipped_started = 0
 
     for event in data:
         home = event.get("home_team", "")
         away = event.get("away_team", "")
         game_id = event.get("id", "")
         commence = event.get("commence_time", "")
+
+        # Drop any game that has already started (commence_time <= now UTC).
+        # Books pull lines at first pitch — picks on started games can't be placed.
+        if commence:
+            try:
+                ct = datetime.fromisoformat(commence.replace("Z", "+00:00"))
+                if ct <= now_utc:
+                    skipped_started += 1
+                    continue
+            except ValueError:
+                pass  # malformed timestamp — keep the event rather than silently drop
 
         if normalize_names:
             home_canonical = try_normalize(home)
@@ -222,6 +250,9 @@ def _parse_odds_response(data: list[dict], normalize_names: bool = True) -> pd.D
                             row["UnderOdds"] = outcome["price"]
 
             rows.append(row)
+
+    if skipped_started:
+        print(f"  ⏱  Filtered {skipped_started} game(s) already started — picks only include upcoming games.")
 
     if not rows:
         return pd.DataFrame()
@@ -393,7 +424,7 @@ def odds_freshness_summary(odds_df: pd.DataFrame) -> str:
     if odds_df.empty or "OddsUpdatedAt" not in odds_df.columns:
         return "  Odds freshness: unknown (no timestamp in data)"
 
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc).replace(tzinfo=None)  # naive UTC for comparison
     ages_min: list[float] = []
 
     for ts_str in odds_df["OddsUpdatedAt"].dropna().unique():
@@ -508,7 +539,7 @@ def fetch_event_odds(
     url = f"{API_BASE}/sports/{sport}/events/{event_id}/odds"
     params = {
         "apiKey": api_key,
-        "regions": "us",
+        "regions": "us,us2,eu",
         "markets": markets,
         "oddsFormat": "american",
     }
@@ -650,7 +681,7 @@ def fetch_golf_outrights(
     url = f"{API_BASE}/sports/{sport}/odds"
     params = {
         "apiKey": api_key,
-        "regions": "us",
+        "regions": "us,us2,eu",
         "markets": "outrights",
         "oddsFormat": "american",
     }

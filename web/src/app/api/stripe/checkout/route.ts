@@ -3,11 +3,19 @@ import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_PRICE_ID) {
+      console.error("Stripe env vars not configured (STRIPE_SECRET_KEY, STRIPE_PRICE_ID)");
+      return NextResponse.json(
+        { error: "Subscriptions are not yet available. Check back soon!" },
+        { status: 503 }
+      );
+    }
+
     const { email } = await req.json().catch(() => ({}));
 
     const origin = req.headers.get("origin") || "http://localhost:3000";
 
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2026-03-25.dahlia",
     });
 
@@ -15,7 +23,7 @@ export async function POST(req: NextRequest) {
       mode: "subscription",
       line_items: [
         {
-          price: process.env.STRIPE_PRICE_ID!,
+          price: process.env.STRIPE_PRICE_ID,
           quantity: 1,
         },
       ],

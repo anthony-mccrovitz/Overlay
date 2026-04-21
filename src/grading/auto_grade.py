@@ -69,6 +69,15 @@ def fetch_final_scores(game_date: date | None = None) -> list[dict]:
             home_score = home_info.get("score")
             away_score = away_info.get("score")
 
+            # Extract first-inning runs from linescore for NRFI grading
+            innings = game.get("linescore", {}).get("innings", [])
+            first_inn = next((i for i in innings if i.get("num") == 1), None)
+            first_inn_home = None
+            first_inn_away = None
+            if first_inn:
+                first_inn_home = first_inn.get("home", {}).get("runs")
+                first_inn_away = first_inn.get("away", {}).get("runs")
+
             results.append({
                 "game_pk": game.get("gamePk"),
                 "home_team": home_name,
@@ -77,6 +86,8 @@ def fetch_final_scores(game_date: date | None = None) -> list[dict]:
                 "away_score": int(away_score) if away_score is not None else None,
                 "state": state,
                 "detailed_state": detailed_state,
+                "first_inning_home_runs": int(first_inn_home) if first_inn_home is not None else None,
+                "first_inning_away_runs": int(first_inn_away) if first_inn_away is not None else None,
             })
 
     return results
@@ -256,6 +267,165 @@ def fetch_closing_odds(sport: str = "baseball_mlb") -> dict[str, dict]:
     return closing
 
 
+_PNL_FILE = Path("data/pnl/picks.json")
+
+
+def _update_pnl_pick_result(
+    pick_date: date,
+    team: str,
+    market: str,
+    won: bool,
+    profit: float,
+) -> bool:
+    """
+    Update the result on an _auto_log_picks entry in data/pnl/picks.json.
+
+    Matches by (date, team, market). Returns True if an entry was updated,
+    False if no matching entry was found (caller should use PnLTracker instead).
+    """
+    if not _PNL_FILE.exists():
+        return False
+    try:
+        data = json.loads(_PNL_FILE.read_text())
+    except (json.JSONDecodeError, ValueError):
+        return False
+
+    date_str = pick_date.isoformat()
+    team_lower = team.lower().strip()
+    now_ts = datetime.now(tz=timezone.utc).isoformat()
+
+    for p in data.get("picks", []):
+        if (
+            p.get("date") == date_str
+            and p.get("team", "").lower().strip() == team_lower
+            and p.get("market", "moneyline") == market
+            and p.get("result") is None
+        ):
+            p["result"]      = "win" if won else "loss"
+            p["profit"]      = round(profit / 100.0, 4) if abs(profit) > 1 else round(profit, 4)
+            p["resulted_at"] = now_ts
+            _PNL_FILE.write_text(json.dumps(data, indent=2))
+            return True
+    return False
+
+
+def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: date) -> None:
+    """
+    Write NRFI pick results into pnl/picks.json so public_stats can show
+    a real NRFI-specific record separate from moneyline picks.
+    """
+    if not nrfi_picks:
+        return
+
+    _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        existing = json.loads(_PNL_FILE.read_text()) if _PNL_FILE.exists() else {"picks": []}
+        if "picks" not in existing:
+            existing = {"picks": []}
+    except (json.JSONDecodeError, ValueError):
+        existing = {"picks": []}
+
+    date_str = pick_date.isoformat()
+    now_ts = datetime.now(tz=timezone.utc).isoformat()
+
+    # Build lookup key: (date, home_team, away_team, direction) to avoid dupes
+    existing_keys = {
+        (p.get("date", ""), p.get("home_team", "").lower(), p.get("away_team", "").lower(), p.get("direction", "").upper())
+        for p in existing["picks"]
+        if p.get("market") == "nrfi"
+    }
+
+    for np_ in nrfi_picks:
+        home_t = np_.get("home_team", "")
+        away_t = np_.get("away_team", "")
+        direction = (np_.get("direction") or "NRFI").upper()
+        key = (date_str, home_t.lower(), away_t.lower(), direction)
+
+        if key in existing_keys:
+            # Update result if it's now known
+            for p in existing["picks"]:
+                if (
+                    p.get("market") == "nrfi"
+                    and p.get("date") == date_str
+                    and p.get("home_team", "").lower() == home_t.lower()
+                    and p.get("away_team", "").lower() == away_t.lower()
+                    and p.get("direction", "").upper() == direction
+                    and p.get("result") is None
+                ):
+                    # Find result
+                    result = None
+                    for r in results:
+                        if (
+                            _normalize(r["home_team"]) == _normalize(home_t)
+                            or _normalize(home_t) in _normalize(r["home_team"])
+                        ):
+                            if (
+                                _normalize(r["away_team"]) == _normalize(away_t)
+                                or _normalize(away_t) in _normalize(r["away_team"])
+                            ):
+                                result = r
+                                break
+                    if result and result["state"] == "Final":
+                        h1 = result.get("first_inning_home_runs")
+                        a1 = result.get("first_inning_away_runs")
+                        if h1 is not None and a1 is not None:
+                            runs_in_first = h1 + a1
+                            won = (runs_in_first == 0) if direction == "NRFI" else (runs_in_first > 0)
+                            p["result"] = "win" if won else "loss"
+                            p["first_inning_runs"] = runs_in_first
+                            p["resulted_at"] = now_ts
+            continue
+
+        # New entry
+        entry = {
+            "date": date_str,
+            "market": "nrfi",
+            "direction": direction,
+            "home_team": home_t,
+            "away_team": away_t,
+            "team": f"{away_t} @ {home_t}",
+            "opponent": "",
+            "odds": np_.get("odds"),
+            "stake": 1.0,
+            "card_pick": True,
+            "projected_nrfi": np_.get("projected_nrfi"),
+            "result": None,
+            "profit": None,
+            "recorded_at": now_ts,
+            "resulted_at": None,
+            "auto_logged": True,
+        }
+
+        # Try to grade immediately if results are available
+        result = None
+        for r in results:
+            if (
+                _normalize(r["home_team"]) == _normalize(home_t)
+                or _normalize(home_t) in _normalize(r["home_team"])
+            ):
+                if (
+                    _normalize(r["away_team"]) == _normalize(away_t)
+                    or _normalize(away_t) in _normalize(r["away_team"])
+                ):
+                    result = r
+                    break
+
+        if result and result["state"] == "Final":
+            h1 = result.get("first_inning_home_runs")
+            a1 = result.get("first_inning_away_runs")
+            if h1 is not None and a1 is not None:
+                runs_in_first = h1 + a1
+                won = (runs_in_first == 0) if direction == "NRFI" else (runs_in_first > 0)
+                entry["result"] = "win" if won else "loss"
+                entry["first_inning_runs"] = runs_in_first
+                entry["resulted_at"] = now_ts
+
+        existing["picks"].append(entry)
+        existing_keys.add(key)
+
+    _PNL_FILE.write_text(json.dumps(existing, indent=2))
+
+
 def grade_picks(
     pick_date: date | None = None,
     sport: str = "baseball_mlb",
@@ -424,18 +594,19 @@ def grade_picks(
             except Exception:
                 pass
 
-        # -- Update P&L tracker --
-        try:
-            pnl_tracker.record_pick(
-                game_id=game_id, team=team, opponent=opponent,
-                odds=odds, model_prob=model_prob, bet_size=flat_stake,
-            )
-        except ValueError:
-            pass
-        try:
-            pnl_tracker.record_result(game_id, team, won)
-        except ValueError:
-            pass
+        # -- Update P&L: direct entry update first, PnLTracker fallback --
+        if not _update_pnl_pick_result(d, team, market, won, profit):
+            try:
+                pnl_tracker.record_pick(
+                    game_id=game_id, team=team, opponent=opponent,
+                    odds=odds, model_prob=model_prob, bet_size=flat_stake,
+                )
+            except ValueError:
+                pass
+            try:
+                pnl_tracker.record_result(game_id, team, won)
+            except ValueError:
+                pass
 
         score_str = (
             f"{result['away_team']} {result['away_score']}, "
@@ -492,18 +663,19 @@ def grade_picks(
         else:
             losses += 1
 
-        try:
-            pnl_tracker.record_pick(
-                game_id=gid, team=team, opponent=sp.get("opponent", ""),
-                bet_type="spread", odds=odds, model_prob=float(sp.get("model_prob", 0.5)),
-                bet_size=flat_stake,
-            )
-            pnl_tracker.record_result(gid, team, cov, bet_type="spread")
-        except ValueError:
+        if not _update_pnl_pick_result(d, team, "spread", cov, profit):
             try:
+                pnl_tracker.record_pick(
+                    game_id=gid, team=team, opponent=sp.get("opponent", ""),
+                    bet_type="spread", odds=odds, model_prob=float(sp.get("model_prob", 0.5)),
+                    bet_size=flat_stake,
+                )
                 pnl_tracker.record_result(gid, team, cov, bet_type="spread")
             except ValueError:
-                pass
+                try:
+                    pnl_tracker.record_result(gid, team, cov, bet_type="spread")
+                except ValueError:
+                    pass
 
         score_str = f"{away_n} {aws} @ {home_n} {hs}"
         tag = "WIN " if cov else "LOSS"
@@ -568,17 +740,18 @@ def grade_picks(
             losses += 1
 
         label = f"{direction} {line}"
-        try:
-            pnl_tracker.record_pick(
-                game_id=gid, team=label, opponent=f"{away_n} @ {home_n}",
-                bet_type="total", odds=odds, model_prob=0.5, bet_size=flat_stake,
-            )
-            pnl_tracker.record_result(gid, label, won, bet_type="total")
-        except ValueError:
+        if not _update_pnl_pick_result(d, label, "total", won, profit):
             try:
+                pnl_tracker.record_pick(
+                    game_id=gid, team=label, opponent=f"{away_n} @ {home_n}",
+                    bet_type="total", odds=odds, model_prob=0.5, bet_size=flat_stake,
+                )
                 pnl_tracker.record_result(gid, label, won, bet_type="total")
             except ValueError:
-                pass
+                try:
+                    pnl_tracker.record_result(gid, label, won, bet_type="total")
+                except ValueError:
+                    pass
 
         tr = hs + aws
         tag = "WIN " if won else "LOSS"
@@ -592,11 +765,72 @@ def grade_picks(
             "edge_runs": float(tp.get("edge_runs", 0) or 0),
         })
 
+    # --- NRFI / YRFI ---
+    nrfi_picks = _load_json_list(report_dir / "nrfi.json")
+    nrfi_wins = 0
+    nrfi_losses = 0
+    nrfi_pending = 0
+
+    for np_ in nrfi_picks:
+        home_t = np_.get("home_team", "")
+        away_t = np_.get("away_team", "")
+        direction = (np_.get("direction") or "NRFI").upper()
+
+        result = None
+        for r in results:
+            if (
+                _normalize(r["home_team"]) == _normalize(home_t)
+                or _normalize(home_t) in _normalize(r["home_team"])
+                or _normalize(r["home_team"]) in _normalize(home_t)
+            ):
+                if (
+                    _normalize(r["away_team"]) == _normalize(away_t)
+                    or _normalize(away_t) in _normalize(r["away_team"])
+                    or _normalize(r["away_team"]) in _normalize(away_t)
+                ):
+                    result = r
+                    break
+
+        if result is None or result["state"] != "Final":
+            nrfi_pending += 1
+            continue
+
+        h1 = result.get("first_inning_home_runs")
+        a1 = result.get("first_inning_away_runs")
+
+        if h1 is None or a1 is None:
+            # linescore not available — can't grade
+            nrfi_pending += 1
+            continue
+
+        runs_in_first = h1 + a1
+        if direction == "NRFI":
+            won = runs_in_first == 0
+        else:  # YRFI
+            won = runs_in_first > 0
+
+        if won:
+            nrfi_wins += 1
+        else:
+            nrfi_losses += 1
+
+        label = f"{away_t} @ {home_t} {direction}"
+        score_str = f"1st inning: {away_t} {a1}, {home_t} {h1}"
+        tag = "WIN " if won else "LOSS"
+        if verbose:
+            print(f"  {tag:4s}  NRFI {label} — {score_str}")
+
+    # Persist NRFI results to pnl so public_stats can show NRFI-specific record
+    _update_pnl_nrfi(nrfi_picks, results, d)
+
     settled = wins + losses
     roi = (total_profit / total_staked * 100) if total_staked > 0 else 0
+    nrfi_settled = nrfi_wins + nrfi_losses
 
     if verbose:
         print(f"\n  {'─'*50}")
+        if nrfi_settled > 0:
+            print(f"  NRFI:    {nrfi_wins}-{nrfi_losses} ({nrfi_wins/nrfi_settled:.1%}) today")
         if settled > 0:
             print(f"  RECORD:  {wins}-{losses} ({wins/settled:.1%} win rate)")
             print(f"  PROFIT:  ${total_profit:+,.0f} on ${total_staked:,.0f} wagered")
@@ -614,6 +848,55 @@ def grade_picks(
 
         print(f"  {'='*50}\n")
 
+    # Per-category breakdown
+    def _cat(bet_type: str) -> dict:
+        items = [g for g in graded if g.get("bet_type") == bet_type and g.get("status") in ("win", "loss")]
+        w = sum(1 for g in items if g.get("status") == "win")
+        l = sum(1 for g in items if g.get("status") == "loss")
+        profit = sum(float(g.get("profit") or 0) for g in items)
+        staked = len(items) * flat_stake
+        return {
+            "wins": w, "losses": l,
+            "win_rate": round(w / (w + l), 4) if (w + l) > 0 else None,
+            "profit": round(profit, 2),
+            "roi": round((profit / staked) * 100, 2) if staked > 0 else None,
+        }
+
+    def _agreement_breakdown(graded_list: list) -> dict:
+        """Break down win rate by model agreement signal (AGREE vs SPLIT)."""
+        result = {}
+        for signal in (True, False):
+            label = "agree" if signal else "split"
+            items = [
+                g for g in graded_list
+                if g.get("model_agreement") is signal and g.get("status") in ("win", "loss")
+            ]
+            w = sum(1 for g in items if g.get("status") == "win")
+            l = len(items) - w
+            profit = sum(float(g.get("profit") or 0) for g in items)
+            staked = len(items) * flat_stake
+            result[label] = {
+                "wins": w, "losses": l,
+                "win_rate": round(w / (w + l), 4) if (w + l) > 0 else None,
+                "profit": round(profit, 2),
+                "roi": round((profit / staked) * 100, 2) if staked > 0 else None,
+            }
+        return result
+
+    def _clv_summary(graded_list: list) -> dict:
+        """Summarize CLV (closing line value) across graded picks."""
+        clv_picks = [g for g in graded_list if g.get("clv_pct") is not None]
+        if not clv_picks:
+            return {"picks_with_clv": 0}
+        avg_clv = sum(float(g["clv_pct"]) for g in clv_picks) / len(clv_picks)
+        beating_close = sum(1 for g in clv_picks if float(g.get("clv_pct", 0)) > 0)
+        return {
+            "picks_with_clv": len(clv_picks),
+            "avg_clv_pct": round(avg_clv * 100, 2),
+            "beating_close": beating_close,
+            "pct_beating_close": round(beating_close / len(clv_picks), 4) if clv_picks else None,
+        }
+
     # Persist grading report
     report_dir.mkdir(parents=True, exist_ok=True)
     report = {
@@ -630,6 +913,18 @@ def grade_picks(
         "total_staked": total_staked,
         "total_profit": total_profit,
         "roi": roi,
+        "nrfi_picks": len(nrfi_picks),
+        "nrfi_wins": nrfi_wins,
+        "nrfi_losses": nrfi_losses,
+        "nrfi_pending": nrfi_pending,
+        "nrfi_win_rate": nrfi_wins / nrfi_settled if nrfi_settled > 0 else None,
+        "by_type": {
+            "moneyline": _cat("moneyline"),
+            "spread":    _cat("spread"),
+            "total":     _cat("total"),
+        },
+        "by_agreement": _agreement_breakdown(graded),
+        "clv_summary":  _clv_summary(graded),
         "details": graded,
         "graded_at": datetime.now(timezone.utc).isoformat(),
     }

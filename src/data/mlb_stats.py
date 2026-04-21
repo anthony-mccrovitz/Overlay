@@ -451,12 +451,28 @@ def get_todays_matchups(
             home_pitcher = fetch_pitcher_stats(hp["id"], season)
             home_pitcher.name = hp.get("fullName", "")
             home_pitcher.player_id = hp["id"]
+            # Recency weighting: last-5 starts × 60% + season × 40%
+            try:
+                log5 = fetch_pitcher_game_logs(hp["id"], season, n=5)
+                if log5.get("era_l10", 4.5) > 0:  # era_l10 key = last-N ERA
+                    home_pitcher.era = round(log5["era_l10"] * 0.6 + home_pitcher.era * 0.4, 2)
+                    home_pitcher.k_per_9 = round(log5["k9_l10"] * 0.6 + home_pitcher.k_per_9 * 0.4, 2)
+            except Exception:
+                pass
 
         ap = away_info.get("probablePitcher")
         if ap and ap.get("id"):
             away_pitcher = fetch_pitcher_stats(ap["id"], season)
             away_pitcher.name = ap.get("fullName", "")
             away_pitcher.player_id = ap["id"]
+            # Recency weighting: last-5 starts × 60% + season × 40%
+            try:
+                log5 = fetch_pitcher_game_logs(ap["id"], season, n=5)
+                if log5.get("era_l10", 4.5) > 0:
+                    away_pitcher.era = round(log5["era_l10"] * 0.6 + away_pitcher.era * 0.4, 2)
+                    away_pitcher.k_per_9 = round(log5["k9_l10"] * 0.6 + away_pitcher.k_per_9 * 0.4, 2)
+            except Exception:
+                pass
 
         matchups.append(Matchup(
             game_id=game.get("gamePk", 0),
