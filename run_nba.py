@@ -465,6 +465,15 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     except Exception as _cap_err:
         print(f"  [captions] {_cap_err}")
 
+    # ── CLV opening-line snapshot ──────────────────────────────────────────────
+    try:
+        from src.analytics.clv_tracker import snapshot_from_pnl
+        n_snapped = snapshot_from_pnl(card_date_obj.isoformat())
+        if n_snapped:
+            print(f"  [CLV] Snapshotted opening lines for {n_snapped} NBA pick(s)")
+    except Exception as _clv_err:
+        print(f"  [CLV snapshot] {_clv_err}")
+
 
 _PNL_FILE = Path("data/pnl/picks.json")
 

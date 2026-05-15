@@ -114,3 +114,18 @@ def live_models() -> list[tuple[str, str]]:
 def incubating_models() -> list[tuple[str, str]]:
     """List of (sport, market) tuples currently incubating (silent)."""
     return [k for k, v in MODELS.items() if v["status"] == "incubating"]
+
+
+# New-model shadow stake caps: 0.5u until N≥30 settled with positive CLV
+_NEW_SPORTS = {"wnba", "tennis", "soccer", "pga"}
+
+def shadow_stake(sport: str, market: str) -> float:
+    """Return appropriate stake for a shadow pick.
+
+    New sport models (WNBA, tennis, soccer, PGA) use 0.5u until they prove
+    out (N≥30 settled + positive CLV). All other incubating models use 1.0u.
+    """
+    s, _ = _key(sport, market)
+    if s in _NEW_SPORTS:
+        return 0.5
+    return 1.0

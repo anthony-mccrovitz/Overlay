@@ -40,6 +40,12 @@ CANONICAL_FIELDS = (
     "result", "profit", "recorded_at", "resulted_at",
 )
 
+_DIRECTION_ALIASES: dict[str, str] = {
+    "ML":   "WIN",
+    "H2H":  "WIN",
+    "AWAY": "WIN",
+}
+
 _MARKET_ALIASES: dict[str, str] = {
     "h2h":        "moneyline",
     "ml":         "moneyline",
@@ -49,9 +55,13 @@ _MARKET_ALIASES: dict[str, str] = {
     "runline":    "spread",
     "rl":         "spread",
     "spreads":    "spread",
+    "puck_line":  "spread",
+    "puck-line":  "spread",
     "over_under": "total",
     "totals":     "total",
     "ou":         "total",
+    "f5_total":   "f5_total",
+    "f5 total":   "f5_total",
 }
 
 _DEFAULT_DIRECTION: dict[str, str] = {
@@ -105,11 +115,11 @@ def validate_pick(pick: dict) -> list[str]:
             issues.append(f"missing field: {f}")
 
     market = pick.get("market", "")
-    if market not in ("moneyline", "spread", "total", "nrfi", "prop", "unknown"):
+    if market not in ("moneyline", "spread", "total", "nrfi", "prop", "f5_total", "unknown"):
         issues.append(f"invalid market: {market!r}")
 
     direction = pick.get("direction", "")
-    if direction not in ("WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER", "NRFI", "YRFI", ""):
+    if direction not in ("WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER", "NRFI", "YRFI", "DRAW", ""):
         issues.append(f"invalid direction: {direction!r}")
 
     result = pick.get("result")
@@ -171,12 +181,23 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
 
     # ── Direction ────────────────────────────────────────────────────────────
     direction = str(raw.get("direction") or "").upper().strip()
+    _VALID_DIRECTIONS = {"WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER", "NRFI", "YRFI", "DRAW"}
+    direction = _DIRECTION_ALIASES.get(direction, direction)
     if not direction:
         if market == "total":
             parts = team.upper().split()
             direction = parts[0] if parts and parts[0] in ("OVER", "UNDER") else "OVER"
         else:
             direction = _DEFAULT_DIRECTION.get(market, "WIN")
+    elif direction not in _VALID_DIRECTIONS:
+        # Numeric string used as direction (e.g. "-15.5" from WNBA spread bug)
+        try:
+            float(direction)
+            direction = "COVER" if market == "spread" else "OVER"
+        except ValueError:
+            # Long team name used as direction (tennis/soccer model bug)
+            if len(direction) > 5 and direction not in _VALID_DIRECTIONS:
+                direction = _DEFAULT_DIRECTION.get(market, "WIN")
 
     # ── Line ─────────────────────────────────────────────────────────────────
     line: float | None = raw.get("line") or raw.get("bet_line")

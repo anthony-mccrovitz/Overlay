@@ -99,19 +99,21 @@ def snapshot_opening_lines(
     added    = 0
 
     for pick in picks:
-        team = str(pick.get("Team", "")).strip()
+        # Support both old format (Team/BestOdds) and canonical schema (team/odds)
+        team = str(pick.get("Team") or pick.get("team") or "").strip()
         if not team:
             continue
         key = (date_str, team.lower().strip())
         if key in snap_keys:
             continue
 
-        odds = float(pick.get("BestOdds") or 0)
+        odds = float(pick.get("BestOdds") or pick.get("odds") or pick.get("best_odds") or 0)
         snap = {
             "date":                 date_str,
             "team":                 team,
-            "opponent":             str(pick.get("Opponent", "?")).strip(),
+            "opponent":             str(pick.get("Opponent") or pick.get("matchup") or "?").strip(),
             "sport":                sport,
+            "market":               str(pick.get("market") or pick.get("Market") or "moneyline"),
             "opening_odds":         odds,
             "opening_implied_prob": round(_odds_to_implied(odds), 6),
             "snapshot_time":        now_ts,
@@ -128,6 +130,94 @@ def snapshot_opening_lines(
         _save_snapshots(snapshots)
 
     return added
+
+
+def snapshot_from_pnl(date_str: str | None = None) -> int:
+    """
+    Snapshot opening lines for all picks on date_str directly from picks.json.
+    Works for all sports (MLB, NBA, NHL, WNBA, soccer, tennis, PGA).
+    Returns number of new snapshots added.
+    """
+    from datetime import date as _date
+    PNL_FILE = Path("data/pnl/picks.json")
+    if not PNL_FILE.exists():
+        return 0
+
+    effective_date = date_str or _date.today().isoformat()
+    try:
+        all_picks = json.loads(PNL_FILE.read_text()).get("picks", [])
+    except (json.JSONDecodeError, OSError):
+        return 0
+
+    day_picks = [p for p in all_picks if isinstance(p, dict) and p.get("date") == effective_date]
+    if not day_picks:
+        return 0
+
+    snapshots = _load_snapshots()
+    snap_keys = {
+        (s.get("date", ""), s.get("team", "").lower().strip(), s.get("market", ""))
+        for s in snapshots
+    }
+
+    now_ts = datetime.now(tz=timezone.utc).isoformat()
+    added = 0
+
+    for pick in day_picks:
+        team = str(pick.get("team") or "").strip()
+        if not team:
+            continue
+        market = str(pick.get("market") or "moneyline")
+        key = (effective_date, team.lower().strip(), market)
+        if key in snap_keys:
+            continue
+
+        odds = float(pick.get("odds") or pick.get("best_odds") or 0)
+        snap = {
+            "date":                 effective_date,
+            "team":                 team,
+            "opponent":             str(pick.get("matchup") or "?").strip(),
+            "sport":                str(pick.get("sport") or "baseball_mlb"),
+            "market":               market,
+            "opening_odds":         odds,
+            "opening_implied_prob": round(_odds_to_implied(odds), 6),
+            "snapshot_time":        now_ts,
+            "closing_odds":         None,
+            "closing_implied_prob": None,
+            "clv":                  None,
+            "clv_pct":              None,
+        }
+        snapshots.append(snap)
+        snap_keys.add(key)
+        added += 1
+
+    if added > 0:
+        _save_snapshots(snapshots)
+
+    return added
+
+
+def backfill_snapshots_from_pnl() -> int:
+    """
+    Backfill opening-line snapshots for all dates in picks.json.
+    Safe to run multiple times (deduplicates).
+    """
+    PNL_FILE = Path("data/pnl/picks.json")
+    if not PNL_FILE.exists():
+        return 0
+    try:
+        all_picks = json.loads(PNL_FILE.read_text()).get("picks", [])
+    except (json.JSONDecodeError, OSError):
+        return 0
+
+    dates = sorted({p.get("date") for p in all_picks if isinstance(p, dict) and p.get("date")})
+    total = 0
+    for d in dates:
+        n = snapshot_from_pnl(d)
+        if n:
+            print(f"  [CLV backfill] {d}: {n} picks snapshotted")
+            total += n
+    print(f"  [CLV backfill] Total: {total} new snapshots added across {len(dates)} dates")
+    return total
 
 
 def fetch_closing_lines(
@@ -228,24 +318,36 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     day_snaps = [s for s in snapshots if s.get("date") == date_str]
 
     if not day_snaps:
-        print(f"  [CLV] No opening-line snapshots for {date_str}.")
-        print(f"        Run snapshot_opening_lines() after generating picks.")
         return []
 
-    # Guess sport from first snapshot (default to baseball_mlb)
-    sport = day_snaps[0].get("sport", "baseball_mlb")
-    closing_map = fetch_closing_lines(date_str=date_str, sport=sport)
+    # Build per-sport closing maps for all sports present that day
+    sports_today = {s.get("sport", "baseball_mlb") for s in day_snaps}
+    closing_maps: dict[str, dict] = {}
+    for sport in sports_today:
+        closing_maps[sport] = fetch_closing_lines(date_str=date_str, sport=sport)
+
+    # Merged map: all teams from all sports (used as fallback)
+    merged_map: dict[str, float] = {}
+    for cm in closing_maps.values():
+        merged_map.update(cm)
 
     updated = 0
     for snap in day_snaps:
         team_lower = snap["team"].lower().strip()
+        snap_sport = snap.get("sport", "baseball_mlb")
 
-        # Try exact match first, then partial
-        closing_odds = closing_map.get(team_lower)
+        # Try sport-specific map first, then merged fallback
+        sport_map = closing_maps.get(snap_sport, {})
+        closing_odds = sport_map.get(team_lower) or merged_map.get(team_lower)
+
         if closing_odds is None:
-            for key, val in closing_map.items():
-                if team_lower in key or key in team_lower:
-                    closing_odds = val
+            # Partial match
+            for cm in (sport_map, merged_map):
+                for key, val in cm.items():
+                    if team_lower in key or key in team_lower:
+                        closing_odds = val
+                        break
+                if closing_odds is not None:
                     break
 
         if closing_odds is None:

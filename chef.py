@@ -986,6 +986,18 @@ def cmd_migrate(args: argparse.Namespace) -> int:
             p["stake"] = 1.0
             fixups += 1
 
+        # Fix direction="NAN" from old prediction bug (pandas NaN stringified)
+        if str(p.get("direction", "")).upper() == "NAN":
+            market = p.get("market", "moneyline")
+            p["direction"] = "COVER" if market == "spread" else "WIN"
+            fixups += 1
+
+        # Fix old NHL puck-line direction strings like "HOME -1.5" / "AWAY +1.5"
+        direction_str = str(p.get("direction", ""))
+        if direction_str.upper().startswith(("HOME ", "AWAY ")):
+            p["direction"] = "COVER"
+            fixups += 1
+
     if fixups > 0:
         _PNL_FILE.write_text(json.dumps(data, indent=2))
         print(f"    Fixups applied: {fixups} (NHL v0_heuristic tags + stake=0 backfill)")

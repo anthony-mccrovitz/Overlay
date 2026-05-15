@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.models.tennis_model import TennisModel
 from src.data.odds_api import MY_BOOKS_PARAM
 from src.tracking.schema import normalize_pick
-from src.config.models import is_live
+from src.config.models import is_live, shadow_stake
 
 import requests
 
@@ -129,7 +129,7 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
             "sportsbook":  e.get("sportsbook", ""),
             "model_prob":  e.get("model_prob"),
             "edge_pct":    e.get("edge_pct"),
-            "stake":       1.0,
+            "stake":       shadow_stake("tennis", market),
             "card_pick":   is_live("tennis", market),
             "result":      None,
             "profit":      None,
@@ -229,6 +229,17 @@ def run_tennis(args: argparse.Namespace) -> int:
                 f"odds={e['odds']:+d}  model={e['model_prob']:.1%}  [{e['sportsbook']}]"
             )
 
+    # Pinnacle disagreement guard
+    try:
+        from src.betting.value_bets import flag_high_edge_picks
+        high_edge = flag_high_edge_picks(edges, threshold_pct=8.0)
+        if high_edge:
+            print(f"\n  ⚠  MANUAL REVIEW: {len(high_edge)} pick(s) with edge >8%:")
+            for e in high_edge:
+                print(f"    {e['team']}  edge={e['edge_pct']:+.1f}%  — verify Elo is current")
+    except Exception:
+        pass
+
     # 3. Save output
     out_dir = Path("output/picks") / sport / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -240,6 +251,15 @@ def run_tennis(args: argparse.Namespace) -> int:
     added = _auto_log_picks(edges, game_date, sport)
     if added:
         print(f"  Logged {added} pick(s) to PnL.")
+
+    # 5. CLV snapshot
+    try:
+        from src.analytics.clv_tracker import snapshot_from_pnl
+        n_snapped = snapshot_from_pnl(game_date.isoformat())
+        if n_snapped:
+            print(f"  [CLV] Snapshotted {n_snapped} tennis pick(s)")
+    except Exception as _clv_err:
+        print(f"  [CLV snapshot] {_clv_err}")
 
     print(f"\n{'='*60}\n")
     return 0

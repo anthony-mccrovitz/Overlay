@@ -138,17 +138,21 @@ class SoccerModel:
         min_year: int = 2010,
         refresh_data: bool = False,
         verbose: bool = True,
+        _matches: list[dict] | None = None,
     ) -> "SoccerModel":
         """
         Fit Dixon-Coles parameters on historical international match data.
-        Saves model to MODEL_PATH.
+        Saves model to MODEL_PATH. Pass _matches to override data loading (for backtests).
         """
         from src.data.soccer_data import load_training_data
 
-        if verbose:
-            print("  [soccer] Loading match data...")
-        all_matches = load_training_data()
-        matches = [m for m in all_matches if m["year"] >= min_year]
+        if _matches is not None:
+            matches = _matches
+        else:
+            if verbose:
+                print("  [soccer] Loading match data...")
+            all_matches = load_training_data()
+            matches = [m for m in all_matches if m["year"] >= min_year]
         if not matches:
             raise RuntimeError("No match data loaded — check network or cache.")
         if verbose:

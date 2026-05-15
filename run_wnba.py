@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.models.wnba_model import find_wnba_edges
 from src.data.odds_api import MY_BOOKS_PARAM
 from src.tracking.schema import normalize_pick, make_pick_id
-from src.config.models import is_live
+from src.config.models import is_live, shadow_stake
 
 import requests
 
@@ -116,7 +116,7 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
             "sportsbook":  e.get("sportsbook", ""),
             "model_prob":  e.get("model_prob"),
             "edge_pct":    e.get("edge_pct"),
-            "stake":       1.0,
+            "stake":       shadow_stake("wnba", market),
             "card_pick":   is_live("wnba", market),
             "result":      None,
             "profit":      None,
@@ -225,6 +225,15 @@ def run_wnba(args: argparse.Namespace) -> int:
     n_logged = _auto_log_wnba_picks(edges, game_date)
     if n_logged > 0:
         print(f"  Auto-logged {n_logged} pick(s) to pnl.")
+
+    # 6. CLV snapshot
+    try:
+        from src.analytics.clv_tracker import snapshot_from_pnl
+        n_snapped = snapshot_from_pnl(game_date.isoformat())
+        if n_snapped:
+            print(f"  [CLV] Snapshotted {n_snapped} WNBA pick(s)")
+    except Exception as _clv_err:
+        print(f"  [CLV snapshot] {_clv_err}")
 
     print(f"\n{'='*60}\n")
     return 0

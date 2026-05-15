@@ -59,6 +59,15 @@ def find_value_bets(
         return _find_moneyline_value(predictions, odds_df, min_edge, fair_prob_map, sport)
 
 
+def flag_high_edge_picks(edges: list[dict], threshold_pct: float = 8.0) -> list[dict]:
+    """Return edges that exceed threshold vs implied prob — flag for manual review.
+
+    Any edge above threshold_pct is suspicious (stale line, data error, or genuine
+    but rare alpha). Return the flagged list; caller decides whether to warn or block.
+    """
+    return [e for e in edges if abs(float(e.get("edge_pct") or 0)) > threshold_pct]
+
+
 def _find_moneyline_value(
     predictions: dict[tuple[str, str], float],
     odds_df: pd.DataFrame,
