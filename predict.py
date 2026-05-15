@@ -999,16 +999,19 @@ def _run_mlb_daily(args, sport: str):
                     print(f"  Auto-logged {n_props} prop(s) to pnl for tracking")
             except Exception as _ple:
                 print(f"  [prop log] {_ple}")
-            # Render props card image (only for live prop models)
-            from src.config.models import is_live as _is_live
-            if _is_live("mlb", "prop"):
-                try:
-                    from src.output.card_html import render_props_card_html
-                    props_img = render_props_card_html(prop_edges[:10], sport=sport, card_date=_game_date)
-                    if props_img:
-                        print(f"  Props card → {props_img}")
-                except Exception as _pci:
-                    print(f"  [props card] {_pci}")
+            # Render combined props card + one card per prop type (for content variety)
+            try:
+                from src.output.card_html import render_props_card_html, render_props_cards_by_type
+                # Combined card (legacy, top 10 across all types)
+                props_img = render_props_card_html(prop_edges[:10], sport=sport, card_date=_game_date)
+                if props_img:
+                    print(f"  Props card → {props_img}")
+                # Per-type cards (Ks, HR, Hits, TB, RBIs separately)
+                by_type = render_props_cards_by_type(prop_edges, sport=sport, card_date=_game_date)
+                for mkt, path in by_type.items():
+                    print(f"  Props/{mkt} card → {path}")
+            except Exception as _pci:
+                print(f"  [props card] {_pci}")
                 try:
                     from src.output.captions import props_caption
                     pcap = props_caption(prop_edges[:10], card_date=_game_date)

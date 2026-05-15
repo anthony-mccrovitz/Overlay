@@ -393,59 +393,113 @@ def _field_default_skill(odds: int) -> float:
     return max(0.05, min(2.0, scaled * 2.0))
 
 
+class SimulationOutput:
+    """
+    Stores the full simulation tensor for efficient multi-market pricing.
+    Run once per tournament; query any market without re-simulating.
+    """
+
+    def __init__(
+        self,
+        players: list[str],
+        totals: np.ndarray,   # shape (n_sim, n_players) — 4-round score totals
+        round1: np.ndarray,   # shape (n_sim, n_players) — round 1 scores only
+        skill_ratings: dict[str, float],
+        n_sim: int,
+    ) -> None:
+        self.players = players
+        self.idx     = {p: i for i, p in enumerate(players)}
+        self.totals  = totals     # (n_sim, n_players)
+        self.round1  = round1     # (n_sim, n_players)
+        self.skill_ratings = skill_ratings
+        self.n_sim   = n_sim
+        # Precompute finish ranks (ascending = lower score = better)
+        self._ranks  = np.argsort(totals, axis=1)    # (n_sim, n_players)
+        self._ranks1 = np.argsort(round1, axis=1)    # for FRL
+        # Precompute per-player finish position (inverse rank)
+        self._finish = np.argsort(self._ranks, axis=1)  # _finish[s, i] = finish pos of player i in sim s
+
+    def _pos(self, player: str) -> np.ndarray:
+        """Finish position of player across all sims (0-indexed, 0=winner)."""
+        i = self.idx[player]
+        return self._finish[:, i]
+
+    # ── Market pricing ─────────────────────────────────────────────────────────
+
+    def win_prob(self, player: str) -> float:
+        return float((self._pos(player) == 0).mean())
+
+    def top_n_prob(self, player: str, n: int) -> float:
+        return float((self._pos(player) < n).mean())
+
+    def make_cut_prob(self, player: str, cut_line: int = 65) -> float:
+        """Probability of finishing in top cut_line after 36 holes (approx)."""
+        r2 = self.totals[:, self.idx[player]] / 2  # halve 4-round total as 2-round proxy
+        r2_field = (self.totals / 2)
+        pos_r2 = (r2_field < r2[:, np.newaxis]).sum(axis=1)
+        return float((pos_r2 < cut_line).mean())
+
+    def matchup_prob(self, player_a: str, player_b: str) -> float:
+        """P(player_a finishes better than player_b over 72 holes)."""
+        pa = self._pos(player_a)
+        pb = self._pos(player_b)
+        return float((pa < pb).mean())
+
+    def three_ball_prob(self, player_a: str, player_b: str, player_c: str) -> float:
+        """P(player_a beats both player_b and player_c over 72 holes)."""
+        pa = self._pos(player_a)
+        pb = self._pos(player_b)
+        pc = self._pos(player_c)
+        return float(((pa < pb) & (pa < pc)).mean())
+
+    def frl_prob(self, player: str) -> float:
+        """P(player leads / co-leads after round 1)."""
+        i = self.idx[player]
+        r1_pos = np.argsort(np.argsort(self.round1, axis=1), axis=1)
+        return float((r1_pos[:, i] == 0).mean())
+
+    def summary(self) -> dict[str, dict]:
+        """Per-player probability dict (backward-compatible with old API)."""
+        return {
+            p: {
+                "win_prob":    self.win_prob(p),
+                "top5_prob":   self.top_n_prob(p, 5),
+                "top10_prob":  self.top_n_prob(p, 10),
+                "top20_prob":  self.top_n_prob(p, 20),
+                "make_cut":    self.make_cut_prob(p),
+                "frl_prob":    self.frl_prob(p),
+                "skill":       self.skill_ratings.get(p, 0.0),
+            }
+            for p in self.players
+        }
+
+
 def run_simulation(
     players: list[str],
     skill_ratings: dict[str, float],
     n_sim: int = 150_000,
     seed: int = 42,
-) -> dict[str, dict]:
+) -> SimulationOutput:
     """
     Monte Carlo simulation: 4 rounds, 156 players.
-    Returns per-player win/top5/top10/top20 probabilities.
+    Returns a SimulationOutput object that can price any market.
     """
     rng = np.random.default_rng(seed)
     n   = len(players)
 
-    # Expected score per round (strokes above avg → below par)
-    # Par 71, field average ~71.5 for a major
     field_avg  = 71.5
     exp_scores = np.array([field_avg - skill_ratings.get(p, 0.3) for p in players])
 
-    # Simulate n_sim tournaments
     # Shape: (n_sim, n_players, 4_rounds)
     rounds = rng.normal(
-        loc   = exp_scores[np.newaxis, :, np.newaxis],   # (1, n, 1)
+        loc   = exp_scores[np.newaxis, :, np.newaxis],
         scale = ROUND_SIGMA,
         size  = (n_sim, n, 4),
     )
-    totals = rounds.sum(axis=2)   # (n_sim, n_players)
+    totals = rounds.sum(axis=2)    # (n_sim, n_players)
+    round1 = rounds[:, :, 0]       # (n_sim, n_players)
 
-    # Fully vectorised finish counting — (n_sim, n_players) argsort
-    ranks = np.argsort(totals, axis=1)   # ranks[s, k] = player index finishing kth in sim s
-
-    # For each player, count how many sims they finished in each position bucket
-    # ranks[:, 0]  → winner index per sim
-    wins  = np.bincount(ranks[:, 0],        minlength=n).astype(np.float64)
-    top5  = np.zeros(n, dtype=np.float64)
-    top10 = np.zeros(n, dtype=np.float64)
-    top20 = np.zeros(n, dtype=np.float64)
-
-    for k in range(min(20, n)):
-        col = ranks[:, k]
-        if k < 5:  top5  += np.bincount(col, minlength=n)
-        if k < 10: top10 += np.bincount(col, minlength=n)
-        top20 += np.bincount(col, minlength=n)
-
-    results = {}
-    for i, player in enumerate(players):
-        results[player] = {
-            "win_prob":   wins[i]  / n_sim,
-            "top5_prob":  top5[i]  / n_sim,
-            "top10_prob": top10[i] / n_sim,
-            "top20_prob": top20[i] / n_sim,
-            "skill":      skill_ratings.get(player, 0.0),
-        }
-    return results
+    return SimulationOutput(players, totals, round1, skill_ratings, n_sim)
 
 
 def _american_to_decimal(odds: int) -> float:
@@ -501,7 +555,7 @@ def fetch_odds() -> dict[str, dict]:
 def run_pga_model(n_sim: int = 100_000) -> list[dict]:
     """
     Full pipeline: fetch odds → build skill ratings → simulate → find edges.
-    Returns sorted list of picks with edge data.
+    Returns sorted list of picks with edge data (outright + top5/10/20 markets).
     """
     print("  Fetching PGA Championship odds...")
     market_odds = fetch_odds()
@@ -511,34 +565,32 @@ def run_pga_model(n_sim: int = 100_000) -> list[dict]:
 
     print(f"  {len(market_odds)} players in market.")
 
-    # Build skill ratings for all players in the market
     skill_ratings: dict[str, float] = {}
     for player, info in market_odds.items():
         if player in PLAYER_DB:
             skill_ratings[player] = _course_adjusted_skill(player, PLAYER_DB)
         else:
-            # Use odds-implied skill for players not in DB
             skill_ratings[player] = _field_default_skill(info["best_odds"])
 
     players = list(market_odds.keys())
 
     print(f"  Running {n_sim:,} simulations for {len(players)} players...")
-    sim_results = run_simulation(players, skill_ratings, n_sim=n_sim)
+    sim = run_simulation(players, skill_ratings, n_sim=n_sim)
+    sim_results = sim.summary()
 
-    # Build picks list with edges
+    # Build picks list with edges — outright market
     picks = []
-    # Market overround — total implied prob > 100% due to vig; normalize
     total_impl = sum(v["implied_prob"] for v in market_odds.values())
-    vig_factor = total_impl  # typically ~1.20 for outrights
+    vig_factor = total_impl
 
     for player in players:
         odds_info = market_odds[player]
-        sim       = sim_results[player]
+        sr        = sim_results[player]
 
         raw_impl  = odds_info["implied_prob"]
-        fair_impl = raw_impl / vig_factor   # remove overround
+        fair_impl = raw_impl / vig_factor
 
-        model_win = sim["win_prob"]
+        model_win = sr["win_prob"]
         edge_pct  = round((model_win - fair_impl) * 100, 2)
 
         picks.append({
@@ -548,15 +600,64 @@ def run_pga_model(n_sim: int = 100_000) -> list[dict]:
             "model_win":    round(model_win * 100, 2),
             "market_impl":  round(fair_impl * 100, 2),
             "edge_pct":     edge_pct,
-            "top5_prob":    round(sim["top5_prob"] * 100, 1),
-            "top10_prob":   round(sim["top10_prob"] * 100, 1),
-            "top20_prob":   round(sim["top20_prob"] * 100, 1),
-            "skill_rating": round(sim["skill"], 3),
+            "top5_prob":    round(sr["top5_prob"] * 100, 1),
+            "top10_prob":   round(sr["top10_prob"] * 100, 1),
+            "top20_prob":   round(sr["top20_prob"] * 100, 1),
+            "make_cut":     round(sr["make_cut"] * 100, 1),
+            "frl_prob":     round(sr["frl_prob"] * 100, 2),
+            "skill_rating": round(sr["skill"], 3),
         })
 
     # Sort by edge descending
     picks.sort(key=lambda x: x["edge_pct"], reverse=True)
     return picks
+
+
+def price_matchups(
+    sim: SimulationOutput,
+    market_odds: dict[str, dict],
+    player_pairs: list[tuple[str, str]],
+    min_edge_pct: float = 3.0,
+) -> list[dict]:
+    """
+    Price head-to-head tournament matchups from the simulation tensor.
+    player_pairs: list of (player_a, player_b) tuples to evaluate.
+    Returns edge dicts compatible with pnl schema.
+    """
+    edges = []
+    total_impl = sum(v["implied_prob"] for v in market_odds.values())
+    vig = total_impl
+
+    for a, b in player_pairs:
+        if a not in sim.idx or b not in sim.idx:
+            continue
+        p_a = sim.matchup_prob(a, b)
+
+        # Pull best available odds for each side (use outright as proxy if no dedicated market)
+        odds_a = market_odds.get(a, {}).get("best_odds", -110)
+        odds_b = market_odds.get(b, {}).get("best_odds", -110)
+
+        # Devig the pair
+        impl_a = _implied_prob(odds_a) / (_implied_prob(odds_a) + _implied_prob(odds_b))
+        impl_b = 1.0 - impl_a
+
+        for player, model_p, imp_p, book_odds in [
+            (a, p_a, impl_a, odds_a),
+            (b, 1 - p_a, impl_b, odds_b),
+        ]:
+            edge = (model_p - imp_p) * 100.0
+            if edge >= min_edge_pct:
+                edges.append({
+                    "market":       "matchup",
+                    "player":       player,
+                    "opponent":     b if player == a else a,
+                    "odds":         int(book_odds),
+                    "model_prob":   round(model_p, 4),
+                    "implied_prob": round(imp_p, 4),
+                    "edge_pct":     round(edge, 2),
+                })
+
+    return sorted(edges, key=lambda x: x["edge_pct"], reverse=True)
 
 
 def print_report(picks: list[dict], top_n: int = 20) -> None:

@@ -802,20 +802,40 @@ def _load_record_str(sport: str) -> str:
 
 
 def _format_record_str(sport: str) -> str:
-    """Pull a clean season record line for the card footer."""
+    """Pull a clean season record line for the card footer.
+
+    Reads sport-specific stats from public_stats.json by_sport[<sport>]. The
+    sport key is normalized so 'baseball_mlb', 'basketball_nba', 'mlb', 'nba',
+    'NBA' all resolve to the same bucket. Falls back to overall summary only
+    when no sport-specific bucket exists (e.g. mixed cards).
+    """
     try:
         stats_path = Path("data/public_stats.json")
         if not stats_path.exists():
             return ""
         with open(stats_path) as f:
-            s = json.load(f).get("summary", {})
-        w = s.get("wins", 0); l = s.get("losses", 0)
-        wr = s.get("win_rate", 0) * 100
-        u  = s.get("units_profit", 0)
-        roi = s.get("roi", 0) * 100
+            stats = json.load(f)
+        sport_key = (sport or "").lower()
+        for prefix in ("baseball_", "basketball_", "icehockey_", "hockey_"):
+            sport_key = sport_key.replace(prefix, "")
+        bucket = stats.get("by_sport", {}).get(sport_key)
+        if not bucket:
+            # No per-sport bucket yet — fall back to overall
+            bucket = stats.get("summary", {})
+        w = int(bucket.get("wins", 0) or 0)
+        l = int(bucket.get("losses", 0) or 0)
+        u = bucket.get("profit_units")
+        if u is None:
+            u = bucket.get("units_profit", 0) or 0
+        roi = bucket.get("roi")
+        if roi is None:
+            # Compute on the fly if not stored
+            settled = w + l
+            roi = (u / settled) if settled else 0
+        wr = (w / (w + l)) if (w + l) else 0
         sign_u = "+" if u >= 0 else ""
         sign_r = "+" if roi >= 0 else ""
-        return f"{w}-{l} ({wr:.1f}%) {sign_u}{u:.2f}u · ROI {sign_r}{roi:.1f}%"
+        return f"{w}-{l} ({wr*100:.1f}%) {sign_u}{u:.2f}u · ROI {sign_r}{roi*100:.1f}%"
     except Exception:
         return ""
 
@@ -1170,7 +1190,8 @@ _MARKET_COLOR = {
 }
 
 
-def _build_props_html(props: list[dict], sport: str, d: date) -> str:
+def _build_props_html(props: list[dict], sport: str, d: date,
+                      pill_label: str = "PLAYER PROPS") -> str:
     sport_lbl = _SPORT_LABELS.get(sport.lower(), sport.upper())
     date_str  = d.strftime("%b %d, %Y").upper()
 
@@ -1450,7 +1471,7 @@ def _build_props_html(props: list[dict], sport: str, d: date) -> str:
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
-      <div class="props-pill">PLAYER PROPS</div>
+      <div class="props-pill">{pill_label}</div>
     </div>
   </div>
 
@@ -1474,15 +1495,17 @@ def render_props_card_html(
     props: list[dict],
     sport: str = "mlb",
     card_date: date | None = None,
+    pill_label: str = "PLAYER PROPS",
+    filename: str = "props_card",
 ) -> Path | None:
     """Render player props card to PNG via Playwright. Returns path or None."""
     d = card_date or date.today()
-    html = _build_props_html(props, sport, d)
+    html = _build_props_html(props, sport, d, pill_label=pill_label)
 
     save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
-    html_path = save_dir / "props_card.html"
-    png_path  = save_dir / "props_card.png"
+    html_path = save_dir / f"{filename}.html"
+    png_path  = save_dir / f"{filename}.png"
 
     html_path.write_text(html, encoding="utf-8")
 
@@ -1502,6 +1525,62 @@ def render_props_card_html(
     except Exception as e:
         print(f"  [props card] Playwright render failed: {e}")
         return None
+
+
+_PROP_TYPE_PILL = {
+    "pitcher_strikeouts":  "PITCHER STRIKEOUTS",
+    "batter_home_runs":    "BATTER HOME RUNS",
+    "batter_hits":         "BATTER HITS",
+    "batter_total_bases":  "TOTAL BASES",
+    "batter_rbis":         "BATTER RBIs",
+    "player_points":       "PLAYER POINTS",
+    "player_rebounds":     "PLAYER REBOUNDS",
+    "player_assists":      "PLAYER ASSISTS",
+    "player_pra":          "POINTS + REB + AST",
+    "player_blocks":       "PLAYER BLOCKS",
+    "player_steals":       "PLAYER STEALS",
+    "player_threes":       "THREE POINTERS MADE",
+}
+
+
+def render_props_cards_by_type(
+    props: list[dict],
+    sport: str = "mlb",
+    card_date: date | None = None,
+    min_per_card: int = 1,
+    max_per_card: int = 8,
+) -> dict[str, Path]:
+    """Render one prop card per prop type (e.g. pitcher_strikeouts, batter_home_runs).
+
+    Groups `props` by their `market` field, then calls `render_props_card_html`
+    for each group with a sport-typed filename like `props_pitcher_strikeouts_card.png`.
+
+    Skips groups with fewer than `min_per_card` picks. Returns {market: png_path}.
+    """
+    from collections import defaultdict
+
+    by_market: dict[str, list[dict]] = defaultdict(list)
+    for p in props:
+        mkt = p.get("market") or p.get("prop_market") or "unknown"
+        by_market[mkt].append(p)
+
+    results: dict[str, Path] = {}
+    for market, group in by_market.items():
+        if len(group) < min_per_card:
+            continue
+        group_sorted = sorted(group, key=lambda x: float(x.get("edge_pct") or 0), reverse=True)
+        pill = _PROP_TYPE_PILL.get(market, market.replace("_", " ").upper())
+        filename = f"props_{market}_card"
+        png = render_props_card_html(
+            group_sorted[:max_per_card],
+            sport=sport,
+            card_date=card_date,
+            pill_label=pill,
+            filename=filename,
+        )
+        if png:
+            results[market] = png
+    return results
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -2215,7 +2294,8 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
 </html>"""
 
 
-def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA") -> str:
+def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA",
+                          pill_label: str = "PLAYER PROPS") -> str:
     """NBA player props card — supports PTS, REB, AST, 3PM, PRA, BLK, STL."""
     date_str = d.strftime("%b %d, %Y").upper()
     is_playoff = "PLAYOFF" in context_label.upper() or "PLAY-IN" in context_label.upper()
@@ -2405,7 +2485,7 @@ def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA"
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
-      <div class="context-pill">PLAYER PROPS</div>
+      <div class="context-pill">{pill_label}</div>
     </div>
   </div>
 
@@ -2562,16 +2642,51 @@ def render_nba_props_card_html(
     props: list[dict],
     card_date: date | None = None,
     context_label: str = "NBA",
+    pill_label: str = "PLAYER PROPS",
+    filename: str = "nba_props_card",
 ) -> Path | None:
     """Render NBA player props card to PNG."""
     d = card_date or date.today()
-    html = _build_nba_props_html(props, d, context_label)
+    html = _build_nba_props_html(props, d, context_label, pill_label=pill_label)
     save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
     return _playwright_render(
-        html, save_dir / "nba_props_card.html", save_dir / "nba_props_card.png",
+        html, save_dir / f"{filename}.html", save_dir / f"{filename}.png",
         target_height=2400,
     )
+
+
+def render_nba_props_cards_by_type(
+    props: list[dict],
+    card_date: date | None = None,
+    context_label: str = "NBA",
+    min_per_card: int = 1,
+    max_per_card: int = 8,
+) -> dict[str, Path]:
+    """One NBA props card per prop type. See render_props_cards_by_type for MLB."""
+    from collections import defaultdict
+    by_market: dict[str, list[dict]] = defaultdict(list)
+    for p in props:
+        mkt = p.get("market") or p.get("prop_market") or "unknown"
+        by_market[mkt].append(p)
+
+    results: dict[str, Path] = {}
+    for market, group in by_market.items():
+        if len(group) < min_per_card:
+            continue
+        group_sorted = sorted(group, key=lambda x: float(x.get("edge_pct") or 0), reverse=True)
+        pill = _PROP_TYPE_PILL.get(market, market.replace("_", " ").upper())
+        filename = f"nba_props_{market}_card"
+        png = render_nba_props_card_html(
+            group_sorted[:max_per_card],
+            card_date=card_date,
+            context_label=context_label,
+            pill_label=pill,
+            filename=filename,
+        )
+        if png:
+            results[market] = png
+    return results
 
 
 # ── IG Story card (1080×1920) ─────────────────────────────────────────────────

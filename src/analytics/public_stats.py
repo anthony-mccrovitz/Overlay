@@ -121,8 +121,10 @@ def write_public_stats() -> None:
         }
 
     by_sport = {
-        "mlb": _sport_stats("mlb"),
-        "nba": _sport_stats("nba"),
+        "mlb":  _sport_stats("mlb"),
+        "nba":  _sport_stats("nba"),
+        "nhl":  _sport_stats("nhl"),
+        "wnba": _sport_stats("wnba"),
     }
 
     # ── Recent picks — last 10 settled card picks, newest first ───────────────

@@ -16,6 +16,10 @@ INDIVIDUAL COMMANDS
   python3 chef.py picks soccer                 # World Cup soccer picks
   python3 chef.py picks tennis                 # Tennis (Roland-Garros/Italian Open/Wimbledon)
   python3 chef.py picks pga                    # PGA Tour major picks
+  python3 chef.py picks nascar                 # NASCAR Cup Series outrights
+  python3 chef.py picks indycar                # NTT IndyCar Series outrights
+  python3 chef.py picks f1                     # Formula 1 outrights
+  python3 chef.py picks ufc                    # UFC / MMA moneylines
   python3 chef.py grade                        # grade both MLB + NBA
   python3 chef.py grade --date 20260417        # grade specific date
   python3 chef.py record                       # full P&L breakdown
@@ -80,6 +84,13 @@ def cmd_picks(args: argparse.Namespace) -> int:
         if late:
             print("  [LATE LINE] Refreshing odds 1-2h before first pitch — best CLV window.")
         return _run(cmd)
+    elif sport in ("mlb-props", "mlb_props", "props"):
+        cmd = [sys.executable, "run_mlb_props.py"]
+        if getattr(args, "date", None):
+            cmd += ["--date", args.date]
+        if getattr(args, "refresh", False) or late:
+            cmd.append("--refresh")
+        return _run(cmd)
     elif sport == "nba":
         cmd = [sys.executable, "run_nba.py"]
         if getattr(args, "date", None):
@@ -131,8 +142,42 @@ def cmd_picks(args: argparse.Namespace) -> int:
         if getattr(args, "fit", False):
             cmd.append("--fit")
         return _run(cmd)
+    elif sport in ("nascar", "cup"):
+        cmd = [sys.executable, "run_nascar.py", "--sport", "auto_racing_nascar_cup_series"]
+        if getattr(args, "date", None):
+            cmd += ["--date", args.date]
+        if getattr(args, "refresh", False) or late:
+            cmd.append("--refresh")
+        if getattr(args, "n_sim", None):
+            cmd += ["--n-sim", str(args.n_sim)]
+        return _run(cmd)
+    elif sport in ("indycar", "indy", "indy500"):
+        cmd = [sys.executable, "run_nascar.py", "--sport", "auto_racing_indycar_series"]
+        if getattr(args, "date", None):
+            cmd += ["--date", args.date]
+        if getattr(args, "refresh", False) or late:
+            cmd.append("--refresh")
+        if getattr(args, "n_sim", None):
+            cmd += ["--n-sim", str(args.n_sim)]
+        return _run(cmd)
+    elif sport in ("f1", "formula1", "formulaone"):
+        cmd = [sys.executable, "run_nascar.py", "--sport", "auto_racing_formula_one"]
+        if getattr(args, "date", None):
+            cmd += ["--date", args.date]
+        if getattr(args, "refresh", False) or late:
+            cmd.append("--refresh")
+        if getattr(args, "n_sim", None):
+            cmd += ["--n-sim", str(args.n_sim)]
+        return _run(cmd)
+    elif sport in ("ufc", "mma"):
+        cmd = [sys.executable, "run_ufc.py"]
+        if getattr(args, "date", None):
+            cmd += ["--date", args.date]
+        if getattr(args, "refresh", False) or late:
+            cmd.append("--refresh")
+        return _run(cmd)
     else:
-        print(f"Unknown sport: {sport}. Use 'mlb', 'nba', 'nhl', 'wnba', or 'soccer'.")
+        print(f"Unknown sport: {sport}. Use: mlb, nba, nhl, wnba, soccer, pga, tennis, nascar, indycar, f1, ufc.")
         return 1
 
 
@@ -1290,7 +1335,7 @@ def main() -> int:
 
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
-    p_picks.add_argument("sport", choices=["mlb", "nba", "nhl", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon"], help="Sport to generate picks for")
+    p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nhl", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "nascar", "cup", "indycar", "indy", "indy500", "f1", "formula1", "formulaone", "ufc", "mma"], help="Sport to generate picks for")
     p_picks.add_argument("--date",    help="Date YYYYMMDD (MLB + NBA slate / output folder)")
     p_picks.add_argument("--refresh", action="store_true", help="Force-refresh odds cache")
     p_picks.add_argument("--late",    action="store_true",

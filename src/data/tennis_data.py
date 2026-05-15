@@ -171,3 +171,152 @@ SERVE_WIN_BY_SURFACE: dict[str, float] = {
 
 # Standard deviation of per-match serve win % (player variation)
 SERVE_WIN_STD = 0.035
+
+
+# ── Live Elo refresh from JeffSackmann tennis_atp ────────────────────────────
+
+_SACKMANN_BASE = "https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master"
+_ELO_CACHE     = Path("data/cache/tennis/live_elo.json")
+_K_MAJOR  = 40
+_K_NORMAL = 32
+_MAJOR_NAMES = {"australian open", "roland garros", "wimbledon", "us open"}
+
+
+def _surface_key(surface: str) -> str:
+    s = (surface or "").lower()
+    if s in ("clay", "hard", "grass"):
+        return s
+    if "carpet" in s or "indoor" in s:
+        return "hard"
+    return "hard"
+
+
+def compute_live_elo(years: list[int] | None = None, verbose: bool = False) -> dict[str, dict[str, float]]:
+    """
+    Download ATP match CSVs from JeffSackmann's repo and compute surface-specific
+    Elo ratings sequentially. Returns {player_name: {clay, hard, grass}}.
+    """
+    import requests
+    import io
+    import csv
+
+    if years is None:
+        years = [2023, 2024, 2025, 2026]
+
+    # ratings[player][surface] = elo
+    ratings: dict[str, dict[str, float]] = {}
+
+    def _elo(player: str, surface: str) -> float:
+        return ratings.setdefault(player, {}).get(surface, 1500.0)
+
+    def _update(w: str, l: str, surface: str, k: int) -> None:
+        ew = _elo(w, surface)
+        el = _elo(l, surface)
+        exp_w = 1.0 / (1.0 + 10.0 ** ((el - ew) / 400.0))
+        ratings.setdefault(w, {})[surface] = ew + k * (1.0 - exp_w)
+        ratings.setdefault(l, {})[surface] = el + k * (0.0 - (1.0 - exp_w))
+
+    total_matches = 0
+    for year in years:
+        url = f"{_SACKMANN_BASE}/atp_matches_{year}.csv"
+        try:
+            resp = requests.get(url, timeout=20)
+            resp.raise_for_status()
+            reader = csv.DictReader(io.StringIO(resp.text))
+            rows = list(reader)
+        except Exception as e:
+            if verbose:
+                print(f"  [tennis_elo] {year} fetch failed: {e}")
+            continue
+
+        for row in rows:
+            winner = row.get("winner_name", "").strip()
+            loser  = row.get("loser_name",  "").strip()
+            if not winner or not loser:
+                continue
+            surface  = _surface_key(row.get("surface", ""))
+            is_major = row.get("tourney_name", "").lower().strip() in _MAJOR_NAMES
+            k = _K_MAJOR if is_major else _K_NORMAL
+            _update(winner, loser, surface, k)
+            total_matches += 1
+
+    if verbose:
+        print(f"  [tennis_elo] Processed {total_matches} matches across {len(years)} years.")
+        top = sorted(
+            [(p, r.get("clay", 1500)) for p, r in ratings.items()],
+            key=lambda x: x[1], reverse=True
+        )[:10]
+        print("  [tennis_elo] Top clay Elo:")
+        for p, e in top:
+            print(f"             {p:30s}  clay={e:.0f}")
+
+    return ratings
+
+
+def refresh_player_db(years: list[int] | None = None, verbose: bool = True) -> None:
+    """
+    Recompute Elo from JeffSackmann data and update the in-memory PLAYER_DB.
+    Also caches to data/cache/tennis/live_elo.json.
+    """
+    import json
+
+    live = compute_live_elo(years=years, verbose=verbose)
+
+    _ELO_CACHE.parent.mkdir(parents=True, exist_ok=True)
+    _ELO_CACHE.write_text(json.dumps(live, indent=2))
+
+    # Update PLAYER_DB with computed values for all players we track
+    for player in list(PLAYER_DB.keys()):
+        if player in live:
+            for surface in ("clay", "hard", "grass"):
+                if surface in live[player]:
+                    PLAYER_DB[player][surface] = round(live[player][surface])
+        # Also try last-name partial match
+        else:
+            last = player.split()[-1].lower()
+            for lp, lr in live.items():
+                if last in lp.lower():
+                    for surface in ("clay", "hard", "grass"):
+                        if surface in lr:
+                            PLAYER_DB[player][surface] = round(lr[surface])
+                    break
+
+    # Add any top-ranked players from live data not already in PLAYER_DB
+    top_clay = sorted(
+        [(p, r.get("clay", 1500)) for p, r in live.items()],
+        key=lambda x: x[1], reverse=True
+    )[:50]
+    for player, clay_elo in top_clay:
+        if player not in PLAYER_DB and clay_elo > 1700:
+            PLAYER_DB[player] = {
+                "clay":  round(live[player].get("clay", 1500)),
+                "hard":  round(live[player].get("hard", 1500)),
+                "grass": round(live[player].get("grass", 1500)),
+            }
+
+    if verbose:
+        print(f"  [tennis_elo] PLAYER_DB updated ({len(PLAYER_DB)} players).")
+
+
+def load_cached_elo(verbose: bool = False) -> bool:
+    """
+    Load live Elo from cache if it exists and is fresh (< 12 hours).
+    Updates PLAYER_DB in-place. Returns True if loaded.
+    """
+    import json, time as _time
+
+    if not _ELO_CACHE.exists():
+        return False
+    age = _time.time() - _ELO_CACHE.stat().st_mtime
+    if age > 43200:  # 12 hours
+        return False
+
+    live = json.loads(_ELO_CACHE.read_text())
+    for player in list(PLAYER_DB.keys()):
+        if player in live:
+            for surface in ("clay", "hard", "grass"):
+                if surface in live[player]:
+                    PLAYER_DB[player][surface] = round(live[player][surface])
+    if verbose:
+        print(f"  [tennis_elo] Loaded cached Elo ({len(live)} players, age {age/3600:.1f}h).")
+    return True

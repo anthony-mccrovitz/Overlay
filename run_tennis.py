@@ -166,6 +166,15 @@ def run_tennis(args: argparse.Namespace) -> int:
     print(f"  {game_date.strftime('%B %d, %Y')}  |  Best of {best_of}")
     print(f"{'='*60}")
 
+    # 0. Refresh live ATP Elo (from JeffSackmann data, cached 12h)
+    try:
+        from src.data.tennis_data import load_cached_elo, refresh_player_db
+        if not load_cached_elo(verbose=True):
+            print("  [Elo] Refreshing ATP Elo from 2023-2026 match history...")
+            refresh_player_db(verbose=True)
+    except Exception as _elo_err:
+        print(f"  [Elo refresh] {_elo_err} — using static ratings")
+
     # 1. Fetch odds
     events = fetch_tennis_odds(sport, refresh=refresh)
     if not events:

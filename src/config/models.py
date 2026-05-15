@@ -117,7 +117,12 @@ def incubating_models() -> list[tuple[str, str]]:
 
 
 # New-model shadow stake caps: 0.5u until N≥30 settled with positive CLV
-_NEW_SPORTS = {"wnba", "tennis", "soccer", "pga"}
+_NEW_SPORTS = {"wnba", "tennis", "soccer", "pga",
+               "auto_racing_nascar_cup_series",
+               "auto_racing_indycar_series",
+               "auto_racing_formula_one",
+               "nascar", "indycar", "f1",
+               "mma_mixed_martial_arts", "ufc", "mma"}
 
 def shadow_stake(sport: str, market: str) -> float:
     """Return appropriate stake for a shadow pick.

@@ -5,7 +5,7 @@ Generates picks for today's international soccer slate and saves to:
     output/picks/soccer_fifa_world_cup/YYYYMMDD/picks.json
 
 Odds source: The Odds API — sport key 'soccer_fifa_world_cup'
-Model: Dixon-Coles with time-decay weighting (trained on WC/Euros 2014-2024)
+Model: Rolling Elo + 2-param Poisson (v2), seeded with live eloratings.net
 
 Run:
     python3 run_soccer.py
@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 load_dotenv()
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src.models.soccer_model import SoccerModel, MODEL_PATH
+from src.models.soccer_model_v2 import SoccerModelV2, load_or_fit_model_v2
 from src.data.odds_api import MY_BOOKS_PARAM
 from src.tracking.schema import normalize_pick
 from src.config.models import is_live, shadow_stake
@@ -154,21 +154,14 @@ def run_soccer(args: argparse.Namespace) -> int:
     print(f"  World Cup Soccer Picks — {game_date.strftime('%B %d, %Y')}")
     print(f"{'='*60}")
 
-    # 1. Load or fit model
-    model = SoccerModel()
-    if do_fit or not MODEL_PATH.exists():
-        print("\n  [soccer] Fitting Dixon-Coles model...")
-        model.fit(min_year=2010, verbose=True)
+    # 1. Load or fit model (v2: rolling Elo + 2-param Poisson)
+    if do_fit:
+        model = SoccerModelV2()
+        model.fit(verbose=True)
     else:
-        try:
-            model.load()
-            age_days = (date.today() - model.fitted_on).days
-            print(f"\n  [soccer] Model loaded (fitted {age_days}d ago, {len(model.teams)} teams).")
-            if age_days > 7:
-                print("  [soccer] Model is >7 days old. Run with --fit to retrain.")
-        except FileNotFoundError:
-            print("  [soccer] No saved model — fitting now...")
-            model.fit(min_year=2010, verbose=True)
+        model = load_or_fit_model_v2(verbose=True)
+    # Always seed with live Elo so predictions use current squad strength
+    model.seed_from_eloratings()
 
     # 2. Fetch odds
     events = fetch_soccer_odds(refresh=refresh)

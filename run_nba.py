@@ -360,10 +360,20 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     cap_picks = nba_picks_caption(top_picks, card_date=card_date_obj, context_label=context)
     (out_dir / "caption_picks.txt").write_text(cap_picks, encoding="utf-8")
 
-    # Props caption
+    # Props caption + cards (combined + one per prop type)
     if props:
         cap_props = nba_props_caption(props, card_date=card_date_obj, context_label=context)
         (out_dir / "caption_props.txt").write_text(cap_props, encoding="utf-8")
+        try:
+            from src.output.card_html import render_nba_props_card_html, render_nba_props_cards_by_type
+            combined = render_nba_props_card_html(props[:10], card_date=card_date_obj, context_label=context)
+            if combined:
+                print(f"  NBA props card → {combined}")
+            by_type = render_nba_props_cards_by_type(props, card_date=card_date_obj, context_label=context)
+            for mkt, path in by_type.items():
+                print(f"  NBA props/{mkt} card → {path}")
+        except Exception as _npc:
+            print(f"  [nba props card] {_npc}")
 
     # Per-card captions (matching MLB system)
     spread_only = [e for e in all_positive if e.get("market") == "spread"]

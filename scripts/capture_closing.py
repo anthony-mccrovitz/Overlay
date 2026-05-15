@@ -36,13 +36,16 @@ CLOSING_DIR = ROOT / "data" / "clv" / "closing"
 LOG_FILE = ROOT / "logs" / "capture_closing.log"
 
 SPORTS = {
-    "mlb":    "baseball_mlb",
-    "nba":    "basketball_nba",
-    "nhl":    "icehockey_nhl",
-    "wnba":   "basketball_wnba",
-    "soccer": "soccer_fifa_world_cup",
-    "tennis": "tennis_atp_french_open",
-    "pga":    "golf_pga_championship",
+    "mlb":     "baseball_mlb",
+    "nba":     "basketball_nba",
+    "nhl":     "icehockey_nhl",
+    "wnba":    "basketball_wnba",
+    "soccer":  "soccer_fifa_world_cup",
+    "tennis":  "tennis_atp_french_open",
+    "pga":     "golf_pga_championship",
+    "nascar":  "auto_racing_nascar_cup_series",
+    "indycar": "auto_racing_indycar_series",
+    "f1":      "auto_racing_formula_one",
 }
 
 
