@@ -21,6 +21,7 @@ import requests
 from src.tracking.clv import CLVTracker
 from src.tracking.ids import make_game_id
 from src.tracking.pnl import PnLTracker
+from src.tracking.schema import profit_from_odds as _profit_units
 
 
 PICKS_DIR = Path("output/picks")
@@ -302,7 +303,7 @@ def _update_pnl_pick_result(
             and p.get("result") is None
         ):
             p["result"]      = "win" if won else "loss"
-            p["profit"]      = round(profit / 100.0, 4) if abs(profit) > 1 else round(profit, 4)
+            p["profit"]      = round(profit, 4)
             p["resulted_at"] = now_ts
             _PNL_FILE.write_text(json.dumps(data, indent=2))
             return True
@@ -376,24 +377,26 @@ def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: dat
                             p["resulted_at"] = now_ts
             continue
 
-        # New entry
+        # Only count toward public record if we have real odds to bet
+        has_odds = np_.get("odds") is not None and not np_.get("no_odds")
         entry = {
             "date": date_str,
+            "sport": "mlb",
             "market": "nrfi",
             "direction": direction,
             "home_team": home_t,
             "away_team": away_t,
             "team": f"{away_t} @ {home_t}",
-            "opponent": "",
-            "odds": np_.get("odds"),
-            "stake": 1.0,
-            "card_pick": True,
+            "matchup": f"{away_t} @ {home_t}",
+            "opponent": f"{away_t} @ {home_t}",
+            "odds": np_.get("odds") if has_odds else None,
+            "stake": 1.0 if has_odds else 0.0,
+            "card_pick": False,
             "projected_nrfi": np_.get("projected_nrfi"),
             "result": None,
             "profit": None,
             "recorded_at": now_ts,
             "resulted_at": None,
-            "auto_logged": True,
         }
 
         # Try to grade immediately if results are available
@@ -595,7 +598,7 @@ def grade_picks(
                 pass
 
         # -- Update P&L: direct entry update first, PnLTracker fallback --
-        if not _update_pnl_pick_result(d, team, market, won, profit):
+        if not _update_pnl_pick_result(d, team, market, won, _profit_units(int(odds), 1.0, won)):
             try:
                 pnl_tracker.record_pick(
                     game_id=game_id, team=team, opponent=opponent,
@@ -663,7 +666,7 @@ def grade_picks(
         else:
             losses += 1
 
-        if not _update_pnl_pick_result(d, team, "spread", cov, profit):
+        if not _update_pnl_pick_result(d, team, "spread", cov, _profit_units(int(odds), 1.0, cov)):
             try:
                 pnl_tracker.record_pick(
                     game_id=gid, team=team, opponent=sp.get("opponent", ""),
@@ -740,7 +743,7 @@ def grade_picks(
             losses += 1
 
         label = f"{direction} {line}"
-        if not _update_pnl_pick_result(d, label, "total", won, profit):
+        if not _update_pnl_pick_result(d, label, "total", won, _profit_units(int(odds), 1.0, won)):
             try:
                 pnl_tracker.record_pick(
                     game_id=gid, team=label, opponent=f"{away_n} @ {home_n}",

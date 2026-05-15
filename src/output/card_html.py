@@ -106,6 +106,39 @@ def _clean_book(name: str) -> str:
     return _BOOK_DISPLAY.get(name.lower().strip(), name.upper().replace(".AG", "").replace(".COM", "").strip())
 
 
+# Sportsbook brand colors and abbreviations for inline badges
+_BOOK_BRANDS: dict[str, tuple[str, str, str]] = {
+    # key (lowercase)  → (bg_color, text_color, display_label)
+    "draftkings":      ("#1B5E20", "#FFFFFF", "DraftKings"),
+    "fanduel":         ("#1493FF", "#FFFFFF", "FanDuel"),
+    "betmgm":          ("#D4AF37", "#000000", "BetMGM"),
+    "betrivers":       ("#003087", "#FFFFFF", "BetRivers"),
+    "hard rock bet":   ("#C8102E", "#FFFFFF", "Hard Rock"),
+    "thescore bet":    ("#E4002B", "#FFFFFF", "theScore"),
+    "fliff":           ("#6C2BD9", "#FFFFFF", "Fliff"),
+    "caesars":         ("#002D72", "#FFD700", "Caesars"),
+    "fanatics":        ("#E4002B", "#FFFFFF", "Fanatics"),
+    "novig":           ("#0A0A0A", "#FFFFFF", "Novig"),
+    "betfred":         ("#B22222", "#FFFFFF", "Betfred"),
+    "pointsbet":       ("#FF0000", "#FFFFFF", "PointsBet"),
+}
+
+
+def _book_badge_html(book: str, font_size: int = 15, padding: str = "6px 16px", radius: str = "8px") -> str:
+    """Return an inline HTML badge for a sportsbook using brand colors."""
+    key = book.lower().strip()
+    if key in _BOOK_BRANDS:
+        bg, fg, label = _BOOK_BRANDS[key]
+    else:
+        clean = _clean_book(book)
+        bg, fg, label = "#1E1E1E", "#888888", clean
+    return (
+        f'<span style="background:{bg};color:{fg};font-size:{font_size}px;font-weight:800;'
+        f'padding:{padding};border-radius:{radius};letter-spacing:0.5px;'
+        f'white-space:nowrap;display:inline-block">{label}</span>'
+    )
+
+
 # ── NBA Team data ─────────────────────────────────────────────────────────────
 
 _NBA_ESPN_ABBR: dict[str, str] = {
@@ -173,15 +206,108 @@ _NBA_TEAM_ABBR: dict[str, str] = {
 }
 
 
+_NBA_LOGO_B64_CACHE: dict[str, str] = {}
+
 def _nba_logo_url(team: str) -> str:
+    """Return base64 data URI for an NBA team logo, fetched once and cached."""
     abbr = _NBA_ESPN_ABBR.get(team)
-    if abbr:
-        return f"https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/{abbr}.png"
+    if not abbr:
+        return ""
+    if abbr in _NBA_LOGO_B64_CACHE:
+        return _NBA_LOGO_B64_CACHE[abbr]
+    try:
+        import requests, base64
+        url = f"https://a.espncdn.com/i/teamlogos/nba/500/scoreboard/{abbr}.png"
+        r = requests.get(url, timeout=6)
+        if r.status_code == 200 and len(r.content) > 1000:
+            b64 = base64.b64encode(r.content).decode()
+            data_uri = f"data:image/png;base64,{b64}"
+            _NBA_LOGO_B64_CACHE[abbr] = data_uri
+            return data_uri
+    except Exception:
+        pass
+    _NBA_LOGO_B64_CACHE[abbr] = ""
     return ""
 
 
 def _nba_team_abbr(name: str) -> str:
     return _NBA_TEAM_ABBR.get(name, name[:3].upper())
+
+
+_PLAYER_HEADSHOT_CACHE: dict[str, str] = {}
+
+def _strip_name_suffix(name: str) -> str:
+    """Remove generational suffixes (II, III, IV, Jr., Sr.) from player names for API lookup."""
+    import re
+    return re.sub(r"\s+(II|III|IV|Jr\.?|Sr\.?)\s*$", "", name.strip(), flags=re.IGNORECASE).strip()
+
+
+def _nba_player_headshot_b64(player_name: str) -> str:
+    """Return base64 data URI for a player headshot, or '' on failure."""
+    if player_name in _PLAYER_HEADSHOT_CACHE:
+        return _PLAYER_HEADSHOT_CACHE[player_name]
+    try:
+        from nba_api.stats.static import players as _nba_players
+        import requests, base64
+        # Try exact name first, then fallback to stripped suffix
+        results = _nba_players.find_players_by_full_name(player_name)
+        if not results:
+            stripped = _strip_name_suffix(player_name)
+            if stripped and stripped != player_name:
+                results = _nba_players.find_players_by_full_name(stripped)
+        if results:
+            pid = results[0]["id"]
+            cdn_url = f"https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{pid}.png"
+            resp = requests.get(cdn_url, timeout=5)
+            if resp.status_code == 200:
+                b64 = base64.b64encode(resp.content).decode()
+                data_uri = f"data:image/png;base64,{b64}"
+                _PLAYER_HEADSHOT_CACHE[player_name] = data_uri
+                return data_uri
+    except Exception:
+        pass
+    _PLAYER_HEADSHOT_CACHE[player_name] = ""
+    return ""
+
+
+_MLB_PLAYER_ID_CACHE: dict[str, int] = {}
+
+def _mlb_player_headshot_b64(player_name: str) -> str:
+    """Return base64 data URI for an MLB player headshot, or '' on failure."""
+    cache_key = f"mlb:{player_name}"
+    if cache_key in _PLAYER_HEADSHOT_CACHE:
+        return _PLAYER_HEADSHOT_CACHE[cache_key]
+    try:
+        import requests, base64, re
+        # Search MLB Stats API for player ID
+        clean = re.sub(r"\s+(II|III|IV|Jr\.?|Sr\.?)\s*$", "", player_name.strip(), flags=re.IGNORECASE).strip()
+        if clean not in _MLB_PLAYER_ID_CACHE:
+            resp = requests.get(
+                "https://statsapi.mlb.com/api/v1/people/search",
+                params={"names": clean, "active": "true", "sportIds": 1},
+                timeout=6,
+            )
+            if resp.status_code == 200:
+                people = resp.json().get("people", [])
+                if people:
+                    _MLB_PLAYER_ID_CACHE[clean] = people[0]["id"]
+        pid = _MLB_PLAYER_ID_CACHE.get(clean)
+        if pid:
+            img_url = (
+                f"https://img.mlbstatic.com/mlb-photos/image/upload/"
+                f"w_213,q_auto:best/v1/people/{pid}/headshot/67/current"
+            )
+            ir = requests.get(img_url, timeout=6)
+            if ir.status_code == 200 and len(ir.content) > 5000:
+                b64 = base64.b64encode(ir.content).decode()
+                ext = "jpeg" if ir.headers.get("content-type", "").endswith("jpeg") else "png"
+                data_uri = f"data:image/{ext};base64,{b64}"
+                _PLAYER_HEADSHOT_CACHE[cache_key] = data_uri
+                return data_uri
+    except Exception:
+        pass
+    _PLAYER_HEADSHOT_CACHE[cache_key] = ""
+    return ""
 
 
 _NBA_MARKET_LABEL = {
@@ -226,10 +352,27 @@ def _edge_color(edge: float, market: str) -> str:
         return "#6480FF"
 
 
+_MLB_LOGO_B64_CACHE: dict[str, str] = {}
+
 def _logo_url(team: str) -> str:
+    """Return base64 data URI for an MLB team logo, fetched once and cached."""
     abbr = _ESPN_ABBR.get(team)
-    if abbr:
-        return f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abbr}.png"
+    if not abbr:
+        return ""
+    if abbr in _MLB_LOGO_B64_CACHE:
+        return _MLB_LOGO_B64_CACHE[abbr]
+    try:
+        import requests, base64
+        url = f"https://a.espncdn.com/i/teamlogos/mlb/500/scoreboard/{abbr}.png"
+        r = requests.get(url, timeout=6)
+        if r.status_code == 200 and len(r.content) > 1000:
+            b64 = base64.b64encode(r.content).decode()
+            data_uri = f"data:image/png;base64,{b64}"
+            _MLB_LOGO_B64_CACHE[abbr] = data_uri
+            return data_uri
+    except Exception:
+        pass
+    _MLB_LOGO_B64_CACHE[abbr] = ""
     return ""
 
 
@@ -264,606 +407,352 @@ def _team_abbr(name: str) -> str:
     return _ABBR.get(name, name[:3].upper())
 
 
-def _build_html(picks: list[dict], sport: str, d: date, card_type: str = "moneyline") -> str:
+
+# ── V2 card design helpers ────────────────────────────────────────────────────
+
+_MUT    = "rgba(255,255,255,0.65)"   # readable secondary text
+_BORDER = "rgba(255,255,255,0.09)"   # dividers / borders
+
+
+def _v2_book_badge(book: str) -> str:
+    key = book.lower().strip()
+    if key in _BOOK_BRANDS:
+        bg, fg, label = _BOOK_BRANDS[key]
+    else:
+        bg, fg, label = "#1E293B", "rgba(255,255,255,0.75)", _clean_book(book)
+    return (
+        f'<span style="background:{bg};color:{fg};font-size:15px;font-weight:800;'
+        f'padding:5px 16px;border-radius:8px;letter-spacing:0.04em;white-space:nowrap">'
+        f'{label}</span>'
+    )
+
+
+def _v2_data_strip(ec: str, prob_pct: float, edge_pct: float, book: str) -> str:
+    lbl = f"font-size:13px;color:{_MUT};letter-spacing:0.1em;font-family:'Courier New',monospace;margin-bottom:5px"
+    return (
+        f'<div style="display:flex;gap:0;margin-top:14px;padding-top:14px;border-top:1px solid {_BORDER}">'
+        f'<div style="flex:1;text-align:center">'
+        f'<div style="{lbl}">WIN PROB</div>'
+        f'<div style="font-size:22px;font-weight:900;color:{ec}">{prob_pct}%</div>'
+        f'</div>'
+        f'<div style="width:1px;background:{_BORDER}"></div>'
+        f'<div style="flex:1;text-align:center">'
+        f'<div style="{lbl}">AI EDGE</div>'
+        f'<div style="font-size:22px;font-weight:900;color:{ec}">+{edge_pct:.1f}%</div>'
+        f'</div>'
+        f'<div style="width:1px;background:{_BORDER}"></div>'
+        f'<div style="flex:1;text-align:center">'
+        f'<div style="{lbl}">BET AT</div>'
+        f'<div>{_v2_book_badge(book)}</div>'
+        f'</div>'
+        f'</div>'
+    )
+
+
+def _v2_bet_pill(label: str) -> str:
+    return (
+        f'<span style="font-size:16px;font-weight:800;color:{_MUT};'
+        f'background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);'
+        f'padding:5px 16px;border-radius:999px;letter-spacing:0.08em">{label}</span>'
+    )
+
+
+def _v2_logo_img(url: str, abbr: str, color: str, size: int) -> str:
+    if url:
+        return (
+            f'<img src="{url}" style="width:{size}px;height:{size}px;'
+            f'object-fit:contain;filter:drop-shadow(0 0 16px {color});'
+            f'padding:4px;flex-shrink:0">'
+        )
+    return (
+        f'<div style="width:{size}px;height:{size}px;border-radius:50%;'
+        f'background:{color};display:flex;align-items:center;justify-content:center;'
+        f'font-size:20px;font-weight:900;color:#fff;flex-shrink:0">{abbr}</div>'
+    )
+
+
+# RGB lookup for team-color gradient backgrounds
+_TEAM_RGB: dict[str, str] = {
+    "#552583": "85,37,131",   # Lakers
+    "#007AC1": "0,122,193",   # Thunder
+    "#C8102E": "200,16,46",   # several
+    "#860038": "134,0,56",    # Cavaliers
+    "#1D1160": "29,17,96",    # Suns
+    "#006BB6": "0,107,182",   # Knicks
+    "#002D62": "0,45,98",     # Pacers
+    "#0E2240": "14,34,64",    # Nuggets
+    "#00471B": "0,71,27",     # Bucks
+    "#007A33": "0,122,51",    # Celtics
+    # MLB
+    "#A7192F": "167,25,47",   "#CE1141": "206,17,65",
+    "#DF6D1D": "223,109,29",  "#BD3039": "189,48,57",
+    "#0E3386": "14,51,134",   "#27251F": "39,37,31",
+    "#C6001F": "198,0,31",    "#003865": "0,56,101",
+    "#330071": "51,0,113",    "#0C2340": "12,35,64",
+    "#002D62": "0,45,98",     "#004687": "0,70,135",
+    "#BA0021": "186,0,33",    "#005A9C": "0,90,156",
+    "#00A3E0": "0,163,224",   "#002855": "0,40,85",
+    "#002B7F": "0,43,127",    "#002D72": "0,45,114",
+    "#003831": "0,56,49",     "#E8182A": "232,24,42",
+    "#FDB827": "253,184,39",  "#2F241D": "47,36,29",
+    "#FD5A1E": "253,90,30",   "#005C5C": "0,92,92",
+    "#C41E3A": "196,30,58",   "#092CB8": "9,44,184",
+    "#003278": "0,50,120",    "#134A8E": "19,74,142",
+    "#AB0003": "171,0,3",
+}
+
+
+def _build_html(picks: list[dict], sport: str, d: date, card_type: str = "moneyline", record_str: str = "") -> str:
     sport_lbl = _SPORT_LABELS.get(sport.lower(), sport.upper())
     date_str  = d.strftime("%b %d, %Y").upper()
-    pill_label, accent, glow = _CARD_TYPE_STYLES.get(card_type, _CARD_TYPE_STYLES["moneyline"])
+    is_nba    = sport.lower() in ("nba", "basketball_nba")
 
     pick_rows_html = ""
     for idx, pick in enumerate(picks[:5]):
-        market   = str(pick.get("Market", "moneyline") or "moneyline").lower()
-        team     = str(pick.get("Team", "") or "")
-        opponent = str(pick.get("Opponent", "") or "")
-        bet_line = str(pick.get("BetLine", "") or "")
-        edge     = float(pick.get("Edge", 0) or 0)
-        odds     = _odds_int(pick.get("BestOdds", 0))
-        book     = str(pick.get("Sportsbook", "") or "").strip()
-        matchup  = str(pick.get("Matchup", "") or opponent)
+        market     = str(pick.get("Market", "moneyline") or "moneyline").lower()
+        team       = str(pick.get("Team", "") or "")
+        opponent   = str(pick.get("Opponent", "") or "")
+        bet_line   = str(pick.get("BetLine", "") or "")
+        raw_edge   = float(pick.get("Edge", 0) or 0)
+        odds_val   = _odds_int(pick.get("BestOdds", 0))
+        book       = str(pick.get("Sportsbook", "") or "").strip()
+        matchup    = str(pick.get("Matchup", "") or opponent)
+        model_prob = float(pick.get("ModelProb", 0) or 0)
+        is_best    = idx == 0
+        odds_str   = f"{odds_val:+d}" if odds_val else ""
+        prob_pct   = round(model_prob * 100, 1)
 
-        ec       = _edge_color(edge, market)
-        is_best  = idx == 0
-        odds_str = f"{odds:+d}" if odds else ""
-        top_play = '<span class="top-play">⚡ TOP PLAY</span>' if is_best else ""
-        card_class = "pick-card best-bet" if is_best else "pick-card"
+        # Edge normalisation: moneyline stored as decimal in card dict, others as percentage
+        if market == "moneyline":
+            edge_pct = round(raw_edge * 100, 1)
+        else:
+            edge_pct = round(raw_edge, 1)
 
-        # ── Totals picks: dual-logo layout ──────────────────────────────────
+        # Odds gradient + edge color
+        odds_grad = "linear-gradient(180deg,#00FF9D,#00C8FF)" if edge_pct >= 12 else "linear-gradient(180deg,#FFD700,#FF8C00)"
+        ec        = "#00FF9D" if edge_pct >= 12 else "#FFD700"
+
+        # ── TOTAL ──────────────────────────────────────────────────────────────
         if market == "total" or card_type == "total":
-            direction = str(pick.get("Direction", "UNDER")).upper()
-            line_val  = pick.get("MarketLine") or pick.get("BetLine") or ""
-            edge_txt  = f"+{edge:.1f}% edge"
-            dir_color = "#39FF78" if direction == "OVER" else "#FF6B6B"
+            direction = str(pick.get("Direction", "OVER")).upper()
+            line_val  = str(pick.get("MarketLine") or pick.get("BetLine") or "")
+            dir_c     = "#00FF9D" if direction == "OVER" else "#FF6B6B"
+            dir_grad  = "linear-gradient(180deg,#00FF9D,#00C8FF)" if direction == "OVER" else "linear-gradient(180deg,#FF6B6B,#FF3030)"
 
-            # Parse teams from matchup "Away @ Home"
-            parts = matchup.replace(" @ ", "@").split("@")
+            # Parse away / home from matchup
+            parts     = matchup.replace(" @ ", "@").split("@")
             away_team = parts[0].strip() if parts else ""
             home_team = parts[1].strip() if len(parts) > 1 else ""
-            if not away_team:
-                away_team = str(pick.get("AwayTeam", ""))
-            if not home_team:
-                home_team = str(pick.get("HomeTeam", ""))
+            if not away_team: away_team = str(pick.get("AwayTeam", ""))
+            if not home_team: home_team = str(pick.get("HomeTeam", ""))
 
-            away_logo = _logo_url(away_team)
-            home_logo = _logo_url(home_team)
-            away_hex  = _MLB_HEX.get(away_team, "#4080FF")
-            home_hex  = _MLB_HEX.get(home_team, "#4080FF")
-            away_abbr = _team_abbr(away_team)
-            home_abbr = _team_abbr(home_team)
+            if is_nba:
+                away_logo = _nba_logo_url(away_team)
+                home_logo = _nba_logo_url(home_team)
+                away_hex  = _NBA_HEX.get(away_team, "#4080FF")
+                home_hex  = _NBA_HEX.get(home_team, "#4080FF")
+                away_abbr = _nba_team_abbr(away_team)
+                home_abbr = _nba_team_abbr(home_team)
+            else:
+                away_logo = _logo_url(away_team)
+                home_logo = _logo_url(home_team)
+                away_hex  = _MLB_HEX.get(away_team, "#4080FF")
+                home_hex  = _MLB_HEX.get(home_team, "#4080FF")
+                away_abbr = _team_abbr(away_team)
+                home_abbr = _team_abbr(home_team)
 
-            def _logo_img(url, abbr, hex_col, cls=""):
-                if url:
-                    return f'<img class="total-logo {cls}" src="{url}" alt="{abbr}" style="--tc:{hex_col}">'
-                return f'<div class="total-logo total-logo-fallback {cls}" style="background:{hex_col}">{abbr}</div>'
+            # last word of team name for "Thunder @ Lakers" style label
+            awn = away_team.split()[-1] if away_team else away_abbr
+            hwn = home_team.split()[-1] if home_team else home_abbr
 
-            pick_rows_html += f"""
-        <div class="{card_class}" style="--team-color:{dir_color};--edge-color:{ec}">
-          <div class="accent-bar" style="background:{dir_color};box-shadow:0 0 16px {dir_color}"></div>
-          <div class="total-matchup">
-            <div class="total-team away-team">
-              {_logo_img(away_logo, away_abbr, away_hex)}
-              <span class="total-abbr" style="color:{away_hex}">{away_abbr}</span>
-            </div>
-            <div class="total-center">
-              <span class="total-direction" style="color:{dir_color}">{direction}</span>
-              <span class="total-line">{line_val}</span>
-              <span class="total-slash" style="color:rgba(255,255,255,0.2)">@</span>
-            </div>
-            <div class="total-team home-team">
-              {_logo_img(home_logo, home_abbr, home_hex)}
-              <span class="total-abbr" style="color:{home_hex}">{home_abbr}</span>
-            </div>
-          </div>
-          <div class="total-right">
-            <div class="total-odds-row">
-              <span class="odds-num" style="color:{ec};--ec:{ec}">{odds_str}</span>
-            </div>
-            <div class="total-meta">
-              <span class="edge-txt" style="color:{ec}">{edge_txt}</span>
-              {'<span class="book-pill">' + book + '</span>' if book else ''}
-              {top_play}
-            </div>
-          </div>
-        </div>"""
+            lsz     = 96 if is_best else 80
+            over_sz = 62 if is_best else 50
+            line_sz = 46 if is_best else 36
+            odds_sz = 70 if is_best else 56
+            pad     = "22px 24px 18px" if is_best else "16px 20px 14px"
+            mt_pill = "margin-top:28px;" if is_best else ""
+
+            top_b = (
+                '<div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);'
+                'padding:6px 18px;background:linear-gradient(135deg,#FFD700,#FF8C00);'
+                'border-radius:999px;font-size:15px;font-weight:900;color:#000;'
+                'letter-spacing:0.06em;white-space:nowrap">⚡ TOP PLAY</div>'
+            ) if is_best else ""
+
+            card_bg  = f"rgba(0,255,157,0.05)" if is_best else "rgba(255,255,255,0.025)"
+            card_bdr = f"rgba(0,255,157,0.25)"  if is_best else "rgba(255,255,255,0.08)"
+
+            pick_rows_html += (
+                f'<div style="position:relative;display:flex;align-items:stretch;gap:0;'
+                f'background:{card_bg};border-radius:18px;margin-bottom:14px;'
+                f'border:1px solid {card_bdr};overflow:hidden">'
+                f'<div style="width:6px;flex-shrink:0;background:{dir_c};box-shadow:0 0 14px {dir_c}"></div>'
+                f'<div style="flex:1;padding:{pad}">'
+                f'{top_b}'
+                # bet type + matchup
+                f'<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;{mt_pill}">'
+                f'{_v2_bet_pill("GAME TOTAL")}'
+                f'<span style="font-size:16px;font-weight:600;color:{_MUT}">{awn} @ {hwn}</span>'
+                f'</div>'
+                # logos / direction / odds
+                f'<div style="display:flex;align-items:center;gap:16px">'
+                f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px">'
+                f'{_v2_logo_img(away_logo, away_abbr, away_hex, lsz)}'
+                f'<span style="font-size:17px;font-weight:800;color:rgba(255,255,255,0.8);letter-spacing:0.06em">{away_abbr}</span>'
+                f'</div>'
+                f'<div style="flex:1;text-align:center">'
+                f'<div style="font-size:{over_sz}px;font-weight:900;color:{dir_c};'
+                f'letter-spacing:-1px;line-height:1;text-shadow:0 0 28px {dir_c}">{direction}</div>'
+                f'<div style="font-size:{line_sz}px;font-weight:900;color:#fff;'
+                f'letter-spacing:-0.5px;line-height:1.1">{line_val}</div>'
+                f'</div>'
+                f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px">'
+                f'{_v2_logo_img(home_logo, home_abbr, home_hex, lsz)}'
+                f'<span style="font-size:17px;font-weight:800;color:rgba(255,255,255,0.8);letter-spacing:0.06em">{home_abbr}</span>'
+                f'</div>'
+                f'<div style="min-width:130px;text-align:right;padding-left:16px;flex-shrink:0">'
+                f'<div style="font-size:{odds_sz}px;font-weight:900;background:{dir_grad};'
+                f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+                f'background-clip:text;letter-spacing:-1px;line-height:1">{odds_str}</div>'
+                f'</div>'
+                f'</div>'
+                + _v2_data_strip(dir_c, prob_pct, edge_pct, book)
+                + f'</div></div>'
+            )
             continue
 
-        # ── Moneyline / spread: single-team layout ──────────────────────────
-        team_hex = _MLB_HEX.get(team, _MLB_HEX.get(opponent, "#4080FF"))
-        logo_url = _logo_url(team) or _logo_url(opponent)
-
-        if market == "moneyline":
-            edge_txt = f"+{edge*100:.1f}% edge"
-            mkt_tag  = ""
+        # ── MONEYLINE / SPREAD ─────────────────────────────────────────────────
+        if is_nba:
+            team_hex = _NBA_HEX.get(team, _NBA_HEX.get(opponent, "#4080FF"))
+            logo_url = _nba_logo_url(team) or _nba_logo_url(opponent)
         else:
-            edge_txt = f"+{edge:.2f} run edge"
-            mkt_tag  = '<span class="mkt-tag">RUN LINE</span>'
+            team_hex = _MLB_HEX.get(team, _MLB_HEX.get(opponent, "#4080FF"))
+            logo_url = _logo_url(team) or _logo_url(opponent)
 
-        team_disp = f"{team}&nbsp;&nbsp;{bet_line}" if market == "spread" and bet_line else team
-        vs_txt    = f"vs&nbsp;&nbsp;{opponent}"
-
-        if logo_url:
-            logo_html = f'<img class="team-logo" src="{logo_url}" alt="{team}">'
+        if market == "spread":
+            pill_lbl = "RUN LINE" if not is_nba else "SPREAD"
+            team_disp = f"{team} {bet_line}".strip() if bet_line else team
         else:
-            initials  = "".join(w[0] for w in team.split()[:2]).upper()
-            logo_html = f'<div class="team-logo logo-fallback" style="background:{team_hex}">{initials}</div>'
+            pill_lbl  = "MONEYLINE"
+            team_disp = team
 
-        pick_rows_html += f"""
-        <div class="{card_class}" style="--team-color:{team_hex};--edge-color:{ec}">
-          <div class="accent-bar"></div>
-          <div class="logo-wrap">
-            {logo_html}
-          </div>
-          <div class="pick-info">
-            <div class="team-row">
-              <span class="team-name">{team_disp}</span>
-              {mkt_tag}
-            </div>
-            <div class="vs-row">{vs_txt}</div>
-            <div class="bottom-row">
-              <span class="edge-txt" style="color:{ec}">{edge_txt}</span>
-              {top_play}
-            </div>
-          </div>
-          <div class="odds-wrap">
-            <span class="odds-num" style="color:{ec};--ec:{ec}">{odds_str}</span>
-            {'<span class="book-pill">' + book + '</span>' if book else ''}
-          </div>
-        </div>"""
+        lsz    = 108 if is_best else 86
+        logo   = _v2_logo_img(logo_url, team[:3].upper(), team_hex, lsz)
 
-    return f"""<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  * {{ margin:0; padding:0; box-sizing:border-box; }}
+        top_b  = (
+            '<div style="position:absolute;top:16px;right:20px;padding:7px 18px;'
+            'background:linear-gradient(135deg,#FFD700,#FF8C00);border-radius:999px;'
+            'font-size:15px;font-weight:900;color:#000;letter-spacing:0.06em">⚡ TOP PLAY</div>'
+        ) if is_best else ""
 
-  body {{
-    width: 1080px;
-    background: #070810;
-    font-family: 'Inter', -apple-system, sans-serif;
-    overflow: hidden;
-  }}
+        rgb      = _TEAM_RGB.get(team_hex, "64,128,255")
+        card_bg  = f"linear-gradient(135deg,rgba({rgb},0.22) 0%,rgba(8,12,24,1) 55%)" if is_best else "rgba(255,255,255,0.025)"
+        card_bdr = f"rgba({rgb},0.45)" if is_best else "rgba(255,255,255,0.08)"
+        pad      = "22px 160px 18px 22px" if is_best else "16px 22px"
+        name_sz  = 44 if is_best else 34
+        odds_sz  = 84 if is_best else 64
 
-  .card-wrap {{
-    width: 1080px;
-    background:
-      radial-gradient(ellipse 80% 40% at 50% 0%, {glow}12 0%, transparent 70%),
-      radial-gradient(ellipse 60% 60% at 80% 100%, rgba(57,255,120,0.04) 0%, transparent 60%),
-      linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
-    padding-bottom: 28px;
-  }}
+        pick_rows_html += (
+            f'<div style="position:relative;display:flex;align-items:stretch;gap:0;'
+            f'background:{card_bg};border-radius:18px;margin-bottom:14px;'
+            f'border:1px solid {card_bdr};overflow:hidden">'
+            f'<div style="width:6px;flex-shrink:0;background:{team_hex};box-shadow:0 0 18px {team_hex}"></div>'
+            f'{top_b}'
+            f'<div style="flex:1;padding:{pad};display:flex;align-items:center;gap:22px">'
+            f'{logo}'
+            f'<div style="flex:1;min-width:0">'
+            f'<div style="margin-bottom:10px">{_v2_bet_pill(pill_lbl)}</div>'
+            f'<div style="font-size:{name_sz}px;font-weight:900;color:#fff;'
+            f'letter-spacing:-0.5px;line-height:1.1;white-space:nowrap;'
+            f'overflow:hidden;text-overflow:ellipsis">{team_disp}</div>'
+            # confidence bar
+            f'<div style="height:4px;background:rgba(255,255,255,0.08);border-radius:2px;'
+            f'margin-top:12px;max-width:380px;overflow:hidden">'
+            f'<div style="height:100%;width:{min(prob_pct,100)}%;background:{odds_grad};'
+            f'box-shadow:0 0 10px {ec}"></div></div>'
+            + _v2_data_strip(ec, prob_pct, edge_pct, book)
+            + f'</div>'
+            f'<div style="min-width:150px;text-align:right;flex-shrink:0;padding-left:16px">'
+            f'<div style="font-size:{odds_sz}px;font-weight:900;background:{odds_grad};'
+            f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+            f'background-clip:text;letter-spacing:-2px;line-height:1">{odds_str}</div>'
+            f'</div>'
+            f'</div></div>'
+        )
 
-  /* ── Header ── */
-  .header {{
-    padding: 28px 44px 22px;
-    border-bottom: 1px solid {accent}40;
-    background: linear-gradient(180deg, {accent}10 0%, transparent 100%);
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-  }}
+    # ── Header ─────────────────────────────────────────────────────────────────
+    # Compute min/max edge for header stats box
+    all_edges: list[float] = []
+    for p in picks[:5]:
+        mkt = str(p.get("Market", "moneyline") or "moneyline").lower()
+        re  = float(p.get("Edge", 0) or 0)
+        all_edges.append(round(re * 100, 1) if mkt == "moneyline" else round(re, 1))
+    min_edge = min(all_edges) if all_edges else 0
+    max_edge = max(all_edges) if all_edges else 0
+    n_picks  = len(picks[:5])
 
-  .brand {{
-    display: flex;
-    align-items: baseline;
-    gap: 0;
-    line-height: 1;
-  }}
+    sport_emoji = "🏀" if is_nba else "⚾"
 
-  .brand-chef {{
-    font-size: 72px;
-    font-weight: 900;
-    color: #F8F8FC;
-    letter-spacing: -2px;
-  }}
+    header = (
+        f'<div style="height:5px;background:linear-gradient(90deg,#00FF9D,#00C8FF,#7B61FF,#FF00AA,#FFD700)"></div>'
+        f'<div style="padding:30px 48px 26px;display:flex;align-items:flex-start;justify-content:space-between;'
+        f'border-bottom:1px solid {_BORDER}">'
+        f'<div>'
+        f'<div style="font-size:14px;font-weight:700;color:{_MUT};letter-spacing:0.14em;margin-bottom:10px">'
+        f'{sport_emoji} {sport_lbl} &nbsp;·&nbsp; {date_str}</div>'
+        f'<div style="font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1">'
+        f'<span style="color:#fff">ChefTony</span>'
+        f'<span style="background:linear-gradient(135deg,#FFD700,#FF8C00);'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Bets</span>'
+        f'<span style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#00FFFF,#7B61FF);'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;'
+        f'margin-left:10px;vertical-align:middle">AI</span>'
+        f'</div>'
+        f'<div style="font-size:16px;color:{_MUT};margin-top:8px;letter-spacing:0.04em">'
+        f'@ChefTonyAIBets &nbsp;·&nbsp; A.I. Edge Detection</div>'
+        f'</div>'
+        f'<div style="text-align:right;padding-top:6px">'
+        f'<div style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;'
+        f'background:rgba(0,255,157,0.06);border:1px solid rgba(0,255,157,0.2);border-radius:12px">'
+        f'<div style="text-align:center">'
+        f'<div style="font-size:13px;color:{_MUT};letter-spacing:0.1em;font-family:Courier New,monospace;margin-bottom:4px">MIN EDGE</div>'
+        f'<div style="font-size:26px;font-weight:900;color:#00FF9D">+{min_edge:.1f}%</div>'
+        f'</div>'
+        f'<div style="width:1px;height:40px;background:{_BORDER}"></div>'
+        f'<div style="text-align:center">'
+        f'<div style="font-size:13px;color:{_MUT};letter-spacing:0.1em;font-family:Courier New,monospace;margin-bottom:4px">TOP EDGE</div>'
+        f'<div style="font-size:26px;font-weight:900;color:#FFD700">+{max_edge:.1f}%</div>'
+        f'</div>'
+        f'</div>'
+        f'<div style="font-size:16px;font-weight:700;color:{_MUT};letter-spacing:0.08em;margin-top:10px">'
+        f'{n_picks} MODEL PICK{"S" if n_picks != 1 else ""}</div>'
+        f'</div>'
+        f'</div>'
+    )
 
-  .brand-bets {{
-    font-size: 56px;
-    font-weight: 900;
-    color: #FFBE00;
-    letter-spacing: -1px;
-    margin-left: 4px;
-  }}
+    footer_left = (record_str + "  ·  ") if record_str else ""
+    footer = (
+        f'<div style="margin:20px 48px 0;padding-top:16px;border-top:1px solid {_BORDER};'
+        f'display:flex;justify-content:space-between;align-items:center">'
+        f'<div style="font-size:15px;color:{_MUT}">{footer_left}Results posted daily · Not financial advice · 21+</div>'
+        f'<div style="font-size:22px;font-weight:900;background:linear-gradient(135deg,#00FF9D,#00C8FF);'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;'
+        f'letter-spacing:0.02em">@ChefTonyAIBets</div>'
+        f'</div>'
+    )
 
-  .brand-ai {{
-    font-size: 34px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #00D4E0, #7B61FF);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-left: 10px;
-    margin-bottom: 6px;
-    filter: drop-shadow(0 0 12px rgba(0,210,220,0.5));
-  }}
-
-  .brand-sub {{
-    font-size: 16px;
-    color: #555870;
-    font-weight: 400;
-    margin-top: 8px;
-    letter-spacing: 0.02em;
-  }}
-
-  .header-right {{
-    text-align: right;
-  }}
-
-  .header-date {{
-    font-size: 18px;
-    font-weight: 700;
-    color: #F8F8FC;
-    letter-spacing: 0.05em;
-  }}
-
-  .sport-pill {{
-    display: inline-block;
-    margin-top: 8px;
-    padding: 5px 14px;
-    background: {accent}20;
-    border: 1px solid {accent}50;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 700;
-    color: {accent};
-    letter-spacing: 0.08em;
-  }}
-  .beta-badge {{
-    display: inline-block;
-    margin-top: 6px;
-    padding: 3px 10px;
-    background: rgba(255,165,0,0.15);
-    border: 1px solid rgba(255,165,0,0.4);
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #FFA500;
-    letter-spacing: 0.08em;
-  }}
-
-  /* ── Pick cards ── */
-  .picks-list {{
-    padding: 18px 44px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }}
-
-  .pick-card {{
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    overflow: hidden;
-    padding: 20px 24px 20px 0;
-    min-height: 120px;
-    backdrop-filter: blur(4px);
-    transition: all 0.2s;
-  }}
-
-  .pick-card.best-bet {{
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--team-color) 15%, #0E1220) 0%,
-      rgba(14,18,32,0.95) 50%
-    );
-    border: 1px solid rgba(255,190,0,0.4);
-    box-shadow:
-      0 0 0 1px rgba(255,190,0,0.1),
-      0 0 40px rgba(255,190,0,0.08),
-      inset 0 1px 0 rgba(255,255,255,0.06);
-    min-height: 156px;
-  }}
-
-  /* Colored left bar */
-  .accent-bar {{
-    width: 6px;
-    align-self: stretch;
-    background: var(--team-color);
-    border-radius: 3px;
-    margin-right: 20px;
-    flex-shrink: 0;
-    box-shadow: 0 0 16px var(--team-color), 0 0 6px var(--team-color);
-  }}
-
-  /* Logo */
-  .logo-wrap {{
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    margin-right: 20px;
-    position: relative;
-  }}
-
-  .best-bet .logo-wrap {{
-    width: 90px;
-    height: 90px;
-  }}
-
-  .team-logo {{
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
-    padding: 6px;
-    box-shadow:
-      0 0 0 3px var(--team-color),
-      0 0 0 5px color-mix(in srgb, var(--team-color) 30%, transparent),
-      0 0 28px color-mix(in srgb, var(--team-color) 80%, transparent),
-      0 0 56px color-mix(in srgb, var(--team-color) 35%, transparent),
-      inset 0 0 16px rgba(255,255,255,0.06);
-  }}
-
-  .logo-fallback {{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 22px;
-    font-weight: 900;
-    color: white;
-    box-shadow: 0 0 0 2px var(--team-color), 0 0 20px color-mix(in srgb, var(--team-color) 50%, transparent);
-  }}
-
-  /* Text block */
-  .pick-info {{
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }}
-
-  .team-row {{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }}
-
-  .team-name {{
-    font-size: 32px;
-    font-weight: 900;
-    color: #F8F8FC;
-    letter-spacing: -0.5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.15;
-    max-width: 520px;
-  }}
-
-  .best-bet .team-name {{
-    font-size: 36px;
-  }}
-
-  .mkt-tag {{
-    font-size: 11px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 0.1em;
-    border: 1px solid rgba(255,255,255,0.12);
-    padding: 2px 8px;
-    border-radius: 4px;
-    flex-shrink: 0;
-  }}
-
-  .vs-row {{
-    font-size: 17px;
-    color: #6B7090;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }}
-
-  .bottom-row {{
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 2px;
-  }}
-
-  .edge-txt {{
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-  }}
-
-  .top-play {{
-    font-size: 14px;
-    font-weight: 700;
-    color: #FFBE00;
-    background: rgba(255,190,0,0.1);
-    border: 1px solid rgba(255,190,0,0.25);
-    padding: 3px 12px;
-    border-radius: 999px;
-    letter-spacing: 0.04em;
-  }}
-
-  /* Odds */
-  .odds-wrap {{
-    flex-shrink: 0;
-    text-align: right;
-    min-width: 160px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }}
-
-  .odds-num {{
-    font-size: 56px;
-    font-weight: 900;
-    letter-spacing: -1px;
-    line-height: 1;
-    filter: drop-shadow(0 0 20px var(--ec));
-  }}
-
-  .best-bet .odds-num {{
-    font-size: 64px;
-  }}
-
-  .book-pill {{
-    display: block;
-    margin-top: 8px;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.80);
-    text-align: center;
-    white-space: nowrap;
-  }}
-
-  /* ── Totals dual-logo layout ── */
-  .total-matchup {{
-    display: flex;
-    align-items: center;
-    gap: 0;
-    flex: 1;
-    padding-left: 0;
-    min-width: 0;
-  }}
-
-  .total-team {{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    width: 110px;
-    flex-shrink: 0;
-  }}
-
-  .total-logo {{
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.06) 100%);
-    padding: 5px;
-    box-shadow:
-      0 0 0 2px var(--tc, #4080FF),
-      0 0 18px color-mix(in srgb, var(--tc, #4080FF) 50%, transparent);
-  }}
-
-  .best-bet .total-logo {{
-    width: 90px;
-    height: 90px;
-  }}
-
-  .total-logo-fallback {{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    font-weight: 900;
-    color: #fff;
-  }}
-
-  .total-abbr {{
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }}
-
-  .total-center {{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 0 8px;
-  }}
-
-  .total-direction {{
-    font-size: 36px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    line-height: 1;
-  }}
-
-  .best-bet .total-direction {{ font-size: 42px; }}
-
-  .total-line {{
-    font-size: 28px;
-    font-weight: 900;
-    color: rgba(255,255,255,0.85);
-    letter-spacing: -0.5px;
-    line-height: 1;
-  }}
-
-  .best-bet .total-line {{ font-size: 33px; }}
-
-  .total-slash {{
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    margin-top: 2px;
-  }}
-
-  .total-right {{
-    flex-shrink: 0;
-    min-width: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-  }}
-
-  .total-odds-row {{ display: flex; align-items: baseline; }}
-
-  .total-meta {{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 5px;
-  }}
-
-  /* ── Footer ── */
-  .footer {{
-    margin: 20px 44px 0;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,190,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }}
-
-  .footer-left {{
-    font-size: 14px;
-    color: #555870;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }}
-
-  .footer-handle {{
-    font-size: 20px;
-    font-weight: 800;
-    color: #FFBE00;
-    letter-spacing: 0.02em;
-  }}
-
-  .footer-right {{
-    font-size: 13px;
-    color: #555870;
-    font-weight: 400;
-  }}
-</style>
-</head>
-<body>
-<div class="card-wrap">
-  <div class="header">
-    <div>
-      <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
-      </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
-    </div>
-    <div class="header-right">
-      <div class="header-date">{date_str}</div>
-      <div class="sport-pill">{pill_label}</div>
-      {('<div class="beta-badge">MODEL IN TESTING</div>' if card_type == "total" else "")}
-    </div>
-  </div>
-
-  <div class="picks-list">
-    {pick_rows_html}
-  </div>
-
-  <div class="footer">
-    <div class="footer-left">{pill_label} &nbsp;·&nbsp; {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
-    <div class="footer-right">A.I. Verified</div>
-  </div>
-</div>
-</body>
-</html>"""
+    return (
+        '<!DOCTYPE html><html><head><meta charset="utf-8">'
+        '<link rel="preconnect" href="https://fonts.googleapis.com">'
+        '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">'
+        '<style>*{margin:0;padding:0;box-sizing:border-box}</style>'
+        '</head><body style="background:#070B14;font-family:Inter,sans-serif;width:1080px">'
+        '<div class="card-wrap" style="width:1080px;background:linear-gradient(180deg,#0C1020 0%,#080C18 50%,#070B14 100%);padding-bottom:42px">'
+        + header
+        + f'<div style="padding:22px 48px 0">{pick_rows_html}</div>'
+        + footer
+        + '</div></body></html>'
+    )
 
 
 def _playwright_render(html: str, html_path: Path, png_path: Path,
@@ -892,47 +781,369 @@ def _playwright_render(html: str, html_path: Path, png_path: Path,
         return None
 
 
+def _load_record_str(sport: str) -> str:
+    """Load season record from public_stats.json for footer display."""
+    try:
+        import json
+        stats_path = Path("data/public_stats.json")
+        if not stats_path.exists():
+            return ""
+        with open(stats_path) as f:
+            stats = json.load(f)
+        sport_key = sport.lower().replace("baseball_", "").replace("basketball_", "")
+        by_sport = stats.get("by_sport", {}).get(sport_key, {})
+        wins   = by_sport.get("wins", 0)
+        losses = by_sport.get("losses", 0)
+        profit = by_sport.get("profit_units", 0)
+        sign   = "+" if profit >= 0 else ""
+        return f"{wins}-{losses} ({sign}{profit:.1f}u)"
+    except Exception:
+        return ""
+
+
+def _format_record_str(sport: str) -> str:
+    """Pull a clean season record line for the card footer."""
+    try:
+        stats_path = Path("data/public_stats.json")
+        if not stats_path.exists():
+            return ""
+        with open(stats_path) as f:
+            s = json.load(f).get("summary", {})
+        w = s.get("wins", 0); l = s.get("losses", 0)
+        wr = s.get("win_rate", 0) * 100
+        u  = s.get("units_profit", 0)
+        roi = s.get("roi", 0) * 100
+        sign_u = "+" if u >= 0 else ""
+        sign_r = "+" if roi >= 0 else ""
+        return f"{w}-{l} ({wr:.1f}%) {sign_u}{u:.2f}u · ROI {sign_r}{roi:.1f}%"
+    except Exception:
+        return ""
+
+
 def render_pick_card_html(
     picks: list[dict],
     sport: str = "mlb",
     card_date: date | None = None,
+    record_str: str | None = None,
 ) -> Path | None:
-    """Render moneyline pick card to PNG via Playwright."""
+    """Render moneyline pick card to PNG (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_mlb_card, render_overlay_nba_card
     d = card_date or date.today()
-    html = _build_html(picks, sport, d, card_type="moneyline")
-
-    save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    html_path = save_dir / "pick_card.html"
-    png_path  = save_dir / "pick_card.png"
-
-    return _playwright_render(html, html_path, png_path)
+    rec = record_str if record_str is not None else _format_record_str(sport)
+    if sport.lower() in ("nba", "basketball_nba"):
+        # NBA path: data uses lowercase keys; convert from MLB-shaped picks if needed
+        return render_overlay_nba_card(picks, card_date=d, record_str=rec, filename="pick_card")
+    return render_overlay_mlb_card(picks, card_date=d, record_str=rec, card_type="moneyline", filename="pick_card")
 
 
 def render_runline_card_html(
     picks: list[dict],
     sport: str = "mlb",
     card_date: date | None = None,
+    record_str: str | None = None,
 ) -> Path | None:
-    """Render run line (spread) pick card to PNG."""
+    """Render run line (spread) pick card to PNG (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_mlb_card
     d = card_date or date.today()
-    html = _build_html(picks, sport, d, card_type="spread")
-    save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "runline_card.html", save_dir / "runline_card.png")
+    rec = record_str if record_str is not None else _format_record_str(sport)
+    return render_overlay_mlb_card(picks, card_date=d, record_str=rec, card_type="spread", filename="runline_card")
 
 
 def render_totals_card_html(
     picks: list[dict],
     sport: str = "mlb",
     card_date: date | None = None,
+    record_str: str | None = None,
 ) -> Path | None:
-    """Render over/under totals pick card to PNG."""
+    """Render over/under totals pick card to PNG (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_mlb_card
     d = card_date or date.today()
-    html = _build_html(picks, sport, d, card_type="total")
-    save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
+    rec = record_str if record_str is not None else _format_record_str(sport)
+    return render_overlay_mlb_card(picks, card_date=d, record_str=rec, card_type="total", filename="totals_card")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Game slate cards — show ALL games today with ML / spread / total
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _build_game_slate_html(
+    games: list[dict],
+    sport: str,
+    d: date,
+    accent: str,
+    pill_label: str,
+    logo_fn,
+    hex_fn,
+    abbr_fn,
+) -> str:
+    """
+    Shared HTML builder for MLB and NBA full-slate cards.
+
+    Each game dict should have:
+      away_team, home_team,
+      away_ml, home_ml        (int American odds, 0 if unknown)
+      spread_line             (float, e.g. -1.5)
+      away_spread_odds        (int)
+      home_spread_odds        (int)
+      total                   (float, e.g. 8.5)
+      over_odds, under_odds   (int)
+      game_time               (str, e.g. "7:10 PM ET")
+    """
+    date_str = d.strftime("%b %d, %Y").upper()
+    glow     = accent
+
+    def _fmt_odds(o) -> str:
+        try:
+            v = int(o)
+            return f"+{v}" if v > 0 else str(v)
+        except (TypeError, ValueError):
+            return "—"
+
+    def _fmt_line(line) -> str:
+        try:
+            v = float(line)
+            return f"+{v}" if v > 0 else str(v)
+        except (TypeError, ValueError):
+            return ""
+
+    rows_html = ""
+    for game in games:
+        away      = str(game.get("away_team", ""))
+        home      = str(game.get("home_team", ""))
+        away_logo = logo_fn(away)
+        home_logo = logo_fn(home)
+        away_hex  = hex_fn(away)
+        home_hex  = hex_fn(home)
+        away_abbr = abbr_fn(away)
+        home_abbr = abbr_fn(home)
+        away_ml   = _fmt_odds(game.get("away_ml", 0))
+        home_ml   = _fmt_odds(game.get("home_ml", 0))
+        spread    = _fmt_line(game.get("spread_line", ""))
+        away_sp_o = _fmt_odds(game.get("away_spread_odds", 0))
+        home_sp_o = _fmt_odds(game.get("home_spread_odds", 0))
+        total     = game.get("total", "")
+        over_o    = _fmt_odds(game.get("over_odds", 0))
+        under_o   = _fmt_odds(game.get("under_odds", 0))
+        gametime  = str(game.get("game_time", ""))
+
+        def _logo_tag(url, abbr, hx, side=""):
+            if url:
+                return f'<img class="sl-logo sl-logo-{side}" src="{url}" alt="{abbr}" style="--tc:{hx}">'
+            return f'<div class="sl-logo sl-logo-{side} sl-logo-fallback" style="background:{hx}">{abbr[:3]}</div>'
+
+        spread_disp = f"{away_abbr} {spread} · {away_sp_o}" if spread else "—"
+        total_disp  = f"O {total} ({over_o}) / U ({under_o})" if total else "—"
+
+        rows_html += f"""
+      <div class="sl-row">
+        <div class="sl-teams">
+          <div class="sl-team away">
+            {_logo_tag(away_logo, away_abbr, away_hex, 'away')}
+            <span class="sl-abbr" style="color:{away_hex}">{away_abbr}</span>
+          </div>
+          <div class="sl-at">@</div>
+          <div class="sl-team home">
+            {_logo_tag(home_logo, home_abbr, home_hex, 'home')}
+            <span class="sl-abbr" style="color:{home_hex}">{home_abbr}</span>
+          </div>
+          {('<div class="sl-time">' + gametime + '</div>') if gametime else ''}
+        </div>
+        <div class="sl-markets">
+          <div class="sl-cell">
+            <div class="sl-cell-label">MONEYLINE</div>
+            <div class="sl-ml-row">
+              <span class="sl-ml away-ml">{away_ml}</span>
+              <span class="sl-ml-sep">/</span>
+              <span class="sl-ml home-ml">{home_ml}</span>
+            </div>
+          </div>
+          <div class="sl-cell">
+            <div class="sl-cell-label">SPREAD</div>
+            <div class="sl-val">{spread_disp}</div>
+          </div>
+          <div class="sl-cell">
+            <div class="sl-cell-label">TOTAL</div>
+            <div class="sl-val">{total_disp}</div>
+          </div>
+        </div>
+      </div>"""
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  body {{
+    width: 1080px;
+    background: #070810;
+    font-family: 'Inter', -apple-system, sans-serif;
+    overflow: hidden;
+  }}
+  .card-wrap {{
+    width: 1080px;
+    min-height: 1080px;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, {glow}12 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 80% 100%, rgba(57,255,120,0.04) 0%, transparent 60%),
+      linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
+    padding-bottom: 28px;
+  }}
+  .header {{
+    padding: 28px 44px 22px;
+    border-bottom: 1px solid {accent}40;
+    background: linear-gradient(180deg, {accent}10 0%, transparent 100%);
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }}
+  .brand {{ display: flex; align-items: baseline; gap: 0; line-height: 1; }}
+  .brand-chef {{ font-size: 72px; font-weight: 900; color: #F8F8FC; letter-spacing: -2px; }}
+  .brand-bets {{ font-size: 56px; font-weight: 900; color: #FFBE00; letter-spacing: -1px; margin-left: 4px; }}
+  .brand-ai {{
+    font-size: 34px; font-weight: 800;
+    background: linear-gradient(135deg, #00D4E0, #7B61FF);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-left: 10px; margin-bottom: 6px;
+    filter: drop-shadow(0 0 12px rgba(0,210,220,0.5));
+  }}
+  .brand-sub {{ font-size: 16px; color: #555870; font-weight: 400; margin-top: 8px; letter-spacing: 0.02em; }}
+  .header-right {{ text-align: right; }}
+  .header-date {{ font-size: 18px; font-weight: 700; color: #F8F8FC; letter-spacing: 0.05em; }}
+  .sport-pill {{
+    display: inline-block; margin-top: 8px; padding: 5px 14px;
+    background: {accent}20; border: 1px solid {accent}50;
+    border-radius: 999px; font-size: 13px; font-weight: 700;
+    color: {accent}; letter-spacing: 0.08em;
+  }}
+
+  /* Slate grid */
+  .slate {{ padding: 14px 36px 0; display: flex; flex-direction: column; gap: 8px; }}
+
+  .sl-row {{
+    display: flex; align-items: center; gap: 0;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; overflow: hidden;
+    padding: 14px 20px;
+  }}
+
+  .sl-teams {{
+    display: flex; align-items: center; gap: 8px;
+    min-width: 240px; flex-shrink: 0;
+  }}
+
+  .sl-team {{ display: flex; flex-direction: column; align-items: center; gap: 4px; }}
+  .sl-at {{ font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.3); margin: 0 6px; }}
+
+  .sl-logo {{
+    width: 42px; height: 42px; object-fit: contain;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.06) 100%);
+    padding: 3px;
+    box-shadow: 0 0 0 1.5px var(--tc, #4080FF), 0 0 8px color-mix(in srgb, var(--tc, #4080FF) 50%, transparent);
+  }}
+
+  .sl-logo-fallback {{
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 900; color: #fff;
+  }}
+
+  .sl-abbr {{ font-size: 13px; font-weight: 800; letter-spacing: 0.04em; }}
+
+  .sl-time {{
+    font-size: 10px; color: rgba(255,255,255,0.3); margin-left: 6px; white-space: nowrap;
+    align-self: center;
+  }}
+
+  .sl-markets {{ display: flex; flex: 1; gap: 0; margin-left: 16px; }}
+  .sl-cell {{
+    flex: 1; padding: 0 12px;
+    border-left: 1px solid rgba(255,255,255,0.06);
+  }}
+  .sl-cell:first-child {{ border-left: none; }}
+  .sl-cell-label {{ font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }}
+  .sl-ml-row {{ display: flex; align-items: center; gap: 6px; }}
+  .sl-ml {{ font-size: 15px; font-weight: 800; color: #F8F8FC; }}
+  .sl-ml-sep {{ font-size: 12px; color: rgba(255,255,255,0.25); }}
+  .sl-val {{ font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.75); line-height: 1.3; }}
+
+  /* Footer */
+  .footer {{
+    margin: 16px 44px 0; padding-top: 14px;
+    border-top: 1px solid rgba(255,190,0,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+  }}
+  .footer-left {{ font-size: 14px; color: #555870; font-weight: 500; letter-spacing: 0.04em; }}
+  .footer-handle {{ font-size: 20px; font-weight: 800; color: #FFBE00; letter-spacing: 0.02em; }}
+  .footer-right {{ font-size: 13px; color: #555870; font-weight: 400; }}
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div class="header">
+    <div>
+      <div class="brand">
+        <span class="brand-chef">ChefTony</span>
+        <span class="brand-bets">Bets</span>
+        <span class="brand-ai">AI</span>
+      </div>
+      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">{date_str}</div>
+      <div class="sport-pill">{pill_label}</div>
+    </div>
+  </div>
+
+  <div class="slate">{rows_html}</div>
+
+  <div class="footer">
+    <div class="footer-left">{pill_label} · {date_str}</div>
+    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-right">A.I. Verified</div>
+  </div>
+</div>
+</body>
+</html>"""
+
+
+def _build_mlb_game_slate_html(games: list[dict], d: date) -> str:
+    return _build_game_slate_html(
+        games, "mlb", d,
+        accent="#FFBE00", pill_label="MLB FULL SLATE",
+        logo_fn=_logo_url,
+        hex_fn=lambda t: _MLB_HEX.get(t, "#4080FF"),
+        abbr_fn=_team_abbr,
+    )
+
+
+def _build_nba_game_slate_html(games: list[dict], d: date) -> str:
+    return _build_game_slate_html(
+        games, "nba", d,
+        accent="#00D4E0", pill_label="NBA FULL SLATE",
+        logo_fn=_nba_logo_url,
+        hex_fn=lambda t: _NBA_HEX.get(t, "#4080FF"),
+        abbr_fn=_nba_team_abbr,
+    )
+
+
+def render_mlb_slate_card(games: list[dict], card_date: date | None = None) -> Path | None:
+    """Render full MLB game slate card (all games, all markets) to PNG."""
+    d = card_date or date.today()
+    html = _build_mlb_game_slate_html(games, d)
+    save_dir = OUTPUT_DIR / "baseball_mlb" / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "totals_card.html", save_dir / "totals_card.png")
+    return _playwright_render(html, save_dir / "mlb_slate_card.html", save_dir / "mlb_slate_card.png", target_height=1500)
+
+
+def render_nba_slate_card(games: list[dict], card_date: date | None = None) -> Path | None:
+    """Render full NBA game slate card (all games, all markets) to PNG."""
+    d = card_date or date.today()
+    html = _build_nba_game_slate_html(games, d)
+    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "nba_slate_card.html", save_dir / "nba_slate_card.png", target_height=1500)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1000,14 +1211,18 @@ def _build_props_html(props: list[dict], sport: str, d: date) -> str:
         # Big prop statement: "OVER 6.5 K's" — the actual bet, prominent
         prop_stmt = f"{direction} {line} {mkt_label}"
 
-        # Team logo from ESPN CDN (same as picks card)
-        team_logo_url = _logo_url(team)
-        if team_logo_url:
-            avatar_html = f'<img class="prop-team-logo" src="{team_logo_url}" alt="{team}">'
+        # Player headshot → team logo fallback → initials
+        headshot = _mlb_player_headshot_b64(player)
+        if headshot:
+            avatar_html = f'<img class="prop-team-logo" src="{headshot}" alt="{player}" style="border-radius:50%;object-fit:cover;">'
         else:
-            parts    = player.split()
-            initials = (parts[0][0] + parts[-1][0]).upper() if len(parts) >= 2 else player[:2].upper()
-            avatar_html = f'<span class="prop-initials">{initials}</span>'
+            team_logo_url = _logo_url(team)
+            if team_logo_url:
+                avatar_html = f'<img class="prop-team-logo" src="{team_logo_url}" alt="{team}">'
+            else:
+                parts    = player.split()
+                initials = (parts[0][0] + parts[-1][0]).upper() if len(parts) >= 2 else player[:2].upper()
+                avatar_html = f'<span class="prop-initials">{initials}</span>'
 
         card_class = "prop-card best-prop" if is_best else "prop-card"
         top_play  = '<span class="top-play">⚡ BEST BET</span>' if is_best else ""
@@ -1057,6 +1272,7 @@ def _build_props_html(props: list[dict], sport: str, d: date) -> str:
 
   .card-wrap {{
     width: 1080px;
+    min-height: 1080px;
     background:
       radial-gradient(ellipse 80% 40% at 50% 0%, rgba(123,97,255,0.08) 0%, transparent 70%),
       radial-gradient(ellipse 60% 60% at 80% 100%, rgba(57,255,120,0.04) 0%, transparent 60%),
@@ -1370,6 +1586,7 @@ def _build_nrfi_html(games: list[dict], sport: str, d: date) -> str:
 
   .card-wrap {{
     width: 1080px;
+    min-height: 1080px;
     background: #08090F;
     padding: 44px 52px 40px;
   }}
@@ -1672,9 +1889,7 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
         card_cls  = "nba-card best-nba-card" if is_best else "nba-card"
         logo_size = 86 if is_best else 76
         best_banner = f"""
-        <div class="best-banner">
-          <span class="best-star">★</span> BEST BET <span class="best-star">★</span>
-        </div>""" if is_best else ""
+        <div class="best-banner">BEST BET</div>""" if is_best else ""
 
         rows_html += f"""
     <div class="{card_cls}" style="--sc:{side_hex};--ec:{ec}">
@@ -1762,34 +1977,32 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
   .card-wrap {{
     width:1080px;
     background:
-      radial-gradient(ellipse 80% 40% at 50% 0%, {accent}12 0%, transparent 65%),
+      radial-gradient(ellipse 80% 40% at 50% 0%, {accent}10 0%, transparent 60%),
       linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
-    padding-bottom:32px;
+    padding-bottom:40px;
   }}
 
   .header {{
-    padding:28px 44px 20px;
-    border-bottom:1px solid {accent}35;
-    background:linear-gradient(180deg, {accent}08 0%, transparent 100%);
-    display:flex; align-items:flex-end; justify-content:space-between;
+    padding:28px 44px 24px;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+    display:flex; align-items:center; justify-content:space-between;
   }}
-  .brand {{ display:flex; align-items:baseline; line-height:1; }}
-  .brand-chef {{ font-size:72px; font-weight:900; color:#F8F8FC; letter-spacing:-2px; }}
-  .brand-bets {{ font-size:56px; font-weight:900; color:{accent}; letter-spacing:-1px; margin-left:4px; }}
-  .brand-ai {{
-    font-size:34px; font-weight:800; margin-left:10px; margin-bottom:6px;
-    background:linear-gradient(135deg,#00D4E0,#7B61FF);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-    filter:drop-shadow(0 0 12px rgba(0,210,220,0.45));
+  .brand {{ display:flex; align-items:center; gap:12px; line-height:1; }}
+  .brand-logo {{
+    width:44px; height:44px; border-radius:11px;
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; color:#fff; font-weight:900; flex-shrink:0;
   }}
-  .brand-sub {{ font-size:15px; color:#555870; margin-top:8px; }}
+  .brand-name {{ font-size:36px; font-weight:900; color:#F8F8FC; letter-spacing:-0.5px; }}
+  .brand-sub {{ font-size:13px; color:rgba(255,255,255,0.3); margin-top:4px; }}
   .header-right {{ text-align:right; }}
-  .header-date {{ font-size:18px; font-weight:700; color:#F8F8FC; letter-spacing:0.05em; }}
+  .header-date {{ font-size:15px; font-weight:700; color:rgba(255,255,255,0.7); letter-spacing:0.06em; }}
   .ctx-pill {{
-    display:inline-block; margin-top:8px; padding:5px 16px;
-    background:{accent}16; border:1px solid {accent}45;
-    border-radius:999px; font-size:11px; font-weight:800;
-    color:{accent}; letter-spacing:0.12em;
+    display:inline-block; margin-top:8px; padding:5px 14px;
+    background:rgba(99,102,241,0.15); border:1px solid rgba(99,102,241,0.35);
+    border-radius:999px; font-size:10px; font-weight:800;
+    color:#818cf8; letter-spacing:0.12em;
   }}
 
   /* ── Pick cards ── */
@@ -1882,26 +2095,18 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
     padding:2px 10px; border-radius:999px; border:1px solid;
     white-space:nowrap;
   }}
-  /* BEST BET full-width banner */
+  /* BEST BET label */
   .best-banner {{
     position:absolute; top:0; left:0; right:0;
-    background:linear-gradient(90deg,
-      rgba(255,190,0,0.0) 0%,
-      rgba(255,190,0,0.22) 30%,
-      rgba(255,190,0,0.28) 50%,
-      rgba(255,190,0,0.22) 70%,
-      rgba(255,190,0,0.0) 100%);
-    border-bottom:1px solid rgba(255,190,0,0.45);
-    padding:7px 0 6px;
-    text-align:center;
-    font-size:15px; font-weight:900; letter-spacing:0.25em;
-    color:#FFD700;
-    text-shadow:0 0 16px rgba(255,210,0,0.8);
+    background:rgba(255,255,255,0.03);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    padding:6px 18px;
+    font-size:10px; font-weight:800; letter-spacing:0.2em;
+    color:rgba(255,255,255,0.5); text-transform:uppercase;
     z-index:2;
   }}
-  .best-star {{ font-size:13px; opacity:0.85; }}
   .best-nba-card {{
-    padding-top:36px;
+    padding-top:32px;
   }}
   .bet-book {{
     font-size:13px; font-weight:800; color:rgba(255,255,255,0.82);
@@ -2043,7 +2248,10 @@ def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA"
 
         prop_stmt = f"{direction} {line} {mkt_label}"
 
-        if team_logo:
+        headshot_url = _nba_player_headshot_b64(player)
+        if headshot_url:
+            avatar_html = f'<img class="prop-logo" src="{headshot_url}" alt="{player}" style="border-radius:50%;object-fit:cover;">'
+        elif team_logo:
             avatar_html = f'<img class="prop-logo" src="{team_logo}" alt="{team_guess}">'
         else:
             parts    = player.split()
@@ -2089,6 +2297,7 @@ def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA"
 
   .card-wrap {{
     width:1080px;
+    min-height:1080px;
     background:
       radial-gradient(ellipse 80% 40% at 50% 0%, {accent}10 0%, transparent 70%),
       linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
@@ -2222,12 +2431,14 @@ def render_nba_pick_card_html(
     context_label: str = "NBA",
     top_props: list[dict] | None = None,
 ) -> Path | None:
-    """Render NBA game picks card (spreads + moneylines + totals) to PNG."""
+    """Render NBA game picks card (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_nba_card
     d = card_date or date.today()
-    html = _build_nba_html(picks, d, context_label, top_props=top_props)
-    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "nba_pick_card.html", save_dir / "nba_pick_card.png")
+    rec = _format_record_str("nba")
+    return render_overlay_nba_card(
+        picks, card_date=d, context_label=context_label,
+        record_str=rec, filename="nba_pick_card",
+    )
 
 
 def render_nba_spread_card_html(
@@ -2235,15 +2446,17 @@ def render_nba_spread_card_html(
     card_date: date | None = None,
     context_label: str = "NBA",
 ) -> Path | None:
-    """Render NBA spread picks card to PNG."""
+    """Render NBA spread picks card to PNG (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_nba_card
     d = card_date or date.today()
     spread_picks = [p for p in picks if p.get("market") == "spread"][:5]
     if not spread_picks:
         return None
-    html = _build_nba_html(spread_picks, d, context_label)
-    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "nba_spread_card.html", save_dir / "nba_spread_card.png")
+    rec = _format_record_str("nba")
+    return render_overlay_nba_card(
+        spread_picks, card_date=d, context_label=context_label,
+        record_str=rec, filename="nba_spread_card",
+    )
 
 
 def render_nba_moneyline_card_html(
@@ -2251,15 +2464,17 @@ def render_nba_moneyline_card_html(
     card_date: date | None = None,
     context_label: str = "NBA",
 ) -> Path | None:
-    """Render NBA moneyline picks card to PNG."""
+    """Render NBA moneyline picks card to PNG (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_nba_card
     d = card_date or date.today()
     ml_picks = [p for p in picks if p.get("market") in ("moneyline", "h2h")][:5]
     if not ml_picks:
         return None
-    html = _build_nba_html(ml_picks, d, context_label)
-    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "nba_ml_card.html", save_dir / "nba_ml_card.png")
+    rec = _format_record_str("nba")
+    return render_overlay_nba_card(
+        ml_picks, card_date=d, context_label=context_label,
+        record_str=rec, filename="nba_ml_card",
+    )
 
 
 def render_nba_totals_card_html(
@@ -2267,15 +2482,17 @@ def render_nba_totals_card_html(
     card_date: date | None = None,
     context_label: str = "NBA",
 ) -> Path | None:
-    """Render NBA totals (O/U) picks card to PNG."""
+    """Render NBA totals (O/U) picks card to PNG (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_nba_card
     d = card_date or date.today()
     total_picks = [p for p in picks if p.get("market") == "total"][:5]
     if not total_picks:
         return None
-    html = _build_nba_html(total_picks, d, context_label)
-    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "nba_totals_card.html", save_dir / "nba_totals_card.png")
+    rec = _format_record_str("nba")
+    return render_overlay_nba_card(
+        total_picks, card_date=d, context_label=context_label,
+        record_str=rec, filename="nba_totals_card",
+    )
 
 
 def render_nba_pick_of_day_html(
@@ -2283,15 +2500,15 @@ def render_nba_pick_of_day_html(
     card_date: date | None = None,
     context_label: str = "NBA",
 ) -> Path | None:
-    """Render NBA pick of the day card to PNG."""
+    """Render NBA pick of the day card (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_pick_of_day
     d = card_date or date.today()
-    # Reuse the NBA card builder with a single pick marked as best
-    pick_copy = dict(pick)
-    pick_copy["is_best"] = True
-    html = _build_nba_html([pick_copy], d, context_label)
-    save_dir = OUTPUT_DIR / "basketball_nba" / d.strftime("%Y%m%d")
-    save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "nba_pick_of_day.html", save_dir / "nba_pick_of_day.png")
+    rec = _format_record_str("nba")
+    # Write both naming variants for compatibility with downstream callers
+    render_overlay_pick_of_day(pick, sport="basketball_nba", card_date=d,
+                               record_str=rec, filename="pick_of_day_card")
+    return render_overlay_pick_of_day(pick, sport="basketball_nba", card_date=d,
+                                      record_str=rec, filename="nba_pick_of_day")
 
 
 def render_nba_slate_card_html(
@@ -2661,149 +2878,267 @@ def render_mlb_story_card(
 # Pick of the Day card — hero single pick
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _load_totals_record_str() -> str:
+    """Return e.g. 'Totals 41-31 (57% WR)' from public_stats.json."""
+    try:
+        import json as _json
+        p = Path("data/public_stats.json")
+        if not p.exists():
+            return ""
+        stats = _json.loads(p.read_text())
+        t = stats.get("by_market", {}).get("total", {})
+        w, l = t.get("wins", 0), t.get("losses", 0)
+        n = w + l
+        if n < 5:
+            return ""
+        return f"Totals {w}-{l} ({round(w/n*100,1)}% WR)"
+    except Exception:
+        return ""
+
+
 def _build_pick_of_day_html(pick: dict, sport: str, d: date) -> str:
     date_str  = d.strftime("%b %d, %Y").upper()
-    team      = str(pick.get("Team") or pick.get("team") or "")
-    opponent  = str(pick.get("Opponent") or pick.get("opponent") or "")
-    odds      = int(pick.get("BestOdds") or pick.get("best_odds") or pick.get("odds") or 0)
-    book      = str(pick.get("Sportsbook") or pick.get("sportsbook") or pick.get("book") or "")
-    model_prob = float(pick.get("ModelProb") or pick.get("model_prob") or 0)
-    edge      = float(pick.get("Edge") or pick.get("edge") or 0)
-    edge_pct  = round(edge * 100, 1) if abs(edge) < 1 else round(edge, 1)
-    why       = str(pick.get("Why") or pick.get("why") or "")
-    market    = str(pick.get("Market") or pick.get("market") or "moneyline").upper()
-    bet_line  = pick.get("BetLine") or pick.get("bet_line") or ""
+    _is_nba   = sport.lower() in ("nba", "basketball_nba")
 
-    team_hex  = _MLB_HEX.get(team, "#4080FF")
-    logo_url  = _logo_url(team)
+    # NBA picks store "Phoenix Suns +10.5" in team — split out the line
+    raw_team  = str(pick.get("Team") or pick.get("team") or "")
+    bet_line  = pick.get("BetLine") or pick.get("bet_line") or ""
+    if _is_nba and not bet_line:
+        parts = raw_team.rsplit(" ", 1)
+        if len(parts) == 2 and parts[1] and parts[1][0] in ("+", "-") and parts[1][1:].replace(".", "").isdigit():
+            raw_team, bet_line = parts[0], parts[1]
+
+    # Opponent: NBA picks use matchup field
+    matchup   = str(pick.get("matchup") or pick.get("Matchup") or "")
+    if matchup and not pick.get("Opponent") and not pick.get("opponent"):
+        away_m, home_m = (matchup.split(" @ ", 1) + [""])[:2]
+        if raw_team.lower() in away_m.lower():
+            opponent = home_m
+        else:
+            opponent = away_m
+    else:
+        opponent = str(pick.get("Opponent") or pick.get("opponent") or "")
+
+    team      = raw_team
+    odds_raw  = pick.get("BestOdds") or pick.get("best_odds") or pick.get("odds") or 0
+    odds      = int(odds_raw) if odds_raw else 0
+    book      = _clean_book(str(pick.get("Sportsbook") or pick.get("sportsbook") or pick.get("book") or ""))
+    model_prob = float(pick.get("ModelProb") or pick.get("model_prob") or 0)
+    edge      = float(pick.get("Edge") or pick.get("edge_pct") or pick.get("edge") or 0)
+    edge_pct  = round(edge * 100, 1) if abs(edge) < 1 else round(edge, 1)
+    why       = str(pick.get("Why") or pick.get("why") or pick.get("notes") or "")
+    market    = str(pick.get("Market") or pick.get("market") or "moneyline").upper()
+
+    if _is_nba:
+        team_hex = _NBA_HEX.get(team, "#4080FF")
+        logo_url = _nba_logo_url(team)
+        team_abbr = _nba_team_abbr(team)
+    else:
+        team_hex = _MLB_HEX.get(team, "#4080FF")
+        logo_url = _logo_url(team)
+        team_abbr = _ESPN_ABBR.get(team, team[:3].upper())
+
     if logo_url:
         logo_html = f'<img class="pod-logo" src="{logo_url}" alt="{team}">'
     else:
-        abbr = _ESPN_ABBR.get(team, team[:3].upper())
-        logo_html = f'<div class="pod-logo pod-logo-fb" style="background:{team_hex}">{abbr}</div>'
+        logo_html = f'<div class="pod-logo pod-logo-fb" style="background:{team_hex}">{team_abbr}</div>'
 
-    odds_str  = f"{odds:+d}" if odds else "–"
-    conf_pct  = round(model_prob * 100, 1)
+    odds_str = f"{odds:+d}" if odds else "–"
 
-    label_map = {"MONEYLINE": "MONEYLINE", "SPREAD": f"RUN LINE {bet_line}", "TOTAL": f"TOTAL {bet_line}"}
-    bet_label = label_map.get(market, market)
+    sport_lbl = _SPORT_LABELS.get(sport.lower(), sport.upper())
+    if market == "SPREAD":
+        bet_label = f"SPREAD  {bet_line}" if bet_line else "SPREAD"
+    elif market == "TOTAL":
+        direction = str(pick.get("direction") or pick.get("Direction") or "OVER").upper()
+        bet_label = f"{direction}  {bet_line}" if bet_line else market
+    else:
+        bet_label = "MONEYLINE"
+
+    # For totals the "team" is "OVER 212.5" — use matchup teams for logos
+    if market == "TOTAL" and matchup and " @ " in matchup:
+        away_t, home_t = matchup.split(" @ ", 1)
+        if _is_nba:
+            away_logo = _nba_logo_url(away_t.strip())
+            home_logo = _nba_logo_url(home_t.strip())
+            away_abbr = _nba_team_abbr(away_t.strip())
+            home_abbr = _nba_team_abbr(home_t.strip())
+            away_hex  = _NBA_HEX.get(away_t.strip(), "#4080FF")
+            home_hex  = _NBA_HEX.get(home_t.strip(), "#4080FF")
+        else:
+            away_logo = _logo_url(away_t.strip())
+            home_logo = _logo_url(home_t.strip())
+            away_abbr = _ESPN_ABBR.get(away_t.strip(), away_t.strip()[:3].upper())
+            home_abbr = _ESPN_ABBR.get(home_t.strip(), home_t.strip()[:3].upper())
+            away_hex  = _MLB_HEX.get(away_t.strip(), "#4080FF")
+            home_hex  = _MLB_HEX.get(home_t.strip(), "#4080FF")
+        accent = "#00E676" if str(pick.get("direction","")).upper() != "UNDER" else "#FF5C5C"
+        away_img = f'<img class="duo-logo" src="{away_logo}">' if away_logo else f'<div class="duo-logo duo-fb" style="background:{away_hex}">{away_abbr}</div>'
+        home_img = f'<img class="duo-logo" src="{home_logo}">' if home_logo else f'<div class="duo-logo duo-fb" style="background:{home_hex}">{home_abbr}</div>'
+        logo_section = f"""<div class="duo-logos">
+          <div class="team-side">{away_img}<span class="team-abbr">{away_abbr}</span></div>
+          <span class="vs-sep">@</span>
+          <div class="team-side">{home_img}<span class="team-abbr">{home_abbr}</span></div>
+        </div>"""
+        name_html   = ""
+        sub_html    = f'<div class="matchup-sub">{matchup}</div>' if matchup else ""
+    else:
+        accent = team_hex
+        if logo_url:
+            logo_section = f'<img class="solo-logo" src="{logo_url}" alt="{team}">'
+        else:
+            logo_section = f'<div class="solo-logo solo-fb" style="background:{team_hex}">{team_abbr}</div>'
+        name_html = f'<div class="team-hero">{team}</div>'
+        sub_html  = f'<div class="matchup-sub">vs {opponent}</div>' if opponent else ""
+
+    record_str = _load_totals_record_str()
+    edge_color = "#00E676" if edge_pct >= 5 else ("#FFA514" if edge_pct >= 0 else "#FF5C5C")
 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
   body {{
-    font-family: 'Inter', sans-serif;
-    background: #0A0A0F;
-    width: 1080px; height: 1080px;
-    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system,'Helvetica Neue',Arial,sans-serif;
+    background: #080808; width: 1080px; height: 1080px;
   }}
-  .pod-wrap {{
-    width: 960px; height: 960px;
-    background: linear-gradient(135deg, #0F1117 0%, #161B2E 50%, #0F1117 100%);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 32px;
+  .card-wrap {{
+    width: 1080px; height: 1080px;
+    background: #080808;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 28px; padding: 56px;
     position: relative; overflow: hidden;
   }}
-  .pod-wrap::before {{
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, {team_hex}22 0%, transparent 60%);
+  .glow {{
+    position: absolute; top: 0; left: 0; right: 0; height: 680px;
+    background: radial-gradient(ellipse 90% 70% at 50% -5%, {accent}2A 0%, transparent 65%);
+    pointer-events: none;
   }}
-  .pod-badge {{
-    background: linear-gradient(90deg, {team_hex}, {team_hex}CC);
-    color: #fff; font-size: 13px; font-weight: 700;
-    letter-spacing: 3px; text-transform: uppercase;
-    padding: 6px 20px; border-radius: 999px;
+  /* HEADER */
+  .header {{
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 38px 52px 0; flex-shrink: 0; position: relative; z-index: 1;
   }}
-  .pod-logo {{ width: 140px; height: 140px; object-fit: contain; filter: drop-shadow(0 0 24px {team_hex}88); }}
-  .pod-logo-fb {{
-    width: 140px; height: 140px; border-radius: 50%;
+  .h-brand {{
+    font-size: 21px; font-weight: 900; color: #fff;
+    letter-spacing: 2px; text-transform: uppercase;
+  }}
+  .h-pill {{
+    font-size: 13px; font-weight: 800; letter-spacing: 3.5px;
+    color: rgba(255,255,255,0.5); text-transform: uppercase;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
+    padding: 9px 24px; border-radius: 999px;
+  }}
+  .h-date {{
+    font-size: 17px; font-weight: 700; color: rgba(255,255,255,0.65);
+  }}
+  /* LOGO ZONE — fills upper half */
+  .logo-zone {{
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px; position: relative; z-index: 1;
+  }}
+  .solo-logo {{
+    width: 220px; height: 220px; object-fit: contain;
+    filter: drop-shadow(0 0 50px {accent}55);
+  }}
+  .solo-fb {{
+    width: 220px; height: 220px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 36px; font-weight: 900; color: #fff;
+    font-size: 64px; font-weight: 900; color: #fff;
+    filter: drop-shadow(0 0 50px {accent}55);
   }}
-  .pod-team {{
-    font-size: 52px; font-weight: 900; color: #FFFFFF;
-    text-align: center; line-height: 1.1;
-    text-shadow: 0 0 40px {team_hex}66;
+  .duo-logos {{ display: flex; align-items: flex-start; gap: 36px; }}
+  .team-side {{ display: flex; flex-direction: column; align-items: center; gap: 12px; }}
+  .duo-logo {{
+    width: 160px; height: 160px; object-fit: contain;
+    filter: drop-shadow(0 0 24px rgba(255,255,255,0.18));
   }}
-  .pod-vs {{ font-size: 18px; color: #666; font-weight: 500; }}
-  .pod-opponent {{ font-size: 26px; color: #AAA; font-weight: 600; }}
-  .pod-bet {{
-    display: flex; align-items: center; gap: 16px;
+  .duo-fb {{
+    width: 160px; height: 160px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px; font-weight: 900; color: #fff;
   }}
-  .pod-bet-type {{
-    font-size: 13px; font-weight: 700; letter-spacing: 2px;
-    color: #888; text-transform: uppercase;
+  .vs-sep {{
+    font-size: 26px; font-weight: 900; color: rgba(255,255,255,0.22);
+    margin-top: 64px;
   }}
-  .pod-odds {{
-    font-size: 64px; font-weight: 900;
-    background: linear-gradient(90deg, {team_hex}, #FFFFFF);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .team-abbr {{
+    font-size: 20px; font-weight: 900; color: rgba(255,255,255,0.75);
+    letter-spacing: 2px;
   }}
-  .pod-book {{ font-size: 15px; color: #555; font-weight: 600; }}
-  .pod-stats {{
-    display: flex; gap: 32px; align-items: center;
+  .team-hero {{
+    font-size: 50px; font-weight: 900; color: #fff;
+    letter-spacing: -0.5px; text-align: center; line-height: 1.1;
   }}
-  .pod-stat {{
+  .matchup-sub {{
+    font-size: 22px; font-weight: 600; color: rgba(255,255,255,0.52);
     text-align: center;
   }}
-  .pod-stat-val {{ font-size: 28px; font-weight: 800; color: #FFF; }}
-  .pod-stat-lbl {{ font-size: 11px; font-weight: 600; color: #555; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }}
-  .pod-why {{
-    font-size: 14px; color: #666; font-style: italic;
-    text-align: center; max-width: 600px; line-height: 1.5;
+  /* BET ZONE — fills lower half */
+  .bet-zone {{
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; position: relative; z-index: 1;
   }}
-  .pod-footer {{
-    position: absolute; bottom: 28px; left: 0; right: 0;
-    display: flex; justify-content: space-between; padding: 0 48px;
-    font-size: 12px; color: #333; font-weight: 600;
+  .market-lbl {{
+    font-size: 15px; font-weight: 800; letter-spacing: 5px;
+    color: rgba(255,255,255,0.38); text-transform: uppercase;
   }}
+  .odds-hero {{
+    font-size: 160px; font-weight: 900; color: {accent};
+    line-height: 0.85; letter-spacing: -6px;
+    filter: drop-shadow(0 0 60px {accent}55);
+  }}
+  .meta-row {{
+    display: flex; align-items: center; gap: 16px; margin-top: 6px;
+  }}
+  .edge-pill {{
+    font-size: 18px; font-weight: 800; letter-spacing: 0.5px;
+    color: {edge_color}; background: {edge_color}18;
+    border: 1.5px solid {edge_color}55;
+    padding: 9px 26px; border-radius: 999px;
+  }}
+  /* FOOTER */
+  .footer {{
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 52px 36px; flex-shrink: 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    position: relative; z-index: 1;
+  }}
+  .footer-record {{ font-size: 17px; font-weight: 900; color: #00E676; }}
+  .footer-note {{ font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.28); }}
 </style>
 </head>
 <body>
-<div class="pod-wrap">
-  <div class="pod-badge">PICK OF THE DAY</div>
-  {logo_html}
-  <div class="pod-team">{team}</div>
-  <div style="display:flex;align-items:center;gap:12px">
-    <span class="pod-vs">vs</span>
-    <span class="pod-opponent">{opponent}</span>
+<div class="card-wrap">
+  <div class="glow"></div>
+
+  <div class="header">
+    <span class="h-brand">@ChefTonyAIBets</span>
+    <span class="h-pill">Pick of the Day</span>
+    <span class="h-date">{sport_lbl} · {date_str}</span>
   </div>
-  <div style="text-align:center">
-    <div class="pod-bet-type">{bet_label}</div>
-    <div class="pod-odds">{odds_str}</div>
-    <div class="pod-book">{book}</div>
+
+  <div class="logo-zone">
+    {logo_section}
+    {name_html}
+    {sub_html}
   </div>
-  <div class="pod-stats">
-    <div class="pod-stat">
-      <div class="pod-stat-val">{conf_pct:.0f}%</div>
-      <div class="pod-stat-lbl">Model Conf</div>
-    </div>
-    <div style="width:1px;height:40px;background:#333"></div>
-    <div class="pod-stat">
-      <div class="pod-stat-val">{edge_pct:+.1f}%</div>
-      <div class="pod-stat-lbl">Edge vs Line</div>
-    </div>
-    <div style="width:1px;height:40px;background:#333"></div>
-    <div class="pod-stat">
-      <div class="pod-stat-val">AI</div>
-      <div class="pod-stat-lbl">Verified</div>
+
+  <div class="bet-zone">
+    <div class="market-lbl">{bet_label}</div>
+    <div class="odds-hero">{odds_str}</div>
+    <div class="meta-row">
+      {_book_badge_html(book, font_size=17, padding="9px 22px", radius="10px")}
+      <div class="edge-pill">+{edge_pct:.1f}% EDGE</div>
     </div>
   </div>
-  {"<div class='pod-why'>" + why + "</div>" if why else ""}
-  <div class="pod-footer">
-    <span>MLB · {date_str}</span>
-    <span>@ChefTonyAIBets</span>
-    <span>Not financial advice</span>
+
+  <div class="footer">
+    <span class="footer-record">{record_str}</span>
+    <span class="footer-note">Picks timestamped before tip-off · Not financial advice · 21+</span>
   </div>
 </div>
 </body>
@@ -2815,12 +3150,221 @@ def render_pick_of_day_card_html(
     sport: str = "mlb",
     card_date: date | None = None,
 ) -> Path | None:
-    """Render hero 'Pick of the Day' card to PNG (1080×1080 square)."""
+    """Render hero 1080×1080 'Pick of the Day' card (Overlay-branded)."""
+    from src.output.overlay_cards import render_overlay_pick_of_day
     d = card_date or date.today()
-    html = _build_pick_of_day_html(pick, sport, d)
+    rec = _format_record_str(sport)
+    return render_overlay_pick_of_day(pick, sport=sport, card_date=d, record_str=rec)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Clean totals card — 2-3 picks, readable at Instagram thumbnail size
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _build_clean_totals_html(picks: list[dict], sport: str, d: date) -> str:
+    _is_nba   = "nba" in sport.lower()
+    date_str  = d.strftime("%b %d, %Y").upper()
+    sport_lbl = _SPORT_LABELS.get(sport.lower(), sport.upper())
+    record_str = _load_totals_record_str()
+
+    totals = [p for p in picks if str(p.get("market","")).lower() in ("total","f5_total")][:3]
+    if not totals:
+        return ""
+
+    rows = ""
+    for p in totals:
+        matchup   = p.get("matchup", "")
+        direction = str(p.get("direction","OVER")).upper()
+        bet_line  = p.get("bet_line") or p.get("line","")
+        odds_raw  = p.get("best_odds") or p.get("odds") or p.get("BestOdds") or 0
+        odds      = int(odds_raw) if odds_raw else 0
+        odds_str  = f"{odds:+d}" if odds else "–"
+        book      = (p.get("sportsbook") or p.get("Sportsbook","")).strip()
+        edge_pct  = float(p.get("edge_pct") or p.get("Edge") or 0)
+        edge_color = "#00E676" if edge_pct >= 8 else ("#FFA514" if edge_pct >= 4 else "#6B8CFF")
+
+        away_t = home_t = ""
+        if matchup and " @ " in matchup:
+            away_t, home_t = matchup.split(" @ ", 1)
+            away_t = away_t.strip(); home_t = home_t.strip()
+
+        if _is_nba:
+            away_logo = _nba_logo_url(away_t) if away_t else ""
+            home_logo = _nba_logo_url(home_t) if home_t else ""
+            away_abbr = _nba_team_abbr(away_t)
+            home_abbr = _nba_team_abbr(home_t)
+            away_hex  = _NBA_HEX.get(away_t, "#4080FF")
+            home_hex  = _NBA_HEX.get(home_t, "#4080FF")
+        else:
+            away_logo = _logo_url(away_t) if away_t else ""
+            home_logo = _logo_url(home_t) if home_t else ""
+            away_abbr = _ESPN_ABBR.get(away_t, away_t[:3].upper()) if away_t else "AWY"
+            home_abbr = _ESPN_ABBR.get(home_t, home_t[:3].upper()) if home_t else "HME"
+            away_hex  = _MLB_HEX.get(away_t, "#4080FF")
+            home_hex  = _MLB_HEX.get(home_t, "#4080FF")
+
+        away_img = f'<img class="logo" src="{away_logo}">' if away_logo else f'<div class="logo logo-fb" style="background:{away_hex}">{away_abbr}</div>'
+        home_img = f'<img class="logo" src="{home_logo}">' if home_logo else f'<div class="logo logo-fb" style="background:{home_hex}">{home_abbr}</div>'
+        dir_color = "#00E676" if direction == "OVER" else "#FF5C5C"
+
+        rows += f"""
+  <div class="pick-section">
+    <div class="matchup-row">
+      <div class="team-block">
+        {away_img}
+        <span class="team-name">{away_abbr}</span>
+      </div>
+      <span class="at-sign">@</span>
+      <div class="team-block">
+        {home_img}
+        <span class="team-name">{home_abbr}</span>
+      </div>
+    </div>
+    <div class="bet-display">
+      <span class="direction" style="color:{dir_color}">{direction}</span>
+      <span class="line">{bet_line}</span>
+    </div>
+    <div class="meta-row">
+      <span class="odds">{odds_str}</span>
+      {_book_badge_html(book, font_size=15, padding="5px 14px", radius="8px")}
+      <span class="edge-pill" style="color:{edge_color};border-color:{edge_color}55">+{edge_pct:.1f}% EDGE</span>
+    </div>
+  </div>"""
+
+    n = len(totals)
+    # Dividers between picks
+    rows = rows.replace('</div>\n  <div class="pick-section">', '</div>\n  <div class="divider-line"></div>\n  <div class="pick-section">', n - 1)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  body {{
+    font-family: -apple-system,'Helvetica Neue',Arial,sans-serif;
+    background: #080808; width: 1080px; height: 1080px;
+  }}
+  .card-wrap {{
+    width: 1080px; height: 1080px; background: #080808;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+  }}
+  /* HEADER */
+  .header {{
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 34px 52px 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }}
+  .h-sport {{
+    font-size: 26px; font-weight: 900; color: #fff;
+    letter-spacing: 2px; text-transform: uppercase;
+  }}
+  .h-date {{
+    font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+  }}
+  .h-brand {{
+    font-size: 18px; font-weight: 900; color: #00E676;
+    letter-spacing: 1.5px;
+  }}
+  /* PICK SECTIONS */
+  .picks-body {{ flex: 1; display: flex; flex-direction: column; }}
+  .pick-section {{
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 24px 52px; gap: 18px;
+  }}
+  .divider-line {{
+    height: 1px; background: rgba(255,255,255,0.08);
+    flex-shrink: 0; margin: 0 52px;
+  }}
+  /* LOGOS */
+  .matchup-row {{
+    display: flex; align-items: center; justify-content: center; gap: 36px;
+  }}
+  .team-block {{
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }}
+  .logo {{
+    width: 120px; height: 120px; object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));
+  }}
+  .logo-fb {{
+    width: 120px; height: 120px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; font-weight: 900; color: #fff;
+  }}
+  .team-name {{
+    font-size: 20px; font-weight: 900; color: rgba(255,255,255,0.8);
+    letter-spacing: 2px; text-transform: uppercase;
+  }}
+  .at-sign {{
+    font-size: 26px; font-weight: 700; color: rgba(255,255,255,0.3);
+    margin-top: -20px;
+  }}
+  /* BET HERO */
+  .bet-display {{ display: flex; align-items: baseline; gap: 18px; }}
+  .direction {{
+    font-size: 96px; font-weight: 900; line-height: 1; letter-spacing: -2px;
+    filter: drop-shadow(0 0 50px currentColor);
+  }}
+  .line {{
+    font-size: 78px; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1px;
+  }}
+  /* META */
+  .meta-row {{ display: flex; align-items: center; gap: 14px; }}
+  .odds {{ font-size: 32px; font-weight: 900; color: #fff; }}
+  .edge-pill {{
+    font-size: 16px; font-weight: 800; letter-spacing: 1px;
+    border: 1.5px solid; border-radius: 999px; padding: 5px 18px;
+  }}
+  /* FOOTER */
+  .footer {{
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 52px 30px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+  }}
+  .footer-record {{ font-size: 18px; font-weight: 900; color: #00E676; }}
+  .footer-note {{ font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.3); }}
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div class="header">
+    <span class="h-sport">{sport_lbl} Totals</span>
+    <span class="h-date">{date_str}</span>
+    <span class="h-brand">@ChefTonyAIBets</span>
+  </div>
+
+  <div class="picks-body">
+    {rows}
+  </div>
+
+  <div class="footer">
+    <span class="footer-record">{record_str}</span>
+    <span class="footer-note">Picks logged before tip-off · Not financial advice · 21+</span>
+  </div>
+</div>
+</body>
+</html>"""
+
+
+def render_clean_totals_card(
+    picks: list[dict],
+    sport: str,
+    card_date: date | None = None,
+) -> Path | None:
+    """Render clean totals card (2-3 picks) optimized for Instagram."""
+    d = card_date or date.today()
+    totals = [p for p in picks if str(p.get("market","")).lower() in ("total","f5_total")]
+    if not totals:
+        return None
+    html = _build_clean_totals_html(picks, sport, d)
     save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
-    return _playwright_render(html, save_dir / "pick_of_day_card.html", save_dir / "pick_of_day_card.png")
+    return _playwright_render(html, save_dir / "totals_clean_card.html", save_dir / "totals_clean_card.png")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -2835,6 +3379,7 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
         "moneyline": "ML",
         "spread":    "RL",
         "total":     "O/U",
+        "f5_total":  "F5",
         "nrfi":      "NRFI",
         "prop":      "PROP",
     }
@@ -2842,9 +3387,21 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
         "moneyline": "#4CAF50",
         "spread":    "#2196F3",
         "total":     "#FF9800",
+        "f5_total":  "#FF9800",
         "nrfi":      "#9C27B0",
         "prop":      "#00BCD4",
     }
+
+    # Adaptive sizing: fewer picks = bigger cards, more picks = compact
+    n = len(picks)
+    if n <= 5:
+        card_h, logo_sz, team_fs, best_fs, odds_fs, best_odds_fs, gap, pad_v = 108, 68, 30, 34, 50, 56, 11, 18
+    elif n <= 8:
+        card_h, logo_sz, team_fs, best_fs, odds_fs, best_odds_fs, gap, pad_v = 88, 56, 25, 28, 42, 46, 9, 14
+    elif n <= 11:
+        card_h, logo_sz, team_fs, best_fs, odds_fs, best_odds_fs, gap, pad_v = 74, 46, 21, 23, 34, 37, 7, 10
+    else:
+        card_h, logo_sz, team_fs, best_fs, odds_fs, best_odds_fs, gap, pad_v = 62, 38, 18, 19, 28, 30, 6, 8
 
     is_nba = sport.lower() in ("basketball_nba", "nba")
 
@@ -2863,7 +3420,6 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
         edge_color = "#39FF78" if edge_pct >= 5 else ("#FFA514" if edge_pct >= 2 else "#666")
         is_best = i == 0
 
-        # Team logo and hex color — use sport-appropriate lookup
         if is_nba:
             team_hex = _NBA_HEX.get(label, "#4080FF")
             logo_url = _nba_logo_url(label)
@@ -2878,6 +3434,7 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
 
         card_cls = "s-card s-best" if is_best else "s-card"
         top_play = '<span class="s-top">TOP PLAY</span>' if is_best else ""
+        cur_odds_fs = best_odds_fs if is_best else odds_fs
 
         rows_html += f"""
     <div class="{card_cls}" style="--tc:{team_hex};--ec:{edge_color}">
@@ -2895,7 +3452,7 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
         </div>
       </div>
       <div class="s-odds-wrap">
-        <span class="s-odds" style="color:{edge_color}">{odds_str}</span>
+        <span class="s-odds" style="font-size:{cur_odds_fs}px;color:{edge_color}">{odds_str}</span>
         {'<span class="s-book">' + book + '</span>' if book else ''}
       </div>
     </div>"""
@@ -2915,91 +3472,91 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
     background:
       radial-gradient(ellipse 80% 40% at 50% 0%, rgba(64,128,255,0.07) 0%, transparent 70%),
       linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
-    padding-bottom: 28px;
+    padding-bottom: {pad_v}px;
   }}
 
   .s-header {{
-    padding: 28px 44px 22px;
+    padding: {pad_v + 10}px 44px {pad_v}px;
     border-bottom: 1px solid rgba(64,128,255,0.25);
     background: linear-gradient(180deg, rgba(64,128,255,0.06) 0%, transparent 100%);
     display: flex; align-items: flex-end; justify-content: space-between;
   }}
   .s-brand {{ display: flex; align-items: baseline; gap: 0; line-height: 1; }}
-  .s-brand-chef {{ font-size: 72px; font-weight: 900; color: #F8F8FC; letter-spacing: -2px; }}
-  .s-brand-bets {{ font-size: 56px; font-weight: 900; color: #FFBE00; letter-spacing: -1px; margin-left: 4px; }}
-  .s-brand-ai {{ font-size: 34px; font-weight: 800; background: linear-gradient(135deg, #00D4E0, #7B61FF);
+  .s-brand-chef {{ font-size: {min(72, 48 + max(0, 5-n)*5)}px; font-weight: 900; color: #F8F8FC; letter-spacing: -2px; }}
+  .s-brand-bets {{ font-size: {min(56, 38 + max(0, 5-n)*4)}px; font-weight: 900; color: #FFBE00; letter-spacing: -1px; margin-left: 4px; }}
+  .s-brand-ai {{ font-size: {min(34, 24 + max(0, 5-n)*2)}px; font-weight: 800; background: linear-gradient(135deg, #00D4E0, #7B61FF);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     margin-left: 10px; filter: drop-shadow(0 0 12px rgba(0,210,220,0.5)); }}
-  .s-brand-sub {{ font-size: 16px; color: #555870; font-weight: 400; margin-top: 8px; }}
+  .s-brand-sub {{ font-size: {min(16, 11 + max(0, 5-n))}px; color: #555870; font-weight: 400; margin-top: 6px; }}
   .s-header-right {{ text-align: right; }}
-  .s-header-date {{ font-size: 18px; font-weight: 700; color: #F8F8FC; letter-spacing: 0.05em; }}
+  .s-header-date {{ font-size: {min(18, 14 + max(0, 5-n))}px; font-weight: 700; color: #F8F8FC; letter-spacing: 0.05em; }}
   .s-sport-pill {{
-    display: inline-block; margin-top: 8px; padding: 5px 14px;
+    display: inline-block; margin-top: 6px; padding: 4px 12px;
     background: rgba(64,128,255,0.15); border: 1px solid rgba(64,128,255,0.35);
-    border-radius: 999px; font-size: 13px; font-weight: 700; color: #4080FF; letter-spacing: 0.08em;
+    border-radius: 999px; font-size: 12px; font-weight: 700; color: #4080FF; letter-spacing: 0.08em;
   }}
 
-  .s-list {{ padding: 18px 44px 0; display: flex; flex-direction: column; gap: 12px; }}
+  .s-list {{ padding: {pad_v}px 44px 0; display: flex; flex-direction: column; gap: {gap}px; }}
 
   .s-card {{
     position: relative; display: flex; align-items: center; gap: 0;
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px; overflow: hidden; padding: 20px 28px 20px 0;
-    min-height: 110px; backdrop-filter: blur(4px);
+    border-radius: {min(20, 10 + max(0, 5-n)*2)}px; overflow: hidden;
+    padding: {pad_v - 4}px 24px {pad_v - 4}px 0;
+    min-height: {card_h}px; backdrop-filter: blur(4px);
   }}
   .s-best {{
     background: linear-gradient(135deg, color-mix(in srgb, var(--tc) 15%, #0E1220) 0%, rgba(14,18,32,0.95) 50%);
     border: 1px solid rgba(255,190,0,0.4);
     box-shadow: 0 0 40px rgba(255,190,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06);
-    min-height: 120px;
+    min-height: {card_h + 10}px;
   }}
 
-  .s-bar {{ width: 6px; align-self: stretch; border-radius: 3px; margin-right: 16px; flex-shrink: 0; }}
+  .s-bar {{ width: 5px; align-self: stretch; border-radius: 3px; margin-right: 14px; flex-shrink: 0; }}
 
-  .s-logo-wrap {{ width: 72px; height: 72px; flex-shrink: 0; margin-right: 20px; }}
-  .s-best .s-logo-wrap {{ width: 80px; height: 80px; }}
+  .s-logo-wrap {{ width: {logo_sz}px; height: {logo_sz}px; flex-shrink: 0; margin-right: {max(12, logo_sz//4)}px; }}
+  .s-best .s-logo-wrap {{ width: {logo_sz + 8}px; height: {logo_sz + 8}px; }}
   .s-logo {{
     width: 100%; height: 100%; object-fit: contain; border-radius: 50%;
     background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.06) 100%);
-    padding: 5px;
-    box-shadow: 0 0 0 2px var(--tc), 0 0 20px color-mix(in srgb, var(--tc) 50%, transparent);
+    padding: 4px;
+    box-shadow: 0 0 0 2px var(--tc), 0 0 16px color-mix(in srgb, var(--tc) 50%, transparent);
   }}
   .s-logo-fb {{
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 900; color: white;
+    font-size: {max(12, logo_sz//4)}px; font-weight: 900; color: white;
   }}
 
-  .s-info {{ flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }}
-  .s-team-row {{ display: flex; align-items: center; gap: 10px; }}
-  .s-team {{ font-size: 32px; font-weight: 900; color: #F8F8FC; letter-spacing: -0.5px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1; }}
-  .s-best .s-team {{ font-size: 36px; }}
+  .s-info {{ flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }}
+  .s-team-row {{ display: flex; align-items: center; gap: 8px; }}
+  .s-team {{ font-size: {team_fs}px; font-weight: 900; color: #F8F8FC; letter-spacing: -0.5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.15; }}
+  .s-best .s-team {{ font-size: {best_fs}px; }}
   .s-badge {{
-    font-size: 10px; font-weight: 700; letter-spacing: 1px;
-    padding: 3px 8px; border-radius: 999px; border: 1px solid; flex-shrink: 0;
+    font-size: {max(9, team_fs//3)}px; font-weight: 700; letter-spacing: 1px;
+    padding: 2px 7px; border-radius: 999px; border: 1px solid; flex-shrink: 0;
   }}
-  .s-opp {{ font-size: 15px; color: #6B7090; font-weight: 500; }}
-  .s-meta {{ display: flex; align-items: center; gap: 12px; margin-top: 2px; }}
-  .s-edge {{ font-size: 14px; font-weight: 700; letter-spacing: 0.03em; }}
+  .s-opp {{ font-size: {max(11, team_fs - 10)}px; color: #6B7090; font-weight: 500; }}
+  .s-meta {{ display: flex; align-items: center; gap: 10px; margin-top: 1px; }}
+  .s-edge {{ font-size: {max(11, team_fs - 10)}px; font-weight: 700; letter-spacing: 0.03em; }}
   .s-top {{
-    font-size: 11px; font-weight: 700; color: #FFBE00;
+    font-size: {max(9, team_fs - 14)}px; font-weight: 700; color: #FFBE00;
     background: rgba(255,190,0,0.1); border: 1px solid rgba(255,190,0,0.25);
-    padding: 2px 10px; border-radius: 999px; letter-spacing: 0.04em;
+    padding: 2px 8px; border-radius: 999px; letter-spacing: 0.04em;
   }}
 
-  .s-odds-wrap {{ flex-shrink: 0; text-align: right; min-width: 130px;
+  .s-odds-wrap {{ flex-shrink: 0; text-align: right; min-width: 110px;
     display: flex; flex-direction: column; align-items: flex-end; }}
-  .s-odds {{ font-size: 52px; font-weight: 900; letter-spacing: -1px; line-height: 1;
-    filter: drop-shadow(0 0 16px var(--ec)); }}
-  .s-best .s-odds {{ font-size: 60px; }}
-  .s-book {{ display: block; margin-top: 6px; font-size: 12px; font-weight: 800;
+  .s-odds {{ font-weight: 900; letter-spacing: -1px; line-height: 1;
+    filter: drop-shadow(0 0 12px var(--ec)); }}
+  .s-book {{ display: block; margin-top: 4px; font-size: {max(9, team_fs - 14)}px; font-weight: 800;
     letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); }}
 
   .s-footer {{
-    margin: 24px 44px 0; padding-top: 16px;
+    margin: {pad_v}px 44px 0; padding-top: 12px;
     border-top: 1px solid rgba(255,255,255,0.06);
     display: flex; justify-content: space-between;
-    font-size: 12px; color: #333; font-weight: 600;
+    font-size: 11px; color: #333; font-weight: 600;
   }}
   .s-footer-handle {{ color: rgba(64,128,255,0.8); font-weight: 700; }}
 </style>
@@ -3016,7 +3573,7 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
     </div>
     <div class="s-header-right">
       <div class="s-header-date">{date_str}</div>
-      <div class="s-sport-pill">FULL SLATE</div>
+      <div class="s-sport-pill">FULL SLATE · {n} PICKS</div>
     </div>
   </div>
   <div class="s-list">
@@ -3042,3 +3599,374 @@ def render_slate_card_html(
     save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
     return _playwright_render(html, save_dir / "slate_card.html", save_dir / "slate_card.png")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# F5 (First 5 Innings) Totals Card
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _build_f5_html(plays: list[dict], sport: str, d: date) -> str:
+    date_str = d.strftime("%b %d, %Y").upper()
+    accent = "#60A5FA"
+    glow   = "#60A5FA"
+
+    pick_rows_html = ""
+    for idx, p in enumerate(plays[:5]):
+        direction  = str(p.get("direction", "OVER")).upper()
+        line       = p.get("line", "")
+        odds       = _odds_int(p.get("odds", 0))
+        edge       = float(p.get("edge_pct", 0) or 0)
+        book       = str(p.get("book") or p.get("sportsbook", "")).strip()
+        matchup    = str(p.get("matchup", ""))
+        proj       = p.get("projected_total", "")
+        away_team  = str(p.get("away_team", ""))
+        home_team  = str(p.get("home_team", ""))
+        if not away_team or not home_team:
+            parts = matchup.replace(" @ ", "@").split("@")
+            away_team = parts[0].strip() if parts else away_team
+            home_team = parts[1].strip() if len(parts) > 1 else home_team
+
+        ec        = _edge_color(edge, "total")
+        is_best   = idx == 0
+        odds_str  = f"{odds:+d}" if odds else ""
+        edge_txt  = f"+{edge:.1f}% edge"
+        dir_color = "#39FF78" if direction == "OVER" else "#FF6B6B"
+        card_cls  = "pick-card best-bet" if is_best else "pick-card"
+        top_play  = '<span class="top-play">⚡ TOP PLAY</span>' if is_best else ""
+        proj_str  = f"proj {proj}" if proj else ""
+
+        away_logo = _logo_url(away_team)
+        home_logo = _logo_url(home_team)
+        away_hex  = _MLB_HEX.get(away_team, "#4080FF")
+        home_hex  = _MLB_HEX.get(home_team, "#4080FF")
+        away_abbr = _team_abbr(away_team)
+        home_abbr = _team_abbr(home_team)
+
+        def _logo_img(url, abbr, hex_col):
+            if url:
+                return f'<img class="total-logo" src="{url}" alt="{abbr}" style="--tc:{hex_col}">'
+            return f'<div class="total-logo total-logo-fallback" style="background:{hex_col}">{abbr}</div>'
+
+        pick_rows_html += f"""
+        <div class="{card_cls}" style="--team-color:{dir_color};--edge-color:{ec}">
+          <div class="accent-bar" style="background:{dir_color};box-shadow:0 0 16px {dir_color}"></div>
+          <div class="total-matchup">
+            <div class="total-team away-team">
+              {_logo_img(away_logo, away_abbr, away_hex)}
+              <span class="total-abbr" style="color:{away_hex}">{away_abbr}</span>
+            </div>
+            <div class="total-center">
+              <span class="f5-tag">F5</span>
+              <span class="total-direction" style="color:{dir_color}">{direction}</span>
+              <span class="total-line">{line}</span>
+            </div>
+            <div class="total-team home-team">
+              {_logo_img(home_logo, home_abbr, home_hex)}
+              <span class="total-abbr" style="color:{home_hex}">{home_abbr}</span>
+            </div>
+          </div>
+          <div class="total-right">
+            <div class="total-odds-row">
+              <span class="odds-num" style="color:{ec};--ec:{ec}">{odds_str}</span>
+            </div>
+            <div class="total-meta">
+              <span class="edge-txt" style="color:{ec}">{edge_txt}</span>
+              {'<span class="book-pill">' + book + '</span>' if book else ''}
+              {'<span class="proj-txt">' + proj_str + '</span>' if proj_str else ''}
+              {top_play}
+            </div>
+          </div>
+        </div>"""
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  body {{ width:1080px; background:#070810; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }}
+  .card-wrap {{
+    width:1080px; min-height:1080px;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, {glow}12 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 80% 100%, rgba(57,255,120,0.04) 0%, transparent 60%),
+      linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
+    padding-bottom:28px;
+  }}
+  .header {{ padding:28px 44px 22px; border-bottom:1px solid {accent}40; background:linear-gradient(180deg,{accent}10 0%,transparent 100%); display:flex; align-items:flex-end; justify-content:space-between; }}
+  .brand {{ display:flex; align-items:baseline; gap:0; line-height:1; }}
+  .brand-chef {{ font-size:72px; font-weight:900; color:#F8F8FC; letter-spacing:-2px; }}
+  .brand-bets {{ font-size:56px; font-weight:900; color:#FFBE00; letter-spacing:-1px; margin-left:4px; }}
+  .brand-ai {{ font-size:34px; font-weight:800; background:linear-gradient(135deg,#00D4E0,#7B61FF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-left:10px; margin-bottom:6px; filter:drop-shadow(0 0 12px rgba(0,210,220,0.5)); }}
+  .brand-sub {{ font-size:16px; color:#555870; font-weight:400; margin-top:8px; letter-spacing:0.02em; }}
+  .header-right {{ text-align:right; }}
+  .header-date {{ font-size:18px; font-weight:700; color:#F8F8FC; letter-spacing:0.05em; }}
+  .sport-pill {{ display:inline-block; margin-top:8px; padding:5px 14px; background:{accent}20; border:1px solid {accent}50; border-radius:999px; font-size:13px; font-weight:700; color:{accent}; letter-spacing:0.08em; }}
+  .picks-list {{ padding:18px 44px 0; display:flex; flex-direction:column; gap:12px; }}
+  .pick-card {{ position:relative; display:flex; align-items:center; gap:0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:20px; overflow:hidden; padding:20px 24px 20px 0; min-height:120px; }}
+  .pick-card.best-bet {{ background:linear-gradient(135deg,color-mix(in srgb,var(--team-color) 15%,#0E1220) 0%,rgba(14,18,32,0.95) 50%); border:1px solid rgba(255,190,0,0.4); box-shadow:0 0 0 1px rgba(255,190,0,0.1),0 0 40px rgba(255,190,0,0.08),inset 0 1px 0 rgba(255,255,255,0.06); min-height:156px; }}
+  .accent-bar {{ width:6px; align-self:stretch; border-radius:3px; margin-right:20px; flex-shrink:0; }}
+  .total-matchup {{ display:flex; align-items:center; flex:1; padding-left:0; min-width:0; }}
+  .total-team {{ display:flex; flex-direction:column; align-items:center; gap:6px; width:110px; flex-shrink:0; }}
+  .total-logo {{ width:80px; height:80px; object-fit:contain; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,0.15) 0%,rgba(255,255,255,0.06) 100%); padding:5px; box-shadow:0 0 0 2px var(--tc,#4080FF),0 0 18px color-mix(in srgb,var(--tc,#4080FF) 50%,transparent); }}
+  .best-bet .total-logo {{ width:90px; height:90px; }}
+  .total-logo-fallback {{ display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:900; color:#fff; }}
+  .total-abbr {{ font-size:15px; font-weight:800; letter-spacing:0.04em; text-transform:uppercase; }}
+  .total-center {{ flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:0 8px; }}
+  .f5-tag {{ font-size:11px; font-weight:800; color:{accent}; letter-spacing:0.15em; background:{accent}18; border:1px solid {accent}40; border-radius:4px; padding:2px 7px; }}
+  .total-direction {{ font-size:36px; font-weight:900; letter-spacing:-0.5px; line-height:1; }}
+  .best-bet .total-direction {{ font-size:42px; }}
+  .total-line {{ font-size:28px; font-weight:900; color:rgba(255,255,255,0.85); letter-spacing:-0.5px; line-height:1; }}
+  .best-bet .total-line {{ font-size:33px; }}
+  .total-right {{ flex-shrink:0; min-width:150px; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }}
+  .total-odds-row {{ display:flex; align-items:baseline; }}
+  .total-meta {{ display:flex; flex-direction:column; align-items:flex-end; gap:5px; }}
+  .odds-num {{ font-size:56px; font-weight:900; letter-spacing:-1px; line-height:1; filter:drop-shadow(0 0 20px var(--ec)); }}
+  .best-bet .odds-num {{ font-size:64px; }}
+  .edge-txt {{ font-size:16px; font-weight:700; letter-spacing:0.03em; }}
+  .book-pill {{ display:block; margin-top:2px; font-size:13px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.80); }}
+  .proj-txt {{ font-size:12px; color:#555870; }}
+  .top-play {{ font-size:14px; font-weight:700; color:#FFBE00; background:rgba(255,190,0,0.1); border:1px solid rgba(255,190,0,0.25); padding:3px 12px; border-radius:999px; letter-spacing:0.04em; }}
+  .footer {{ margin:20px 44px 0; padding-top:16px; border-top:1px solid rgba(255,190,0,0.2); display:flex; align-items:center; justify-content:space-between; }}
+  .footer-left {{ font-size:14px; color:#555870; font-weight:500; letter-spacing:0.04em; }}
+  .footer-handle {{ font-size:20px; font-weight:800; color:#FFBE00; letter-spacing:0.02em; }}
+  .footer-right {{ font-size:13px; color:#555870; font-weight:400; }}
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div class="header">
+    <div>
+      <div class="brand">
+        <span class="brand-chef">ChefTony</span>
+        <span class="brand-bets">Bets</span>
+        <span class="brand-ai">AI</span>
+      </div>
+      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">{date_str}</div>
+      <div class="sport-pill">F5 TOTALS</div>
+    </div>
+  </div>
+  <div class="picks-list">{pick_rows_html}</div>
+  <div class="footer">
+    <div class="footer-left">MLB F5 TOTALS &nbsp;·&nbsp; {date_str}</div>
+    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-right">A.I. Verified</div>
+  </div>
+</div>
+</body>
+</html>"""
+
+
+def render_f5_card_html(
+    plays: list[dict],
+    sport: str = "mlb",
+    card_date: date | None = None,
+) -> Path | None:
+    """Render F5 totals card to PNG via Playwright."""
+    if not plays:
+        return None
+    d = card_date or date.today()
+    html = _build_f5_html(plays, sport, d)
+    save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "f5_card.html", save_dir / "f5_card.png")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Batter Props Card (Hits / HRs / RBIs / Total Bases)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _build_batter_props_html(props: list[dict], sport: str, d: date) -> str:
+    date_str = d.strftime("%b %d, %Y").upper()
+    accent   = "#C084FC"
+    glow     = "#C084FC"
+
+    _MKT_LABEL = {
+        "batter_hits":        "Hits",
+        "batter_home_runs":   "HRs",
+        "batter_rbis":        "RBIs",
+        "batter_total_bases": "TB",
+    }
+    _MKT_COLOR = {
+        "batter_hits":        "#39FF78",
+        "batter_home_runs":   "#FF4D4D",
+        "batter_total_bases": "#FFA514",
+        "batter_rbis":        "#00D4E0",
+    }
+
+    rows_html = ""
+    for idx, p in enumerate(props[:8]):
+        market    = str(p.get("market", ""))
+        player    = str(p.get("player", ""))
+        matchup   = str(p.get("matchup", ""))
+        away_team = str(p.get("away_team", ""))
+        home_team = str(p.get("home_team", ""))
+        direction = str(p.get("direction", "OVER")).upper()
+        line      = p.get("line", "")
+        edge_pct  = float(p.get("edge_pct", 0) or 0)
+        odds      = int(p.get("odds", 0) or 0)
+        book      = str(p.get("book") or p.get("sportsbook", ""))
+        projected = p.get("projected", 0)
+        is_best   = idx == 0
+
+        mkt_label = _MKT_LABEL.get(market, market.replace("batter_", "").title())
+        mkt_color = _MKT_COLOR.get(market, "#C084FC")
+        ec        = "#39FF78" if edge_pct >= 8 else ("#FFA514" if edge_pct >= 5 else "#C084FC")
+        odds_str  = f"{odds:+d}" if odds else ""
+        dir_color = "#39FF78" if direction == "OVER" else "#FF6B6B"
+        dir_bg    = "rgba(57,255,120,0.12)" if direction == "OVER" else "rgba(255,107,107,0.12)"
+        dir_border = "rgba(57,255,120,0.3)" if direction == "OVER" else "rgba(255,107,107,0.3)"
+        prop_stmt = f"{direction} {line} {mkt_label}"
+
+        _low = {"batter_home_runs", "batter_rbis"}
+        if market in _low or (isinstance(projected, float) and projected < 1.0):
+            proj_display = f"{int(round(projected * 100))}% chance"
+        else:
+            proj_display = f"proj {projected:.1f}" if projected else ""
+
+        # Avatar: MLB player headshot → team logo → initials
+        headshot = _mlb_player_headshot_b64(player)
+        team_hex = _MLB_HEX.get(away_team, _MLB_HEX.get(home_team, "#C084FC"))
+        if headshot:
+            avatar_html = f'<img class="prop-team-logo" src="{headshot}" alt="{player}" style="border-radius:50%;object-fit:cover;">'
+        else:
+            team_logo_url = _logo_url(away_team) or _logo_url(home_team)
+            if team_logo_url:
+                avatar_html = f'<img class="prop-team-logo" src="{team_logo_url}" alt="{player}">'
+            else:
+                parts    = player.split()
+                initials = (parts[0][0] + parts[-1][0]).upper() if len(parts) >= 2 else player[:2].upper()
+                avatar_html = f'<span class="prop-initials">{initials}</span>'
+
+        card_cls = "prop-card best-prop" if is_best else "prop-card"
+        top_play = '<span class="top-play">⚡ BEST BET</span>' if is_best else ""
+        opp_txt  = f"vs {home_team}" if away_team else matchup
+
+        rows_html += f"""
+        <div class="{card_cls}" style="--team-color:{team_hex};--ec:{ec}">
+          <div class="prop-accent-bar" style="background:{mkt_color};box-shadow:0 0 14px {mkt_color}"></div>
+          <div class="prop-avatar" style="background:radial-gradient(circle,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.08) 100%);box-shadow:0 0 0 3px {team_hex},0 0 0 5px color-mix(in srgb,{team_hex} 30%,transparent),0 0 24px color-mix(in srgb,{team_hex} 70%,transparent)">
+            {avatar_html}
+          </div>
+          <div class="prop-info">
+            <div class="prop-player-row">
+              <span class="prop-player">{player}</span>
+            </div>
+            <div class="prop-bet-row">
+              <span class="prop-stmt" style="color:{dir_color}">{prop_stmt}</span>
+              <span class="prop-mkt-badge" style="color:{mkt_color};border-color:{mkt_color}40;background:{mkt_color}18">{mkt_label}</span>
+            </div>
+            <div class="prop-sub">{opp_txt} &nbsp;·&nbsp; {away_team}</div>
+            <div class="prop-bottom-row">
+              {'<span class="prop-proj" style="color:' + ec + '">' + proj_display + '</span>' if proj_display else ''}
+              <span class="prop-edge" style="color:{ec}">+{edge_pct:.1f}% edge</span>
+              {top_play}
+            </div>
+          </div>
+          <div class="prop-odds-wrap">
+            <span class="prop-odds-num" style="color:{ec};--ec:{ec}">{odds_str}</span>
+            {'<span class="book-pill">' + book + '</span>' if book else ''}
+          </div>
+        </div>"""
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  body {{ width:1080px; background:#070810; font-family:'Inter',-apple-system,sans-serif; overflow:hidden; }}
+  .card-wrap {{
+    width:1080px; min-height:1080px;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, {glow}12 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 80% 100%, rgba(57,255,120,0.04) 0%, transparent 60%),
+      linear-gradient(180deg, #0A0C1A 0%, #06080F 100%);
+    padding-bottom:28px;
+  }}
+  .header {{ padding:28px 44px 22px; border-bottom:1px solid {accent}40; background:linear-gradient(180deg,{accent}10 0%,transparent 100%); display:flex; align-items:flex-end; justify-content:space-between; }}
+  .brand {{ display:flex; align-items:baseline; gap:0; line-height:1; }}
+  .brand-chef {{ font-size:72px; font-weight:900; color:#F8F8FC; letter-spacing:-2px; }}
+  .brand-bets {{ font-size:56px; font-weight:900; color:#FFBE00; letter-spacing:-1px; margin-left:4px; }}
+  .brand-ai {{ font-size:34px; font-weight:800; background:linear-gradient(135deg,#00D4E0,#7B61FF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-left:10px; margin-bottom:6px; filter:drop-shadow(0 0 12px rgba(0,210,220,0.5)); }}
+  .brand-sub {{ font-size:16px; color:#555870; font-weight:400; margin-top:8px; letter-spacing:0.02em; }}
+  .header-right {{ text-align:right; }}
+  .header-date {{ font-size:18px; font-weight:700; color:#F8F8FC; letter-spacing:0.05em; }}
+  .sport-pill {{ display:inline-block; margin-top:8px; padding:5px 14px; background:{accent}20; border:1px solid {accent}50; border-radius:999px; font-size:13px; font-weight:700; color:{accent}; letter-spacing:0.08em; }}
+  .picks-list {{ padding:18px 44px 0; display:flex; flex-direction:column; gap:12px; }}
+  .prop-card {{ position:relative; display:flex; align-items:center; gap:0; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:20px; overflow:hidden; padding:18px 24px 18px 0; min-height:110px; }}
+  .prop-card.best-prop {{ background:linear-gradient(135deg,color-mix(in srgb,var(--team-color) 15%,#0E1220) 0%,rgba(14,18,32,0.95) 50%); border:1px solid rgba(255,190,0,0.4); box-shadow:0 0 0 1px rgba(255,190,0,0.1),0 0 40px rgba(255,190,0,0.08),inset 0 1px 0 rgba(255,255,255,0.06); min-height:140px; }}
+  .prop-accent-bar {{ width:6px; align-self:stretch; border-radius:3px; margin-right:16px; flex-shrink:0; }}
+  .prop-avatar {{ width:72px; height:72px; border-radius:50%; flex-shrink:0; margin-right:18px; display:flex; align-items:center; justify-content:center; overflow:hidden; }}
+  .best-prop .prop-avatar {{ width:82px; height:82px; }}
+  .prop-team-logo {{ width:100%; height:100%; object-fit:contain; border-radius:50%; padding:4px; }}
+  .prop-initials {{ font-size:20px; font-weight:900; color:#fff; }}
+  .prop-info {{ flex:1; min-width:0; display:flex; flex-direction:column; gap:4px; }}
+  .prop-player-row {{ display:flex; align-items:center; gap:8px; }}
+  .prop-player {{ font-size:26px; font-weight:900; color:#F8F8FC; letter-spacing:-0.3px; line-height:1.1; }}
+  .best-prop .prop-player {{ font-size:30px; }}
+  .prop-bet-row {{ display:flex; align-items:center; gap:8px; }}
+  .prop-stmt {{ font-size:18px; font-weight:800; }}
+  .prop-mkt-badge {{ font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; border:1px solid; letter-spacing:0.06em; }}
+  .prop-sub {{ font-size:14px; color:#6B7090; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
+  .prop-bottom-row {{ display:flex; align-items:center; gap:12px; margin-top:2px; }}
+  .prop-proj {{ font-size:14px; font-weight:600; }}
+  .prop-edge {{ font-size:15px; font-weight:700; letter-spacing:0.03em; }}
+  .top-play {{ font-size:13px; font-weight:700; color:#FFBE00; background:rgba(255,190,0,0.1); border:1px solid rgba(255,190,0,0.25); padding:2px 10px; border-radius:999px; }}
+  .prop-odds-wrap {{ flex-shrink:0; text-align:right; min-width:130px; display:flex; flex-direction:column; align-items:flex-end; }}
+  .prop-odds-num {{ font-size:52px; font-weight:900; letter-spacing:-1px; line-height:1; filter:drop-shadow(0 0 20px var(--ec)); }}
+  .best-prop .prop-odds-num {{ font-size:58px; }}
+  .book-pill {{ display:block; margin-top:6px; font-size:12px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.75); }}
+  .footer {{ margin:20px 44px 0; padding-top:16px; border-top:1px solid rgba(255,190,0,0.2); display:flex; align-items:center; justify-content:space-between; }}
+  .footer-left {{ font-size:14px; color:#555870; font-weight:500; letter-spacing:0.04em; }}
+  .footer-handle {{ font-size:20px; font-weight:800; color:#FFBE00; letter-spacing:0.02em; }}
+  .footer-right {{ font-size:13px; color:#555870; font-weight:400; }}
+</style>
+</head>
+<body>
+<div class="card-wrap">
+  <div class="header">
+    <div>
+      <div class="brand">
+        <span class="brand-chef">ChefTony</span>
+        <span class="brand-bets">Bets</span>
+        <span class="brand-ai">AI</span>
+      </div>
+      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">{date_str}</div>
+      <div class="sport-pill">BATTER PROPS</div>
+    </div>
+  </div>
+  <div class="picks-list">{rows_html}</div>
+  <div class="footer">
+    <div class="footer-left">MLB BATTER PROPS &nbsp;·&nbsp; {date_str}</div>
+    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-right">A.I. Verified</div>
+  </div>
+</div>
+</body>
+</html>"""
+
+
+def render_batter_props_card_html(
+    props: list[dict],
+    sport: str = "mlb",
+    card_date: date | None = None,
+) -> Path | None:
+    """Render batter props card to PNG via Playwright."""
+    if not props:
+        return None
+    d = card_date or date.today()
+    html = _build_batter_props_html(props, sport, d)
+    save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, save_dir / "batter_props_card.html", save_dir / "batter_props_card.png")

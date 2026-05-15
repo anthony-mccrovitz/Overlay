@@ -135,8 +135,8 @@ def fetch_closing_lines(
     sport: str = "baseball_mlb",
 ) -> dict[str, float]:
     """
-    Read the odds cache from data/cache/odds/<sport>_latest.json and extract
-    the best available moneyline for each team.
+    Read closing lines from the date-specific archive first, then fall back
+    to today's live odds cache.
 
     Returns a dict mapping team name (lower-case) -> best moneyline odds.
     """
@@ -145,9 +145,42 @@ def fetch_closing_lines(
     if date_str is None:
         date_str = date.today().isoformat()
 
+    closing: dict[str, list[float]] = {}
+
+    # Try date-specific closing archive (most accurate — captured at game time).
+    # Closing files may use either the full sport key (e.g. baseball_mlb_DATE.json)
+    # or the short key (e.g. mlb_DATE.json). Try both in order.
+    short_sport = (sport
+                   .replace("baseball_", "")
+                   .replace("basketball_", "")
+                   .replace("hockey_", ""))
+    for prefix in [sport, short_sport]:
+        archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
+        if not archive_path.exists():
+            continue
+        try:
+            records = json.loads(archive_path.read_text())
+            for row in records:
+                home = str(row.get("HomeTeam") or "").lower().strip()
+                away = str(row.get("AwayTeam") or "").lower().strip()
+                home_ml = row.get("BestHomeML")
+                away_ml = row.get("BestAwayML")
+                if home and home_ml is not None:
+                    closing.setdefault(home, []).append(float(home_ml))
+                if away and away_ml is not None:
+                    closing.setdefault(away, []).append(float(away_ml))
+            if closing:
+                return {
+                    team: max(prices, key=lambda p: p if p > 0 else -10000 / abs(p))
+                    for team, prices in closing.items()
+                }
+        except (json.JSONDecodeError, ValueError, KeyError):
+            pass  # fall through to next prefix or live cache
+
+    # Fall back to live odds cache (today's picks only — don't mix dates)
     cache_path = ODDS_CACHE_DIR / f"{sport}_latest.json"
     if not cache_path.exists():
-        print(f"  [CLV] Odds cache not found: {cache_path}")
+        print(f"  [CLV] No closing archive for {date_str} and no live cache found.")
         return {}
 
     try:
@@ -155,10 +188,6 @@ def fetch_closing_lines(
     except (json.JSONDecodeError, ValueError):
         print(f"  [CLV] Could not parse odds cache: {cache_path}")
         return {}
-
-    # raw is a list of game objects from the Odds API
-    # Each game has bookmakers -> markets -> outcomes with name/price
-    closing: dict[str, list[float]] = {}
 
     for game in raw:
         for book in game.get("bookmakers", []):
@@ -171,7 +200,6 @@ def fetch_closing_lines(
                     if team_lower and price is not None:
                         closing.setdefault(team_lower, []).append(float(price))
 
-    # Use the best (most favorable) odds per team across all books
     return {
         team: max(prices, key=lambda p: p if p > 0 else -10000 / abs(p))
         for team, prices in closing.items()
@@ -285,6 +313,21 @@ def get_clv_summary() -> dict:
                 "avg_clv_pct": round(sum(vals) / len(vals), 3),
             }
 
+    # Group by sport
+    sport_buckets: dict[str, list[float]] = {}
+    for s in with_clv:
+        sp = (s.get("sport") or "unknown").lower()
+        # Normalize to short form
+        if "mlb" in sp or sp == "baseball": sp = "mlb"
+        elif "nba" in sp or sp == "basketball": sp = "nba"
+        elif "nhl" in sp or sp == "hockey": sp = "nhl"
+        sport_buckets.setdefault(sp, []).append(s["clv_pct"])
+
+    clv_by_sport = {
+        sp: {"count": len(vals), "avg_clv_pct": round(sum(vals) / len(vals), 3)}
+        for sp, vals in sport_buckets.items()
+    }
+
     n = len(with_clv)
     if n < 20:
         verdict = f"EARLY DATA — {n} picks with CLV (need 50+ for significance)"
@@ -303,6 +346,7 @@ def get_clv_summary() -> dict:
         "avg_clv_pct":      round(avg_clv, 3),
         "positive_clv_pct": round(pos_pct, 1),
         "clv_by_tier":      clv_by_tier,
+        "clv_by_sport":     clv_by_sport,
         "verdict":          verdict,
     }
 

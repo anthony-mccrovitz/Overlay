@@ -31,9 +31,19 @@ def _cached_get(key: str, url: str, params: dict | None = None, max_age_s: int =
             with open(cache) as f:
                 return json.load(f)
 
-    resp = requests.get(url, params=params or {}, timeout=30)
-    resp.raise_for_status()
-    data = resp.json()
+    last_exc: Exception | None = None
+    for attempt in range(3):
+        try:
+            resp = requests.get(url, params=params or {}, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            break
+        except (requests.ConnectionError, requests.Timeout, requests.HTTPError) as exc:
+            last_exc = exc
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+    else:
+        raise last_exc  # type: ignore[misc]
 
     with open(cache, "w") as f:
         json.dump(data, f)

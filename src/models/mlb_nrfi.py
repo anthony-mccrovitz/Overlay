@@ -73,18 +73,67 @@ def train_nrfi_model(
             print(f"  Processing {season}...")
 
         games = fetch_season_linescores(season, verbose=False)
-        pitcher_season: dict[int, dict] = defaultdict(lambda: {"era": 4.5, "k9": 8.0, "bb9": 3.0, "whip": 1.3, "games": 0})
 
-        # Also get pitcher stats from regular game data
+        # Build walk-forward per-pitcher cumulative stats from game logs.
+        # Keyed by pitcher_id; accumulate IP, ER, K, BB, H as games are processed.
+        pitcher_cumul: dict[int, dict] = defaultdict(lambda: {
+            "ip": 0.0, "er": 0, "k": 0, "bb": 0, "h": 0, "starts": 0,
+        })
+
+        # Pre-fetch pitcher game logs for all pitchers seen this season so we
+        # can build cumulative stats game-by-game (no lookahead).
         reg_games = _fetch_season_games(season)
-        for g in reg_games:
-            # Track pitcher general stats
-            for side in ["home", "away"]:
+        # Sort by date so we can replay in chronological order
+        reg_games_sorted = sorted(reg_games, key=lambda g: (g["date"], g["game_pk"] or 0))
+
+        # Build per-pitcher ordered game log from reg_games (estimates from team scores)
+        pitcher_game_seq: dict[int, list[dict]] = defaultdict(list)
+        for g in reg_games_sorted:
+            for side, opp_side in [("home", "away"), ("away", "home")]:
                 pid = g.get(f"{side}_pitcher_id")
                 if not pid:
                     continue
-                # Simple game count tracking
-                pitcher_season[pid]["games"] += 1
+                opp_runs = g.get(f"{opp_side}_score", 0) or 0
+                sp_er = max(0, round(opp_runs * 0.55 * 0.9))
+                ip_est = 5.5
+                k_est  = round(ip_est * 0.83)
+                bb_est = round(ip_est * 0.39)
+                h_est  = round(ip_est * 1.00)
+                pitcher_game_seq[pid].append({
+                    "date": g["date"],
+                    "game_pk": g["game_pk"],
+                    "ip": ip_est, "er": sp_er, "k": k_est, "bb": bb_est, "h": h_est,
+                })
+
+        # For each game in pitcher_game_seq, we build a cumulative stat snapshot
+        # *before* that game (walk-forward). Index by game_pk → cumulative stats.
+        pitcher_pregame_stats: dict[tuple[int, int], dict] = {}
+        for pid, log in pitcher_game_seq.items():
+            cum = {"ip": 0.0, "er": 0, "k": 0, "bb": 0, "h": 0, "starts": 0}
+            for entry in log:
+                gpk = entry["game_pk"]
+                pitcher_pregame_stats[(pid, gpk)] = dict(cum)
+                cum["ip"]     += entry["ip"]
+                cum["er"]     += entry["er"]
+                cum["k"]      += entry["k"]
+                cum["bb"]     += entry["bb"]
+                cum["h"]      += entry["h"]
+                cum["starts"] += 1
+
+        def _pitcher_stats(pid: int, gpk: int) -> dict:
+            """Return cumulative stats for pitcher pid before game gpk."""
+            c = pitcher_pregame_stats.get((pid, gpk), {})
+            ip = max(c.get("ip", 0.0), 1.0)
+            starts = c.get("starts", 0)
+            if starts < 3:
+                return {"era": 4.5, "k9": 8.0, "bb9": 3.0, "whip": 1.3, "starts": starts}
+            return {
+                "era":    round(c.get("er", 0) / ip * 9, 2),
+                "k9":     round(c.get("k", 0)  / ip * 9, 2),
+                "bb9":    round(c.get("bb", 0)  / ip * 9, 2),
+                "whip":   round((c.get("bb", 0) + c.get("h", 0)) / ip, 3),
+                "starts": starts,
+            }
 
         month_offset = {3: 0, 4: 0.14, 5: 0.29, 6: 0.43, 7: 0.57, 8: 0.71, 9: 0.86, 10: 1.0}
 
@@ -106,20 +155,24 @@ def train_nrfi_model(
             game_month = int(g["date"][5:7]) if len(g["date"]) >= 7 else 6
             sp = month_offset.get(game_month, 0.5)
 
+            gpk = g["game_pk"]
+            hp_stats = _pitcher_stats(hp_id, gpk)
+            ap_stats = _pitcher_stats(ap_id, gpk)
+
             row = {
                 "season": season,
-                "game_pk": g["game_pk"],
+                "game_pk": gpk,
                 "nrfi": int(g["nrfi"]),
                 "home_sp_1st_era": hp_1st_era,
                 "away_sp_1st_era": ap_1st_era,
-                "home_sp_era": 4.5,  # placeholder — filled from pitcher accumulator if available
-                "away_sp_era": 4.5,
-                "home_sp_k9": 8.0,
-                "away_sp_k9": 8.0,
-                "home_sp_bb9": 3.0,
-                "away_sp_bb9": 3.0,
-                "home_sp_whip": 1.3,
-                "away_sp_whip": 1.3,
+                "home_sp_era": hp_stats["era"],
+                "away_sp_era": ap_stats["era"],
+                "home_sp_k9": hp_stats["k9"],
+                "away_sp_k9": ap_stats["k9"],
+                "home_sp_bb9": hp_stats["bb9"],
+                "away_sp_bb9": ap_stats["bb9"],
+                "home_sp_whip": hp_stats["whip"],
+                "away_sp_whip": ap_stats["whip"],
                 "home_team_1st_scoring_rate": home_1st_rate,
                 "away_team_1st_scoring_rate": away_1st_rate,
                 "home_sp_1st_games": pitcher_1st[hp_id]["games"],

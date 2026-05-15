@@ -20,7 +20,7 @@ def _sample_picks():
 
 def test_generate_pick_card_text_happy_path():
     text = generate_pick_card_text(_sample_picks(), sport="ncaab")
-    assert "EdgeFinder" in text
+    assert "ChefTonyBets" in text
     assert "NCAAB" in text
     assert "Iowa State" in text
     assert "8.2%" in text  # edge formatted as percentage
@@ -48,7 +48,7 @@ def test_generate_pick_card_text_long_team_names():
         }
     ]
     text = generate_pick_card_text(picks, sport="ncaab")
-    assert "EdgeFinder" in text
+    assert "ChefTonyBets" in text
     assert "University of Southern California" in text
 
 

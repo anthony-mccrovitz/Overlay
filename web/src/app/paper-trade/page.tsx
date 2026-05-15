@@ -156,7 +156,7 @@ export default function PaperTradePage() {
     return (
       <div className="max-w-5xl mx-auto px-3 py-4 space-y-px">
         <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3">
-          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER</div>
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">OVERLAY</div>
           <div className="text-sm font-bold text-[var(--text-bright)]">PAPER TRADING VALIDATOR</div>
         </div>
         <div className="border border-[var(--border-hi)] px-4 py-8 text-center">
@@ -179,7 +179,7 @@ export default function PaperTradePage() {
       {/* Header */}
       <div className="border border-[var(--border-hi)] bg-[var(--bg-panel)] px-4 py-3 flex items-center justify-between">
         <div>
-          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">EDGEFINDER · DAY {data.days_tracked}</div>
+          <div className="text-[9px] text-[var(--text-muted)] tracking-widest mb-0.5">OVERLAY · DAY {data.days_tracked}</div>
           <div className="text-sm font-bold text-[var(--text-bright)]">PAPER TRADING VALIDATOR</div>
         </div>
         <span className={`border px-2.5 py-1 text-[10px] font-bold tracking-widest ${vc}`}>

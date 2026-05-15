@@ -245,7 +245,7 @@ class TestNormalizePick:
     def test_basic_normalization(self):
         p = normalize_pick(self._base())
         assert p["sport"] == "mlb"
-        assert p["direction"] == "WIN"
+        assert p["direction"] == "HOME"
         assert p["market"] == "moneyline"
         assert p["odds"] == 140
         assert p["pick_id"].startswith("mlb_20260418_")
@@ -378,3 +378,36 @@ class TestValidatePick:
         p["result"] = "unknown"
         issues = validate_pick(p)
         assert any("result" in i for i in issues)
+
+    def test_home_away_directions_valid(self):
+        p = self._canonical()
+        p["direction"] = "HOME"
+        assert validate_pick(p) == []
+        p["direction"] = "AWAY"
+        assert validate_pick(p) == []
+
+    def test_nan_direction_invalid(self):
+        p = self._canonical()
+        p["direction"] = "NAN"
+        issues = validate_pick(p)
+        assert any("direction" in i for i in issues)
+
+    def test_normalize_pick_moneyline_direction_default(self):
+        raw = {
+            "team": "Chicago Cubs",
+            "date": "2026-04-23",
+            "sport": "mlb",
+            "market": "moneyline",
+            "odds": 106,
+        }
+        result = normalize_pick(raw)
+        assert result is not None
+        assert result["direction"] == "HOME"
+
+    def test_card_pick_stake_unit_scale(self):
+        p = self._canonical()
+        p["stake"] = 1.0
+        p["card_pick"] = True
+        p["profit"] = profit_from_odds(-110, 1.0, True)
+        assert abs(p["profit"] - 0.9091) < 0.001
+        assert validate_pick(p) == []

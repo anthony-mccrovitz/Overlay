@@ -39,12 +39,25 @@ PICKS_NBA="10 13 * * * cd $PROJECT_DIR && $PYTHON chef.py picks nba >> $LOG_DIR/
 # Prints X + IG copy-paste captions to captions.log — check it, copy, post
 CAPTION="5 13 * * * cd $PROJECT_DIR && $PYTHON scripts/gen_caption.py >> $LOG_DIR/captions.log 2>&1"
 
-# ── 6:45 PM ET (22:45 UTC) — closing line snapshot ───────────────────────────
-CLOSE="45 22 * * * cd $PROJECT_DIR && $PYTHON predict.py --sport mlb --close >> $LOG_DIR/close.log 2>&1"
+# ── Every 2 min — per-game closing-line capture ──────────────────────────────
+# Captures any event starting in the next 2.5-7.5 min window, regardless of
+# whether we have a pick on it. Builds the closing-line archive needed for
+# CLV. See scripts/capture_closing.py.
+CAPTURE_CLOSING="*/2 * * * * cd $PROJECT_DIR && $PYTHON scripts/capture_closing.py --sport all --window 5 >> $LOG_DIR/capture_closing.log 2>&1"
 
-# ── 11:45 PM ET (03:45 UTC next day) — grade + publish stats ─────────────────
-# West coast games finish by ~11:30 PM ET. Grade both sports.
+# ── Every 15 min from 4 PM to 3 AM ET — post-game grader ─────────────────────
+# Grades any completed game throughout the night. Idempotent — already-graded
+# picks are skipped. See scripts/grade_completed.py.
+GRADE_LIVE="*/15 20-23,0-7 * * * cd $PROJECT_DIR && $PYTHON scripts/grade_completed.py >> $LOG_DIR/grade_completed.log 2>&1"
+
+# ── 11:45 PM ET (03:45 UTC next day) — final pass: grade + refresh stats ─────
+# Catches anything the live grader missed and refreshes public_stats.json.
 GRADE="45 3 * * * cd $PROJECT_DIR && $PYTHON chef.py grade >> $LOG_DIR/grade.log 2>&1"
+
+# ── 4:00 AM ET (08:00 UTC) — backfill CLV from captured closing snapshots ────
+# Joins yesterday's settled card picks against data/clv/closing/ and writes
+# CLV records. Idempotent — only fills gaps. See scripts/backfill_clv.py.
+BACKFILL_CLV="0 8 * * * cd $PROJECT_DIR && $PYTHON scripts/backfill_clv.py >> $LOG_DIR/backfill_clv.log 2>&1"
 
 echo "Installing ChefTonyBets cron jobs..."
 echo "  Project: $PROJECT_DIR"
@@ -56,8 +69,10 @@ echo ""
  echo "$PICKS_MLB"; \
  echo "$PICKS_NBA"; \
  echo "$CAPTION"; \
- echo "$CLOSE"; \
- echo "$GRADE") | crontab -
+ echo "$CAPTURE_CLOSING"; \
+ echo "$GRADE_LIVE"; \
+ echo "$GRADE"; \
+ echo "$BACKFILL_CLV") | crontab -
 
 echo "Installed:"
 echo ""

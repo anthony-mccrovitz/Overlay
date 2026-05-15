@@ -246,7 +246,7 @@ def print_report(arbs: list[dict], mc_all: dict, mc_t1: dict) -> None:
     print("  [4] Margins are tiny (0.5–2%). Volume is everything. You need")
     print("      many accounts, fast execution, and software to profit at scale.")
     print()
-    print("  [5] Your EdgeFinder MODEL edge strategy is more sustainable long-term")
+    print("  [5] Your Overlay MODEL edge strategy is more sustainable long-term")
     print("      because books can't detect +EV betting as easily as pure arbing.")
     print(line)
 

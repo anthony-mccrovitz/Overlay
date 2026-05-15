@@ -260,6 +260,15 @@ def predict_total(
         )
         adjusted += wind_adj
 
+    # Apply umpire tendency adjustment (home plate ump O/U lean)
+    try:
+        from src.data.umpires import get_game_ump_adjustment
+        ump_adj, ump_name = get_game_ump_adjustment(home_team)
+        if ump_adj != 0.0:
+            adjusted += ump_adj
+    except Exception:
+        pass
+
     return adjusted
 
 
@@ -309,31 +318,48 @@ def find_totals_edges(
 
         ht = matchup.home_team
         at = matchup.away_team
+
+        # Estimate bullpen ERA from team ERA minus SP contribution
+        # SP covers ~61% of innings; remainder is bullpen
+        _SP_FRAC = 0.61
+        h_sp_era = matchup.home_pitcher.era if matchup.home_pitcher and matchup.home_pitcher.era > 0 else (ht.era or 4.5)
+        a_sp_era = matchup.away_pitcher.era if matchup.away_pitcher and matchup.away_pitcher.era > 0 else (at.era or 4.5)
+        h_team_era = ht.era or 4.5
+        a_team_era = at.era or 4.5
+        h_bp_era = max(2.5, min(7.5, (h_team_era - h_sp_era * _SP_FRAC) / max(1 - _SP_FRAC, 0.2)))
+        a_bp_era = max(2.5, min(7.5, (a_team_era - a_sp_era * _SP_FRAC) / max(1 - _SP_FRAC, 0.2)))
+
+        # Elo proxy from win percentage (neutral=1500, each 10pp win% ≈ 40 Elo pts)
+        h_win_pct = ht.wins / max(ht.wins + ht.losses, 1) if (ht.wins + ht.losses) > 0 else 0.5
+        a_win_pct = at.wins / max(at.wins + at.losses, 1) if (at.wins + at.losses) > 0 else 0.5
+        h_elo = 1500 + (h_win_pct - 0.5) * 400
+        a_elo = 1500 + (a_win_pct - 0.5) * 400
+
         home_stats = {
             "rs_g": ht.rs_per_game or 4.5, "ra_g": ht.ra_per_game or 4.5,
-            "pyth": 0.5, "win_pct": ht.wins / max(ht.wins + ht.losses, 1) if (ht.wins + ht.losses) > 0 else 0.5,
+            "pyth": 0.5, "win_pct": h_win_pct,
             "games": ht.games or 30, "rs_std": 2.5,
-            "sp_era": matchup.home_pitcher.era if matchup.home_pitcher else 4.5,
+            "sp_era": h_sp_era,
             "sp_whip": matchup.home_pitcher.whip if matchup.home_pitcher else 1.3,
             "sp_k9": matchup.home_pitcher.k_per_9 if matchup.home_pitcher else 8.0,
             "sp_bb9": matchup.home_pitcher.bb_per_9 if matchup.home_pitcher else 3.0,
             "sp_ip": matchup.home_pitcher.innings_pitched if matchup.home_pitcher else 50,
             "sp_fip_proxy": 0, "sp_era_vs_team": 0,
-            "bullpen_era": 4.0, "elo": 1500, "rest_days": 1,
+            "bullpen_era": h_bp_era, "elo": h_elo, "rest_days": 1,
             "last10_pct": 0.5, "last5_pct": 0.5, "last20_pct": 0.5,
             "momentum": 0, "run_diff_g": 0, "home_pct": 0.5, "pyth_residual": 0,
         }
         away_stats = {
             "rs_g": at.rs_per_game or 4.5, "ra_g": at.ra_per_game or 4.5,
-            "pyth": 0.5, "win_pct": at.wins / max(at.wins + at.losses, 1) if (at.wins + at.losses) > 0 else 0.5,
+            "pyth": 0.5, "win_pct": a_win_pct,
             "games": at.games or 30, "rs_std": 2.5,
-            "sp_era": matchup.away_pitcher.era if matchup.away_pitcher else 4.5,
+            "sp_era": a_sp_era,
             "sp_whip": matchup.away_pitcher.whip if matchup.away_pitcher else 1.3,
             "sp_k9": matchup.away_pitcher.k_per_9 if matchup.away_pitcher else 8.0,
             "sp_bb9": matchup.away_pitcher.bb_per_9 if matchup.away_pitcher else 3.0,
             "sp_ip": matchup.away_pitcher.innings_pitched if matchup.away_pitcher else 50,
             "sp_fip_proxy": 0, "sp_era_vs_team": 0,
-            "bullpen_era": 4.0, "elo": 1500, "rest_days": 1,
+            "bullpen_era": a_bp_era, "elo": a_elo, "rest_days": 1,
             "away_pct": 0.5, "last10_pct": 0.5, "last5_pct": 0.5, "last20_pct": 0.5,
             "momentum": 0, "run_diff_g": 0, "pyth_residual": 0,
         }
@@ -388,7 +414,21 @@ def find_totals_edges(
                 model_prob = float(1 - _norm.cdf((total_line - pred_total) / _STD))
             else:
                 model_prob = float(_norm.cdf((total_line - pred_total) / _STD))
+            # Apply trained MLB total calibrator so picks.json reflects the
+            # post-calibration probability that the edge was computed from.
+            try:
+                from src.analytics.calibration import apply_calibration
+                model_prob = apply_calibration(model_prob, "mlb", "total")
+            except Exception:
+                pass
             implied_prob = 0.5  # default; overridden below with real vig-adjusted odds
+            # Umpire info for display
+            try:
+                from src.data.umpires import get_game_ump_adjustment
+                _ump_adj, _ump_name = get_game_ump_adjustment(home)
+            except Exception:
+                _ump_adj, _ump_name = 0.0, None
+
             edges.append({
                 "home_team": home,
                 "away_team": away,
@@ -401,6 +441,8 @@ def find_totals_edges(
                 "game_id": game_id,
                 "commence_time": game_rows["CommenceTime"].iloc[0] if "CommenceTime" in game_rows.columns else "",
                 "model_prob": round(model_prob, 4),
+                "ump_name": _ump_name,
+                "ump_adj": round(_ump_adj, 2) if _ump_adj else 0.0,
             })
 
     edges.sort(key=lambda e: e["edge_runs"], reverse=True)

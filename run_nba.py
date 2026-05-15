@@ -24,6 +24,7 @@ from dotenv import load_dotenv
 load_dotenv()
 sys.path.insert(0, str(Path(__file__).parent))
 
+from src.data.odds_api import MY_BOOKS_PARAM
 from src.data.nba_stats import fetch_team_ratings, fetch_player_stats
 from src.models.nba_model import find_nba_edges, project_game
 from src.data.nba_props import find_nba_prop_edges
@@ -31,7 +32,8 @@ from src.output.card_html import (
     render_nba_pick_card_html, render_nba_props_card_html,
     render_nba_spread_card_html, render_nba_moneyline_card_html,
     render_nba_totals_card_html, render_nba_pick_of_day_html,
-    render_nba_slate_card_html,
+    render_nba_slate_card_html, render_clean_totals_card,
+    render_pick_of_day_card_html,
 )
 from src.output.captions import (
     nba_picks_caption, nba_props_caption, print_nba_captions,
@@ -70,10 +72,10 @@ def fetch_nba_odds(refresh: bool = False) -> list[dict]:
             f"{API_BASE}/sports/basketball_nba/odds",
             params={
                 "apiKey": key,
-                "regions": "us",
+                "regions": "us,us2",
                 "markets": "h2h,spreads,totals",
                 "oddsFormat": "american",
-                "bookmakers": "draftkings,fanduel,betmgm,betrivers",
+                "bookmakers": MY_BOOKS_PARAM,
             },
             timeout=20,
         )
@@ -140,16 +142,27 @@ def print_picks_table(edges: list[dict], props: list[dict]) -> None:
     print(f"\n{line}")
 
 
-# Play-in / Playoffs date ranges for 2025-26 season
-_PLAYIN_DATES  = {"20260415", "20260416", "20260417", "20260418"}
-_PLAYOFF_START = "20260419"
+def _is_postseason_game(event: dict) -> bool:
+    """Detect if an event is a playoff/play-in game from its title or id."""
+    title = (event.get("sport_title") or event.get("home_team") or "").lower()
+    eid = str(event.get("id") or "")
+    # The Odds API uses 'basketball_nba' for regular season and the same key
+    # for playoffs — detect via month heuristic but make it easy to override.
+    return False  # enriched by _context_label below
 
 
 def _context_label(today: str, events: list[dict]) -> str:
-    """Return PLAY-IN TOURNAMENT, NBA PLAYOFFS, or NBA based on date/events."""
-    if today in _PLAYIN_DATES:
+    """Return PLAY-IN TOURNAMENT, NBA PLAYOFFS, or NBA based on date + schedule."""
+    from datetime import date as _date
+    try:
+        d = _date(int(today[:4]), int(today[4:6]), int(today[6:]))
+    except (ValueError, IndexError):
+        return "NBA"
+    # Play-in: mid-April (typically 3rd week). Playoffs: late-April through mid-June.
+    # Use month + day heuristic — good enough; doesn't need exact hardcoded dates.
+    if d.month == 4 and 14 <= d.day <= 19:
         return "PLAY-IN TOURNAMENT"
-    if today >= _PLAYOFF_START:
+    if (d.month == 4 and d.day >= 19) or d.month in (5, 6):
         return "NBA PLAYOFFS"
     return "NBA"
 
@@ -162,6 +175,19 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     print("\n  ChefTonyBets — NBA Picks Pipeline")
     print(f"  Date: {today}")
     print("  Fetching NBA team ratings...")
+
+    # Pre-load injury and rest data
+    try:
+        from src.data.injury_tracker import fetch_nba_injuries, get_lineup_adjustment
+        from src.data.schedule_tracker import get_rest_days
+        _nba_injuries = fetch_nba_injuries(today)
+        _injury_loaded = True
+        n_inj = sum(len(v) for v in _nba_injuries.values() if isinstance(v, list))
+        print(f"  ✓  Injury data loaded ({n_inj} reported injuries)")
+    except Exception as _inj_err:
+        _nba_injuries = {}
+        _injury_loaded = False
+        print(f"  [injury] {_inj_err} — continuing without adjustment")
 
     # Pre-warm stats caches
     all_teams = fetch_team_ratings()
@@ -204,13 +230,25 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     # ── Game edges ─────────────────────────────────────────────────────────
     print("\n  Running NBA model...")
-    edges = find_nba_edges(upcoming, min_edge_pct=3.0)
+    edges = find_nba_edges(upcoming, min_edge_pct=3.0, is_playoff=date.today().month in (4, 5, 6))
     print(f"  ✓  {len(edges)} game edges found")
 
     # ── Project each matchup ───────────────────────────────────────────────
+    # NBA playoffs run mid-April through mid-June. Pass is_playoff so the
+    # model applies the ~5.7% intensity adjustment only when appropriate.
+    today_month = date.today().month
+    is_playoff_window = today_month in (4, 5, 6)
     print("\n  Game projections:")
+    _game_date = date(int(today[:4]), int(today[4:6]), int(today[6:]))
     for ev in upcoming[:4]:
-        proj = project_game(ev["away_team"], ev["home_team"], all_teams)
+        away_inj = get_lineup_adjustment(ev["away_team"], "nba", today) if _injury_loaded else 0.0
+        home_inj = get_lineup_adjustment(ev["home_team"], "nba", today) if _injury_loaded else 0.0
+        away_rest = get_rest_days(ev["away_team"], _game_date, "nba") if _injury_loaded else 2
+        home_rest = get_rest_days(ev["home_team"], _game_date, "nba") if _injury_loaded else 2
+        proj = project_game(ev["away_team"], ev["home_team"], all_teams,
+                            away_rest_days=away_rest, home_rest_days=home_rest,
+                            is_playoff=is_playoff_window,
+                            away_injury_adj=away_inj, home_injury_adj=home_inj)
         ct = _format_time(ev.get("commence_time", ""))
         print(
             f"    {ev['away_team']} @ {ev['home_team']}  {ct}\n"
@@ -225,15 +263,30 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     raw_props = find_nba_prop_edges(upcoming[:4])
     print(f"  ✓  {len(raw_props)} prop edges found")
 
-    # Dedupe: one prop per player (best edge), then sort by edge desc
-    # This prevents the same player appearing 3x with PTS/REB/AST all listed
+    # Dedupe: one prop per player (best edge), then sort by edge desc.
+    # Confidence gate: 0.62 <= model_prob <= 0.78
+    #   - floor 0.62: below this Brier is ~0.51 (pure noise from the calibrator)
+    #   - ceiling 0.78: above this we're either fading a market that's already
+    #     pricing the over correctly or eating a juice line (-300+); historic
+    #     backtest shows these win the bet but lose money on units.
+    # This also prevents the same player appearing 3x with PTS/REB/AST.
+    MIN_PROP_CONFIDENCE = 0.62
+    MAX_PROP_CONFIDENCE = 0.78
     _seen_players: dict[str, dict] = {}
     for prop in sorted(raw_props, key=lambda x: float(x.get("edge_pct", 0)), reverse=True):
         player = prop.get("player", "")
-        if player and player not in _seen_players:
+        conf   = float(prop.get("model_prob", 0))
+        if (
+            player
+            and player not in _seen_players
+            and MIN_PROP_CONFIDENCE <= conf <= MAX_PROP_CONFIDENCE
+        ):
             _seen_players[player] = prop
     props = list(_seen_players.values())[:10]
-    print(f"  ✓  {len(props)} unique-player props after dedup")
+    print(
+        f"  ✓  {len(props)} unique-player props after dedup + confidence filter "
+        f"({MIN_PROP_CONFIDENCE} ≤ p ≤ {MAX_PROP_CONFIDENCE})"
+    )
 
     # ── Context label (Play-In / Playoffs / NBA) ──────────────────────────
     context = _context_label(today, upcoming)
@@ -254,6 +307,17 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     # ── Log picks to central pnl tracker ──────────────────────────────────
     _auto_log_nba_picks(edges, today)
 
+    # ── Log props to pnl for tracking (card_pick=False) ───────────────────
+    if props:
+        try:
+            from predict import _auto_log_props
+            _prop_date = date(int(today[:4]), int(today[4:6]), int(today[6:]))
+            n_props = _auto_log_props(props, sport="nba", game_date=_prop_date)
+            if n_props > 0:
+                print(f"  Auto-logged {n_props} NBA prop(s) to pnl for tracking")
+        except Exception as _nba_prop_err:
+            print(f"  [prop log] {_nba_prop_err}")
+
     # ── Terminal display ───────────────────────────────────────────────────
     print_picks_table(edges, props)
 
@@ -273,46 +337,21 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
         else:
             print("  ⚠  Pick card render failed (is Playwright installed?)")
 
-    # ── Individual market cards (same system as MLB) ────────────────────────
+    # ── Cards: pick of day + clean totals only ─────────────────────────────
     all_positive = [e for e in edges if e.get("edge_pct", 0) > 0]
 
-    # Spread card
-    sp = render_nba_spread_card_html(all_positive, card_date=card_date_obj, context_label=context)
-    if sp:
-        print(f"  ✓  Spread card → {sp}")
-
-    # Moneyline card
-    ml = render_nba_moneyline_card_html(all_positive, card_date=card_date_obj, context_label=context)
-    if ml:
-        print(f"  ✓  Moneyline card → {ml}")
-
-    # Totals card
-    tt = render_nba_totals_card_html(all_positive, card_date=card_date_obj, context_label=context)
-    if tt:
-        print(f"  ✓  Totals card → {tt}")
-
-    # Pick of the day — best edge pick
+    # Pick of day — best total, fall back to best overall
     if all_positive:
-        best = max(all_positive, key=lambda x: float(x.get("edge_pct", 0)))
-        pod = render_nba_pick_of_day_html(best, card_date=card_date_obj, context_label=context)
+        totals = [p for p in all_positive if p.get("market") == "total"]
+        best = max(totals or all_positive, key=lambda x: float(x.get("edge_pct", 0)))
+        pod = render_pick_of_day_card_html(best, sport="basketball_nba", card_date=card_date_obj)
         if pod:
             print(f"  ✓  Pick of day → {pod}")
 
-    # Slate card — top 5 across all markets
-    slate = render_nba_slate_card_html(all_positive, card_date=card_date_obj, context_label=context)
-    if slate:
-        print(f"  ✓  Slate card → {slate}")
-
-    # Props card
-    if props:
-        print("\n  Generating NBA props card...")
-        props_card_path = render_nba_props_card_html(
-            props, card_date=card_date_obj, context_label=context
-        )
-        if props_card_path:
-            print(f"  ✓  Props card → {props_card_path}")
-        else:
-            print("  ⚠  Props card render failed")
+    # Clean totals card (2-3 picks, Instagram-optimized)
+    tt = render_clean_totals_card(all_positive, sport="basketball_nba", card_date=card_date_obj)
+    if tt:
+        print(f"  ✓  Totals card → {tt}")
 
     # ── Generate captions ──────────────────────────────────────────────────
     print("\n  Generating captions...")
@@ -343,7 +382,8 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
             nba_totals_caption(totals_only, card_date=card_date_obj, context_label=context), encoding="utf-8")
 
     if all_positive:
-        best = max(all_positive, key=lambda x: float(x.get("edge_pct", 0)))
+        non_total = [p for p in all_positive if p.get("market") != "total"]
+        best = max(non_total or all_positive, key=lambda x: float(x.get("edge_pct", 0)))
         (out_dir / "caption_pick_of_day.txt").write_text(
             nba_pick_of_day_caption(best, card_date=card_date_obj, context_label=context), encoding="utf-8")
 
@@ -353,6 +393,77 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     # Print all to terminal
     print_nba_captions(top_picks, props, card_date=card_date_obj, context_label=context)
+
+    # ── Parlay card (only when NBA moneyline model is live) ───────────────────
+    from src.config.models import is_live as _nba_is_live
+    if _nba_is_live("nba", "moneyline"):
+        try:
+            from src.output.parlay_card import render_parlay_card
+            print("\n  Generating NBA parlay card...")
+            _parlay_pool: list[dict] = []
+            for e in edges:
+                _parlay_pool.append({
+                    "team":       e.get("team", ""),
+                    "matchup":    e.get("matchup", ""),
+                    "market":     e.get("market", "moneyline"),
+                    "odds":       int(e.get("best_odds", -110) or -110),
+                    "best_odds":  int(e.get("best_odds", -110) or -110),
+                    "sportsbook": e.get("sportsbook", ""),
+                    "edge_pct":   float(e.get("edge_pct", 0) or 0),
+                })
+            _parlay_pool.sort(key=lambda x: x["edge_pct"], reverse=True)
+            parlay_path = render_parlay_card(_parlay_pool, sport="basketball_nba", card_date=card_date_obj)
+            if parlay_path:
+                print(f"  ✓  Parlay card → {parlay_path}")
+            else:
+                print("  No parlay card (need ≥2 picks with ≥5% edge).")
+        except Exception as _pc_err:
+            print(f"  [parlay card] {_pc_err}")
+    else:
+        print("\n  NBA parlay card skipped — moneyline model incubating.")
+
+    # ── Platform captions (Instagram / Twitter / Reddit) ──────────────────────
+    try:
+        from src.output.captions_platform import write_platform_captions
+        print("\n  Writing captions (Instagram / Twitter / Reddit)...")
+        _cap_picks = [
+            {
+                "team":       e.get("team", ""),
+                "matchup":    e.get("matchup", ""),
+                "market":     e.get("market", "moneyline"),
+                "direction":  e.get("direction", ""),
+                "odds":       int(e.get("best_odds", -110) or -110),
+                "best_odds":  int(e.get("best_odds", -110) or -110),
+                "sportsbook": e.get("sportsbook", ""),
+                "edge_pct":   float(e.get("edge_pct", 0) or 0),
+            }
+            for e in all_positive
+        ]
+        cap_paths = write_platform_captions(
+            picks=_cap_picks,
+            sport="basketball_nba",
+            card_date=card_date_obj,
+        )
+        for platform, path in cap_paths.items():
+            print(f"  ✓  {platform:12s} → {path}")
+
+        # Reddit daily thread templates
+        try:
+            from src.output.reddit_templates import write_reddit_templates
+            reddit_paths = write_reddit_templates(
+                mlb_picks=[],
+                mlb_props=[],
+                nrfi_picks=[],
+                nba_picks=_cap_picks,
+                sport="basketball_nba",
+                card_date=card_date_obj,
+            )
+            for name, path in reddit_paths.items():
+                print(f"  ✓  reddit_{name:10s} → {path}")
+        except Exception as _rt_err:
+            print(f"  [reddit templates] {_rt_err}")
+    except Exception as _cap_err:
+        print(f"  [captions] {_cap_err}")
 
 
 _PNL_FILE = Path("data/pnl/picks.json")
@@ -406,7 +517,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             except (ValueError, TypeError):
                 line = None
 
-        card_pick = rank < 6
+        from src.config.models import is_live as _is_live
         data["picks"].append({
             "pick_id":     pick_id,
             "date":        date_str,
@@ -420,8 +531,8 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             "sportsbook":  e.get("sportsbook"),
             "model_prob":  e.get("model_prob") or e.get("win_prob"),
             "edge_pct":    e.get("edge_pct"),
-            "stake":       1.0 if card_pick else 0.0,
-            "card_pick":   card_pick,
+            "stake":       1.0,
+            "card_pick":   _is_live("nba", market),
             "result":      None,
             "profit":      None,
             "recorded_at": now_ts,
@@ -547,8 +658,12 @@ def grade_nba_picks(target_date: str | None = None, flat_stake: float = 1.0, ver
         direction = str(pick.get("direction", "COVER")).upper()
         bet_line  = float(pick.get("bet_line") or 0)
 
-        # Resolve game
-        score = _find_score(team)
+        # Resolve game — for totals, team is "OVER 215.5" so look up by matchup teams
+        if market == "total" and matchup and " @ " in matchup:
+            away_t, home_t = matchup.split(" @ ", 1)
+            score = _find_score(home_t) or _find_score(away_t)
+        else:
+            score = _find_score(team)
         if not matchup and score:
             matchup = f"{score['away_team']} @ {score['home_team']}"
 

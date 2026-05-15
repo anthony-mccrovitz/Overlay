@@ -26,16 +26,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from src.data.odds_api import MY_BOOKS_PARAM, MY_BOOKS_TITLES
+
 CACHE_DIR = Path("data/cache/odds")
 API_BASE = "https://api.the-odds-api.com/v4"
 
-# All books we include in arb scanning (offshore OK for finding arbs — just
-# flag which books are tier-1 US-legal vs grey-market).
-TIER1_BOOKS = frozenset({"DraftKings", "FanDuel", "BetMGM", "BetRivers", "Caesars Sportsbook"})
-ALL_BOOKS = frozenset({
-    "DraftKings", "FanDuel", "BetMGM", "BetRivers", "Caesars Sportsbook",
-    "BetOnline.ag", "BetUS", "Bovada", "MyBookie.ag", "LowVig.ag",
-})
+# Use the same book set as all other pipelines — Anthony's accounts only.
+TIER1_BOOKS = MY_BOOKS_TITLES
+ALL_BOOKS   = MY_BOOKS_TITLES
 
 
 def _api_key() -> str | None:
@@ -64,13 +62,10 @@ def _load_or_fetch_odds(sport: str = "baseball_mlb", refresh: bool = False) -> l
             f"{API_BASE}/sports/{sport}/odds",
             params={
                 "apiKey": key,
-                "regions": "us",
+                "regions": "us,us2",
                 "markets": "h2h,totals,spreads",
                 "oddsFormat": "american",
-                "bookmakers": ",".join([
-                    "draftkings", "fanduel", "betmgm", "betrivers",
-                    "bovada", "lowvig", "betonlineag", "mybookieag",
-                ]),
+                "bookmakers": MY_BOOKS_PARAM,
             },
             timeout=20,
         )
@@ -273,8 +268,8 @@ def format_arb_table(arbs: list[dict], bankroll: float = 1000.0) -> str:
         game = a["game"][:27]
         mkt = a["market"][:9]
         margin = f"{a['margin_pct']:.2f}%"
-        s1 = f"{a['side1']} {a['odds1']:+d} {a['book1']}"[-20:]
-        s2 = f"{a['side2']} {a['odds2']:+d} {a['book2']}"[-20:]
+        s1 = f"{a['side1']} {int(a['odds1']):+d} {a['book1']}"[-20:]
+        s2 = f"{a['side2']} {int(a['odds2']):+d} {a['book2']}"[-20:]
         t1_flag = "" if a["both_tier1"] else " ⚠ offshore"
         rows.append(
             f"{game:<28}{mkt:<10}{margin:>7}  {s1:>20}  {s2:>20}{t1_flag}"

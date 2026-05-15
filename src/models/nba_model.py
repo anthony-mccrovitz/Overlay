@@ -16,6 +16,8 @@ from __future__ import annotations
 import math
 from datetime import datetime, timezone
 
+from src.models.bias import adjusted_edge
+from src.analytics.calibration import apply_calibration
 from src.data.nba_stats import (
     LG_AVG_DRTG,
     LG_AVG_ORTG,
@@ -25,8 +27,11 @@ from src.data.nba_stats import (
     get_team_ratings,
 )
 
-# Minimum edge to surface as a pick
-MIN_EDGE_PCT = 4.0
+# Minimum edge to surface as a pick.
+# Raised from 4.0 → 8.0: calibration analysis shows model overstates edges
+# by ~2-3x (NBA prop ECE=0.43, spread ECE=0.18). Higher threshold filters
+# noise and keeps only genuinely mispriced lines.
+MIN_EDGE_PCT = 8.0
 
 # Points per possession constants
 POSSESSIONS_PER_PACE = 100.0   # ORtg/DRtg are per-100-possessions
@@ -64,6 +69,9 @@ def project_game(
     all_teams: list[dict] | None = None,
     away_rest_days: int = 2,
     home_rest_days: int = 2,
+    is_playoff: bool = False,
+    away_injury_adj: float = 0.0,
+    home_injury_adj: float = 0.0,
 ) -> dict:
     """
     Project a game: spread, total, win probability.
@@ -109,20 +117,52 @@ def project_game(
     away_pts_per_100 = LG_AVG_ORTG + (away_ortg - LG_AVG_ORTG) * 0.6 + (LG_AVG_DRTG - home_drtg) * 0.4
     home_pts_per_100 = LG_AVG_ORTG + (home_ortg - LG_AVG_ORTG) * 0.6 + (LG_AVG_DRTG - away_drtg) * 0.4
 
-    away_score_proj = away_pts_per_100 * (game_pace / POSSESSIONS_PER_PACE)
-    home_score_proj = home_pts_per_100 * (game_pace / POSSESSIONS_PER_PACE) + HOME_COURT + rest_diff * 0.5
+    away_score_proj = away_pts_per_100 * (game_pace / POSSESSIONS_PER_PACE) - away_injury_adj
+    home_score_proj = home_pts_per_100 * (game_pace / POSSESSIONS_PER_PACE) + HOME_COURT + rest_diff * 0.5 - home_injury_adj
 
     # Playoff / play-in intensity adjustment: defense sharpens, pace slows ~4%.
     # Regular season avg ~228 pts/game, playoff avg ~215 — about 5.7% lower.
-    PLAYOFF_FACTOR = 0.944
-    away_score_proj *= PLAYOFF_FACTOR
-    home_score_proj *= PLAYOFF_FACTOR
+    # Only apply when caller flags this as a playoff game; in-season backtest
+    # showed unconditional application caused a ~10.6 pt under-projection bias.
+    if is_playoff:
+        PLAYOFF_FACTOR = 0.944
+        away_score_proj *= PLAYOFF_FACTOR
+        home_score_proj *= PLAYOFF_FACTOR
 
     projected_total = away_score_proj + home_score_proj
 
-    # Win probability via normal distribution
-    # Historical NBA single-game std dev ≈ 12 pts
+    # Try XGBoost model first (more accurate when trained); fall back to formula
     spread_std = 12.0
+    try:
+        from src.models.nba_xgboost import predict_game as _xgb_predict, is_trained
+        if is_trained():
+            # net_rating_diff is a reasonable same-scale proxy for form features
+            # when live rolling game logs are unavailable at serve time.
+            net_diff_proxy = home_net - away_net
+            xgb_features = {
+                "home_ortg_20g": home_ortg, "home_drtg_20g": home_drtg, "home_pace_20g": home_pace,
+                "away_ortg_20g": away_ortg, "away_drtg_20g": away_drtg, "away_pace_20g": away_pace,
+                "net_rtg_diff":  net_diff_proxy,
+                "home_rest_days": home_rest_days, "away_rest_days": away_rest_days,
+                "rest_diff":     home_rest_days - away_rest_days,
+                "home_b2b":      1 if home_rest_days == 0 else 0,
+                "away_b2b":      1 if away_rest_days == 0 else 0,
+                # Use net rating as proxy for form — better than zero when rolling
+                # game logs aren't available in the live prediction path.
+                "home_form_5g":  home_net, "home_form_10g": home_net,
+                "away_form_5g":  away_net, "away_form_10g": away_net,
+                "is_playoff":    1 if is_playoff else 0,
+                "season_progress": 0.5,
+                "h2h_margin":    0.0,
+            }
+            xgb_result = _xgb_predict(xgb_features)
+            if xgb_result:
+                projected_spread = xgb_result["spread"]
+                projected_total  = xgb_result["total"]
+                spread_std       = xgb_result["spread_std"]
+    except Exception:
+        pass  # formula fallback already computed above
+
     home_win_prob = _normal_cdf(projected_spread / spread_std)
     away_win_prob = 1.0 - home_win_prob
 
@@ -150,6 +190,7 @@ def project_game(
 def find_nba_edges(
     events: list[dict],
     min_edge_pct: float = MIN_EDGE_PCT,
+    is_playoff: bool = False,
 ) -> list[dict]:
     """
     Find edges across all NBA games in `events`.
@@ -186,15 +227,23 @@ def find_nba_edges(
             except ValueError:
                 pass
 
-        proj = project_game(away, home, all_teams)
+        proj = project_game(away, home, all_teams, is_playoff=is_playoff)
 
         # Build best odds per side per market across all books
         best_h2h:    dict[str, dict] = {}  # team_name -> {odds, book}
         best_spread: dict[str, dict] = {}  # team_name -> {odds, point, book}
         best_total:  dict[str, dict] = {}  # "Over"/"Under" -> {odds, point, book}
 
+        # Pinnacle-specific lines for sharp fair-prob anchor (sub-1% vig).
+        # Used to compute implied/fair prob; soft-book lines still drive the
+        # bet recommendation (where we actually shop the +EV price).
+        pin_h2h:    dict[str, float] = {}
+        pin_spread: dict[str, dict] = {}
+        pin_total:  dict[str, dict] = {}
+
         for bk in event.get("bookmakers", []):
             book = bk.get("title", "")
+            is_pin = book.lower() == "pinnacle"
             for mkt in bk.get("markets", []):
                 mkey = mkt.get("key")
                 for o in mkt.get("outcomes", []):
@@ -205,12 +254,18 @@ def find_nba_edges(
                     if mkey == "h2h":
                         if name not in best_h2h or price > best_h2h[name]["odds"]:
                             best_h2h[name] = {"odds": price, "book": book}
+                        if is_pin:
+                            pin_h2h[name] = price
                     elif mkey == "spreads":
                         if name not in best_spread or price > best_spread[name]["odds"]:
                             best_spread[name] = {"odds": price, "point": point, "book": book}
+                        if is_pin:
+                            pin_spread[name] = {"odds": price, "point": point}
                     elif mkey == "totals":
                         if name not in best_total or price > best_total[name]["odds"]:
                             best_total[name] = {"odds": price, "point": point, "book": book}
+                        if is_pin:
+                            pin_total[name] = {"odds": price, "point": point}
 
         matchup = f"{away} @ {home}"
 
@@ -218,14 +273,24 @@ def find_nba_edges(
         if home in best_h2h and away in best_h2h:
             h_odds = best_h2h[home]["odds"]
             a_odds = best_h2h[away]["odds"]
-            h_implied, a_implied = _devig_two_way(h_odds, a_odds)
+            # Prefer Pinnacle-devig for fair prob (sharp ~1% vig); fall back
+            # to cross-book best-of-each-side devig (introduces arb bias but
+            # is the only option when Pinnacle isn't in the feed).
+            if home in pin_h2h and away in pin_h2h:
+                h_implied, a_implied = _devig_two_way(pin_h2h[home], pin_h2h[away])
+            else:
+                h_implied, a_implied = _devig_two_way(h_odds, a_odds)
 
-            for team, model_prob, implied, odds, book in [
+            for team, raw_prob, implied, odds, book in [
                 (home, proj["home_win_prob"], h_implied, h_odds, best_h2h[home]["book"]),
                 (away, proj["away_win_prob"], a_implied, a_odds, best_h2h[away]["book"]),
             ]:
-                edge = (model_prob - implied) * 100
-                if abs(edge) >= min_edge_pct and model_prob > 0.52:
+                model_prob = apply_calibration(raw_prob, "nba", "moneyline")
+                edge = adjusted_edge(model_prob, implied)
+                # Only fire when edge is POSITIVE (model sees underpriced side).
+                # abs() was wrong — it caused negative-edge bets to fire when
+                # model_prob happened to exceed 0.52.
+                if edge >= min_edge_pct:
                     edges.append({
                         "matchup": matchup,
                         "game_id": game_id,
@@ -248,13 +313,25 @@ def find_nba_edges(
         if home in best_spread and away in best_spread:
             h_sp = best_spread[home]
             a_sp = best_spread[away]
-            h_implied, a_implied = _devig_two_way(h_sp["odds"], a_sp["odds"])
+            # Pinnacle-anchored implied prob when its spread matches the best-book
+            # line (avoids comparing different point spreads). Otherwise fall back
+            # to best-of-each-side cross-book devig.
+            if (
+                home in pin_spread
+                and away in pin_spread
+                and pin_spread[home].get("point") == h_sp.get("point")
+            ):
+                h_implied, a_implied = _devig_two_way(
+                    pin_spread[home]["odds"], pin_spread[away]["odds"]
+                )
+            else:
+                h_implied, a_implied = _devig_two_way(h_sp["odds"], a_sp["odds"])
 
             # proj["projected_spread"] = -home_advantage (negative when home is favored)
             # home_advantage = -model_spread
             home_adv = -proj["projected_spread"]  # positive = home is projected to win by this many
 
-            for team, mkt_line, model_covers_prob, implied, odds, book in [
+            for team, mkt_line, raw_covers_prob, implied, odds, book in [
                 # Away covers +L when home wins by < L: P(X < L) where X ~ N(home_adv, 12²)
                 (away, a_sp["point"],
                  _normal_cdf((float(a_sp["point"] or 0) - home_adv) / 12.0),
@@ -264,8 +341,9 @@ def find_nba_edges(
                  1.0 - _normal_cdf((-float(h_sp["point"] or 0) - home_adv) / 12.0),
                  h_implied, h_sp["odds"], h_sp["book"]),
             ]:
-                edge = (model_covers_prob - implied) * 100
-                if abs(edge) >= min_edge_pct:
+                model_covers_prob = apply_calibration(raw_covers_prob, "nba", "spread")
+                edge = adjusted_edge(model_covers_prob, implied)
+                if edge >= min_edge_pct:
                     line_str = f"{mkt_line:+.1f}" if mkt_line is not None else ""
                     edges.append({
                         "matchup": matchup,
@@ -289,23 +367,37 @@ def find_nba_edges(
         if "Over" in best_total and "Under" in best_total:
             ov = best_total["Over"]
             un = best_total["Under"]
-            ov_implied, un_implied = _devig_two_way(ov["odds"], un["odds"])
+            # Pinnacle-anchored fair prob when its total matches the best-book
+            # line. Otherwise fall back to cross-book devig.
+            if (
+                "Over" in pin_total
+                and "Under" in pin_total
+                and pin_total["Over"].get("point") == ov.get("point")
+            ):
+                ov_implied, un_implied = _devig_two_way(
+                    pin_total["Over"]["odds"], pin_total["Under"]["odds"]
+                )
+            else:
+                ov_implied, un_implied = _devig_two_way(ov["odds"], un["odds"])
             market_line = float(ov.get("point") or 0)
 
             # Model probability of going over using normal distribution
             # Std dev of NBA totals historically ~13 pts
             total_std = 13.0
-            model_over_prob = 1.0 - _normal_cdf(
+            raw_over_prob = 1.0 - _normal_cdf(
                 (market_line - proj["projected_total"]) / total_std
             )
+            model_over_prob  = apply_calibration(raw_over_prob, "nba", "total")
             model_under_prob = 1.0 - model_over_prob
 
             for direction, model_prob, implied, odds, book in [
                 ("OVER",  model_over_prob,  ov_implied, ov["odds"], ov["book"]),
                 ("UNDER", model_under_prob, un_implied, un["odds"], un["book"]),
             ]:
-                edge = (model_prob - implied) * 100
-                if abs(edge) >= min_edge_pct and model_prob > 0.50:
+                edge = adjusted_edge(model_prob, implied)
+                # Pure positive-edge filter — no model_prob gate needed.
+                # If edge > 0, model_prob > implied_prob by definition.
+                if edge >= min_edge_pct:
                     edges.append({
                         "matchup": matchup,
                         "game_id": game_id,

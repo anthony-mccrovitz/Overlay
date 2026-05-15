@@ -33,29 +33,37 @@ SPREAD_LINE_ABS_MAX = 3.5
 CACHE_DIR = Path("data/cache/odds")
 API_BASE = "https://api.the-odds-api.com/v4"
 
-# US sportsbooks Anthony has accounts at (Indiana).
-# Caesars and bet365 not available via Odds API US regions — excluded.
-# theScore Bet = ESPN Bet rebranded back; API key remains "theScore Bet".
-# Offshore/grey-market books excluded entirely.
-PREFERRED_BOOKS = {
-    "DraftKings", "FanDuel", "BetMGM", "BetRivers",
-    "Hard Rock Bet", "Fliff", "Bally Bet", "theScore Bet",
-}
+# ── Anthony's sportsbook accounts ─────────────────────────────────────────────
+# API keys used in all bookmakers= params. Edit here to add/remove a book.
+# espnbet  = ESPN Bet (shows as "theScore Bet" in API — same platform)
+# fliff    = Fliff (social sportsbook, limited markets but included)
+MY_BOOKS_KEYS: list[str] = [
+    "draftkings",
+    "fanduel",
+    "betmgm",
+    "betrivers",
+    "espnbet",       # ESPN Bet
+    "fliff",         # Fliff
+    "hardrockbet",   # Hard Rock Bet
+]
+MY_BOOKS_PARAM = ",".join(MY_BOOKS_KEYS)   # ready for bookmakers= API param
 
-# Sharp books used for de-vigged true probability (CLV/EV baseline).
-# Pinnacle is the gold standard — never bet there (EU only), use as no-vig reference.
-# Matchbook is a sharp exchange, also useful as reference.
-SHARP_BOOKS = frozenset({"Pinnacle", "Matchbook", "DraftKings", "FanDuel"})
-
-# Tier-1 books surfaced on cards — same as PREFERRED_BOOKS.
-TIER1_BOOKS = frozenset({
+# Display names matching the Odds API title field (used for filtering response objects)
+MY_BOOKS_TITLES = frozenset({
     "DraftKings", "FanDuel", "BetMGM", "BetRivers",
-    "Hard Rock Bet", "Fliff", "Bally Bet", "theScore Bet",
+    "theScore Bet",    # ESPN Bet
+    "Fliff",
+    "Hard Rock Bet",
 })
 
-# Odds API internal keys for the sharp reference books
-# Used when we need to filter API response by specific book key
+# Sharp books used for de-vigged true probability (CLV/EV baseline).
+# Pinnacle is the gold standard — no-vig reference only, never shown as bet destination.
+SHARP_BOOKS     = frozenset({"Pinnacle", "Matchbook", "DraftKings", "FanDuel"})
 SHARP_BOOK_KEYS = frozenset({"pinnacle", "matchbook", "draftkings", "fanduel"})
+
+# Legacy aliases kept for any callers that imported these names
+PREFERRED_BOOKS = MY_BOOKS_TITLES
+TIER1_BOOKS     = MY_BOOKS_TITLES
 
 SUPPORTED_SPORTS = {
     "basketball_ncaab",

@@ -55,7 +55,7 @@ _MARKET_ALIASES: dict[str, str] = {
 }
 
 _DEFAULT_DIRECTION: dict[str, str] = {
-    "moneyline": "WIN",
+    "moneyline": "HOME",
     "spread":    "COVER",
     "nrfi":      "NRFI",
     "prop":      "OVER",
@@ -109,7 +109,7 @@ def validate_pick(pick: dict) -> list[str]:
         issues.append(f"invalid market: {market!r}")
 
     direction = pick.get("direction", "")
-    if direction not in ("WIN", "COVER", "OVER", "UNDER", "NRFI", "YRFI", ""):
+    if direction not in ("WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER", "NRFI", "YRFI", ""):
         issues.append(f"invalid direction: {direction!r}")
 
     result = pick.get("result")
@@ -252,6 +252,13 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         except (ValueError, TypeError):
             edge_pct = None
 
+    # Sanity clamp. A real moneyline edge >10pp against a Pinnacle-devigged
+    # benchmark is almost always a stale-line / data bug, not a real edge.
+    # Negative edges happen when we log non-card "model lean" picks, so we
+    # allow more room on the downside.
+    if edge_pct is not None:
+        edge_pct = max(-15.0, min(edge_pct, 10.0))
+
     # ── Result / Profit ───────────────────────────────────────────────────────
     result = raw.get("result")
     if result not in (None, "win", "loss", "push"):
@@ -273,24 +280,25 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
     pick_id = raw.get("pick_id") or make_pick_id(sport, date_, team, market, direction)
 
     return {
-        "pick_id":     pick_id,
-        "date":        date_,
-        "sport":       sport,
-        "market":      market,
-        "direction":   direction,
-        "team":        team,
-        "matchup":     matchup,
-        "odds":        odds,
-        "line":        line,
-        "sportsbook":  sportsbook,
-        "model_prob":  round(model_prob, 4) if model_prob is not None else None,
-        "edge_pct":    round(edge_pct, 2) if edge_pct is not None else None,
-        "stake":       stake,
-        "card_pick":   card_pick,
-        "result":      result,
-        "profit":      round(profit, 4) if profit is not None else None,
-        "recorded_at": recorded_at,
-        "resulted_at": resulted_at,
+        "pick_id":       pick_id,
+        "date":          date_,
+        "sport":         sport,
+        "market":        market,
+        "direction":     direction,
+        "team":          team,
+        "matchup":       matchup,
+        "odds":          odds,
+        "line":          line,
+        "sportsbook":    sportsbook,
+        "model_prob":    round(model_prob, 4) if model_prob is not None else None,
+        "edge_pct":      round(edge_pct, 2) if edge_pct is not None else None,
+        "stake":         stake,
+        "card_pick":     card_pick,
+        "result":        result,
+        "profit":        round(profit, 4) if profit is not None else None,
+        "recorded_at":   recorded_at,
+        "resulted_at":   resulted_at,
+        "model_version": raw.get("model_version"),
     }
 
 

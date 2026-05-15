@@ -44,7 +44,6 @@ BATTER_FEATURES = [
     "opp_pitcher_whip",
     "opp_pitcher_k9",
     "opp_pitcher_bb9",
-    "batting_order",
     "is_home",
 ]
 
@@ -274,7 +273,6 @@ def build_batter_training_data(
                     "opp_pitcher_whip": opp_stats["whip"],
                     "opp_pitcher_k9": opp_stats["k9"],
                     "opp_pitcher_bb9": opp_stats["bb9"],
-                    "batting_order": 5,  # default; real data hard to get historically
                     "is_home": int(current.get("is_home", False)),
                     # Targets
                     "actual_hits": current["hits"],
@@ -401,7 +399,6 @@ def predict_batter_props(
     opp_pitcher_whip: float = 1.3,
     opp_pitcher_k9: float = 8.0,
     opp_pitcher_bb9: float = 3.0,
-    batting_order: int = 5,
     is_home: bool = True,
 ) -> dict[str, float]:
     """
@@ -439,7 +436,6 @@ def predict_batter_props(
         "opp_pitcher_whip": opp_pitcher_whip,
         "opp_pitcher_k9": opp_pitcher_k9,
         "opp_pitcher_bb9": opp_pitcher_bb9,
-        "batting_order": batting_order,
         "is_home": int(is_home),
     }
 

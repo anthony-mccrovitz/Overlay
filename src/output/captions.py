@@ -633,6 +633,65 @@ Not financial advice. Bet responsibly. 21+
 {tags} #NBAslate #fullslate #NBAtonight""".strip()
 
 
+def f5_caption(plays: list[dict], card_date: date | None = None) -> str:
+    """Caption for F5 (First 5 Innings) totals card."""
+    d = card_date or date.today()
+    date_str = d.strftime("%b %-d")
+    mkt_short = {"batter_hits": "Hits", "batter_home_runs": "HRs",
+                 "batter_rbis": "RBIs", "batter_total_bases": "TB"}
+    lines = [
+        f"⚾ F5 TOTALS — {date_str}",
+        "First 5 innings only. No bullpen variance. Cleaner edge.",
+        "━━━━━━━━━━━━━━━",
+    ]
+    for p in plays[:5]:
+        matchup   = p.get("matchup", "")
+        direction = p.get("direction", "OVER")
+        line      = p.get("line", "")
+        odds      = p.get("odds", 0)
+        book      = p.get("book") or p.get("sportsbook", "")
+        edge      = float(p.get("edge_pct", 0) or 0)
+        odds_str  = f"{int(odds):+d}" if odds else ""
+        lines.append(f"• {matchup} F5 {direction} {line}  {odds_str} @ {book}  |  +{edge:.1f}%")
+    lines += [
+        "━━━━━━━━━━━━━━━",
+        "Model uses SP ERA × opponent K-rate for first 5 only — cleaner than full-game totals.",
+        "Not financial advice. 21+",
+        "#MLB #sportsbetting #F5 #firstfiveinnings #MLBpicks #sharpbetting #totals #baseballbetting",
+    ]
+    return "\n".join(lines)
+
+
+def batter_props_caption(props: list[dict], card_date: date | None = None) -> str:
+    """Caption for batter props card (hits/HRs/RBIs/TB)."""
+    d = card_date or date.today()
+    date_str = d.strftime("%b %-d")
+    mkt_short = {"batter_hits": "Hits", "batter_home_runs": "HRs",
+                 "batter_rbis": "RBIs", "batter_total_bases": "TB"}
+    lines = [
+        f"⚾ BATTER PROPS — {date_str}",
+        "Books price batters on season BA. We adjust for pitcher matchup. Gap = edge.",
+        "━━━━━━━━━━━━━━━",
+    ]
+    for p in props[:6]:
+        player    = p.get("player", "")
+        market    = p.get("market", "")
+        direction = p.get("direction", "OVER")
+        line      = p.get("line", "")
+        odds      = p.get("odds", 0)
+        book      = p.get("book") or p.get("sportsbook", "")
+        edge      = float(p.get("edge_pct", 0) or 0)
+        odds_str  = f"{int(odds):+d}" if odds else ""
+        ms        = mkt_short.get(market, market)
+        lines.append(f"• {player} {direction} {line} {ms}  {odds_str} @ {book}  |  +{edge:.1f}%")
+    lines += [
+        "━━━━━━━━━━━━━━━",
+        "Not financial advice. 21+",
+        "#MLB #sportsbetting #batterprops #hitsbet #homerunbet #MLBprops #sharpbetting #propbets",
+    ]
+    return "\n".join(lines)
+
+
 def print_nba_captions(
     picks: list[dict],
     props: list[dict],

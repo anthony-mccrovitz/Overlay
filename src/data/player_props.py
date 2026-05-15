@@ -22,15 +22,19 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from src.data.odds_api import MY_BOOKS_PARAM
+
 load_dotenv()
 
 CACHE_DIR = Path("data/cache/props")
 API_BASE = "https://api.the-odds-api.com/v4"
 
 # Props markets to pull
-# NOTE: batter_hits and batter_total_bases removed — projection uses only avg SP K/9
-# with no individual batter stats, producing identical 1.7 TB for every player.
-# Only pitcher_strikeouts and batter_home_runs use pitcher-specific data.
+# NOTE: batter_hits, batter_total_bases, AND batter_home_runs all removed from this
+# pipeline — they produced identical per-game projections for every batter (no
+# per-batter signal). Per-batter projections live in src/models/mlb_batter_props.py
+# which uses real season stats (BA, HR/AB) matched against opp pitcher quality.
+# This module now handles only pitcher_strikeouts (where projection IS per-pitcher).
 PROP_MARKETS = [
     "pitcher_strikeouts",
     # batter_home_runs removed: population-level lambda, not batter-specific — identical
@@ -129,7 +133,7 @@ def fetch_event_props(event_id: str, market: str) -> list[dict]:
             "regions": "us",
             "markets": market,
             "oddsFormat": "american",
-            "bookmakers": "draftkings,fanduel,betmgm,caesars",
+            "bookmakers": MY_BOOKS_PARAM,
         },
         max_age_s=1800,  # 30 min — props move quickly
     )
@@ -202,30 +206,6 @@ def _project_strikeouts(k9: float, k9_l10: float, lineup_ops: float, innings: fl
     return (k9_adj / 9) * innings
 
 
-def _project_batter_hits(opp_sp_k9: float, pa_per_game: float = 4.0) -> float:
-    """
-    Project expected hits for an average batter vs a starter of given K/9.
-    League avg BA ~.248. Each 1.0 K/9 above 8.5 suppresses BA by ~2%.
-    Returns expected hits per game.
-    """
-    k9_delta = opp_sp_k9 - 8.5
-    ba = 0.248 * (1.0 - k9_delta * 0.02)
-    ba = max(0.18, min(0.35, ba))
-    return ba * pa_per_game
-
-
-def _project_batter_total_bases(opp_sp_k9: float, pa_per_game: float = 4.0) -> float:
-    """
-    Project expected total bases for an average batter vs a starter of given K/9.
-    League avg SLG ~.410. Each 1.0 K/9 above 8.5 suppresses SLG by ~2.5%.
-    Returns expected TB per game (hits + extra bases).
-    """
-    k9_delta = opp_sp_k9 - 8.5
-    slg = 0.410 * (1.0 - k9_delta * 0.025)
-    slg = max(0.28, min(0.58, slg))
-    return slg * pa_per_game
-
-
 def find_prop_edges(
     matchups_with_stats: list[dict],
     game_date: date | None = None,
@@ -273,6 +253,23 @@ def find_prop_edges(
         # ── SP K/9 for use in batter projections ──
         avg_sp_k9 = (m.get("home_sp_k9", 8.5) + m.get("away_sp_k9", 8.5)) / 2
 
+        def _confidence_tier(proj_val: float, line_val: float, market_key: str) -> str:
+            """Rate confidence based on gap between projection and line vs typical variance."""
+            gap = abs(proj_val - line_val)
+            # Strikeout variance: ~2 Ks/game std dev. High = gap > 1.5 K, Med = > 0.8 K
+            # Points/rebounds: higher variance, need bigger gap
+            if market_key == "pitcher_strikeouts":
+                if gap >= 1.5:  return "HIGH"
+                if gap >= 0.8:  return "MED"
+                return "LOW"
+            if market_key in ("player_points", "player_pra"):
+                if gap >= 5.0:  return "HIGH"
+                if gap >= 3.0:  return "MED"
+                return "LOW"
+            if gap >= 2.0:  return "HIGH"
+            if gap >= 1.0:  return "MED"
+            return "LOW"
+
         def _append_edge(market: str, player: str, team: str, opp: str,
                          line: float, p_over: float, implied: float,
                          over_odds: float, under_odds: float, proj,
@@ -286,6 +283,7 @@ def find_prop_edges(
             bet_odds   = over_odds if edge > 0 else under_odds
             if bet_dir == "OVER" and bet_prob < MIN_OVER_PROB:
                 return
+            confidence = _confidence_tier(float(proj), line, market)
             edges.append({
                 "type": "prop",
                 "market": market,
@@ -298,9 +296,11 @@ def find_prop_edges(
                 "model_prob": round(bet_prob, 3),
                 "implied_prob": round(bet_implied, 3),
                 "edge_pct": round(abs(edge) * 100, 1),
+                "confidence": confidence,
                 "odds": int(bet_odds),
                 "book": prop["book"],
                 "label": f"{player} {bet_dir} {line} {label_suffix}",
+                "validation": f"Proj {round(float(proj),1)} vs {line} line [{confidence}]",
             })
 
         # ── Strikeout props ──
@@ -340,24 +340,9 @@ def find_prop_edges(
                          prop["over_odds"], prop["under_odds"],
                          projected, "Ks")
 
-        # ── Batter HR props ──
-        hr_props = fetch_event_props(event_id, "batter_home_runs")
-        for prop in hr_props:
-            player = prop["player"]
-            line   = prop["line"]   # almost always 0.5
-            implied = prop["implied_over_prob"]
-            # P(HR) ~ 1 - e^(-lambda) where lambda = adj HR rate per game
-            k9_delta = avg_sp_k9 - 8.5
-            lam_hr = 0.115 * (1.0 - k9_delta * 0.025)
-            lam_hr = max(0.05, min(0.22, lam_hr))
-            p_over = 1.0 - _math.exp(-lam_hr)
-            # HR props don't have reliable team assignment without lineup data;
-            # label as home vs away based on which team's pitcher they face
-            _append_edge("batter_home_runs", player,
-                         m["home_team"], m["away_team"],
-                         line, p_over, implied,
-                         prop["over_odds"], prop["under_odds"],
-                         round(lam_hr, 2), "HR")
+        # NOTE: batter_home_runs removed from this pipeline. Per-batter HR projection
+        # lives in src/models/mlb_batter_props.py which uses each batter's actual
+        # season HR/AB rate matched against opposing pitcher HR/9.
 
     edges.sort(key=lambda x: x["edge_pct"], reverse=True)
     return edges

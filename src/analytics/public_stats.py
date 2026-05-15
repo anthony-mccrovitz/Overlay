@@ -67,8 +67,6 @@ def write_public_stats() -> None:
         data = json.load(f)
 
     all_picks = data.get("picks", [])
-
-    # Only count officially posted picks toward the public record.
     card_picks = [p for p in all_picks if p.get("card_pick")]
 
     # ── Composite record (all markets, all sports) ────────────────────────────

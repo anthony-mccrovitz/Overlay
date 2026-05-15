@@ -10,6 +10,8 @@ import pandas as pd
 import numpy as np
 
 from src.betting.markets import BetType
+from src.models.bias import adjusted_edge
+from src.analytics.calibration import apply_calibration
 
 # Edges above this are almost always bad odds / wrong market in the feed, not real +EV.
 _MAX_SANE_MONEYLINE_EDGE = 0.20
@@ -20,6 +22,8 @@ def find_value_bets(
     odds_df: pd.DataFrame,
     min_edge: float = 0.03,
     market: BetType = BetType.MONEYLINE,
+    fair_prob_map: dict | None = None,
+    sport: str = "mlb",
 ) -> pd.DataFrame:
     """
     Find games where model disagrees with market odds.
@@ -31,6 +35,12 @@ def find_value_bets(
         odds_df: DataFrame from odds_api.get_best_odds(market=...)
         min_edge: Minimum edge to flag as value bet (default 3% for binary, 0.5 runs for continuous)
         market: Which market to detect value in
+        fair_prob_map: Optional {GameID: {market: {side: fair_prob, ...}}} from
+                       src.data.pinnacle_fair.build_fair_prob_map(raw_odds_df).
+                       When provided, edge is computed against Pinnacle no-vig fair
+                       prob instead of the best soft-book implied prob — eliminates
+                       the systematic edge inflation that comes from comparing to a
+                       book offering 4-8% vig.
 
     Returns:
         DataFrame with value bets, sorted by edge (highest first)
@@ -40,19 +50,21 @@ def find_value_bets(
         return pd.DataFrame()
 
     if market == BetType.MONEYLINE:
-        return _find_moneyline_value(predictions, odds_df, min_edge)
+        return _find_moneyline_value(predictions, odds_df, min_edge, fair_prob_map, sport)
     elif market == BetType.SPREAD:
-        return _find_spread_value(predictions, odds_df, min_edge)
+        return _find_spread_value(predictions, odds_df, min_edge, sport)
     elif market == BetType.TOTAL:
-        return _find_totals_value(predictions, odds_df, min_edge)
+        return _find_totals_value(predictions, odds_df, min_edge, sport)
     else:
-        return _find_moneyline_value(predictions, odds_df, min_edge)
+        return _find_moneyline_value(predictions, odds_df, min_edge, fair_prob_map, sport)
 
 
 def _find_moneyline_value(
     predictions: dict[tuple[str, str], float],
     odds_df: pd.DataFrame,
     min_edge: float,
+    fair_prob_map: dict | None = None,
+    sport: str = "mlb",
 ) -> pd.DataFrame:
     bets = []
 
@@ -69,6 +81,12 @@ def _find_moneyline_value(
         else:
             continue
 
+        # Apply Platt/isotonic calibration trained from settled picks so the
+        # model_prob written to picks.json is the post-calibration number that
+        # the edge was actually computed against.
+        model_prob_home = apply_calibration(model_prob_home, sport, "moneyline")
+        model_prob_away = 1.0 - model_prob_home
+
         best_home_ml = row.get("BestHomeML", 0)
         best_away_ml = row.get("BestAwayML", 0)
 
@@ -76,8 +94,19 @@ def _find_moneyline_value(
         if pd.isna(best_home_ml) or pd.isna(best_away_ml):
             continue
 
+        # ── Pinnacle-anchored fair probability (preferred) ───────────────
+        # Falls back to the best-book implied prob (which is inflated by vig)
+        # only if Pinnacle/median devig isn't available for this game.
         implied_home = row.get("HomeImpliedProb", 0.5)
-        edge_home = model_prob_home - implied_home
+        implied_away = row.get("AwayImpliedProb", 0.5)
+        if fair_prob_map:
+            gid = row.get("GameID", "")
+            g = fair_prob_map.get(gid)
+            if g and "h2h" in g:
+                implied_home = g["h2h"].get("home", implied_home)
+                implied_away = g["h2h"].get("away", implied_away)
+
+        edge_home = adjusted_edge(model_prob_home, implied_home) / 100
         if edge_home >= min_edge:
             bets.append({
                 "Team": home, "Opponent": away,
@@ -90,8 +119,7 @@ def _find_moneyline_value(
                 "Market": "moneyline",
             })
 
-        implied_away = row.get("AwayImpliedProb", 0.5)
-        edge_away = model_prob_away - implied_away
+        edge_away = adjusted_edge(model_prob_away, implied_away) / 100
         if edge_away >= min_edge:
             bets.append({
                 "Team": away, "Opponent": home,
@@ -135,6 +163,7 @@ def _find_spread_value(
     predictions: dict[tuple[str, str], float],
     odds_df: pd.DataFrame,
     min_edge: float,
+    sport: str = "mlb",
 ) -> pd.DataFrame:
     """predictions values are model-implied margins (home - away)."""
     from src.models.mlb_spreads import win_prob_to_margin
@@ -198,6 +227,7 @@ def _find_totals_value(
     predictions: dict[tuple[str, str], float],
     odds_df: pd.DataFrame,
     min_edge: float,
+    sport: str = "mlb",
 ) -> pd.DataFrame:
     """predictions values are predicted game totals."""
     bets = []

@@ -5,9 +5,9 @@ Model: P(NRFI) = P(home_no_score_1st | away_sp) × P(away_no_score_1st | home_sp
 Uses pitcher ERA + K/9 to estimate first-inning run suppression probability.
 Compares to book's implied NRFI probability (from h2h_1st_1_innings market).
 
-League baseline: ~42% of games have NRFI (each team ~65% chance not scoring in 1st).
-Elite SP matchups push NRFI probability to 55-60%.
-Weak SP matchups drop it to 28-35%.
+League baseline: ~67% of MLB games have NRFI (each team ~82% chance not scoring in 1st).
+Elite SP matchups push NRFI probability to 75-80%.
+Weak SP matchups drop it to 55-60%.
 """
 from __future__ import annotations
 
@@ -21,13 +21,16 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from src.data.odds_api import MY_BOOKS_PARAM
+
 load_dotenv()
 
 CACHE_DIR = Path("data/cache/nrfi")
 API_BASE = "https://api.the-odds-api.com/v4"
 
 # League baseline: P(one team doesn't score in first inning) facing avg SP
-_BASE_P_HOLD = 0.648   # calibrated so avg game NRFI ≈ 0.42 (0.648 × 0.648)
+# Actual MLB NRFI rate ~67% → each team ~81.9% to not score → sqrt(0.67) = 0.819
+_BASE_P_HOLD = 0.819
 _LEAGUE_AVG_ERA = 4.20
 _LEAGUE_AVG_K9  = 8.5
 MIN_EDGE = 0.04   # 4 percentage points vs implied
@@ -109,7 +112,7 @@ def fetch_nrfi_odds(event_id: str) -> dict | None:
             "regions": "us",
             "markets": "h2h_1st_1_innings",
             "oddsFormat": "american",
-            "bookmakers": "draftkings,fanduel,betmgm,caesars",
+            "bookmakers": MY_BOOKS_PARAM,
         },
         max_age_s=1800,
     )
@@ -179,6 +182,13 @@ def find_nrfi_edges(
         away_sp_k9  = m.get("away_sp_k9",  _LEAGUE_AVG_K9)
 
         p_nrfi = project_nrfi(home_sp_era, home_sp_k9, away_sp_era, away_sp_k9)
+        # Apply trained NRFI calibrator (Platt/isotonic from settled history)
+        # before edge math so picks.json prob matches the edge.
+        try:
+            from src.analytics.calibration import apply_calibration
+            p_nrfi = apply_calibration(p_nrfi, "mlb", "nrfi")
+        except Exception:
+            pass
         p_yrfi = 1.0 - p_nrfi
 
         # Try to get event ID
@@ -220,7 +230,7 @@ def find_nrfi_edges(
                 else:
                     edges.append({
                         "type": "nrfi",
-                        "market": "yrfi",
+                        "market": "nrfi",
                         "direction": "YRFI",
                         "home_team": m["home_team"],
                         "away_team": m["away_team"],
@@ -234,11 +244,15 @@ def find_nrfi_edges(
                         "label": f"{m['away_team']} @ {m['home_team']} YRFI",
                     })
         else:
-            # No live odds — show model projection only (no edge calc)
+            # No live odds available from books for this event. Still log
+            # with a default -120 (typical NRFI line) so the pick is gradeable
+            # and feeds into model performance tracking. Don't market this as
+            # +EV — flag with no_odds=True.
+            direction = "NRFI" if p_nrfi >= 0.50 else "YRFI"
             edges.append({
                 "type": "nrfi",
-                "market": "nrfi" if p_nrfi >= 0.50 else "yrfi",
-                "direction": "NRFI" if p_nrfi >= 0.50 else "YRFI",
+                "market": "nrfi",
+                "direction": direction,
                 "home_team": m["home_team"],
                 "away_team": m["away_team"],
                 "home_sp": m.get("home_sp_name", "TBD"),
@@ -246,9 +260,10 @@ def find_nrfi_edges(
                 "projected_nrfi": p_nrfi,
                 "implied_nrfi": None,
                 "edge_pct": None,
-                "odds": None,
+                "odds": -120,    # default for grading; verify book line before betting
                 "book": None,
-                "label": f"{m['away_team']} @ {m['home_team']} {'NRFI' if p_nrfi >= 0.50 else 'YRFI'}",
+                "no_odds": True,
+                "label": f"{m['away_team']} @ {m['home_team']} {direction}",
             })
 
     # Sort: if we have edge data, sort by edge; otherwise by projected_nrfi descending

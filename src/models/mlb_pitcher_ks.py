@@ -295,9 +295,10 @@ def train_pitcher_ks_model(
     test_mae = np.mean(np.abs(test_pred - y_test))
     baseline_mae = np.mean(np.abs(y_train.mean() - y_test))
 
-    # Over/under accuracy with typical line at individual prediction
-    lines = y_test.values
-    ou_correct = np.mean((test_pred > lines.mean()) == (lines > lines.mean()))
+    # Direction accuracy: does model predict higher/lower than actual?
+    # (Actual game lines unavailable in training data — this measures whether the
+    # model's direction vs the season mean matches the actual outcome direction.)
+    ou_correct = np.mean((test_pred > y_train.mean()) == (y_test.values > y_train.mean()))
 
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(MODEL_PATH, "wb") as f:

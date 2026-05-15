@@ -141,6 +141,14 @@ def find_spread_edges(
         else:
             continue
 
+        # Calibrate the underlying win prob before deriving the margin so the
+        # spread edge and the model_prob written to picks.json agree.
+        try:
+            from src.analytics.calibration import apply_calibration
+            model_prob_home = apply_calibration(model_prob_home, "mlb", "spread")
+        except Exception:
+            pass
+
         model_margin = win_prob_to_margin(model_prob_home, scale)
 
         # Positive market_spread means home is underdog (+1.5).

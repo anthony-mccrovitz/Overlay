@@ -6,98 +6,114 @@ import { usePathname } from "next/navigation";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const mono = JetBrains_Mono({ variable: "--font-mono-jetbrains", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const mono  = JetBrains_Mono({ variable: "--font-mono-jetbrains", subsets: ["latin"], weight: ["400","500","600","700"] });
 
 const NAV = [
-  { href: "/",          label: "HOME",     key: "~"  },
-  { href: "/dashboard", label: "PICKS",    key: "F1" },
-  { href: "/record",    label: "RECORD",   key: "F2" },
-  { href: "/pricing",   label: "PRICING",  key: "F4" },
+  { href: "/",          label: "Home"   },
+  { href: "/dashboard", label: "Picks"  },
+  { href: "/record",    label: "Record" },
 ];
-
-function TopBar({ pathname }: { pathname: string }) {
-  return (
-    <header className="sticky top-0 z-50 border-b border-[var(--border-hi)] bg-[var(--bg-panel)]">
-      {/* Primary nav row */}
-      <div className="flex items-center h-9 px-3 gap-0 overflow-x-auto no-scrollbar">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5 mr-4 flex-shrink-0">
-          <span className="text-[var(--cyan)] font-bold text-sm tracking-widest">CHEF</span>
-          <span className="text-[var(--text-muted)] text-sm">TONYBETS</span>
-        </Link>
-
-        {/* Nav items */}
-        <div className="flex items-center gap-px flex-shrink-0">
-          {NAV.map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(item.href + "/");
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-1 px-2.5 h-9 text-[11px] font-medium tracking-wider border-b-2 transition-colors ${
-                  active
-                    ? "border-[var(--cyan)] text-[var(--cyan)] bg-[var(--cyan-dim)]"
-                    : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-overlay)]"
-                }`}
-              >
-                <span className="text-[var(--text-muted)] text-[9px] hidden sm:inline">{item.key}</span>
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Right: status */}
-        <div className="ml-auto flex items-center gap-2 flex-shrink-0">
-          <span className="hidden md:flex items-center gap-1.5 text-[10px] text-[var(--text-muted)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot inline-block" />
-            MODEL ONLINE
-          </span>
-          <span className="text-[10px] text-[var(--text-muted)] hidden lg:block">
-            MLB · NBA · NFL · NCAAB
-          </span>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isEarlyAccess = pathname === "/early-access";
 
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable} h-full`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#000000" />
-        <title>ChefTonyBets — Daily Sports Betting Picks</title>
-        <meta name="description" content="Live MLB and NBA picks powered by ML models. Real results, no cherry-picking. Full track record published daily." />
+        <meta name="theme-color" content="#06080f" />
+        <title>Overlay — Find the edge every day</title>
+        <meta name="description" content="AI-powered sharp betting analytics. Daily edges across MLB, NBA, and golf. Verified track record. No cherry-picking." />
       </head>
-      <body className="min-h-full flex flex-col crt">
-        <TopBar pathname={pathname} />
-        <main className="flex-1">{children}</main>
+      <body className="min-h-full flex flex-col" style={{ background: "#06080f", color: "#e2e8f0" }}>
+
+        {/* Nav — hidden on early-access page */}
+        {!isEarlyAccess && (
+          <header style={{
+            position: "sticky", top: 0, zIndex: 50,
+            background: "rgba(6,8,15,0.85)", backdropFilter: "blur(12px)",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
+          }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", gap: 32 }}>
+
+              {/* Logo */}
+              <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none", flexShrink: 0 }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: 7,
+                  background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 13, color: "#fff", fontWeight: 900,
+                }}>◈</div>
+                <span style={{ fontWeight: 800, fontSize: 16, color: "#f1f5f9", letterSpacing: "-0.02em" }}>Overlay</span>
+              </Link>
+
+              {/* Links */}
+              <nav style={{ display: "flex", gap: 4, flex: 1 }}>
+                {NAV.map(({ href, label }) => {
+                  const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+                  return (
+                    <Link key={href} href={href} style={{
+                      padding: "5px 12px", borderRadius: 7, fontSize: 13, fontWeight: 500,
+                      textDecoration: "none", transition: "all 0.15s",
+                      color: active ? "#818cf8" : "#64748b",
+                      background: active ? "rgba(99,102,241,0.1)" : "transparent",
+                    }}>{label}</Link>
+                  );
+                })}
+              </nav>
+
+              {/* CTA */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginLeft: "auto" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", animation: "pulse-dot 2s ease-in-out infinite" }} />
+                  <span style={{ fontSize: 10, color: "#22c55e", fontWeight: 700, letterSpacing: "0.12em" }}>LIVE</span>
+                </div>
+                <Link href="/early-access" style={{
+                  background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+                  color: "#fff", fontWeight: 700, fontSize: 12,
+                  padding: "7px 16px", borderRadius: 8, textDecoration: "none",
+                  letterSpacing: "0.03em",
+                }}>Get Access →</Link>
+              </div>
+            </div>
+          </header>
+        )}
+
+        <main style={{ flex: 1 }}>{children}</main>
+
         {/* Mobile bottom nav */}
-        <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[var(--border-hi)] bg-[var(--bg-panel)] safe-bottom">
-          <div className="flex items-center h-12">
-            {NAV.map((item) => {
-              const active = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full text-[9px] tracking-widest font-medium transition-colors ${
-                    active ? "text-[var(--cyan)] bg-[var(--cyan-dim)]" : "text-[var(--text-muted)]"
-                  }`}
-                >
-                  <span className="text-[8px] text-[var(--text-muted)]">{item.key}</span>
-                  {item.label}
-                </Link>
-              );
-            })}
-          </div>
-        </nav>
-        {/* Mobile nav spacer */}
-        <div className="h-12 md:hidden" />
+        {!isEarlyAccess && (
+          <>
+            <nav style={{
+              position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
+              borderTop: "1px solid rgba(255,255,255,0.07)",
+              background: "rgba(6,8,15,0.95)", backdropFilter: "blur(12px)",
+              display: "flex", height: 56,
+            }} className="md:hidden">
+              {[...NAV, { href: "/early-access", label: "Join" }].map(({ href, label }) => {
+                const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+                const isJoin = href === "/early-access";
+                return (
+                  <Link key={href} href={href} style={{
+                    flex: 1, display: "flex", flexDirection: "column",
+                    alignItems: "center", justifyContent: "center",
+                    fontSize: 9, fontWeight: 700, letterSpacing: "0.1em",
+                    textDecoration: "none",
+                    color: isJoin ? "#818cf8" : active ? "#6366f1" : "#475569",
+                    background: active && !isJoin ? "rgba(99,102,241,0.08)" : "transparent",
+                  }}>
+                    <span style={{ fontSize: 15, marginBottom: 2 }}>
+                      {href === "/" ? "◎" : href === "/dashboard" ? "⚡" : href === "/record" ? "◼" : "★"}
+                    </span>
+                    {label.toUpperCase()}
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="md:hidden" style={{ height: 56 }} />
+          </>
+        )}
       </body>
     </html>
   );

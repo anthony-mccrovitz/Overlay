@@ -1,4 +1,4 @@
-# ChefTonyBets / EdgeFinder — Daily Distribution Playbook
+# ChefTonyBets / Overlay — Daily Distribution Playbook
 
 **Time budget: 30-60 min/day**
 **Goal: Build audience → prove track record → convert to subscribers**

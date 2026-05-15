@@ -1,5 +1,5 @@
 """
-EdgeFinder API — FastAPI backend wrapping the existing prediction engine.
+Overlay API — FastAPI backend wrapping the existing prediction engine.
 
 Run locally:
   uvicorn api.main:app --reload --port 8000
@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.routes import picks, odds, record, backtest, sizing, verify, line_shop, grade, paper_trade
 
 app = FastAPI(
-    title="EdgeFinder API",
+    title="Overlay API",
     description="AI-powered sports betting edge detection",
     version="0.1.0",
 )

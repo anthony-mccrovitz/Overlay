@@ -1,4 +1,4 @@
-# EdgeFinder — MLB Betting Edge Detection
+# Overlay — Multi-Sport Betting Edge Detection
 
 ## Project Goal
 Build an ML-powered sports betting edge detection system that finds mathematically proven
@@ -21,8 +21,10 @@ All operations go through `chef.py` — the unified CLI.
 **Morning (generate picks):**
 ```
 python3 chef.py picks mlb                  # today's MLB slate
+python3 chef.py picks mlb --date 20260512  # specific slate date (output folder)
 python3 chef.py picks nba                  # today's NBA slate
-python3 chef.py picks nba --date 20260418  # specific date (NBA only)
+python3 chef.py picks nba --date 20260418  # specific date
+python3 chef.py morning --date 20260512    # full morning pipeline for that slate
 ```
 
 **Evening (grade results):**

@@ -33,10 +33,13 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
+from src.data.odds_api import MY_BOOKS_PARAM
 from src.data.nba_stats import (
     LG_AVG_DRTG,
+    LG_AVG_PACE,
     fetch_player_stats,
     get_player_stats,
+    get_team_ratings,
     get_team_opp_pts_allowed,
     fetch_opp_position_defense,
 )
@@ -54,8 +57,8 @@ NBA_PROPS_MARKETS = [
     "player_steals",
 ]
 API_BASE = "https://api.the-odds-api.com/v4"
-MIN_EDGE = 0.05      # 5% edge
-MIN_OVER_PROB = 0.53
+MIN_EDGE = 0.12      # 12% — raised from 5%; NBA prop ECE=0.43 means stated edges are ~3x overstated
+MIN_OVER_PROB = 0.50  # removed asymmetric gate — let edge sign decide direction
 
 
 def _api_key() -> str | None:
@@ -137,16 +140,21 @@ def _project_points(player: dict, opp_drtg: float) -> tuple[float, float]:
     return projected, max(std, 3.0)
 
 
-def _project_rebounds(player: dict) -> tuple[float, float]:
+def _project_rebounds(player: dict, opp_drtg: float = LG_AVG_DRTG) -> tuple[float, float]:
     reb = float(player.get("REB", 5.0))
-    return reb, max(reb * 0.45, 1.5)
+    # Worse defense (higher DRtg) → more missed shots → more rebounding opportunities
+    def_factor = opp_drtg / LG_AVG_DRTG
+    projected = reb * (1.0 + (def_factor - 1.0) * 0.4)
+    return projected, max(projected * 0.45, 1.5)
 
 
-def _project_assists(player: dict, opp_pace: float = 98.5) -> tuple[float, float]:
+def _project_assists(player: dict, opp_pace: float = LG_AVG_PACE, opp_drtg: float = LG_AVG_DRTG) -> tuple[float, float]:
     ast = float(player.get("AST", 4.0))
-    # Higher pace → slightly more assist opportunities
-    pace_factor = opp_pace / 98.5
-    projected = ast * pace_factor
+    # Higher pace → more possessions → more assist opportunities
+    pace_factor = opp_pace / LG_AVG_PACE
+    # Worse defense → more made buckets → slight more assists
+    def_factor = opp_drtg / LG_AVG_DRTG
+    projected = ast * pace_factor * (1.0 + (def_factor - 1.0) * 0.2)
     return projected, max(projected * 0.50, 1.0)
 
 
@@ -188,7 +196,7 @@ def fetch_nba_event_props(event_id: str, market: str) -> list[dict]:
             "regions": "us",
             "markets": market,
             "oddsFormat": "american",
-            "bookmakers": "draftkings,fanduel,betmgm,betrivers",
+            "bookmakers": MY_BOOKS_PARAM,
         },
         max_age_s=900,  # 15-min refresh for live props
     )
@@ -258,8 +266,27 @@ def find_nba_prop_edges(
         away_team = event["away_team"]
         matchup   = f"{away_team} @ {home_team}"
 
-        home_pts_allowed = get_team_opp_pts_allowed(home_team, opp_defense)
-        away_pts_allowed = get_team_opp_pts_allowed(away_team, opp_defense)
+        # DRtg: lower = better defense. Home player faces away defense; away player faces home defense.
+        home_drtg = get_team_opp_pts_allowed(home_team, opp_defense)
+        away_drtg = get_team_opp_pts_allowed(away_team, opp_defense)
+        home_pace = float(get_team_ratings(home_team).get("PACE", LG_AVG_PACE))
+        away_pace = float(get_team_ratings(away_team).get("PACE", LG_AVG_PACE))
+        game_pace = (home_pace + away_pace) / 2.0
+
+        def _opp_drtg(player_stats: dict) -> float:
+            """Return the defensive rating the player faces based on their team."""
+            player_team = player_stats.get("TEAM_NAME", "")
+            if player_team:
+                home_words = set(home_team.lower().split())
+                away_words = set(away_team.lower().split())
+                player_words = set(player_team.lower().split())
+                # If player's team matches home team → they face away team's defense
+                if home_words & player_words:
+                    return away_drtg
+                if away_words & player_words:
+                    return home_drtg
+            # Fallback: average of both defenses
+            return (home_drtg + away_drtg) / 2.0
 
         def _append(
             market: str, player_name: str, line: float,
@@ -267,19 +294,23 @@ def find_nba_prop_edges(
             implied: float, over_odds: float, under_odds: float,
             book: str, stat_label: str,
         ) -> None:
+            from src.analytics.calibration import apply_calibration
             if use_poisson:
-                p_over = _poisson_over(proj, line)
+                p_over_raw = _poisson_over(proj, line)
             else:
-                p_over = _normal_over_prob(proj, line, std)
+                p_over_raw = _normal_over_prob(proj, line, std)
+
+            # Apply Platt calibration — corrects for overconfidence in prop projections
+            p_over = apply_calibration(p_over_raw, "nba", "prop")
 
             for direction, model_prob, imp, odds in [
                 ("OVER",  p_over,       implied,     over_odds),
                 ("UNDER", 1 - p_over,   1 - implied, under_odds),
             ]:
-                edge = model_prob - imp  # positive = model favors this side
-                if edge < min_edge:     # only add when model genuinely favors this direction
-                    continue
-                if direction == "OVER" and model_prob < MIN_OVER_PROB:
+                edge = model_prob - imp
+                # Only positive edge — direction is already set by the loop,
+                # so abs() would silently fire on wrong-direction props.
+                if edge < min_edge:
                     continue
                 edges.append({
                     "type": "nba_prop",
@@ -293,7 +324,7 @@ def find_nba_prop_edges(
                     "projected": round(float(proj), 1),
                     "model_prob": round(model_prob, 3),
                     "implied_prob": round(imp, 3),
-                    "edge_pct": round(abs(edge) * 100, 1),
+                    "edge_pct": round(edge * 100, 1),
                     "odds": int(odds),
                     "book": book,
                     "label": f"{player_name} {direction} {line} {stat_label}",
@@ -305,9 +336,7 @@ def find_nba_prop_edges(
             stats = get_player_stats(prop["player"], all_players)
             if not stats:
                 continue
-            # Determine if player is home or away (best effort via team check)
-            opp_def = away_pts_allowed  # default: use away team's pts allowed
-            proj, std = _project_points(stats, opp_def)
+            proj, std = _project_points(stats, _opp_drtg(stats))
             _append("player_points", prop["player"], prop["line"],
                     proj, std, False,
                     prop["implied_over_prob"], prop["over_odds"], prop["under_odds"],
@@ -319,7 +348,7 @@ def find_nba_prop_edges(
             stats = get_player_stats(prop["player"], all_players)
             if not stats:
                 continue
-            proj, std = _project_rebounds(stats)
+            proj, std = _project_rebounds(stats, _opp_drtg(stats))
             _append("player_rebounds", prop["player"], prop["line"],
                     proj, std, True,
                     prop["implied_over_prob"], prop["over_odds"], prop["under_odds"],
@@ -331,7 +360,7 @@ def find_nba_prop_edges(
             stats = get_player_stats(prop["player"], all_players)
             if not stats:
                 continue
-            proj, std = _project_assists(stats)
+            proj, std = _project_assists(stats, game_pace, _opp_drtg(stats))
             _append("player_assists", prop["player"], prop["line"],
                     proj, std, True,
                     prop["implied_over_prob"], prop["over_odds"], prop["under_odds"],
@@ -355,7 +384,7 @@ def find_nba_prop_edges(
             stats = get_player_stats(prop["player"], all_players)
             if not stats:
                 continue
-            proj, std = _project_pra(stats, away_pts_allowed)
+            proj, std = _project_pra(stats, _opp_drtg(stats))
             _append("player_pra", prop["player"], prop["line"],
                     proj, std, False,
                     prop["implied_over_prob"], prop["over_odds"], prop["under_odds"],

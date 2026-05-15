@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-EdgeFinder Paper Trading Tracker
+Overlay Paper Trading Tracker
 ─────────────────────────────────
 Usage:
   python3 track.py bet  "Team" "Opponent" --odds 140 --stake 1     # log a paper bet
@@ -285,7 +285,7 @@ def cmd_analytics(args):
 # ── Entrypoint ────────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(prog="track", description="EdgeFinder paper tracker")
+    parser = argparse.ArgumentParser(prog="track", description="Overlay paper tracker")
     sub    = parser.add_subparsers(dest="cmd")
 
     # bet
