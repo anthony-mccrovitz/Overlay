@@ -25,7 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PICKS_PATH = ROOT / "data" / "pnl" / "picks.json"
 STATS_PATH = ROOT / "data" / "public_stats.json"
-OUT_PATH = ROOT / "overlay" / "public" / "data" / "customer_feed.json"
+OUT_PATH = ROOT / "overlay" / "src" / "data" / "customer_feed.json"
 
 NBA_SPORTS = {"nba", "basketball_nba"}
 MLB_SPORTS = {"mlb", "baseball_mlb"}

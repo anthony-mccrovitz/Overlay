@@ -1,5 +1,4 @@
-import { promises as fs } from "fs";
-import path from "path";
+import feedJson from "@/data/customer_feed.json";
 
 export type CustomerPick = {
   matchup: string;
@@ -72,11 +71,5 @@ export type CustomerFeed = {
 };
 
 export async function readFeed(): Promise<CustomerFeed | null> {
-  try {
-    const p = path.join(process.cwd(), "public", "data", "customer_feed.json");
-    const raw = await fs.readFile(p, "utf-8");
-    return JSON.parse(raw) as CustomerFeed;
-  } catch {
-    return null;
-  }
+  return feedJson as unknown as CustomerFeed;
 }
