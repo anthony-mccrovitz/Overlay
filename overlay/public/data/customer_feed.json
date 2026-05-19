@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-19T16:17:27.866693Z",
+  "updated_at": "2026-05-19T17:01:50.014574Z",
   "date": "2026-05-19",
   "record": {
     "wins": 36,
@@ -7,8 +7,11 @@
     "pushes": 0,
     "units": 2.68,
     "roi_pct": 4.12,
+    "win_rate_pct": 55.4,
     "streak": 4,
-    "settled": 65
+    "settled": 65,
+    "avg_odds": "-69",
+    "total_card": 65
   },
   "picks": {
     "nba": [
@@ -31,8 +34,267 @@
         "sportsbook": "BetRivers",
         "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -109.",
         "result": "pending"
+      },
+      {
+        "matchup": "Cleveland Cavaliers @ New York Knicks",
+        "selection": "OVER 217.5",
+        "market": "total",
+        "odds": "-109",
+        "stake": "1u",
+        "sportsbook": "BetRivers",
+        "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -109.",
+        "result": "pending"
       }
     ],
     "mlb": []
+  },
+  "featured": {
+    "pick": {
+      "matchup": "Cleveland Cavaliers @ New York Knicks",
+      "selection": "OVER 216.5",
+      "market": "total",
+      "odds": "-105",
+      "stake": "1u",
+      "sportsbook": "theScore Bet",
+      "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -105.",
+      "result": "pending"
+    },
+    "sport": "NBA"
+  },
+  "ticker": [
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "W",
+      "units": 1.12
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "result": "W",
+      "units": 0.95
+    },
+    {
+      "sport": "MLB",
+      "matchup": "Baltimore Orio",
+      "result": "W",
+      "units": 0.27
+    },
+    {
+      "sport": "MLB",
+      "matchup": "New York Yanke",
+      "result": "W",
+      "units": 0.44
+    },
+    {
+      "sport": "MLB",
+      "matchup": "JAY @ YAN",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "BRA @ MAR",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "BRE @ CUB",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "RED @ PHI",
+      "result": "L",
+      "units": -1.0
+    }
+  ],
+  "recent_picks": [
+    {
+      "date": "2026-05-18",
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "pick": "O 220.5",
+      "odds": "-105",
+      "result": "WIN",
+      "pl": 0.95
+    },
+    {
+      "date": "2026-05-18",
+      "sport": "MLB",
+      "matchup": "DOD @ PAD",
+      "pick": "PAD +1.5",
+      "odds": "-130",
+      "result": "WIN",
+      "pl": 0.77
+    },
+    {
+      "date": "2026-05-18",
+      "sport": "MLB",
+      "matchup": "ATH @ ANG",
+      "pick": "ANG +1.5",
+      "odds": "-149",
+      "result": "WIN",
+      "pl": 0.67
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "NBA",
+      "matchup": "CAV @ PIS",
+      "pick": "O 206.5",
+      "odds": "-105",
+      "result": "WIN",
+      "pl": 0.95
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "NBA",
+      "matchup": "CAV @ PIS",
+      "pick": "O 205.5",
+      "odds": "-105",
+      "result": "WIN",
+      "pl": 0.95
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "MLB",
+      "matchup": "ORI @ NAT",
+      "pick": "NAT +1.5",
+      "odds": "-145",
+      "result": "LOSS",
+      "pl": -1.0
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "MLB",
+      "matchup": "RAN @ AST",
+      "pick": "AST +1.5",
+      "odds": "-164",
+      "result": "LOSS",
+      "pl": -1.0
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "MLB",
+      "matchup": "CUB @ SOX",
+      "pick": "SOX +1.5",
+      "odds": "-148",
+      "result": "WIN",
+      "pl": 0.68
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "MLB",
+      "matchup": "BRE @ TWI",
+      "pick": "TWI +1.5",
+      "odds": "-150",
+      "result": "WIN",
+      "pl": 0.67
+    },
+    {
+      "date": "2026-05-17",
+      "sport": "MLB",
+      "matchup": "DIA @ ROC",
+      "pick": "ROC +1.5",
+      "odds": "-121",
+      "result": "LOSS",
+      "pl": -1.0
+    }
+  ],
+  "equity_curve": [
+    {
+      "date": "2026-04-22",
+      "units": 0.25
+    },
+    {
+      "date": "2026-04-23",
+      "units": 0.58
+    },
+    {
+      "date": "2026-04-24",
+      "units": 3.24
+    },
+    {
+      "date": "2026-05-15",
+      "units": 1.14
+    },
+    {
+      "date": "2026-05-16",
+      "units": 2.04
+    },
+    {
+      "date": "2026-05-17",
+      "units": 0.29
+    },
+    {
+      "date": "2026-05-18",
+      "units": 2.68
+    }
+  ],
+  "seats": {
+    "taken": 3,
+    "total": 25
   }
 }

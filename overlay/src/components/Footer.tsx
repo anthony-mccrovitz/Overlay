@@ -14,7 +14,7 @@ export function Footer() {
             color: "var(--text-muted)",
           }}
         >
-          <div>© {new Date().getFullYear()} Overlay. All rights reserved.</div>
+          <div className="mono" style={{ letterSpacing: "0.06em" }}>© {new Date().getFullYear()} OVERLAY · 21+ · BET RESPONSIBLY</div>
           <div style={{ display: "flex", gap: 20 }}>
             <Link href="/terms" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Terms</Link>
             <Link href="/privacy" style={{ color: "var(--text-muted)", textDecoration: "none" }}>Privacy</Link>

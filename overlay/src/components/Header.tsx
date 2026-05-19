@@ -5,49 +5,71 @@ export function Header() {
     <header
       style={{
         borderBottom: "1px solid var(--border)",
-        background: "rgba(7,9,15,0.85)",
-        backdropFilter: "blur(8px)",
+        background: "var(--bg)",
         position: "sticky",
-        top: 0,
-        zIndex: 50,
+        top: 30,
+        zIndex: 40,
       }}
     >
       <div
         style={{
-          maxWidth: 1100,
+          maxWidth: 1280,
           margin: "0 auto",
-          padding: "14px 20px",
+          padding: "16px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
           <span
             style={{
-              fontSize: 18,
+              width: 22,
+              height: 22,
+              background: "var(--accent)",
+              borderRadius: 3,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
               fontWeight: 800,
-              letterSpacing: "-0.02em",
-              background: "linear-gradient(90deg, var(--indigo), var(--violet))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              fontSize: 13,
+              fontFamily: "var(--font-mono)",
+            }}
+          >
+            O
+          </span>
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 800,
+              letterSpacing: "0.08em",
+              color: "var(--text-bright)",
             }}
           >
             OVERLAY
           </span>
         </Link>
-        <nav style={{ display: "flex", gap: 24, alignItems: "center" }}>
-          <Link href="/picks" style={{ color: "var(--text-secondary)", textDecoration: "none", fontSize: 13, fontWeight: 500 }}>
-            Picks
-          </Link>
-          <Link href="/record" style={{ color: "var(--text-secondary)", textDecoration: "none", fontSize: 13, fontWeight: 500 }}>
-            Record
-          </Link>
-          <Link href="/account" style={{ color: "var(--text-secondary)", textDecoration: "none", fontSize: 13, fontWeight: 500 }}>
-            Account
-          </Link>
+        <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <Link href="/record" style={navLink}>Record</Link>
+          <Link href="/picks" style={navLink}>The Model</Link>
+          <Link href="/#pricing" style={navLink}>Pricing</Link>
+          <a
+            href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#pricing"}
+            className="btn-ghost"
+            style={{ padding: "8px 16px", fontSize: 12 }}
+          >
+            Subscribe — $29/mo
+          </a>
         </nav>
       </div>
     </header>
   );
 }
+
+const navLink: React.CSSProperties = {
+  color: "var(--text-secondary)",
+  textDecoration: "none",
+  fontSize: 13,
+  fontWeight: 500,
+};

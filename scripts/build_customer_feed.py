@@ -135,6 +135,107 @@ def bucket(sport_value: str) -> str | None:
     return None
 
 
+def ticker_label(sport: str) -> str:
+    if sport in NBA_SPORTS:
+        return "NBA"
+    if sport in MLB_SPORTS:
+        return "MLB"
+    return sport.upper()[:4]
+
+
+def matchup_short(matchup: str) -> str:
+    if "@" in matchup:
+        parts = [p.strip() for p in matchup.split("@")]
+        if len(parts) == 2:
+            return f"{parts[0].split()[-1][:3].upper()} @ {parts[1].split()[-1][:3].upper()}"
+    return matchup[:14]
+
+
+def short_pick(pick: dict) -> str:
+    market = (pick.get("market") or "").lower()
+    direction = (pick.get("direction") or "").upper()
+    team = pick.get("team") or ""
+    line = pick.get("line")
+    if market in ("total", "totals"):
+        return f"{'O' if direction == 'OVER' else 'U'} {line}" if line is not None else direction
+    if market in ("spread", "runline", "run_line", "puckline"):
+        if line is not None:
+            sign = "+" if line > 0 else ""
+            team_short = team.split()[-1][:3].upper() if team else ""
+            return f"{team_short} {sign}{line}"
+        return team[:8]
+    if market in ("moneyline", "ml"):
+        return f"{team.split()[-1][:3].upper()} ML" if team else "ML"
+    return (team or direction or market.upper())[:12]
+
+
+def pick_profit_units(pick: dict) -> float:
+    return round(pick.get("profit") or 0.0, 2)
+
+
+def build_ticker(picks: list[dict], limit: int = 18) -> list[dict]:
+    settled = [
+        p for p in picks
+        if p.get("result") in ("win", "loss", "push") and bucket(p.get("sport", ""))
+    ]
+    settled.sort(key=lambda p: (p.get("resulted_at") or p.get("date") or ""), reverse=True)
+    out = []
+    for p in settled[:limit]:
+        out.append({
+            "sport": ticker_label(p.get("sport", "")),
+            "matchup": matchup_short(p.get("matchup") or ""),
+            "result": p.get("result", "").upper()[0],  # W / L / P
+            "units": pick_profit_units(p),
+        })
+    return out
+
+
+def build_recent_picks(picks: list[dict], limit: int = 10) -> list[dict]:
+    settled = [
+        p for p in picks
+        if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
+        and bucket(p.get("sport", ""))
+    ]
+    settled.sort(key=lambda p: (p.get("date") or "", p.get("resulted_at") or ""), reverse=True)
+    out = []
+    for p in settled[:limit]:
+        out.append({
+            "date": p.get("date", ""),
+            "sport": ticker_label(p.get("sport", "")),
+            "matchup": matchup_short(p.get("matchup") or ""),
+            "pick": short_pick(p),
+            "odds": format_odds(p.get("odds")),
+            "result": p.get("result", "").upper(),
+            "pl": pick_profit_units(p),
+        })
+    return out
+
+
+def build_equity_curve(picks: list[dict], points: int = 80) -> list[dict]:
+    settled = [
+        p for p in picks
+        if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
+        and p.get("date") and bucket(p.get("sport", ""))
+    ]
+    settled.sort(key=lambda p: p["date"])
+    by_day: dict[str, float] = {}
+    for p in settled:
+        d = p["date"]
+        by_day[d] = by_day.get(d, 0.0) + (p.get("profit") or 0.0)
+    days = sorted(by_day.keys())
+    if not days:
+        return []
+    cumulative = 0.0
+    curve = []
+    for d in days:
+        cumulative += by_day[d]
+        curve.append({"date": d, "units": round(cumulative, 2)})
+    if len(curve) > points:
+        step = len(curve) / points
+        curve = [curve[int(i * step)] for i in range(points)] + [curve[-1]]
+    return curve
+
+
 def build_feed(target_date: str | None = None) -> dict:
     raw = json.loads(PICKS_PATH.read_text())
     picks = raw["picks"] if isinstance(raw, dict) else raw
@@ -155,21 +256,49 @@ def build_feed(target_date: str | None = None) -> dict:
 
     stats = json.loads(STATS_PATH.read_text()) if STATS_PATH.exists() else {}
     summary = stats.get("summary", {})
+
+    settled_card = [
+        p for p in picks
+        if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
+        and bucket(p.get("sport", ""))
+    ]
+    odds_vals = [p.get("odds") for p in settled_card if p.get("odds") is not None]
+    avg_odds = int(sum(odds_vals) / len(odds_vals)) if odds_vals else None
+
     record = {
         "wins": summary.get("wins", 0),
         "losses": summary.get("losses", 0),
         "pushes": summary.get("pushes", 0),
         "units": round(summary.get("units_profit", 0.0), 2),
         "roi_pct": round(summary.get("roi", 0.0) * 100, 2),
+        "win_rate_pct": round(summary.get("win_rate", 0.0) * 100, 1),
         "streak": summary.get("streak", 0),
         "settled": summary.get("settled", 0),
+        "avg_odds": format_odds(avg_odds) if avg_odds is not None else None,
+        "total_card": len(settled_card),
     }
+
+    # Featured pick: highest-stake or first NBA pick today, fallback first MLB
+    featured = None
+    if grouped["nba"]:
+        featured = grouped["nba"][0]
+        featured_sport = "NBA"
+    elif grouped["mlb"]:
+        featured = grouped["mlb"][0]
+        featured_sport = "MLB"
+    else:
+        featured_sport = None
 
     return {
         "updated_at": datetime.utcnow().isoformat() + "Z",
         "date": today,
         "record": record,
         "picks": grouped,
+        "featured": {"pick": featured, "sport": featured_sport} if featured else None,
+        "ticker": build_ticker(picks),
+        "recent_picks": build_recent_picks(picks),
+        "equity_curve": build_equity_curve(picks),
+        "seats": {"taken": 3, "total": 25},  # manually adjust as you sell
     }
 
 

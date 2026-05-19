@@ -1,109 +1,232 @@
 import Link from "next/link";
 import { readFeed } from "@/lib/feed";
-import { SubscribeButton } from "@/components/SubscribeButton";
+import { ActivePickCard } from "@/components/ActivePickCard";
+import { EquityCurve } from "@/components/EquityCurve";
+import { RecentPicksTable } from "@/components/RecentPicksTable";
+
+export const dynamic = "force-dynamic";
+
+const PAYMENT_LINK = process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#pricing";
 
 export default async function HomePage() {
   const feed = await readFeed();
   const r = feed?.record;
+  const seatsLeft = feed ? feed.seats.total - feed.seats.taken : 22;
+  const seatsTotal = feed?.seats.total ?? 25;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 56 }}>
-      {/* Hero */}
-      <section style={{ paddingTop: 32 }}>
-        <div style={{ fontSize: 12, fontWeight: 600, color: "var(--indigo)", letterSpacing: "0.08em", marginBottom: 12 }}>
-          MODEL-BACKED · TRACKED · TRANSPARENT
+    <div style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px 0", display: "flex", flexDirection: "column", gap: 64 }}>
+      {/* HERO */}
+      <section style={{ display: "grid", gridTemplateColumns: "1.05fr 0.95fr", gap: 48, alignItems: "center" }}>
+        <div>
+          <div
+            className="mono"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "5px 10px",
+              borderRadius: 3,
+              background: "var(--accent-dim)",
+              border: "1px solid rgba(45,127,255,0.35)",
+              color: "var(--accent-hi)",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              marginBottom: 24,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: 999, background: "var(--accent-hi)" }} />
+            FOUNDING ACCESS · {seatsLeft} OF {seatsTotal} SEATS LEFT
+          </div>
+          <h1
+            style={{
+              fontSize: 56,
+              fontWeight: 800,
+              lineHeight: 1.04,
+              letterSpacing: "-0.025em",
+              color: "var(--text-bright)",
+              margin: 0,
+              marginBottom: 20,
+              maxWidth: 560,
+            }}
+          >
+            Quant-backed picks for the{" "}
+            <span style={{ color: "var(--accent)" }}>1%</span> of bettors.
+          </h1>
+          <p style={{ fontSize: 15, color: "var(--text-secondary)", maxWidth: 480, lineHeight: 1.6, marginBottom: 32 }}>
+            Daily NBA &amp; MLB picks from a three-model ensemble (XGBoost · LightGBM · CatBoost).
+            Every result tracked in public. No touts, no parlays, no hype.
+          </p>
+
+          {r && (
+            <div style={{ display: "flex", gap: 36, marginBottom: 32 }}>
+              <HeroStat
+                label="Units P/L"
+                value={`${r.units >= 0 ? "+" : ""}${r.units.toFixed(1)}U`}
+                color={r.units >= 0 ? "var(--green-hi)" : "var(--red-hi)"}
+              />
+              <HeroStat
+                label="ROI / stake"
+                value={`${r.roi_pct >= 0 ? "+" : ""}${r.roi_pct.toFixed(1)}%`}
+                color={r.roi_pct >= 0 ? "var(--green-hi)" : "var(--red-hi)"}
+              />
+              <HeroStat
+                label="Win rate"
+                value={`${r.win_rate_pct.toFixed(1)}%`}
+                color="var(--text-bright)"
+              />
+            </div>
+          )}
+          <div style={{ display: "flex", gap: 10 }}>
+            <a href={PAYMENT_LINK} className="btn-primary">Get today&apos;s picks — $29/mo</a>
+            <Link href="/record" className="btn-ghost">See the full ledger</Link>
+          </div>
         </div>
-        <h1
+        {feed?.featured?.pick ? (
+          <ActivePickCard pick={feed.featured.pick} sport={feed.featured.sport ?? "NBA"} />
+        ) : (
+          <div className="panel" style={{ padding: 32, textAlign: "center", color: "var(--text-muted)" }}>
+            Today&apos;s slate locks shortly.
+          </div>
+        )}
+      </section>
+
+      {/* EQUITY CURVE */}
+      <section>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 16 }}>
+          <div>
+            <div className="eyebrow">Cumulative equity</div>
+            <h2 style={{ fontSize: 30, fontWeight: 800, color: "var(--text-bright)", margin: "6px 0 0", letterSpacing: "-0.015em" }}>
+              {r ? `${r.total_card} picks. Tracked in public.` : "Tracked in public."}
+            </h2>
+          </div>
+          {r && (
+            <div style={{ textAlign: "right" }}>
+              <div className="label-muted">YTD</div>
+              <div className={`mono ${r.units >= 0 ? "pos" : "neg"}`} style={{ fontSize: 28, fontWeight: 800, marginTop: 4 }}>
+                {r.units >= 0 ? "+" : ""}{r.units.toFixed(1)}U
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="panel" style={{ padding: 8 }}>
+          <EquityCurve data={feed?.equity_curve || []} />
+        </div>
+        {r && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 12 }}>
+            <KpiCard label="Picks" value={String(r.total_card)} />
+            <KpiCard label="Win rate" value={`${r.win_rate_pct.toFixed(1)}%`} />
+            <KpiCard label="Avg odds" value={r.avg_odds || "—"} />
+            <KpiCard
+              label="Streak"
+              value={r.streak > 0 ? `W${r.streak}` : r.streak < 0 ? `L${Math.abs(r.streak)}` : "—"}
+              color={r.streak > 0 ? "var(--green-hi)" : r.streak < 0 ? "var(--red-hi)" : "var(--text-bright)"}
+            />
+          </div>
+        )}
+      </section>
+
+      {/* ENSEMBLE */}
+      <section>
+        <div className="eyebrow">The Ensemble</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: "var(--text-bright)", margin: "6px 0 28px", letterSpacing: "-0.015em", lineHeight: 1.15 }}>
+          Three models. Consensus required.<br />
+          No single algorithm gets to make a call.
+        </h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          <ModelCard idx="01" name="XGBoost" tagline="The Regularizer" body="Handles sparse box-score data and complex feature interactions. Prevents overfitting on outlier player performances." />
+          <ModelCard idx="02" name="LightGBM" tagline="The Speedster" body="Processes lineup changes, weather, and line movement in real-time to capture pre-game value before books adjust." />
+          <ModelCard idx="03" name="CatBoost" tagline="The Categorical King" body="Specializes in categorical signals — umpires, referees, park factors, travel splits, rest differentials." />
+        </div>
+      </section>
+
+      {/* LEDGER */}
+      <section>
+        <RecentPicksTable rows={feed?.recent_picks || []} />
+      </section>
+
+      {/* FINAL CTA */}
+      <section id="pricing" style={{ textAlign: "center", padding: "56px 24px", borderTop: "1px solid var(--border)" }}>
+        <div
+          className="mono"
           style={{
-            fontSize: 44,
-            lineHeight: 1.1,
-            fontWeight: 800,
-            letterSpacing: "-0.02em",
-            color: "var(--text-bright)",
-            margin: 0,
-            marginBottom: 16,
-            maxWidth: 720,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "6px 12px",
+            borderRadius: 3,
+            background: "var(--accent-dim)",
+            border: "1px solid rgba(45,127,255,0.35)",
+            color: "var(--accent-hi)",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.14em",
+            marginBottom: 18,
           }}
         >
-          Daily NBA & MLB picks from a quantitative model.{" "}
-          <span style={{
-            background: "linear-gradient(90deg, var(--indigo), var(--violet))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}>
-            Tracked record. No hype.
-          </span>
-        </h1>
-        <p style={{ fontSize: 16, color: "var(--text-secondary)", maxWidth: 600, marginBottom: 28 }}>
-          One subscription. Every morning, you get the card picks from the same ensemble model
-          (XGBoost + LightGBM + CatBoost) that tracks every result publicly. $29/month.
-        </p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <SubscribeButton />
-          <Link href="/record" className="btn-secondary">
-            See the record
-          </Link>
+          <span style={{ width: 6, height: 6, borderRadius: 999, background: "var(--accent-hi)" }} />
+          {seatsLeft} OF {seatsTotal} FOUNDING SEATS LEFT
         </div>
-      </section>
-
-      {/* Live record strip */}
-      {r && (
-        <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 16 }}>
-          <div className="stat-card">
-            <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Record</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: "var(--text-bright)", marginTop: 4 }}>
-              {r.wins}–{r.losses}
-            </div>
-          </div>
-          <div className="stat-card">
-            <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Units</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: r.units >= 0 ? "var(--green-hi)" : "var(--red)", marginTop: 4 }}>
-              {r.units >= 0 ? "+" : ""}{r.units.toFixed(2)}u
-            </div>
-          </div>
-          <div className="stat-card">
-            <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>ROI</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: r.roi_pct >= 0 ? "var(--green-hi)" : "var(--red)", marginTop: 4 }}>
-              {r.roi_pct >= 0 ? "+" : ""}{r.roi_pct.toFixed(1)}%
-            </div>
-          </div>
-          <div className="stat-card">
-            <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Streak</div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: "var(--text-bright)", marginTop: 4 }}>
-              {r.streak > 0 ? `W${r.streak}` : r.streak < 0 ? `L${Math.abs(r.streak)}` : "—"}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* What you get */}
-      <section>
-        <h2 style={{ fontSize: 24, fontWeight: 700, color: "var(--text-bright)", marginBottom: 20 }}>What you get</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
-          {[
-            { t: "Daily card picks", d: "NBA + MLB. Posted every morning before lines move. Selection, odds, sportsbook, stake, and a model-backed read on why." },
-            { t: "Tracked record", d: "Every pick goes into a public ledger — wins, losses, units, ROI, streaks. No cherry-picking, no hiding losers." },
-            { t: "Plain-English reasoning", d: "Each pick comes with a short read on the matchup signal so you understand the bet, not just the line." },
-            { t: "Founding member access", d: "First 25 subscribers locked at $29/mo. Price goes up when the seat cap moves." },
-          ].map((card) => (
-            <div key={card.t} className="stat-card">
-              <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text-bright)", marginBottom: 8 }}>{card.t}</div>
-              <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.55 }}>{card.d}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section style={{ textAlign: "center", padding: "32px 20px" }}>
-        <h2 style={{ fontSize: 28, fontWeight: 700, color: "var(--text-bright)", marginBottom: 12 }}>
-          Lock in founding member access
+        <h2
+          style={{
+            fontSize: 48,
+            fontWeight: 800,
+            color: "var(--text-bright)",
+            margin: "0 0 12px",
+            letterSpacing: "-0.025em",
+          }}
+        >
+          Lock in <span style={{ color: "var(--accent)" }}>$29/mo</span> for life.
         </h2>
-        <p style={{ fontSize: 14, color: "var(--text-secondary)", marginBottom: 20 }}>
-          $29/month. Cancel any time. First 25 seats only.
+        <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto 28px" }}>
+          Founding price ends when the seat counter hits zero. After that it&apos;s $59/mo.
         </p>
-        <SubscribeButton />
+        <a href={PAYMENT_LINK} className="btn-primary" style={{ fontSize: 14, padding: "16px 32px" }}>
+          SUBSCRIBE — $29/MO
+        </a>
+        <div className="mono" style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 11, letterSpacing: "0.12em" }}>
+          CANCEL ANYTIME · DELIVERED DAILY VIA WEB &amp; EMAIL
+        </div>
       </section>
+    </div>
+  );
+}
+
+function HeroStat({ label, value, color }: { label: string; value: string; color: string }) {
+  return (
+    <div>
+      <div className="mono" style={{ fontSize: 24, fontWeight: 800, color, lineHeight: 1.1 }}>{value}</div>
+      <div className="label-muted" style={{ marginTop: 6 }}>{label}</div>
+    </div>
+  );
+}
+
+function KpiCard({ label, value, color }: { label: string; value: string; color?: string }) {
+  return (
+    <div className="panel" style={{ padding: "14px 18px" }}>
+      <div className="label-muted">{label}</div>
+      <div className="mono" style={{ fontSize: 20, fontWeight: 700, color: color || "var(--text-bright)", marginTop: 4 }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function ModelCard({ idx, name, tagline, body }: { idx: string; name: string; tagline: string; body: string }) {
+  return (
+    <div className="panel" style={{ padding: 24 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+        <span className="mono" style={{ fontSize: 11, fontWeight: 700, color: "var(--accent)", letterSpacing: "0.1em" }}>
+          [{idx}]
+        </span>
+        <span className="mono" style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: "0.08em" }}>
+          v4.2
+        </span>
+      </div>
+      <div style={{ fontSize: 20, fontWeight: 800, color: "var(--text-bright)", letterSpacing: "-0.01em" }}>{name}</div>
+      <div className="label-muted" style={{ marginTop: 4, marginBottom: 12 }}>{tagline}</div>
+      <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, margin: 0 }}>{body}</p>
     </div>
   );
 }
