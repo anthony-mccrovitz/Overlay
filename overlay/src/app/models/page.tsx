@@ -1,13 +1,13 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions, isAllowlisted } from "@/lib/auth";
+import { isAllowlisted } from "@/lib/auth";
+import { safeSession } from "@/lib/session";
 import { readFeed } from "@/lib/feed";
 import { SubscribeButton } from "@/components/SubscribeButton";
 
 export const dynamic = "force-dynamic";
 
 export default async function ModelsPage() {
-  const session = await getServerSession(authOptions);
+  const session = await safeSession();
   if (!session?.user?.email) redirect("/login");
   if (!isAllowlisted(session.user.email)) {
     return (
