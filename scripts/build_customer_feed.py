@@ -211,6 +211,75 @@ def build_recent_picks(picks: list[dict], limit: int = 10) -> list[dict]:
     return out
 
 
+def build_models(picks: list[dict]) -> list[dict]:
+    """Per-(sport, market) breakdown for NBA + MLB card picks only.
+
+    The customer-facing 'models' view — shows each strategy as a 'model row'
+    with W-L, win rate, ROI, profit. No internal/incubating models exposed.
+    """
+    def american_profit(odds: float, stake: float, result: str) -> float:
+        if result == "win":
+            return stake * (odds / 100.0) if odds > 0 else stake * (100.0 / abs(odds))
+        if result == "loss":
+            return -stake
+        return 0.0
+
+    groups: dict[tuple, list[dict]] = {}
+    for p in picks:
+        if not p.get("card_pick"):
+            continue
+        sport_b = bucket(p.get("sport", ""))
+        if not sport_b:
+            continue
+        market = (p.get("market") or "other").lower()
+        key = (sport_b.upper(), market)
+        groups.setdefault(key, []).append(p)
+
+    out = []
+    for (sport, market), bucket_picks in groups.items():
+        settled = [p for p in bucket_picks if p.get("result") in ("win", "loss", "push")]
+        pending = [p for p in bucket_picks if p.get("result") not in ("win", "loss", "push")]
+        wins = sum(1 for p in settled if p["result"] == "win")
+        losses = sum(1 for p in settled if p["result"] == "loss")
+        pushes = sum(1 for p in settled if p["result"] == "push")
+        decided = wins + losses
+        win_rate = round(wins / decided * 100, 1) if decided else None
+        stakes = sum(p.get("stake") or 0.0 for p in settled if p["result"] != "push")
+        profit = sum(p.get("profit") or 0.0 for p in settled)
+        roi = round(profit / stakes * 100, 1) if stakes else None
+        market_label = {
+            "moneyline": "Moneyline",
+            "ml": "Moneyline",
+            "total": "Totals",
+            "totals": "Totals",
+            "spread": "Spread / Run Line",
+            "runline": "Run Line",
+            "run_line": "Run Line",
+            "puckline": "Puck Line",
+            "prop": "Player Props",
+            "nrfi": "NRFI / YRFI",
+            "f5": "First 5 Innings",
+        }.get(market, market.title())
+        out.append({
+            "key": f"{sport.lower()}_{market}",
+            "sport": sport,
+            "label": f"{sport} · {market_label}",
+            "market_label": market_label,
+            "status": "live",
+            "wins": wins,
+            "losses": losses,
+            "pushes": pushes,
+            "pending": len(pending),
+            "settled": len(settled),
+            "win_rate": win_rate,
+            "roi": roi,
+            "profit": round(profit, 2),
+        })
+
+    out.sort(key=lambda m: (m["sport"], -m["profit"]))
+    return out
+
+
 def build_equity_curve(picks: list[dict], points: int = 80) -> list[dict]:
     settled = [
         p for p in picks
@@ -298,6 +367,7 @@ def build_feed(target_date: str | None = None) -> dict:
         "ticker": build_ticker(picks),
         "recent_picks": build_recent_picks(picks),
         "equity_curve": build_equity_curve(picks),
+        "models": build_models(picks),
         "seats": {"taken": 3, "total": 25},  # manually adjust as you sell
     }
 

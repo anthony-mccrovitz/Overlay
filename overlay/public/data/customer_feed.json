@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-19T17:01:50.014574Z",
+  "updated_at": "2026-05-19T17:09:30.695034Z",
   "date": "2026-05-19",
   "record": {
     "wins": 36,
@@ -291,6 +291,98 @@
     {
       "date": "2026-05-18",
       "units": 2.68
+    }
+  ],
+  "models": [
+    {
+      "key": "mlb_moneyline",
+      "sport": "MLB",
+      "label": "MLB \u00b7 Moneyline",
+      "market_label": "Moneyline",
+      "status": "live",
+      "wins": 11,
+      "losses": 7,
+      "pushes": 0,
+      "pending": 0,
+      "settled": 18,
+      "win_rate": 61.1,
+      "roi": 18.4,
+      "profit": 3.31
+    },
+    {
+      "key": "mlb_total",
+      "sport": "MLB",
+      "label": "MLB \u00b7 Totals",
+      "market_label": "Totals",
+      "status": "live",
+      "wins": 4,
+      "losses": 1,
+      "pushes": 0,
+      "pending": 0,
+      "settled": 5,
+      "win_rate": 80.0,
+      "roi": 58.6,
+      "profit": 2.93
+    },
+    {
+      "key": "mlb_prop",
+      "sport": "MLB",
+      "label": "MLB \u00b7 Player Props",
+      "market_label": "Player Props",
+      "status": "live",
+      "wins": 1,
+      "losses": 3,
+      "pushes": 0,
+      "pending": 0,
+      "settled": 4,
+      "win_rate": 25.0,
+      "roi": -51.2,
+      "profit": -2.05
+    },
+    {
+      "key": "mlb_spread",
+      "sport": "MLB",
+      "label": "MLB \u00b7 Spread / Run Line",
+      "market_label": "Spread / Run Line",
+      "status": "live",
+      "wins": 12,
+      "losses": 15,
+      "pushes": 0,
+      "pending": 0,
+      "settled": 27,
+      "win_rate": 44.4,
+      "roi": -22.1,
+      "profit": -5.97
+    },
+    {
+      "key": "nba_total",
+      "sport": "NBA",
+      "label": "NBA \u00b7 Totals",
+      "market_label": "Totals",
+      "status": "live",
+      "wins": 7,
+      "losses": 2,
+      "pushes": 0,
+      "pending": 9,
+      "settled": 9,
+      "win_rate": 77.8,
+      "roi": 50.1,
+      "profit": 4.51
+    },
+    {
+      "key": "nba_spread",
+      "sport": "NBA",
+      "label": "NBA \u00b7 Spread / Run Line",
+      "market_label": "Spread / Run Line",
+      "status": "live",
+      "wins": 1,
+      "losses": 1,
+      "pushes": 0,
+      "pending": 0,
+      "settled": 2,
+      "win_rate": 50.0,
+      "roi": -2.4,
+      "profit": -0.05
     }
   ],
   "seats": {

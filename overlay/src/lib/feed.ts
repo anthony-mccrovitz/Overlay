@@ -31,6 +31,22 @@ export type RecentPick = {
 
 export type EquityPoint = { date: string; units: number };
 
+export type ModelRow = {
+  key: string;
+  sport: string;
+  label: string;
+  market_label: string;
+  status: string;
+  wins: number;
+  losses: number;
+  pushes: number;
+  pending: number;
+  settled: number;
+  win_rate: number | null;
+  roi: number | null;
+  profit: number;
+};
+
 export type CustomerFeed = {
   updated_at: string;
   date: string;
@@ -51,6 +67,7 @@ export type CustomerFeed = {
   ticker: TickerItem[];
   recent_picks: RecentPick[];
   equity_curve: EquityPoint[];
+  models: ModelRow[];
   seats: { taken: number; total: number };
 };
 

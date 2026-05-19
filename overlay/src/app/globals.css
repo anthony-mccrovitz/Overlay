@@ -44,27 +44,71 @@ body {
 
 /* Ticker tape */
 .ticker {
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #0F1318 0%, #0A0B0D 100%);
+  border-bottom: 1px solid var(--border-hi);
+  border-top: 1px solid var(--accent);
   overflow: hidden;
-  position: relative;
-  height: 30px;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: 44px;
   display: flex;
   align-items: center;
+  box-shadow: 0 1px 0 rgba(45,127,255,0.15);
+}
+.ticker::before {
+  content: "LIVE";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  display: flex; align-items: center;
+  padding: 0 14px;
+  background: var(--accent);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  z-index: 2;
+  border-right: 1px solid rgba(0,0,0,0.25);
+}
+.ticker::after {
+  content: "";
+  position: absolute;
+  right: 0; top: 0; bottom: 0; width: 80px;
+  background: linear-gradient(90deg, transparent, var(--bg) 80%);
+  z-index: 2;
+  pointer-events: none;
 }
 .ticker-track {
   display: inline-flex;
   white-space: nowrap;
-  animation: ticker-scroll 60s linear infinite;
-  gap: 32px;
-  padding-left: 100%;
+  animation: ticker-scroll 70s linear infinite;
+  gap: 28px;
+  padding-left: 64px;
 }
+.ticker:hover .ticker-track { animation-play-state: paused; }
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-.ticker-item { font-size: 11px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 8px; }
-.ticker-tag { color: var(--accent); font-weight: 700; }
+.ticker-item {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+.ticker-tag {
+  color: var(--accent-hi);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  background: rgba(45,127,255,0.12);
+  border: 1px solid rgba(45,127,255,0.3);
+  border-radius: 3px;
+}
 
 /* Panels */
 .panel {

@@ -7,7 +7,7 @@ export function Header() {
         borderBottom: "1px solid var(--border)",
         background: "var(--bg)",
         position: "sticky",
-        top: 30,
+        top: 44,
         zIndex: 40,
       }}
     >
@@ -51,9 +51,10 @@ export function Header() {
           </span>
         </Link>
         <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <Link href="/picks" style={navLink}>Picks</Link>
+          <Link href="/models" style={navLink}>Models</Link>
+          <Link href="/tools" style={navLink}>Tools</Link>
           <Link href="/record" style={navLink}>Record</Link>
-          <Link href="/picks" style={navLink}>The Model</Link>
-          <Link href="/#pricing" style={navLink}>Pricing</Link>
           <a
             href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#pricing"}
             className="btn-ghost"
