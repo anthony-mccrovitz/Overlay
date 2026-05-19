@@ -1,15 +1,14 @@
 import { redirect } from "next/navigation";
-import { isAllowlisted } from "@/lib/auth";
-import { safeSession } from "@/lib/session";
+import { getSession, isAllowlisted } from "@/lib/session";
 import { readFeed } from "@/lib/feed";
 import { SubscribeButton } from "@/components/SubscribeButton";
 
 export const dynamic = "force-dynamic";
 
 export default async function ModelsPage() {
-  const session = await safeSession();
-  if (!session?.user?.email) redirect("/login");
-  if (!isAllowlisted(session.user.email)) {
+  const session = getSession();
+  if (!session?.email) redirect("/login");
+  if (!isAllowlisted(session.email)) {
     return (
       <div style={{ maxWidth: 520, margin: "80px auto", textAlign: "center", padding: "0 20px" }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, color: "var(--text-bright)", marginBottom: 12 }}>

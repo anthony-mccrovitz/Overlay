@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
-import { isAllowlisted } from "@/lib/auth";
-import { safeSession } from "@/lib/session";
+import { getSession, isAllowlisted } from "@/lib/session";
 import { readFeed } from "@/lib/feed";
 import { PickCard } from "@/components/PickCard";
 import { SubscribeButton } from "@/components/SubscribeButton";
@@ -8,16 +7,16 @@ import { SubscribeButton } from "@/components/SubscribeButton";
 export const dynamic = "force-dynamic";
 
 export default async function PicksPage() {
-  const session = await safeSession();
-  if (!session?.user?.email) redirect("/login");
-  if (!isAllowlisted(session.user.email)) {
+  const session = getSession();
+  if (!session?.email) redirect("/login");
+  if (!isAllowlisted(session.email)) {
     return (
       <div style={{ textAlign: "center", padding: "80px 20px" }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, color: "var(--text-bright)", marginBottom: 12 }}>
           You&apos;re not subscribed yet
         </h1>
         <p style={{ color: "var(--text-secondary)", marginBottom: 20 }}>
-          {session.user.email} isn&apos;t on the subscriber list. Subscribe below — once your payment
+          {session.email} isn&apos;t on the subscriber list. Subscribe below — once your payment
           is confirmed, your access unlocks within an hour.
         </p>
         <SubscribeButton />
