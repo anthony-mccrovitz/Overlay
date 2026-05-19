@@ -59,6 +59,8 @@ export function Header() {
             href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#pricing"}
             className="btn-ghost"
             style={{ padding: "8px 16px", fontSize: 12 }}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Subscribe — $29/mo
           </a>

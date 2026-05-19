@@ -79,7 +79,7 @@ export default async function HomePage() {
             </div>
           )}
           <div style={{ display: "flex", gap: 10 }}>
-            <a href={PAYMENT_LINK} className="btn-primary">Get today&apos;s picks — $29/mo</a>
+            <a href={PAYMENT_LINK} className="btn-primary" target="_blank" rel="noopener noreferrer">Get today&apos;s picks — $29/mo</a>
             <Link href="/record" className="btn-ghost">See the full ledger</Link>
           </div>
         </div>
@@ -182,7 +182,7 @@ export default async function HomePage() {
         <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto 28px" }}>
           Founding price ends when the seat counter hits zero. After that it&apos;s $59/mo.
         </p>
-        <a href={PAYMENT_LINK} className="btn-primary" style={{ fontSize: 14, padding: "16px 32px" }}>
+        <a href={PAYMENT_LINK} className="btn-primary" style={{ fontSize: 14, padding: "16px 32px" }} target="_blank" rel="noopener noreferrer">
           SUBSCRIBE — $29/MO
         </a>
         <div className="mono" style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 11, letterSpacing: "0.12em" }}>

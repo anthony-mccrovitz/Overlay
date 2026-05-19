@@ -77,6 +77,8 @@ export function ActivePickCard({
           href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#pricing"}
           className="btn-primary"
           style={{ marginTop: 22, width: "100%", padding: "14px 16px" }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           UNLOCK TODAY&apos;S PICKS
         </a>
