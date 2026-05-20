@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-20T05:57:17.931265Z",
+  "updated_at": "2026-05-20T13:38:36.612411Z",
   "date": "2026-05-20",
   "record": {
     "wins": 40,
@@ -10,340 +10,55 @@
     "win_rate_pct": 58.0,
     "streak": 8,
     "settled": 69,
-    "avg_odds": "-71",
-    "total_card": 69
+    "avg_odds": null,
+    "total_card": 0
   },
   "picks": {
-    "nba": [],
+    "nba": [
+      {
+        "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+        "selection": "OVER 216.5",
+        "market": "total",
+        "odds": "-108",
+        "stake": "1u",
+        "sportsbook": "DraftKings",
+        "reasoning": "Model leans over the total in San Antonio Spurs @ Oklahoma City Thunder. Pace and matchup signal point that way at -108.",
+        "result": "pending"
+      }
+    ],
     "mlb": []
   },
-  "featured": null,
-  "ticker": [
-    {
-      "sport": "NBA",
-      "matchup": "CAV @ KNI",
-      "result": "W",
-      "units": 0.91
+  "featured": {
+    "pick": {
+      "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+      "selection": "OVER 216.5",
+      "market": "total",
+      "odds": "-108",
+      "stake": "1u",
+      "sportsbook": "DraftKings",
+      "reasoning": "Model leans over the total in San Antonio Spurs @ Oklahoma City Thunder. Pace and matchup signal point that way at -108.",
+      "result": "pending"
     },
-    {
-      "sport": "NBA",
-      "matchup": "CAV @ KNI",
-      "result": "W",
-      "units": 0.91
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "W",
-      "units": 1.15
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "W",
-      "units": 1.29
-    },
-    {
-      "sport": "NBA",
-      "matchup": "CAV @ KNI",
-      "result": "W",
-      "units": 0.91
-    },
-    {
-      "sport": "MLB",
-      "matchup": "RAN @ ROC",
-      "result": "L",
-      "units": 0.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "W",
-      "units": 0.96
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "BRE @ CUB",
-      "result": "W",
-      "units": 1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "BRE @ CUB",
-      "result": "W",
-      "units": 0.77
-    },
-    {
-      "sport": "MLB",
-      "matchup": "BRE @ CUB",
-      "result": "L",
-      "units": 0.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "JAY @ YAN",
-      "result": "W",
-      "units": 0.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "MET @ NAT",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "MET @ NAT",
-      "result": "L",
-      "units": 0.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "MET @ NAT",
-      "result": "W",
-      "units": 1.15
-    },
-    {
-      "sport": "MLB",
-      "matchup": "",
-      "result": "W",
-      "units": 1.22
-    }
-  ],
-  "recent_picks": [
-    {
-      "date": "2026-05-19",
-      "sport": "NBA",
-      "matchup": "CAV @ KNI",
-      "pick": "O 217.5",
-      "odds": "-109",
-      "result": "WIN",
-      "pl": 0.91
-    },
-    {
-      "date": "2026-05-19",
-      "sport": "NBA",
-      "matchup": "CAV @ KNI",
-      "pick": "O 218.0",
-      "odds": "-109",
-      "result": "WIN",
-      "pl": 0.91
-    },
-    {
-      "date": "2026-05-19",
-      "sport": "NBA",
-      "matchup": "CAV @ KNI",
-      "pick": "O 216.5",
-      "odds": "-105",
-      "result": "WIN",
-      "pl": 0.91
-    },
-    {
-      "date": "2026-05-18",
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "pick": "O 221.5",
-      "odds": "-105",
-      "result": "WIN",
-      "pl": 0.95
-    },
-    {
-      "date": "2026-05-18",
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "pick": "O 220.5",
-      "odds": "-105",
-      "result": "WIN",
-      "pl": 0.95
-    },
-    {
-      "date": "2026-05-18",
-      "sport": "MLB",
-      "matchup": "DOD @ PAD",
-      "pick": "PAD +1.5",
-      "odds": "-130",
-      "result": "WIN",
-      "pl": 0.77
-    },
-    {
-      "date": "2026-05-18",
-      "sport": "MLB",
-      "matchup": "ATH @ ANG",
-      "pick": "ANG +1.5",
-      "odds": "-149",
-      "result": "WIN",
-      "pl": 0.67
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "NBA",
-      "matchup": "CAV @ PIS",
-      "pick": "O 206.5",
-      "odds": "-105",
-      "result": "WIN",
-      "pl": 0.95
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "NBA",
-      "matchup": "CAV @ PIS",
-      "pick": "O 205.5",
-      "odds": "-105",
-      "result": "WIN",
-      "pl": 0.95
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "MLB",
-      "matchup": "ORI @ NAT",
-      "pick": "NAT +1.5",
-      "odds": "-145",
-      "result": "LOSS",
-      "pl": -1.0
-    }
-  ],
-  "equity_curve": [
-    {
-      "date": "2026-04-22",
-      "units": 0.25
-    },
-    {
-      "date": "2026-04-23",
-      "units": 0.58
-    },
-    {
-      "date": "2026-04-24",
-      "units": 3.24
-    },
-    {
-      "date": "2026-05-15",
-      "units": 1.14
-    },
-    {
-      "date": "2026-05-16",
-      "units": 2.04
-    },
-    {
-      "date": "2026-05-17",
-      "units": 0.29
-    },
-    {
-      "date": "2026-05-18",
-      "units": 3.63
-    },
-    {
-      "date": "2026-05-19",
-      "units": 6.36
-    }
-  ],
+    "sport": "NBA"
+  },
+  "ticker": [],
+  "recent_picks": [],
+  "equity_curve": [],
   "models": [
-    {
-      "key": "mlb_moneyline",
-      "sport": "MLB",
-      "label": "MLB \u00b7 Moneyline",
-      "market_label": "Moneyline",
-      "status": "live",
-      "wins": 11,
-      "losses": 7,
-      "pushes": 0,
-      "pending": 0,
-      "settled": 18,
-      "win_rate": 61.1,
-      "roi": 18.4,
-      "profit": 3.31
-    },
-    {
-      "key": "mlb_total",
-      "sport": "MLB",
-      "label": "MLB \u00b7 Totals",
-      "market_label": "Totals",
-      "status": "live",
-      "wins": 4,
-      "losses": 1,
-      "pushes": 0,
-      "pending": 0,
-      "settled": 5,
-      "win_rate": 80.0,
-      "roi": 58.6,
-      "profit": 2.93
-    },
-    {
-      "key": "mlb_prop",
-      "sport": "MLB",
-      "label": "MLB \u00b7 Player Props",
-      "market_label": "Player Props",
-      "status": "live",
-      "wins": 1,
-      "losses": 3,
-      "pushes": 0,
-      "pending": 0,
-      "settled": 4,
-      "win_rate": 25.0,
-      "roi": -51.2,
-      "profit": -2.05
-    },
-    {
-      "key": "mlb_spread",
-      "sport": "MLB",
-      "label": "MLB \u00b7 Spread / Run Line",
-      "market_label": "Spread / Run Line",
-      "status": "live",
-      "wins": 12,
-      "losses": 15,
-      "pushes": 0,
-      "pending": 0,
-      "settled": 27,
-      "win_rate": 44.4,
-      "roi": -22.1,
-      "profit": -5.97
-    },
     {
       "key": "nba_total",
       "sport": "NBA",
       "label": "NBA \u00b7 Totals",
       "market_label": "Totals",
       "status": "live",
-      "wins": 11,
-      "losses": 2,
+      "wins": 0,
+      "losses": 0,
       "pushes": 0,
-      "pending": 5,
-      "settled": 13,
-      "win_rate": 84.6,
-      "roi": 63.0,
-      "profit": 8.19
-    },
-    {
-      "key": "nba_spread",
-      "sport": "NBA",
-      "label": "NBA \u00b7 Spread / Run Line",
-      "market_label": "Spread / Run Line",
-      "status": "live",
-      "wins": 1,
-      "losses": 1,
-      "pushes": 0,
-      "pending": 0,
-      "settled": 2,
-      "win_rate": 50.0,
-      "roi": -2.4,
-      "profit": -0.05
+      "pending": 1,
+      "settled": 0,
+      "win_rate": null,
+      "roi": null,
+      "profit": 0
     }
   ],
   "upcoming_models": [
