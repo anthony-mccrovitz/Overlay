@@ -68,6 +68,43 @@ def flag_high_edge_picks(edges: list[dict], threshold_pct: float = 8.0) -> list[
     return [e for e in edges if abs(float(e.get("edge_pct") or 0)) > threshold_pct]
 
 
+def model_recent_clv(sport: str, market: str, n: int = 30) -> float | None:
+    """Return avg CLV cents over the last `n` settled picks for this (sport, market).
+
+    Returns None if fewer than 10 picks — not enough signal to gate on.
+    Used by runners to decide whether to set card_pick=True: if recent CLV is
+    negative, the model is bleeding edge to the close and should stay shadow.
+
+    Per 2026-05-19 plan: card_pick=True requires non-negative CLV on rolling sample.
+    """
+    import json
+    from pathlib import Path
+
+    clv_path = Path("data/clv/clv_records.json")
+    if not clv_path.exists():
+        return None
+    try:
+        records = json.loads(clv_path.read_text()).get("picks", [])
+    except Exception:
+        return None
+
+    sport_n = (sport or "").lower()
+    # Normalize MLB/NBA sport aliases
+    for alias in ("baseball_", "basketball_", "icehockey_"):
+        sport_n = sport_n.replace(alias, "")
+
+    relevant = [
+        r for r in records
+        if (r.get("sport") or "").lower().replace("baseball_","").replace("basketball_","") == sport_n
+        and r.get("clv_cents") is not None
+    ]
+    relevant.sort(key=lambda r: r.get("pick_time") or "", reverse=True)
+    sample = relevant[:n]
+    if len(sample) < 10:
+        return None
+    return sum(r["clv_cents"] for r in sample) / len(sample)
+
+
 def _find_moneyline_value(
     predictions: dict[tuple[str, str], float],
     odds_df: pd.DataFrame,
@@ -115,8 +152,29 @@ def _find_moneyline_value(
                 implied_home = g["h2h"].get("home", implied_home)
                 implied_away = g["h2h"].get("away", implied_away)
 
+        # Sharp disagreement gate: if Pinnacle is confidently on the other side
+        # (their fair prob < 45% for our pick), require 1.5x edge to go against
+        # the sharpest book in the world. Most retail edges are noise vs Pinnacle.
+        pin_source = "median"
+        if fair_prob_map:
+            gid = row.get("GameID", "")
+            g = fair_prob_map.get(gid)
+            if g and "h2h" in g:
+                pin_source = g["h2h"].get("source", "median")
+        _sharp_mult = 1.5 if (pin_source == "pinnacle" and implied_home < 0.45) else 1.0
+
+        # FLS guard: heavy underdogs (implied < 0.33, i.e. longer than +200) require
+        # Pinnacle source AND 2x edge. Longshot bias means these picks fail at high
+        # rates regardless of model edge — Snowberg & Wolfers 2010 confirms no EV.
+        if implied_home < 0.33:
+            if pin_source != "pinnacle":
+                # No Pinnacle anchor on a heavy dog → skip entirely (per 2026-05-19 plan)
+                continue
+            _sharp_mult = max(_sharp_mult, 2.0)
+
         edge_home = adjusted_edge(model_prob_home, implied_home) / 100
-        if edge_home >= min_edge:
+        _min_home = (min_edge * _sharp_mult) if implied_home >= 0.33 else max(0.10, min_edge * _sharp_mult)
+        if edge_home >= _min_home:
             bets.append({
                 "Team": home, "Opponent": away,
                 "ModelProb": model_prob_home, "ImpliedProb": implied_home,
@@ -126,10 +184,17 @@ def _find_moneyline_value(
                 "Spread": row.get("ConsensusSpread", 0),
                 "CommenceTime": row.get("CommenceTime", ""),
                 "Market": "moneyline",
+                "pin_source": pin_source,
             })
 
+        _sharp_mult_away = 1.5 if (pin_source == "pinnacle" and implied_away < 0.45) else 1.0
+        if implied_away < 0.33:
+            if pin_source != "pinnacle":
+                continue  # plan: no Pinnacle anchor on heavy dog → no bet
+            _sharp_mult_away = max(_sharp_mult_away, 2.0)
         edge_away = adjusted_edge(model_prob_away, implied_away) / 100
-        if edge_away >= min_edge:
+        _min_away = (min_edge * _sharp_mult_away) if implied_away >= 0.33 else max(0.10, min_edge * _sharp_mult_away)
+        if edge_away >= _min_away:
             bets.append({
                 "Team": away, "Opponent": home,
                 "ModelProb": model_prob_away, "ImpliedProb": implied_away,
@@ -139,6 +204,7 @@ def _find_moneyline_value(
                 "Spread": row.get("ConsensusSpread", 0),
                 "CommenceTime": row.get("CommenceTime", ""),
                 "Market": "moneyline",
+                "pin_source": pin_source,
             })
 
     if not bets:
