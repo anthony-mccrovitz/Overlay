@@ -147,6 +147,29 @@ export default async function ModelsPage() {
         </div>
       ))}
 
+      {feed?.upcoming_models && feed.upcoming_models.length > 0 && (
+        <section style={{ marginTop: 8 }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 14 }}>
+            <div>
+              <div className="eyebrow">On deck</div>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--text-bright)", margin: "4px 0 0", letterSpacing: "-0.01em" }}>
+                Coming soon to the book
+              </h2>
+              <p style={{ color: "var(--text-secondary)", marginTop: 6, fontSize: 13, maxWidth: 600 }}>
+                Models actively in shadow mode or launch prep. Subscribers get access the second they go live —
+                no upcharge, no waitlist.
+              </p>
+            </div>
+            <span className="mono" style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+              {feed.upcoming_models.length} STRATEGIES QUEUED
+            </span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 12 }}>
+            {feed.upcoming_models.map((m, i) => <UpcomingCard key={i} m={m} />)}
+          </div>
+        </section>
+      )}
+
       <div
         style={{
           padding: "14px 16px",
@@ -161,6 +184,56 @@ export default async function ModelsPage() {
         <strong style={{ color: "var(--text-secondary)" }}>How this works:</strong> Every model
         breaks out by sport × market. We post the card pick the moment a model finds a +EV edge —
         win or lose, it lands in this table. Profitable strategies stay; chronic losers get retired.
+      </div>
+    </div>
+  );
+}
+
+function UpcomingCard({ m }: { m: { sport: string; label: string; market: string; eta: string; status: string; teaser: string; accent: string } }) {
+  const accentMap: Record<string, { rail: string; chip: string; chipBg: string; chipBorder: string; statusLabel: string }> = {
+    green:  { rail: "var(--green-hi)",  chip: "var(--green-hi)",  chipBg: "rgba(34,210,122,0.10)",  chipBorder: "rgba(34,210,122,0.35)",  statusLabel: m.status === "live" ? "LIVE" : "LAUNCHING" },
+    amber:  { rail: "#F59E0B",          chip: "#F59E0B",          chipBg: "rgba(245,158,11,0.10)",  chipBorder: "rgba(245,158,11,0.35)",  statusLabel: "IN SHADOW" },
+    muted:  { rail: "var(--border-hi)", chip: "var(--text-muted)", chipBg: "var(--bg-raised)",      chipBorder: "var(--border)",          statusLabel: "INCUBATING" },
+  };
+  const a = accentMap[m.accent] || accentMap.amber;
+
+  return (
+    <div className="panel" style={{ padding: 0, overflow: "hidden", position: "relative" }}>
+      <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: a.rail }} />
+      <div style={{ padding: "14px 16px 12px 18px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span className="mono" style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.14em", color: "var(--text-secondary)" }}>
+          [{m.sport.toUpperCase()}]
+        </span>
+        <span
+          className="mono"
+          style={{
+            fontSize: 9,
+            fontWeight: 800,
+            padding: "3px 7px",
+            background: a.chipBg,
+            color: a.chip,
+            border: `1px solid ${a.chipBorder}`,
+            borderRadius: 3,
+            letterSpacing: "0.12em",
+          }}
+        >
+          {a.statusLabel}
+        </span>
+      </div>
+      <div style={{ padding: "14px 16px 16px 18px" }}>
+        <div style={{ fontSize: 16, fontWeight: 800, color: "var(--text-bright)", letterSpacing: "-0.01em", marginBottom: 4 }}>
+          {m.label}
+        </div>
+        <div className="mono" style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: "0.04em", marginBottom: 10 }}>
+          {m.market}
+        </div>
+        <div style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: 12 }}>
+          {m.teaser}
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid var(--border)" }}>
+          <span className="label-muted">ETA</span>
+          <span className="mono" style={{ fontSize: 12, color: "var(--text-bright)", fontWeight: 700 }}>{m.eta}</span>
+        </div>
       </div>
     </div>
   );

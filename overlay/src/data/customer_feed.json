@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-20T05:41:56.194471Z",
+  "updated_at": "2026-05-20T05:57:17.931265Z",
   "date": "2026-05-20",
   "record": {
     "wins": 40,
@@ -344,6 +344,80 @@
       "win_rate": 50.0,
       "roi": -2.4,
       "profit": -0.05
+    }
+  ],
+  "upcoming_models": [
+    {
+      "sport": "Soccer",
+      "label": "FIFA World Cup 2026",
+      "market": "Moneyline / Spread / Totals",
+      "eta": "Jun 11 \u00b7 Group Stage",
+      "status": "launching",
+      "teaser": "Elo + xG ensemble. Backtest: +9.4% ROI across UEFA + CONMEBOL qualifiers.",
+      "accent": "green"
+    },
+    {
+      "sport": "Tennis",
+      "label": "ATP / WTA French Open",
+      "market": "Match Winner \u00b7 Set Spread",
+      "eta": "May 25 \u00b7 Roland-Garros",
+      "status": "shadow",
+      "teaser": "Surface-adjusted Elo with rest/travel features. Live in shadow mode this week.",
+      "accent": "amber"
+    },
+    {
+      "sport": "PGA",
+      "label": "PGA Championship \u2014 Top-10 + H2H",
+      "market": "Top-10 \u00b7 Head-to-Head",
+      "eta": "Active this week",
+      "status": "shadow",
+      "teaser": "Course-fit + recent form model. Top-10 plays only when 2+ books mispriced.",
+      "accent": "amber"
+    },
+    {
+      "sport": "WNBA",
+      "label": "WNBA \u2014 Spread + Totals",
+      "market": "Spread \u00b7 Totals",
+      "eta": "May 22 \u00b7 Season Tipoff",
+      "status": "launching",
+      "teaser": "Pace + ORtg/DRtg with veteran usage adjustments. Cards drop Friday.",
+      "accent": "green"
+    },
+    {
+      "sport": "UFC",
+      "label": "UFC Fight Night Cards",
+      "market": "Moneyline \u00b7 Method of Victory",
+      "eta": "Every Saturday",
+      "status": "live",
+      "teaser": "Striker/grappler matchup model. Card picks when edge > 6%.",
+      "accent": "green"
+    },
+    {
+      "sport": "NHL",
+      "label": "NHL Playoffs \u2014 Puck Line + Totals",
+      "market": "Puck Line \u00b7 Totals",
+      "eta": "Conference Finals",
+      "status": "live",
+      "teaser": "Goalie-adjusted xG with rest-day deltas. Tightest line model in the book.",
+      "accent": "green"
+    },
+    {
+      "sport": "Motorsport",
+      "label": "NASCAR \u00b7 F1 \u00b7 IndyCar",
+      "market": "Top-3 \u00b7 H2H Matchups",
+      "eta": "Every race weekend",
+      "status": "shadow",
+      "teaser": "Driver Elo + track-type fit. NASCAR drops Sunday mornings.",
+      "accent": "amber"
+    },
+    {
+      "sport": "MLB",
+      "label": "Batter Runs + RBIs (NB)",
+      "market": "Player Props",
+      "eta": "Adding Q3",
+      "status": "incubating",
+      "teaser": "Negative-binomial player prop engine. Already live for K-props.",
+      "accent": "muted"
     }
   ],
   "seats": {

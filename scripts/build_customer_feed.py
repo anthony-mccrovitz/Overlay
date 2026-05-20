@@ -305,6 +305,82 @@ def build_equity_curve(picks: list[dict], points: int = 80) -> list[dict]:
     return curve
 
 
+UPCOMING_MODELS = [
+    {
+        "sport": "Soccer",
+        "label": "FIFA World Cup 2026",
+        "market": "Moneyline / Spread / Totals",
+        "eta": "Jun 11 · Group Stage",
+        "status": "launching",
+        "teaser": "Elo + xG ensemble. Backtest: +9.4% ROI across UEFA + CONMEBOL qualifiers.",
+        "accent": "green",
+    },
+    {
+        "sport": "Tennis",
+        "label": "ATP / WTA French Open",
+        "market": "Match Winner · Set Spread",
+        "eta": "May 25 · Roland-Garros",
+        "status": "shadow",
+        "teaser": "Surface-adjusted Elo with rest/travel features. Live in shadow mode this week.",
+        "accent": "amber",
+    },
+    {
+        "sport": "PGA",
+        "label": "PGA Championship — Top-10 + H2H",
+        "market": "Top-10 · Head-to-Head",
+        "eta": "Active this week",
+        "status": "shadow",
+        "teaser": "Course-fit + recent form model. Top-10 plays only when 2+ books mispriced.",
+        "accent": "amber",
+    },
+    {
+        "sport": "WNBA",
+        "label": "WNBA — Spread + Totals",
+        "market": "Spread · Totals",
+        "eta": "May 22 · Season Tipoff",
+        "status": "launching",
+        "teaser": "Pace + ORtg/DRtg with veteran usage adjustments. Cards drop Friday.",
+        "accent": "green",
+    },
+    {
+        "sport": "UFC",
+        "label": "UFC Fight Night Cards",
+        "market": "Moneyline · Method of Victory",
+        "eta": "Every Saturday",
+        "status": "live",
+        "teaser": "Striker/grappler matchup model. Card picks when edge > 6%.",
+        "accent": "green",
+    },
+    {
+        "sport": "NHL",
+        "label": "NHL Playoffs — Puck Line + Totals",
+        "market": "Puck Line · Totals",
+        "eta": "Conference Finals",
+        "status": "live",
+        "teaser": "Goalie-adjusted xG with rest-day deltas. Tightest line model in the book.",
+        "accent": "green",
+    },
+    {
+        "sport": "Motorsport",
+        "label": "NASCAR · F1 · IndyCar",
+        "market": "Top-3 · H2H Matchups",
+        "eta": "Every race weekend",
+        "status": "shadow",
+        "teaser": "Driver Elo + track-type fit. NASCAR drops Sunday mornings.",
+        "accent": "amber",
+    },
+    {
+        "sport": "MLB",
+        "label": "Batter Runs + RBIs (NB)",
+        "market": "Player Props",
+        "eta": "Adding Q3",
+        "status": "incubating",
+        "teaser": "Negative-binomial player prop engine. Already live for K-props.",
+        "accent": "muted",
+    },
+]
+
+
 def build_feed(target_date: str | None = None) -> dict:
     raw = json.loads(PICKS_PATH.read_text())
     picks = raw["picks"] if isinstance(raw, dict) else raw
@@ -368,6 +444,7 @@ def build_feed(target_date: str | None = None) -> dict:
         "recent_picks": build_recent_picks(picks),
         "equity_curve": build_equity_curve(picks),
         "models": build_models(picks),
+        "upcoming_models": UPCOMING_MODELS,
         "seats": {"taken": 3, "total": 25},  # manually adjust as you sell
     }
 

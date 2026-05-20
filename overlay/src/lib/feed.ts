@@ -67,7 +67,18 @@ export type CustomerFeed = {
   recent_picks: RecentPick[];
   equity_curve: EquityPoint[];
   models: ModelRow[];
+  upcoming_models?: UpcomingModel[];
   seats: { taken: number; total: number };
+};
+
+export type UpcomingModel = {
+  sport: string;
+  label: string;
+  market: string;
+  eta: string;
+  status: string;
+  teaser: string;
+  accent: string;
 };
 
 export async function readFeed(): Promise<CustomerFeed | null> {
