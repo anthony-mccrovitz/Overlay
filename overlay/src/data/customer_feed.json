@@ -1,177 +1,170 @@
 {
-  "updated_at": "2026-05-19T17:22:15.218852Z",
-  "date": "2026-05-19",
+  "updated_at": "2026-05-20T05:41:56.194471Z",
+  "date": "2026-05-20",
   "record": {
-    "wins": 36,
+    "wins": 40,
     "losses": 29,
     "pushes": 0,
-    "units": 2.68,
-    "roi_pct": 4.12,
-    "win_rate_pct": 55.4,
-    "streak": 4,
-    "settled": 65,
-    "avg_odds": "-69",
-    "total_card": 65
+    "units": 6.36,
+    "roi_pct": 9.22,
+    "win_rate_pct": 58.0,
+    "streak": 8,
+    "settled": 69,
+    "avg_odds": "-71",
+    "total_card": 69
   },
   "picks": {
-    "nba": [
-      {
-        "matchup": "Cleveland Cavaliers @ New York Knicks",
-        "selection": "OVER 216.5",
-        "market": "total",
-        "odds": "-105",
-        "stake": "1u",
-        "sportsbook": "theScore Bet",
-        "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -105.",
-        "result": "pending"
-      },
-      {
-        "matchup": "Cleveland Cavaliers @ New York Knicks",
-        "selection": "OVER 218.0",
-        "market": "total",
-        "odds": "-109",
-        "stake": "1u",
-        "sportsbook": "BetRivers",
-        "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -109.",
-        "result": "pending"
-      },
-      {
-        "matchup": "Cleveland Cavaliers @ New York Knicks",
-        "selection": "OVER 217.5",
-        "market": "total",
-        "odds": "-109",
-        "stake": "1u",
-        "sportsbook": "BetRivers",
-        "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -109.",
-        "result": "pending"
-      }
-    ],
+    "nba": [],
     "mlb": []
   },
-  "featured": {
-    "pick": {
-      "matchup": "Cleveland Cavaliers @ New York Knicks",
-      "selection": "OVER 216.5",
-      "market": "total",
-      "odds": "-105",
-      "stake": "1u",
-      "sportsbook": "theScore Bet",
-      "reasoning": "Model leans over the total in Cleveland Cavaliers @ New York Knicks. Pace and matchup signal point that way at -105.",
-      "result": "pending"
-    },
-    "sport": "NBA"
-  },
+  "featured": null,
   "ticker": [
     {
       "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
+      "matchup": "CAV @ KNI",
       "result": "W",
-      "units": 1.12
+      "units": 0.91
     },
     {
       "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ THU",
+      "matchup": "CAV @ KNI",
       "result": "W",
-      "units": 0.95
+      "units": 0.91
     },
     {
       "sport": "MLB",
-      "matchup": "Baltimore Orio",
-      "result": "W",
-      "units": 0.27
-    },
-    {
-      "sport": "MLB",
-      "matchup": "New York Yanke",
-      "result": "W",
-      "units": 0.44
-    },
-    {
-      "sport": "MLB",
-      "matchup": "JAY @ YAN",
+      "matchup": "",
       "result": "L",
       "units": -1.0
     },
     {
       "sport": "MLB",
-      "matchup": "BRA @ MAR",
+      "matchup": "",
+      "result": "W",
+      "units": 1.15
+    },
+    {
+      "sport": "MLB",
+      "matchup": "",
+      "result": "W",
+      "units": 1.29
+    },
+    {
+      "sport": "NBA",
+      "matchup": "CAV @ KNI",
+      "result": "W",
+      "units": 0.91
+    },
+    {
+      "sport": "MLB",
+      "matchup": "RAN @ ROC",
+      "result": "L",
+      "units": 0.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "",
+      "result": "W",
+      "units": 0.96
+    },
+    {
+      "sport": "MLB",
+      "matchup": "",
       "result": "L",
       "units": -1.0
     },
     {
       "sport": "MLB",
       "matchup": "BRE @ CUB",
+      "result": "W",
+      "units": 1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "BRE @ CUB",
+      "result": "W",
+      "units": 0.77
+    },
+    {
+      "sport": "MLB",
+      "matchup": "BRE @ CUB",
+      "result": "L",
+      "units": 0.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "JAY @ YAN",
+      "result": "W",
+      "units": 0.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "",
       "result": "L",
       "units": -1.0
     },
     {
       "sport": "MLB",
-      "matchup": "RED @ PHI",
+      "matchup": "MET @ NAT",
       "result": "L",
       "units": -1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "MET @ NAT",
+      "result": "L",
+      "units": 0.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "MET @ NAT",
+      "result": "W",
+      "units": 1.15
+    },
+    {
+      "sport": "MLB",
+      "matchup": "",
+      "result": "W",
+      "units": 1.22
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-05-19",
+      "sport": "NBA",
+      "matchup": "CAV @ KNI",
+      "pick": "O 217.5",
+      "odds": "-109",
+      "result": "WIN",
+      "pl": 0.91
+    },
+    {
+      "date": "2026-05-19",
+      "sport": "NBA",
+      "matchup": "CAV @ KNI",
+      "pick": "O 218.0",
+      "odds": "-109",
+      "result": "WIN",
+      "pl": 0.91
+    },
+    {
+      "date": "2026-05-19",
+      "sport": "NBA",
+      "matchup": "CAV @ KNI",
+      "pick": "O 216.5",
+      "odds": "-105",
+      "result": "WIN",
+      "pl": 0.91
+    },
+    {
+      "date": "2026-05-18",
+      "sport": "NBA",
+      "matchup": "SPU @ THU",
+      "pick": "O 221.5",
+      "odds": "-105",
+      "result": "WIN",
+      "pl": 0.95
+    },
     {
       "date": "2026-05-18",
       "sport": "NBA",
@@ -225,42 +218,6 @@
       "odds": "-145",
       "result": "LOSS",
       "pl": -1.0
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "MLB",
-      "matchup": "RAN @ AST",
-      "pick": "AST +1.5",
-      "odds": "-164",
-      "result": "LOSS",
-      "pl": -1.0
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "MLB",
-      "matchup": "CUB @ SOX",
-      "pick": "SOX +1.5",
-      "odds": "-148",
-      "result": "WIN",
-      "pl": 0.68
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "MLB",
-      "matchup": "BRE @ TWI",
-      "pick": "TWI +1.5",
-      "odds": "-150",
-      "result": "WIN",
-      "pl": 0.67
-    },
-    {
-      "date": "2026-05-17",
-      "sport": "MLB",
-      "matchup": "DIA @ ROC",
-      "pick": "ROC +1.5",
-      "odds": "-121",
-      "result": "LOSS",
-      "pl": -1.0
     }
   ],
   "equity_curve": [
@@ -290,7 +247,11 @@
     },
     {
       "date": "2026-05-18",
-      "units": 2.68
+      "units": 3.63
+    },
+    {
+      "date": "2026-05-19",
+      "units": 6.36
     }
   ],
   "models": [
@@ -360,14 +321,14 @@
       "label": "NBA \u00b7 Totals",
       "market_label": "Totals",
       "status": "live",
-      "wins": 7,
+      "wins": 11,
       "losses": 2,
       "pushes": 0,
-      "pending": 9,
-      "settled": 9,
-      "win_rate": 77.8,
-      "roi": 50.1,
-      "profit": 4.51
+      "pending": 5,
+      "settled": 13,
+      "win_rate": 84.6,
+      "roi": 63.0,
+      "profit": 8.19
     },
     {
       "key": "nba_spread",
