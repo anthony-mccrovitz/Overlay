@@ -28,13 +28,9 @@ from src.data.odds_api import MY_BOOKS_PARAM
 from src.data.nba_stats import fetch_team_ratings, fetch_player_stats
 from src.models.nba_model import find_nba_edges, project_game
 from src.data.nba_props import find_nba_prop_edges
-from src.output.card_html import (
-    render_nba_pick_card_html, render_nba_props_card_html,
-    render_nba_spread_card_html, render_nba_moneyline_card_html,
-    render_nba_totals_card_html, render_nba_pick_of_day_html,
-    render_nba_slate_card_html, render_clean_totals_card,
-    render_pick_of_day_card_html,
-)
+from src.output.cards import render_nba_totals_card
+# Old card renderers preserved in card_html.py but no longer called from here.
+# Spreads paused, props shadow — only totals card active.
 from src.output.captions import (
     nba_picks_caption, nba_props_caption, print_nba_captions,
     nba_spread_caption, nba_moneyline_caption, nba_totals_caption,
@@ -264,13 +260,16 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     print(f"  ✓  {len(raw_props)} prop edges found")
 
     # Dedupe: one prop per player (best edge), then sort by edge desc.
-    # Confidence gate: 0.62 <= model_prob <= 0.78
-    #   - floor 0.62: below this Brier is ~0.51 (pure noise from the calibrator)
+    # Confidence gate: 0.53 <= model_prob <= 0.78
+    #   - floor 0.53: the Platt calibrator squashes raw probs toward 0.50; in
+    #     practice all positive-edge calibrated probs land in 0.49-0.55. The
+    #     previous floor of 0.62 was set against the raw (uncalibrated) probs
+    #     and silently filtered 100% of edges after calibration. Anything above
+    #     0.53 with a positive edge_pct is still +EV relative to the book.
     #   - ceiling 0.78: above this we're either fading a market that's already
     #     pricing the over correctly or eating a juice line (-300+); historic
     #     backtest shows these win the bet but lose money on units.
-    # This also prevents the same player appearing 3x with PTS/REB/AST.
-    MIN_PROP_CONFIDENCE = 0.62
+    MIN_PROP_CONFIDENCE = 0.53
     MAX_PROP_CONFIDENCE = 0.78
     _seen_players: dict[str, dict] = {}
     for prop in sorted(raw_props, key=lambda x: float(x.get("edge_pct", 0)), reverse=True):
@@ -326,32 +325,18 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     # Filter top positive-edge picks for cards (spread + ML + total, best 6)
     top_picks = [e for e in edges if e.get("edge_pct", 0) > 0][:6]
-    if top_picks:
-        print("\n  Generating NBA pick card...")
-        pick_card_path = render_nba_pick_card_html(
-            top_picks, card_date=card_date_obj, context_label=context,
-            top_props=props[:4] if props else None,
-        )
-        if pick_card_path:
-            print(f"  ✓  Pick card → {pick_card_path}")
-        else:
-            print("  ⚠  Pick card render failed (is Playwright installed?)")
-
-    # ── Cards: pick of day + clean totals only ─────────────────────────────
     all_positive = [e for e in edges if e.get("edge_pct", 0) > 0]
 
-    # Pick of day — best total, fall back to best overall
-    if all_positive:
-        totals = [p for p in all_positive if p.get("market") == "total"]
-        best = max(totals or all_positive, key=lambda x: float(x.get("edge_pct", 0)))
-        pod = render_pick_of_day_card_html(best, sport="basketball_nba", card_date=card_date_obj)
-        if pod:
-            print(f"  ✓  Pick of day → {pod}")
-
-    # Clean totals card (2-3 picks, Instagram-optimized)
-    tt = render_clean_totals_card(all_positive, sport="basketball_nba", card_date=card_date_obj)
-    if tt:
-        print(f"  ✓  Totals card → {tt}")
+    # ── New ChefTonyBets NBA totals card ──────────────────────────────────
+    totals_picks = [e for e in all_positive if e.get("market") == "total"]
+    if totals_picks:
+        print("\n  Generating NBA totals card (new design)...")
+        tt = render_nba_totals_card(totals_picks, card_date=card_date_obj)
+        if tt:
+            print(f"  ✓  NBA totals card → {tt}")
+        else:
+            print("  ⚠  NBA totals card render failed (is Playwright installed?)")
+    # Spreads, moneyline, props, pick-of-day, slate cards all paused/shadow — no render.
 
     # ── Generate captions ──────────────────────────────────────────────────
     print("\n  Generating captions...")
@@ -364,16 +349,7 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     if props:
         cap_props = nba_props_caption(props, card_date=card_date_obj, context_label=context)
         (out_dir / "caption_props.txt").write_text(cap_props, encoding="utf-8")
-        try:
-            from src.output.card_html import render_nba_props_card_html, render_nba_props_cards_by_type
-            combined = render_nba_props_card_html(props[:10], card_date=card_date_obj, context_label=context)
-            if combined:
-                print(f"  NBA props card → {combined}")
-            by_type = render_nba_props_cards_by_type(props, card_date=card_date_obj, context_label=context)
-            for mkt, path in by_type.items():
-                print(f"  NBA props/{mkt} card → {path}")
-        except Exception as _npc:
-            print(f"  [nba props card] {_npc}")
+        # NBA props card paused (shadow market — no card render)
 
     # Per-card captions (matching MLB system)
     spread_only = [e for e in all_positive if e.get("market") == "spread"]
@@ -475,6 +451,78 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     except Exception as _cap_err:
         print(f"  [captions] {_cap_err}")
 
+    # ── Overlay "show your work" content (live model only) ────────────────────
+    try:
+        from src.config.models import is_live
+        from src.output.captions_overlay import receipts_caption
+        from src.output.card_overlay_minimal import render_calibration_card
+        from src.output.talking_head_show_your_work import write_script
+
+        # Find best live-model edge (NBA Totals is the live market)
+        _live_pick = None
+        for e in all_positive:
+            mkt = (e.get("market") or "").lower()
+            if mkt == "h2h":
+                mkt = "moneyline"
+            if not is_live("nba", mkt):
+                continue
+            edge_pct_val = float(e.get("edge_pct") or 0)
+            if _live_pick is None or edge_pct_val > _live_pick.get("_edge_pct", -999):
+                _live_pick = dict(e)
+                _live_pick["_market"] = mkt
+                _live_pick["_edge_pct"] = edge_pct_val
+
+        if _live_pick is None:
+            print("  [overlay content] No live-model edges today.")
+        else:
+            _live_market = _live_pick.pop("_market")
+            _live_pick.pop("_edge_pct", None)
+            _out_dir = Path(f"output/picks/basketball_nba/{today}")
+
+            rcap = receipts_caption(_live_pick, "nba", _live_market, today=card_date_obj)
+            (_out_dir / "receipts_post.txt").write_text(rcap, encoding="utf-8")
+            print(f"  ✓  receipts_post.txt → {_out_dir}/receipts_post.txt")
+
+            _rec_line = ""
+            _brier_line = ""
+            for ln in rcap.split("\n"):
+                if "·" in ln and "ROI" in ln and not _rec_line:
+                    _rec_line = ln.strip()
+                if ln.lower().startswith("brier "):
+                    _brier_line = ln.strip()
+            card_path = render_calibration_card(
+                _live_pick, "nba", _live_market,
+                record_line=_rec_line, brier_line=_brier_line,
+                card_date=card_date_obj,
+            )
+            if card_path:
+                print(f"  ✓  calibration_card.png → {card_path}")
+
+            try:
+                _direction = (_live_pick.get("direction") or "").upper()
+                _line = _live_pick.get("bet_line") or _live_pick.get("line")
+                _odds = _live_pick.get("best_odds") or _live_pick.get("odds")
+                _team = _live_pick.get("team", "")
+                if _live_market == "total":
+                    _pick_line = f"{_direction} {_line} ({int(_odds):+d})" if _odds else f"{_direction} {_line}"
+                else:
+                    _pick_line = f"{_team} ({int(_odds):+d})" if _odds else _team
+                write_script(
+                    _out_dir, sport="nba", market=_live_market,
+                    pick_line=_pick_line,
+                    model_prob_pct=float(_live_pick.get("model_prob", 0) or 0) * 100,
+                    edge_pct=float(_live_pick.get("edge_pct", 0) or 0),
+                    record_str=_rec_line or "—",
+                    brier=None,
+                    clv_avg_cents=None,
+                    today=card_date_obj,
+                )
+                print(f"  ✓  show_your_work.md → {_out_dir}/talking_head/show_your_work.md")
+            except Exception as _th_err:
+                print(f"  [show-your-work] {_th_err}")
+    except Exception as _ov_err:
+        print(f"  [overlay content] Skipped: {_ov_err}")
+
     # ── CLV opening-line snapshot ──────────────────────────────────────────────
     try:
         from src.analytics.clv_tracker import snapshot_from_pnl
@@ -506,12 +554,24 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
     # Dedup on pick_id
     existing_ids = {p.get("pick_id", "") for p in data["picks"]}
 
+    _NBA_PAUSED = ["spread", "prop"]
+    _NBA_TIER: dict[str, str] = {
+        "total":       "tier1",
+        "moneyline":   "tier2",
+        "spread":      "shadow",
+        "player_prop": "shadow",
+    }
+
     added = 0
     for rank, e in enumerate(edges):
         team      = str(e.get("team", "")).strip()
         market    = str(e.get("market", "spread")).lower()
         direction = str(e.get("direction", "")).upper()
         matchup   = str(e.get("matchup", "")).strip()
+
+        # Skip paused markets — still modeled, but not logged to public record
+        if market in _NBA_PAUSED:
+            continue
 
         if not direction:
             direction = "WIN" if market == "moneyline" else "COVER" if market == "spread" else "OVER"
@@ -550,6 +610,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             "sportsbook":  e.get("sportsbook"),
             "model_prob":  e.get("model_prob") or e.get("win_prob"),
             "edge_pct":    e.get("edge_pct"),
+            "model_tier":  _NBA_TIER.get(market, "shadow"),
             "stake":       1.0,
             "card_pick":   _is_live("nba", market),
             "result":      None,
@@ -805,6 +866,12 @@ def grade_nba_picks(target_date: str | None = None, flat_stake: float = 1.0, ver
             pnl_data = {"picks": []}
         now_ts = datetime.now(timezone.utc).isoformat()
         date_str = f"{today[:4]}-{today[4:6]}-{today[6:]}"
+
+        def _strip_line(t: str) -> str:
+            """Strip trailing spread/total value: 'Celtics +5.5' → 'celtics'"""
+            import re
+            return re.sub(r'\s+[+-]?\d+\.?\d*$', '', t).strip().lower()
+
         for g in graded:
             if g.get("status") not in ("win", "loss"):
                 continue
@@ -812,13 +879,22 @@ def grade_nba_picks(target_date: str | None = None, flat_stake: float = 1.0, ver
             market = g.get("market", "spread")
             won    = g.get("won", False)
             profit = g.get("profit", 0.0)
+            team_base = _strip_line(team)
+            direction = str(g.get("direction", "")).upper()
             for p in pnl_data.get("picks", []):
                 if (
                     p.get("sport") == "nba"
                     and p.get("date") == date_str
-                    and p.get("team", "").lower() == team.lower()
                     and p.get("market", "").lower() == market.lower()
                     and p.get("result") is None
+                    and (
+                        # Exact match first
+                        p.get("team", "").lower() == team.lower()
+                        # Fuzzy: strip spread/total line value and compare base team name
+                        or _strip_line(p.get("team", "")) == team_base
+                        # For totals: match on direction (OVER/UNDER) if no team name
+                        or (market == "total" and direction and p.get("direction", "").upper() == direction)
+                    )
                 ):
                     p["result"]      = "win" if won else "loss"
                     p["profit"]      = round(profit, 4)   # already in units (flat_stake=1.0)

@@ -756,7 +756,7 @@ def _run_mlb_daily(args, sport: str):
     # ── Run Line (Spreads) ────────────────────────────────────────────────────
     if use_all or "spreads" in markets or "spread" in markets:
         from src.models.mlb_spreads import find_spread_edges
-        spread_edges = find_spread_edges(predictions, raw_odds, min_edge_runs=0.4)
+        spread_edges = find_spread_edges(predictions, raw_odds, min_edge_runs=0.6)
         if spread_edges:
             spread_rows = []
             for e in spread_edges:
@@ -999,29 +999,24 @@ def _run_mlb_daily(args, sport: str):
                     print(f"  Auto-logged {n_props} prop(s) to pnl for tracking")
             except Exception as _ple:
                 print(f"  [prop log] {_ple}")
-            # Render combined props card + one card per prop type (for content variety)
+            # Render pitcher Ks card (new design); other prop types paused
             try:
-                from src.output.card_html import render_props_card_html, render_props_cards_by_type
-                # Combined card (legacy, top 10 across all types)
-                props_img = render_props_card_html(prop_edges[:10], sport=sport, card_date=_game_date)
-                if props_img:
-                    print(f"  Props card → {props_img}")
-                # Per-type cards (Ks, HR, Hits, TB, RBIs separately)
-                by_type = render_props_cards_by_type(prop_edges, sport=sport, card_date=_game_date)
-                for mkt, path in by_type.items():
-                    print(f"  Props/{mkt} card → {path}")
+                from src.output.cards import render_mlb_pitcher_ks_card
+                _ks_edges = [pe for pe in prop_edges if "strikeout" in str(pe.get("market","")).lower() or "k" in str(pe.get("market","")).lower()]
+                if _ks_edges:
+                    ks_card = render_mlb_pitcher_ks_card(_ks_edges[:5], card_date=_game_date)
+                    if ks_card:
+                        print(f"  Pitcher Ks card → {ks_card}")
             except Exception as _pci:
-                print(f"  [props card] {_pci}")
-                try:
-                    from src.output.captions import props_caption
-                    pcap = props_caption(prop_edges[:10], card_date=_game_date)
-                    _pcap_path = props_dir / "caption_props.txt"
-                    _pcap_path.write_text(pcap, encoding="utf-8")
-                    print(f"  Props caption → {_pcap_path}")
-                except Exception as _pce:
-                    print(f"  [props caption] {_pce}")
-            else:
-                print("  Props card skipped — model incubating (not live).")
+                print(f"  [pitcher ks card] {_pci}")
+            try:
+                from src.output.captions import props_caption
+                pcap = props_caption(prop_edges[:10], card_date=_game_date)
+                _pcap_path = props_dir / "caption_props.txt"
+                _pcap_path.write_text(pcap, encoding="utf-8")
+                print(f"  Props caption → {_pcap_path}")
+            except Exception as _pce:
+                print(f"  [props caption] {_pce}")
         else:
             print("  No prop edges found (no ODDS_API_KEY, or no lines posted yet).")
     except Exception as _prop_err:
@@ -1093,16 +1088,11 @@ def _run_mlb_daily(args, sport: str):
             _nrfi_with_odds = [p for p in nrfi_plays if not p.get("no_odds")]
             if _nrfi_with_odds:
                 print(f"  ({len(_nrfi_with_odds)} NRFI play(s) have live odds; {len(nrfi_plays) - len(_nrfi_with_odds)} missing book line)")
-            # Render card (only for live NRFI model and only picks with real odds)
-            from src.config.models import is_live as _is_live
-            if _is_live("mlb", "nrfi") and _nrfi_with_odds:
-                try:
-                    from src.output.card_html import render_nrfi_card_html
-                    nrfi_img = render_nrfi_card_html(_nrfi_with_odds[:5], sport=sport, card_date=_game_date)
-                    if nrfi_img:
-                        print(f"  NRFI card → {nrfi_img}")
-                except Exception as _nci:
-                    print(f"  [nrfi card] {_nci}")
+            # Render NRFI card whenever we have picks with real book odds.
+            # (Card rendering is decoupled from is_live — that flag only controls
+            # whether picks get card_pick=True for social posting.)
+            if _nrfi_with_odds:
+                # NRFI card removed — shadow market, no card render
                 try:
                     from src.output.captions import nrfi_caption
                     ncap = nrfi_caption(_nrfi_with_odds[:5], card_date=_game_date)
@@ -1111,10 +1101,7 @@ def _run_mlb_daily(args, sport: str):
                 except Exception as _nce:
                     print(f"  [nrfi caption] {_nce}")
             else:
-                if not _is_live("mlb", "nrfi"):
-                    print("  NRFI card skipped — model incubating (not live).")
-                elif not _nrfi_with_odds:
-                    print("  NRFI card skipped — no plays have live book odds.")
+                print("  NRFI card skipped — no plays have live book odds.")
             # F5 card (built after NRFI since it uses same SP inputs)
             # Card rendered in Step 8 block but caption written here alongside NRFI
         else:
@@ -1186,9 +1173,8 @@ def _run_mlb_daily(args, sport: str):
                     print(f"  [f5 pnl] {_f5_pnl}")
             else:
                 print("  No F5 edges meet threshold.")
-            # F5 card + caption (only for live F5 model)
-            from src.config.models import is_live as _is_live
-            if f5_plays and _is_live("mlb", "f5_total"):
+            # Render F5 card whenever we have picks. is_live only gates social posting.
+            if f5_plays:
                 try:
                     from src.output.card_html import render_f5_card_html
                     f5_img = render_f5_card_html(f5_plays[:5], sport=sport, card_date=_game_date)
@@ -1203,8 +1189,6 @@ def _run_mlb_daily(args, sport: str):
                     print(f"  F5 caption → {out_dir}/caption_f5.txt")
                 except Exception as _f5cap:
                     print(f"  [f5 caption] {_f5cap}")
-            elif f5_plays:
-                print("  F5 card skipped — model incubating (not live).")
     except Exception as _f5_err:
         print(f"  [f5] Skipped: {_f5_err}")
 
@@ -1281,25 +1265,17 @@ def _run_mlb_daily(args, sport: str):
                 bp_dir.mkdir(parents=True, exist_ok=True)
                 (bp_dir / "batter_props.json").write_text(_json.dumps(_batter_edges, indent=2))
                 print(f"  Batter props saved → output/picks/{sport}/{ts}/batter_props.json")
-                # Batter props card (only for live batter prop models)
-                from src.config.models import is_live as _is_live
-                if _is_live("mlb", "batter_home_runs") or _is_live("mlb", "batter_hits"):
-                    try:
-                        from src.output.card_html import render_batter_props_card_html
-                        bp_img = render_batter_props_card_html(_batter_edges[:8], sport=sport, card_date=_game_date)
-                        if bp_img:
-                            print(f"  Batter props card → {bp_img}")
-                    except Exception as _bpc:
-                        print(f"  [batter props card] {_bpc}")
-                    try:
-                        from src.output.captions import batter_props_caption
-                        bpcap = batter_props_caption(_batter_edges[:6], card_date=_game_date)
-                        (bp_dir / "caption_batter_props.txt").write_text(bpcap, encoding="utf-8")
-                        print(f"  Batter props caption → {bp_dir}/caption_batter_props.txt")
-                    except Exception as _bpcap:
-                        print(f"  [batter props caption] {_bpcap}")
-                else:
-                    print("  Batter props card skipped — models incubating (not live).")
+                # Render batter prop cards regardless of live/incubating status —
+                # the card_pick=True flag (controlled by is_live) gates social posting,
+                # but the images themselves should always render so they're available.
+                # Batter props card paused (market incubating — no card render)
+                try:
+                    from src.output.captions import batter_props_caption
+                    bpcap = batter_props_caption(_batter_edges[:6], card_date=_game_date)
+                    (bp_dir / "caption_batter_props.txt").write_text(bpcap, encoding="utf-8")
+                    print(f"  Batter props caption → {bp_dir}/caption_batter_props.txt")
+                except Exception as _bpcap:
+                    print(f"  [batter props caption] {_bpcap}")
             else:
                 print("  No batter prop edges found.")
         else:
@@ -1309,7 +1285,7 @@ def _run_mlb_daily(args, sport: str):
 
     # ── Parlay card (only when moneyline model is live) ──────────────────────
     from src.config.models import is_live as _is_live
-    if _is_live("mlb", "moneyline"):
+    if True:  # always render parlay card; is_live only gates social posting
         try:
             from src.output.parlay_card import render_parlay_card
             print("\nStep 10: Generating MLB parlay card...")
@@ -1341,8 +1317,6 @@ def _run_mlb_daily(args, sport: str):
                 print("  No parlay card (need ≥2 picks with ≥5% edge).")
         except Exception as _pc_err:
             print(f"  [parlay card] Skipped: {_pc_err}")
-    else:
-        print("\nStep 10: MLB parlay card skipped — moneyline model incubating.")
 
     # ── Platform captions (Instagram / Twitter / Reddit) ─────────────────────
     try:
@@ -1413,6 +1387,105 @@ def _run_mlb_daily(args, sport: str):
             print(f"  ✓  reddit_{name:10s} → {path}")
     except Exception as _rt_err:
         print(f"  [reddit templates] Skipped: {_rt_err}")
+
+    # ── Overlay "show your work" content (receipts / minimal card / TikTok) ───
+    # Only generated for the live model in this sport (MLB Run Line is the live
+    # MLB market). Skips silently if no live picks available.
+    try:
+        from src.config.models import is_live
+        from src.output.captions_overlay import receipts_caption
+        from src.output.card_overlay_minimal import render_calibration_card
+        from src.output.talking_head_show_your_work import write_script
+
+        _sport_key = sport.lower().replace("baseball_", "").replace("basketball_", "").replace("icehockey_", "")
+        # Pick the best edge from live-model picks (MLB: spread; NBA: total)
+        _live_pick = None
+        for _, row in combined.iterrows():
+            _mkt_raw = row.get("Market")
+            if isinstance(_mkt_raw, float):
+                _mkt_raw = "moneyline"
+            mkt = str(_mkt_raw or "moneyline").lower()
+            if mkt in ("h2h",):
+                mkt = "moneyline"
+            if mkt in ("totals",):
+                mkt = "total"
+            if mkt in ("spreads",):
+                mkt = "spread"
+            if not is_live(_sport_key, mkt):
+                continue
+            edge_val = float(row.get("Edge", 0) or 0)
+            edge_pct_val = edge_val * 100 if abs(edge_val) < 1 else edge_val
+            if _live_pick is None or edge_pct_val > _live_pick["_edge_pct"]:
+                _live_pick = dict(row)
+                _live_pick["_market"] = mkt
+                _live_pick["_edge_pct"] = edge_pct_val
+
+        if _live_pick is None:
+            print("  [overlay content] No live-model edges in slate today — skipping show-your-work content.")
+        else:
+            _live_market = _live_pick.pop("_market")
+            _live_pick.pop("_edge_pct", None)
+            _out_dir = Path(f"output/picks/{sport}/{game_date.strftime('%Y%m%d')}")
+
+            # 1. Receipts caption
+            rcap = receipts_caption(_live_pick, _sport_key, _live_market, today=game_date)
+            (_out_dir / "receipts_post.txt").write_text(rcap, encoding="utf-8")
+            print(f"  ✓  receipts_post.txt → {_out_dir}/receipts_post.txt")
+
+            # 2. Minimal calibration card — derive record_line / brier from receipts text
+            _rec_line = ""
+            _brier_line = ""
+            for ln in rcap.split("\n"):
+                if "·" in ln and ("ROI" in ln or "u" in ln) and not _rec_line:
+                    _rec_line = ln.strip()
+                if ln.lower().startswith("brier "):
+                    _brier_line = ln.strip()
+            card_path = render_calibration_card(
+                _live_pick, _sport_key, _live_market,
+                record_line=_rec_line, brier_line=_brier_line,
+                card_date=game_date,
+            )
+            if card_path:
+                print(f"  ✓  calibration_card.png → {card_path}")
+
+            # 3. TikTok "show your work" script
+            try:
+                _model_prob = float(_live_pick.get("ModelProb", 0) or 0)
+                _edge_val = float(_live_pick.get("Edge", 0) or 0)
+                _edge_pct = _edge_val * 100 if abs(_edge_val) < 1 else _edge_val
+                def _clean(v):
+                    if v is None: return None
+                    if isinstance(v, float) and v != v: return None
+                    return v
+                _team = str(_clean(_live_pick.get("Team")) or "")
+                _direction = str(_clean(_live_pick.get("Direction")) or "").upper()
+                _line = _clean(_live_pick.get("BetLine")) or _clean(_live_pick.get("MarketLine"))
+                _odds = _clean(_live_pick.get("BestOdds"))
+                try:
+                    _odds_i = int(_odds) if _odds else None
+                except (TypeError, ValueError):
+                    _odds_i = None
+                if _live_market in ("total", "f5_total"):
+                    _odds_s = f"({_odds_i:+d})" if _odds_i else ""
+                    _pick_line = f"{_direction} {_line} {_odds_s}".strip()
+                else:
+                    _odds_s = f"({_odds_i:+d})" if _odds_i else ""
+                    _pick_line = f"{_team} {_odds_s}".strip()
+                write_script(
+                    _out_dir, sport=_sport_key, market=_live_market,
+                    pick_line=_pick_line,
+                    model_prob_pct=_model_prob * 100,
+                    edge_pct=_edge_pct,
+                    record_str=_rec_line or "—",
+                    brier=None,  # parsed best-effort from receipts; let helper handle missing
+                    clv_avg_cents=None,
+                    today=game_date,
+                )
+                print(f"  ✓  show_your_work.md → {_out_dir}/talking_head/show_your_work.md")
+            except Exception as _th_err:
+                print(f"  [show-your-work script] {_th_err}")
+    except Exception as _ov_err:
+        print(f"  [overlay content] Skipped: {_ov_err}")
 
 
 def _save_model_only_picks(game_preds, sport: str, args):
@@ -1561,6 +1634,36 @@ def _print_daily_summary(picks_df: pd.DataFrame, sport: str, target_date=None) -
 
 _PNL_FILE = Path("data/pnl/picks.json")
 
+# Markets paused from PNL logging (no academic backing / negative EV proven).
+# Picks are still modeled and saved to output JSON for shadow CLV tracking,
+# but NOT logged to data/pnl/picks.json so they don't distort the record.
+PAUSED_MARKETS: dict[str, list[str]] = {
+    "mlb":  ["spread", "prop", "batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis"],
+    "nba":  ["spread", "prop"],
+    "wnba": ["spread", "moneyline", "total"],
+}
+
+# Model tier mapping for dashboard display.
+_MARKET_TIER: dict[tuple[str, str], str] = {
+    ("mlb",  "total"):       "tier1",
+    ("mlb",  "moneyline"):   "tier2",
+    ("mlb",  "spread"):      "shadow",
+    ("mlb",  "f5_total"):    "tier2",
+    ("mlb",  "nrfi"):        "shadow",
+    ("nba",  "total"):       "tier1",
+    ("nba",  "moneyline"):   "tier2",
+    ("nba",  "spread"):      "shadow",
+    ("nba",  "player_prop"): "shadow",
+    ("wnba", "total"):       "shadow",
+    ("wnba", "moneyline"):   "shadow",
+    ("wnba", "spread"):      "shadow",
+}
+
+
+def _get_model_tier(sport: str, market: str) -> str:
+    key = (sport.lower().strip(), market.lower().strip())
+    return _MARKET_TIER.get(key, "shadow")
+
 
 def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> int:
     """
@@ -1597,6 +1700,11 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             continue
 
         market    = str(pick.get("Market", "moneyline")).lower().strip()
+
+        # Skip paused markets — modeled internally but not logged to public record
+        if market in PAUSED_MARKETS.get("mlb", []):
+            continue
+
         direction = str(pick.get("Direction", "")).upper().strip()
         if not direction:
             # Use home/away for moneylines so grader knows which side was picked
@@ -1662,6 +1770,8 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             "model_prob":       pick.get("ModelProb"),
             "edge_pct":         edge_pct,
             "model_agreement":  bool(agreement) if agreement is not None else None,
+            "model_tier":       _get_model_tier("mlb", market),
+            "weather_context":  pick.get("weather_context") or pick.get("WeatherContext") or "",
             "stake":            1.0,
             "card_pick":        card_pick,
             "result":           None,
@@ -1862,6 +1972,15 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     if img_path:
         print(f"  Moneyline card → {img_path}")
 
+    # ── New ChefTonyBets moneyline card ───────────────────────────────────────
+    try:
+        from src.output.cards import render_mlb_moneyline_card
+        ml_new_card = render_mlb_moneyline_card(ml_card_picks, card_date=_game_date)
+        if ml_new_card:
+            print(f"  ML card (new) → {ml_new_card}")
+    except Exception as _mlnc:
+        print(f"  [ml card new] {_mlnc}")
+
     # ── Run Line card — always generate, fall back to model top plays ─────────
     spread_picks = [p for p in picks_list if str(p.get("Market", "")).lower() == "spread"]
     if not spread_picks and ensemble_preds and raw_odds is not None and not raw_odds.empty:
@@ -1904,13 +2023,7 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
             print(f"  [run line fallback] {_spe}")
 
     if spread_picks:
-        try:
-            from src.output.card_html import render_runline_card_html
-            rl_path = render_runline_card_html(spread_picks[:5], sport=sport, card_date=_game_date)
-            if rl_path:
-                print(f"  Run line card → {rl_path}")
-        except Exception as _e:
-            print(f"  [run line card] {_e}")
+        # Run line card paused — no card render (market incubating)
         try:
             from src.output.captions import picks_caption
             rl_cap = picks_caption(spread_picks[:5], card_date=_game_date)
@@ -1942,13 +2055,14 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     combined_ou = sorted(game_totals + f5_as_totals, key=lambda x: float(x.get("Edge") or 0), reverse=True)
     ou_top5 = combined_ou[:5]
     if ou_top5:
+        # New ChefTonyBets totals card
         try:
-            from src.output.card_html import render_totals_card_html
-            ou_path = render_totals_card_html(ou_top5, sport=sport, card_date=_game_date)
+            from src.output.cards import render_mlb_totals_card
+            ou_path = render_mlb_totals_card(ou_top5, card_date=_game_date)
             if ou_path:
-                print(f"  Totals card → {ou_path}")
+                print(f"  Totals card (new) → {ou_path}")
         except Exception as _e:
-            print(f"  [totals card] {_e}")
+            print(f"  [totals card new] {_e}")
         try:
             from src.output.captions import picks_caption
             ou_cap = picks_caption(ou_top5, card_date=_game_date)
@@ -1968,48 +2082,10 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     except Exception as _e:
         print(f"  [captions] {_e}")
 
-    # ── Pick of the Day + clean totals card ──────────────────────────────────
-    try:
-        from src.output.card_html import render_pick_of_day_card_html, render_clean_totals_card
-        # Prefer totals for pick of day (strongest market)
-        total_picks_pod = [p for p in picks_list if str(p.get("Market","")).lower() in ("total","f5_total")]
-        best_pick = max(total_picks_pod, key=lambda x: float(x.get("Edge") or 0)) if total_picks_pod else (picks_list[0] if picks_list else None)
-        if best_pick:
-            # Normalize MLB pick dict for the shared render function
-            norm = {
-                "team":       best_pick.get("Team",""),
-                "matchup":    best_pick.get("Matchup",""),
-                "market":     str(best_pick.get("Market","moneyline")).lower(),
-                "direction":  str(best_pick.get("Direction","")),
-                "bet_line":   best_pick.get("BetLine") or best_pick.get("MarketLine",""),
-                "best_odds":  best_pick.get("BestOdds",0),
-                "sportsbook": best_pick.get("Sportsbook",""),
-                "edge_pct":   float(best_pick.get("Edge",0) or 0) * 100,
-                "model_prob": float(best_pick.get("ModelProb",0) or 0),
-            }
-            pod_path = render_pick_of_day_card_html(norm, sport=sport, card_date=_game_date)
-            if pod_path:
-                print(f"  Pick of day card → {pod_path}")
-
-        # Clean totals card
-        norm_picks = [
-            {
-                "team":       p.get("Team",""),
-                "matchup":    p.get("Matchup",""),
-                "market":     str(p.get("Market","")).lower(),
-                "direction":  str(p.get("Direction","")),
-                "bet_line":   p.get("BetLine") or p.get("MarketLine",""),
-                "best_odds":  p.get("BestOdds",0),
-                "sportsbook": p.get("Sportsbook",""),
-                "edge_pct":   float(p.get("Edge",0) or 0) * 100,
-            }
-            for p in picks_list
-        ]
-        totals_path = render_clean_totals_card(norm_picks, sport=sport, card_date=_game_date)
-        if totals_path:
-            print(f"  Totals card → {totals_path}")
-    except Exception as _pod_err:
-        print(f"  [cards] {_pod_err}")
+    # ── Pick of the Day + clean totals card (old system — removed) ──────────
+    # render_pick_of_day_card_html and render_clean_totals_card replaced by
+    # the new ChefTonyBets card system in src/output/cards.py. No render here.
+    pass
 
     # Auto-log picks to pnl tracker — pass game_date so grading matches the right entries
     n_logged = _auto_log_picks(picks_list, game_date=_game_date)

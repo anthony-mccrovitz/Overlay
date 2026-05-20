@@ -19,10 +19,12 @@ Run via `python3 scripts/build_customer_feed.py` or wire into chef.py.
 from __future__ import annotations
 
 import json
+import sys
 from datetime import date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 PICKS_PATH = ROOT / "data" / "pnl" / "picks.json"
 STATS_PATH = ROOT / "data" / "public_stats.json"
 OUT_PATH = ROOT / "overlay" / "src" / "data" / "customer_feed.json"
@@ -212,11 +214,33 @@ def build_recent_picks(picks: list[dict], limit: int = 10) -> list[dict]:
 
 
 def build_models(picks: list[dict]) -> list[dict]:
-    """Per-(sport, market) breakdown for NBA + MLB card picks only.
+    """Per-(sport, market) breakdown across ALL sports — grouped by research tier.
 
     The customer-facing 'models' view — shows each strategy as a 'model row'
-    with W-L, win rate, ROI, profit. No internal/incubating models exposed.
+    with W-L, win rate, ROI, profit, and the research tier (T1/T2/Shadow/Paused)
+    so subscribers see the same model-selection plan the algo is following.
     """
+    from src.config.models import model_tier, model_label, MODELS
+
+    sport_display = {
+        "mlb": "MLB", "nba": "NBA", "nhl": "NHL", "wnba": "WNBA",
+        "tennis": "Tennis", "soccer": "Soccer", "pga": "PGA",
+        "nascar": "NASCAR", "indycar": "IndyCar", "f1": "Formula 1",
+        "ufc": "UFC",
+    }
+
+    def norm_sport(s: str) -> str:
+        s = (s or "").lower()
+        for pre in ("baseball_", "basketball_", "icehockey_"):
+            s = s.replace(pre, "")
+        if s.startswith("soccer"):  return "soccer"
+        if s.startswith("tennis"):  return "tennis"
+        if s.startswith("auto_racing_nascar"): return "nascar"
+        if s.startswith("auto_racing_indycar"): return "indycar"
+        if s.startswith("auto_racing_formula"): return "f1"
+        if s.startswith("mma"):     return "ufc"
+        if s.startswith("golf_pga"): return "pga"
+        return s
     def american_profit(odds: float, stake: float, result: str) -> float:
         if result == "win":
             return stake * (odds / 100.0) if odds > 0 else stake * (100.0 / abs(odds))
@@ -224,19 +248,29 @@ def build_models(picks: list[dict]) -> list[dict]:
             return -stake
         return 0.0
 
+    # Bucket all picks (not just card_pick=True) by (sport, market) — we now show
+    # the full model book grouped by tier, including shadow/paused models that
+    # subscribers should see as part of the research-driven plan.
     groups: dict[tuple, list[dict]] = {}
     for p in picks:
-        if not p.get("card_pick"):
-            continue
-        sport_b = bucket(p.get("sport", ""))
-        if not sport_b:
+        s = norm_sport(p.get("sport", ""))
+        if not s:
             continue
         market = (p.get("market") or "other").lower()
-        key = (sport_b.upper(), market)
-        groups.setdefault(key, []).append(p)
+        # Use prop sub-market when available so each sub-model is its own row
+        if market == "prop" and p.get("prop_market"):
+            market = p["prop_market"].lower()
+        groups.setdefault((s, market), []).append(p)
+
+    # Include every registered model even if it has zero picks yet
+    for (s, m) in MODELS.keys():
+        groups.setdefault((s, m), [])
 
     out = []
     for (sport, market), bucket_picks in groups.items():
+        tier = model_tier(sport, market)
+        label = model_label(sport, market)
+
         settled = [p for p in bucket_picks if p.get("result") in ("win", "loss", "push")]
         pending = [p for p in bucket_picks if p.get("result") not in ("win", "loss", "push")]
         wins = sum(1 for p in settled if p["result"] == "win")
@@ -244,28 +278,19 @@ def build_models(picks: list[dict]) -> list[dict]:
         pushes = sum(1 for p in settled if p["result"] == "push")
         decided = wins + losses
         win_rate = round(wins / decided * 100, 1) if decided else None
-        stakes = sum(p.get("stake") or 0.0 for p in settled if p["result"] != "push")
+        # Default to 1.0u per pick if stake is missing/zero (matches PNL convention)
+        stakes = sum((p.get("stake") or 1.0) for p in settled if p["result"] != "push")
         profit = sum(p.get("profit") or 0.0 for p in settled)
         roi = round(profit / stakes * 100, 1) if stakes else None
-        market_label = {
-            "moneyline": "Moneyline",
-            "ml": "Moneyline",
-            "total": "Totals",
-            "totals": "Totals",
-            "spread": "Spread / Run Line",
-            "runline": "Run Line",
-            "run_line": "Run Line",
-            "puckline": "Puck Line",
-            "prop": "Player Props",
-            "nrfi": "NRFI / YRFI",
-            "f5": "First 5 Innings",
-        }.get(market, market.title())
+
         out.append({
-            "key": f"{sport.lower()}_{market}",
-            "sport": sport,
-            "label": f"{sport} · {market_label}",
-            "market_label": market_label,
-            "status": "live",
+            "key": f"{sport}_{market}",
+            "sport": sport_display.get(sport, sport.upper()),
+            "sport_key": sport,
+            "label": label,
+            "market": market,
+            "tier": tier,                  # t1 / t2 / shadow / paused
+            "status": "live" if tier in ("t1", "t2") else tier,
             "wins": wins,
             "losses": losses,
             "pushes": pushes,
@@ -276,7 +301,8 @@ def build_models(picks: list[dict]) -> list[dict]:
             "profit": round(profit, 2),
         })
 
-    out.sort(key=lambda m: (m["sport"], -m["profit"]))
+    tier_order = {"t1": 0, "t2": 1, "shadow": 2, "paused": 3}
+    out.sort(key=lambda m: (tier_order.get(m["tier"], 9), m["sport"], -m["profit"]))
     return out
 
 

@@ -1,9 +1,42 @@
 import { redirect } from "next/navigation";
 import { getSession, isAllowlisted } from "@/lib/session";
-import { readFeed } from "@/lib/feed";
+import { readFeed, type ModelRow } from "@/lib/feed";
 import { SubscribeButton } from "@/components/SubscribeButton";
 
 export const dynamic = "force-dynamic";
+
+type Tier = "t1" | "t2" | "shadow" | "paused";
+
+const TIER_META: Record<Tier, { label: string; sub: string; accent: string; chipBg: string; chipBorder: string }> = {
+  t1: {
+    label: "Tier 1 — Proven",
+    sub: "Peer-reviewed academic or documented professional results.",
+    accent: "var(--green-hi)",
+    chipBg: "rgba(34,210,122,0.10)",
+    chipBorder: "rgba(34,210,122,0.35)",
+  },
+  t2: {
+    label: "Tier 2 — Theoretically sound",
+    sub: "Strong practitioner backing, mechanically defensible. Smaller stake.",
+    accent: "var(--accent-hi)",
+    chipBg: "rgba(45,127,255,0.10)",
+    chipBorder: "rgba(45,127,255,0.35)",
+  },
+  shadow: {
+    label: "Shadow — Tracking only",
+    sub: "Building sample size or under rebuild. Not yet on the public card.",
+    accent: "#F59E0B",
+    chipBg: "rgba(245,158,11,0.10)",
+    chipBorder: "rgba(245,158,11,0.35)",
+  },
+  paused: {
+    label: "Paused — Research says don't bet",
+    sub: "High vig, no documented edge, or persistent losses. Shown for transparency.",
+    accent: "var(--text-muted)",
+    chipBg: "var(--bg-raised)",
+    chipBorder: "var(--border)",
+  },
+};
 
 export default async function ModelsPage() {
   const session = getSession();
@@ -25,13 +58,14 @@ export default async function ModelsPage() {
   const feed = await readFeed();
   const models = feed?.models || [];
 
-  const sportOrder = ["NBA", "MLB"];
-  const grouped: Record<string, typeof models> = {};
-  for (const m of models) (grouped[m.sport] ||= []).push(m);
+  const grouped: Record<Tier, ModelRow[]> = { t1: [], t2: [], shadow: [], paused: [] };
+  for (const m of models) {
+    const t = (m.tier || "shadow") as Tier;
+    (grouped[t] ||= []).push(m);
+  }
 
-  const totalProfit = models.reduce((s, m) => s + m.profit, 0);
-  const totalWins = models.reduce((s, m) => s + m.wins, 0);
-  const totalLosses = models.reduce((s, m) => s + m.losses, 0);
+  const liveCount = grouped.t1.length + grouped.t2.length;
+  const totalProfit = [...grouped.t1, ...grouped.t2].reduce((s, m) => s + m.profit, 0);
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 24px", display: "flex", flexDirection: "column", gap: 28 }}>
@@ -40,132 +74,45 @@ export default async function ModelsPage() {
         <h1 style={{ fontSize: 30, fontWeight: 800, color: "var(--text-bright)", margin: "6px 0 0", letterSpacing: "-0.015em" }}>
           Live model performance
         </h1>
-        <p style={{ color: "var(--text-secondary)", marginTop: 8, maxWidth: 600, fontSize: 14 }}>
-          Each row is an independent strategy in the ensemble. Settled card picks only — every loss
-          is on the board.
+        <p style={{ color: "var(--text-secondary)", marginTop: 8, maxWidth: 700, fontSize: 14 }}>
+          Every model is grouped by research tier. Tier 1 is what the research literature
+          and our own CLV say works. Tier 2 has practitioner backing. Shadow is tracked-only.
+          Paused models are kept visible so you can see what we deliberately stopped — and why.
         </p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
-        <Kpi label="Total record" value={`${totalWins}–${totalLosses}`} />
+        <Kpi label="Active card markets" value={String(liveCount)} color="var(--accent-hi)" />
+        <Kpi label="Tracked (shadow)" value={String(grouped.shadow.length)} />
+        <Kpi label="Paused" value={String(grouped.paused.length)} color="var(--text-muted)" />
         <Kpi
-          label="Total profit"
+          label="T1+T2 profit"
           value={`${totalProfit >= 0 ? "+" : ""}${totalProfit.toFixed(2)}U`}
           color={totalProfit >= 0 ? "var(--green-hi)" : "var(--red-hi)"}
         />
-        <Kpi label="Live models" value={String(models.length)} color="var(--accent-hi)" />
-        <Kpi
-          label="Profitable"
-          value={String(models.filter((m) => m.profit > 0).length) + ` / ${models.length}`}
-        />
       </div>
 
-      {sportOrder.filter((s) => grouped[s]?.length).map((sport) => (
-        <div key={sport} className="panel" style={{ overflow: "hidden" }}>
-          <div
-            style={{
-              padding: "14px 20px",
-              borderBottom: "1px solid var(--border)",
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              background: "rgba(45,127,255,0.04)",
-            }}
-          >
-            <span className="mono" style={{ color: "var(--accent-hi)", fontSize: 12, fontWeight: 800, letterSpacing: "0.12em" }}>
-              [{sport}]
-            </span>
-            <span style={{ color: "var(--text-bright)", fontWeight: 700, fontSize: 14 }}>
-              {grouped[sport].length} model{grouped[sport].length === 1 ? "" : "s"}
-            </span>
-          </div>
-          <table className="ledger">
-            <thead>
-              <tr>
-                <th>Model</th>
-                <th>Status</th>
-                <th style={{ textAlign: "right" }}>Record</th>
-                <th style={{ textAlign: "right" }}>Win%</th>
-                <th style={{ textAlign: "right" }}>ROI</th>
-                <th style={{ textAlign: "right" }}>Profit</th>
-                <th style={{ textAlign: "right" }}>Pending</th>
-              </tr>
-            </thead>
-            <tbody>
-              {grouped[sport].map((m) => (
-                <tr key={m.key}>
-                  <td style={{ color: "var(--text-bright)", fontWeight: 600 }}>{m.market_label}</td>
-                  <td>
-                    <span className="chip chip-win" style={{ background: "rgba(34,197,94,0.10)" }}>
-                      <span
-                        style={{
-                          width: 5,
-                          height: 5,
-                          borderRadius: 999,
-                          background: "var(--green-hi)",
-                          display: "inline-block",
-                          marginRight: 5,
-                        }}
-                      />
-                      LIVE
-                    </span>
-                  </td>
-                  <td className="mono" style={{ textAlign: "right" }}>
-                    {m.settled > 0
-                      ? `${m.wins}–${m.losses}${m.pushes > 0 ? `–${m.pushes}` : ""}`
-                      : "—"}
-                  </td>
-                  <td className="mono" style={{ textAlign: "right" }}>
-                    {m.win_rate === null ? (
-                      <span style={{ color: "var(--text-muted)" }}>—</span>
-                    ) : (
-                      <span style={{ color: m.win_rate >= 52.4 ? "var(--green-hi)" : "var(--text-secondary)" }}>
-                        {m.win_rate.toFixed(1)}%
-                      </span>
-                    )}
-                  </td>
-                  <td className="mono" style={{ textAlign: "right" }}>
-                    {m.roi === null ? (
-                      <span style={{ color: "var(--text-muted)" }}>—</span>
-                    ) : (
-                      <span className={m.roi >= 0 ? "pos" : "neg"} style={{ fontWeight: 700 }}>
-                        {m.roi >= 0 ? "+" : ""}
-                        {m.roi.toFixed(1)}%
-                      </span>
-                    )}
-                  </td>
-                  <td className={`mono ${m.profit >= 0 ? "pos" : "neg"}`} style={{ textAlign: "right", fontWeight: 700 }}>
-                    {m.settled > 0 ? `${m.profit >= 0 ? "+" : ""}${m.profit.toFixed(1)}U` : "—"}
-                  </td>
-                  <td className="mono" style={{ textAlign: "right", color: "var(--text-muted)" }}>
-                    {m.pending > 0 ? m.pending : "—"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
+      {(["t1", "t2", "shadow", "paused"] as Tier[]).map((t) =>
+        grouped[t].length > 0 ? <TierSection key={t} tier={t} rows={grouped[t]} /> : null
+      )}
 
       {feed?.upcoming_models && feed.upcoming_models.length > 0 && (
         <section style={{ marginTop: 8 }}>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 14 }}>
-            <div>
-              <div className="eyebrow">On deck</div>
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--text-bright)", margin: "4px 0 0", letterSpacing: "-0.01em" }}>
-                Coming soon to the book
-              </h2>
-              <p style={{ color: "var(--text-secondary)", marginTop: 6, fontSize: 13, maxWidth: 600 }}>
-                Models actively in shadow mode or launch prep. Subscribers get access the second they go live —
-                no upcharge, no waitlist.
-              </p>
-            </div>
-            <span className="mono" style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: "0.1em" }}>
-              {feed.upcoming_models.length} STRATEGIES QUEUED
-            </span>
+          <div style={{ marginBottom: 14 }}>
+            <div className="eyebrow">On deck</div>
+            <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--text-bright)", margin: "4px 0 0" }}>
+              Coming soon to the book
+            </h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 12 }}>
-            {feed.upcoming_models.map((m, i) => <UpcomingCard key={i} m={m} />)}
+            {feed.upcoming_models.map((m, i) => (
+              <div key={i} className="panel" style={{ padding: 14 }}>
+                <div className="eyebrow" style={{ color: "var(--accent-hi)" }}>{m.sport.toUpperCase()}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text-bright)", margin: "6px 0" }}>{m.label}</div>
+                <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 8 }}>{m.teaser}</div>
+                <div className="mono" style={{ fontSize: 11, color: "var(--text-muted)" }}>ETA · {m.eta}</div>
+              </div>
+            ))}
           </div>
         </section>
       )}
@@ -181,61 +128,91 @@ export default async function ModelsPage() {
           lineHeight: 1.6,
         }}
       >
-        <strong style={{ color: "var(--text-secondary)" }}>How this works:</strong> Every model
-        breaks out by sport × market. We post the card pick the moment a model finds a +EV edge —
-        win or lose, it lands in this table. Profitable strategies stay; chronic losers get retired.
+        <strong style={{ color: "var(--text-secondary)" }}>How this works:</strong> Tiering is set
+        by research — not vibes. Tier 1 promotion requires ≥30 settled picks, positive ROI, and
+        non-negative CLV. Demotion triggers if ROI drops below 0% on a rolling 60-pick window.
       </div>
     </div>
   );
 }
 
-function UpcomingCard({ m }: { m: { sport: string; label: string; market: string; eta: string; status: string; teaser: string; accent: string } }) {
-  const accentMap: Record<string, { rail: string; chip: string; chipBg: string; chipBorder: string; statusLabel: string }> = {
-    green:  { rail: "var(--green-hi)",  chip: "var(--green-hi)",  chipBg: "rgba(34,210,122,0.10)",  chipBorder: "rgba(34,210,122,0.35)",  statusLabel: m.status === "live" ? "LIVE" : "LAUNCHING" },
-    amber:  { rail: "#F59E0B",          chip: "#F59E0B",          chipBg: "rgba(245,158,11,0.10)",  chipBorder: "rgba(245,158,11,0.35)",  statusLabel: "IN SHADOW" },
-    muted:  { rail: "var(--border-hi)", chip: "var(--text-muted)", chipBg: "var(--bg-raised)",      chipBorder: "var(--border)",          statusLabel: "INCUBATING" },
-  };
-  const a = accentMap[m.accent] || accentMap.amber;
-
+function TierSection({ tier, rows }: { tier: Tier; rows: ModelRow[] }) {
+  const meta = TIER_META[tier];
   return (
-    <div className="panel" style={{ padding: 0, overflow: "hidden", position: "relative" }}>
-      <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: a.rail }} />
-      <div style={{ padding: "14px 16px 12px 18px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span className="mono" style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.14em", color: "var(--text-secondary)" }}>
-          [{m.sport.toUpperCase()}]
-        </span>
-        <span
-          className="mono"
-          style={{
-            fontSize: 9,
-            fontWeight: 800,
-            padding: "3px 7px",
-            background: a.chipBg,
-            color: a.chip,
-            border: `1px solid ${a.chipBorder}`,
-            borderRadius: 3,
-            letterSpacing: "0.12em",
-          }}
-        >
-          {a.statusLabel}
+    <section>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 18, fontWeight: 800, color: meta.accent, margin: 0, letterSpacing: "-0.01em" }}>
+            {meta.label}
+          </h2>
+          <p style={{ color: "var(--text-secondary)", margin: "4px 0 0", fontSize: 12 }}>{meta.sub}</p>
+        </div>
+        <span className="mono" style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+          {rows.length} MODEL{rows.length === 1 ? "" : "S"}
         </span>
       </div>
-      <div style={{ padding: "14px 16px 16px 18px" }}>
-        <div style={{ fontSize: 16, fontWeight: 800, color: "var(--text-bright)", letterSpacing: "-0.01em", marginBottom: 4 }}>
-          {m.label}
-        </div>
-        <div className="mono" style={{ fontSize: 11, color: "var(--text-muted)", letterSpacing: "0.04em", marginBottom: 10 }}>
-          {m.market}
-        </div>
-        <div style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: 12 }}>
-          {m.teaser}
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 10, borderTop: "1px solid var(--border)" }}>
-          <span className="label-muted">ETA</span>
-          <span className="mono" style={{ fontSize: 12, color: "var(--text-bright)", fontWeight: 700 }}>{m.eta}</span>
-        </div>
+
+      <div className="panel" style={{ overflow: "hidden" }}>
+        <table className="ledger">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Sport</th>
+              <th style={{ textAlign: "right" }}>N</th>
+              <th style={{ textAlign: "right" }}>Record</th>
+              <th style={{ textAlign: "right" }}>Win%</th>
+              <th style={{ textAlign: "right" }}>ROI</th>
+              <th style={{ textAlign: "right" }}>Profit</th>
+              <th style={{ textAlign: "right" }}>Pending</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((m) => (
+              <tr key={m.key}>
+                <td style={{ color: "var(--text-bright)", fontWeight: 600 }}>{m.label}</td>
+                <td className="mono" style={{ color: "var(--text-secondary)", fontSize: 11, letterSpacing: "0.06em" }}>
+                  {m.sport}
+                </td>
+                <td className="mono" style={{ textAlign: "right" }}>{m.settled}</td>
+                <td className="mono" style={{ textAlign: "right" }}>
+                  {m.settled > 0
+                    ? `${m.wins}–${m.losses}${m.pushes > 0 ? `–${m.pushes}` : ""}`
+                    : "—"}
+                </td>
+                <td className="mono" style={{ textAlign: "right" }}>
+                  {m.win_rate === null ? (
+                    <span style={{ color: "var(--text-muted)" }}>—</span>
+                  ) : (
+                    <span style={{ color: m.win_rate >= 52.4 ? "var(--green-hi)" : "var(--text-secondary)" }}>
+                      {m.win_rate.toFixed(1)}%
+                    </span>
+                  )}
+                </td>
+                <td className="mono" style={{ textAlign: "right" }}>
+                  {m.roi === null ? (
+                    <span style={{ color: "var(--text-muted)" }}>—</span>
+                  ) : (
+                    <span className={m.roi >= 0 ? "pos" : "neg"} style={{ fontWeight: 700 }}>
+                      {m.roi >= 0 ? "+" : ""}
+                      {m.roi.toFixed(1)}%
+                    </span>
+                  )}
+                </td>
+                <td
+                  className={`mono ${m.profit >= 0 ? "pos" : "neg"}`}
+                  style={{ textAlign: "right", fontWeight: 700 }}
+                >
+                  {m.settled > 0 ? `${m.profit >= 0 ? "+" : ""}${m.profit.toFixed(1)}U` : "—"}
+                </td>
+                <td className="mono" style={{ textAlign: "right", color: "var(--text-muted)" }}>
+                  {m.pending > 0 ? m.pending : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
+    </section>
   );
 }
 

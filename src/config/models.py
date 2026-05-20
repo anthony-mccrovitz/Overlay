@@ -1,68 +1,82 @@
 """
 Model registry — controls which models post publicly and which incubate silently.
 
+Source-of-truth for the model selection plan agreed 2026-05-19, grounded in
+the research pass on academically + practitioner-proven betting edges.
+
 Status meanings:
   live       → picks marked card_pick=True, posted (cards, captions, Reddit), public record
   incubating → picks logged + graded silently (card_pick=False), no posts, private record
   retired    → model is not run at all
 
-Promotion to live requires: >= 30 settled picks AND positive ROI on the settled sample.
-Demotion to incubating: ROI drops below 0% on a rolling sample, or sample size dries up.
+Tier meanings (display + customer-facing grouping):
+  t1     → "Proven" — peer-reviewed academic or documented professional results
+  t2     → "Theoretically sound" — strong practitioner backing, mechanically defensible
+  shadow → tracking only — building sample for promotion / sanity-checking model health
+  paused → explicitly paused per research (high vig, no documented edge, persistent losses)
 
-The (sport, market) key is the canonical model identifier used across the pipeline.
+Paused models are also listed in predict.py:PAUSED_MARKETS / run_nba.py:_NBA_PAUSED so
+they're not even logged to picks.json — keep the two in sync.
+
+Promotion: shadow → t1/t2 requires ≥ 30 settled picks AND positive ROI on the settled
+sample AND non-negative CLV. Demotion: ROI drops below 0% on a rolling 60-pick window.
+
+Research backing for the tiers:
+  NBA Totals          — Voulgaris documented, pace/tempo mispricing
+  Tennis Elo          — Kovalchik 2016, Angelini 2022 (peer-reviewed)
+  MLB Totals+Weather  — 14+ years wind-direction data, Pinnacle/Action analyses
+  Dixon-Coles Soccer  — Dixon & Coles 1997 (JRSS) — edge lives in mid/lower leagues
+  PGA SG model        — Strokes-Gained predictive of outright odds (practitioner)
+  Auto-racing Elo     — Outright winner Elo (practitioner backtests)
+  MLB Pitcher Ks      — Mechanically sound; current model -11.8% ROI → REBUILD in shadow
+  MLB Moneyline       — Bias-fixed (penalize longshots per Snowberg & Wolfers 2010)
 """
 from __future__ import annotations
 
 
 MODELS: dict[tuple[str, str], dict] = {
-    # ── NBA — only proven model so far ───────────────────────────────────────
-    ("nba", "total"):     {"status": "live",       "label": "NBA Totals"},
-    ("nba", "moneyline"): {"status": "incubating", "label": "NBA Moneyline"},
-    ("nba", "spread"):    {"status": "incubating", "label": "NBA Spread"},
-    ("nba", "prop"):      {"status": "incubating", "label": "NBA Props (legacy bucket)"},
-    # NBA prop sub-models — tracked individually so each can graduate on its own
-    ("nba", "player_points"):   {"status": "incubating", "label": "NBA Player Points"},
-    ("nba", "player_rebounds"): {"status": "incubating", "label": "NBA Player Rebounds"},
-    ("nba", "player_assists"):  {"status": "incubating", "label": "NBA Player Assists"},
-    ("nba", "player_pra"):      {"status": "incubating", "label": "NBA Player PRA"},
-    ("nba", "player_blocks"):   {"status": "incubating", "label": "NBA Player Blocks"},
-    ("nba", "player_steals"):   {"status": "incubating", "label": "NBA Player Steals"},
-    ("nba", "player_threes"):   {"status": "incubating", "label": "NBA Player 3PM"},
+    # ── Tier 1 (proven) — these go on the card ────────────────────────────────
+    ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
+    ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
+    ("tennis", "moneyline"): {"status": "live",       "tier": "t1", "label": "Tennis Elo"},
+    ("soccer", "moneyline"): {"status": "live",       "tier": "t1", "label": "Soccer Dixon-Coles"},
 
-    # ── MLB — all incubating until they prove out ────────────────────────────
-    ("mlb", "moneyline"): {"status": "incubating", "label": "MLB Moneyline"},
-    ("mlb", "spread"):    {"status": "live",       "label": "MLB Run Line"},
-    ("mlb", "total"):     {"status": "incubating", "label": "MLB Totals"},
-    ("mlb", "f5_total"):  {"status": "incubating", "label": "MLB F5 Totals"},
-    ("mlb", "nrfi"):      {"status": "incubating", "label": "MLB NRFI"},
-    ("mlb", "prop"):      {"status": "incubating", "label": "MLB Props (legacy bucket)"},
-    # MLB prop sub-models — tracked individually so each can graduate on its own
-    ("mlb", "pitcher_strikeouts"): {"status": "incubating", "label": "MLB Pitcher Ks"},
-    ("mlb", "batter_home_runs"):   {"status": "incubating", "label": "MLB Batter HR"},
-    ("mlb", "batter_hits"):        {"status": "incubating", "label": "MLB Batter Hits"},
-    ("mlb", "batter_total_bases"): {"status": "incubating", "label": "MLB Batter Total Bases"},
-    ("mlb", "batter_rbis"):        {"status": "incubating", "label": "MLB Batter RBIs"},
+    # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
+    ("mlb",    "moneyline"): {"status": "live",       "tier": "t2", "label": "MLB Moneyline (bias-fixed)"},
+    ("pga",    "outright"):  {"status": "live",       "tier": "t2", "label": "PGA Outright (SG)"},
+    ("nascar", "outright"):  {"status": "live",       "tier": "t2", "label": "NASCAR Outright Elo"},
+    ("indycar","outright"):  {"status": "live",       "tier": "t2", "label": "IndyCar Outright Elo"},
+    ("f1",     "outright"):  {"status": "live",       "tier": "t2", "label": "F1 Outright Elo"},
 
-    # ── WNBA — port of NBA efficiency model, same methodology ───────────────────
-    ("wnba", "total"):     {"status": "incubating", "label": "WNBA Totals"},
-    ("wnba", "spread"):    {"status": "incubating", "label": "WNBA Spread"},
-    ("wnba", "moneyline"): {"status": "incubating", "label": "WNBA Moneyline"},
+    # ── Shadow (tracking only — building sample / rebuilding) ────────────────
+    ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (rebuild)"},
+    ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals"},
+    ("mlb", "nrfi"):               {"status": "incubating", "tier": "shadow", "label": "MLB NRFI"},
+    ("nba", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "NBA Moneyline"},
+    ("nba", "player_points"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Points"},
+    ("nba", "player_rebounds"):    {"status": "incubating", "tier": "shadow", "label": "NBA Player Rebounds"},
+    ("nba", "player_assists"):     {"status": "incubating", "tier": "shadow", "label": "NBA Player Assists"},
+    ("nba", "player_pra"):         {"status": "incubating", "tier": "shadow", "label": "NBA Player PRA"},
+    ("nba", "player_blocks"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Blocks"},
+    ("nba", "player_steals"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Steals"},
+    ("nba", "player_threes"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player 3PM"},
+    ("nhl", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "NHL Moneyline"},
+    ("nhl", "puck_line"):          {"status": "incubating", "tier": "shadow", "label": "NHL Puck Line"},
+    ("nhl", "total"):              {"status": "incubating", "tier": "shadow", "label": "NHL Totals"},
+    ("ufc", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "UFC Moneyline"},
 
-    # ── NHL — trained logreg model on 3 seasons (2022-25), holdout Brier 0.240 ─
-    ("nhl", "moneyline"): {"status": "incubating", "label": "NHL Moneyline"},
-    ("nhl", "puck_line"): {"status": "incubating", "label": "NHL Puck Line"},
-    ("nhl", "total"):     {"status": "incubating", "label": "NHL Totals"},
-
-    # ── PGA — event-driven, no daily slate ───────────────────────────────────
-    ("pga", "outright"):  {"status": "incubating", "label": "PGA Outright"},
-
-    # ── Tennis — surface Elo + Markov chain, Roland-Garros May 25 ─────────────
-    ("tennis", "moneyline"): {"status": "incubating", "label": "Tennis Moneyline"},
-
-    # ── Soccer / World Cup — Dixon-Coles model, WC 2026 starts June 11 ────────
-    ("soccer", "moneyline"): {"status": "incubating", "label": "Soccer Moneyline"},
-    ("soccer", "total"):     {"status": "incubating", "label": "Soccer Totals"},
-    ("soccer", "draw"):      {"status": "incubating", "label": "Soccer Draw"},
+    # ── Paused (research says don't bet) — also in PAUSED_MARKETS gate ───────
+    ("mlb",  "spread"):            {"status": "incubating", "tier": "paused", "label": "MLB Run Line"},
+    ("mlb",  "prop"):              {"status": "incubating", "tier": "paused", "label": "MLB Batter Props (generic)"},
+    ("mlb",  "batter_home_runs"):  {"status": "incubating", "tier": "paused", "label": "MLB Batter HR"},
+    ("mlb",  "batter_hits"):       {"status": "incubating", "tier": "paused", "label": "MLB Batter Hits"},
+    ("mlb",  "batter_total_bases"):{"status": "incubating", "tier": "paused", "label": "MLB Batter Total Bases"},
+    ("mlb",  "batter_rbis"):       {"status": "incubating", "tier": "paused", "label": "MLB Batter RBIs"},
+    ("nba",  "spread"):            {"status": "incubating", "tier": "paused", "label": "NBA Spread"},
+    ("nba",  "prop"):              {"status": "incubating", "tier": "paused", "label": "NBA Props (generic bucket)"},
+    ("wnba", "moneyline"):         {"status": "incubating", "tier": "paused", "label": "WNBA Moneyline"},
+    ("wnba", "spread"):            {"status": "incubating", "tier": "paused", "label": "WNBA Spread"},
+    ("wnba", "total"):             {"status": "incubating", "tier": "paused", "label": "WNBA Totals"},
 }
 
 
@@ -75,6 +89,16 @@ def _key(sport: str, market: str) -> tuple[str, str]:
         raw = "soccer"
     elif raw.startswith("tennis"):
         raw = "tennis"
+    elif raw.startswith("auto_racing_nascar"):
+        raw = "nascar"
+    elif raw.startswith("auto_racing_indycar"):
+        raw = "indycar"
+    elif raw.startswith("auto_racing_formula"):
+        raw = "f1"
+    elif raw.startswith("mma") or raw == "mma_mixed_martial_arts":
+        raw = "ufc"
+    elif raw.startswith("golf_pga"):
+        raw = "pga"
     s = raw
     m = (market or "").lower()
     return (s, m)
@@ -83,6 +107,11 @@ def _key(sport: str, market: str) -> tuple[str, str]:
 def model_status(sport: str, market: str) -> str:
     """Return 'live', 'incubating', or 'retired'. Unknown models default to incubating."""
     return MODELS.get(_key(sport, market), {}).get("status", "incubating")
+
+
+def model_tier(sport: str, market: str) -> str:
+    """Return 't1', 't2', 'shadow', or 'paused'. Unknown models default to 'shadow'."""
+    return MODELS.get(_key(sport, market), {}).get("tier", "shadow")
 
 
 def is_live(sport: str, market: str, prop_market: str | None = None) -> bool:
@@ -94,6 +123,11 @@ def is_live(sport: str, market: str, prop_market: str | None = None) -> bool:
     if market == "prop" and prop_market:
         return model_status(sport, prop_market) == "live"
     return model_status(sport, market) == "live"
+
+
+def is_paused(sport: str, market: str) -> bool:
+    """True if this market is explicitly paused per research — don't log to PNL."""
+    return model_tier(sport, market) == "paused"
 
 
 def is_retired(sport: str, market: str) -> bool:
@@ -116,6 +150,11 @@ def incubating_models() -> list[tuple[str, str]]:
     return [k for k, v in MODELS.items() if v["status"] == "incubating"]
 
 
+def models_by_tier(tier: str) -> list[tuple[str, str]]:
+    """List of (sport, market) tuples in the given tier."""
+    return [k for k, v in MODELS.items() if v.get("tier") == tier]
+
+
 # New-model shadow stake caps: 0.5u until N≥30 settled with positive CLV
 _NEW_SPORTS = {"wnba", "tennis", "soccer", "pga",
                "auto_racing_nascar_cup_series",
@@ -129,8 +168,11 @@ def shadow_stake(sport: str, market: str) -> float:
 
     New sport models (WNBA, tennis, soccer, PGA) use 0.5u until they prove
     out (N≥30 settled + positive CLV). All other incubating models use 1.0u.
+    Tier-2 live models also use 0.5u stake until they hit the 30-pick threshold.
     """
     s, _ = _key(sport, market)
     if s in _NEW_SPORTS:
+        return 0.5
+    if model_tier(sport, market) == "t2":
         return 0.5
     return 1.0

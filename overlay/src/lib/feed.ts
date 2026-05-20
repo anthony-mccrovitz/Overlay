@@ -33,8 +33,11 @@ export type EquityPoint = { date: string; units: number };
 export type ModelRow = {
   key: string;
   sport: string;
+  sport_key?: string;
   label: string;
-  market_label: string;
+  market?: string;
+  market_label?: string;
+  tier?: "t1" | "t2" | "shadow" | "paused";
   status: string;
   wins: number;
   losses: number;
