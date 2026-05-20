@@ -132,6 +132,7 @@ def _card_html(
     sport_key: str = "mlb",
     market_banner: str | None = None,
     record_strip_html: str | None = None,
+    form_strip_html: str | None = None,
 ) -> str:
     """
     Wrap body_html in the full card template.
@@ -507,6 +508,46 @@ def _card_html(
     .conf-strong {{ color: #7ee8a2; }}
     .conf-good   {{ color: rgba(255,255,255,0.50); }}
 
+    /* ── Receipts (last 14 days) strip ── */
+    .form-strip {{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 56px 0;
+      font-size: 13px;
+      font-weight: 700;
+    }}
+    .form-label {{
+      color: rgba(255,255,255,0.40);
+      letter-spacing: 0.14em;
+    }}
+    .form-stats {{
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }}
+
+    /* ── Hero matchup logos ── */
+    .hero-logos {{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      margin-bottom: 18px;
+    }}
+    .hero-logo-img {{
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
+    }}
+    .hero-vs {{
+      font-family: 'Barlow Condensed', 'Inter', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.30);
+      letter-spacing: 0.04em;
+    }}
+
     /* ── Hero single-pick layout ── */
     .hero-wrap {{
       flex: 1;
@@ -685,6 +726,9 @@ def _card_html(
   <!-- Record strip -->
   {record_strip_html or ''}
 
+  <!-- Recent form (last 14 days) -->
+  {form_strip_html or ''}
+
   <!-- Picks -->
   <div class="picks">
     {body_html}
@@ -761,6 +805,96 @@ def _fmt_game_time(commence_time: str | None) -> str | None:
         return et.strftime("%-I:%M %p ET").replace("AM", "AM").replace("PM", "PM")
     except Exception:
         return None
+
+
+# ── Team logos (ESPN CDN — free, public, hot-linkable) ─────────────────────
+# Maps lowercase team name fragments → ESPN abbreviation slug.
+# URL pattern: https://a.espncdn.com/i/teamlogos/{league}/500/{slug}.png
+
+_NBA_TEAM_SLUGS = {
+    "hawks":"atl","celtics":"bos","nets":"bkn","hornets":"cha","bulls":"chi",
+    "cavaliers":"cle","mavericks":"dal","nuggets":"den","pistons":"det",
+    "warriors":"gs","rockets":"hou","pacers":"ind","clippers":"lac",
+    "lakers":"lal","grizzlies":"mem","heat":"mia","bucks":"mil",
+    "timberwolves":"min","pelicans":"no","knicks":"ny","thunder":"okc",
+    "magic":"orl","76ers":"phi","suns":"phx","trail blazers":"por",
+    "blazers":"por","kings":"sac","spurs":"sa","raptors":"tor","jazz":"utah","wizards":"wsh",
+}
+
+_MLB_TEAM_SLUGS = {
+    "diamondbacks":"ari","braves":"atl","orioles":"bal","red sox":"bos",
+    "cubs":"chc","white sox":"chw","reds":"cin","guardians":"cle",
+    "rockies":"col","tigers":"det","astros":"hou","royals":"kc",
+    "angels":"laa","dodgers":"lad","marlins":"mia","brewers":"mil",
+    "twins":"min","mets":"nym","yankees":"nyy","athletics":"oak",
+    "phillies":"phi","pirates":"pit","padres":"sd","giants":"sf",
+    "mariners":"sea","cardinals":"stl","rays":"tb","rangers":"tex",
+    "blue jays":"tor","nationals":"wsh",
+}
+
+
+def _team_logo_url(team: str, sport_key: str) -> str | None:
+    """Return ESPN CDN logo URL for a team name, or None if not found."""
+    if not team:
+        return None
+    name = team.lower().strip()
+    if "nba" in sport_key.lower() or "basketball" in sport_key.lower():
+        league = "nba"; slugs = _NBA_TEAM_SLUGS
+    elif "mlb" in sport_key.lower() or "baseball" in sport_key.lower():
+        league = "mlb"; slugs = _MLB_TEAM_SLUGS
+    else:
+        return None
+    # Match by last word or longest matching fragment
+    for frag, slug in slugs.items():
+        if frag in name:
+            return f"https://a.espncdn.com/i/teamlogos/{league}/500/{slug}.png"
+    return None
+
+
+def _split_matchup(matchup: str) -> tuple[str, str] | None:
+    """Return (away, home) team names from a matchup string, or None."""
+    if not matchup:
+        return None
+    for sep in (" @ ", " vs. ", " vs ", " at "):
+        if sep in matchup:
+            parts = matchup.split(sep, 1)
+            if len(parts) == 2:
+                return parts[0].strip(), parts[1].strip()
+    return None
+
+
+def _load_recent_form_strip(sport_key: str) -> str:
+    """Pull the 'last 14 days' record line from receipts_post.txt for the sport.
+
+    Returns HTML for a small receipts strip shown directly below the record
+    strip — quick social proof ('last 14 days: 19-6, +11.8u, ROI +47.3%').
+    """
+    from datetime import date as _date
+    folder_map = {
+        "basketball_nba": "basketball_nba",
+        "baseball_mlb":   "baseball_mlb",
+    }
+    folder = folder_map.get(sport_key)
+    if not folder:
+        return ""
+    ts = _date.today().strftime("%Y%m%d")
+    path = Path("output/picks") / folder / ts / "receipts_post.txt"
+    if not path.exists():
+        return ""
+    try:
+        lines = [ln.strip() for ln in path.read_text().splitlines() if ln.strip()]
+        if len(lines) < 2:
+            return ""
+        # Line 1: "NBA Totals model — last 14 days"
+        # Line 2: "19-6 · +11.8u · ROI +47.3% · CLV -2.20c (N=2)"
+        title = lines[0]
+        stats = lines[1]
+        return f"""<div class="form-strip">
+  <span class="form-label">LAST 14 DAYS</span>
+  <span class="form-stats">{stats}</span>
+</div>"""
+    except Exception:
+        return ""
 
 
 def _load_record_strip(sport: str, market: str | None) -> str:
@@ -860,6 +994,7 @@ def _hero_pick_html(
     game_time: str | None = None,
     units: str = "1.0u",
     extra_subtitle: str | None = None,
+    sport_key: str = "",
 ) -> str:
     """Hero single-pick layout — dominant matchup + selection + odds.
 
@@ -878,11 +1013,27 @@ def _hero_pick_html(
     if game_time:
         game_time_html = f'<span class="hero-time">{_ICON_CLOCK}{game_time}</span>'
 
+    # Team logos from ESPN CDN (no-op for sports we don't have slugs for)
+    logos_html = ""
+    teams = _split_matchup(matchup)
+    if teams and sport_key:
+        away_url = _team_logo_url(teams[0], sport_key)
+        home_url = _team_logo_url(teams[1], sport_key)
+        if away_url and home_url:
+            logos_html = (
+                '<div class="hero-logos">'
+                f'<img class="hero-logo-img" src="{away_url}" alt="" />'
+                '<div class="hero-vs">@</div>'
+                f'<img class="hero-logo-img" src="{home_url}" alt="" />'
+                '</div>'
+            )
+
     return f"""
 <div class="hero-wrap">
   <!-- Matchup banner -->
   <div class="hero-matchup-block">
     <div class="hero-market-label">{market_label.upper()}</div>
+    {logos_html}
     <div class="hero-matchup">{matchup}</div>
     {subtitle}
   </div>
@@ -1069,6 +1220,7 @@ def render_mlb_totals_card(picks: list[dict], card_date: date | None = None) -> 
             game_time=row["game_time"],
             units=row["units"],
             extra_subtitle=row["weather"] or None,
+            sport_key="baseball_mlb",
         )
     else:
         max_edge_idx = max(range(len(rows)), key=lambda i: rows[i]["edge_pct"])
@@ -1105,6 +1257,7 @@ def render_mlb_totals_card(picks: list[dict], card_date: date | None = None) -> 
         sport_key="baseball_mlb",
         market_banner="Over / Under Picks — AI Edge Detection",
         record_strip_html=record_html,
+        form_strip_html=_load_recent_form_strip("baseball_mlb"),
     )
     return _render_html_to_png(html, out_path)
 
@@ -1253,6 +1406,7 @@ def render_nba_totals_card(picks: list[dict], card_date: date | None = None) -> 
             game_time=row["game_time"],
             units=row["units"],
             extra_subtitle="NBA Playoffs",
+            sport_key="basketball_nba",
         )
     else:
         max_edge_idx = max(range(len(rows)), key=lambda i: rows[i]["edge_pct"])
@@ -1285,6 +1439,7 @@ def render_nba_totals_card(picks: list[dict], card_date: date | None = None) -> 
         sport_key="basketball_nba",
         market_banner="Over / Under Picks — AI Edge Detection",
         record_strip_html=record_html,
+        form_strip_html=_load_recent_form_strip("basketball_nba"),
     )
     return _render_html_to_png(html, out_path)
 
