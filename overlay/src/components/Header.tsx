@@ -12,6 +12,7 @@ export function Header() {
       }}
     >
       <div
+        className="header-inner"
         style={{
           maxWidth: 1280,
           margin: "0 auto",
@@ -19,9 +20,10 @@ export function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          gap: 12,
         }}
       >
-        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <span
             style={{
               width: 22,
@@ -50,7 +52,9 @@ export function Header() {
             OVERLAY
           </span>
         </Link>
-        <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
+
+        {/* Desktop nav */}
+        <nav className="nav-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
           <Link href="/picks" style={navLink}>Picks</Link>
           <Link href="/models" style={navLink}>Models</Link>
           <Link href="/tools" style={navLink}>Tools</Link>
@@ -65,6 +69,35 @@ export function Header() {
             Subscribe — $29/mo
           </a>
         </nav>
+
+        {/* Mobile nav — compact horizontal scrollable strip */}
+        <nav
+          className="nav-mobile"
+          style={{
+            display: "none",
+            alignItems: "center",
+            gap: 14,
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+            flex: 1,
+            justifyContent: "flex-end",
+            scrollbarWidth: "none",
+          }}
+        >
+          <Link href="/picks" style={navLinkMobile}>Picks</Link>
+          <Link href="/models" style={navLinkMobile}>Models</Link>
+          <Link href="/tools" style={navLinkMobile}>Tools</Link>
+          <Link href="/record" style={navLinkMobile}>Record</Link>
+          <a
+            href={process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK || "#pricing"}
+            className="btn-primary"
+            style={{ padding: "6px 12px", fontSize: 11, flexShrink: 0 }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            $29/mo
+          </a>
+        </nav>
       </div>
     </header>
   );
@@ -75,4 +108,13 @@ const navLink: React.CSSProperties = {
   textDecoration: "none",
   fontSize: 13,
   fontWeight: 500,
+};
+
+const navLinkMobile: React.CSSProperties = {
+  color: "var(--text-secondary)",
+  textDecoration: "none",
+  fontSize: 12,
+  fontWeight: 600,
+  flexShrink: 0,
+  letterSpacing: "0.02em",
 };

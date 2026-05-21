@@ -21,6 +21,7 @@ export function RecentPicksTable({ rows }: { rows: RecentPick[] }) {
         </div>
         <div className="label-muted">Auto-logged from the model</div>
       </div>
+      <div className="scroll-x">
       <table className="ledger">
         <thead>
           <tr>
@@ -53,6 +54,7 @@ export function RecentPicksTable({ rows }: { rows: RecentPick[] }) {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

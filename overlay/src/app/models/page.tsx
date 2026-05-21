@@ -81,7 +81,7 @@ export default async function ModelsPage() {
         </p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+      <div className="grid-4">
         <Kpi label="Active card markets" value={String(liveCount)} color="var(--accent-hi)" />
         <Kpi label="Tracked (shadow)" value={String(grouped.shadow.length)} />
         <Kpi label="Paused" value={String(grouped.paused.length)} color="var(--text-muted)" />
@@ -152,7 +152,7 @@ function TierSection({ tier, rows }: { tier: Tier; rows: ModelRow[] }) {
         </span>
       </div>
 
-      <div className="panel" style={{ overflow: "hidden" }}>
+      <div className="panel scroll-x" style={{ overflow: "hidden" }}>
         <table className="ledger">
           <thead>
             <tr>

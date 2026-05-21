@@ -53,7 +53,7 @@ export function ActivePickCard({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
+            gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
             gap: 16,
             marginTop: 20,
             paddingTop: 16,

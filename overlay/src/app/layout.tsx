@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     "Three-model ensemble. Public ledger. Founding seats $29/mo. No touts, no parlays, no hype.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#0A0B0D",
+};
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const feed = await readFeed();
   return (

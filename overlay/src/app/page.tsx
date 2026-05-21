@@ -15,9 +15,9 @@ export default async function HomePage() {
   const seatsTotal = feed?.seats.total ?? 25;
 
   return (
-    <div style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px 0", display: "flex", flexDirection: "column", gap: 64 }}>
+    <div className="landing-wrap" style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px 0", display: "flex", flexDirection: "column", gap: 64 }}>
       {/* HERO */}
-      <section style={{ display: "grid", gridTemplateColumns: "1.05fr 0.95fr", gap: 48, alignItems: "center" }}>
+      <section className="hero-grid">
         <div>
           <div
             className="mono"
@@ -114,7 +114,7 @@ export default async function HomePage() {
           <EquityCurve data={feed?.equity_curve || []} />
         </div>
         {r && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 12 }}>
+          <div className="grid-4" style={{ marginTop: 12 }}>
             <KpiCard label="Picks" value={String(r.total_card)} />
             <KpiCard label="Win rate" value={`${r.win_rate_pct.toFixed(1)}%`} />
             <KpiCard label="Avg odds" value={r.avg_odds || "—"} />
@@ -134,7 +134,7 @@ export default async function HomePage() {
           Three models. Consensus required.<br />
           No single algorithm gets to make a call.
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div className="grid-3">
           <ModelCard idx="01" name="XGBoost" tagline="The Regularizer" body="Handles sparse box-score data and complex feature interactions. Prevents overfitting on outlier player performances." />
           <ModelCard idx="02" name="LightGBM" tagline="The Speedster" body="Processes lineup changes, weather, and line movement in real-time to capture pre-game value before books adjust." />
           <ModelCard idx="03" name="CatBoost" tagline="The Categorical King" body="Specializes in categorical signals — umpires, referees, park factors, travel splits, rest differentials." />
