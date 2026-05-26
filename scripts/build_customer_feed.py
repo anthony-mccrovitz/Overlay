@@ -29,8 +29,19 @@ PICKS_PATH = ROOT / "data" / "pnl" / "picks.json"
 STATS_PATH = ROOT / "data" / "public_stats.json"
 OUT_PATH = ROOT / "overlay" / "src" / "data" / "customer_feed.json"
 
-NBA_SPORTS = {"nba", "basketball_nba"}
-MLB_SPORTS = {"mlb", "baseball_mlb"}
+SPORT_LABELS: dict[str, str] = {
+    "nba": "NBA", "basketball_nba": "NBA", "basketball_nba_summer_league": "NBA",
+    "mlb": "MLB", "baseball_mlb": "MLB",
+    "nhl": "NHL", "icehockey_nhl": "NHL",
+    "wnba": "WNBA", "basketball_wnba": "WNBA",
+    "soccer": "Soccer", "soccer_fifa_world_cup": "Soccer", "soccer_epl": "Soccer",
+    "tennis": "Tennis", "tennis_atp_french_open": "Tennis", "tennis_atp_italian_open": "Tennis",
+    "ufc": "UFC", "mma_mixed_martial_arts": "UFC",
+    "nascar": "NASCAR", "auto_racing_nascar_cup_series": "NASCAR",
+    "f1": "F1", "auto_racing_formula_one": "F1",
+    "indycar": "IndyCar", "auto_racing_indycar_series": "IndyCar",
+    "pga": "PGA", "golf_pga_championship": "PGA", "golf_pga_championship_winner": "PGA",
+}
 
 
 def format_odds(odds: int | float | None) -> str:
@@ -129,20 +140,22 @@ def customer_pick(pick: dict) -> dict:
     }
 
 
-def bucket(sport_value: str) -> str | None:
-    if sport_value in NBA_SPORTS:
-        return "nba"
-    if sport_value in MLB_SPORTS:
-        return "mlb"
-    return None
+def sport_key(sport_value: str) -> str | None:
+    """Return the canonical short key for a sport, e.g. 'basketball_nba' → 'nba'. None if unknown."""
+    label = SPORT_LABELS.get(sport_value)
+    if not label:
+        return None
+    # Reverse-map label to canonical short key
+    short = {v: k for k, v in SPORT_LABELS.items() if len(k) <= 8}
+    return short.get(label, sport_value)
+
+
+def sport_label(sport_value: str) -> str:
+    return SPORT_LABELS.get(sport_value, sport_value.upper()[:6])
 
 
 def ticker_label(sport: str) -> str:
-    if sport in NBA_SPORTS:
-        return "NBA"
-    if sport in MLB_SPORTS:
-        return "MLB"
-    return sport.upper()[:4]
+    return SPORT_LABELS.get(sport, sport.upper()[:4])
 
 
 def matchup_short(matchup: str) -> str:
@@ -178,7 +191,7 @@ def pick_profit_units(pick: dict) -> float:
 def build_ticker(picks: list[dict], limit: int = 18) -> list[dict]:
     settled = [
         p for p in picks
-        if p.get("result") in ("win", "loss", "push") and bucket(p.get("sport", ""))
+        if p.get("result") in ("win", "loss", "push") and p.get("card_pick")
     ]
     settled.sort(key=lambda p: (p.get("resulted_at") or p.get("date") or ""), reverse=True)
     out = []
@@ -196,7 +209,6 @@ def build_recent_picks(picks: list[dict], limit: int = 10) -> list[dict]:
     settled = [
         p for p in picks
         if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
-        and bucket(p.get("sport", ""))
     ]
     settled.sort(key=lambda p: (p.get("date") or "", p.get("resulted_at") or ""), reverse=True)
     out = []
@@ -310,7 +322,7 @@ def build_equity_curve(picks: list[dict], points: int = 80) -> list[dict]:
     settled = [
         p for p in picks
         if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
-        and p.get("date") and bucket(p.get("sport", ""))
+        and p.get("date")
     ]
     settled.sort(key=lambda p: p["date"])
     by_day: dict[str, float] = {}
@@ -414,16 +426,19 @@ def build_feed(target_date: str | None = None) -> dict:
     today = target_date or date.today().isoformat()
 
     todays_card = [
-        p
-        for p in picks
-        if p.get("card_pick") and p.get("date") == today and bucket(p.get("sport", ""))
+        p for p in picks
+        if p.get("card_pick") and p.get("date") == today
     ]
 
-    grouped: dict[str, list[dict]] = {"nba": [], "mlb": []}
+    # Group by display label (e.g. "nba", "mlb", "nhl") — order matters for UI
+    SPORT_ORDER = ["nba", "mlb", "nhl", "wnba", "soccer", "tennis", "ufc", "nascar", "f1", "indycar", "pga"]
+    grouped: dict[str, list[dict]] = {}
     for p in todays_card:
-        b = bucket(p["sport"])
-        if b:
-            grouped[b].append(customer_pick(p))
+        lbl = sport_label(p.get("sport", "")).lower()
+        grouped.setdefault(lbl, []).append(customer_pick(p))
+    # Sort groups by preferred order
+    grouped = {k: grouped[k] for k in SPORT_ORDER if k in grouped} | \
+              {k: v for k, v in grouped.items() if k not in SPORT_ORDER}
 
     stats = json.loads(STATS_PATH.read_text()) if STATS_PATH.exists() else {}
     summary = stats.get("summary", {})
@@ -431,7 +446,6 @@ def build_feed(target_date: str | None = None) -> dict:
     settled_card = [
         p for p in picks
         if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
-        and bucket(p.get("sport", ""))
     ]
     odds_vals = [p.get("odds") for p in settled_card if p.get("odds") is not None]
     avg_odds = int(sum(odds_vals) / len(odds_vals)) if odds_vals else None
@@ -449,16 +463,14 @@ def build_feed(target_date: str | None = None) -> dict:
         "total_card": len(settled_card),
     }
 
-    # Featured pick: highest-stake or first NBA pick today, fallback first MLB
+    # Featured pick: first pick from the highest-priority sport present today
     featured = None
-    if grouped["nba"]:
-        featured = grouped["nba"][0]
-        featured_sport = "NBA"
-    elif grouped["mlb"]:
-        featured = grouped["mlb"][0]
-        featured_sport = "MLB"
-    else:
-        featured_sport = None
+    featured_sport = None
+    for lbl in ["nba", "mlb", "nhl", "wnba", "soccer", "tennis", "ufc"]:
+        if grouped.get(lbl):
+            featured = grouped[lbl][0]
+            featured_sport = lbl.upper()
+            break
 
     return {
         "updated_at": datetime.utcnow().isoformat() + "Z",
@@ -479,9 +491,9 @@ def main() -> None:
     feed = build_feed()
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_text(json.dumps(feed, indent=2))
-    total = len(feed["picks"]["nba"]) + len(feed["picks"]["mlb"])
-    print(f"wrote {OUT_PATH} — {total} picks for {feed['date']} "
-          f"(nba={len(feed['picks']['nba'])}, mlb={len(feed['picks']['mlb'])})")
+    total = sum(len(v) for v in feed["picks"].values())
+    breakdown = ", ".join(f"{k}={len(v)}" for k, v in feed["picks"].items())
+    print(f"wrote {OUT_PATH} — {total} picks for {feed['date']} ({breakdown})")
 
 
 if __name__ == "__main__":

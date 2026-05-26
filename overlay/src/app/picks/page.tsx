@@ -33,8 +33,8 @@ export default async function PicksPage() {
     );
   }
 
-  const { nba, mlb } = feed.picks;
-  const total = nba.length + mlb.length;
+  const allSports = Object.entries(feed.picks).filter(([, picks]) => picks.length > 0);
+  const total = allSports.reduce((sum, [, picks]) => sum + picks.length, 0);
 
   return (
     <div style={containerStyle}>
@@ -51,8 +51,9 @@ export default async function PicksPage() {
         <div className="label-muted" style={{ alignSelf: "center" }}>signed in: {session.email}</div>
       </div>
 
-      {nba.length > 0 && <Section title="NBA" picks={nba} />}
-      {mlb.length > 0 && <Section title="MLB" picks={mlb} />}
+      {allSports.map(([sport, picks]) => (
+        <Section key={sport} title={sport.toUpperCase()} picks={picks} />
+      ))}
       {total === 0 && (
         <div className="panel" style={{ padding: 32, textAlign: "center", color: "var(--text-muted)" }}>
           No card picks posted yet for today. Check back after the morning slate locks.

@@ -4,6 +4,7 @@ import "./globals.css";
 import { TickerBar } from "@/components/TickerBar";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AutoRefresh } from "@/components/AutoRefresh";
 import { readFeed } from "@/lib/feed";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -27,6 +28,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body>
+        <AutoRefresh intervalMs={2 * 60 * 1000} />
         <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <TickerBar items={feed?.ticker || []} />
           <Header />

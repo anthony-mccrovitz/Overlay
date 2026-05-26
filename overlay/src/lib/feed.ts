@@ -1,4 +1,5 @@
-import feedJson from "@/data/customer_feed.json";
+import fs from "fs";
+import path from "path";
 
 export type CustomerPick = {
   matchup: string;
@@ -64,7 +65,7 @@ export type CustomerFeed = {
     avg_odds: string | null;
     total_card: number;
   };
-  picks: { nba: CustomerPick[]; mlb: CustomerPick[] };
+  picks: Record<string, CustomerPick[]>;
   featured: { pick: CustomerPick; sport: string } | null;
   ticker: TickerItem[];
   recent_picks: RecentPick[];
@@ -85,5 +86,11 @@ export type UpcomingModel = {
 };
 
 export async function readFeed(): Promise<CustomerFeed | null> {
-  return feedJson as unknown as CustomerFeed;
+  try {
+    const feedPath = path.join(process.cwd(), "src", "data", "customer_feed.json");
+    const raw = fs.readFileSync(feedPath, "utf-8");
+    return JSON.parse(raw) as unknown as CustomerFeed;
+  } catch {
+    return null;
+  }
 }
