@@ -2,79 +2,147 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-const API = "/api";
+// ── Types ──────────────────────────────────────────────────────────────────────
 
-// ── Types ────────────────────────────────────────────────────────────────────
-
-interface Pick {
-  Team: string; Opponent: string; ModelProb: number; ImpliedProb: number;
-  Edge: number; BestOdds: number; Sportsbook: string; Market?: string;
-  BetSize?: number; KellyFraction?: number; ExpectedProfit?: number;
-  model_tier?: string | null; weather_context?: string | null;
-}
-interface Prop {
-  player: string; team: string; opponent: string; market: string; line: number;
-  direction: string; projected: number|null; ModelProb: number; ImpliedProb: number;
-  EdgePct: number; BestOdds: number; Sportsbook: string; label: string;
-  BetSize?: number; ExpectedProfit?: number;
-}
-interface NrfiGame {
-  direction: string; home_team: string; away_team: string; home_sp: string; away_sp: string;
-  projected_nrfi: number|null; implied_nrfi: number|null;
-  EdgePct: number|null; BestOdds: number|null; Sportsbook: string; label: string;
-}
-interface PicksData {
-  sport: string; date?: string; display_date?: string;
-  moneyline: Pick[]; spread: Pick[]; totals: Pick[];
-  props: Prop[]; nrfi: NrfiGame[]; message?: string;
+interface FlatPick {
+  pick_id: string;
+  date: string;
+  sport: string;
+  market: string;
+  team: string;
+  matchup: string;
+  direction: string;
+  line: number | null;
+  odds: number;
+  odds_fmt: string;
+  sportsbook: string;
+  edge_pct: number;
+  model_prob: number;
+  result: string | null;
+  profit: number;
 }
 
-const SPORTS = [
-  { key: "mlb", label: "MLB" },
-  { key: "nba", label: "NBA" },
-];
+interface TodayData {
+  date: string;
+  count: number;
+  picks: FlatPick[];
+  potd: FlatPick | null;
+  by_sport: Record<string, FlatPick[]>;
+}
 
-const MARKETS = [
-  { key: "all",      label: "All" },
-  { key: "moneyline",label: "Moneyline" },
-  { key: "spread",   label: "Spread" },
-  { key: "totals",   label: "Totals" },
-  { key: "props",    label: "Props" },
-  { key: "nrfi",     label: "NRFI" },
-];
+interface YestData {
+  date: string;
+  count: number;
+  wins: number;
+  losses: number;
+  pl: number;
+  picks: FlatPick[];
+}
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────────
 
-function fmtOdds(o: number) { return o > 0 ? `+${o}` : `${o}`; }
+function fmtOdds(o: number): string { return o > 0 ? `+${o}` : `${o}`; }
 
-function edgeTier(v: number): "hot"|"high"|"med"|"low" {
+function impliedProb(odds: number): number {
+  if (odds < 0) return (-odds) / (-odds + 100);
+  return 100 / (odds + 100);
+}
+
+function edgeTier(v: number): "hot" | "high" | "med" | "low" {
   if (v >= 10) return "hot";
   if (v >= 7)  return "high";
   if (v >= 4)  return "med";
   return "low";
 }
 
-function mktBadgeClass(mkt: string) {
-  switch (mkt.toLowerCase()) {
-    case "moneyline": return "ml";
-    case "spread":    return "rl";
-    case "total":     return "ou";
-    case "prop":      return "prop";
-    case "nrfi":      return "nrfi";
-    default:          return "ml";
+const SPORT_LABELS: Record<string, string> = {
+  mlb: "MLB", nba: "NBA", nhl: "NHL",
+  basketball_wnba: "WNBA", wnba: "WNBA",
+  soccer: "Soccer", soccer_epl: "Soccer · EPL",
+  soccer_spain_la_liga: "Soccer · La Liga",
+  soccer_france_ligue_1: "Soccer · Ligue 1",
+  soccer_germany_bundesliga: "Soccer · Bundesliga",
+  soccer_italy_serie_a: "Soccer · Serie A",
+  soccer_usa_mls: "MLS",
+  golf_pga: "Golf · PGA", tennis_atp: "Tennis · ATP",
+  nascar: "NASCAR", ufc_mma: "UFC/MMA",
+};
+
+const MARKET_LABELS: Record<string, string> = {
+  moneyline: "ML", f5_total: "F5 O/U", total: "O/U",
+  nrfi: "NRFI", spread: "Spread", puck_line: "Puck Line", prop: "Prop",
+};
+
+const SECTION_TITLES: Record<string, string> = {
+  moneyline: "Moneyline",
+  total: "Game Totals",
+  f5_total: "F5 Totals",
+  nrfi: "NRFI / YRFI",
+  puck_line: "Puck Line",
+  spread: "Spread / Run Line",
+  prop: "Player Props",
+};
+
+const MARKET_COLORS: Record<string, string> = {
+  moneyline:  "text-[var(--cyan)]",
+  total:      "text-[var(--blue)]",
+  f5_total:   "text-[var(--indigo)]",
+  nrfi:       "text-[var(--amber)]",
+  puck_line:  "text-[var(--green)]",
+  spread:     "text-[var(--green)]",
+  prop:       "text-[var(--purple)]",
+};
+
+const MARKET_ORDER = ["moneyline", "puck_line", "spread", "total", "f5_total", "nrfi", "prop"];
+
+function sportLabel(k: string): string {
+  return SPORT_LABELS[k] ?? k.replace(/_/g, " ").toUpperCase();
+}
+
+function mktLabel(k: string): string {
+  return MARKET_LABELS[k] ?? k.replace(/_/g, " ").toUpperCase().slice(0, 8);
+}
+
+function sectionTitle(mkt: string): string {
+  return SECTION_TITLES[mkt] ?? mkt.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function mktBadgeClass(mkt: string): string {
+  switch (mkt) {
+    case "moneyline":  return "ml";
+    case "f5_total":
+    case "total":      return "ou";
+    case "nrfi":       return "nrfi";
+    case "spread":
+    case "puck_line":  return "rl";
+    default:           return "prop";
   }
 }
 
-function mktLabel(mkt: string) {
-  const m: Record<string,string> = { moneyline:"ML", spread:"RL", total:"O/U", prop:"PROP", nrfi:"NRFI" };
-  return m[mkt.toLowerCase()] ?? mkt.toUpperCase().slice(0, 4);
+function resultClass(r: string | null): string {
+  if (!r) return "text-[var(--text-muted)]";
+  if (r === "win")  return "text-[var(--green)]";
+  if (r === "loss") return "text-[var(--red)]";
+  if (r === "push") return "text-[var(--amber)]";
+  return "text-[var(--text-muted)]";
 }
 
-// ── Probability bar ──────────────────────────────────────────────────────────
+function resultLabel(r: string | null): string {
+  if (!r) return "–";
+  return r.charAt(0).toUpperCase() + r.slice(1);
+}
 
-function ProbBar({ model, implied, color = "indigo" }: { model: number; implied: number; color?: string }) {
+// ── Probability bar ────────────────────────────────────────────────────────────
+
+function ProbBar({ model, implied }: { model: number; implied: number }) {
   const [w, setW] = useState(0);
-  useEffect(() => { const t = setTimeout(() => setW(model * 100), 120); return () => clearTimeout(t); }, [model]);
+  useEffect(() => {
+    const t = setTimeout(() => setW(model * 100), 120);
+    return () => clearTimeout(t);
+  }, [model]);
+  const edgeVal = (model - implied) * 100;
+  const tier = edgeTier(edgeVal);
+  const colorClass = tier === "hot" || tier === "high" ? "high" : "indigo";
 
   return (
     <div>
@@ -86,157 +154,97 @@ function ProbBar({ model, implied, color = "indigo" }: { model: number; implied:
         </div>
       </div>
       <div className="prob-track">
-        <div className={`prob-fill ${color}`} style={{ width: `${w}%` }} />
+        <div className={`prob-fill ${colorClass}`} style={{ width: `${w}%` }} />
       </div>
     </div>
   );
 }
 
-// ── Pick card ────────────────────────────────────────────────────────────────
+// ── Pick Card ──────────────────────────────────────────────────────────────────
 
-function PickCard({ pick, featured = false }: { pick: Pick; featured?: boolean }) {
+function PickCard({ pick, featured = false }: { pick: FlatPick; featured?: boolean }) {
   const [open, setOpen] = useState(false);
-  const edgePct = pick.Edge * 100;
-  const tier    = edgeTier(edgePct);
-  const mkt     = pick.Market?.toLowerCase() ?? "moneyline";
+  const tier = edgeTier(pick.edge_pct);
+  const imp  = impliedProb(pick.odds);
+  const dir  = pick.direction && pick.direction !== "NAN" ? pick.direction : null;
 
   return (
-    <div className={`pick-card ${featured ? "featured" : ""}`} onClick={() => setOpen(o => !o)}>
-      {/* Header bar */}
+    <div
+      className={`pick-card ${featured ? "featured" : ""}`}
+      onClick={() => setOpen(o => !o)}
+    >
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--border)]">
         <div className="flex items-center gap-2">
-          <span className={`mkt-badge ${mktBadgeClass(mkt)}`}>{mktLabel(mkt)}</span>
-          {featured && <span className="text-[9px] font-bold tracking-widest text-[var(--gold)]">★ TOP PICK</span>}
-          {pick.model_tier === "tier1" && (
-            <span className="text-[9px] font-bold tracking-widest px-1.5 py-0.5 rounded bg-[var(--indigo)]/20 text-[var(--cyan)] border border-[var(--indigo)]/40">T1</span>
+          <span className={`mkt-badge ${mktBadgeClass(pick.market)}`}>{mktLabel(pick.market)}</span>
+          {featured && (
+            <span className="text-[9px] font-bold tracking-widest text-[var(--gold)]">★ PICK OF THE DAY</span>
           )}
-          {pick.model_tier === "tier2" && (
-            <span className="text-[9px] font-bold tracking-widest px-1.5 py-0.5 rounded bg-[var(--amber)]/20 text-[var(--amber)] border border-[var(--amber)]/40">T2</span>
-          )}
-          {pick.model_tier === "shadow" && (
-            <span className="text-[9px] font-bold tracking-widest px-1.5 py-0.5 rounded bg-[var(--border)] text-[var(--text-muted)]">SHD</span>
+          {dir && (
+            <span className="text-[10px] text-[var(--text-muted)] font-medium">{dir}</span>
           )}
         </div>
         <span className={`edge-badge ${tier}`}>
           {tier === "hot" ? "🔥 " : tier === "high" ? "↑ " : ""}
-          +{edgePct.toFixed(1)}% edge
+          +{pick.edge_pct.toFixed(1)}%
         </span>
       </div>
 
-      {/* Main body */}
+      {/* Body */}
       <div className="px-4 py-4">
         <div className="mb-3">
-          <div className="text-lg font-black text-[var(--text-bright)] leading-tight">{pick.Team}</div>
-          <div className="text-sm text-[var(--text-muted)] mt-0.5">vs {pick.Opponent}</div>
+          <div className="text-lg font-black text-[var(--text-bright)] leading-tight">{pick.team}</div>
+          {pick.matchup && pick.matchup !== pick.team && (
+            <div className="text-sm text-[var(--text-muted)] mt-0.5">{pick.matchup}</div>
+          )}
         </div>
-        <ProbBar model={pick.ModelProb} implied={pick.ImpliedProb} color={tier === "hot" || tier === "high" ? "high" : "indigo"} />
+        <ProbBar model={pick.model_prob} implied={imp} />
       </div>
 
       {/* Footer */}
       <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--border)] bg-[var(--bg-overlay)]">
         <div className="flex items-center gap-3">
-          <span className="text-xl font-black text-[var(--amber)] font-mono">{fmtOdds(pick.BestOdds)}</span>
-          {pick.Sportsbook && <span className="text-[10px] text-[var(--text-muted)] font-medium">{pick.Sportsbook.toUpperCase()}</span>}
-          {pick.weather_context && mkt === "total" && (
-            <span className="text-[10px] text-[var(--cyan)] font-medium">{pick.weather_context}</span>
+          <span className="text-xl font-black text-[var(--amber)] font-mono">{pick.odds_fmt}</span>
+          {pick.sportsbook && (
+            <span className="text-[10px] text-[var(--text-muted)] font-medium">
+              {pick.sportsbook.toUpperCase()}
+            </span>
           )}
         </div>
-        <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
-          {pick.KellyFraction != null && (
-            <span>Kelly <span className="text-[var(--cyan)] font-bold">{(pick.KellyFraction*100).toFixed(1)}%</span></span>
-          )}
-          <span className="text-[var(--border-hi)]">{open ? "▲" : "▼"}</span>
-        </div>
+        <span className="text-[10px] text-[var(--border-hi)]">{open ? "▲" : "▼"}</span>
       </div>
 
       {/* Expanded */}
       {open && (
-        <div className="px-4 py-4 border-t border-[var(--border)] grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[var(--bg-panel)]" onClick={e => e.stopPropagation()}>
+        <div
+          className="px-4 py-4 border-t border-[var(--border)] grid grid-cols-2 sm:grid-cols-3 gap-4 bg-[var(--bg-panel)]"
+          onClick={e => e.stopPropagation()}
+        >
           <div>
             <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">MODEL PROB</div>
-            <div className="text-[var(--indigo)] font-black font-mono">{(pick.ModelProb*100).toFixed(2)}%</div>
+            <div className="text-[var(--indigo)] font-black font-mono">{(pick.model_prob * 100).toFixed(2)}%</div>
           </div>
           <div>
             <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">IMPLIED PROB</div>
-            <div className="text-[var(--text-bright)] font-bold font-mono">{(pick.ImpliedProb*100).toFixed(2)}%</div>
+            <div className="text-[var(--text-bright)] font-bold font-mono">{(imp * 100).toFixed(2)}%</div>
           </div>
           <div>
-            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">KELLY FRACTION</div>
-            <div className="text-[var(--amber)] font-bold font-mono">
-              {pick.KellyFraction != null ? `${(pick.KellyFraction*100).toFixed(2)}%` : "N/A"}
-            </div>
+            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">EDGE</div>
+            <div className="text-[var(--green)] font-bold font-mono">+{pick.edge_pct.toFixed(1)}%</div>
           </div>
-          {pick.BetSize != null && pick.BetSize > 0 && (
+          {pick.line != null && (
             <div>
-              <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">KELLY BET</div>
-              <div className="text-[var(--green)] font-bold font-mono">
-                ${pick.BetSize.toFixed(0)}
-                {pick.ExpectedProfit != null && <span className="text-[var(--text-muted)] font-normal ml-1 text-[10px]">+${pick.ExpectedProfit.toFixed(2)} EV</span>}
-              </div>
+              <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">LINE</div>
+              <div className="text-[var(--amber)] font-bold font-mono">{pick.line}</div>
             </div>
           )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ── Prop card ─────────────────────────────────────────────────────────────────
-
-function PropCard({ prop }: { prop: Prop }) {
-  const [open, setOpen] = useState(false);
-  const tier = edgeTier(prop.EdgePct);
-  const mktDisplay = prop.market.replace(/^(pitcher_|batter_)/, "").replace(/_/g, " ").toUpperCase();
-  const isOver = prop.direction.toUpperCase() === "OVER";
-
-  return (
-    <div className="pick-card" onClick={() => setOpen(o => !o)}>
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--border)]">
-        <div className="flex items-center gap-2">
-          <span className="mkt-badge prop">PROP</span>
-          <span className="text-[10px] text-[var(--text-muted)]">{mktDisplay}</span>
-        </div>
-        <span className={`edge-badge ${tier}`}>+{prop.EdgePct.toFixed(1)}% edge</span>
-      </div>
-
-      <div className="px-4 py-4">
-        <div className="mb-3">
-          <div className="text-lg font-black text-[var(--text-bright)] leading-tight">{prop.player}</div>
-          <div className="flex items-center gap-2 mt-1">
-            <span className={`text-sm font-bold ${isOver ? "text-[var(--green)]" : "text-[var(--red)]"}`}>
-              {prop.direction} {prop.line}
-            </span>
-            <span className="text-xs text-[var(--text-muted)]">{prop.team} vs {prop.opponent}</span>
-          </div>
-        </div>
-        <ProbBar model={prop.ModelProb} implied={prop.ImpliedProb} />
-      </div>
-
-      <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--border)] bg-[var(--bg-overlay)]">
-        <div className="flex items-center gap-3">
-          <span className="text-xl font-black text-[var(--amber)] font-mono">{fmtOdds(prop.BestOdds)}</span>
-          {prop.Sportsbook && <span className="text-[10px] text-[var(--text-muted)]">{prop.Sportsbook.toUpperCase()}</span>}
-        </div>
-        {prop.projected != null && (
-          <span className="text-[10px] text-[var(--text-muted)]">
-            Proj <span className="text-[var(--cyan)] font-bold">{prop.projected.toFixed(1)}</span>
-          </span>
-        )}
-      </div>
-
-      {open && (
-        <div className="px-4 py-4 border-t border-[var(--border)] grid grid-cols-2 sm:grid-cols-3 gap-4 bg-[var(--bg-panel)]" onClick={e => e.stopPropagation()}>
           <div>
-            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">MODEL PROB</div>
-            <div className="text-[var(--indigo)] font-black font-mono">{(prop.ModelProb*100).toFixed(2)}%</div>
-          </div>
-          <div>
-            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">IMPLIED PROB</div>
-            <div className="text-[var(--text-bright)] font-bold font-mono">{(prop.ImpliedProb*100).toFixed(2)}%</div>
+            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">SPORTSBOOK</div>
+            <div className="text-[var(--text)] font-bold">{pick.sportsbook}</div>
           </div>
           <div>
             <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">MARKET</div>
-            <div className="text-[var(--purple)] font-bold">{mktDisplay}</div>
+            <div className="text-[var(--purple)] font-bold">{sectionTitle(pick.market)}</div>
           </div>
         </div>
       )}
@@ -244,182 +252,224 @@ function PropCard({ prop }: { prop: Prop }) {
   );
 }
 
-// ── NRFI card ─────────────────────────────────────────────────────────────────
+// ── Yesterday Result Row ───────────────────────────────────────────────────────
 
-function NrfiCard({ g }: { g: NrfiGame }) {
-  const [open, setOpen] = useState(false);
-  const isNrfi = g.direction === "NRFI";
-  const edge   = g.EdgePct ?? 0;
-  const tier   = edgeTier(edge);
+function ResultRow({ pick }: { pick: FlatPick }) {
+  const pnlColor =
+    pick.profit > 0 ? "text-[var(--green)]" :
+    pick.profit < 0 ? "text-[var(--red)]" :
+    "text-[var(--text-muted)]";
 
   return (
-    <div className="pick-card" onClick={() => setOpen(o => !o)}>
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--border)]">
-        <span className="mkt-badge nrfi">{g.direction}</span>
-        {edge > 0 && <span className={`edge-badge ${tier}`}>+{edge.toFixed(1)}% edge</span>}
+    <div className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
+      <div className="flex items-center gap-2 min-w-0">
+        <span className={`mkt-badge ${mktBadgeClass(pick.market)} shrink-0`}>
+          {mktLabel(pick.market)}
+        </span>
+        <span className="text-sm text-[var(--text)] font-medium truncate">{pick.team}</span>
+        <span className="text-xs text-[var(--text-muted)] font-mono shrink-0">{pick.odds_fmt}</span>
       </div>
-
-      <div className="px-4 py-4">
-        <div className="text-lg font-black text-[var(--text-bright)] leading-tight mb-1">
-          {g.away_team} <span className="text-[var(--text-muted)] font-normal text-sm">@</span> {g.home_team}
-        </div>
-        <div className="text-xs text-[var(--text-muted)] mb-3">
-          {g.away_sp || "TBD"} vs {g.home_sp || "TBD"}
-        </div>
-        {g.projected_nrfi != null && g.implied_nrfi != null && (
-          <ProbBar model={g.projected_nrfi} implied={g.implied_nrfi} color={isNrfi ? "high" : "indigo"} />
-        )}
+      <div className="flex items-center gap-3 shrink-0 ml-2">
+        <span className={`text-xs font-bold ${resultClass(pick.result)}`}>
+          {resultLabel(pick.result)}
+        </span>
+        <span className={`text-sm font-black font-mono ${pnlColor}`}>
+          {pick.profit >= 0 ? "+" : ""}{pick.profit.toFixed(2)}u
+        </span>
       </div>
-
-      <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--border)] bg-[var(--bg-overlay)]">
-        <div className="flex items-center gap-3">
-          {g.BestOdds != null && <span className="text-xl font-black text-[var(--amber)] font-mono">{fmtOdds(g.BestOdds)}</span>}
-          {g.Sportsbook && <span className="text-[10px] text-[var(--text-muted)]">{g.Sportsbook.toUpperCase()}</span>}
-        </div>
-      </div>
-
-      {open && (
-        <div className="px-4 py-4 border-t border-[var(--border)] grid grid-cols-2 gap-4 bg-[var(--bg-panel)]" onClick={e => e.stopPropagation()}>
-          <div>
-            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">PROJ NRFI%</div>
-            <div className="text-[var(--cyan)] font-black font-mono">{g.projected_nrfi != null ? `${(g.projected_nrfi*100).toFixed(1)}%` : "N/A"}</div>
-          </div>
-          <div>
-            <div className="text-[9px] font-semibold tracking-widest text-[var(--text-muted)] mb-1">IMPLIED NRFI%</div>
-            <div className="text-[var(--text-bright)] font-bold font-mono">{g.implied_nrfi != null ? `${(g.implied_nrfi*100).toFixed(1)}%` : "N/A"}</div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
-// ── Card grid section ─────────────────────────────────────────────────────────
+// ── Section wrapper ────────────────────────────────────────────────────────────
 
-function Section({ title, color, count, children }: { title: string; color: string; count: number; children: React.ReactNode }) {
+function Section({ title, color, count, children }: {
+  title: string; color: string; count: number; children: React.ReactNode;
+}) {
   if (count === 0) return null;
+  const borderClass = color.replace("text-", "border-").replace("]", "/30]");
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
         <h2 className={`text-sm font-bold ${color}`}>{title}</h2>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${color.replace("text-", "border-").replace("]", "/30]")} bg-[var(--bg-raised)]`}>{count}</span>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${borderClass} bg-[var(--bg-raised)]`}>
+          {count}
+        </span>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {children}
-      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{children}</div>
     </div>
   );
 }
 
-// ── Page ─────────────────────────────────────────────────────────────────────
+// ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const [data, setData]         = useState<PicksData|null>(null);
-  const [sport, setSport]       = useState("mlb");
-  const [market, setMarket]     = useState("all");
-  const [minEdgePct, setMinEdgePct] = useState(3);
-  const [tierFilter, setTierFilter] = useState("all");
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState("");
-  const [ts, setTs]             = useState("");
+  const [today,    setToday]    = useState<TodayData | null>(null);
+  const [yest,     setYest]     = useState<YestData | null>(null);
+  const [sport,    setSport]    = useState("all");
+  const [mktFilt,  setMktFilt]  = useState("all");
+  const [minEdge,  setMinEdge]  = useState(3);
+  const [showYest, setShowYest] = useState(false);
+  const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState("");
+  const [ts,       setTs]       = useState("");
 
   const load = useCallback(() => {
-    setLoading(true); setError("");
-    const minEdgeParam = (minEdgePct / 100).toFixed(2);
-    fetch(`${API}/picks/${sport}?bankroll=1000&min_edge=${minEdgeParam}`)
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); setTs(new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })); })
-      .catch(e => { setError(e.message); setLoading(false); });
-  }, [sport, minEdgePct]);
+    setLoading(true);
+    setError("");
+    Promise.all([
+      fetch("/data/today_picks.json").then(r => { if (!r.ok) throw new Error(`today_picks: ${r.status}`); return r.json(); }),
+      fetch("/data/yesterday_results.json").then(r => { if (!r.ok) throw new Error(`yesterday: ${r.status}`); return r.json(); }),
+    ])
+      .then(([t, y]: [TodayData, YestData]) => {
+        setToday(t);
+        setYest(y);
+        setLoading(false);
+        setTs(new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }));
+      })
+      .catch((e: Error) => { setError(e.message); setLoading(false); });
+  }, []);
 
   useEffect(() => { load(); }, [load]);
 
-  const d = data;
-  const ml    = d?.moneyline ?? [];
-  const sp    = d?.spread ?? [];
-  const tot   = d?.totals ?? [];
-  const props = d?.props ?? [];
-  const nrfi  = d?.nrfi ?? [];
+  // ── Build pick set ──────────────────────────────────────────────────────────
 
-  // Tier filter helper
-  const tierMatch = (t?: string | null) =>
-    tierFilter === "all" || (t ?? "tier1") === tierFilter;
+  const allPicks: FlatPick[] = today?.picks ?? [];
+  const bySport = today?.by_sport ?? {};
+  const sports  = Object.keys(bySport);
 
-  // Sort each section by edge descending, apply tier filter
-  const sortML   = [...ml].filter(p => tierMatch(p.model_tier)).sort((a, b)  => b.Edge - a.Edge);
-  const sortSP   = [...sp].filter(p => tierMatch(p.model_tier)).sort((a, b)  => b.Edge - a.Edge);
-  const sortTot  = [...tot].filter(p => tierMatch(p.model_tier)).sort((a, b) => b.Edge - a.Edge);
-  const sortProp = [...props].sort((a, b) => b.EdgePct - a.EdgePct);
-  const sortNrfi = [...nrfi].sort((a, b) => (b.EdgePct ?? 0) - (a.EdgePct ?? 0));
+  // Active sport slice
+  const sportPicks: FlatPick[] = sport === "all" ? allPicks : (bySport[sport] ?? []);
 
-  // Featured pick: highest edge across all game picks
-  const allGamePicks = [...sortML, ...sortSP, ...sortTot];
-  const featuredPick = allGamePicks[0] ?? null;
+  // Available market filters for current sport slice
+  const availMarkets: string[] = [
+    "all",
+    ...Array.from(new Set(sportPicks.map(p => p.market))),
+  ];
 
-  const totalCount = ml.length + sp.length + tot.length + props.length + nrfi.length;
+  // Apply market + min edge filters, sort by edge desc
+  const filteredPicks: FlatPick[] = sportPicks
+    .filter(p => mktFilt === "all" || p.market === mktFilt)
+    .filter(p => p.edge_pct >= minEdge)
+    .sort((a, b) => b.edge_pct - a.edge_pct);
 
-  const show = (mkt: string) => market === "all" || market === mkt;
+  // Group by market for sectioned display
+  const byMarket: Record<string, FlatPick[]> = {};
+  for (const p of filteredPicks) {
+    if (!byMarket[p.market]) byMarket[p.market] = [];
+    byMarket[p.market].push(p);
+  }
+  const sortedMarkets: string[] = [
+    ...MARKET_ORDER.filter(m => byMarket[m]),
+    ...Object.keys(byMarket).filter(m => !MARKET_ORDER.includes(m)),
+  ];
+
+  // ── Yesterday stats ────────────────────────────────────────────────────────
+
+  const yestPl    = yest?.pl ?? 0;
+  const yestWins  = yest?.wins ?? 0;
+  const yestLoss  = yest?.losses ?? 0;
+  const yestColor = yestPl >= 0 ? "text-[var(--green)]" : "text-[var(--red)]";
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 pb-24 md:pb-8 space-y-6">
 
+      {/* ── Yesterday bar ── */}
+      {!loading && yest && (
+        <div
+          className="rounded-xl border border-[var(--border-hi)] bg-[var(--bg-raised)] px-4 py-3 cursor-pointer select-none"
+          onClick={() => setShowYest(v => !v)}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-[10px] font-semibold tracking-widest text-[var(--text-muted)]">
+                YESTERDAY · {yest.date}
+              </span>
+              <span className="text-sm font-bold text-[var(--text)]">
+                {yestWins}W–{yestLoss}L
+              </span>
+              <span className={`text-sm font-black font-mono ${yestColor}`}>
+                {yestPl >= 0 ? "+" : ""}{yestPl.toFixed(2)}u
+              </span>
+              <span className="text-[10px] text-[var(--text-muted)]">
+                ({yest.count} picks)
+              </span>
+            </div>
+            <span className="text-[10px] text-[var(--text-muted)] shrink-0">
+              {showYest ? "▲ Hide" : "▼ Results"}
+            </span>
+          </div>
+
+          {showYest && yest.picks.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-[var(--border)]">
+              {yest.picks.map(p => <ResultRow key={p.pick_id} pick={p} />)}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── POTD ── */}
+      {!loading && today?.potd && (
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <h2 className="text-sm font-bold text-[var(--gold)]">★ Pick of the Day</h2>
+            <span className="text-[10px] text-[var(--text-muted)]">{today.date}</span>
+          </div>
+          <PickCard pick={today.potd} featured={true} />
+        </div>
+      )}
+
       {/* ── Controls ── */}
       <div className="flex flex-col gap-3">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-          {/* Sport */}
-          <div className="flex items-center gap-2">
-            {SPORTS.map(s => (
-              <button key={s.key} onClick={() => setSport(s.key)}
-                className={`sport-tab ${sport === s.key ? "active" : ""}`}>
-                {s.label}
-              </button>
-            ))}
-          </div>
 
-          {/* Market filter */}
-          <div className="flex items-center gap-1.5 flex-wrap sm:ml-auto">
-            {MARKETS.map(m => (
-              <button key={m.key} onClick={() => setMarket(m.key)}
-                className={`text-[11px] font-semibold px-3 py-1 rounded-lg border transition-all ${
-                  market === m.key
-                    ? "bg-[var(--bg-overlay)] border-[var(--border-hi)] text-[var(--text-bright)]"
-                    : "border-transparent text-[var(--text-muted)] hover:text-[var(--text)]"
-                }`}>
-                {m.label}
-              </button>
-            ))}
-          </div>
+        {/* Sport tabs */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => { setSport("all"); setMktFilt("all"); }}
+            className={`sport-tab ${sport === "all" ? "active" : ""}`}
+          >
+            All&nbsp;<span className="opacity-60">({allPicks.length})</span>
+          </button>
+          {sports.map(s => (
+            <button
+              key={s}
+              onClick={() => { setSport(s); setMktFilt("all"); }}
+              className={`sport-tab ${sport === s ? "active" : ""}`}
+            >
+              {sportLabel(s)}&nbsp;
+              <span className="opacity-60">({bySport[s]?.length ?? 0})</span>
+            </button>
+          ))}
         </div>
 
-        {/* Edge + Tier filters */}
+        {/* Market filter */}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {availMarkets.map(m => (
+            <button
+              key={m}
+              onClick={() => setMktFilt(m)}
+              className={`text-[11px] font-semibold px-3 py-1 rounded-lg border transition-all ${
+                mktFilt === m
+                  ? "bg-[var(--bg-overlay)] border-[var(--border-hi)] text-[var(--text-bright)]"
+                  : "border-transparent text-[var(--text-muted)] hover:text-[var(--text)]"
+              }`}
+            >
+              {m === "all" ? "All" : mktLabel(m)}
+            </button>
+          ))}
+        </div>
+
+        {/* Min edge slider */}
         <div className="flex items-center gap-4 text-[11px] text-[var(--text-muted)]">
           <label className="flex items-center gap-2 cursor-pointer">
             <span className="font-semibold">MIN EDGE</span>
             <input
-              type="range" min={1} max={15} step={1} value={minEdgePct}
-              onChange={e => setMinEdgePct(Number(e.target.value))}
+              type="range" min={0} max={20} step={1} value={minEdge}
+              onChange={e => setMinEdge(Number(e.target.value))}
               className="w-20 accent-[var(--indigo)]"
             />
-            <span className="font-bold text-[var(--text-bright)] font-mono w-8">{minEdgePct}%</span>
+            <span className="font-bold text-[var(--text-bright)] font-mono w-8">{minEdge}%</span>
           </label>
-          <div className="flex items-center gap-1.5">
-            <span className="font-semibold">TIER</span>
-            {[
-              { key: "all", label: "All" },
-              { key: "tier1", label: "T1" },
-              { key: "tier2", label: "T2" },
-              { key: "shadow", label: "SHD" },
-            ].map(t => (
-              <button key={t.key} onClick={() => setTierFilter(t.key)}
-                className={`text-[10px] font-bold px-2 py-0.5 rounded border transition-all ${
-                  tierFilter === t.key
-                    ? "bg-[var(--bg-overlay)] border-[var(--border-hi)] text-[var(--text-bright)]"
-                    : "border-transparent text-[var(--text-muted)] hover:text-[var(--text)]"
-                }`}>
-                {t.label}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -434,34 +484,29 @@ export default function DashboardPage() {
           ) : (
             <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--green)] live-dot" />
-              {totalCount} picks · updated {ts}
+              {filteredPicks.length} picks shown · {today?.date} · refreshed {ts}
             </div>
           )}
-          {d?.display_date && <span className="text-xs text-[var(--text-muted)]">— {d.display_date}</span>}
         </div>
-        <button onClick={load} className="text-[11px] text-[var(--indigo)] font-semibold hover:opacity-70 transition-opacity">↻ Refresh</button>
+        <button
+          onClick={load}
+          className="text-[11px] text-[var(--indigo)] font-semibold hover:opacity-70 transition-opacity"
+        >
+          ↻ Refresh
+        </button>
       </div>
 
-      {/* ── Error state ── */}
+      {/* ── Error ── */}
       {error && (
         <div className="rounded-xl border border-[var(--red)]/40 bg-[var(--red-dim)] px-4 py-3 text-sm text-[var(--red)]">
           {error}
         </div>
       )}
 
-      {/* ── Message (no picks) ── */}
-      {!loading && !error && d?.message && totalCount === 0 && (
-        <div className="rounded-2xl border border-[var(--border-hi)] bg-[var(--bg-raised)] px-6 py-12 text-center">
-          <div className="text-4xl mb-3">📭</div>
-          <div className="text-[var(--text-bright)] font-bold mb-1">No picks today</div>
-          <div className="text-sm text-[var(--text-muted)]">{d.message}</div>
-        </div>
-      )}
-
       {/* ── Skeleton ── */}
       {loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[1,2,3,4].map(i => (
+          {[1, 2, 3, 4].map(i => (
             <div key={i} className="rounded-2xl border border-[var(--border-hi)] overflow-hidden">
               <div className="h-10 skeleton" />
               <div className="p-4 space-y-3">
@@ -475,59 +520,33 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ── Featured pick ── */}
-      {!loading && featuredPick && market === "all" && (
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <h2 className="text-sm font-bold text-[var(--gold)]">★ Best Edge Today</h2>
+      {/* ── Empty state ── */}
+      {!loading && !error && filteredPicks.length === 0 && (
+        <div className="rounded-2xl border border-[var(--border-hi)] bg-[var(--bg-raised)] px-6 py-12 text-center">
+          <div className="text-4xl mb-3">📭</div>
+          <div className="text-[var(--text-bright)] font-bold mb-1">No picks match filters</div>
+          <div className="text-sm text-[var(--text-muted)]">
+            Try lowering the min edge slider or selecting a different market.
           </div>
-          <PickCard pick={featuredPick} featured={true} />
         </div>
       )}
 
-      {/* ── Cards by market ── */}
-      {!loading && !error && (
+      {/* ── Picks by market section ── */}
+      {!loading && !error && filteredPicks.length > 0 && (
         <div className="space-y-8">
-          {show("moneyline") && (
-            <Section title="Moneyline" color="text-[var(--cyan)]" count={sortML.length}>
-              {sortML.map((p, i) => <PickCard key={i} pick={p} />)}
+          {sortedMarkets.map(mkt => (
+            <Section
+              key={mkt}
+              title={sectionTitle(mkt)}
+              color={MARKET_COLORS[mkt] ?? "text-[var(--text)]"}
+              count={byMarket[mkt].length}
+            >
+              {byMarket[mkt].map(p => <PickCard key={p.pick_id} pick={p} />)}
             </Section>
-          )}
-          {show("spread") && (
-            <Section title="Spread / Run Line" color="text-[var(--green)]" count={sortSP.length}>
-              {sortSP.map((p, i) => <PickCard key={i} pick={p} />)}
-            </Section>
-          )}
-          {show("totals") && (
-            <Section title="Totals (O/U)" color="text-[var(--blue)]" count={sortTot.length}>
-              {sortTot.map((p, i) => <PickCard key={i} pick={p} />)}
-            </Section>
-          )}
-          {show("props") && (
-            <Section title="Player Props" color="text-[var(--purple)]" count={sortProp.length}>
-              {sortProp.map((p, i) => <PropCard key={i} prop={p} />)}
-            </Section>
-          )}
-          {show("nrfi") && (
-            <Section title="NRFI / YRFI" color="text-[var(--amber)]" count={sortNrfi.length}>
-              {sortNrfi.map((g, i) => <NrfiCard key={i} g={g} />)}
-            </Section>
-          )}
+          ))}
         </div>
       )}
 
-      {/* ── No results for filter ── */}
-      {!loading && !error && totalCount > 0 && market !== "all" && (() => {
-        const cnt = market === "moneyline" ? ml.length : market === "spread" ? sp.length : market === "totals" ? tot.length : market === "props" ? props.length : nrfi.length;
-        if (cnt > 0) return null;
-        return (
-          <div className="rounded-2xl border border-[var(--border-hi)] bg-[var(--bg-raised)] px-6 py-10 text-center">
-            <div className="text-3xl mb-2">🔍</div>
-            <div className="text-[var(--text-bright)] font-bold mb-1">No {market} picks today</div>
-            <div className="text-sm text-[var(--text-muted)]">Model didn&apos;t find an edge in this market for today&apos;s slate.</div>
-          </div>
-        );
-      })()}
     </div>
   );
 }

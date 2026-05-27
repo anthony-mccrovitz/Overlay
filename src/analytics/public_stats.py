@@ -122,6 +122,89 @@ def write_public_stats() -> None:
     _sport_keys = sorted({p.get("sport", "") for p in card_picks if p.get("sport")})
     by_sport = {sport: _sport_stats(sport) for sport in _sport_keys}
 
+    # ── Today's picks + yesterday's results — served to dashboard ───────────────
+    from datetime import date as _date, timedelta as _td
+    _today_str     = _date.today().isoformat()               # "2026-05-27"
+    _yesterday_str = (_date.today() - _td(days=1)).isoformat()  # "2026-05-26"
+
+    def _fmt_pick(p: dict) -> dict:
+        odds = p.get("odds", 0) or 0
+        return {
+            "pick_id":    p.get("pick_id", ""),
+            "date":       p.get("date", ""),
+            "sport":      p.get("sport", ""),
+            "market":     p.get("market", ""),
+            "team":       p.get("team", ""),
+            "matchup":    p.get("matchup", ""),
+            "direction":  p.get("direction", ""),
+            "line":       p.get("line"),
+            "odds":       odds,
+            "odds_fmt":   f"+{odds}" if odds > 0 else str(odds),
+            "sportsbook": p.get("sportsbook", ""),
+            "edge_pct":   p.get("edge_pct", 0),
+            "model_prob": p.get("model_prob", 0),
+            "result":     p.get("result"),
+            "profit":     round(float(p.get("profit") or 0), 2),
+        }
+
+    today_card = [_fmt_pick(p) for p in card_picks
+                  if str(p.get("date", "")).startswith(_today_str)
+                  and not p.get("result")]
+
+    yesterday_graded = [_fmt_pick(p) for p in card_picks
+                        if str(p.get("date", "")).startswith(_yesterday_str)
+                        and p.get("result") in ("win", "loss", "void")]
+
+    # Pick of the day: highest-edge pending ML pick today (not totals/F5/shadow)
+    # Falls back to best win yesterday if nothing pending today
+    _potd = None
+    _ml_today = [p for p in today_card
+                 if p.get("market") in ("moneyline", "ml")
+                 and (p.get("edge_pct") or 0) >= 5]
+    if _ml_today:
+        _potd = max(_ml_today, key=lambda x: x.get("edge_pct") or 0)
+    elif today_card:
+        _potd = max(today_card, key=lambda x: x.get("edge_pct") or 0)
+    elif yesterday_graded:
+        _wins = [p for p in yesterday_graded if p.get("result") == "win"
+                 and p.get("market") in ("moneyline", "ml")]
+        if _wins:
+            _potd = max(_wins, key=lambda x: x.get("profit") or 0)
+
+    _today_meta = {
+        "date":      _today_str,
+        "picks":     sorted(today_card,     key=lambda x: -(x.get("edge_pct") or 0)),
+        "potd":      _potd,
+        "count":     len(today_card),
+        "by_sport":  {},
+    }
+    for p in today_card:
+        sp = p.get("sport", "other")
+        _today_meta["by_sport"].setdefault(sp, []).append(p)
+
+    _yesterday_meta = {
+        "date":        _yesterday_str,
+        "picks":       sorted(yesterday_graded, key=lambda x: x.get("date", "")),
+        "wins":        sum(1 for p in yesterday_graded if p.get("result") == "win"),
+        "losses":      sum(1 for p in yesterday_graded if p.get("result") == "loss"),
+        "pl":          round(sum(float(p.get("profit") or 0) for p in yesterday_graded), 2),
+        "count":       len(yesterday_graded),
+    }
+
+    # Write to web/public/data/ so Vercel can serve them
+    for fname, obj in [
+        ("today_picks.json",     _today_meta),
+        ("yesterday_results.json", _yesterday_meta),
+    ]:
+        try:
+            out = _WEB_OUT_FILE.parent / fname
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with open(out, "w", encoding="utf-8") as _f:
+                import json as _json
+                _json.dump(obj, _f, indent=2)
+        except Exception as _we:
+            print(f"  [stats] warning: {fname} write failed: {_we}")
+
     # ── Recent picks — last 10 settled card picks, newest first ───────────────
     recent_settled = sorted(
         non_push,

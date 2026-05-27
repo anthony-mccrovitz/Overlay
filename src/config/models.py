@@ -38,7 +38,7 @@ MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 1 (proven) — these go on the card ────────────────────────────────
     ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
     ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
-    ("tennis", "moneyline"): {"status": "live",       "tier": "t1", "label": "Tennis Elo"},
+    ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo (4W-27L shadow, rebuilding)"},
     ("soccer", "moneyline"): {"status": "live",       "tier": "t1", "label": "Soccer Dixon-Coles"},
 
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────

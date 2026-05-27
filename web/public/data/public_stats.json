@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-27T15:41:51.046528+00:00",
+  "updated_at": "2026-05-27T16:56:10.801577+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -12,9 +12,9 @@
       "label": "MLB Totals (Weather)"
     },
     "tennis_moneyline": {
-      "status": "live",
-      "tier": "t1",
-      "label": "Tennis Elo"
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Tennis Elo (4W-27L shadow, rebuilding)"
     },
     "soccer_moneyline": {
       "status": "live",
@@ -203,9 +203,9 @@
     }
   },
   "summary": {
-    "total_picks": 192,
+    "total_picks": 184,
     "settled": 160,
-    "pending": 27,
+    "pending": 19,
     "wins": 101,
     "losses": 58,
     "pushes": 1,
@@ -224,18 +224,6 @@
     "streak": 0
   },
   "by_market": {
-    "f5_total": {
-      "total": 8,
-      "settled": 0,
-      "pending": 8,
-      "wins": 0,
-      "losses": 0,
-      "pushes": 0,
-      "win_rate": 0.0,
-      "units_profit": 0,
-      "roi": 0.0,
-      "streak": 0
-    },
     "moneyline": {
       "total": 78,
       "settled": 64,
@@ -287,9 +275,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 94,
+      "total": 86,
       "settled": 68,
-      "pending": 26,
+      "pending": 18,
       "wins": 41,
       "losses": 26,
       "win_rate": 0.6119,

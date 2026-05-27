@@ -1174,7 +1174,7 @@ def _run_mlb_daily(args, sport: str):
                             "model_prob": fp["model_prob"],
                             "edge_pct":   fp["edge_pct"],
                             "stake":      1.0,
-                            "card_pick":  True,   # F5 now live — validated line guard in f5_totals.py
+                            "card_pick":  is_live("mlb", "f5_total"),  # shadow until 30+ graded picks
                             "result":     None,
                             "profit":     None,
                             "recorded_at": now,
@@ -1239,11 +1239,12 @@ def _run_mlb_daily(args, sport: str):
             }
             for fp in _f5_for_ou
         ]
-        _combined_ou = sorted(_game_totals_ou + _f5_norm, key=lambda x: float(x.get("Edge") or 0), reverse=True)[:5]
+        # totals_card = game totals ONLY (F5 has its own dedicated f5_card)
+        _combined_ou = sorted(_game_totals_ou, key=lambda x: float(x.get("Edge") or 0), reverse=True)[:5]
         if _combined_ou:
             _ou_path = render_totals_card_html(_combined_ou, sport=sport, card_date=_game_date_ou)
             if _ou_path:
-                print(f"  O/U card (game totals + F5, {len(_combined_ou)} picks) → {_ou_path}")
+                print(f"  O/U card (game totals, {len(_combined_ou)} picks) → {_ou_path}")
     except Exception as _ou_rebuild_err:
         print(f"  [ou rebuild] {_ou_rebuild_err}")
 
@@ -1983,28 +1984,9 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
         except Exception:
             pass
 
-    # ── Totals card (over/under picks) — game totals + F5 totals, top 5 by edge ─
+    # ── Totals card (over/under picks) — game totals ONLY (F5 has its own f5_card) ─
     game_totals = [p for p in picks_list if str(p.get("Market", "")).lower() == "total"]
-    # Normalize F5 picks into the same schema so they can appear on the O/U card
-    _f5_plays_for_card = locals().get("f5_plays") or []
-    f5_as_totals = []
-    for fp in _f5_plays_for_card:
-        f5_as_totals.append({
-            "Market":    "total",
-            "Team":      f"{fp.get('direction','OVER')} {fp.get('line','')} (F5)",
-            "Direction": fp.get("direction", "OVER"),
-            "MarketLine": fp.get("line"),
-            "BetLine":   fp.get("line"),
-            "BestOdds":  fp.get("odds", 0),
-            "Edge":      float(fp.get("edge_pct", 0) or 0),
-            "Sportsbook": fp.get("book", ""),
-            "Matchup":   fp.get("matchup", ""),
-            "AwayTeam":  fp.get("away_team", ""),
-            "HomeTeam":  fp.get("home_team", ""),
-            "ModelProb": fp.get("model_prob", 0),
-            "Why":       f"F5 proj {fp.get('projected_total','')}",
-        })
-    combined_ou = sorted(game_totals + f5_as_totals, key=lambda x: float(x.get("Edge") or 0), reverse=True)
+    combined_ou = sorted(game_totals, key=lambda x: float(x.get("Edge") or 0), reverse=True)
     ou_top5 = combined_ou[:5]
     if ou_top5:
         # New ChefTonyBets totals card
