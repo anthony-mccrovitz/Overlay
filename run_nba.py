@@ -170,6 +170,17 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     print("\n  ChefTonyBets — NBA Picks Pipeline")
     print(f"  Date: {today}")
+
+    # ── Schedule guard: skip if no NBA games today ─────────────────────────────
+    try:
+        from scripts.schedule_check import validate_and_log
+        date_fmt = f"{today[:4]}-{today[4:6]}-{today[6:]}"
+        if not validate_and_log("nba", date_fmt):
+            return
+    except Exception as _sce:
+        print(f"  ⚠  Schedule check skipped ({_sce})")
+    # ──────────────────────────────────────────────────────────────────────────
+
     print("  Fetching NBA team ratings...")
 
     # Pre-load injury and rest data

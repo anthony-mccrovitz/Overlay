@@ -208,6 +208,16 @@ def find_f5_edges(
             continue
 
         line = float(odds["line"])
+
+        # ── Sanity guard: F5 totals are always 3.5–6.5 runs. ──────────────────
+        # If we get a line > 7.0 it means the API returned a full-game total
+        # (9.5, 8.5, etc.) under the wrong market key — discard it.
+        if line > 7.0:
+            continue
+        # Also reject implausibly low lines (model data error)
+        if line < 2.5:
+            continue
+        # ──────────────────────────────────────────────────────────────────────
         # Estimate prob of going over using normal approx (std dev ~2.5 runs for 5-inning totals)
         F5_STD = 2.5
         z = (proj - line) / F5_STD
@@ -241,21 +251,25 @@ def find_f5_edges(
                 pick_odds = odds["under_odds"]
                 edge = edge_under
 
+            matchup_str = f"{m['away_team']} @ {m['home_team']}"
             edges.append({
-                "type":       "f5_total",
-                "market":     "f5_total",
-                "direction":  direction,
-                "home_team":  m["home_team"],
-                "away_team":  m["away_team"],
-                "matchup":    f"{m['away_team']} @ {m['home_team']}",
-                "projected_total":   proj,
-                "line":       line,
-                "model_prob": round(model_prob, 4),
-                "implied_prob": round(implied_over if direction == "OVER" else 1 - implied_over, 4),
-                "edge_pct":   round(edge * 100, 1),
-                "odds":       pick_odds,
-                "book":       odds["book"],
-                "label":      f"F5 {direction} {line} ({m['away_team']} @ {m['home_team']})",
+                "type":            "f5_total",
+                "market":          "f5_total",
+                "direction":       direction,
+                "home_team":       m["home_team"],
+                "away_team":       m["away_team"],
+                "matchup":         matchup_str,
+                # team field = human-readable "F5 UNDER 4.5 (SEA @ OAK)" so the
+                # card and picks record clearly identifies the game, not just "UNDER 4.5"
+                "team":            f"F5 {direction} {line} ({matchup_str})",
+                "projected_total": proj,
+                "line":            line,
+                "model_prob":      round(model_prob, 4),
+                "implied_prob":    round(implied_over if direction == "OVER" else 1 - implied_over, 4),
+                "edge_pct":        round(edge * 100, 1),
+                "odds":            pick_odds,
+                "book":            odds["book"],
+                "label":           f"F5 {direction} {line} ({matchup_str})",
             })
 
     edges.sort(key=lambda x: abs(x.get("edge_pct", 0)), reverse=True)

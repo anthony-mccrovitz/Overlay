@@ -191,6 +191,15 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     print(f"\n  [NHL] Generating picks for {game_date.isoformat()}")
 
+    # ── Schedule guard: skip if no NHL games today ─────────────────────────────
+    try:
+        from scripts.schedule_check import validate_and_log
+        if not validate_and_log("nhl", game_date.isoformat()):
+            return
+    except Exception as _sce:
+        print(f"  ⚠  Schedule check skipped ({_sce})")
+    # ──────────────────────────────────────────────────────────────────────────
+
     # Fetch schedule
     schedule = fetch_today_schedule(game_date)
     if schedule:

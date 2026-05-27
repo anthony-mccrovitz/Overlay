@@ -50,7 +50,7 @@ MODELS: dict[tuple[str, str], dict] = {
 
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
     ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (rebuild)"},
-    ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals"},
+    ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals (line-validated, building sample)"},
     ("mlb", "nrfi"):               {"status": "incubating", "tier": "shadow", "label": "MLB NRFI"},
     ("nba", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "NBA Moneyline"},
     ("nba", "player_points"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Points"},

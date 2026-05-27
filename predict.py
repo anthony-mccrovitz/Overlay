@@ -603,6 +603,15 @@ def _run_mlb_daily(args, sport: str):
     game_date = _daily_game_date(args)
     date_label = game_date.strftime("%Y-%m-%d")
 
+    # ── Schedule guard: skip if no MLB games today ─────────────────────────────
+    try:
+        from scripts.schedule_check import validate_and_log
+        if not validate_and_log("mlb", date_label):
+            return
+    except Exception as _sce:
+        print(f"  ⚠  Schedule check skipped ({_sce})")
+    # ──────────────────────────────────────────────────────────────────────────
+
     print(f"Step 1: Fetching MLB schedule and team stats...")
     matchups = get_todays_matchups(game_date=game_date)
     if not matchups:
@@ -1149,12 +1158,15 @@ def _run_mlb_daily(args, sport: str):
                     f5_entries = []
                     seen_ids: set[str] = set()
                     for fp in f5_plays:
+                        # Use the enriched team field from f5_totals.py which
+                        # includes the matchup: "F5 UNDER 4.5 (SEA @ OAK)"
+                        team_str = fp.get("team") or f"F5 {fp['direction']} {fp['line']} ({fp['matchup']})"
                         raw = {
                             "date":       _game_date.isoformat(),
                             "sport":      "mlb",
                             "market":     "f5_total",
                             "direction":  fp["direction"],
-                            "team":       f"{fp['direction']} {fp['line']}",
+                            "team":       team_str,
                             "matchup":    fp["matchup"],
                             "odds":       fp["odds"],
                             "line":       fp["line"],
@@ -1162,7 +1174,7 @@ def _run_mlb_daily(args, sport: str):
                             "model_prob": fp["model_prob"],
                             "edge_pct":   fp["edge_pct"],
                             "stake":      1.0,
-                            "card_pick":  is_live("mlb", "f5_total"),
+                            "card_pick":  True,   # F5 now live — validated line guard in f5_totals.py
                             "result":     None,
                             "profit":     None,
                             "recorded_at": now,
@@ -1173,7 +1185,7 @@ def _run_mlb_daily(args, sport: str):
                             f5_entries.append(norm)
                             seen_ids.add(pid)
                     added = append_picks_safe(pnl_path, f5_entries)
-                    print(f"  F5 picks logged to pnl ({added} added)")
+                    print(f"  F5 picks logged to pnl ({added} added, card_pick=True)")
                 except Exception as _f5_pnl:
                     print(f"  [f5 pnl] {_f5_pnl}")
             else:

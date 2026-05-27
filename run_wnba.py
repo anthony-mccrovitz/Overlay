@@ -140,6 +140,15 @@ def run_wnba(args: argparse.Namespace) -> int:
     print(f"  WNBA Picks — {game_date.strftime('%B %d, %Y')}")
     print(f"{'='*60}")
 
+    # ── Schedule guard: skip if no WNBA games today ────────────────────────────
+    try:
+        from scripts.schedule_check import validate_and_log
+        if not validate_and_log("wnba", game_date.isoformat()):
+            return 0
+    except Exception as _sce:
+        print(f"  ⚠  Schedule check skipped ({_sce})")
+    # ──────────────────────────────────────────────────────────────────────────
+
     # 1. Fetch odds
     events = fetch_wnba_odds(refresh=refresh)
     if not events:

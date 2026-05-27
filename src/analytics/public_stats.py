@@ -150,8 +150,23 @@ def write_public_stats() -> None:
         {"season": 2024, "accuracy": 0.538, "high_conf": 0.571, "games": 2430, "edge_pct": 8},
     ]
 
+    # ── Algo status — surface live/shadow/paused to the web app ─────────────────
+    try:
+        from src.config.models import MODELS
+        algo_status = {
+            f"{sport}_{market}": {
+                "status": cfg.get("status", "unknown"),
+                "tier":   cfg.get("tier", "shadow"),
+                "label":  cfg.get("label", f"{sport} {market}"),
+            }
+            for (sport, market), cfg in MODELS.items()
+        }
+    except Exception:
+        algo_status = {}
+
     stats = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
+        "algo_status": algo_status,
         "summary": {
             "total_picks":    len(card_picks),
             "settled":        len(settled),

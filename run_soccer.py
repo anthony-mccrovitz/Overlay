@@ -257,6 +257,15 @@ def run_soccer(args: argparse.Namespace) -> int:
     print(f"  Soccer Picks — {game_date.strftime('%B %d, %Y')}")
     print(f"{'='*60}")
 
+    # ── Schedule guard: skip if no soccer games across any tracked league ──────
+    try:
+        from scripts.schedule_check import validate_and_log
+        if not validate_and_log("soccer", game_date.isoformat()):
+            return 0
+    except Exception as _sce:
+        print(f"  ⚠  Schedule check skipped ({_sce})")
+    # ──────────────────────────────────────────────────────────────────────────
+
     # 1. Load or fit model (v2: rolling Elo + 2-param Poisson)
     if do_fit:
         model = SoccerModelV2()
