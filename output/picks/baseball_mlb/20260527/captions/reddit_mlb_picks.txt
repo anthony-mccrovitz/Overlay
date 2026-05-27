@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 5/27/26 (Wednesday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 37-26 (58.7% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Tampa Bay Rays vs  | -102 | +16.7% | FanDuel |
+| Miami Marlins vs  | +136 | +14.9% | FanDuel |
+| New York Yankees vs  | -149 | +14.7% | DraftKings |
+| Houston Astros vs  | +140 | +15.9% | theScore Bet |
+| Cincinnati Reds vs  | +105 | +12.1% | theScore Bet |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Seattle Mariners @ Athletics NRFI (Logan Gilbert vs Jeffrey Springs) | NRFI +105 | 66% | Caesars |
+| New York Yankees @ Kansas City Royals NRFI (Gerrit Cole vs Noah Cameron) | NRFI -102 | 66% | FanDuel |
+| Cincinnati Reds @ New York Mets NRFI (Andrew Abbott vs Huascar Brazobán) | NRFI -115 | 67% | Caesars |
+| Atlanta Braves @ Boston Red Sox NRFI (Bryce Elder vs Connelly Early) | NRFI -120 | 67% | FanDuel |
+| Minnesota Twins @ Chicago White Sox NRFI (Connor Prielipp vs Davis Martin) | NRFI -120 | 67% | FanDuel |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*
