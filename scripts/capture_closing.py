@@ -96,7 +96,9 @@ def capture_sport(
     force: bool,
 ) -> int:
     """Capture closing odds for any game in the [lo_min, hi_min] window."""
-    events = fetch_events_list(sport=odds_api_sport, refresh=True)
+    # refresh=False — use 1h cache. We only need to know game times once per hour,
+    # not every 2 minutes. This prevents burning credits on empty event-list polls.
+    events = fetch_events_list(sport=odds_api_sport, refresh=False)
     if not events:
         return 0
 

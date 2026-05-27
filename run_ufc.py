@@ -87,17 +87,11 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
     if not edges:
         return 0
 
-    pnl_data: dict = {}
-    if PNL_FILE.exists():
-        try:
-            pnl_data = json.loads(PNL_FILE.read_text())
-        except (json.JSONDecodeError, OSError):
-            pnl_data = {}
-    picks = pnl_data.get("picks", [])
-    existing_ids = {p.get("pick_id") for p in picks if isinstance(p, dict)}
+    from src.tracking.schema import append_picks_safe
 
-    now   = datetime.now(timezone.utc).isoformat()
-    added = 0
+    existing_ids: set[str] = set()
+    now     = datetime.now(timezone.utc).isoformat()
+    entries: list[dict] = []
 
     for e in edges:
         raw = {
@@ -122,15 +116,12 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
         pid  = norm.get("pick_id")
         if pid and pid in existing_ids:
             continue
-        picks.append(norm)
+        entries.append(norm)
         if pid:
             existing_ids.add(pid)
-        added += 1
 
-    pnl_data["picks"] = picks
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
-    return added
+    return append_picks_safe(PNL_FILE, entries)
 
 
 def run_ufc(args: argparse.Namespace) -> int:
@@ -217,6 +208,13 @@ def run_ufc(args: argparse.Namespace) -> int:
                 f"odds={e['odds']:+d}  model={e['model_prob']:.1%}  "
                 f"KO={e['ko_tko']:.1%}  sub={e['submission']:.1%}  [{e['sportsbook']}]"
             )
+
+    # Unknown-fighter warning
+    unknown_edges = [e for e in edges if e.get("data_quality") == "unknown_fighter"]
+    if unknown_edges:
+        print(f"\n  WARNING: {len(unknown_edges)} edge(s) from unknown fighter(s) — model has no Glicko data, treat as low confidence:")
+        for e in unknown_edges[:5]:
+            print(f"    {e['fighter']}  edge={e['edge_pct']:+.1f}%  matchup={e['matchup']}")
 
     # Pinnacle guard
     try:

@@ -90,17 +90,11 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
     if not edges:
         return 0
 
-    pnl_data: dict = {}
-    if PNL_FILE.exists():
-        try:
-            pnl_data = json.loads(PNL_FILE.read_text())
-        except (json.JSONDecodeError, OSError):
-            pnl_data = {}
-    picks = pnl_data.get("picks", [])
-    existing_ids = {p.get("pick_id") for p in picks if isinstance(p, dict)}
+    from src.tracking.schema import append_picks_safe
 
-    now = datetime.now(timezone.utc).isoformat()
-    added = 0
+    existing_ids: set[str] = set()
+    now     = datetime.now(timezone.utc).isoformat()
+    entries: list[dict] = []
 
     for e in edges:
         market = e.get("market", "total")
@@ -126,15 +120,12 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
         pid = norm.get("pick_id")
         if pid and pid in existing_ids:
             continue
-        picks.append(norm)
+        entries.append(norm)
         if pid:
             existing_ids.add(pid)
-        added += 1
 
-    pnl_data["picks"] = picks
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
-    return added
+    return append_picks_safe(PNL_FILE, entries)
 
 
 # ─────────────────────────── Main ────────────────────────────────────────────
@@ -155,17 +146,21 @@ def run_wnba(args: argparse.Namespace) -> int:
         print("  No WNBA events found. Season may be dark or no odds posted yet.")
         return 0
 
-    # Filter to today's games
+    # Filter to today's games — compare in Eastern time so late-night games
+    # (e.g. 02:00 UTC = 10 PM ET) aren't misclassified as the next calendar day.
+    import zoneinfo
+    _ET = zoneinfo.ZoneInfo("America/New_York")
     today_events = []
     for ev in events:
         ct = ev.get("commence_time", "")
         if not ct:
             continue
         try:
-            event_date = datetime.fromisoformat(ct.replace("Z", "+00:00")).strftime("%Y%m%d")
+            utc_dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
+            event_date = utc_dt.astimezone(_ET).strftime("%Y%m%d")
             if event_date == today_str:
                 today_events.append(ev)
-        except ValueError:
+        except (ValueError, KeyError):
             pass
 
     if not today_events:
@@ -221,10 +216,9 @@ def run_wnba(args: argparse.Namespace) -> int:
         except Exception as _ce:
             print(f"  [captions] {_ce}")
 
-    # 5. Auto-log to pnl
-    n_logged = _auto_log_wnba_picks(edges, game_date)
-    if n_logged > 0:
-        print(f"  Auto-logged {n_logged} pick(s) to pnl.")
+    # 5. Auto-log to pnl (PAUSED: WNBA market is in shadow/incubating status)
+    # 0-8 on spreads; all markets thin. Track output JSON for CLV but don't log to record.
+    print("  [PAUSED] WNBA picks not logged to pnl (shadow tracking only).")
 
     # 6. CLV snapshot
     try:

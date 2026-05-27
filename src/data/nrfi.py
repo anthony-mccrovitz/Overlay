@@ -34,6 +34,7 @@ _BASE_P_HOLD = 0.819
 _LEAGUE_AVG_ERA = 4.20
 _LEAGUE_AVG_K9  = 8.5
 MIN_EDGE = 0.04   # 4 percentage points vs implied
+MIN_IMPLIED_PROB = 0.30   # no picks at odds better than +233
 
 
 def _api_key() -> str | None:
@@ -101,18 +102,21 @@ def project_nrfi(
 
 def fetch_nrfi_odds(event_id: str) -> dict | None:
     """
-    Fetch first-inning H2H odds for a game.
+    Fetch first-inning NRFI/YRFI odds for a game.
     Returns {yrfi_odds, nrfi_odds, implied_yrfi_prob, implied_nrfi_prob, book}
     or None if market not available.
+
+    Primary: totals_1st_1_innings from FanDuel/BetMGM/DraftKings.
+      UNDER 0.5 = NRFI, OVER 0.5 = YRFI.
+    Fallback: h2h_1st_1_innings from any region (Yes/No format).
     """
     data = _cached_get(
         f"nrfi_{event_id}",
         f"{API_BASE}/sports/baseball_mlb/events/{event_id}/odds",
         {
             "regions": "us",
-            "markets": "h2h_1st_1_innings",
+            "markets": "totals_1st_1_innings,h2h_1st_1_innings",
             "oddsFormat": "american",
-            "bookmakers": MY_BOOKS_PARAM,
         },
         max_age_s=1800,
     )
@@ -122,28 +126,38 @@ def fetch_nrfi_odds(event_id: str) -> dict | None:
     best: dict | None = None
     for bookmaker in data.get("bookmakers", []):
         book_name = bookmaker.get("title", "")
+        book_key  = bookmaker.get("key", "")
         for mkt in bookmaker.get("markets", []):
-            if mkt.get("key") != "h2h_1st_1_innings":
-                continue
+            mkt_key = mkt.get("key", "")
             outcomes = mkt.get("outcomes", [])
-            # outcomes: [{name: "Yes", price: -130}, {name: "No", price: +110}]
-            yes_odds = next((o["price"] for o in outcomes if "yes" in o.get("name","").lower()), None)
-            no_odds  = next((o["price"] for o in outcomes if "no"  in o.get("name","").lower()), None)
 
-            # some books label by team names instead of Yes/No — try home/away
-            if yes_odds is None and len(outcomes) == 2:
-                yes_odds = outcomes[0].get("price")
-                no_odds  = outcomes[1].get("price")
-
-            if yes_odds is None or no_odds is None:
+            if mkt_key == "totals_1st_1_innings":
+                # UNDER 0.5 = NRFI, OVER 0.5 = YRFI
+                over_o  = next((o for o in outcomes if o.get("name","").lower() == "over"),  None)
+                under_o = next((o for o in outcomes if o.get("name","").lower() == "under"), None)
+                if not over_o or not under_o:
+                    continue
+                yes_odds = int(over_o["price"])   # YRFI
+                no_odds  = int(under_o["price"])   # NRFI
+            elif mkt_key == "h2h_1st_1_innings":
+                # Yes/No format: Yes = YRFI, No = NRFI
+                yes_odds = next((o["price"] for o in outcomes if "yes" in o.get("name","").lower()), None)
+                no_odds  = next((o["price"] for o in outcomes if "no"  in o.get("name","").lower()), None)
+                if yes_odds is None or no_odds is None:
+                    continue
+                yes_odds = int(yes_odds)
+                no_odds  = int(no_odds)
+            else:
                 continue
 
             implied_yrfi = _devig(yes_odds, no_odds)
-            # Keep the book with best NRFI odds (highest no_odds)
-            if best is None or no_odds > best.get("nrfi_odds", -999):
+            # Prefer our tier-1 books; among those prefer best NRFI odds
+            tier1 = book_key in ("fanduel", "draftkings", "betmgm", "caesars", "betrivers")
+            if best is None or (tier1 and not best.get("tier1")) or no_odds > best.get("nrfi_odds", -999):
                 best = {
-                    "yrfi_odds": int(yes_odds),
-                    "nrfi_odds": int(no_odds),
+                    "yrfi_odds": yes_odds,
+                    "nrfi_odds": no_odds,
+                    "tier1": tier1,
                     "implied_yrfi_prob": round(implied_yrfi, 4),
                     "implied_nrfi_prob": round(1 - implied_yrfi, 4),
                     "book": book_name,
@@ -176,6 +190,15 @@ def find_nrfi_edges(
     }
 
     for m in matchups_with_stats:
+        # Skip games with no confirmed starters — model has zero signal on TBD pitchers.
+        # Defaulting to league-average ERA/K9 produces phantom ~12% edges at -120 lines.
+        home_sp_name = m.get("home_sp_name", "").strip()
+        away_sp_name = m.get("away_sp_name", "").strip()
+        if not home_sp_name or home_sp_name.upper() == "TBD":
+            continue
+        if not away_sp_name or away_sp_name.upper() == "TBD":
+            continue
+
         home_sp_era = m.get("home_sp_era", _LEAGUE_AVG_ERA)
         home_sp_k9  = m.get("home_sp_k9",  _LEAGUE_AVG_K9)
         away_sp_era = m.get("away_sp_era", _LEAGUE_AVG_ERA)
@@ -206,6 +229,9 @@ def find_nrfi_edges(
         if book_data:
             implied_nrfi = book_data["implied_nrfi_prob"]
             implied_yrfi = book_data["implied_yrfi_prob"]
+            # Skip when either side is a longshot — model unreliable at extreme odds
+            if implied_nrfi < MIN_IMPLIED_PROB or implied_yrfi < MIN_IMPLIED_PROB:
+                continue
             nrfi_edge = p_nrfi - implied_nrfi
             yrfi_edge = p_yrfi - implied_yrfi
 

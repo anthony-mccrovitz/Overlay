@@ -17,7 +17,7 @@ from xgboost import XGBRegressor
 
 from src.data.odds_api import TOTAL_LINE_MAX, TOTAL_LINE_MIN
 from src.data.park_factors import apply_park_factor, OUTDOOR_PARKS
-from src.data.weather import get_game_weather, weather_run_adjustment
+from src.data.weather import get_game_weather, weather_run_adjustment, build_weather_context
 from src.models.mlb_xgboost import build_training_data, FEATURE_COLS
 
 MODEL_PATH = Path("models/mlb_totals.pkl")
@@ -257,6 +257,7 @@ def predict_total(
             weather["wind_mph"],
             weather["wind_dir_deg"],
             is_outdoor=True,
+            home_team=home_team,
         )
         adjusted += wind_adj
 
@@ -429,6 +430,22 @@ def find_totals_edges(
             except Exception:
                 _ump_adj, _ump_name = 0.0, None
 
+            # Build weather context string for dashboard display
+            _weather_ctx = ""
+            try:
+                _wx = get_game_weather(home)
+                if _wx and home in OUTDOOR_PARKS:
+                    _wx_adj = weather_run_adjustment(
+                        _wx["wind_mph"], _wx["wind_dir_deg"],
+                        is_outdoor=True, home_team=home,
+                    )
+                    _weather_ctx = build_weather_context(
+                        home, _wx["wind_mph"], _wx["wind_dir_deg"],
+                        _wx["temp_f"], _wx_adj,
+                    )
+            except Exception:
+                pass
+
             edges.append({
                 "home_team": home,
                 "away_team": away,
@@ -443,6 +460,7 @@ def find_totals_edges(
                 "model_prob": round(model_prob, 4),
                 "ump_name": _ump_name,
                 "ump_adj": round(_ump_adj, 2) if _ump_adj else 0.0,
+                "weather_context": _weather_ctx,
             })
 
     edges.sort(key=lambda e: e["edge_runs"], reverse=True)

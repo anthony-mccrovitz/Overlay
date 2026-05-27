@@ -29,6 +29,18 @@ ODDS_API    = "https://api.the-odds-api.com/v4"
 BATTER_MARKETS = ["batter_hits", "batter_home_runs", "batter_rbis", "batter_total_bases"]
 MIN_EDGE        = 0.05
 MIN_CONFIDENCE  = 0.58
+# No picks at implied < 20% (odds longer than +400) — model unreliable at longshots.
+MIN_IMPLIED_PROB = 0.20
+
+# Minimum line per market — OVER 0.5 hits/TB/RBIs produce phantom 40-55% edges
+# because P(≥1 hit in a game) is ~70% for any starter at league-average WHIP,
+# creating systematic overconfidence at trivially low lines.
+_MIN_LINE_BY_MARKET: dict[str, float] = {
+    "batter_hits":        1.5,
+    "batter_total_bases": 1.5,
+    "batter_rbis":        0.5,   # 0.5 is valid for RBIs (rare enough to have signal)
+    "batter_home_runs":   0.5,   # 0.5 is the only HR line that exists
+}
 
 
 def _api_key() -> str | None:
@@ -56,6 +68,94 @@ def _cached_get(key: str, url: str, params: dict, max_age_s: int = 3600):
         return data
     except Exception:
         return None
+
+
+def _safe_float(v, default: float = 0.0) -> float:
+    """Coerce to float, falling back to default on None/'-/non-numeric strings."""
+    if v is None or v == "" or v == "-":
+        return default
+    try:
+        return float(v)
+    except (ValueError, TypeError):
+        return default
+
+
+_PLAYER_ID_CACHE: dict[str, int] = {}
+
+
+def _norm_name(name: str) -> str:
+    """Strip punctuation/case/accents for fuzzy player name matching."""
+    import unicodedata
+    name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode("ascii")
+    return name.lower().replace(".", "").replace(",", "").replace("'", "").strip()
+
+
+def _build_player_id_map(season: int = 2026) -> dict[str, int]:
+    """Walk all 30 MLB rosters once and build a {normalized_name: player_id} cache.
+
+    Cached for 24h via the standard _cached_get layer. Returns the in-memory
+    `_PLAYER_ID_CACHE` (also persists it as a JSON cache file).
+    """
+    global _PLAYER_ID_CACHE
+    if _PLAYER_ID_CACHE:
+        return _PLAYER_ID_CACHE
+
+    cache_path = CACHE_DIR / f"player_id_map_{season}.json"
+    if cache_path.exists() and (time.time() - cache_path.stat().st_mtime) < 86400:
+        try:
+            _PLAYER_ID_CACHE = json.loads(cache_path.read_text())
+            return _PLAYER_ID_CACHE
+        except Exception:
+            pass
+
+    # Pull every team's roster for the season
+    try:
+        teams_data = _cached_get(
+            f"teams_{season}",
+            f"{MLB_API}/teams",
+            {"sportId": 1, "season": season},
+            max_age_s=86400 * 7,
+        )
+    except Exception:
+        return {}
+
+    if not teams_data:
+        return {}
+
+    name_map: dict[str, int] = {}
+    for team in teams_data.get("teams", []):
+        tid = team.get("id")
+        if not tid:
+            continue
+        try:
+            roster = _cached_get(
+                f"roster_full_{tid}_{season}",
+                f"{MLB_API}/teams/{tid}/roster",
+                {"rosterType": "fullSeason", "season": season},
+                max_age_s=86400,
+            )
+        except Exception:
+            continue
+        for entry in (roster or {}).get("roster", []):
+            pid = entry.get("person", {}).get("id")
+            full = entry.get("person", {}).get("fullName", "")
+            if pid and full:
+                name_map[_norm_name(full)] = pid
+
+    _PLAYER_ID_CACHE = name_map
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        cache_path.write_text(json.dumps(name_map))
+    except Exception:
+        pass
+    return name_map
+
+
+def _lookup_player_id(name: str, season: int = 2026) -> int | None:
+    """Return MLB player_id for a name, building the cache on first call."""
+    if not _PLAYER_ID_CACHE:
+        _build_player_id_map(season)
+    return _PLAYER_ID_CACHE.get(_norm_name(name))
 
 
 def _devig(over_odds: float, under_odds: float) -> float:
@@ -234,50 +334,88 @@ def find_batter_prop_edges(
                 if line is None or over_odds is None or under_odds is None:
                     continue
 
-                implied_over = _devig(over_odds, under_odds)
                 line_f = float(line)
+                if line_f < _MIN_LINE_BY_MARKET.get(market, 1.5):
+                    continue
 
-                # Projection — use pitcher from opposing side
-                # (home batters face away SP; away batters face home SP)
-                # We can't easily split home vs away batters from odds API player names,
-                # so use average of both SPs as a rough proxy
+                implied_over = _devig(over_odds, under_odds)
+
+                # Use average of both starters as the pitcher matchup proxy
                 avg_whip = (home_sp_whip + away_sp_whip) / 2
                 avg_hr9  = (home_sp_hr9  + away_sp_hr9)  / 2
 
+                # Per-batter stats: look up MLB player_id from name, fetch
+                # season hitting stats. Falls back to league averages if not found.
+                player_name = pl.get("player", "")
+                pid = _lookup_player_id(player_name)
+                batter_stats = {}
+                if pid:
+                    try:
+                        batter_stats = fetch_batter_season_stats(pid)
+                    except Exception:
+                        batter_stats = {}
+
+                ab = _safe_float(batter_stats.get("atBats"), 0)
+                hits = _safe_float(batter_stats.get("hits"), 0)
+                hr = _safe_float(batter_stats.get("homeRuns"), 0)
+                tb = _safe_float(batter_stats.get("totalBases"), 0)
+                rbi = _safe_float(batter_stats.get("rbi"), 0)
+                games = _safe_float(batter_stats.get("gamesPlayed"), 0)
+
+                # Per-batter rates — only use if the player has ≥30 AB (real sample)
+                has_batter_data = ab >= 30
+                batter_avg = (hits / ab) if has_batter_data and ab else 0.250
+                batter_hr_per_ab = (hr / ab) if has_batter_data and ab else 0.035
+                batter_tb_per_ab = (tb / ab) if has_batter_data and ab else (0.250 * 1.5)
+                batter_rbi_per_g = (rbi / games) if has_batter_data and games else 0.65
+
                 if market == "batter_hits":
-                    LG_AVG_HIT = 0.78  # expected hits per game at league avg
-                    proj = _project_hits(0.250, avg_whip)
+                    proj = _project_hits(batter_avg, avg_whip)
                     model_over = _poisson_over_prob(proj, line_f)
 
                 elif market == "batter_home_runs":
-                    LG_HR_RATE = 0.035  # HR per AB
-                    proj = _project_hr(LG_HR_RATE, avg_hr9)
+                    proj = _project_hr(batter_hr_per_ab, avg_hr9)
                     model_over = _poisson_over_prob(proj, line_f)
 
                 elif market == "batter_rbis":
-                    # RBI roughly correlates with hits * runners on base
-                    proj = 0.65  # league avg RBI per game
+                    # Adjust per-game RBI by pitcher WHIP (more baserunners → more RBI ops)
+                    pitcher_adj = (avg_whip - 1.30) / 1.30
+                    proj = max(0.0, batter_rbi_per_g * (1 + pitcher_adj * 0.15))
                     model_over = _poisson_over_prob(proj, line_f)
 
                 elif market == "batter_total_bases":
-                    proj = 0.250 * 3.8 * 1.5  # BA × AB × bases_per_hit
+                    # TB per game = TB/AB * AB/game (assume 3.8 AB/game for starters)
+                    AB_PER_GAME = 3.8
+                    pitcher_adj = (avg_whip - 1.30) / 1.30
+                    proj = max(0.0, batter_tb_per_ab * AB_PER_GAME * (1 + pitcher_adj * 0.15))
                     model_over = _poisson_over_prob(proj, line_f)
 
                 else:
                     continue
 
-                # Apply trained MLB prop calibrator (Platt/isotonic) so the
-                # model_prob written downstream matches the edge calculation.
-                try:
-                    from src.analytics.calibration import apply_calibration
-                    model_over = apply_calibration(model_over, "mlb", "prop")
-                except Exception:
-                    pass
+                # NOTE: We intentionally do NOT apply the shared mlb-prop
+                # Platt calibrator here. It was trained on pitcher_strikeouts
+                # where true probs hover around 0.50; applied to HR (true probs
+                # ~5-15%) it pulls every projection toward 0.45, manufacturing
+                # phantom edges on weak hitters at +900 prices. The raw Poisson
+                # projection with per-batter rates is the honest signal.
 
                 edge = (model_over - implied_over) * 100
+                direction = "OVER" if edge > 0 else "UNDER"
+                bet_prob  = model_over if direction == "OVER" else (1 - model_over)
+                bet_implied = implied_over if direction == "OVER" else (1 - implied_over)
 
-                if abs(edge) >= MIN_EDGE * 100 and model_over >= MIN_CONFIDENCE:
-                    direction = "OVER" if edge > 0 else "UNDER"
+                # Skip longshot lines — implied < 20% means +400 or longer odds,
+                # where the model's Poisson projection has no reliable signal.
+                if bet_implied < MIN_IMPLIED_PROB:
+                    continue
+
+                # HR uses a lower confidence floor — HR is a rare event, the model
+                # rarely projects >30% even for sluggers but the +EV is still real.
+                # All other markets (hits/TB/RBI) keep the standard 0.58 floor.
+                conf_floor = 0.25 if market == "batter_home_runs" else MIN_CONFIDENCE
+
+                if abs(edge) >= MIN_EDGE * 100 and bet_prob >= conf_floor:
                     pick_odds  = over_odds if direction == "OVER" else under_odds
                     edges.append({
                         "type":         "batter_prop",

@@ -10,14 +10,19 @@ Used to find edges against pitcher_strikeouts prop lines.
 """
 from __future__ import annotations
 
+import csv
+import io
 import json
 import pickle
 import time
+import urllib.request
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 from xgboost import XGBRegressor
 
 from src.data.mlb_stats import _cached_get, API_BASE
@@ -36,7 +41,71 @@ KS_FEATURES = [
     "opp_team_k_per_game",
     "is_home",
     "season_progress",
+    "l5_k_per_ip",
+    "k_rate_divergence_pct",
+    "stuff_plus",
 ]
+
+_STUFF_PLUS_URL = (
+    "https://baseballsavant.mlb.com/leaderboard/custom"
+    "?year={season}&type=pitcher&filter=&sort=stuff_plus_avg&sortDir=desc"
+    "&min=50&selections=stuff_plus_avg&chart=false&x=stuff_plus_avg"
+    "&y=stuff_plus_avg&r=no&chartType=beeswarm&csv=true"
+)
+_CACHE_DIR = Path("data/cache")
+
+
+def _fetch_stuff_plus(season: int, refresh: bool = False) -> dict[int, float]:
+    """
+    Fetch Baseball Savant Stuff+ for a season.
+
+    Returns dict mapping MLBAM pitcher ID -> stuff_plus value.
+    Caches result at data/cache/stuff_plus_{season}.json for 24h.
+    Returns {} silently on any error.
+    """
+    cache_path = _CACHE_DIR / f"stuff_plus_{season}.json"
+
+    if not refresh and cache_path.exists():
+        age_s = time.time() - cache_path.stat().st_mtime
+        if age_s < 86400:
+            try:
+                with open(cache_path) as f:
+                    raw = json.load(f)
+                return {int(k): float(v) for k, v in raw.items()}
+            except Exception:
+                pass
+
+    try:
+        url = _STUFF_PLUS_URL.format(season=season)
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            content = resp.read().decode("utf-8")
+
+        result: dict[int, float] = {}
+        reader = csv.DictReader(io.StringIO(content))
+        for row in reader:
+            pid_raw = row.get("player_id") or row.get("pitcher_id") or ""
+            # Try multiple possible column names for stuff+
+            sp_raw = (
+                row.get("stuff_plus_avg")
+                or row.get("stuff_plus")
+                or row.get("Stuff+")
+                or ""
+            )
+            if not pid_raw or not sp_raw:
+                continue
+            try:
+                result[int(pid_raw)] = float(sp_raw)
+            except (ValueError, TypeError):
+                continue
+
+        _CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        with open(cache_path, "w") as f:
+            json.dump({str(k): v for k, v in result.items()}, f)
+
+        return result
+    except Exception:
+        return {}
 
 
 def _fetch_pitcher_game_logs(pitcher_id: int, season: int) -> list[dict]:
@@ -349,11 +418,21 @@ def predict_pitcher_ks(
     pitcher_recent_k_avg: float = 5.5,
     opp_team_k_rate: float = 0.22,
     is_home: bool = True,
+    # New params:
+    l5_k_per_ip: float | None = None,   # K/IP last 5 starts; None = use season rate
+    stuff_plus: float = 100.0,          # 100 = average stuff
 ) -> float:
     """Predict pitcher's strikeout total for a game."""
+    season_k_per_ip = pitcher_k9 / 9
+    if l5_k_per_ip is None:
+        l5_k_per_ip = season_k_per_ip
+    k_rate_divergence_pct = (
+        (l5_k_per_ip - season_k_per_ip) / max(season_k_per_ip, 0.001) * 100
+    )
+
     loaded = load_pitcher_ks_model()
     if loaded is None:
-        return pitcher_k9 / 9 * pitcher_avg_ip
+        return pitcher_k9 / 9 * pitcher_avg_ip * (stuff_plus / 100) ** 0.3
 
     model, features = loaded
 
@@ -369,7 +448,85 @@ def predict_pitcher_ks(
         "opp_team_k_per_game": opp_team_k_rate * 36,
         "is_home": int(is_home),
         "season_progress": 0.5,
+        "l5_k_per_ip": l5_k_per_ip,
+        "k_rate_divergence_pct": k_rate_divergence_pct,
+        "stuff_plus": stuff_plus,
     }
 
     X = pd.DataFrame([row])[features].fillna(0)
     return float(model.predict(X)[0])
+
+
+def find_pitcher_ks_edges(
+    game_props: list[dict],
+    min_edge_pct: float = 10.0,
+) -> list[dict]:
+    """
+    Find pitcher K prop edges from a list of game prop dicts.
+
+    Each dict in game_props must have:
+      pitcher_id (int), pitcher_name (str), team (str), opponent (str),
+      line (float), odds (int), book (str),
+      pitcher_k9 (float), pitcher_avg_ip (float), opp_team_k_rate (float),
+      [optional] pitcher_recent_k_avg, pitcher_bb9, pitcher_era, pitcher_whip,
+                 pitcher_starts, is_home, l5_k_per_ip
+
+    Returns list of edge dicts with model_tier="tier2", filtered to:
+      - edge_pct >= min_edge_pct (default 10%)
+      - implied prob between 30% and 70% (no longshots, no heavy favorites)
+    """
+    stuff_map = _fetch_stuff_plus(datetime.now().year)
+
+    edges = []
+    for g in game_props:
+        pitcher_id = g.get("pitcher_id", 0)
+        stuff_plus = stuff_map.get(pitcher_id, 100.0)
+
+        projected = predict_pitcher_ks(
+            pitcher_k9=g.get("pitcher_k9", 8.0),
+            pitcher_bb9=g.get("pitcher_bb9", 3.0),
+            pitcher_avg_ip=g.get("pitcher_avg_ip", 5.5),
+            pitcher_era=g.get("pitcher_era", 4.0),
+            pitcher_whip=g.get("pitcher_whip", 1.3),
+            pitcher_starts=g.get("pitcher_starts", 10),
+            pitcher_recent_k_avg=g.get("pitcher_recent_k_avg", 5.5),
+            opp_team_k_rate=g.get("opp_team_k_rate", 0.22),
+            is_home=g.get("is_home", True),
+            l5_k_per_ip=g.get("l5_k_per_ip", None),
+            stuff_plus=stuff_plus,
+        )
+
+        line = float(g["line"])
+        odds = int(g["odds"])
+        sigma = 1.8
+
+        # Over/under probabilities using Normal distribution
+        over_prob = float(1 - norm.cdf(line, loc=projected, scale=sigma))
+        under_prob = float(norm.cdf(line, loc=projected, scale=sigma))
+
+        # Implied probability from American odds
+        if odds > 0:
+            implied_prob = 100 / (odds + 100)
+        else:
+            implied_prob = abs(odds) / (abs(odds) + 100)
+
+        for direction, model_prob in [("OVER", over_prob), ("UNDER", under_prob)]:
+            edge_pct = (model_prob - implied_prob) * 100
+            if edge_pct >= min_edge_pct and 0.30 <= implied_prob <= 0.70:
+                edges.append({
+                    "player": g.get("pitcher_name", ""),
+                    "team": g.get("team", ""),
+                    "opponent": g.get("opponent", ""),
+                    "market": "pitcher_strikeouts",
+                    "line": line,
+                    "direction": direction,
+                    "projected": round(projected, 2),
+                    "model_prob": round(model_prob, 4),
+                    "implied_prob": round(implied_prob, 4),
+                    "edge_pct": round(edge_pct, 2),
+                    "odds": odds,
+                    "book": g.get("book", ""),
+                    "model_tier": "tier2",
+                })
+
+    return edges

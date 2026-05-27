@@ -10,6 +10,7 @@ interface Pick {
   Team: string; Opponent: string; ModelProb: number; ImpliedProb: number;
   Edge: number; BestOdds: number; Sportsbook: string; Market?: string;
   BetSize?: number; KellyFraction?: number; ExpectedProfit?: number;
+  model_tier?: string | null; weather_context?: string | null;
 }
 interface Prop {
   player: string; team: string; opponent: string; market: string; line: number;
@@ -106,6 +107,15 @@ function PickCard({ pick, featured = false }: { pick: Pick; featured?: boolean }
         <div className="flex items-center gap-2">
           <span className={`mkt-badge ${mktBadgeClass(mkt)}`}>{mktLabel(mkt)}</span>
           {featured && <span className="text-[9px] font-bold tracking-widest text-[var(--gold)]">★ TOP PICK</span>}
+          {pick.model_tier === "tier1" && (
+            <span className="text-[9px] font-bold tracking-widest px-1.5 py-0.5 rounded bg-[var(--indigo)]/20 text-[var(--cyan)] border border-[var(--indigo)]/40">T1</span>
+          )}
+          {pick.model_tier === "tier2" && (
+            <span className="text-[9px] font-bold tracking-widest px-1.5 py-0.5 rounded bg-[var(--amber)]/20 text-[var(--amber)] border border-[var(--amber)]/40">T2</span>
+          )}
+          {pick.model_tier === "shadow" && (
+            <span className="text-[9px] font-bold tracking-widest px-1.5 py-0.5 rounded bg-[var(--border)] text-[var(--text-muted)]">SHD</span>
+          )}
         </div>
         <span className={`edge-badge ${tier}`}>
           {tier === "hot" ? "🔥 " : tier === "high" ? "↑ " : ""}
@@ -127,6 +137,9 @@ function PickCard({ pick, featured = false }: { pick: Pick; featured?: boolean }
         <div className="flex items-center gap-3">
           <span className="text-xl font-black text-[var(--amber)] font-mono">{fmtOdds(pick.BestOdds)}</span>
           {pick.Sportsbook && <span className="text-[10px] text-[var(--text-muted)] font-medium">{pick.Sportsbook.toUpperCase()}</span>}
+          {pick.weather_context && mkt === "total" && (
+            <span className="text-[10px] text-[var(--cyan)] font-medium">{pick.weather_context}</span>
+          )}
         </div>
         <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
           {pick.KellyFraction != null && (
@@ -301,20 +314,23 @@ function Section({ title, color, count, children }: { title: string; color: stri
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const [data, setData]       = useState<PicksData|null>(null);
-  const [sport, setSport]     = useState("mlb");
-  const [market, setMarket]   = useState("all");
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState("");
-  const [ts, setTs]           = useState("");
+  const [data, setData]         = useState<PicksData|null>(null);
+  const [sport, setSport]       = useState("mlb");
+  const [market, setMarket]     = useState("all");
+  const [minEdgePct, setMinEdgePct] = useState(3);
+  const [tierFilter, setTierFilter] = useState("all");
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState("");
+  const [ts, setTs]             = useState("");
 
   const load = useCallback(() => {
     setLoading(true); setError("");
-    fetch(`${API}/picks/${sport}?bankroll=1000&min_edge=0.03`)
+    const minEdgeParam = (minEdgePct / 100).toFixed(2);
+    fetch(`${API}/picks/${sport}?bankroll=1000&min_edge=${minEdgeParam}`)
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false); setTs(new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })); })
       .catch(e => { setError(e.message); setLoading(false); });
-  }, [sport]);
+  }, [sport, minEdgePct]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -325,10 +341,14 @@ export default function DashboardPage() {
   const props = d?.props ?? [];
   const nrfi  = d?.nrfi ?? [];
 
-  // Sort each section by edge descending
-  const sortML   = [...ml].sort((a, b)  => b.Edge - a.Edge);
-  const sortSP   = [...sp].sort((a, b)  => b.Edge - a.Edge);
-  const sortTot  = [...tot].sort((a, b) => b.Edge - a.Edge);
+  // Tier filter helper
+  const tierMatch = (t?: string | null) =>
+    tierFilter === "all" || (t ?? "tier1") === tierFilter;
+
+  // Sort each section by edge descending, apply tier filter
+  const sortML   = [...ml].filter(p => tierMatch(p.model_tier)).sort((a, b)  => b.Edge - a.Edge);
+  const sortSP   = [...sp].filter(p => tierMatch(p.model_tier)).sort((a, b)  => b.Edge - a.Edge);
+  const sortTot  = [...tot].filter(p => tierMatch(p.model_tier)).sort((a, b) => b.Edge - a.Edge);
   const sortProp = [...props].sort((a, b) => b.EdgePct - a.EdgePct);
   const sortNrfi = [...nrfi].sort((a, b) => (b.EdgePct ?? 0) - (a.EdgePct ?? 0));
 
@@ -344,29 +364,62 @@ export default function DashboardPage() {
     <div className="max-w-3xl mx-auto px-4 py-6 pb-24 md:pb-8 space-y-6">
 
       {/* ── Controls ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        {/* Sport */}
-        <div className="flex items-center gap-2">
-          {SPORTS.map(s => (
-            <button key={s.key} onClick={() => setSport(s.key)}
-              className={`sport-tab ${sport === s.key ? "active" : ""}`}>
-              {s.label}
-            </button>
-          ))}
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          {/* Sport */}
+          <div className="flex items-center gap-2">
+            {SPORTS.map(s => (
+              <button key={s.key} onClick={() => setSport(s.key)}
+                className={`sport-tab ${sport === s.key ? "active" : ""}`}>
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Market filter */}
+          <div className="flex items-center gap-1.5 flex-wrap sm:ml-auto">
+            {MARKETS.map(m => (
+              <button key={m.key} onClick={() => setMarket(m.key)}
+                className={`text-[11px] font-semibold px-3 py-1 rounded-lg border transition-all ${
+                  market === m.key
+                    ? "bg-[var(--bg-overlay)] border-[var(--border-hi)] text-[var(--text-bright)]"
+                    : "border-transparent text-[var(--text-muted)] hover:text-[var(--text)]"
+                }`}>
+                {m.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Market filter */}
-        <div className="flex items-center gap-1.5 flex-wrap sm:ml-auto">
-          {MARKETS.map(m => (
-            <button key={m.key} onClick={() => setMarket(m.key)}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-lg border transition-all ${
-                market === m.key
-                  ? "bg-[var(--bg-overlay)] border-[var(--border-hi)] text-[var(--text-bright)]"
-                  : "border-transparent text-[var(--text-muted)] hover:text-[var(--text)]"
-              }`}>
-              {m.label}
-            </button>
-          ))}
+        {/* Edge + Tier filters */}
+        <div className="flex items-center gap-4 text-[11px] text-[var(--text-muted)]">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <span className="font-semibold">MIN EDGE</span>
+            <input
+              type="range" min={1} max={15} step={1} value={minEdgePct}
+              onChange={e => setMinEdgePct(Number(e.target.value))}
+              className="w-20 accent-[var(--indigo)]"
+            />
+            <span className="font-bold text-[var(--text-bright)] font-mono w-8">{minEdgePct}%</span>
+          </label>
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold">TIER</span>
+            {[
+              { key: "all", label: "All" },
+              { key: "tier1", label: "T1" },
+              { key: "tier2", label: "T2" },
+              { key: "shadow", label: "SHD" },
+            ].map(t => (
+              <button key={t.key} onClick={() => setTierFilter(t.key)}
+                className={`text-[10px] font-bold px-2 py-0.5 rounded border transition-all ${
+                  tierFilter === t.key
+                    ? "bg-[var(--bg-overlay)] border-[var(--border-hi)] text-[var(--text-bright)]"
+                    : "border-transparent text-[var(--text-muted)] hover:text-[var(--text)]"
+                }`}>
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

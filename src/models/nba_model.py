@@ -25,6 +25,8 @@ from src.data.nba_stats import (
     HOME_COURT,
     fetch_team_ratings,
     get_team_ratings,
+    fetch_team_rolling_ratings,
+    get_blended_team_ratings,
 )
 
 # Minimum edge to surface as a pick.
@@ -72,6 +74,8 @@ def project_game(
     is_playoff: bool = False,
     away_injury_adj: float = 0.0,
     home_injury_adj: float = 0.0,
+    l10_teams: list[dict] | None = None,
+    l20_teams: list[dict] | None = None,
 ) -> dict:
     """
     Project a game: spread, total, win probability.
@@ -87,8 +91,10 @@ def project_game(
     if all_teams is None:
         all_teams = fetch_team_ratings()
 
-    away = get_team_ratings(away_team, all_teams)
-    home = get_team_ratings(home_team, all_teams)
+    # Use rolling-weighted ratings when available (40% L10 / 35% L20 / 25% season).
+    # Season-long averages lag reality by weeks after trades, injuries, or slumps.
+    away = get_blended_team_ratings(away_team, all_teams, l10_teams, l20_teams)
+    home = get_blended_team_ratings(home_team, all_teams, l10_teams, l20_teams)
 
     away_ortg = float(away.get("OFF_RATING") or LG_AVG_ORTG)
     away_drtg = float(away.get("DEF_RATING") or LG_AVG_DRTG)
@@ -209,6 +215,14 @@ def find_nba_edges(
     Returns list of edge dicts sorted by edge_pct descending.
     """
     all_teams = fetch_team_ratings()
+    # Prefetch rolling splits once; project_game uses them for all games.
+    # Graceful fallback: if NBA Stats API is unavailable, rolling = None and
+    # get_blended_team_ratings falls back to season averages.
+    try:
+        l10_teams = fetch_team_rolling_ratings(10)
+        l20_teams = fetch_team_rolling_ratings(20)
+    except Exception:
+        l10_teams = l20_teams = None
     now_utc = datetime.now(timezone.utc)
     edges = []
 
@@ -227,7 +241,8 @@ def find_nba_edges(
             except ValueError:
                 pass
 
-        proj = project_game(away, home, all_teams, is_playoff=is_playoff)
+        proj = project_game(away, home, all_teams, is_playoff=is_playoff,
+                            l10_teams=l10_teams, l20_teams=l20_teams)
 
         # Build best odds per side per market across all books
         best_h2h:    dict[str, dict] = {}  # team_name -> {odds, book}

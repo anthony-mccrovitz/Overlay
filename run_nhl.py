@@ -93,19 +93,18 @@ def _format_time(iso: str) -> str:
 
 
 def _auto_log_picks(picks: list[dict], game_date: date) -> int:
-    """Log NHL picks to data/pnl/picks.json as card_pick=False."""
+    """Log NHL picks to data/pnl/picks.json. card_pick driven by models.py registry."""
     if not picks:
         return 0
 
-    try:
-        pnl_data = json.loads(_PNL_FILE.read_text()) if _PNL_FILE.exists() else {"picks": []}
-    except (json.JSONDecodeError, ValueError):
-        pnl_data = {"picks": []}
+    from src.tracking.schema import append_picks_safe
+    from src.config.models import is_live, shadow_stake
 
-    existing_ids = {p.get("pick_id", "") for p in pnl_data.get("picks", [])}
+    existing_ids: set[str] = set()
     date_str = game_date.isoformat()
     now_ts = datetime.now(timezone.utc).isoformat()
     added = 0
+    nhl_entries: list[dict] = []
 
     for pick in picks:
         team_slug = pick["team"].lower().replace(" ", "-").replace(".", "")[:20]
@@ -116,35 +115,36 @@ def _auto_log_picks(picks: list[dict], game_date: date) -> int:
         if pick_id in existing_ids:
             continue
 
+        market = pick["market"]
         entry = {
             "pick_id":       pick_id,
             "date":          date_str,
             "sport":         "nhl",
-            "market":        pick["market"],
+            "market":        market,
             "direction":     pick["direction"],
             "team":          pick["team"],
             "matchup":       pick["matchup"],
             "odds":          pick["odds"],
             "line":          pick.get("line"),
-            "sportsbook":    "DraftKings",
+            "sportsbook":    pick.get("sportsbook", "DraftKings"),
             "model_prob":    pick["model_prob"],
             "edge_pct":      pick["edge_pct"],
             "proj_total":    pick.get("proj_total"),
-            "stake":         1.0,
-            "card_pick":     False,
+            "stake":         shadow_stake("nhl", market),
+            "card_pick":     is_live("nhl", market),
             "result":        None,
             "profit":        None,
             "recorded_at":   now_ts,
             "resulted_at":   None,
             "model_version": "v1_logreg_20260514",
         }
-        pnl_data.setdefault("picks", []).append(entry)
+        nhl_entries.append(entry)
         existing_ids.add(pick_id)
         added += 1
 
-    if added > 0:
+    if nhl_entries:
         _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-        _PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
+        append_picks_safe(_PNL_FILE, nhl_entries)
 
     return added
 
@@ -260,7 +260,7 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     # Log to pnl
     n_logged = _auto_log_picks(picks, game_date)
     if n_logged:
-        print(f"  ✓  Auto-logged {n_logged} pick(s) to data/pnl/picks.json (card_pick=False)")
+        print(f"  ✓  Auto-logged {n_logged} pick(s) to data/pnl/picks.json")
 
     # Print slate overview
     if projections:

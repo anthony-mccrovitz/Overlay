@@ -223,3 +223,85 @@ def get_team_opp_pts_allowed(team_name: str, opp_stats: list[dict] | None = None
     # Use DEF_RATING from advanced stats — already per-100-possessions calibrated
     adv = get_team_ratings(team_name)
     return float(adv.get("DEF_RATING", LG_AVG_DRTG))
+
+
+# ─────────────────────────── Rolling Team Ratings ───────────────────────────
+
+def fetch_team_rolling_ratings(last_n_games: int = 10, refresh: bool = False) -> list[dict]:
+    """
+    Fetch team efficiency ratings over the last N games.
+
+    NBA Stats API supports LastNGames parameter on LeagueDashTeamStats.
+    Results are cached 6 hours (same TTL as season ratings).
+    Falls back to season ratings if the API call fails.
+    """
+    cache_key = f"team_advanced_L{last_n_games}_2025_26"
+    cached = _load_cache(cache_key)
+    if cached and not refresh:
+        return cached
+
+    try:
+        from nba_api.stats.endpoints import leaguedashteamstats
+        resp = leaguedashteamstats.LeagueDashTeamStats(
+            season="2025-26",
+            measure_type_detailed_defense="Advanced",
+            last_n_games=last_n_games,
+            timeout=30,
+        )
+        df = resp.get_data_frames()[0]
+        teams = df.to_dict("records")
+        _save_cache(cache_key, teams)
+        return teams
+    except Exception as e:
+        print(f"  [nba_stats] rolling L{last_n_games} ratings: {e}")
+        path = _cache_path(cache_key)
+        if path.exists():
+            with open(path) as f:
+                return json.load(f)
+        # Fall back to season data rather than returning empty
+        return fetch_team_ratings()
+
+
+def get_blended_team_ratings(
+    team_name: str,
+    season_teams: list[dict] | None = None,
+    l10_teams: list[dict] | None = None,
+    l20_teams: list[dict] | None = None,
+) -> dict:
+    """
+    Return blended team efficiency ratings weighted toward recent form.
+
+    Weights (Voulgaris-documented, pace/tempo mispricing research):
+        40% L10 (most recent form)
+        35% L20 (medium-term trend)
+        25% season average (stable baseline)
+
+    Falls back to season ratings for any missing rolling data.
+    """
+    if season_teams is None:
+        season_teams = fetch_team_ratings()
+    if l10_teams is None:
+        l10_teams = fetch_team_rolling_ratings(10)
+    if l20_teams is None:
+        l20_teams = fetch_team_rolling_ratings(20)
+
+    season = get_team_ratings(team_name, season_teams)
+    l10 = get_team_ratings(team_name, l10_teams) if l10_teams else season
+    l20 = get_team_ratings(team_name, l20_teams) if l20_teams else season
+
+    W_L10, W_L20, W_SEASON = 0.40, 0.35, 0.25
+
+    def blend(key: str, default: float) -> float:
+        s = float(season.get(key) or default)
+        r10 = float(l10.get(key) or s)
+        r20 = float(l20.get(key) or s)
+        return W_L10 * r10 + W_L20 * r20 + W_SEASON * s
+
+    return {
+        "TEAM_NAME": team_name,
+        "OFF_RATING": blend("OFF_RATING", LG_AVG_ORTG),
+        "DEF_RATING": blend("DEF_RATING", LG_AVG_DRTG),
+        "NET_RATING": blend("NET_RATING", 0.0),
+        "PACE": blend("PACE", LG_AVG_PACE),
+        "W_PCT": float(season.get("W_PCT") or 0.5),
+    }

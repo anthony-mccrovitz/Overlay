@@ -415,11 +415,6 @@ def _mlb_pick_row(pick: dict, is_best: bool) -> str:
             line = f" {float(bet_line):+.1f}"
         pick_name = f"{team}{line}".strip()
         accent_hex = _MLB_HEX.get(team, "#4080FF")
-        # Show only the team being bet (single logo)
-        logo_section = f'''
-      <div class="pick-vs-logos">
-        {_logo_html(_logo_url(team), _team_abbr(team), accent_hex, 56)}
-      </div>'''
     elif market == "total":
         direction = _safe(pick.get("Direction") or "OVER").upper()
         line_val = pick.get("MarketLine") or bet_line
@@ -427,21 +422,17 @@ def _mlb_pick_row(pick: dict, is_best: bool) -> str:
         line_str = f"{line_val}" if not _is_nan(line_val) else ""
         pick_name = f"{direction} {line_str}".strip()
         accent_hex = "#22D3EE" if direction == "OVER" else "#F87171"
-        # Show BOTH teams for totals
-        logo_section = f'''
-      <div class="pick-vs-logos">
-        {_logo_html(away_logo, away_abbr, away_hex, 48)}
-        <span class="pick-vs-sep">@</span>
-        {_logo_html(home_logo, home_abbr, home_hex, 48)}
-      </div>'''
     else:
         mkt_label = "MONEYLINE"
         pick_name = team
         accent_hex = _MLB_HEX.get(team, "#4080FF")
-        # Single team logo for moneyline
-        logo_section = f'''
+
+    # Always show both teams (matches NBA card style — consistent layout across markets)
+    logo_section = f'''
       <div class="pick-vs-logos">
-        {_logo_html(_logo_url(team), _team_abbr(team), accent_hex, 56)}
+        {_logo_html(away_logo, away_abbr, away_hex, 52)}
+        <span class="pick-vs-sep">@</span>
+        {_logo_html(home_logo, home_abbr, home_hex, 52)}
       </div>'''
 
     e_color = _edge_color(edge_pct)

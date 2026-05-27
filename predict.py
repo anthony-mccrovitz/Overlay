@@ -508,7 +508,8 @@ def _rebook_to_tier1(picks_df: pd.DataFrame, raw_odds: pd.DataFrame) -> pd.DataF
     """
     For any pick whose Sportsbook is NOT tier-1, replace it with the best
     available tier-1 book (DK/FD/BetMGM/BetRivers) for that game and side.
-    If no tier-1 alternative exists, leave the pick unchanged.
+    If no tier-1 alternative exists, mark the pick card_pick=False so it is
+    shadow-tracked but never shown as a public recommendation.
     """
     from src.data.odds_api import TIER1_BOOKS
 
@@ -528,6 +529,9 @@ def _rebook_to_tier1(picks_df: pd.DataFrame, raw_odds: pd.DataFrame) -> pd.DataF
         game_id = str(row.get("GameID", "") or "")
         game_t1 = tier1[tier1["GameID"] == game_id] if game_id else pd.DataFrame()
         if game_t1.empty:
+            # No tier-1 book has this game — keep offshore line for grading but
+            # don't surface it as a card pick.
+            result.at[idx, "CardPick"] = False
             continue
 
         if mkt == "moneyline":
@@ -791,7 +795,7 @@ def _run_mlb_daily(args, sport: str):
     # ── Totals (Over/Under) ───────────────────────────────────────────────────
     if use_all or "totals" in markets or "total" in markets:
         from src.models.mlb_totals import find_totals_edges
-        totals_edges = find_totals_edges(matchups, raw_odds, min_edge_runs=1.5)
+        totals_edges = find_totals_edges(matchups, raw_odds, min_edge_runs=1.0)
         if totals_edges:
             totals_rows = []
             for e in totals_edges:
@@ -906,22 +910,25 @@ def _run_mlb_daily(args, sport: str):
     combined["_norm"] = combined.apply(_norm_edge, axis=1)
     combined = combined.sort_values("_norm", ascending=False)
 
-    # Deduplicate: keep only the highest-ranked pick per game.
-    # With dedup, a "Both" ML+Consensus duplicate collapses to a single top pick.
-    seen_games: set[frozenset] = set()
+    # Deduplicate within each market: keep one pick per (game, market) pair.
+    # This lets the same game produce a moneyline AND a game total — different bets.
+    # The original intent (collapsing ML+Consensus duplicates for the same bet) is
+    # preserved because both have market="moneyline" and the same game teams.
+    seen_game_markets: set[tuple] = set()
     dedup_rows = []
     for _, row in combined.iterrows():
         team = str(row.get("Team", "")).lower().strip()
         opp  = str(row.get("Opponent", "")).lower().strip()
+        market = str(row.get("Market", "moneyline")).lower().strip()
         _raw_m = row.get("Matchup")
         matchup_str = "" if (pd.isna(_raw_m) if _raw_m is not None else False) else str(_raw_m or "").lower().strip()
         if matchup_str:
             parts = [p.strip() for p in matchup_str.replace(" @ ", "@").split("@")]
-            game_key = frozenset(p for p in parts if p)
+            game_key = (frozenset(p for p in parts if p), market)
         else:
-            game_key = frozenset([team, opp])
-        if game_key not in seen_games:
-            seen_games.add(game_key)
+            game_key = (frozenset([team, opp]), market)
+        if game_key not in seen_game_markets:
+            seen_game_markets.add(game_key)
             dedup_rows.append(row)
 
     combined = pd.DataFrame(dedup_rows).drop(columns=["_norm"]).reset_index(drop=True)
@@ -1134,14 +1141,13 @@ def _run_mlb_daily(args, sport: str):
                 (out_dir / "f5_totals.json").write_text(_json.dumps(f5_plays, indent=2))
                 # Log to pnl
                 try:
-                    from src.tracking.schema import normalize_pick
+                    from src.tracking.schema import normalize_pick, append_picks_safe
                     from src.config.models import is_live
                     from datetime import datetime as _dt, timezone as _tz
                     pnl_path = Path("data/pnl/picks.json")
-                    pnl_data = _json.loads(pnl_path.read_text()) if pnl_path.exists() else {"picks": []}
-                    existing_ids = {p.get("pick_id") for p in pnl_data.get("picks", [])}
                     now = _dt.now(_tz.utc).isoformat()
-                    added = 0
+                    f5_entries = []
+                    seen_ids: set[str] = set()
                     for fp in f5_plays:
                         raw = {
                             "date":       _game_date.isoformat(),
@@ -1162,12 +1168,11 @@ def _run_mlb_daily(args, sport: str):
                             "recorded_at": now,
                         }
                         norm = normalize_pick(raw)
-                        if norm.get("pick_id") in existing_ids:
-                            continue
-                        pnl_data["picks"].append(norm)
-                        existing_ids.add(norm["pick_id"])
-                        added += 1
-                    pnl_path.write_text(_json.dumps(pnl_data, indent=2))
+                        pid = norm.get("pick_id")
+                        if pid and pid not in seen_ids:
+                            f5_entries.append(norm)
+                            seen_ids.add(pid)
+                    added = append_picks_safe(pnl_path, f5_entries)
                     print(f"  F5 picks logged to pnl ({added} added)")
                 except Exception as _f5_pnl:
                     print(f"  [f5 pnl] {_f5_pnl}")
@@ -1230,58 +1235,11 @@ def _run_mlb_daily(args, sport: str):
     except Exception as _ou_rebuild_err:
         print(f"  [ou rebuild] {_ou_rebuild_err}")
 
-    # ── Batter Props (hits, HRs, RBIs, total bases) ───────────────────────────
+    # ── Batter Props — PAUSED (high vig, phantom edges, no proven model) ────────
+    # Skipping entirely: not generating files, captions, or picks.
+    # Re-enable when 60+ graded picks show positive CLV.
     _batter_edges: list[dict] = []
-    try:
-        from src.data.mlb_batter_props import find_batter_prop_edges
-        print("\nStep 9: Scanning batter props (hits / HRs / RBIs / total bases)...")
-        _game_date = game_date
-        batter_inputs = []
-        for ep in (ensemble_preds if use_ensemble else []):
-            m_obj = next(
-                (m for m in matchups
-                 if m.home_team.name == ep.home_team and m.away_team.name == ep.away_team),
-                None,
-            )
-            if not m_obj:
-                continue
-            batter_inputs.append({
-                "home_team":   ep.home_team,
-                "away_team":   ep.away_team,
-                "home_sp_whip": m_obj.home_pitcher.whip if m_obj.home_pitcher and hasattr(m_obj.home_pitcher, "whip") else 1.30,
-                "away_sp_whip": m_obj.away_pitcher.whip if m_obj.away_pitcher and hasattr(m_obj.away_pitcher, "whip") else 1.30,
-                "home_sp_hr9":  getattr(m_obj.home_pitcher, "hr_per_9", 1.20) if m_obj.home_pitcher else 1.20,
-                "away_sp_hr9":  getattr(m_obj.away_pitcher, "hr_per_9", 1.20) if m_obj.away_pitcher else 1.20,
-            })
-        if batter_inputs:
-            _batter_edges = find_batter_prop_edges(batter_inputs, game_date=_game_date)
-            if _batter_edges:
-                print(f"  Found {len(_batter_edges)} batter prop edge(s):")
-                for bp in _batter_edges[:6]:
-                    print(f"    {bp['label']}  edge={bp['edge_pct']}%  odds={bp['odds']:+d}  [{bp['book']}]")
-                import json as _json
-                ts = _game_date.strftime("%Y%m%d")
-                bp_dir = Path("output/picks") / sport / ts
-                bp_dir.mkdir(parents=True, exist_ok=True)
-                (bp_dir / "batter_props.json").write_text(_json.dumps(_batter_edges, indent=2))
-                print(f"  Batter props saved → output/picks/{sport}/{ts}/batter_props.json")
-                # Render batter prop cards regardless of live/incubating status —
-                # the card_pick=True flag (controlled by is_live) gates social posting,
-                # but the images themselves should always render so they're available.
-                # Batter props card paused (market incubating — no card render)
-                try:
-                    from src.output.captions import batter_props_caption
-                    bpcap = batter_props_caption(_batter_edges[:6], card_date=_game_date)
-                    (bp_dir / "caption_batter_props.txt").write_text(bpcap, encoding="utf-8")
-                    print(f"  Batter props caption → {bp_dir}/caption_batter_props.txt")
-                except Exception as _bpcap:
-                    print(f"  [batter props caption] {_bpcap}")
-            else:
-                print("  No batter prop edges found.")
-        else:
-            print("  No matchup inputs — skipping batter props.")
-    except Exception as _bp_err:
-        print(f"  [batter props] Skipped: {_bp_err}")
+    # (batter props block removed — paused)
 
     # ── Parlay card (only when moneyline model is live) ──────────────────────
     from src.config.models import is_live as _is_live
@@ -1673,27 +1631,17 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
     game_date: the actual game date — critical when picks are generated a day
     in advance (--tomorrow) or grading runs the morning after.
     """
-    from src.tracking.schema import make_pick_id
+    from src.tracking.schema import make_pick_id, append_picks_safe
 
     _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-
-    if _PNL_FILE.exists():
-        try:
-            existing = json.loads(_PNL_FILE.read_text())
-            if "picks" not in existing:
-                raise ValueError
-        except (json.JSONDecodeError, ValueError):
-            existing = {"picks": []}
-    else:
-        existing = {"picks": []}
 
     today  = (game_date or date.today()).isoformat()
     now_ts = datetime.now(tz=timezone.utc).isoformat()
 
-    # Dedup on pick_id — robust against all field variations
-    existing_ids = {p.get("pick_id", "") for p in existing["picks"]}
+    existing_ids: set[str] = set()  # populated per-pick to avoid duplicate within batch
 
     added = 0
+    new_entries: list[dict] = []
     for rank, pick in enumerate(picks_list):
         team = str(pick.get("Team", "")).strip()
         if not team:
@@ -1779,12 +1727,12 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             "recorded_at":      now_ts,
             "resulted_at":      None,
         }
-        existing["picks"].append(entry)
+        new_entries.append(entry)
         existing_ids.add(pick_id)
         added += 1
 
-    if added > 0:
-        _PNL_FILE.write_text(json.dumps(existing, indent=2))
+    if new_entries:
+        append_picks_safe(_PNL_FILE, new_entries)
 
     return added
 
@@ -1794,25 +1742,17 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
     Log generated prop picks to pnl/picks.json. Sets card_pick based on model status
     (live → True, incubating → False). Deduplicates on pick_id.
     """
-    from src.tracking.schema import make_pick_id
+    from src.tracking.schema import make_pick_id, append_picks_safe
     from src.config.models import is_live as _is_live
 
     _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    if _PNL_FILE.exists():
-        try:
-            existing = json.loads(_PNL_FILE.read_text())
-            if "picks" not in existing:
-                raise ValueError
-        except (json.JSONDecodeError, ValueError):
-            existing = {"picks": []}
-    else:
-        existing = {"picks": []}
 
     today  = (game_date or date.today()).isoformat()
     now_ts = datetime.now(tz=timezone.utc).isoformat()
-    existing_ids = {p.get("pick_id", "") for p in existing["picks"]}
+    existing_ids: set[str] = set()
 
     added = 0
+    prop_entries: list[dict] = []
     for prop in props_list:
         player    = str(prop.get("player") or prop.get("Player") or "").strip()
         if not player:
@@ -1857,12 +1797,12 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
             "recorded_at": now_ts,
             "resulted_at": None,
         }
-        existing["picks"].append(entry)
+        prop_entries.append(entry)
         existing_ids.add(pick_id)
         added += 1
 
-    if added > 0:
-        _PNL_FILE.write_text(json.dumps(existing, indent=2))
+    if prop_entries:
+        append_picks_safe(_PNL_FILE, prop_entries)
 
     return added
 

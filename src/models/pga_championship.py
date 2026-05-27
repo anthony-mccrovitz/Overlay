@@ -1,33 +1,146 @@
 """
-PGA Championship 2026 — Monte Carlo simulation model.
+PGA Tour Major Picks — Monte Carlo simulation model.
 
-Quail Hollow Club, Charlotte NC  |  Par 71  |  ~7,600 yards
-May 14–17, 2026
+Supports all four majors + The Players via COURSE_PROFILES. Auto-detects the
+active tournament from the Odds API sport key, or defaults to Quail Hollow.
+
+Live SG ratings: scraped from the same CDN pgatour.com uses for its stats pages
+(statdata.pgatour.com). No API key required, cached 24h, fails silently.
+Falls back to the static PLAYER_DB if the CDN is unreachable.
 
 Model approach:
   1. Each player gets a skill rating = weighted SG composite
-  2. Course-fit adjustments for Quail Hollow (premium on SG Approach + length)
+  2. Course-fit adjustments for the active venue
   3. Per-round score sampled from Normal(expected_score, σ)
   4. 4 rounds summed → lowest total wins
   5. 100k simulations → win probability per player
   6. Compare to market implied probability → edge
-
-Quail Hollow course profile:
-  - Long (7,600 yds), par 71
-  - "The Green Mile" finish (holes 16-18) punishes mistakes
-  - Bentgrass greens — rewards precise approaches
-  - Tree-lined fairways — accuracy off tee matters
-  - SG: Approach weighted 40%, OTT 25%, Putting 25%, ATG 10%
 """
 from __future__ import annotations
 
 import json
 import math
+import os
 import random
-from datetime import date
+import time
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import numpy as np
+
+_SG_CACHE_DIR = Path("data/cache/pgatour_sg")
+_SG_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+# PGA Tour stat IDs used on pgatour.com (stable across seasons)
+_PGA_STAT_IDS = {
+    "sg_total": "02674",
+    "sg_ott":   "02567",
+    "sg_app":   "02568",
+    "sg_atg":   "02569",
+    "sg_putt":  "02564",
+}
+
+# ── PGA Tour live SG ratings (free, no key required) ─────────────────────────
+
+def _fetch_pgatour_stat(stat_id: str, season: int, refresh: bool = False) -> dict[str, float]:
+    """
+    Fetch a single SG stat for all players from the PGA Tour stats CDN.
+
+    Uses statdata.pgatour.com — the same backend pgatour.com's stats pages hit.
+    No authentication needed. Returns {player_name: value} or {} on error.
+    Caches 24h.
+    """
+    cache = _SG_CACHE_DIR / f"{stat_id}_{season}.json"
+    if not refresh and cache.exists():
+        age = time.time() - cache.stat().st_mtime
+        if age < 86400:
+            try:
+                with open(cache) as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, OSError):
+                pass
+
+    try:
+        import requests as req
+        r = req.get(
+            f"https://statdata.pgatour.com/r/{season}/{stat_id}.json",
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=10,
+        )
+        r.raise_for_status()
+        data = r.json()
+        result: dict[str, float] = {}
+        for row in data.get("plrs", []):
+            name = row.get("n", "").strip()
+            val  = row.get("v") or row.get("avg") or row.get("total") or "0"
+            if name:
+                try:
+                    result[name] = float(str(val).replace(",", ""))
+                except (ValueError, TypeError):
+                    pass
+        if result:
+            with open(cache, "w") as f:
+                json.dump(result, f)
+        return result
+    except Exception:
+        return {}
+
+
+def _fetch_pgatour_sg_ratings(season: int | None = None, refresh: bool = False) -> dict[str, dict]:
+    """
+    Fetch all five SG components from pgatour.com stats CDN.
+
+    Returns {player_name: {sg_total, sg_app, sg_ott, sg_putt, sg_atg}} or {}
+    if the CDN is unreachable (triggers static PLAYER_DB fallback in caller).
+    """
+    if season is None:
+        from datetime import datetime as _dt
+        season = _dt.now().year
+
+    stats: dict[str, dict[str, float]] = {}
+    for sg_key, stat_id in _PGA_STAT_IDS.items():
+        player_vals = _fetch_pgatour_stat(stat_id, season, refresh=refresh)
+        for name, val in player_vals.items():
+            stats.setdefault(name, {})[sg_key] = val
+
+    # Only return players where we got at least sg_total
+    result = {
+        name: vals
+        for name, vals in stats.items()
+        if "sg_total" in vals
+    }
+    if result:
+        print(f"  [PGA Tour stats] Loaded live SG ratings for {len(result)} players.")
+    return result
+
+
+def _merge_live_ratings(static_db: dict[str, dict], live: dict[str, dict]) -> dict[str, dict]:
+    """
+    Merge live PGA Tour SG ratings into the static player DB.
+
+    Live data overwrites sg_total/sg_app/sg_ott/sg_putt/sg_atg.
+    form, major_exp, and course history carry over from the static DB.
+    Players in live data but not in static DB get default bonuses.
+    """
+    merged: dict[str, dict] = {}
+    for name, live_stats in live.items():
+        static = static_db.get(name, {})
+        merged[name] = {
+            **live_stats,
+            "form":      static.get("form", 1.0),
+            "major_exp": static.get("major_exp", 0.02),
+        }
+        # Carry over any course-specific history keys (qh_history, masters_history, etc.)
+        for k, v in static.items():
+            if k.endswith("_history") and k not in merged[name]:
+                merged[name][k] = v
+
+    # Also include static DB players not in live data (keep them as-is)
+    for name, static in static_db.items():
+        if name not in merged:
+            merged[name] = static
+
+    return merged
 
 # ── Player database ───────────────────────────────────────────────────────────
 # sg_total:   season-avg strokes gained vs. field per round
@@ -40,8 +153,8 @@ import numpy as np
 # qh_history: course bonus for Quail Hollow (Wells Fargo wins / top finishes)
 #
 # Stats are 2025-2026 PGA Tour season approximations based on
-# world rankings + known performance profiles. Replace with DataGolf
-# API data when available: https://datagolf.com/api-access (free tier)
+# world rankings + known performance profiles. Live SG data is fetched from
+# statdata.pgatour.com at runtime and merged on top of these entries.
 
 PLAYER_DB: dict[str, dict] = {
     # ── Elite tier ─────────────────────────────────────────────────────────
@@ -321,30 +434,112 @@ PLAYER_DB: dict[str, dict] = {
     },
 }
 
-# ── Course fit weights for Quail Hollow ───────────────────────────────────────
-# Long, demanding par 71 — rewards ball-strikers, penalizes crooked drivers
+# ── Course profiles ───────────────────────────────────────────────────────────
+# course_adj_weights: how each SG component scores above/below average at this venue
+# history_key:        player DB key that holds this venue's bonus (e.g. "qh_history")
+# round_sigma:        per-round scoring std dev (tighter at augusta, wider at US Open)
+# par:                course par
+# description:        brief notes
+
+COURSE_PROFILES: dict[str, dict] = {
+    # PGA Championship venues
+    "quail_hollow": {
+        "course_adj_weights": {"sg_app": 0.15, "sg_ott": 0.05, "sg_putt": 0.05, "sg_atg": -0.02},
+        "history_key": "qh_history",
+        "round_sigma": 3.4,
+        "par": 71,
+        "description": "Quail Hollow, Charlotte NC — long par 71, bentgrass, ball-strikers",
+    },
+    "oak_hill": {
+        "course_adj_weights": {"sg_app": 0.18, "sg_ott": 0.04, "sg_putt": 0.03, "sg_atg": -0.01},
+        "history_key": "oak_hill_history",
+        "round_sigma": 3.6,
+        "par": 70,
+        "description": "Oak Hill CC, Rochester NY — tight fairways, premium on accuracy",
+    },
+    # US Open venues
+    "oakmont": {
+        "course_adj_weights": {"sg_app": 0.20, "sg_ott": 0.02, "sg_putt": 0.08, "sg_atg": -0.03},
+        "history_key": "oakmont_history",
+        "round_sigma": 3.8,
+        "par": 70,
+        "description": "Oakmont CC — penal rough, lightning greens, shotmakers",
+    },
+    "shinnecock": {
+        "course_adj_weights": {"sg_app": 0.15, "sg_ott": 0.06, "sg_putt": 0.06, "sg_atg": -0.02},
+        "history_key": "shinnecock_history",
+        "round_sigma": 3.9,
+        "par": 70,
+        "description": "Shinnecock Hills — wind exposure, USGA setup",
+    },
+    # The Masters
+    "augusta": {
+        "course_adj_weights": {"sg_app": 0.10, "sg_ott": 0.08, "sg_putt": 0.12, "sg_atg": 0.05},
+        "history_key": "masters_history",
+        "round_sigma": 3.2,
+        "par": 72,
+        "description": "Augusta National — premium on putting, second shot precision",
+    },
+    # The Open Championship (links)
+    "royal_troon": {
+        "course_adj_weights": {"sg_app": 0.08, "sg_ott": 0.12, "sg_putt": 0.06, "sg_atg": 0.08},
+        "history_key": "open_history",
+        "round_sigma": 4.2,
+        "par": 71,
+        "description": "Royal Troon — links, wind, bounces; creativity rewarded",
+    },
+    "st_andrews": {
+        "course_adj_weights": {"sg_app": 0.05, "sg_ott": 0.14, "sg_putt": 0.08, "sg_atg": 0.10},
+        "history_key": "open_history",
+        "round_sigma": 4.0,
+        "par": 72,
+        "description": "St Andrews — wide fairways, pot bunkers, putting premium",
+    },
+    # The Players
+    "tpc_sawgrass": {
+        "course_adj_weights": {"sg_app": 0.18, "sg_ott": 0.03, "sg_putt": 0.08, "sg_atg": 0.02},
+        "history_key": "sawgrass_history",
+        "round_sigma": 3.3,
+        "par": 72,
+        "description": "TPC Sawgrass — island green 17th, Bermuda greens, approach-heavy",
+    },
+}
+
+# Odds API sport key → course profile key
+_SPORT_TO_COURSE: dict[str, str] = {
+    "golf_pga_championship_winner":  "quail_hollow",
+    "golf_masters_tournament_winner": "augusta",
+    "golf_us_open_winner":            "oakmont",
+    "golf_the_open_championship_winner": "st_andrews",
+    "golf_the_players_championship_winner": "tpc_sawgrass",
+}
+
+# ── Course fit weights for Quail Hollow (legacy alias) ────────────────────────
 QH_WEIGHTS = {
-    "sg_app":  0.40,   # #1 factor — approach to bentgrass greens
-    "sg_ott":  0.25,   # length + accuracy off the tee on long holes
-    "sg_putt": 0.25,   # fast bentgrass greens reward good putters
-    "sg_atg":  0.10,   # scrambling matters but less than approach
+    "sg_app":  0.40,
+    "sg_ott":  0.25,
+    "sg_putt": 0.25,
+    "sg_atg":  0.10,
 }
 
 # Per-round scoring standard deviation (PGA Tour typical)
 ROUND_SIGMA = 3.4
 
 
-def _course_adjusted_skill(player: str, db: dict[str, dict]) -> float:
+def _course_adjusted_skill(
+    player: str,
+    db: dict[str, dict],
+    course_profile: str = "quail_hollow",
+) -> float:
     """
-    Compute course-adjusted skill rating for Quail Hollow.
+    Compute course-adjusted skill rating for the given venue.
     Returns expected strokes-gained per round vs. field (higher = better).
 
     Formula:
       base        = sg_total (primary predictor)
-      course_adj  = component-level fit to Quail Hollow profile
-                    (+bonus if sg_app / sg_ott match course demands)
+      course_adj  = component-level fit to this venue's profile
       form_adj    = form multiplier applied to base
-      bonuses     = major exp + course history (additive, capped)
+      bonuses     = major exp + course-specific history (additive, capped at 0.4)
     """
     p = db.get(player, {})
     if not p:
@@ -352,21 +547,19 @@ def _course_adjusted_skill(player: str, db: dict[str, dict]) -> float:
 
     base = p.get("sg_total", 0.0)
 
-    # Course fit delta: how much does this player's component profile
-    # over/under-index for Quail Hollow vs. a generic tour-average course?
-    # Positive = profile matches QH demands, negative = mismatches
+    profile = COURSE_PROFILES.get(course_profile, COURSE_PROFILES["quail_hollow"])
+    weights = profile["course_adj_weights"]
     course_adj = (
-        p.get("sg_app",  0) * 0.15 +   # iron play heavily rewarded
-        p.get("sg_ott",  0) * 0.05 +   # length bonus (long course)
-        p.get("sg_putt", 0) * 0.05 -   # putting on bentgrass
-        p.get("sg_atg",  0) * 0.02     # small penalty for relying on scrambling
+        p.get("sg_app",  0) * weights.get("sg_app",  0) +
+        p.get("sg_ott",  0) * weights.get("sg_ott",  0) +
+        p.get("sg_putt", 0) * weights.get("sg_putt", 0) +
+        p.get("sg_atg",  0) * weights.get("sg_atg",  0)
     )
 
-    # Form: scale base by form multiplier
     form_adj = base * (p.get("form", 1.0) - 1.0)
 
-    # Major experience + course-specific history (additive, capped at 0.4)
-    bonus = min(p.get("major_exp", 0.0) + p.get("qh_history", 0.0), 0.40)
+    history_key = profile.get("history_key", "qh_history")
+    bonus = min(p.get("major_exp", 0.0) + p.get(history_key, 0.0), 0.40)
 
     return base + course_adj + form_adj + bonus
 
@@ -479,6 +672,7 @@ def run_simulation(
     skill_ratings: dict[str, float],
     n_sim: int = 150_000,
     seed: int = 42,
+    round_sigma: float = ROUND_SIGMA,
 ) -> SimulationOutput:
     """
     Monte Carlo simulation: 4 rounds, 156 players.
@@ -490,14 +684,13 @@ def run_simulation(
     field_avg  = 71.5
     exp_scores = np.array([field_avg - skill_ratings.get(p, 0.3) for p in players])
 
-    # Shape: (n_sim, n_players, 4_rounds)
     rounds = rng.normal(
         loc   = exp_scores[np.newaxis, :, np.newaxis],
-        scale = ROUND_SIGMA,
+        scale = round_sigma,
         size  = (n_sim, n, 4),
     )
-    totals = rounds.sum(axis=2)    # (n_sim, n_players)
-    round1 = rounds[:, :, 0]       # (n_sim, n_players)
+    totals = rounds.sum(axis=2)
+    round1 = rounds[:, :, 0]
 
     return SimulationOutput(players, totals, round1, skill_ratings, n_sim)
 
@@ -514,13 +707,13 @@ def _implied_prob(odds: int) -> float:
     return abs(odds) / (abs(odds) + 100)
 
 
-def fetch_odds() -> dict[str, dict]:
-    """Fetch current PGA Championship outright odds from The Odds API."""
-    import os, requests as req
-    key = os.environ.get("ODDS_API_KEY", "dec2a2126df47d603ca05fa8ba33d5f1")
+def fetch_odds(sport_key: str = "golf_pga_championship_winner") -> dict[str, dict]:
+    """Fetch outright winner odds for the given golf event from The Odds API."""
+    import requests as req
+    key = os.environ.get("ODDS_API_KEY", "")
     try:
         r = req.get(
-            "https://api.the-odds-api.com/v4/sports/golf_pga_championship_winner/odds",
+            f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds",
             params={
                 "apiKey": key, "regions": "us,uk,eu",
                 "markets": "outrights", "oddsFormat": "american",
@@ -552,33 +745,62 @@ def fetch_odds() -> dict[str, dict]:
         return {}
 
 
-def run_pga_model(n_sim: int = 100_000) -> list[dict]:
+def run_pga_model(
+    n_sim: int = 100_000,
+    sport_key: str = "golf_pga_championship_winner",
+    refresh: bool = False,
+) -> list[dict]:
     """
-    Full pipeline: fetch odds → build skill ratings → simulate → find edges.
-    Returns sorted list of picks with edge data (outright + top5/10/20 markets).
+    Full pipeline: fetch odds → load ratings → simulate → find edges.
+
+    sport_key controls which major's odds to fetch and which course profile
+    to apply. Supports all four majors + The Players.
+
+    Live SG ratings are fetched from statdata.pgatour.com (no API key, cached
+    24h). Falls back to the static PLAYER_DB if the CDN is unreachable.
     """
-    print("  Fetching PGA Championship odds...")
-    market_odds = fetch_odds()
+    course_profile = _SPORT_TO_COURSE.get(sport_key, "quail_hollow")
+    profile = COURSE_PROFILES[course_profile]
+
+    tournament = sport_key.replace("golf_", "").replace("_winner", "").replace("_", " ").title()
+    print(f"  Tournament: {tournament}  |  Course: {profile['description']}")
+
+    # 1. Fetch odds
+    print("  Fetching odds...")
+    market_odds = fetch_odds(sport_key=sport_key)
     if not market_odds:
         print("  ERROR: Could not fetch odds. Check ODDS_API_KEY.")
         return []
-
     print(f"  {len(market_odds)} players in market.")
 
+    # 2. Load player ratings (live PGA Tour stats preferred, static fallback)
+    from datetime import datetime as _dt
+    live_ratings = _fetch_pgatour_sg_ratings(season=_dt.now().year, refresh=refresh)
+    if live_ratings:
+        player_db = _merge_live_ratings(PLAYER_DB, live_ratings)
+    else:
+        player_db = PLAYER_DB
+        print("  Using static PLAYER_DB (pgatour.com CDN unavailable).")
+
+    # 3. Build per-player skill ratings using the active course profile
     skill_ratings: dict[str, float] = {}
     for player, info in market_odds.items():
-        if player in PLAYER_DB:
-            skill_ratings[player] = _course_adjusted_skill(player, PLAYER_DB)
+        if player in player_db:
+            skill_ratings[player] = _course_adjusted_skill(player, player_db, course_profile)
         else:
             skill_ratings[player] = _field_default_skill(info["best_odds"])
 
     players = list(market_odds.keys())
 
+    # 4. Simulate
     print(f"  Running {n_sim:,} simulations for {len(players)} players...")
-    sim = run_simulation(players, skill_ratings, n_sim=n_sim)
+    sim = run_simulation(
+        players, skill_ratings, n_sim=n_sim,
+        round_sigma=profile.get("round_sigma", ROUND_SIGMA),
+    )
     sim_results = sim.summary()
 
-    # Build picks list with edges — outright market
+    # 5. Build picks list with edges
     picks = []
     total_impl = sum(v["implied_prob"] for v in market_odds.values())
     vig_factor = total_impl
@@ -606,9 +828,11 @@ def run_pga_model(n_sim: int = 100_000) -> list[dict]:
             "make_cut":     round(sr["make_cut"] * 100, 1),
             "frl_prob":     round(sr["frl_prob"] * 100, 2),
             "skill_rating": round(sr["skill"], 3),
+            "course":       course_profile,
+            "data_source":  "pgatour_live" if live_ratings and player in live_ratings else "static_db",
+            "model_tier":   "tier2",
         })
 
-    # Sort by edge descending
     picks.sort(key=lambda x: x["edge_pct"], reverse=True)
     return picks
 

@@ -44,9 +44,9 @@ MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
     ("mlb",    "moneyline"): {"status": "live",       "tier": "t2", "label": "MLB Moneyline (bias-fixed)"},
     ("pga",    "outright"):  {"status": "live",       "tier": "t2", "label": "PGA Outright (SG)"},
-    ("nascar", "outright"):  {"status": "live",       "tier": "t2", "label": "NASCAR Outright Elo"},
-    ("indycar","outright"):  {"status": "live",       "tier": "t2", "label": "IndyCar Outright Elo"},
-    ("f1",     "outright"):  {"status": "live",       "tier": "t2", "label": "F1 Outright Elo"},
+    ("nascar", "outright"):  {"status": "retired",    "tier": "shadow", "label": "NASCAR Outright Elo"},
+    ("indycar","outright"):  {"status": "retired",    "tier": "shadow", "label": "IndyCar Outright Elo"},
+    ("f1",     "outright"):  {"status": "retired",    "tier": "shadow", "label": "F1 Outright Elo"},
 
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
     ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (rebuild)"},
@@ -60,10 +60,15 @@ MODELS: dict[tuple[str, str], dict] = {
     ("nba", "player_blocks"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Blocks"},
     ("nba", "player_steals"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Steals"},
     ("nba", "player_threes"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player 3PM"},
-    ("nhl", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "NHL Moneyline"},
-    ("nhl", "puck_line"):          {"status": "incubating", "tier": "shadow", "label": "NHL Puck Line"},
-    ("nhl", "total"):              {"status": "incubating", "tier": "shadow", "label": "NHL Totals"},
-    ("ufc", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "UFC Moneyline"},
+    ("nhl", "moneyline"):           {"status": "live",       "tier": "t2",     "label": "NHL Moneyline"},
+    ("nhl", "puck_line"):           {"status": "live",       "tier": "t2",     "label": "NHL Puck Line"},
+    ("nhl", "total"):               {"status": "live",       "tier": "t2",     "label": "NHL Totals"},
+    ("nhl", "player_points"):       {"status": "incubating", "tier": "shadow", "label": "NHL Player Points"},
+    ("nhl", "player_goals"):        {"status": "incubating", "tier": "shadow", "label": "NHL Player Goals"},
+    ("nhl", "player_assists"):      {"status": "incubating", "tier": "shadow", "label": "NHL Player Assists"},
+    ("nhl", "player_shots_on_goal"):{"status": "incubating", "tier": "shadow", "label": "NHL Shots on Goal"},
+    ("nhl", "player_blocked_shots"):{"status": "incubating", "tier": "shadow", "label": "NHL Blocked Shots"},
+    ("ufc", "moneyline"):           {"status": "incubating", "tier": "shadow", "label": "UFC Moneyline"},
 
     # ── Paused (research says don't bet) — also in PAUSED_MARKETS gate ───────
     ("mlb",  "spread"):            {"status": "incubating", "tier": "paused", "label": "MLB Run Line"},
@@ -74,9 +79,9 @@ MODELS: dict[tuple[str, str], dict] = {
     ("mlb",  "batter_rbis"):       {"status": "incubating", "tier": "paused", "label": "MLB Batter RBIs"},
     ("nba",  "spread"):            {"status": "incubating", "tier": "paused", "label": "NBA Spread"},
     ("nba",  "prop"):              {"status": "incubating", "tier": "paused", "label": "NBA Props (generic bucket)"},
-    ("wnba", "moneyline"):         {"status": "incubating", "tier": "paused", "label": "WNBA Moneyline"},
-    ("wnba", "spread"):            {"status": "incubating", "tier": "paused", "label": "WNBA Spread"},
-    ("wnba", "total"):             {"status": "incubating", "tier": "paused", "label": "WNBA Totals"},
+    ("wnba", "moneyline"):         {"status": "incubating", "tier": "shadow", "label": "WNBA Moneyline"},
+    ("wnba", "spread"):            {"status": "incubating", "tier": "shadow", "label": "WNBA Spread"},
+    ("wnba", "total"):             {"status": "incubating", "tier": "shadow", "label": "WNBA Totals"},
 }
 
 

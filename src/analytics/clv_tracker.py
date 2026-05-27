@@ -28,6 +28,25 @@ PICKS_OUTPUT_DIR = Path("output/picks")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+# Canonical sport key aliases — same table as schema.py so CLV join always matches.
+_SPORT_ALIASES: dict[str, str] = {
+    "baseball_mlb":                 "mlb",
+    "basketball_nba":               "nba",
+    "basketball_nba_summer_league": "nba",
+    "basketball_wnba":              "wnba",
+    "americanfootball_nfl":         "nfl",
+    "americanfootball_ncaaf":       "ncaaf",
+    "basketball_ncaab":             "ncaab",
+    "icehockey_nhl":                "nhl",
+}
+
+
+def _normalize_sport(sport: str) -> str:
+    """Normalize Odds API sport key to short canonical form (e.g. baseball_mlb → mlb)."""
+    s = str(sport).lower().strip()
+    return _SPORT_ALIASES.get(s, s)
+
+
 def _odds_to_implied(odds: float | int) -> float:
     """Convert American odds to implied probability (no vig removed)."""
     if odds == 0:
@@ -35,6 +54,25 @@ def _odds_to_implied(odds: float | int) -> float:
     if odds > 0:
         return 100.0 / (odds + 100.0)
     return abs(odds) / (abs(odds) + 100.0)
+
+
+def _devig_prob(picked_odds: float, opponent_odds: float) -> float:
+    """
+    De-vig a two-sided market using the additive (Pinnacle) method.
+    Returns the fair probability for the picked side.
+
+    Example: picked=-150, opponent=+130
+      raw_picked   = 150/250 = 0.600
+      raw_opponent = 100/230 = 0.435
+      overround    = 1.035
+      fair         = 0.600 / 1.035 = 0.580
+    """
+    raw_picked   = _odds_to_implied(picked_odds)
+    raw_opponent = _odds_to_implied(opponent_odds)
+    overround    = raw_picked + raw_opponent
+    if overround <= 0:
+        return raw_picked
+    return raw_picked / overround
 
 
 def _load_snapshots() -> list[dict]:
@@ -112,7 +150,7 @@ def snapshot_opening_lines(
             "date":                 date_str,
             "team":                 team,
             "opponent":             str(pick.get("Opponent") or pick.get("matchup") or "?").strip(),
-            "sport":                sport,
+            "sport":                _normalize_sport(sport),
             "market":               str(pick.get("market") or pick.get("Market") or "moneyline"),
             "opening_odds":         odds,
             "opening_implied_prob": round(_odds_to_implied(odds), 6),
@@ -176,7 +214,7 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
             "date":                 effective_date,
             "team":                 team,
             "opponent":             str(pick.get("matchup") or "?").strip(),
-            "sport":                str(pick.get("sport") or "baseball_mlb"),
+            "sport":                _normalize_sport(str(pick.get("sport") or "mlb")),
             "market":               market,
             "opening_odds":         odds,
             "opening_implied_prob": round(_odds_to_implied(odds), 6),
@@ -218,6 +256,47 @@ def backfill_snapshots_from_pnl() -> int:
             total += n
     print(f"  [CLV backfill] Total: {total} new snapshots added across {len(dates)} dates")
     return total
+
+
+def fetch_closing_pairs(
+    date_str: str | None = None,
+    sport: str = "baseball_mlb",
+) -> dict[str, tuple[float, float]]:
+    """
+    Like fetch_closing_lines but returns two-sided data for de-vig.
+    Returns {team_lower: (team_odds, opponent_odds)} from the closing archive.
+    Only available for archive files (not live cache fallback).
+    """
+    from datetime import date
+
+    if date_str is None:
+        date_str = date.today().isoformat()
+
+    short_sport = (sport
+                   .replace("baseball_", "")
+                   .replace("basketball_", "")
+                   .replace("hockey_", ""))
+
+    for prefix in [sport, short_sport]:
+        archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
+        if not archive_path.exists():
+            continue
+        try:
+            records = json.loads(archive_path.read_text())
+            pairs: dict[str, tuple[float, float]] = {}
+            for row in records:
+                home = str(row.get("HomeTeam") or "").lower().strip()
+                away = str(row.get("AwayTeam") or "").lower().strip()
+                home_ml = row.get("BestHomeML")
+                away_ml = row.get("BestAwayML")
+                if home and away and home_ml is not None and away_ml is not None:
+                    pairs[home] = (float(home_ml), float(away_ml))
+                    pairs[away] = (float(away_ml), float(home_ml))
+            if pairs:
+                return pairs
+        except (json.JSONDecodeError, ValueError, KeyError):
+            pass
+    return {}
 
 
 def fetch_closing_lines(
@@ -320,16 +399,24 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     if not day_snaps:
         return []
 
-    # Build per-sport closing maps for all sports present that day
-    sports_today = {s.get("sport", "baseball_mlb") for s in day_snaps}
-    closing_maps: dict[str, dict] = {}
-    for sport in sports_today:
-        closing_maps[sport] = fetch_closing_lines(date_str=date_str, sport=sport)
+    # Normalize sport keys in snapshots (may have been written with old Odds API slug)
+    for s in day_snaps:
+        s["sport"] = _normalize_sport(s.get("sport", "mlb"))
 
-    # Merged map: all teams from all sports (used as fallback)
+    # Build per-sport closing maps for all sports present that day
+    sports_today = {s.get("sport", "mlb") for s in day_snaps}
+    closing_maps: dict[str, dict] = {}
+    closing_pairs: dict[str, dict] = {}  # two-sided for de-vig
+    for sport in sports_today:
+        closing_maps[sport]  = fetch_closing_lines(date_str=date_str, sport=sport)
+        closing_pairs[sport] = fetch_closing_pairs(date_str=date_str, sport=sport)
+
+    # Merged maps: all teams from all sports (used as fallback)
     merged_map: dict[str, float] = {}
-    for cm in closing_maps.values():
-        merged_map.update(cm)
+    merged_pairs: dict[str, tuple] = {}
+    for sport in sports_today:
+        merged_map.update(closing_maps[sport])
+        merged_pairs.update(closing_pairs[sport])
 
     updated = 0
     for snap in day_snaps:
@@ -337,7 +424,8 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         snap_sport = snap.get("sport", "baseball_mlb")
 
         # Try sport-specific map first, then merged fallback
-        sport_map = closing_maps.get(snap_sport, {})
+        sport_map   = closing_maps.get(snap_sport, {})
+        sport_pairs = closing_pairs.get(snap_sport, {})
         closing_odds = sport_map.get(team_lower) or merged_map.get(team_lower)
 
         if closing_odds is None:
@@ -353,13 +441,22 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         if closing_odds is None:
             continue  # no closing line available yet
 
-        closing_imp = _odds_to_implied(closing_odds)
-        clv         = closing_imp - snap["opening_implied_prob"]
+        # De-vig closing probability using two-sided data when available.
+        # Falls back to raw implied prob for markets without a paired opponent line
+        # (e.g. live-cache fallback, totals, props).
+        pair = sport_pairs.get(team_lower) or merged_pairs.get(team_lower)
+        if pair:
+            closing_imp = _devig_prob(pair[0], pair[1])
+        else:
+            closing_imp = _odds_to_implied(closing_odds)
+
+        clv = closing_imp - snap["opening_implied_prob"]
 
         snap["closing_odds"]         = closing_odds
         snap["closing_implied_prob"] = round(closing_imp, 6)
         snap["clv"]                  = round(clv, 6)
         snap["clv_pct"]              = round(clv * 100, 3)
+        snap["clv_devigged"]         = pair is not None  # flag for reporting
         updated += 1
 
     if updated > 0:

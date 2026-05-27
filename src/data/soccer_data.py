@@ -1,20 +1,22 @@
 """
 International football match data loader.
 
-Primary source: openfootball/world-cup.json GitHub dataset
-  World Cup matches 2014-2026 (includes group stage, knockouts, qualifiers)
-  Format: JSON with rounds/matches structure.
+Primary source: martj42/international_results CSV dataset
+  All international results from 1872–present (qualifiers, tournaments, friendlies).
+  Filtered to competitive matches only for Dixon-Coles training.
 
-Supplementary: club match proxy data (top 5 leagues via football-data.co.uk)
-  Used to enrich team strength estimates with more recent form.
+Supplementary: openfootball/world-cup.json GitHub dataset
+  Used as fallback if martj42 fetch fails.
 
 Usage:
-    from src.data.soccer_data import load_world_cup_history, load_upcoming_matches
-    history = load_world_cup_history()   # past WC + euros matches for training
-    upcoming = load_upcoming_matches()   # 2026 WC group stage fixtures
+    from src.data.soccer_data import load_training_data, get_elo_ratings
+    history = load_training_data()      # competitive internationals 2012+
+    elo = get_elo_ratings()             # World Football Elo ratings dict
 """
 from __future__ import annotations
 
+import csv
+import io
 import json
 import time
 from datetime import datetime, date
@@ -23,6 +25,30 @@ from pathlib import Path
 import requests
 
 CACHE_DIR = Path("data/cache/soccer")
+
+# martj42/international_results — all international results from 1872–present
+INTL_RESULTS_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
+
+# Only include these tournament types for Dixon-Coles training (no friendlies)
+COMPETITIVE_TOURNAMENTS: frozenset[str] = frozenset([
+    "FIFA World Cup",
+    "FIFA World Cup qualification",
+    "UEFA Euro",
+    "UEFA Euro qualification",
+    "Copa América",
+    "Copa America",
+    "Gold Cup",
+    "CONCACAF Gold Cup",
+    "CONCACAF Nations League",
+    "UEFA Nations League",
+    "Africa Cup of Nations",
+    "African Nations Cup",
+    "AFC Asian Cup",
+    "AFC Asian Cup qualification",
+    "Confederations Cup",
+    "FIFA Confederations Cup",
+    "CONMEBOL–UEFA Cup of Champions",
+])
 
 # openfootball World Cup JSON — confirmed working
 WC_URLS = {
@@ -65,6 +91,151 @@ def _fetch_json(url: str, cache_key: str, max_age_days: int = 1) -> dict | list 
             with open(cache) as f:
                 return json.load(f)
         return None
+
+
+def load_international_results(
+    min_year: int = 2012,
+    competitive_only: bool = True,
+) -> list[dict]:
+    """
+    Load all international results from the martj42 dataset (CSV on GitHub).
+    ~50k matches from 1872–present. Filtered to competitive matches by default.
+    Cached locally for 1 day.
+    """
+    cache_path = CACHE_DIR / "intl_results.csv"
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    raw_csv: str | None = None
+    if cache_path.exists():
+        age = time.time() - cache_path.stat().st_mtime
+        if age < 86400:
+            raw_csv = cache_path.read_text(encoding="utf-8")
+
+    if raw_csv is None:
+        try:
+            resp = requests.get(INTL_RESULTS_URL, timeout=30)
+            resp.raise_for_status()
+            raw_csv = resp.text
+            cache_path.write_text(raw_csv, encoding="utf-8")
+            print(f"  [soccer_data] Fetched martj42 dataset ({len(raw_csv)//1024}KB)")
+        except Exception as exc:
+            print(f"  [soccer_data] martj42 fetch failed: {exc}")
+            if cache_path.exists():
+                raw_csv = cache_path.read_text(encoding="utf-8")
+                print("  [soccer_data] Using stale cache.")
+            else:
+                return []
+
+    if not raw_csv:
+        return []
+
+    reader = csv.DictReader(io.StringIO(raw_csv))
+    results: list[dict] = []
+    for row in reader:
+        try:
+            match_date = datetime.strptime(row["date"], "%Y-%m-%d").date()
+        except (ValueError, KeyError):
+            continue
+        if match_date.year < min_year:
+            continue
+        tournament = row.get("tournament", "")
+        if competitive_only and tournament not in COMPETITIVE_TOURNAMENTS:
+            continue
+        try:
+            home_score = int(row["home_score"])
+            away_score = int(row["away_score"])
+        except (ValueError, KeyError):
+            continue
+        neutral_raw = row.get("neutral", "False")
+        neutral = neutral_raw.strip().lower() in ("true", "1", "yes")
+        results.append({
+            "date":       match_date,
+            "home_team":  row.get("home_team", "").strip(),
+            "away_team":  row.get("away_team", "").strip(),
+            "home_score": home_score,
+            "away_score": away_score,
+            "tournament": tournament,
+            "year":       match_date.year,
+            "neutral":    neutral,
+        })
+
+    results.sort(key=lambda x: x["date"])
+    return results
+
+
+# In-process Elo cache so repeated calls don't recompute
+_ELO_CACHE: dict[str, float] | None = None
+
+
+def compute_elo_ratings(
+    matches: list[dict],
+    k: float = 32.0,
+    base: float = 1500.0,
+) -> dict[str, float]:
+    """
+    Compute World Football Elo ratings from a sorted list of match dicts.
+    Returns {team_name: elo_rating}.
+
+    Uses World Football Elo conventions:
+    - Home advantage: +100 Elo points to home team's effective rating
+    - Goal-difference multiplier: 1.0 (gd≤1), 1.5 (gd=2), (11+gd)/8 (gd≥3)
+    - Standard K=32 (higher than chess, lower than some sport systems)
+    """
+    ratings: dict[str, float] = {}
+
+    for m in matches:
+        home = m["home_team"]
+        away = m["away_team"]
+        if not home or not away:
+            continue
+
+        ra = ratings.get(home, base)
+        rb = ratings.get(away, base)
+
+        # Home advantage boost (temporary — not stored)
+        ra_eff = ra + (0 if m.get("neutral", False) else 100)
+
+        ea = 1.0 / (1.0 + 10.0 ** ((rb - ra_eff) / 400.0))
+
+        hs, as_ = m["home_score"], m["away_score"]
+        if hs > as_:
+            sa = 1.0
+        elif hs == as_:
+            sa = 0.5
+        else:
+            sa = 0.0
+
+        gd = abs(hs - as_)
+        if gd <= 1:
+            gdf = 1.0
+        elif gd == 2:
+            gdf = 1.5
+        else:
+            gdf = (11 + gd) / 8.0
+
+        ratings[home] = ra + k * gdf * (sa - ea)
+        ratings[away] = rb + k * gdf * ((1 - sa) - (1 - ea))
+
+    return ratings
+
+
+def get_elo_ratings(min_year: int = 2000) -> dict[str, float]:
+    """
+    Return current World Football Elo ratings computed from all international
+    results (including friendlies) from min_year. Result is cached in-process.
+    """
+    global _ELO_CACHE
+    if _ELO_CACHE is not None:
+        return _ELO_CACHE
+    matches = load_international_results(min_year=min_year, competitive_only=False)
+    if not matches:
+        # Fallback: compute from openfootball tournament data only
+        matches = []
+        matches.extend(load_world_cup_history([2014, 2018, 2022]))
+        matches.extend(load_euros_history([2020, 2024]))
+        matches.sort(key=lambda x: x["date"])
+    _ELO_CACHE = compute_elo_ratings(matches)
+    return _ELO_CACHE
 
 
 def _parse_openfootball(data: dict | list, tournament: str, year: int) -> list[dict]:
@@ -183,17 +354,24 @@ def load_copa_history(years: list[int] | None = None) -> list[dict]:
     return all_matches
 
 
-def load_training_data() -> list[dict]:
+def load_training_data(min_year: int = 2012) -> list[dict]:
     """
-    Load combined historical match data for Dixon-Coles training.
-    Includes: WC 2014-2022, Euros 2016-2024, Copa 2021-2024.
+    Load comprehensive international match data for Dixon-Coles training.
+    Primary: martj42 dataset (all competitive internationals from min_year onward).
+    Includes: WC qualifiers, Euros qualifiers, CONMEBOL qualifiers, Nations League,
+              Copa América (all years incl. 2016/2019), Gold Cup, etc.
+    Fallback: openfootball WC/Euros/Copa JSONs if martj42 fetch fails.
     """
-    all_matches = []
-    all_matches.extend(load_world_cup_history([2014, 2018, 2022]))
-    all_matches.extend(load_euros_history([2020, 2024]))
-    all_matches.extend(load_copa_history())
-    all_matches.sort(key=lambda x: x["date"])
-    return all_matches
+    matches = load_international_results(min_year=min_year, competitive_only=True)
+    if len(matches) < 100:
+        print("  [soccer_data] martj42 unavailable — falling back to openfootball sources.")
+        matches = []
+        matches.extend(load_world_cup_history([2014, 2018, 2022]))
+        matches.extend(load_euros_history([2020, 2024]))
+        matches.extend(load_copa_history())
+    matches.sort(key=lambda x: x["date"])
+    print(f"  [soccer_data] Training data: {len(matches):,} competitive matches (min_year={min_year})")
+    return matches
 
 
 def load_upcoming_wc2026() -> list[dict]:

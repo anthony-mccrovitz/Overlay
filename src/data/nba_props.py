@@ -59,6 +59,21 @@ NBA_PROPS_MARKETS = [
 API_BASE = "https://api.the-odds-api.com/v4"
 MIN_EDGE = 0.12      # 12% — raised from 5%; NBA prop ECE=0.43 means stated edges are ~3x overstated
 MIN_OVER_PROB = 0.50  # removed asymmetric gate — let edge sign decide direction
+MIN_IMPLIED_PROB = 0.35   # no picks at odds better than +186 — calibrator can't price longshots
+MIN_EDGE_OVER = 0.18      # OVERs need higher bar: -12.2u vs UNDERs +3.0u historically
+OVER_BIAS_CORRECTION = 0.06  # subtract from OVER prob before edge calc: books shade lines downward
+
+# Minimum line per market — below these thresholds the model has no real signal.
+# UNDER 0.5 blocks / steals / assists are the primary driver of Brier 0.4050.
+_MIN_LINE_BY_MARKET: dict[str, float] = {
+    "player_points": 5.0,
+    "player_rebounds": 2.5,
+    "player_assists": 1.5,
+    "player_threes": 1.5,
+    "player_pra": 15.0,
+    "player_blocks": 1.5,
+    "player_steals": 1.5,
+}
 
 
 def _api_key() -> str | None:
@@ -295,22 +310,33 @@ def find_nba_prop_edges(
             book: str, stat_label: str,
         ) -> None:
             from src.analytics.calibration import apply_calibration
+            # Skip lines too low for reliable probability estimation.
+            # Sub-threshold lines produce phantom edges — the model has no signal there.
+            if line < _MIN_LINE_BY_MARKET.get(market, 1.0):
+                return
             if use_poisson:
                 p_over_raw = _poisson_over(proj, line)
             else:
                 p_over_raw = _normal_over_prob(proj, line, std)
 
             # Apply Platt calibration — corrects for overconfidence in prop projections
-            p_over = apply_calibration(p_over_raw, "nba", "prop")
+            p_over_cal = apply_calibration(p_over_raw, "nba", "prop")
+            # Books shade OVER lines to attract square money — correct for systematic bias
+            # Historical: OVERs 41% WR vs UNDERs 61% WR. 6pp correction splits the gap.
+            p_over = max(0.01, min(0.99, p_over_cal - OVER_BIAS_CORRECTION))
 
             for direction, model_prob, imp, odds in [
                 ("OVER",  p_over,       implied,     over_odds),
                 ("UNDER", 1 - p_over,   1 - implied, under_odds),
             ]:
+                # Skip longshot odds — calibrator outputs near-constant prob which
+                # creates phantom edges when implied prob is very low (+200 or better)
+                if imp < MIN_IMPLIED_PROB:
+                    continue
                 edge = model_prob - imp
-                # Only positive edge — direction is already set by the loop,
-                # so abs() would silently fire on wrong-direction props.
-                if edge < min_edge:
+                # OVERs need higher bar: historically -12.2u vs UNDERs +3.0u
+                threshold = MIN_EDGE_OVER if direction == "OVER" else min_edge
+                if edge < threshold:
                     continue
                 edges.append({
                     "type": "nba_prop",

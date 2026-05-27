@@ -100,17 +100,11 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
     if not edges:
         return 0
 
-    pnl_data: dict = {}
-    if PNL_FILE.exists():
-        try:
-            pnl_data = json.loads(PNL_FILE.read_text())
-        except (json.JSONDecodeError, OSError):
-            pnl_data = {}
-    picks = pnl_data.get("picks", [])
-    existing_ids = {p.get("pick_id") for p in picks if isinstance(p, dict)}
+    from src.tracking.schema import append_picks_safe
 
-    now   = datetime.now(timezone.utc).isoformat()
-    added = 0
+    existing_ids: set[str] = set()
+    now     = datetime.now(timezone.utc).isoformat()
+    entries: list[dict] = []
 
     for e in edges:
         raw = {
@@ -135,25 +129,75 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
         pid  = norm.get("pick_id")
         if pid and pid in existing_ids:
             continue
-        picks.append(norm)
+        entries.append(norm)
         if pid:
             existing_ids.add(pid)
-        added += 1
 
-    pnl_data["picks"] = picks
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
-    return added
+    return append_picks_safe(PNL_FILE, entries)
+
+
+def _build_events_from_manual(odds_json: str, sport: str) -> list[dict]:
+    """
+    Parse manually-entered odds JSON into Odds-API-compatible event format.
+
+    Expected input format (paste from DraftKings/FanDuel):
+    [
+      {"driver": "Kyle Larson",  "win_odds": -150},
+      {"driver": "Chase Elliott", "win_odds": +600},
+      ...
+    ]
+
+    Returns a single synthetic event with one bookmaker entry.
+    """
+    try:
+        raw = json.loads(odds_json)
+    except json.JSONDecodeError as e:
+        print(f"  [manual] Invalid JSON: {e}")
+        return []
+
+    if not isinstance(raw, list) or not raw:
+        print("  [manual] Expected a JSON array of {driver, win_odds} objects.")
+        return []
+
+    outcomes = []
+    for entry in raw:
+        driver = entry.get("driver") or entry.get("name") or entry.get("player")
+        odds   = entry.get("win_odds") or entry.get("odds") or entry.get("price")
+        if driver and odds is not None:
+            outcomes.append({"name": str(driver), "price": float(odds)})
+
+    if not outcomes:
+        print("  [manual] No valid driver/odds pairs found.")
+        return []
+
+    return [{
+        "id":            "manual_entry",
+        "sport_key":     sport,
+        "sport_title":   sport,
+        "commence_time": datetime.now(timezone.utc).isoformat(),
+        "home_team":     outcomes[0]["name"],
+        "away_team":     outcomes[-1]["name"],
+        "bookmakers": [{
+            "key":   "manual",
+            "title": "Manual Entry",
+            "markets": [{
+                "key":      "outrights",
+                "outcomes": outcomes,
+            }],
+        }],
+    }]
 
 
 def run_motorsport(args: argparse.Namespace) -> int:
-    sport    = getattr(args, "sport", SPORT_KEY) or SPORT_KEY
-    n_sim    = getattr(args, "n_sim", 50_000)
-    refresh  = getattr(args, "refresh", False)
-    min_edge = getattr(args, "min_edge", 3.0)
-    date_str = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
-    game_date = date(int(date_str[:4]), int(date_str[4:6]), int(date_str[6:]))
-    today_str = game_date.strftime("%Y%m%d")
+    sport      = getattr(args, "sport", SPORT_KEY) or SPORT_KEY
+    n_sim      = getattr(args, "n_sim", 50_000)
+    refresh    = getattr(args, "refresh", False)
+    min_edge   = getattr(args, "min_edge", 3.0)
+    manual_odds = getattr(args, "manual_odds", None)
+    date_str   = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
+    game_date  = date(int(date_str[:4]), int(date_str[4:6]), int(date_str[6:]))
+    today_str  = game_date.strftime("%Y%m%d")
 
     series_label = {
         "auto_racing_nascar_cup_series": "NASCAR Cup Series",
@@ -166,10 +210,36 @@ def run_motorsport(args: argparse.Namespace) -> int:
     print(f"  {game_date.strftime('%B %d, %Y')}  |  n_sim={n_sim:,}")
     print(f"{'='*60}")
 
-    # 1. Fetch odds
-    events = fetch_race_odds(sport=sport, refresh=refresh)
+    # 1. Fetch odds — priority: manual > Pinnacle > Odds API cache
+    if manual_odds:
+        print(f"\n  Using manual odds entry.")
+        events = _build_events_from_manual(manual_odds, sport)
+    else:
+        # Try Pinnacle first (sharpest lines, covers IndyCar/F1/Motorsport)
+        try:
+            from src.data.pinnacle_motorsport import fetch_motorsport_events
+            print(f"\n  Fetching live odds from Pinnacle...")
+            all_pinnacle = fetch_motorsport_events(refresh=refresh)
+            # Filter to events matching this sport key
+            events = [e for e in all_pinnacle if e.get("sport_key") == sport]
+            if not events and all_pinnacle:
+                # If sport key doesn't match exactly, use all motorsport events
+                events = all_pinnacle
+                print(f"  Note: no exact match for {sport}, showing all {len(events)} motorsport event(s)")
+        except Exception as e:
+            print(f"  [Pinnacle] {e}")
+            events = []
+
+        # Fall back to Odds API cache if Pinnacle returned nothing
+        if not events:
+            events = fetch_race_odds(sport=sport, refresh=refresh)
+
     if not events:
-        print(f"  No {series_label} odds found. Race may not be scheduled.")
+        print(f"\n  No {series_label} odds found.")
+        print(f"  Use --manual-odds to paste win odds from your sportsbook:")
+        print(f"    python3 run_nascar.py --manual-odds '[{{\"driver\":\"Kyle Larson\",\"win_odds\":-150}},...]'")
+        print(f"  Or run sim-only (no edge detection) to see model probabilities:")
+        print(f"    python3 run_nascar.py --sim-only --drivers 'Kyle Larson,Chase Elliott,William Byron'")
         return 0
 
     print(f"\n  {len(events)} race event(s) available.")
@@ -262,14 +332,51 @@ def run_motorsport(args: argparse.Namespace) -> int:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Motorsport race picks pipeline")
-    parser.add_argument("--sport",    type=str, default=SPORT_KEY,
-                        help="Odds API sport key (default: NASCAR Cup)")
-    parser.add_argument("--n-sim",   type=int, default=50_000,
-                        help="Monte Carlo simulation count (default: 50000)")
-    parser.add_argument("--min-edge", type=float, default=3.0,
-                        help="Minimum edge %% to report (default: 3.0)")
-    parser.add_argument("--date",    type=str, help="Date YYYYMMDD (default: today)")
-    parser.add_argument("--refresh", action="store_true", help="Force-refresh odds cache")
+    parser = argparse.ArgumentParser(
+        description="Motorsport race picks pipeline",
+        epilog=(
+            "NOTE: The Odds API does not carry motorsport markets.\n"
+            "Paste win odds from DraftKings/FanDuel using --manual-odds:\n"
+            "  python3 run_nascar.py --manual-odds "
+            "'[{\"driver\":\"Kyle Larson\",\"win_odds\":-150},{\"driver\":\"Chase Elliott\",\"win_odds\":+500}]'\n"
+            "\nSim-only (no odds needed):\n"
+            "  python3 run_nascar.py --sim-only --drivers 'Kyle Larson,Chase Elliott,William Byron'"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--sport",       type=str, default=SPORT_KEY)
+    parser.add_argument("--n-sim",       type=int, default=50_000)
+    parser.add_argument("--min-edge",    type=float, default=3.0)
+    parser.add_argument("--date",        type=str, help="Date YYYYMMDD (default: today)")
+    parser.add_argument("--refresh",     action="store_true")
+    parser.add_argument("--manual-odds", type=str, dest="manual_odds",
+                        help='JSON array: [{"driver":"Name","win_odds":-150},...]')
+    parser.add_argument("--sim-only",    action="store_true", dest="sim_only",
+                        help="Run simulation without odds — just show model probabilities")
+    parser.add_argument("--drivers",     type=str,
+                        help="Comma-separated driver list for --sim-only mode")
     args = parser.parse_args()
+
+    # Sim-only mode: just run the model and print probabilities, no odds needed
+    if getattr(args, "sim_only", False):
+        drivers_raw = getattr(args, "drivers", None) or ""
+        entry_list  = [d.strip() for d in drivers_raw.split(",") if d.strip()]
+        if not entry_list:
+            # Default to known top drivers for the series
+            from src.models.motorsport_engine import DRIVER_RATINGS
+            sport_short = {"auto_racing_nascar_cup_series": "nascar",
+                           "auto_racing_indycar_series": "indycar",
+                           "auto_racing_formula_one": "f1"}.get(args.sport, "nascar")
+            entry_list = [d for d, r in DRIVER_RATINGS.items() if sport_short in r]
+        from src.models.motorsport_engine import get_engine
+        eng = get_engine(args.sport)
+        sim = eng.simulate(entry_list, n_sim=args.n_sim)
+        s   = sim.summary()
+        print(f"\n  {args.sport} — Model Probabilities ({args.n_sim:,} sims)")
+        print(f"  {'Driver':30s}  {'Win':>6}  {'Top3':>6}  {'Top5':>6}  {'Top10':>7}  {'DNF':>6}")
+        print(f"  {'-'*75}")
+        for driver, v in sorted(s.items(), key=lambda x: x[1]["win"], reverse=True):
+            print(f"  {driver:30s}  {v['win']:6.1%}  {v['top3']:6.1%}  {v['top5']:6.1%}  {v['top10']:7.1%}  {v['dnf']:6.1%}")
+        import sys; sys.exit(0)
+
     sys.exit(run_motorsport(args))

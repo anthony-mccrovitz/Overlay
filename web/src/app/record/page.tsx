@@ -166,6 +166,55 @@ export default function RecordPage() {
         </div>
       )}
 
+      {/* ── Model Health ── */}
+      {data?.by_market && (
+        <div className="border border-[var(--border-hi)]">
+          <div className="panel-header">
+            <span className="text-[10px] font-bold tracking-widest text-[var(--indigo)]">▌ MODEL HEALTH</span>
+            <span className="ml-2 text-[9px] text-[var(--text-muted)]">ROI = process quality proxy · CLV is ground truth</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-x divide-y divide-[var(--border-hi)] border-t border-[var(--border-hi)]">
+            {[
+              { key: "total",     label: "Totals",    tier: "TIER 1", research: "Weather + Voulgaris" },
+              { key: "moneyline", label: "Moneyline", tier: "TIER 2", research: "Bias-fixed Elo" },
+              { key: "prop",      label: "Props",     tier: "SHADOW", research: "Incubating (50+ needed)" },
+              { key: "nrfi",      label: "NRFI",      tier: "SHADOW", research: "No peer review yet" },
+              { key: "spread",    label: "Spread",    tier: "PAUSED", research: "Vig kills edge" },
+            ].map(({ key, label, tier, research }) => {
+              const m = data.by_market[key];
+              const roi = m?.roi ?? null;
+              const isGreen  = roi != null && roi > 0.05;
+              const isYellow = roi != null && roi >= -0.05 && roi <= 0.05;
+              const isRed    = roi != null && roi < -0.05;
+              const tierColor =
+                tier === "TIER 1" ? "text-[var(--cyan)] border-[var(--indigo)]/40 bg-[var(--indigo)]/10" :
+                tier === "TIER 2" ? "text-[var(--amber)] border-[var(--amber)]/40 bg-[var(--amber)]/10" :
+                tier === "SHADOW" ? "text-[var(--text-muted)] border-[var(--border-hi)] bg-[var(--bg-overlay)]" :
+                "text-[var(--red)] border-[var(--red)]/40 bg-[var(--red)]/10";
+              return (
+                <div key={key} className="px-3 py-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <span className={`text-[8px] font-bold tracking-widest px-1.5 py-px border rounded ${tierColor}`}>{tier}</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-[var(--text-bright)] mb-1">{label}</div>
+                  {m && m.total > 0 ? (
+                    <>
+                      <div className="text-[10px] font-mono font-semibold text-[var(--text-secondary)]">{m.wins}-{m.losses}</div>
+                      <div className={`text-[11px] font-bold font-mono mt-0.5 ${isGreen ? "text-[var(--green)]" : isRed ? "text-[var(--red)]" : isYellow ? "text-[var(--amber)]" : "text-[var(--text-muted)]"}`}>
+                        {roi != null ? fmtRoi(roi) : "—"}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-[10px] text-[var(--text-muted)]">No data</div>
+                  )}
+                  <div className="text-[8px] text-[var(--text-muted)] mt-1.5 leading-tight">{research}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── By market ── */}
       {data?.by_market && (
         <div className="border border-[var(--border-hi)]">

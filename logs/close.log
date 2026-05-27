@@ -284,3 +284,51 @@
   2026-04-19   Washington Nationals           -137    +145   -17.0%
 ════════════════════════════════════════════════════════════
 
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  CLOSING LINE SNAPSHOT — baseball_mlb
+======================================================================
+
+  Fetching closing lines from sportsbooks...
+  ✓  Live odds fetched at 22:45:09. API requests remaining: 235
+  ⏱  Filtered 4 game(s) already started — picks only include upcoming games.
+  Got lines for 13 games.
+  Closing lines saved to data/clv/closing/baseball_mlb_2026-04-20.json
+
+  Computing CLV against opening lines...
+
+════════════════════════════════════════════════════════════
+  CLV REPORT — CLOSING LINE VALUE
+════════════════════════════════════════════════════════════
+  Total picks tracked : 119
+  Picks with CLV data : 58
+  Avg CLV             : -5.30%
+  % bets positive CLV : 39.7%
+
+  VERDICT: NEGATIVE CLV — getting worse lines than closing
+
+  CLV by Edge Tier:
+  Tier        Count   Avg CLV
+  ──────────────────────────────
+  UNKNOWN        58    -5.30%
+
+  Recent picks:
+  Date         Team                           Open   Close      CLV
+  ──────────────────────────────────────────────────────────────
+  2026-04-19   Athletics                         —    +140    -8.3%
+  2026-04-19   Seattle Mariners                  —    -150   +10.0%
+  2026-04-19   Washington Nationals           -137    +145   -17.0%
+  2026-04-20   Chicago Cubs                   +190    -118   +19.6%
+  2026-04-20   St. Louis Cardinals            -194    +100   -16.0%
+  2026-04-20   Detroit Tigers                 -181    -115   -10.9%
+  2026-04-20   Kansas City Royals             -168    -129    -6.4%
+  2026-04-20   Athletics                      +140    +154    -2.3%
+  2026-04-20   Los Angeles Angels             -163    -110    -9.6%
+  2026-04-20   Cincinnati Reds                +100    -108    +1.9%
+════════════════════════════════════════════════════════════
+

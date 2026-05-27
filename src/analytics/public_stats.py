@@ -66,7 +66,10 @@ def write_public_stats() -> None:
     with open(_PNL_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
-    all_picks = data.get("picks", [])
+    if isinstance(data, list):
+        all_picks = data
+    else:
+        all_picks = data.get("picks", [])
     card_picks = [p for p in all_picks if p.get("card_pick")]
 
     # ── Composite record (all markets, all sports) ────────────────────────────
@@ -89,14 +92,9 @@ def write_public_stats() -> None:
     nrfi_pending = [p for p in nrfi_picks if not p.get("result")]
     nrfi_wr      = nrfi_wins / len(nrfi_settled) if nrfi_settled else 0.0
 
-    # ── By market ─────────────────────────────────────────────────────────────
-    markets = {
-        "moneyline": _market_stats(card_picks, "moneyline"),
-        "spread":    _market_stats(card_picks, "spread"),
-        "total":     _market_stats(card_picks, "total"),
-        "nrfi":      _market_stats(card_picks, "nrfi"),
-        "prop":      _market_stats(card_picks, "prop"),
-    }
+    # ── By market — dynamic so new markets auto-appear ───────────────────────
+    _market_keys = sorted({p.get("market", "") for p in card_picks if p.get("market")})
+    markets = {m: _market_stats(card_picks, m) for m in _market_keys}
 
     # ── By sport ──────────────────────────────────────────────────────────────
     def _sport_stats(sport: str) -> dict:
@@ -120,12 +118,9 @@ def write_public_stats() -> None:
             "roi":          round(sp_roi, 4),
         }
 
-    by_sport = {
-        "mlb":  _sport_stats("mlb"),
-        "nba":  _sport_stats("nba"),
-        "nhl":  _sport_stats("nhl"),
-        "wnba": _sport_stats("wnba"),
-    }
+    # All sports present in card picks — new sports auto-appear without code changes
+    _sport_keys = sorted({p.get("sport", "") for p in card_picks if p.get("sport")})
+    by_sport = {sport: _sport_stats(sport) for sport in _sport_keys}
 
     # ── Recent picks — last 10 settled card picks, newest first ───────────────
     recent_settled = sorted(
@@ -202,3 +197,96 @@ def write_public_stats() -> None:
         f"{total_profit:+.2f}u  ROI {roi:+.1%}  "
         f"| NRFI {nrfi_wins}-{nrfi_losses} ({nrfi_wr:.1%})"
     )
+
+
+def model_heat(
+    picks: list[dict],
+    market: str,
+    sport: str | None = None,
+    n: int = 10,
+) -> dict:
+    """
+    Compute rolling performance for a specific model.
+
+    Filters card_pick=True picks by market (and optionally sport prefix),
+    takes the last N settled non-push picks, and returns a heat dict.
+
+    Returns:
+        {
+            'record':         '7-3',
+            'win_rate':       0.70,
+            'roi':            0.142,
+            'status':         'HOT',   # HOT / WARM / COLD
+            'n':              10,
+            'avg_clv':        1.2,     # if available, else None
+            'recommendation': 'Consider bumping stake to 1.5u',
+        }
+
+    Thresholds:
+        HOT:  win_rate >= 0.60
+        WARM: win_rate 0.50 – 0.59
+        COLD: win_rate < 0.50
+    """
+    _MIN_PICKS = 5
+
+    card = [
+        p for p in picks
+        if p.get("card_pick")
+        and (p.get("market") or "").lower() == market.lower()
+        and p.get("result") in ("win", "loss")
+    ]
+    if sport:
+        card = [p for p in card if (p.get("sport") or "").lower().startswith(sport.lower())]
+
+    if len(card) < _MIN_PICKS:
+        return {
+            "record":         None,
+            "win_rate":       None,
+            "roi":            None,
+            "status":         None,
+            "n":              len(card),
+            "avg_clv":        None,
+            "recommendation": f"Insufficient data ({len(card)} picks, need {_MIN_PICKS}+)",
+        }
+
+    # Sort by date/resulted_at and take last N
+    def _sort_key(p: dict) -> str:
+        return p.get("resulted_at") or p.get("date") or ""
+
+    last_n = sorted(card, key=_sort_key)[-n:]
+
+    wins   = sum(1 for p in last_n if p.get("result") == "win")
+    total  = len(last_n)
+    profit = sum(float(p.get("profit") or 0) for p in last_n)
+    staked = sum(float(p.get("stake") or 1) for p in last_n) or 1.0
+    win_rate = wins / total
+    roi      = profit / staked
+
+    # CLV average
+    clv_vals = [float(p["clv_pct"]) for p in last_n if p.get("clv_pct") is not None]
+    avg_clv  = round(sum(clv_vals) / len(clv_vals), 2) if clv_vals else None
+
+    # Status + recommendation
+    if win_rate >= 0.60:
+        status = "HOT"
+        recommendation = "Consider bumping stake to 1.5u"
+    elif win_rate >= 0.50:
+        status = "WARM"
+        recommendation = "Maintain current stake"
+    else:
+        status = "COLD"
+        # Check if cold for 15+ picks
+        if len(card) >= 15 and win_rate < 0.50:
+            recommendation = "Consider shadow-only until it recovers"
+        else:
+            recommendation = "Monitor — need more sample before reducing stake"
+
+    return {
+        "record":         f"{wins}-{total - wins}",
+        "win_rate":       round(win_rate, 4),
+        "roi":            round(roi, 4),
+        "status":         status,
+        "n":              total,
+        "avg_clv":        avg_clv,
+        "recommendation": recommendation,
+    }

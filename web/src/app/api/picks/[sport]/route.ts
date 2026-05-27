@@ -4,12 +4,42 @@ import { join } from "path";
 
 const OUTPUT_ROOT = join(process.cwd(), "..", "output", "picks");
 
+// Canonical short-key → output directory name mapping.
+// Dynamic scan adds any unrecognized sport dirs at runtime.
 const SPORT_DIR_MAP: Record<string, string> = {
-  mlb: "baseball_mlb",
-  nba: "basketball_nba",
-  ncaab: "basketball_ncaab",
-  nfl: "americanfootball_nfl",
+  mlb:          "baseball_mlb",
+  nba:          "basketball_nba",
+  nhl:          "icehockey_nhl",
+  wnba:         "basketball_wnba",
+  ncaab:        "basketball_ncaab",
+  nfl:          "americanfootball_nfl",
+  // Tennis / Soccer use their Odds API sport key directly as both short key and dir
+  tennis:       "tennis_atp_french_open",
+  soccer:       "soccer_epl",
+  "soccer_epl":                  "soccer_epl",
+  "soccer_spain_la_liga":        "soccer_spain_la_liga",
+  "soccer_italy_serie_a":        "soccer_italy_serie_a",
+  "soccer_germany_bundesliga":   "soccer_germany_bundesliga",
+  "soccer_france_ligue_1":       "soccer_france_ligue_1",
+  "soccer_england_championship": "soccer_england_championship",
+  "soccer_fifa_world_cup":       "soccer_fifa_world_cup",
+  "tennis_atp_french_open":      "tennis_atp_french_open",
+  "tennis_atp_wimbledon":        "tennis_atp_wimbledon",
+  "tennis_atp_us_open":          "tennis_atp_us_open",
+  "tennis_wta_french_open":      "tennis_wta_french_open",
+  pga:          "golf_pga_championship",
+  ufc:          "mma_mixed_martial_arts",
+  indycar:      "motorsport_formula_1",
 };
+
+function resolveSportDir(sport: string): string | null {
+  const lower = sport.toLowerCase();
+  if (SPORT_DIR_MAP[lower]) return SPORT_DIR_MAP[lower];
+  // Dynamic: if a folder with that name exists under OUTPUT_ROOT, use it directly
+  const { existsSync: _ex } = require("fs");
+  if (_ex(join(OUTPUT_ROOT, lower))) return lower;
+  return null;
+}
 
 function getLatestDateDir(sportDir: string): string | null {
   const dir = join(OUTPUT_ROOT, sportDir);
@@ -67,6 +97,8 @@ interface RawPick {
   GameID?: string | null;
   Direction?: string | null;
   MarketLine?: number | null;
+  model_tier?: string | null;
+  weather_context?: string | null;
 }
 
 interface RawProp {
@@ -128,6 +160,8 @@ function transformPick(p: RawPick, mkt: string, bankroll: number) {
     BetSize: betSize > 0.5 ? betSize : undefined,
     KellyFraction: kf,
     ExpectedProfit: expectedProfit > 0 ? expectedProfit : undefined,
+    model_tier: p.model_tier ?? null,
+    weather_context: p.weather_context ?? null,
   };
 }
 
@@ -187,7 +221,7 @@ export async function GET(
   const bankroll = parseFloat(searchParams.get("bankroll") ?? "0");
   const minEdge = parseFloat(searchParams.get("min_edge") ?? "0.03");
 
-  const sportDir = SPORT_DIR_MAP[sport.toLowerCase()];
+  const sportDir = resolveSportDir(sport);
   if (!sportDir) {
     return NextResponse.json({ error: `Unknown sport: ${sport}` }, { status: 404 });
   }
@@ -217,7 +251,7 @@ export async function GET(
   // For props/nrfi: use latest folder if files exist, otherwise fall back to the previous date
   function findLatestWithFile(filename: string): unknown[] {
     for (const d of allDirs) {
-      const path = join(OUTPUT_ROOT, sportDir, d, filename);
+      const path = join(OUTPUT_ROOT, sportDir!, d, filename);
       if (existsSync(path)) return readJsonFile(path);
     }
     return [];

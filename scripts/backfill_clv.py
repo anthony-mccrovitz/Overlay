@@ -43,9 +43,18 @@ CLOSING_DIR  = ROOT / "data" / "clv" / "closing"
 RECORDS_FILE = ROOT / "data" / "clv" / "clv_records.json"
 
 SPORT_TO_KEYS = {
-    "mlb": ("mlb", "baseball_mlb"),
-    "nba": ("nba", "basketball_nba"),
-    "nhl": ("nhl", "icehockey_nhl"),
+    "mlb":    ("mlb", "baseball_mlb"),
+    "nba":    ("nba", "basketball_nba"),
+    "nhl":    ("nhl", "icehockey_nhl", "hockey_nhl"),
+    "wnba":   ("wnba", "basketball_wnba"),
+    "tennis": ("tennis", "tennis_atp", "tennis_atp_italian_open", "tennis_atp_french_open"),
+    "soccer": ("soccer", "soccer_fifa_world_cup", "soccer_epl", "soccer_uefa_champs_league"),
+    "mma":    ("mma", "mma_mixed_martial_arts"),
+    "ufc":    ("ufc", "mma_mixed_martial_arts"),
+    "indycar": ("indycar", "auto_racing_indycar_series"),
+    "f1":     ("f1", "auto_racing_formula_one"),
+    "nascar": ("nascar", "auto_racing_nascar"),
+    "pga":    ("pga", "golf_pga_championship", "golf_masters", "golf_us_open"),
 }
 
 
@@ -102,12 +111,27 @@ def _find_snapshot(snapshots: list[dict], matchup: str) -> dict | None:
     away, home = _parse_matchup(matchup)
     if not (away or home):
         return None
+    # Pass 1: strict home↔home, away↔away
     for snap in snapshots:
         if _team_match(snap.get("home_team", ""), home) and _team_match(
             snap.get("away_team", ""), away
         ):
             return snap
-    # second pass: only match by either side (handles team-rename edge cases)
+    # Pass 2: home/away may be flipped (Odds API convention varies by sport/market)
+    for snap in snapshots:
+        if _team_match(snap.get("home_team", ""), away) and _team_match(
+            snap.get("away_team", ""), home
+        ):
+            return snap
+    # Pass 3: both teams present somewhere in snap (catches rename/partial mismatches)
+    for snap in snapshots:
+        sh, sa = snap.get("home_team", ""), snap.get("away_team", "")
+        if (
+            (_team_match(sh, home) or _team_match(sa, home)) and
+            (_team_match(sh, away) or _team_match(sa, away))
+        ):
+            return snap
+    # Pass 4: single team anchor (last resort)
     for snap in snapshots:
         if _team_match(snap.get("home_team", ""), home) or _team_match(
             snap.get("away_team", ""), away
@@ -206,12 +230,17 @@ def _pick_key(pick: dict) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--since", help="Only backfill picks with date >= YYYY-MM-DD")
-    ap.add_argument("--sport", choices=["mlb", "nba", "nhl"], help="Restrict to one sport")
+    ap.add_argument("--sport", help="Restrict to one sport (mlb, nba, nhl, wnba, tennis, soccer, mma, indycar, f1, nascar, pga)")
     ap.add_argument("--force", action="store_true", help="Recompute even if already present")
+    ap.add_argument("--card-only", action="store_true",
+                    help="Restrict to card_pick=True (legacy behaviour). Default: backfill ALL picks.")
     args = ap.parse_args()
 
     picks_blob = _load_json(PICKS_FILE, {"picks": []})
-    picks = picks_blob.get("picks", [])
+    if isinstance(picks_blob, list):
+        picks = picks_blob
+    else:
+        picks = picks_blob.get("picks", [])
     if not picks:
         print("No picks found in data/pnl/picks.json")
         return 0
@@ -226,7 +255,9 @@ def main() -> int:
     no_odds = 0
 
     for pick in picks:
-        if not pick.get("card_pick"):
+        # CLV is informative for shadow picks too — use it for promotion decisions.
+        # Only filter to card_pick=True if explicitly requested via --card-only.
+        if args.card_only and not pick.get("card_pick"):
             skipped += 1
             continue
         if args.sport and pick.get("sport") != args.sport:

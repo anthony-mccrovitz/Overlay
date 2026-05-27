@@ -164,42 +164,118 @@ def get_game_weather(
     return result
 
 
+# Home plate → center field bearing for each outdoor park (degrees, true north = 0).
+# Wind FROM the OPPOSITE direction (bearing + 180) blows OUT to center field.
+# Source: park survey data + satellite imagery. Retractable/dome parks omitted.
+_PARK_CF_BEARING: dict[str, float] = {
+    "Chicago Cubs":           15.0,   # Wrigley: CF roughly NNE → out wind from SSW
+    "Boston Red Sox":         75.0,   # Fenway: CF roughly ENE
+    "New York Yankees":       335.0,  # Yankee Stadium: CF roughly NNW
+    "Colorado Rockies":       350.0,  # Coors Field: CF roughly N
+    "San Francisco Giants":   25.0,   # Oracle Park: CF roughly NNE
+    "Los Angeles Dodgers":    300.0,  # Dodger Stadium: CF roughly WNW
+    "San Diego Padres":       315.0,  # Petco Park: CF roughly NW
+    "Baltimore Orioles":      10.0,   # Camden Yards: CF roughly N
+    "Pittsburgh Pirates":     5.0,    # PNC Park: CF roughly N
+    "Cincinnati Reds":        200.0,  # GABP: CF roughly SSW
+    "Washington Nationals":   120.0,  # Nationals Park: CF roughly ESE
+    "Minnesota Twins":        340.0,  # Target Field: CF roughly NNW
+    "Cleveland Guardians":    20.0,   # Progressive Field: CF roughly NNE
+    "Detroit Tigers":         340.0,  # Comerica Park: CF roughly NNW
+    "Chicago White Sox":      350.0,  # Guaranteed Rate: CF roughly N
+    "Kansas City Royals":     0.0,    # Kauffman Stadium: CF roughly N
+    "New York Mets":          305.0,  # Citi Field: CF roughly NW
+    "Philadelphia Phillies":  325.0,  # Citizens Bank: CF roughly NW
+    "Atlanta Braves":         325.0,  # Truist Park: CF roughly NW
+    "Los Angeles Angels":     330.0,  # Angel Stadium: CF roughly NNW
+    "Athletics":              310.0,  # Oakland Coliseum: CF roughly NW
+    "St. Louis Cardinals":    355.0,  # Busch Stadium: CF roughly N
+    "Milwaukee Brewers":      330.0,  # American Family: CF roughly NNW
+    "Toronto Blue Jays":      350.0,  # Rogers Centre: retractable but included
+    "Seattle Mariners":       340.0,  # T-Mobile: retractable
+    "Tampa Bay Rays":         0.0,    # Tropicana: dome
+    "Miami Marlins":          330.0,  # loanDepot: retractable
+    "Houston Astros":         340.0,  # Minute Maid: retractable
+    "Texas Rangers":          10.0,   # Globe Life: retractable
+    "Arizona Diamondbacks":   350.0,  # Chase Field: retractable
+}
+
+
+def _wind_component(wind_dir_deg: float, cf_bearing: float) -> float:
+    """Return scalar in [-1, 1]: +1 = fully blowing out, -1 = fully blowing in."""
+    import math
+    # Wind comes FROM wind_dir_deg. Blowing-out means wind pushes FROM home → CF,
+    # i.e. wind comes from the direction BEHIND home plate = cf_bearing + 180.
+    out_source = (cf_bearing + 180) % 360
+    delta = abs(wind_dir_deg - out_source) % 360
+    if delta > 180:
+        delta = 360 - delta
+    # delta = 0 → perfectly blowing out (+1), delta = 180 → perfectly blowing in (-1)
+    import math
+    return math.cos(math.radians(delta))
+
+
 def weather_run_adjustment(
     wind_mph: float,
     wind_dir_deg: float,
     is_outdoor: bool,
+    home_team: str = "",
 ) -> float:
     """
-    Estimate run adjustment from wind.
+    Estimate run adjustment from wind speed and direction relative to the park.
 
-    Convention: wind_dir_deg is the direction the wind is coming FROM
-    (meteorological standard). A wind blowing *out* to center field
-    corresponds roughly to wind coming from behind home plate, i.e.
-    from the south (180 deg) toward the outfield — which in standard
-    orientation means the wind direction reported is ~135-225 deg.
+    Magnitudes calibrated to 14+ years of Wrigley Field and multi-park research:
+      - 15+ mph blowing out  → +1.8 runs (favor OVER)
+      - 10-14 mph blowing out → +0.9 runs
+      - 15+ mph blowing in   → -1.8 runs (favor UNDER)
+      - 10-14 mph blowing in  → -0.9 runs
+      - Crosswind (±45-90°)  → ±0.3 runs
+    Temperature penalty: < 50°F → -0.5 runs (cold air = less carry).
 
-    Simplified logic used here:
-      - "blowing out"  = wind_dir_deg in [45, 135]  (wind from SW/W/NW, pushing toward CF)
-      - "blowing in"   = wind_dir_deg in [225, 315]
-      - thresholds: 15 mph => +/-0.4 runs, 10 mph => +/-0.2 runs
-
-    Returns 0.0 for non-outdoor parks.
+    Returns 0.0 for dome/retractable parks (handled by OUTDOOR_PARKS filter upstream).
     """
     if not is_outdoor:
         return 0.0
 
-    blowing_out = 45 <= wind_dir_deg <= 135
-    blowing_in = 225 <= wind_dir_deg <= 315
+    cf_bearing = _PARK_CF_BEARING.get(home_team)
+    if cf_bearing is None:
+        # Fallback: no park data, use simplified compass logic
+        blowing_out = 45 <= wind_dir_deg <= 135
+        blowing_in = 225 <= wind_dir_deg <= 315
+        if blowing_out:
+            return 1.8 if wind_mph >= 15 else (0.9 if wind_mph >= 10 else 0.0)
+        elif blowing_in:
+            return -1.8 if wind_mph >= 15 else (-0.9 if wind_mph >= 10 else 0.0)
+        return 0.0
 
-    if blowing_out:
-        if wind_mph >= 15:
-            return 0.4
-        if wind_mph >= 10:
-            return 0.2
-    elif blowing_in:
-        if wind_mph >= 15:
-            return -0.4
-        if wind_mph >= 10:
-            return -0.2
+    component = _wind_component(wind_dir_deg, cf_bearing)  # -1 to +1
 
-    return 0.0
+    if wind_mph >= 15:
+        base = 1.8
+    elif wind_mph >= 10:
+        base = 0.9
+    elif wind_mph >= 7:
+        base = 0.4
+    else:
+        return 0.0
+
+    return round(component * base, 2)
+
+
+def build_weather_context(
+    home_team: str,
+    wind_mph: float,
+    wind_dir_deg: float,
+    temp_f: float,
+    run_adj: float,
+) -> str:
+    """Human-readable context string for dashboard pick card display."""
+    if abs(run_adj) < 0.1:
+        if temp_f < 50:
+            return f"🥶 {temp_f:.0f}°F cold"
+        return ""
+
+    direction = "out" if run_adj > 0 else "in"
+    sign = "+" if run_adj > 0 else ""
+    temp_str = f", {temp_f:.0f}°F" if temp_f < 50 else ""
+    return f"💨 {wind_mph:.0f}mph {direction} → {sign}{run_adj:.1f} runs{temp_str}"

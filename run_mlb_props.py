@@ -25,7 +25,7 @@ from dotenv import load_dotenv
 load_dotenv()
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src.data.mlb_props_fetcher import fetch_all_mlb_props, enrich_props_with_stats
+from src.data.mlb_props_fetcher import fetch_all_mlb_props, enrich_props_with_stats, PROP_MARKETS as _ODDS_MARKETS
 from src.models.mlb_props_nb import NegBinPropModel, PROP_CONFIGS
 from src.tracking.schema import normalize_pick
 from src.config.models import is_live, shadow_stake
@@ -45,18 +45,11 @@ def _auto_log_picks(edges: list[dict], game_date: date) -> int:
     if not edges:
         return 0
 
-    pnl_data: dict = {}
-    if PNL_FILE.exists():
-        try:
-            pnl_data = json.loads(PNL_FILE.read_text())
-        except (json.JSONDecodeError, OSError):
-            pnl_data = {}
+    from src.tracking.schema import append_picks_safe
 
-    picks = pnl_data.get("picks", [])
-    existing_ids = {p.get("pick_id") for p in picks if isinstance(p, dict)}
-
-    now   = datetime.now(timezone.utc).isoformat()
-    added = 0
+    existing_ids: set[str] = set()
+    now     = datetime.now(timezone.utc).isoformat()
+    entries: list[dict] = []
 
     for e in edges:
         direction = e.get("direction", "OVER")
@@ -83,15 +76,12 @@ def _auto_log_picks(edges: list[dict], game_date: date) -> int:
         pid  = norm.get("pick_id")
         if pid and pid in existing_ids:
             continue
-        picks.append(norm)
+        entries.append(norm)
         if pid:
             existing_ids.add(pid)
-        added += 1
 
-    pnl_data["picks"] = picks
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
-    return added
+    return append_picks_safe(PNL_FILE, entries)
 
 
 def run_mlb_props(args: argparse.Namespace) -> int:
@@ -125,9 +115,14 @@ def run_mlb_props(args: argparse.Namespace) -> int:
 
     active_markets = list(models.keys())
 
-    # 2. Fetch props
+    # 2. Fetch props — only markets the Odds API actually carries
+    fetch_markets = [m for m in active_markets if m in _ODDS_MARKETS]
+    if not fetch_markets:
+        print("  No active models have Odds API coverage. Cannot fetch props.")
+        return 0
+
     print(f"\n  Fetching live props...")
-    props = fetch_all_mlb_props(markets=active_markets, refresh=refresh, verbose=True)
+    props = fetch_all_mlb_props(markets=fetch_markets, refresh=refresh, verbose=True)
     if not props:
         print("  No props found.")
         return 0
@@ -174,9 +169,28 @@ def run_mlb_props(args: argparse.Namespace) -> int:
     # 5. Save output
     out_dir = Path("output/picks/baseball_mlb") / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Combined props.json (backward compat)
     props_path = out_dir / "props.json"
     props_path.write_text(json.dumps(all_edges, indent=2, default=str))
     print(f"\n  Props saved → {props_path}")
+
+    # Per-market files: props_pitcher_strikeouts.json, props_batter_hits.json, etc.
+    markets_in_output = {e.get("market") for e in all_edges if e.get("market")}
+    for market in markets_in_output:
+        market_edges = [e for e in all_edges if e.get("market") == market]
+        fname = f"props_{market}.json"
+        market_path = out_dir / fname
+        market_path.write_text(json.dumps(market_edges, indent=2, default=str))
+        print(f"  {market:40s} → {fname}  ({len(market_edges)} edge(s))")
+
+    # Write empty files for ran markets that had no edges
+    for market in active_markets:
+        if market not in markets_in_output:
+            fname = f"props_{market}.json"
+            market_path = out_dir / fname
+            if not market_path.exists():
+                market_path.write_text("[]")
 
     # 6. Auto-log (only pitcher Ks currently, others pending NB training)
     card_markets = {"pitcher_strikeouts"}
@@ -193,6 +207,21 @@ def run_mlb_props(args: argparse.Namespace) -> int:
             print(f"  [CLV] Snapshotted {n_snapped} prop pick(s)")
     except Exception as err:
         print(f"  [CLV snapshot] {err}")
+
+    # 8. Best pick per market
+    if all_edges:
+        try:
+            from src.analytics.best_picks import best_pick_per_market, best_picks_report
+            best = best_pick_per_market(all_edges)
+            label = f"MLB Props — Best Pick Per Market  ({game_date.strftime('%b %d, %Y')})"
+            print(best_picks_report(best, date_label=label))
+            best_path = out_dir / "props_best_picks.json"
+            best_path.write_text(json.dumps(
+                {m: picks for m, picks in best.items()}, indent=2, default=str
+            ))
+            print(f"  Best picks saved → {best_path}")
+        except Exception as err:
+            print(f"  [best_picks] {err}")
 
     print(f"\n{'='*60}\n")
     return 0

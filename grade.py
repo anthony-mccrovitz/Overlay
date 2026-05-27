@@ -17,27 +17,30 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from src.tracking.schema import profit_from_odds as _profit_from_odds
+
+
+def _profit(stake: float, odds: float, won: bool) -> float:
+    """Thin wrapper — delegates to canonical schema.profit_from_odds."""
+    return _profit_from_odds(odds, stake, won)
+
 DATA_FILE = Path("data/pnl/picks.json")
 
 
 def _load():
     if not DATA_FILE.exists():
         return {"picks": []}
-    return json.loads(DATA_FILE.read_text())
+    raw = json.loads(DATA_FILE.read_text())
+    if isinstance(raw, list):
+        return {"picks": raw}
+    return raw
 
 
 def _save(data):
-    DATA_FILE.write_text(json.dumps(data, indent=2))
-
-
-def _profit(stake: float, odds: float, won: bool) -> float:
-    if not won:
-        return -stake
-    if not odds or odds == 0:
-        return 0.0
-    if odds > 0:
-        return stake * odds / 100
-    return stake * 100 / abs(odds)
+    # Always persist as a plain list
+    picks = data["picks"] if isinstance(data, dict) else data
+    DATA_FILE.write_text(json.dumps(picks, indent=2))
 
 
 def _fetch_scores(date_str: str) -> tuple[dict[str, str], dict[str, dict]]:
@@ -331,12 +334,15 @@ def auto_grade(date_str: str):
     date_dashed  = f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:]}"  # 2026-04-14
 
     data   = _load()
-    # Only grade MLB picks here — NBA/NHL handled by their own graders
+    # Only grade MLB game-line picks here — props handled by _grade_mlb_props
     picks  = [
         p for p in data["picks"]
         if _norm_date(p.get("date", "")) == date_compact
         and p["result"] is None
         and p.get("sport", "mlb") in ("mlb", "baseball_mlb", "")
+        and p.get("market") not in ("pitcher_strikeouts", "prop",
+                                    "batter_home_runs", "batter_hits",
+                                    "batter_total_bases", "batter_rbis")
     ]
 
     if not picks:
@@ -906,6 +912,573 @@ def _grade_nba_props(date_str: str) -> None:
     print(f"  Graded {graded}/{len(pending_props)} NBA props.")
 
 
+def _grade_mlb_props(date_str: str) -> None:
+    """Grade MLB pitcher strikeout props using MLB Stats API boxscores."""
+    import re
+    try:
+        import requests
+    except ImportError:
+        print("  [mlb props] requests not installed")
+        return
+
+    date_compact = _norm_date(date_str)
+    date_iso = f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:]}"
+
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and p.get("sport") in ("baseball_mlb", "mlb")
+        and p.get("market") in ("prop", "pitcher_strikeouts")
+        and p.get("result") in (None, "pending")
+    ]
+    if not pending:
+        return
+
+    # Fetch schedule to get game PKs
+    try:
+        sched_resp = requests.get(
+            "https://statsapi.mlb.com/api/v1/schedule",
+            params={"date": date_iso, "sportId": 1, "hydrate": "team"},
+            timeout=15,
+        )
+        sched_data = sched_resp.json() if sched_resp.status_code == 200 else {}
+    except Exception as e:
+        print(f"  [mlb props] schedule fetch error: {e}")
+        sched_data = {}
+
+    # Build pitcher_name -> strikeout count from all boxscores
+    pitcher_ks: dict[str, int] = {}  # normalized_name -> Ks
+    for date_entry in sched_data.get("dates", []):
+        for game in date_entry.get("games", []):
+            # Only grade final games
+            state = game.get("status", {}).get("abstractGameState", "")
+            if state != "Final":
+                continue
+            game_pk = game.get("gamePk")
+            if not game_pk:
+                continue
+            try:
+                bx_resp = requests.get(
+                    f"https://statsapi.mlb.com/api/v1/game/{game_pk}/boxscore",
+                    timeout=15,
+                )
+                bx_data = bx_resp.json() if bx_resp.status_code == 200 else {}
+            except Exception:
+                bx_data = {}
+
+            teams = bx_data.get("teams", {})
+            for side in ("home", "away"):
+                side_data = teams.get(side, {})
+                players = side_data.get("players", {})
+                for _pid, pdata in players.items():
+                    full_name = pdata.get("person", {}).get("fullName", "")
+                    if not full_name:
+                        continue
+                    pitching = pdata.get("stats", {}).get("pitching", {})
+                    ks = pitching.get("strikeOuts")
+                    if ks is not None:
+                        pitcher_ks[full_name] = int(ks)
+
+    # Payout helper: returns multiplier on stake (not profit, just the payout)
+    def _payout(odds: float) -> float:
+        return odds / 100 if odds > 0 else 100 / abs(odds)
+
+    # Grade each pending pick
+    graded = 0
+    wins = 0
+    losses = 0
+    now_str = datetime.now(timezone.utc).isoformat()
+
+    # Regex to strip " OVER X.X" or " UNDER X.X" suffix from team field
+    _suffix_re = re.compile(r"\s+(OVER|UNDER)\s+[\d.]+\s*$", re.IGNORECASE)
+
+    print(f"\n  ── MLB props ──")
+    for pick in pending:
+        team_field = pick.get("team", "")
+        # Extract player name by stripping direction+line suffix
+        match = _suffix_re.search(team_field)
+        if match:
+            pick_name = team_field[: match.start()].strip()
+        else:
+            # Fallback: strip last two tokens (e.g. "OVER 5.5")
+            parts = team_field.split()
+            name_tokens = []
+            for tok in parts:
+                if tok.upper() in ("OVER", "UNDER"):
+                    break
+                name_tokens.append(tok)
+            pick_name = " ".join(name_tokens).strip()
+
+        if not pick_name:
+            continue
+
+        # Fuzzy match against boxscore pitcher names
+        actual_ks: int | None = None
+        matched_name = ""
+        for full_name, ks in pitcher_ks.items():
+            if (
+                pick_name.lower() == full_name.lower()
+                or pick_name.lower() in full_name.lower()
+                or full_name.lower() in pick_name.lower()
+            ):
+                actual_ks = ks
+                matched_name = full_name
+                break
+
+        if actual_ks is None:
+            # Pitcher did not appear in any completed game — void
+            pick["result"] = "void"
+            pick["profit"] = 0.0
+            pick["resulted_at"] = now_str
+            print(f"  ⚫ VOID  {pick_name} (not found in boxscore)")
+            graded += 1
+            continue
+
+        line = float(pick.get("line") or 0)
+        direction = (pick.get("direction") or "OVER").upper()
+        odds = float(pick.get("odds") or 0)
+        stake = float(pick.get("stake") or 1.0)
+
+        if actual_ks == line:
+            pick["result"] = "push"
+            pick["profit"] = 0.0
+        else:
+            won = (actual_ks > line) if direction == "OVER" else (actual_ks < line)
+            pick["result"] = "win" if won else "loss"
+            pick["profit"] = round(_payout(odds) * stake if won else -stake, 4)
+            if won:
+                wins += 1
+            else:
+                losses += 1
+
+        pick["resulted_at"] = now_str
+        graded += 1
+
+        icon = {"win": "🟢 WIN ", "loss": "🔴 LOSS", "push": "⬜ PUSH"}.get(pick["result"], "?")
+        sign = "+" if odds > 0 else ""
+        prof = f"{pick['profit']:+.2f}u"
+        print(
+            f"  {icon}  {pick_name:<25} {direction} {line:<5}  ({sign}{int(odds)})  →  {prof}"
+            f"  (Ks: {actual_ks})"
+        )
+
+    _save(data)
+    print(f"  ── MLB props ── {graded} graded, {wins}W {losses}L")
+
+    try:
+        from src.analytics.public_stats import write_public_stats
+        write_public_stats()
+    except Exception as e:
+        print(f"  [stats] {e}")
+
+
+def _fetch_scores_generic(sport_key: str, date_str: str) -> dict[str, dict]:
+    """
+    Fetch completed game scores from Odds API for any sport.
+    Returns {team_name: {home, away, home_score, away_score, total, winner}} keyed by both teams.
+
+    Works for: basketball_wnba, mma_mixed_martial_arts, soccer_*, tennis_*, etc.
+    """
+    import requests
+    api_key = os.getenv("ODDS_API_KEY")
+    if not api_key:
+        env_path = Path(".env")
+        if env_path.exists():
+            for line in env_path.read_text().splitlines():
+                if line.startswith("ODDS_API_KEY="):
+                    api_key = line.split("=", 1)[1].strip()
+    if not api_key:
+        return {}
+
+    try:
+        resp = requests.get(
+            f"https://api.the-odds-api.com/v4/sports/{sport_key}/scores/",
+            params={"apiKey": api_key, "daysFrom": 3, "dateFormat": "iso"},
+            timeout=12,
+        )
+        if resp.status_code != 200:
+            return {}
+    except Exception as e:
+        print(f"  [grade/{sport_key}] scores fetch error: {e}")
+        return {}
+
+    games: dict[str, dict] = {}
+    for game in resp.json():
+        if not game.get("completed") or not game.get("scores"):
+            continue
+        commence = game.get("commence_time", "")
+        try:
+            from datetime import timezone as _tz, timedelta as _td
+            dt_utc = datetime.fromisoformat(commence.replace("Z", "+00:00"))
+            # Convert to Eastern Time (UTC-4 DST / UTC-5 standard) so late US games
+            # (e.g. 8pm ET = midnight UTC) map to the correct local date.
+            dt_et = dt_utc.astimezone(_tz(offset=_td(hours=-4)))
+            game_date = dt_et.strftime("%Y%m%d")
+        except Exception:
+            game_date = commence[:10].replace("-", "")
+
+        if game_date != date_str:
+            continue
+
+        scores = {s["name"]: s["score"] for s in game["scores"] if s.get("score") is not None}
+        teams  = list(scores.keys())
+        if len(teams) < 2:
+            continue
+
+        away_team, home_team = teams[0], teams[1]
+        try:
+            away_score = float(scores[away_team])
+            home_score = float(scores[home_team])
+        except (ValueError, TypeError):
+            continue
+
+        if away_score > home_score:
+            winner = away_team
+        elif home_score > away_score:
+            winner = home_team
+        else:
+            winner = "Draw"
+        info = {
+            "home": home_team, "away": away_team,
+            "home_score": home_score, "away_score": away_score,
+            "total": home_score + away_score,
+            "winner": winner,
+            "margin": abs(home_score - away_score),
+        }
+        games[home_team] = info
+        games[away_team] = info
+
+    return games
+
+
+def _fetch_tennis_results_espn(tour: str, date_str: str) -> dict[str, str]:
+    """
+    Fetch tennis match winners from ESPN Core API.
+    Returns {player_name_lower: 'win'|'loss'}.
+
+    tour: 'atp' or 'wta'
+    date_str: YYYYMMDD or YYYY-MM-DD
+    """
+    try:
+        import requests
+        from concurrent.futures import ThreadPoolExecutor
+    except ImportError:
+        return {}
+
+    date_iso = f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}" if len(date_str) == 8 else date_str
+
+    # ESPN uses a fixed event ID per Grand Slam — map sport key → ESPN event ID
+    _ESPN_EVENTS = {
+        "tennis_atp_french_open":  ("atp", "172-2026"),
+        "tennis_wta_french_open":  ("wta", "262-2026"),
+        "tennis_atp_australian_open": ("atp", "166-2026"),
+        "tennis_wta_australian_open": ("wta", "256-2026"),
+        "tennis_atp_us_open":      ("atp", "180-2026"),
+        "tennis_wta_us_open":      ("wta", "270-2026"),
+        "tennis_atp_wimbledon":    ("atp", "176-2026"),
+        "tennis_wta_wimbledon":    ("wta", "266-2026"),
+    }
+
+    results: dict[str, str] = {}
+    # Find matching ESPN event IDs for this tour
+    espn_ids = [(league, eid) for key, (league, eid) in _ESPN_EVENTS.items()
+                if league == tour]
+    if not espn_ids:
+        return {}
+
+    for league, event_id in espn_ids:
+        try:
+            r = requests.get(
+                f"https://sports.core.api.espn.com/v2/sports/tennis/leagues/{league}/events/{event_id}/competitions",
+                params={"limit": 1000},
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=10,
+            )
+            if r.status_code != 200:
+                continue
+            items = r.json().get("items", [])
+
+            def _fetch(item):
+                ref = item.get("$ref", "")
+                if not ref:
+                    return None
+                try:
+                    rr = requests.get(ref, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
+                    return rr.json() if rr.status_code == 200 else None
+                except Exception:
+                    return None
+
+            with ThreadPoolExecutor(max_workers=20) as pool:
+                comps = list(pool.map(_fetch, items))
+
+            for comp in comps:
+                if not comp:
+                    continue
+                raw_date = comp.get("date", "")
+                try:
+                    dt_utc = datetime.fromisoformat(raw_date.replace("Z", "+00:00"))
+                    comp_date = (dt_utc - timedelta(hours=4)).strftime("%Y-%m-%d")
+                except Exception:
+                    comp_date = raw_date[:10]
+                if comp_date != date_iso:
+                    continue
+                for c in comp.get("competitors", []):
+                    name = c.get("name", "")
+                    if name:
+                        results[name.lower()] = "win" if c.get("winner") else "loss"
+        except Exception:
+            continue
+
+    return results
+
+
+def _grade_sport_generic(
+    sport_key: str,
+    sport_name: str,
+    date_str: str,
+    sport_field: str | None = None,
+) -> None:
+    """
+    Generic grader for any sport that uses moneyline/spread/total markets.
+    Fetches scores via Odds API and grades all pending picks matching sport_field.
+
+    sport_key   — Odds API key, e.g. "basketball_wnba"
+    sport_name  — Display name, e.g. "WNBA"
+    sport_field — Value of pick["sport"] to match (defaults to sport_key)
+    """
+    if sport_field is None:
+        sport_field = sport_key
+
+    date_compact = _norm_date(date_str)
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and p.get("sport") == sport_field
+        and p.get("result") in (None, "pending")
+        and p.get("odds") is not None
+    ]
+
+    if not pending:
+        print(f"  No pending {sport_name} picks for {date_str}")
+        return
+
+    print(f"  Fetching {sport_name} scores from Odds API...")
+    games = _fetch_scores_generic(sport_key, date_compact)
+
+    # Tennis fallback: Odds API has no tennis scores — use ESPN Core API
+    espn_winners: dict[str, str] = {}
+    if not games and sport_key.startswith("tennis_"):
+        tour = "atp" if "atp" in sport_key else "wta"
+        print(f"  Odds API has no tennis scores — falling back to ESPN Core API ({tour.upper()})...")
+        espn_winners = _fetch_tennis_results_espn(tour, date_compact)
+        if espn_winners:
+            n_matches = sum(1 for v in espn_winners.values() if v == "win")
+            print(f"  ESPN: {n_matches} completed match(es) found.")
+        else:
+            print(f"  No {sport_name} completed games found for {date_str}")
+            return
+    elif not games:
+        print(f"  No {sport_name} completed games found for {date_str}")
+        return
+
+    if games:
+        print(f"  Found {len(games)//2} {sport_name} game(s). Grading {len(pending)} pick(s)...")
+    graded = 0
+
+    for pick in pending:
+        team   = pick.get("team", "")
+        market = pick.get("market", "moneyline")
+        odds   = float(pick["odds"])
+        sign   = "+" if odds > 0 else ""
+
+        # ── Tennis: use ESPN winner lookup (no game_info structure) ──────────
+        if espn_winners:
+            t_lower = team.lower().strip()
+            result = espn_winners.get(t_lower)
+            if result is None:
+                # last-name fallback
+                last = t_lower.split()[-1] if t_lower.split() else ""
+                for wname, res in espn_winners.items():
+                    if last and len(last) > 3 and wname.split()[-1] == last:
+                        result = res
+                        break
+            if result is None:
+                print(f"  ⚫ UNGRADED  {team} — not found in ESPN results")
+                continue
+            won = result == "win"
+            profit = _profit(pick["stake"], odds, won)
+            pick["result"]     = "win" if won else "loss"
+            pick["profit"]     = round(profit, 4)
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+            icon = "🟢 WIN " if won else "🔴 LOSS"
+            print(f"  {icon}  {team:<28} ({sign}{int(odds):+d})  →  {profit:+.2f}u")
+            graded += 1
+            continue
+
+        # Fuzzy game lookup
+        game_info = games.get(team)
+        if not game_info:
+            for gt, gi in games.items():
+                if len(team) > 3 and (team.lower() in gt.lower() or gt.lower() in team.lower()):
+                    game_info = gi
+                    break
+
+        if not game_info:
+            # Try matching via matchup field
+            matchup = pick.get("matchup", "")
+            for gt, gi in games.items():
+                if gi["home"] in matchup or gi["away"] in matchup:
+                    game_info = gi
+                    break
+
+        if not game_info:
+            print(f"  ⚠️  No score found for {team} ({sport_name}) — skipping")
+            continue
+
+        if market == "moneyline":
+            # MMA: winner is stored as fighter name
+            winner = game_info["winner"]
+            won = (winner.lower() == team.lower()) or (team.lower() in winner.lower())
+
+        elif market in ("spread", "puck_line", "run_line"):
+            line = float(pick.get("line") or 1.5)
+            team_score = game_info["away_score"] if team == game_info["away"] else game_info["home_score"]
+            opp_score  = game_info["home_score"] if team == game_info["away"] else game_info["away_score"]
+            won = (team_score + line) > opp_score
+
+        elif market == "total":
+            line = float(pick.get("line") or 0)
+            direction = (pick.get("direction") or team.split()[0]).upper()
+            actual = game_info["total"]
+            if actual == line:
+                pick["result"] = "push"; pick["profit"] = 0.0
+                pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+                _save(data); graded += 1
+                print(f"  ⬜ PUSH  {team:<28} ({int(odds):+d})")
+                continue
+            won = (actual > line) if direction == "OVER" else (actual < line)
+
+        else:
+            print(f"  ⚠️  Unknown market {market} for {team} — skipping")
+            continue
+
+        pick["result"] = "win" if won else "loss"
+        pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+        graded += 1
+        icon = "🟢 WIN " if won else "🔴 LOSS"
+        prof = f"{pick['profit']:+.2f}u"
+        final = f"{game_info['away']} {game_info['away_score']:.0f} @ {game_info['home']} {game_info['home_score']:.0f}"
+        print(f"  {icon}  {team:<28} ({int(odds):+d})  {market:10}  →  {prof}  |  {final}")
+
+    _save(data)
+    print(f"  Graded {graded}/{len(pending)} {sport_name} picks.")
+
+
+def _grade_outright(sport_field: str, sport_name: str, date_str: str, winner: str) -> None:
+    """
+    Grade outright winner picks (PGA, NASCAR, IndyCar, F1) by providing the winner's name.
+
+    winner — the actual race/tournament winner (fuzzy matched against pick team field)
+    """
+    date_compact = _norm_date(date_str)
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and p.get("sport") == sport_field
+        and p.get("result") in (None, "pending")
+    ]
+
+    if not pending:
+        print(f"  No pending {sport_name} picks for {date_str}")
+        return
+
+    print(f"\n  Grading {len(pending)} {sport_name} outright pick(s). Winner: {winner}")
+    graded = 0
+    for pick in pending:
+        team = pick.get("team", "")
+        odds = float(pick.get("odds") or 0)
+        won  = (winner.lower() == team.lower()) or (team.lower() in winner.lower()) or (winner.lower() in team.lower())
+        pick["result"] = "win" if won else "loss"
+        pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+        graded += 1
+        icon = "🟢 WIN " if won else "🔴 LOSS"
+        prof = f"{pick['profit']:+.2f}u"
+        sign = "+" if odds > 0 else ""
+        print(f"  {icon}  {team:<30} ({sign}{int(odds)})  →  {prof}")
+
+    _save(data)
+    print(f"  Graded {graded}/{len(pending)} {sport_name} picks.")
+
+
+def _grade_nba_props_v2(date_str: str) -> None:
+    """
+    Grade NBA player props logged under sport='basketball_nba' with per-market names
+    (player_points, player_rebounds, etc.) — new schema from run_nba_props.py.
+    """
+    date_compact = _norm_date(date_str)
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and p.get("sport") in ("basketball_nba",)
+        and p.get("market") in _PROP_MARKET_TO_STAT
+        and p.get("result") in (None, "pending")
+    ]
+    if not pending:
+        return
+
+    stats = _fetch_nba_player_stats(date_compact)
+    if not stats:
+        print(f"  [nba props v2] No NBA stats for {date_str}")
+        return
+
+    print(f"\n  ── NBA props (new schema) ──")
+    graded = 0
+    for pick in pending:
+        player = pick.get("player") or pick.get("team", "").split(" OVER")[0].split(" UNDER")[0].strip()
+        market = pick.get("market", "player_points")
+        stat_key = _PROP_MARKET_TO_STAT.get(market)
+        if not stat_key:
+            continue
+
+        actual = None
+        for name, s in stats.items():
+            if name == player or player.lower() in name.lower() or name.lower() in player.lower():
+                actual = s.get(stat_key)
+                break
+
+        if actual is None:
+            pick["result"] = "void"; pick["profit"] = 0.0
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+            print(f"  ⚫ VOID  {player} {market} (DNP)")
+            graded += 1
+            continue
+
+        line = float(pick.get("line") or 0)
+        direction = (pick.get("direction") or "OVER").upper()
+        odds = float(pick.get("odds") or 0)
+
+        if actual == line:
+            pick["result"] = "push"; pick["profit"] = 0.0
+        else:
+            won = (actual > line) if direction == "OVER" else (actual < line)
+            pick["result"] = "win" if won else "loss"
+            pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+        graded += 1
+        icon = {"win": "🟢 WIN ", "loss": "🔴 LOSS", "push": "⬜ PUSH"}.get(pick["result"], "?")
+        print(f"  {icon}  {player:<25} {direction} {line:<5}  ({int(odds):+d})  →  {pick['profit']:+.2f}u  ({stat_key}: {actual})")
+
+    _save(data)
+    if graded:
+        print(f"  Graded {graded}/{len(pending)} NBA props (new schema).")
+
+
 def _grade_nhl(date_str: str) -> None:
     """Grade NHL picks for date_str using api-web.nhle.com final scores."""
     try:
@@ -1002,16 +1575,173 @@ def _grade_nhl(date_str: str) -> None:
     print(f"  Graded {graded}/{len(picks)} NHL picks.")
 
 
+def _grade_nhl_props(date_str: str) -> None:
+    """Grade NHL player props using api-web.nhle.com boxscore data."""
+    import requests
+
+    _NHL_PROP_STAT: dict[str, str] = {
+        "player_points":         "points",
+        "player_goals":          "goals",
+        "player_assists":        "assists",
+        "player_shots_on_goal":  "sog",
+        "player_blocked_shots":  "blockedShots",
+    }
+
+    date_compact = _norm_date(date_str)
+    date_iso = f"{date_compact[:4]}-{date_compact[4:6]}-{date_compact[6:]}"
+
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and p.get("sport") in ("nhl", "icehockey_nhl")
+        and p.get("market") in _NHL_PROP_STAT
+        and p.get("result") in (None, "pending")
+    ]
+    if not pending:
+        return
+
+    # Fetch game IDs for the date
+    try:
+        resp = requests.get(
+            f"https://api-web.nhle.com/v1/score/{date_iso}",
+            timeout=12,
+        )
+        games_raw = resp.json().get("games", []) if resp.status_code == 200 else []
+    except Exception as e:
+        print(f"  [nhl props] schedule error: {e}")
+        return
+
+    # Build player_name_lower → stats dict from all game boxscores
+    player_stats: dict[str, dict] = {}
+    for game in games_raw:
+        state = game.get("gameState", "")
+        if state not in ("OFF", "FINAL"):
+            continue
+        gid = game.get("id")
+        if not gid:
+            continue
+        try:
+            bx = requests.get(
+                f"https://api-web.nhle.com/v1/gamecenter/{gid}/boxscore",
+                timeout=12,
+            )
+            bd = bx.json() if bx.status_code == 200 else {}
+        except Exception:
+            continue
+
+        for side in ("homeTeam", "awayTeam"):
+            team_data = bd.get("playerByGameStats", {}).get(side, {})
+            for group in ("forwards", "defense"):
+                for p in team_data.get(group, []):
+                    raw_name = p.get("name", {})
+                    full = raw_name.get("default", "") if isinstance(raw_name, dict) else str(raw_name)
+                    if full:
+                        player_stats[full.lower()] = p
+
+    if not player_stats:
+        print(f"  [nhl props] No boxscore data for {date_str}")
+        return
+
+    print(f"\n  ── NHL player props ({len(pending)} picks) ──")
+    graded = 0
+    now_str = datetime.now(timezone.utc).isoformat()
+
+    for pick in pending:
+        player = (pick.get("player") or pick.get("team") or "").strip()
+        # Strip line suffix e.g. "C. Caufield OVER 0.5"
+        for tok in ("OVER", "UNDER"):
+            if tok in player.upper():
+                player = player[:player.upper().index(tok)].strip()
+                break
+
+        market = pick.get("market", "")
+        stat_key = _NHL_PROP_STAT.get(market)
+        if not stat_key:
+            continue
+
+        # Match pick full name (e.g. "Sebastian Aho") against boxscore abbreviated name
+        # (e.g. "S. Aho"). Strategy: match on last name + first initial.
+        pname_lower = player.lower()
+        stats = player_stats.get(pname_lower)
+        if not stats:
+            pick_parts = pname_lower.split()
+            pick_last = pick_parts[-1] if pick_parts else ""
+            pick_init = pick_parts[0][0] if pick_parts else ""
+            for name, s in player_stats.items():
+                name_parts = name.split()
+                name_last = name_parts[-1] if name_parts else ""
+                name_first = name_parts[0].rstrip(".") if name_parts else ""
+                if name_last == pick_last and name_first == pick_init:
+                    stats = s
+                    break
+            # Fallback: substring match
+            if not stats:
+                for name, s in player_stats.items():
+                    if pname_lower in name or name in pname_lower:
+                        stats = s
+                        break
+
+        if stats is None:
+            pick["result"] = "void"
+            pick["profit"] = 0.0
+            pick["resulted_at"] = now_str
+            print(f"  ⚫ VOID  {player} {market} (DNP / not found)")
+            graded += 1
+            continue
+
+        actual = stats.get(stat_key)
+        if actual is None:
+            continue
+
+        line = float(pick.get("line") or 0)
+        direction = (pick.get("direction") or "OVER").upper()
+        odds = float(pick.get("odds") or 0)
+
+        if actual == line:
+            pick["result"] = "push"
+            pick["profit"] = 0.0
+        else:
+            won = (actual > line) if direction == "OVER" else (actual < line)
+            pick["result"] = "win" if won else "loss"
+            pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+        pick["resulted_at"] = now_str
+        graded += 1
+
+        icon = {"win": "🟢 WIN ", "loss": "🔴 LOSS", "push": "⬜ PUSH"}.get(pick["result"], "?")
+        print(f"  {icon}  {player:<25} {direction} {line:<5}  ({int(odds):+d})  →  {pick['profit']:+.2f}u  ({stat_key}: {actual})")
+
+    _save(data)
+    if graded:
+        print(f"  Graded {graded}/{len(pending)} NHL props.")
+
+
+_ALL_SPORTS = [
+    "all", "mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc", "pga",
+]
+
+# Maps short sport name → (odds_api_key, sport_field_in_picks)
+_GENERIC_SPORT_MAP = {
+    "wnba": ("basketball_wnba", "basketball_wnba"),
+    "ufc":  ("mma_mixed_martial_arts", "mma_mixed_martial_arts"),
+}
+
+_OUTRIGHT_SPORT_MAP = {
+    "pga": "golf_pga_championship",
+}
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="grade",
-        description="Grade picks against actual results (MLB + NBA).",
+        description="Grade picks against actual results (all sports).",
     )
     parser.add_argument("cmd",    nargs="?", help="win | loss | (blank=auto)")
-    parser.add_argument("team",   nargs="?", help="Team name for win/loss")
+    parser.add_argument("team",   nargs="?", help="Team/player name for win/loss")
     parser.add_argument("--date",   help="Date to grade YYYYMMDD (default: yesterday)")
-    parser.add_argument("--sport",  default="all", choices=["all", "mlb", "nba", "nhl"],
+    parser.add_argument("--sport",  default="all", choices=_ALL_SPORTS,
                         help="Which sport to grade (default: all)")
+    parser.add_argument("--winner", help="Outright winner name (for pga)")
     parser.add_argument("--manual",      action="store_true", help="Interactive W/L mode")
     parser.add_argument("--recap-card",  action="store_true", help="Generate recap card image")
 
@@ -1030,20 +1760,85 @@ def main():
             yesterday  = datetime.now() - timedelta(days=1)
             grade_date = yesterday.strftime("%Y%m%d")
 
-        if args.sport in ("all", "mlb"):
+        sport = args.sport
+
+        # ── MLB ──────────────────────────────────────────────────────────
+        if sport in ("all", "mlb"):
             auto_grade(grade_date)
+            _grade_mlb_props(grade_date)
             if args.recap_card:
                 generate_recap_card(grade_date)
 
-        if args.sport in ("all", "nba"):
+        # ── NBA (game lines + both prop schemas) ─────────────────────────
+        if sport in ("all", "nba"):
             print(f"\n  ── Grading NBA picks for {grade_date} ──")
             _grade_nba(grade_date)
+            _grade_nba_props_v2(grade_date)
 
-        if args.sport in ("all", "nhl"):
+        # ── NHL (game lines + player props) ─────────────────────────────
+        if sport in ("all", "nhl"):
             print(f"\n  ── Grading NHL picks for {grade_date} ──")
             _grade_nhl(grade_date)
+            _grade_nhl_props(grade_date)
 
-        # Update public stats after all grading is done
+        # ── WNBA / UFC (generic Odds API scores) ─────────────────────────
+        for short, (api_key, field) in _GENERIC_SPORT_MAP.items():
+            if sport in ("all", short):
+                label = short.upper()
+                print(f"\n  ── Grading {label} picks for {grade_date} ──")
+                _grade_sport_generic(api_key, label, grade_date, sport_field=field)
+
+        # ── Soccer — grade each league that has pending picks ─────────────
+        if sport in ("all", "soccer"):
+            date_compact = _norm_date(grade_date)
+            data_tmp = _load()
+            soccer_keys = sorted({
+                p.get("sport", "")
+                for p in data_tmp["picks"]
+                if _norm_date(p.get("date", "")) == date_compact
+                and (p.get("sport", "").startswith("soccer_"))
+                and p.get("result") in (None, "pending")
+            })
+            if soccer_keys:
+                print(f"\n  ── Grading SOCCER picks for {grade_date} ──")
+                for sk in soccer_keys:
+                    label = sk.replace("soccer_", "").replace("_", " ").upper()
+                    _grade_sport_generic(sk, f"SOCCER/{label}", grade_date, sport_field=sk)
+            else:
+                print(f"\n  ── Grading SOCCER picks for {grade_date} ──")
+                print(f"  No pending SOCCER picks for {grade_date}")
+
+        # ── Tennis — grade each tour/tournament with pending picks ────────
+        if sport in ("all", "tennis"):
+            date_compact = _norm_date(grade_date)
+            data_tmp = _load()
+            tennis_keys = sorted({
+                p.get("sport", "")
+                for p in data_tmp["picks"]
+                if _norm_date(p.get("date", "")) == date_compact
+                and (p.get("sport", "").startswith("tennis_"))
+                and p.get("result") in (None, "pending")
+            })
+            if tennis_keys:
+                print(f"\n  ── Grading TENNIS picks for {grade_date} ──")
+                for tk in tennis_keys:
+                    label = tk.replace("tennis_", "").replace("_", " ").upper()
+                    _grade_sport_generic(tk, f"TENNIS/{label}", grade_date, sport_field=tk)
+            else:
+                print(f"\n  No TENNIS completed games found for {grade_date}")
+
+        # ── Outright winner markets (PGA only) ────────────────────────────
+        for short, field in _OUTRIGHT_SPORT_MAP.items():
+            if sport in ("all", short):
+                if args.winner:
+                    label = short.upper()
+                    print(f"\n  ── Grading {label} picks for {grade_date} ──")
+                    _grade_outright(field, label, grade_date, winner=args.winner)
+                elif sport == short:
+                    print(f"\n  [{short.upper()}] Outright markets require --winner \"Player Name\"")
+                    print(f"  Example: python3 grade.py --sport {short} --date {grade_date} --winner \"Scottie Scheffler\"")
+
+        # ── Update public stats after all grading ─────────────────────────
         try:
             from src.analytics.public_stats import write_public_stats
             write_public_stats()

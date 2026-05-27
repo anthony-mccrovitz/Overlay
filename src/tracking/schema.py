@@ -28,8 +28,114 @@ SCHEMA (all fields, all sports)
 """
 from __future__ import annotations
 
+import fcntl
+import json
+import os
 import re
+import tempfile
+from pathlib import Path
 from typing import Any
+
+
+# ── Atomic picks I/O ─────────────────────────────────────────────────────────
+# All 12+ scripts that write picks.json run concurrently from cron.
+# Without a lock + atomic rename, last-writer-wins causes data loss.
+
+_LOCK_PATH = Path("data/pnl/picks.lock")
+
+
+def load_picks_safe(path: str | Path) -> dict:
+    """Read picks.json under an exclusive lock. Returns {"picks": [...]}."""
+    path = Path(path)
+    _LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(_LOCK_PATH, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        try:
+            if not path.exists():
+                return {"picks": []}
+            raw = json.loads(path.read_text())
+            if isinstance(raw, list):
+                return {"picks": raw}
+            if "picks" not in raw:
+                return {"picks": []}
+            return raw
+        except (json.JSONDecodeError, OSError):
+            return {"picks": []}
+        finally:
+            fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
+    """Append new_picks to picks.json atomically under an exclusive lock.
+
+    Deduplicates on pick_id. Returns count of picks actually added.
+    Uses write-to-temp + os.replace (atomic rename on POSIX).
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(_LOCK_PATH, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        try:
+            # Read current state inside the lock
+            if path.exists():
+                try:
+                    raw = json.loads(path.read_text())
+                    data = raw if isinstance(raw, dict) and "picks" in raw else {"picks": raw if isinstance(raw, list) else []}
+                except (json.JSONDecodeError, OSError):
+                    data = {"picks": []}
+            else:
+                data = {"picks": []}
+
+            existing_ids = {p.get("pick_id", "") for p in data["picks"] if isinstance(p, dict)}
+            added = 0
+            for pick in new_picks:
+                pid = pick.get("pick_id", "")
+                if pid and pid in existing_ids:
+                    continue
+                data["picks"].append(pick)
+                existing_ids.add(pid)
+                added += 1
+
+            # Write to temp file then rename — atomic on POSIX
+            tmp_fd, tmp_path = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+            try:
+                with os.fdopen(tmp_fd, "w") as f:
+                    json.dump(data, f, indent=2)
+                os.replace(tmp_path, path)
+            except Exception:
+                os.unlink(tmp_path)
+                raise
+
+            return added
+        finally:
+            fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def rewrite_picks_safe(path: str | Path, data: dict) -> None:
+    """Atomically rewrite the entire picks file (e.g. after grading results).
+
+    Use only when you need to mutate existing picks (set result/profit).
+    For adding new picks, prefer append_picks_safe.
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(_LOCK_PATH, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        try:
+            tmp_fd, tmp_path = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+            try:
+                with os.fdopen(tmp_fd, "w") as f:
+                    json.dump(data, f, indent=2)
+                os.replace(tmp_path, path)
+            except Exception:
+                os.unlink(tmp_path)
+                raise
+        finally:
+            fcntl.flock(lf, fcntl.LOCK_UN)
 
 
 # Required fields — every canonical pick must have these.
@@ -39,6 +145,17 @@ CANONICAL_FIELDS = (
     "model_prob", "edge_pct", "stake", "card_pick",
     "result", "profit", "recorded_at", "resulted_at",
 )
+
+_SPORT_ALIASES: dict[str, str] = {
+    "baseball_mlb":              "mlb",
+    "basketball_nba":            "nba",
+    "basketball_nba_summer_league": "nba",
+    "basketball_wnba":           "wnba",
+    "americanfootball_nfl":      "nfl",
+    "americanfootball_ncaaf":    "ncaaf",
+    "basketball_ncaab":          "ncaab",
+    "icehockey_nhl":             "nhl",
+}
 
 _DIRECTION_ALIASES: dict[str, str] = {
     "ML":   "WIN",
@@ -165,6 +282,7 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
 
     # ── Sport ────────────────────────────────────────────────────────────────
     sport = str(raw.get("sport") or "mlb").lower().strip()
+    sport = _SPORT_ALIASES.get(sport, sport)
 
     # ── Market ───────────────────────────────────────────────────────────────
     raw_market = str(raw.get("market") or "moneyline").lower().strip()
@@ -273,12 +391,11 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         except (ValueError, TypeError):
             edge_pct = None
 
-    # Sanity clamp. A real moneyline edge >10pp against a Pinnacle-devigged
-    # benchmark is almost always a stale-line / data bug, not a real edge.
-    # Negative edges happen when we log non-card "model lean" picks, so we
-    # allow more room on the downside.
+    # Sanity clamp. Tennis Elo edges against qualifiers legitimately reach
+    # 40-60pp, so the upper bound is set generously at 100. The negative
+    # bound (-100) catches sign-flip bugs without clipping legitimate losses.
     if edge_pct is not None:
-        edge_pct = max(-15.0, min(edge_pct, 10.0))
+        edge_pct = max(-100.0, min(edge_pct, 100.0))
 
     # ── Result / Profit ───────────────────────────────────────────────────────
     result = raw.get("result")
@@ -301,25 +418,27 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
     pick_id = raw.get("pick_id") or make_pick_id(sport, date_, team, market, direction)
 
     return {
-        "pick_id":       pick_id,
-        "date":          date_,
-        "sport":         sport,
-        "market":        market,
-        "direction":     direction,
-        "team":          team,
-        "matchup":       matchup,
-        "odds":          odds,
-        "line":          line,
-        "sportsbook":    sportsbook,
-        "model_prob":    round(model_prob, 4) if model_prob is not None else None,
-        "edge_pct":      round(edge_pct, 2) if edge_pct is not None else None,
-        "stake":         stake,
-        "card_pick":     card_pick,
-        "result":        result,
-        "profit":        round(profit, 4) if profit is not None else None,
-        "recorded_at":   recorded_at,
-        "resulted_at":   resulted_at,
-        "model_version": raw.get("model_version"),
+        "pick_id":         pick_id,
+        "date":            date_,
+        "sport":           sport,
+        "market":          market,
+        "direction":       direction,
+        "team":            team,
+        "matchup":         matchup,
+        "odds":            odds,
+        "line":            line,
+        "sportsbook":      sportsbook,
+        "model_prob":      round(model_prob, 4) if model_prob is not None else None,
+        "edge_pct":        round(edge_pct, 2) if edge_pct is not None else None,
+        "stake":           stake,
+        "card_pick":       card_pick,
+        "result":          result,
+        "profit":          round(profit, 4) if profit is not None else None,
+        "recorded_at":     recorded_at,
+        "resulted_at":     resulted_at,
+        "model_version":   raw.get("model_version"),
+        "model_tier":      raw.get("model_tier") or None,
+        "weather_context": raw.get("weather_context") or None,
     }
 
 

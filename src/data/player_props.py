@@ -43,7 +43,10 @@ PROP_MARKETS = [
 
 # Min edge to surface as a pick (raw probability edge over implied)
 MIN_EDGE = 0.04
-MIN_OVER_PROB = 0.52  # must project >52% to recommend over
+MIN_OVER_PROB = 0.52      # must project >52% to recommend over
+MIN_IMPLIED_PROB = 0.35   # no picks at odds better than +186 — model can't price longshots
+MIN_EDGE_OVER = 0.10      # OVERs need higher bar: historically -12.2u vs UNDERs +3.0u
+OVER_BIAS_CORRECTION = 0.06  # subtract from p_over: books shade lines, OVERs lose 41% WR
 
 
 def _api_key() -> str | None:
@@ -274,6 +277,9 @@ def find_prop_edges(
                          line: float, p_over: float, implied: float,
                          over_odds: float, under_odds: float, proj,
                          label_suffix: str):
+            # Books shade OVER lines — apply systematic downward correction to OVER prob
+            # Historical: OVERs 41% WR vs UNDERs 61% WR across all settled picks
+            p_over = max(0.01, min(0.99, p_over - OVER_BIAS_CORRECTION))
             edge = p_over - implied
             if abs(edge) < min_edge:
                 return
@@ -282,6 +288,12 @@ def find_prop_edges(
             bet_implied = implied if edge > 0 else (1 - implied)
             bet_odds   = over_odds if edge > 0 else under_odds
             if bet_dir == "OVER" and bet_prob < MIN_OVER_PROB:
+                return
+            # Skip longshot odds — model calibration only valid near fair-game odds
+            if bet_implied < MIN_IMPLIED_PROB:
+                return
+            # OVERs need higher edge bar (historically lose vs UNDERs)
+            if bet_dir == "OVER" and abs(edge) < MIN_EDGE_OVER:
                 return
             confidence = _confidence_tier(float(proj), line, market)
             edges.append({

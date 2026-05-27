@@ -43,8 +43,12 @@ def main() -> int:
 
     target = args.date or date.today().strftime("%Y%m%d")
 
+    # Sports with real-time auto-grading via grade.py subprocess.
+    # Outrights (pga/nascar/f1/indycar) require --winner flag — handled by grade_outrights.py.
+    SPORTS = ("mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc")
+
     rc_total = 0
-    for sport in ("mlb", "nba"):
+    for sport in SPORTS:
         cmd = [sys.executable, str(ROOT / "grade.py"), "--date", target, "--sport", sport]
         try:
             result = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
@@ -53,7 +57,7 @@ def main() -> int:
                 rc_total += 1
             else:
                 # Only log if it actually graded something
-                if "WIN" in result.stdout or "LOSS" in result.stdout:
+                if "WIN" in result.stdout or "LOSS" in result.stdout or "win" in result.stdout or "loss" in result.stdout:
                     last_lines = "\n".join(result.stdout.strip().splitlines()[-3:])
                     _log(f"  {sport.upper()} graded: {last_lines}")
         except subprocess.TimeoutExpired:

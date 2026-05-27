@@ -538,21 +538,14 @@ _PNL_FILE = Path("data/pnl/picks.json")
 
 def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
     """Log NBA edge picks to data/pnl/picks.json using canonical schema."""
-    from src.tracking.schema import make_pick_id
+    from src.tracking.schema import make_pick_id, append_picks_safe
 
     _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        data = json.loads(_PNL_FILE.read_text()) if _PNL_FILE.exists() else {"picks": []}
-        if "picks" not in data:
-            data = {"picks": []}
-    except (json.JSONDecodeError, ValueError):
-        data = {"picks": []}
 
     now_ts   = datetime.now(timezone.utc).isoformat()
     date_str = f"{today[:4]}-{today[4:6]}-{today[6:]}"
 
-    # Dedup on pick_id
-    existing_ids = {p.get("pick_id", "") for p in data["picks"]}
+    existing_ids: set[str] = set()
 
     _NBA_PAUSED = ["spread", "prop"]
     _NBA_TIER: dict[str, str] = {
@@ -563,6 +556,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
     }
 
     added = 0
+    new_entries: list[dict] = []
     for rank, e in enumerate(edges):
         team      = str(e.get("team", "")).strip()
         market    = str(e.get("market", "spread")).lower()
@@ -597,7 +591,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
                 line = None
 
         from src.config.models import is_live as _is_live
-        data["picks"].append({
+        new_entries.append({
             "pick_id":     pick_id,
             "date":        date_str,
             "sport":       "nba",
@@ -618,11 +612,32 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             "recorded_at": now_ts,
             "resulted_at": None,
         })
+        new_entries.append({
+            "pick_id":     pick_id,
+            "date":        date_str,
+            "sport":       "nba",
+            "market":      market,
+            "direction":   direction,
+            "team":        team,
+            "matchup":     matchup,
+            "odds":        e.get("best_odds") or e.get("odds"),
+            "line":        e.get("bet_line") or e.get("line"),
+            "sportsbook":  e.get("sportsbook"),
+            "model_prob":  e.get("model_prob") or e.get("win_prob"),
+            "edge_pct":    e.get("edge_pct"),
+            "model_tier":  _NBA_TIER.get(market, "shadow"),
+            "stake":       1.0,
+            "card_pick":   _is_live("nba", market),
+            "result":      None,
+            "profit":      None,
+            "recorded_at": now_ts,
+            "resulted_at": None,
+        })
         existing_ids.add(pick_id)
         added += 1
 
-    if added > 0:
-        _PNL_FILE.write_text(json.dumps(data, indent=2))
+    if new_entries:
+        append_picks_safe(_PNL_FILE, new_entries)
         print(f"  ✓  {added} NBA pick(s) logged to pnl")
     return added
 
@@ -861,8 +876,11 @@ def grade_nba_picks(target_date: str | None = None, flat_stake: float = 1.0, ver
     # Write results back to central pnl file so public_stats tracks NBA too
     if _PNL_FILE.exists():
         try:
-            pnl_data = json.loads(_PNL_FILE.read_text())
+            _raw = json.loads(_PNL_FILE.read_text())
+            pnl_was_list = isinstance(_raw, list)
+            pnl_data = {"picks": _raw} if pnl_was_list else _raw
         except (json.JSONDecodeError, ValueError):
+            pnl_was_list = False
             pnl_data = {"picks": []}
         now_ts = datetime.now(timezone.utc).isoformat()
         date_str = f"{today[:4]}-{today[4:6]}-{today[6:]}"
@@ -900,7 +918,8 @@ def grade_nba_picks(target_date: str | None = None, flat_stake: float = 1.0, ver
                     p["profit"]      = round(profit, 4)   # already in units (flat_stake=1.0)
                     p["resulted_at"] = now_ts
                     break
-        _PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
+        _out = pnl_data["picks"] if pnl_was_list else pnl_data
+        _PNL_FILE.write_text(json.dumps(_out, indent=2))
 
     # Update public stats
     try:

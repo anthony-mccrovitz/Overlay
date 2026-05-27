@@ -451,25 +451,25 @@ def _card_html(
     .record-strip {{
       display: flex;
       align-items: center;
-      gap: 20px;
-      padding: 12px 56px 24px;
+      gap: 22px;
+      padding: 10px 56px 22px;
       flex-shrink: 0;
     }}
     .record-item {{
-      font-size: 13px;
+      font-size: 18px;
       font-weight: 700;
-      color: rgba(255,255,255,0.55);
-      letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.02em;
     }}
     .record-item .rec-val {{
       color: var(--accent);
-      font-weight: 800;
+      font-weight: 900;
     }}
     .record-dot {{
-      width: 4px;
-      height: 4px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.25);
       flex-shrink: 0;
     }}
 
@@ -512,18 +512,20 @@ def _card_html(
     .form-strip {{
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 8px 56px 0;
-      font-size: 13px;
+      gap: 16px;
+      padding: 6px 56px 0;
+      font-size: 18px;
       font-weight: 700;
     }}
     .form-label {{
-      color: rgba(255,255,255,0.40);
-      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.12em;
+      font-size: 16px;
     }}
     .form-stats {{
       color: var(--accent);
       letter-spacing: 0.02em;
+      font-size: 18px;
     }}
 
     /* ── Hero matchup logos ── */
@@ -531,21 +533,35 @@ def _card_html(
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 36px;
-      margin-bottom: 18px;
+      gap: 56px;
+      margin-bottom: 4px;
+    }}
+    .hero-team {{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
     }}
     .hero-logo-img {{
-      width: 110px;
-      height: 110px;
+      width: 168px;
+      height: 168px;
       object-fit: contain;
-      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.55));
+    }}
+    .hero-team-abbr {{
+      font-family: 'Barlow Condensed', 'Inter', sans-serif;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      color: #fff;
     }}
     .hero-vs {{
       font-family: 'Barlow Condensed', 'Inter', sans-serif;
-      font-size: 38px;
+      font-size: 44px;
       font-weight: 800;
-      color: rgba(255,255,255,0.30);
+      color: rgba(255,255,255,0.35);
       letter-spacing: 0.04em;
+      padding-bottom: 36px;
     }}
 
     /* ── Hero single-pick layout ── */
@@ -554,34 +570,34 @@ def _card_html(
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 30px 56px 0;
-      gap: 28px;
+      padding: 26px 56px 0;
+      gap: 24px;
     }}
     .hero-matchup-block {{
       text-align: center;
-      padding-top: 20px;
+      padding-top: 6px;
     }}
     .hero-market-label {{
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 800;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.26em;
       color: var(--accent);
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }}
     .hero-matchup {{
       font-family: 'Barlow Condensed', 'Inter', sans-serif;
-      font-size: 64px;
+      font-size: 58px;
       font-weight: 800;
-      line-height: 1.05;
+      line-height: 1.04;
       color: #fff;
       letter-spacing: -0.01em;
     }}
     .hero-subtitle {{
-      font-size: 18px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.55);
-      margin-top: 10px;
-      letter-spacing: 0.04em;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.42);
+      margin-top: 14px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }}
     .hero-selection-block {{
@@ -851,6 +867,23 @@ def _team_logo_url(team: str, sport_key: str) -> str | None:
     return None
 
 
+def _team_abbr(team: str, sport_key: str) -> str:
+    """Return uppercase ESPN team slug (e.g. 'OKC', 'BOS') for a team name."""
+    if not team:
+        return ""
+    name = team.lower().strip()
+    if "nba" in sport_key.lower() or "basketball" in sport_key.lower():
+        slugs = _NBA_TEAM_SLUGS
+    elif "mlb" in sport_key.lower() or "baseball" in sport_key.lower():
+        slugs = _MLB_TEAM_SLUGS
+    else:
+        return ""
+    for frag, slug in slugs.items():
+        if frag in name:
+            return slug.upper()
+    return ""
+
+
 def _split_matchup(matchup: str) -> tuple[str, str] | None:
     """Return (away, home) team names from a matchup string, or None."""
     if not matchup:
@@ -1015,18 +1048,25 @@ def _hero_pick_html(
 
     # Team logos from ESPN CDN (no-op for sports we don't have slugs for)
     logos_html = ""
+    matchup_text_html = f'<div class="hero-matchup">{matchup}</div>'
     teams = _split_matchup(matchup)
     if teams and sport_key:
         away_url = _team_logo_url(teams[0], sport_key)
         home_url = _team_logo_url(teams[1], sport_key)
+        away_abbr = _team_abbr(teams[0], sport_key)
+        home_abbr = _team_abbr(teams[1], sport_key)
         if away_url and home_url:
             logos_html = (
                 '<div class="hero-logos">'
-                f'<img class="hero-logo-img" src="{away_url}" alt="" />'
+                f'<div class="hero-team"><img class="hero-logo-img" src="{away_url}" alt="" />'
+                f'<div class="hero-team-abbr">{away_abbr}</div></div>'
                 '<div class="hero-vs">@</div>'
-                f'<img class="hero-logo-img" src="{home_url}" alt="" />'
+                f'<div class="hero-team"><img class="hero-logo-img" src="{home_url}" alt="" />'
+                f'<div class="hero-team-abbr">{home_abbr}</div></div>'
                 '</div>'
             )
+            # Logos already convey the matchup — drop the long text line
+            matchup_text_html = ""
 
     return f"""
 <div class="hero-wrap">
@@ -1034,7 +1074,7 @@ def _hero_pick_html(
   <div class="hero-matchup-block">
     <div class="hero-market-label">{market_label.upper()}</div>
     {logos_html}
-    <div class="hero-matchup">{matchup}</div>
+    {matchup_text_html}
     {subtitle}
   </div>
 
@@ -1405,7 +1445,6 @@ def render_nba_totals_card(picks: list[dict], card_date: date | None = None) -> 
             edge_pct=row["edge_pct"],
             game_time=row["game_time"],
             units=row["units"],
-            extra_subtitle="NBA Playoffs",
             sport_key="basketball_nba",
         )
     else:

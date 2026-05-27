@@ -74,6 +74,8 @@ def _trained_features(home_stats: dict, away_stats: dict,
 MIN_EDGE_PCT = 5.0     # lowered from 8% — goalie bug fix makes model more trustworthy
 GOAL_SIGMA = 1.80      # std dev of goal differential (empirical NHL)
 PUCK_LINE = 1.5        # standard NHL puck line
+OVER_BIAS_CORRECTION = 0.04   # subtract from OVER prob: books shade totals high to attract squares
+MIN_IMPLIED_PROB = 0.30       # no picks at odds better than +233 — model unreliable at extreme odds
 
 # Canonical team name → 3-letter NHL Stats API abbreviation
 _NHL_ABBREV: dict[str, str] = {
@@ -471,11 +473,13 @@ def find_nhl_edges(
                 mean = proj["total_exp_goals"]
                 sigma = GOAL_SIGMA * math.sqrt(2)   # sum of two Poisson variances
                 if side == "Over":
-                    model_prob = 1 - _normal_cdf((pt - mean) / sigma)
+                    model_prob = max(0.01, (1 - _normal_cdf((pt - mean) / sigma)) - OVER_BIAS_CORRECTION)
                 else:
                     model_prob = _normal_cdf((pt - mean) / sigma)
 
                 effective_market = fair_prob if fair_prob is not None else book_prob
+                if effective_market < MIN_IMPLIED_PROB:
+                    continue
                 edge = model_prob - effective_market
                 if edge >= min_edge_pct / 100:
                     _emit(
@@ -501,13 +505,15 @@ def find_nhl_edges(
                                 lines_offered.add(float(o.get("point", 5.5)))
                 for pt in lines_offered:
                     if side == "Over":
-                        model_prob = 1 - _normal_cdf((pt - mean) / sigma)
+                        model_prob = max(0.01, (1 - _normal_cdf((pt - mean) / sigma)) - OVER_BIAS_CORRECTION)
                     else:
                         model_prob = _normal_cdf((pt - mean) / sigma)
                     best = _best_odds("totals", side, pt)
                     if best is None:
                         continue
                     best_odds, book_prob = best
+                    if book_prob < MIN_IMPLIED_PROB:
+                        continue
                     edge = model_prob - book_prob
                     if edge >= min_edge_pct / 100:
                         _emit(

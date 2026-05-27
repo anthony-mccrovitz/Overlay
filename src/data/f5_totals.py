@@ -84,6 +84,9 @@ def project_f5_total(
     return round(total, 2)
 
 
+OVER_BIAS_CORRECTION = 0.04   # books shade totals high; OVERs underperform historically
+MIN_IMPLIED_PROB = 0.30        # skip picks at odds better than +233
+
 def _normal_cdf(x: float) -> float:
     return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
 
@@ -216,7 +219,12 @@ def find_f5_edges(
             model_p_over = apply_calibration(model_p_over, "mlb", "f5_total")
         except Exception:
             pass
+        # Correct for systematic OVER shading by books
+        model_p_over = max(0.01, model_p_over - OVER_BIAS_CORRECTION)
         implied_over = odds["implied_over_prob"]
+
+        if implied_over < MIN_IMPLIED_PROB or (1 - implied_over) < MIN_IMPLIED_PROB:
+            continue
 
         edge_over  = model_p_over - implied_over
         edge_under = (1 - model_p_over) - (1 - implied_over)

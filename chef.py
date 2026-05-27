@@ -16,6 +16,12 @@ INDIVIDUAL COMMANDS
   python3 chef.py picks soccer                 # World Cup soccer picks
   python3 chef.py picks tennis                 # Tennis (Roland-Garros/Italian Open/Wimbledon)
   python3 chef.py picks pga                    # PGA Tour major picks
+  python3 chef.py picks nba-props               # NBA prop edges (all markets)
+  python3 chef.py picks nba-props --market player-points  # single prop market
+  python3 chef.py picks mlb-props               # MLB prop edges (all markets)
+  python3 chef.py picks mlb-props --market pitcher-strikeouts  # single market
+  python3 chef.py picks nhl-props               # NHL player props (points/goals/assists/shots)
+  python3 chef.py picks nhl-props --market player_goals  # single NHL prop market
   python3 chef.py picks nascar                 # NASCAR Cup Series outrights
   python3 chef.py picks indycar                # NTT IndyCar Series outrights
   python3 chef.py picks f1                     # Formula 1 outrights
@@ -54,7 +60,8 @@ def _load_picks() -> list[dict]:
     if not _PNL_FILE.exists():
         return []
     try:
-        return json.loads(_PNL_FILE.read_text()).get("picks", [])
+        raw = json.loads(_PNL_FILE.read_text())
+        return raw if isinstance(raw, list) else raw.get("picks", [])
     except (json.JSONDecodeError, OSError):
         return []
 
@@ -90,6 +97,21 @@ def cmd_picks(args: argparse.Namespace) -> int:
             cmd += ["--date", args.date]
         if getattr(args, "refresh", False) or late:
             cmd.append("--refresh")
+        # Optional single-market filter: chef.py picks mlb-props pitcher-strikeouts
+        market_arg = getattr(args, "market", None)
+        if market_arg:
+            cmd += ["--markets", market_arg.replace("-", "_")]
+        return _run(cmd)
+    elif sport in ("nba-props", "nba_props"):
+        cmd = [sys.executable, "run_nba_props.py"]
+        if getattr(args, "date", None):
+            cmd += ["--date", args.date]
+        if getattr(args, "refresh", False) or late:
+            cmd.append("--refresh")
+        # Optional single-market filter: chef.py picks nba-props player-points
+        market_arg = getattr(args, "market", None)
+        if market_arg:
+            cmd += ["--market", market_arg]
         return _run(cmd)
     elif sport == "nba":
         cmd = [sys.executable, "run_nba.py"]
@@ -142,32 +164,18 @@ def cmd_picks(args: argparse.Namespace) -> int:
         if getattr(args, "fit", False):
             cmd.append("--fit")
         return _run(cmd)
-    elif sport in ("nascar", "cup"):
-        cmd = [sys.executable, "run_nascar.py", "--sport", "auto_racing_nascar_cup_series"]
+    elif sport in ("nascar", "cup", "indycar", "indy", "indy500", "f1", "formula1", "formulaone"):
+        print(f"  Racing models (NASCAR/IndyCar/F1) have been retired. No picks generated.")
+        return 0
+    elif sport in ("nhl-props", "nhl_props"):
+        cmd = [sys.executable, "run_nhl_props.py"]
         if getattr(args, "date", None):
             cmd += ["--date", args.date]
         if getattr(args, "refresh", False) or late:
             cmd.append("--refresh")
-        if getattr(args, "n_sim", None):
-            cmd += ["--n-sim", str(args.n_sim)]
-        return _run(cmd)
-    elif sport in ("indycar", "indy", "indy500"):
-        cmd = [sys.executable, "run_nascar.py", "--sport", "auto_racing_indycar_series"]
-        if getattr(args, "date", None):
-            cmd += ["--date", args.date]
-        if getattr(args, "refresh", False) or late:
-            cmd.append("--refresh")
-        if getattr(args, "n_sim", None):
-            cmd += ["--n-sim", str(args.n_sim)]
-        return _run(cmd)
-    elif sport in ("f1", "formula1", "formulaone"):
-        cmd = [sys.executable, "run_nascar.py", "--sport", "auto_racing_formula_one"]
-        if getattr(args, "date", None):
-            cmd += ["--date", args.date]
-        if getattr(args, "refresh", False) or late:
-            cmd.append("--refresh")
-        if getattr(args, "n_sim", None):
-            cmd += ["--n-sim", str(args.n_sim)]
+        market_arg = getattr(args, "market", None)
+        if market_arg:
+            cmd += ["--market", market_arg.replace("-", "_")]
         return _run(cmd)
     elif sport in ("ufc", "mma"):
         cmd = [sys.executable, "run_ufc.py"]
@@ -177,7 +185,7 @@ def cmd_picks(args: argparse.Namespace) -> int:
             cmd.append("--refresh")
         return _run(cmd)
     else:
-        print(f"Unknown sport: {sport}. Use: mlb, nba, nhl, wnba, soccer, pga, tennis, nascar, indycar, f1, ufc.")
+        print(f"Unknown sport: {sport}. Use: mlb, mlb-props, nba, nba-props, nhl, nhl-props, wnba, soccer, pga, tennis, ufc.")
         return 1
 
 
@@ -189,9 +197,12 @@ def cmd_grade(args: argparse.Namespace) -> int:
         yesterday  = datetime.now() - timedelta(days=1)
         grade_date = yesterday.strftime("%Y%m%d")
 
-    sport = getattr(args, "sport", "all")
-    cmd   = [sys.executable, "grade.py", "--date", grade_date, "--sport", sport]
-    rc    = _run(cmd)
+    sport  = getattr(args, "sport", "all")
+    winner = getattr(args, "winner", None)
+    cmd    = [sys.executable, "grade.py", "--date", grade_date, "--sport", sport]
+    if winner:
+        cmd += ["--winner", winner]
+    rc = _run(cmd)
 
     # Auto-recalibrate probability models after grading
     try:
@@ -1044,7 +1055,8 @@ def cmd_migrate(args: argparse.Namespace) -> int:
             fixups += 1
 
     if fixups > 0:
-        _PNL_FILE.write_text(json.dumps(data, indent=2))
+        from src.tracking.schema import rewrite_picks_safe
+        rewrite_picks_safe(_PNL_FILE, data)
         print(f"    Fixups applied: {fixups} (NHL v0_heuristic tags + stake=0 backfill)")
 
     # Validate all picks
@@ -1150,6 +1162,86 @@ def cmd_clv(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── stats ───────────────────────────────────────────
 
+def cmd_status(args: argparse.Namespace) -> int:
+    """Show which sport pipelines have produced picks today (or for a given date).
+
+    Quick morning sanity check — verifies cron fired and every sport has its
+    daily output dir + picks file. Flags anything missing so you can re-run
+    just that one pipeline manually.
+    """
+    from datetime import date as _date, datetime as _dt
+    import os
+
+    target = args.date or _date.today().strftime("%Y%m%d")
+    try:
+        target_dt = _date(int(target[:4]), int(target[4:6]), int(target[6:]))
+    except (ValueError, IndexError):
+        print(f"Invalid date: {target}. Use YYYYMMDD.")
+        return 1
+
+    # Each sport maps to one or more output dir prefixes — tennis/soccer/golf
+    # rotate dir names by tournament, so we match by prefix.
+    sports = [
+        ("MLB",     ["baseball_mlb"],             "chef.py picks mlb"),
+        ("NBA",     ["basketball_nba"],           "chef.py picks nba"),
+        ("NHL",     ["icehockey_nhl"],            "run_nhl.py"),
+        ("WNBA",    ["basketball_wnba"],          "run_wnba.py"),
+        ("Tennis",  ["tennis_atp", "tennis_wta", "tennis"], "run_tennis.py"),
+        ("Soccer",  ["soccer_"],                  "run_soccer.py"),
+        ("UFC/MMA", ["mma_mixed_martial_arts"],   "run_ufc.py"),
+        ("PGA",     ["golf_pga", "golf_masters", "golf_us_open"], "run_pga.py"),
+    ]
+
+    print(f"\n  ChefTonyBets Pipeline Status — {target_dt.strftime('%A %B %d, %Y')}")
+    print(f"  Current time: {_dt.now().strftime('%H:%M:%S %Z')}")
+    print(f"  {'─' * 70}")
+    print(f"  {'Sport':<10} {'Status':<10} {'Picks':>7}  {'Files':>6}  Re-run command")
+    print(f"  {'─' * 70}")
+
+    missing = []
+    picks_root = Path("output/picks")
+    for label, prefixes, runner in sports:
+        # Find any output dir matching one of the prefixes that has today's date
+        found_dir = None
+        for child in picks_root.iterdir() if picks_root.exists() else []:
+            if not child.is_dir():
+                continue
+            if not any(child.name.startswith(p) for p in prefixes):
+                continue
+            candidate = child / target
+            if candidate.exists():
+                found_dir = candidate
+                break
+
+        if not found_dir:
+            print(f"  {label:<10} {'✗ MISSING':<10} {'—':>7}  {'—':>6}  python3 {runner}")
+            missing.append((label, runner))
+            continue
+        try:
+            files = os.listdir(found_dir)
+        except OSError:
+            files = []
+        # Count actual picks if picks.json exists
+        n_picks = 0
+        picks_path = found_dir / "picks.json"
+        if picks_path.exists():
+            try:
+                data = json.loads(picks_path.read_text())
+                n_picks = len(data) if isinstance(data, list) else len(data.get("picks", []))
+            except (json.JSONDecodeError, ValueError):
+                pass
+        status = "✓ ran" if n_picks else "🟡 empty"
+        print(f"  {label:<10} {status:<10} {n_picks:>7}  {len(files):>6}  {found_dir.parent.name}")
+
+    print(f"  {'─' * 70}")
+    if missing:
+        print(f"\n  {len(missing)} sport(s) missing — re-run with the commands above.")
+        print(f"  Quick fire-everything: ./scripts/setup_cron.sh && bash <(crontab -l | grep picks | awk '{{print $6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18}}')")
+    else:
+        print(f"\n  All {len(sports)} sport pipelines ran successfully ✓")
+    return 0
+
+
 def cmd_stats(args: argparse.Namespace) -> int:
     """Refresh public_stats.json from current picks.json."""
     try:
@@ -1161,10 +1253,21 @@ def cmd_stats(args: argparse.Namespace) -> int:
         return 1
 
 
+# ─────────────────────────── monthly ─────────────────────────────────────────
+
+def cmd_monthly(args: argparse.Namespace) -> int:
+    """Generate monthly performance report."""
+    month_arg = getattr(args, "month", None)
+    cmd = [sys.executable, "scripts/gen_monthly_brief.py"]
+    if month_arg:
+        cmd.append(month_arg)
+    return _run(cmd)
+
+
 # ─────────────────────────── morning ───────────────────────────────────────
 
 def cmd_morning(args: argparse.Namespace) -> int:
-    """Run full morning pipeline: MLB picks + NBA picks + open cards folder."""
+    """Run full morning pipeline: MLB + NBA + Tennis + Soccer + PGA + NHL picks."""
     import platform
 
     today = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
@@ -1196,7 +1299,71 @@ def cmd_morning(args: argparse.Namespace) -> int:
     else:
         print("  ✓ NBA picks done\n")
 
-    # 3) Generate Reddit posts
+    # 3) WNBA picks (season May–Oct; silently skip if off-season)
+    print("  ▸ Generating WNBA picks...")
+    wnba_cmd = [sys.executable, "run_wnba.py"]
+    if getattr(args, "date", None):
+        wnba_cmd += ["--date", args.date]
+    rc_wnba = _run(wnba_cmd)
+    if rc_wnba != 0:
+        print("  ✗ WNBA picks failed (may be off-season or no games today)")
+    else:
+        print("  ✓ WNBA picks done\n")
+
+    # 4) Tennis picks (runs year-round; silently skip if no active tournament)
+    print("  ▸ Generating Tennis picks...")
+    tennis_cmd = [sys.executable, "run_tennis.py"]
+    if getattr(args, "date", None):
+        tennis_cmd += ["--date", args.date]
+    rc_tennis = _run(tennis_cmd)
+    if rc_tennis != 0:
+        print("  ✗ Tennis picks failed (no active tournament or API miss)")
+    else:
+        print("  ✓ Tennis picks done\n")
+
+    # 5) Soccer picks (EPL/La Liga/Bundesliga/Serie A/Ligue 1 club leagues + tournaments)
+    print("  ▸ Generating Soccer picks...")
+    soccer_cmd = [sys.executable, "run_soccer.py"]
+    if getattr(args, "date", None):
+        soccer_cmd += ["--date", args.date]
+    rc_soccer = _run(soccer_cmd)
+    if rc_soccer != 0:
+        print("  ✗ Soccer picks failed (no games today or off-season)")
+    else:
+        print("  ✓ Soccer picks done\n")
+
+    # 6) PGA picks (silently skips when no active major; runs Thu–Sun during events)
+    print("  ▸ Generating PGA picks...")
+    pga_cmd = [sys.executable, "run_pga.py"]
+    rc_pga = _run(pga_cmd)
+    if rc_pga != 0:
+        print("  ✗ PGA picks skipped (no active major or no odds available)")
+    else:
+        print("  ✓ PGA picks done\n")
+
+    # 7) NHL picks (live during playoffs/season; skips in off-season)
+    print("  ▸ Generating NHL picks...")
+    nhl_cmd = [sys.executable, "run_nhl.py"]
+    if getattr(args, "date", None):
+        nhl_cmd += ["--date", args.date]
+    rc_nhl = _run(nhl_cmd)
+    if rc_nhl != 0:
+        print("  ✗ NHL picks skipped (off-season or no games today)")
+    else:
+        print("  ✓ NHL picks done\n")
+
+    # 7b) NHL player props (shadow — building sample)
+    print("  ▸ Generating NHL player props...")
+    nhl_props_cmd = [sys.executable, "run_nhl_props.py"]
+    if getattr(args, "date", None):
+        nhl_props_cmd += ["--date", args.date]
+    rc_nhl_props = _run(nhl_props_cmd)
+    if rc_nhl_props != 0:
+        print("  ✗ NHL props skipped (no games or API unavailable)")
+    else:
+        print("  ✓ NHL props done\n")
+
+    # 9) Generate Reddit posts
     print("  ▸ Generating Reddit posts...")
     try:
         reddit_args = argparse.Namespace(date=today)
@@ -1205,7 +1372,7 @@ def cmd_morning(args: argparse.Namespace) -> int:
     except Exception as e:
         print(f"  ✗ Reddit generation failed: {e}\n")
 
-    # 4) Show where cards are
+    # 10) Show where cards are
     mlb_dir = Path(f"output/picks/baseball_mlb/{today}")
     nba_dir = Path(f"output/picks/basketball_nba/{today}")
 
@@ -1222,11 +1389,11 @@ def cmd_morning(args: argparse.Namespace) -> int:
     print(f"  Captions in same folders (caption_*.txt)")
     print(f"  {sep}\n")
 
-    # 5) Open cards folder on macOS
+    # 11) Open cards folder on macOS
     if platform.system() == "Darwin" and mlb_dir.exists():
         subprocess.run(["open", str(mlb_dir)], check=False)
 
-    # 6) Show Reddit posts location
+    # 12) Show Reddit posts location
     reddit_dir = Path(f"output/reddit")
     reddit_posts = sorted(reddit_dir.glob(f"{today}_*.md")) if reddit_dir.exists() else []
     if reddit_posts:
@@ -1236,7 +1403,7 @@ def cmd_morning(args: argparse.Namespace) -> int:
             print(f"    {f.name}")
         print(f"  {'─'*58}\n")
 
-    # 7) Generate today's talking-head scripts (PICKS + EDUCATION)
+    # 13) Generate today's talking-head scripts (PICKS + EDUCATION)
     print("  ▸ Generating talking-head scripts for today...")
     try:
         from src.output.talking_head import write_all as write_talking_head
@@ -1244,7 +1411,7 @@ def cmd_morning(args: argparse.Namespace) -> int:
     except Exception as e:
         print(f"  ✗ Talking-head failed: {e}")
 
-    # 8) Generate the unified daily brief (one page, everything you need)
+    # 14) Generate the unified daily brief (one page, everything you need)
     print("\n  ▸ Building daily brief...")
     _run([sys.executable, "scripts/gen_morning_brief.py", today])
 
@@ -1257,6 +1424,42 @@ def cmd_morning(args: argparse.Namespace) -> int:
         if platform.system() == "Darwin":
             subprocess.run(["open", str(brief_path)], check=False)
 
+    return 0
+
+
+# ─────────────────────────── night ────────────────────────────────────────
+
+def cmd_night(args: argparse.Namespace) -> int:
+    """
+    Night pipeline (run at 9:30 PM ET):
+    - Generates picks for tomorrow's MLB, NBA, NHL, WNBA slate
+    - Snapshots opening odds as 'open lines' in data/timing/open_lines/
+    - Prints BET NOW vs HOLD status for each pick based on timing config
+    """
+    from scripts.night_pipeline import run as run_night, tomorrow_str, NIGHT_SPORTS
+    date_str = getattr(args, "date", None) or tomorrow_str()
+    sport    = getattr(args, "sport", None)
+    sports   = [sport] if sport else NIGHT_SPORTS
+    run_night(date_str, sports)
+    return 0
+
+
+def cmd_gates(args: argparse.Namespace) -> int:
+    """
+    Bet gates check — run before placing bets.
+    Checks live triggers (inactives, goalies, lineups) and prints
+    BET NOW or HOLD for each pending card pick.
+    """
+    from scripts.bet_gates import run_gates
+    sport = getattr(args, "sport", None)
+    run_gates(sport)
+    return 0
+
+
+def cmd_timing(args: argparse.Namespace) -> int:
+    """Print the sport-by-sport bet timing cheat sheet."""
+    from scripts.timing_config import print_timing_guide
+    print_timing_guide()
     return 0
 
 
@@ -1335,16 +1538,20 @@ def main() -> int:
 
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
-    p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nhl", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "nascar", "cup", "indycar", "indy", "indy500", "f1", "formula1", "formulaone", "ufc", "mma"], help="Sport to generate picks for")
+    p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nba-props", "nba_props", "nhl", "nhl-props", "nhl_props", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "ufc", "mma"], help="Sport to generate picks for")
     p_picks.add_argument("--date",    help="Date YYYYMMDD (MLB + NBA slate / output folder)")
     p_picks.add_argument("--refresh", action="store_true", help="Force-refresh odds cache")
     p_picks.add_argument("--late",    action="store_true",
                          help="Late-line mode: refresh odds 1-2h before first pitch for best CLV")
+    p_picks.add_argument("--market",  type=str, default=None,
+                         help="Single prop market to run (e.g. pitcher-strikeouts, player-points)")
 
     # grade
     p_grade = sub.add_parser("grade", help="Grade picks against actual results")
-    p_grade.add_argument("--sport", default="all", choices=["all", "mlb", "nba"])
-    p_grade.add_argument("--date",  help="Date YYYYMMDD (default: yesterday)")
+    p_grade.add_argument("--sport", default="all",
+                         choices=["all", "mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc", "pga"])
+    p_grade.add_argument("--date",   help="Date YYYYMMDD (default: yesterday)")
+    p_grade.add_argument("--winner", help="Outright winner name (for pga)")
 
     # record
     p_record = sub.add_parser("record", help="Show P&L record and breakdown")
@@ -1422,11 +1629,35 @@ def main() -> int:
     p_result.add_argument("pick_id", help="Team name (partial match) or exact pick_id")
     p_result.add_argument("result",  choices=["win", "loss", "push"])
 
+    # status — daily sanity check across all sport pipelines
+    p_status = sub.add_parser("status", help="Show which sport pipelines produced picks today")
+    p_status.add_argument("--date", help="Date YYYYMMDD (default: today)")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
     p_bankroll.add_argument("--market", default="all",
                             choices=["all", "moneyline", "spread", "total", "nrfi", "prop"])
+
+    # monthly — generate monthly performance report
+    p_monthly = sub.add_parser("monthly", help="Generate monthly performance report (output/briefs/monthly_YYYYMM.md)")
+    p_monthly.add_argument(
+        "month", nargs="?", metavar="YYYYMM",
+        help="Month to report (default: current month)",
+    )
+
+    # night — night pipeline (9:30 PM ET, runs night before to catch opening lines)
+    p_night = sub.add_parser("night", help="Night pipeline: generate tomorrow's picks at line open (9:30 PM ET)")
+    p_night.add_argument("--date",  metavar="YYYYMMDD", help="Target date (default: tomorrow)")
+    p_night.add_argument("--sport", help="Single sport (mlb/nba/nhl/wnba)")
+
+    # gates — bet trigger checker (run before placing bets)
+    p_gates = sub.add_parser("gates", help="Check bet triggers: inactives / goalies / lineups — BET NOW or HOLD")
+    p_gates.add_argument("--sport", default=None,
+                         help="Filter to one sport (nba/nhl/mlb/wnba)")
+
+    # timing — print sport-by-sport timing cheat sheet
+    sub.add_parser("timing", help="Print bet timing cheat sheet for all sports")
 
     args = parser.parse_args()
 
@@ -1440,12 +1671,17 @@ def main() -> int:
         "migrate":  cmd_migrate,
         "test":     cmd_test,
         "stats":    cmd_stats,
+        "status":   cmd_status,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
+        "night":    cmd_night,
+        "gates":    cmd_gates,
+        "timing":   cmd_timing,
         "reddit":   cmd_reddit,
         "bet":      cmd_bet,
         "result":   cmd_result,
         "bankroll": cmd_record_personal,
+        "monthly":  cmd_monthly,
     }
     return dispatch[args.command](args)
 

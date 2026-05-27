@@ -222,15 +222,12 @@ def _team_won(team_name: str, result: dict) -> bool | None:
 
 
 def _profit(stake: float, odds: float, won: bool) -> float:
-    """Calculate profit from American odds."""
-    if not won:
-        return -stake
+    """Thin wrapper — delegates to canonical schema.profit_from_odds."""
+    from src.tracking.schema import profit_from_odds
     if odds is None or odds == 0:
-        # Missing price — assume -110 style payout on wins
-        return stake * (100 / 110)
-    if odds > 0:
-        return stake * (odds / 100)
-    return stake * (100 / abs(odds))
+        # Missing price — assume -110 payout (preserves prior behavior for display path)
+        return stake * (100 / 110) if won else -stake
+    return profit_from_odds(odds, stake, won)
 
 
 def fetch_closing_odds(sport: str = "baseball_mlb") -> dict[str, dict]:
@@ -305,7 +302,8 @@ def _update_pnl_pick_result(
             p["result"]      = "win" if won else "loss"
             p["profit"]      = round(profit, 4)
             p["resulted_at"] = now_ts
-            _PNL_FILE.write_text(json.dumps(data, indent=2))
+            from src.tracking.schema import rewrite_picks_safe
+            rewrite_picks_safe(_PNL_FILE, data)
             return True
     return False
 
@@ -426,7 +424,8 @@ def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: dat
         existing["picks"].append(entry)
         existing_keys.add(key)
 
-    _PNL_FILE.write_text(json.dumps(existing, indent=2))
+    from src.tracking.schema import rewrite_picks_safe
+    rewrite_picks_safe(_PNL_FILE, existing)
 
 
 def grade_picks(

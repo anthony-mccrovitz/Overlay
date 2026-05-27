@@ -24,6 +24,8 @@ from src.data.wnba_stats import (
 )
 
 MIN_EDGE_PCT = 6.0     # Slightly lower threshold than NBA — WNBA books are softer
+OVER_BIAS_CORRECTION = 0.05   # books shade total lines high; OVERs historically underperform
+MIN_IMPLIED_PROB = 0.30       # skip picks at odds better than +233
 
 POSSESSIONS_PER_PACE = 100.0
 GAME_MINUTES = 40.0    # WNBA games are 40 min, not 48
@@ -180,10 +182,16 @@ def find_wnba_edges(
                     model_over_p = 1.0 - _normal_cdf((line - proj_total) / total_std)
                     model_under_p = 1.0 - model_over_p
 
+                    # Apply OVER bias correction before computing edge
+                    model_over_p = max(0.01, model_over_p - OVER_BIAS_CORRECTION)
+                    model_under_p = 1.0 - model_over_p
+
                     for direction, model_p, imp_p, odds in [
                         ("OVER",  model_over_p,  imp_over,  over_odds),
                         ("UNDER", model_under_p, imp_under, under_odds),
                     ]:
+                        if imp_p < MIN_IMPLIED_PROB:
+                            continue
                         edge = (model_p - imp_p) * 100
                         if edge >= min_edge_pct:
                             edges.append({

@@ -264,6 +264,16 @@ class UFCModel:
                 return rating
         return GlickoRating()  # default
 
+    def _is_known_fighter(self, fighter: str) -> bool:
+        if fighter in self.ratings:
+            return True
+        lower = fighter.lower()
+        for name in self.ratings:
+            parts = name.lower().split()
+            if any(p in lower or lower in p for p in parts if len(p) > 3):
+                return True
+        return False
+
     def _get_style(self, fighter: str) -> StyleProfile:
         if fighter in self.styles:
             return self.styles[fighter]
@@ -387,6 +397,11 @@ class UFCModel:
 
             wc_key = wc_map.get(f"{away} vs {home}", wc_map.get(f"{home} vs {away}", "default"))
             n_rounds = 5 if is_main_card else 3
+
+            home_known = self._is_known_fighter(home)
+            away_known = self._is_known_fighter(away)
+            both_unknown = not home_known and not away_known
+
             sim = self.simulate_fight(home, away, weight_class=wc_key, n_rounds=n_rounds, n_sim=n_sim)
 
             for bookmaker in event.get("bookmakers", []):
@@ -416,21 +431,31 @@ class UFCModel:
                         model_p  = sim.win_prob(fighter)
                         edge     = (model_p - imp_fair) * 100.0
                         if edge >= min_edge_pct:
+                            # Skip edges where both fighters are unknown — model is
+                            # coin-flip at default Glicko 1500, producing fake edges.
+                            if both_unknown:
+                                print(
+                                    f"  [UFC] SKIP {fighter} edge={edge:+.1f}% — "
+                                    f"both fighters unknown (default Glicko 1500)"
+                                )
+                                continue
                             summ = sim.summary()
                             fighter_summ = summ.get(fighter, {})
+                            fighter_known = self._is_known_fighter(fighter)
                             edges.append({
-                                "market":     "moneyline",
-                                "direction":  "WIN",
-                                "fighter":    fighter,
-                                "team":       fighter,
-                                "matchup":    f"{away} vs {home}",
-                                "odds":       int(price),
-                                "model_prob": round(model_p, 4),
-                                "edge_pct":   round(edge, 2),
-                                "sportsbook": book,
-                                "ko_tko":     round(fighter_summ.get("ko_tko", 0), 3),
-                                "submission": round(fighter_summ.get("submission", 0), 3),
-                                "decision":   round(fighter_summ.get("decision", 0), 3),
+                                "market":       "moneyline",
+                                "direction":    "WIN",
+                                "fighter":      fighter,
+                                "team":         fighter,
+                                "matchup":      f"{away} vs {home}",
+                                "odds":         int(price),
+                                "model_prob":   round(model_p, 4),
+                                "edge_pct":     round(edge, 2),
+                                "sportsbook":   book,
+                                "ko_tko":       round(fighter_summ.get("ko_tko", 0), 3),
+                                "submission":   round(fighter_summ.get("submission", 0), 3),
+                                "decision":     round(fighter_summ.get("decision", 0), 3),
+                                "data_quality": "known" if fighter_known else "unknown_fighter",
                             })
 
         return sorted(edges, key=lambda x: x["edge_pct"], reverse=True)

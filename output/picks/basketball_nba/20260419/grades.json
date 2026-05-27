@@ -1,26 +1,26 @@
 {
   "date": "20260419",
   "total_picks": 16,
-  "graded": 9,
-  "pending": 7,
-  "wins": 5,
-  "losses": 4,
-  "win_rate": 0.5555555555555556,
-  "total_staked": 9.0,
-  "total_profit": -0.9595910081204196,
-  "roi": -10.662122312449107,
+  "graded": 12,
+  "pending": 4,
+  "wins": 7,
+  "losses": 5,
+  "win_rate": 0.5833333333333334,
+  "total_staked": 12.0,
+  "total_profit": -0.8380956810176162,
+  "roi": -6.984130675146802,
   "by_type": {
     "spread": {
-      "wins": 3,
-      "losses": 3,
-      "profit": -0.18,
+      "wins": 4,
+      "losses": 4,
+      "profit": -0.25,
       "win_rate": 0.5
     },
     "moneyline": {
-      "wins": 2,
+      "wins": 3,
       "losses": 1,
-      "profit": -0.78,
-      "win_rate": 0.6667
+      "profit": -0.59,
+      "win_rate": 0.75
     }
   },
   "details": [
@@ -61,7 +61,14 @@
     {
       "market": "spread",
       "team": "Portland Trail Blazers +10.5",
-      "status": "pending"
+      "matchup": "Portland Trail Blazers @ San Antonio Spurs",
+      "odds": -105,
+      "model_prob": 0.6179,
+      "edge_pct": 12.02,
+      "won": false,
+      "profit": -1.0,
+      "score": "Portland Trail Blazers 98, San Antonio Spurs 111",
+      "status": "loss"
     },
     {
       "market": "total",
@@ -112,12 +119,26 @@
     {
       "market": "moneyline",
       "team": "San Antonio Spurs",
-      "status": "pending"
+      "matchup": "Portland Trail Blazers @ San Antonio Spurs",
+      "odds": -535,
+      "model_prob": 0.7178,
+      "edge_pct": -9.92,
+      "won": true,
+      "profit": 0.18691588785046728,
+      "score": "Portland Trail Blazers 98, San Antonio Spurs 111",
+      "status": "win"
     },
     {
       "market": "spread",
       "team": "San Antonio Spurs -11.0",
-      "status": "pending"
+      "matchup": "Portland Trail Blazers @ San Antonio Spurs",
+      "odds": -107,
+      "model_prob": 0.3663,
+      "edge_pct": -13.6,
+      "won": true,
+      "profit": 0.9345794392523364,
+      "score": "Portland Trail Blazers 98, San Antonio Spurs 111",
+      "status": "win"
     },
     {
       "market": "moneyline",
@@ -168,5 +189,5 @@
       "status": "win"
     }
   ],
-  "graded_at": "2026-04-20T02:55:42.306877+00:00"
+  "graded_at": "2026-04-22T13:06:43.330015+00:00"
 }

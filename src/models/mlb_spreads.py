@@ -185,6 +185,11 @@ def find_spread_edges(
                     best_odds = int(valid.loc[best_idx, best_col])
                     best_book = valid.loc[best_idx, "Sportsbook"]
 
+            # Skip picks at -105 or better (42% WR historically — vig eats the profit)
+            # and at -136 or worse (team is too heavy a favorite on the run line)
+            if best_odds > -106 or best_odds < -135:
+                continue
+
             edges.append({
                 "home_team": home,
                 "away_team": away,

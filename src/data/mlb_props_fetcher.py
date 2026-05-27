@@ -110,6 +110,85 @@ def get_player_id(name: str, id_cache: dict[str, int] | None = None) -> int | No
     return pid
 
 
+def get_team_k_rate(team_name: str, season: int | None = None) -> float:
+    """
+    Return the opponent K-rate (strikeouts per PA) for a team this season.
+    Uses MLB Stats API team standings/stats. Falls back to league avg 0.22.
+    """
+    if season is None:
+        from datetime import date
+        season = date.today().year
+
+    cache_key = f"team_k_rate_{season}"
+    cache_file = CACHE_DIR / f"{cache_key}.json"
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+    team_rates: dict[str, float] = {}
+    if cache_file.exists():
+        try:
+            age = __import__("time").time() - cache_file.stat().st_mtime
+            if age < 86400:  # 24h cache
+                team_rates = json.loads(cache_file.read_text())
+        except Exception:
+            pass
+
+    if not team_rates:
+        try:
+            resp = requests.get(
+                f"{_STATS_BASE}/stats",
+                params={"stats": "season", "group": "hitting",
+                        "season": season, "sportId": 1,
+                        "playerPool": "All", "limit": 30,
+                        "gameType": "R"},
+                timeout=15,
+            )
+            # Team hitting stats endpoint
+            resp2 = requests.get(
+                f"{_STATS_BASE}/teams",
+                params={"season": season, "sportId": 1},
+                timeout=10,
+            )
+            teams_data = resp2.json().get("teams", [])
+            for team in teams_data:
+                tid  = team.get("id")
+                tname = team.get("name", "")
+                if not tid:
+                    continue
+                try:
+                    tr = requests.get(
+                        f"{_STATS_BASE}/teams/{tid}/stats",
+                        params={"stats": "season", "group": "hitting",
+                                "season": season, "sportId": 1},
+                        timeout=8,
+                    )
+                    tstat = tr.json()
+                    for grp in tstat.get("stats", []):
+                        for split in grp.get("splits", []):
+                            s = split.get("stat", {})
+                            pa  = int(s.get("plateAppearances", 0) or 0)
+                            sos = int(s.get("strikeOuts", 0) or 0)
+                            if pa > 0:
+                                team_rates[tname] = sos / pa
+                except Exception:
+                    pass
+            if team_rates:
+                cache_file.write_text(json.dumps(team_rates, indent=2))
+        except Exception:
+            pass
+
+    if not team_rates:
+        return 0.22
+
+    # Fuzzy match team name
+    tl = team_name.lower()
+    for name, rate in team_rates.items():
+        parts = name.lower().split()
+        if any(p in tl for p in parts if len(p) > 3):
+            return rate
+
+    return 0.22
+
+
 def get_pitcher_stats_row(name: str, opp_k_rate: float = 0.22) -> dict[str, float]:
     """
     Build a feature dict for the NB pitcher_strikeouts model.
@@ -200,6 +279,8 @@ def get_batter_stats_row(name: str) -> dict[str, float]:
     hits = int(stats.get("hits", 0) or 0)
     tbases = int(stats.get("totalBases", 0) or 0)
 
+    hits_pg  = hits  / max(g, 1)
+    tb_pg    = tbases / max(g, 1)
     return {
         "ba_season":         avg,
         "babip":             babip,
@@ -208,11 +289,21 @@ def get_batter_stats_row(name: str) -> dict[str, float]:
         "iso_power":         slg - avg,
         "hr_rate":           hrs / max(g, 1),
         "obp_season":        obp,
-        "batting_order_pos": 5,  # unknown without lineup data
+        "batting_order_pos": 5,      # unknown without lineup data
         "rbi_per_game":      rbis / max(g, 1),
-        "risp_ba":           avg,  # proxy — no RISP BA in Stats API standard
-        "hits_per_game":     hits / max(g, 1),
-        "tb_per_game":       tbases / max(g, 1),
+        "risp_ba":           avg,    # proxy — no RISP BA in Stats API standard
+        "hits_per_game":     hits_pg,
+        "tb_per_game":       tb_pg,
+        # Aliases for PROP_CONFIGS feature names
+        "recent_hits_3g":    hits_pg,
+        "recent_tb_3g":      tb_pg,
+        "recent_runs_3g":    rbis / max(g, 1),   # proxy: runs ≈ RBI rate
+        "recent_rbis_3g":    rbis / max(g, 1),
+        "opp_whip":          1.30,   # league avg — no matchup data at enrichment time
+        "opp_k_rate":        0.22,
+        "park_factor_hits":  1.0,
+        "opp_hr_rate":       0.025,
+        "park_hr_factor":    1.0,
     }
 
 
@@ -338,25 +429,34 @@ def enrich_props_with_stats(props: list[dict], verbose: bool = True) -> list[dic
     """
     Add pitcher/batter stat features to each prop dict.
     Caches player stats lookups to avoid repeated API calls.
+    For pitcher props, looks up the opposing team's K-rate from MLB Stats API.
     """
     stat_cache: dict[str, dict] = {}
-    enriched   = []
-    n_looked_up = 0
+    team_k_cache: dict[str, float] = {}
+    enriched     = []
+    n_looked_up  = 0
 
     for prop in props:
-        player = prop.get("player", "")
-        market = prop.get("market", "")
+        player  = prop.get("player", "")
+        market  = prop.get("market", "")
+        matchup = prop.get("matchup", "")  # "Away @ Home"
 
-        if player not in stat_cache:
+        cache_key = f"{player}::{market}"
+        if cache_key not in stat_cache:
             if "pitcher" in market:
-                stat_cache[player] = get_pitcher_stats_row(player)
+                # Infer opposing team from matchup: pitcher is home → opp is away team
+                opp_team = matchup.split(" @ ")[0] if " @ " in matchup else ""
+                if opp_team and opp_team not in team_k_cache:
+                    team_k_cache[opp_team] = get_team_k_rate(opp_team)
+                opp_k_rate = team_k_cache.get(opp_team, 0.22)
+                stat_cache[cache_key] = get_pitcher_stats_row(player, opp_k_rate=opp_k_rate)
             else:
-                stat_cache[player] = get_batter_stats_row(player)
+                stat_cache[cache_key] = get_batter_stats_row(player)
             n_looked_up += 1
             if n_looked_up % 10 == 0 and verbose:
                 print(f"  [props] Looked up {n_looked_up} player stat rows...")
 
-        row = {**prop, **stat_cache[player]}
+        row = {**prop, **stat_cache[cache_key]}
         enriched.append(row)
 
     if verbose:

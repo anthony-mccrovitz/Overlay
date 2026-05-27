@@ -37,20 +37,74 @@ API_BASE = "https://api.the-odds-api.com/v4"
 PNL_FILE = Path("data/pnl/picks.json")
 CACHE_DIR = Path("data/cache/odds")
 
-# Odds API sport keys for major tennis events
+# Odds API sport keys → surface mapping.
+# Grand Slams + 1000/500-level events where Odds API has coverage.
 TENNIS_SPORTS = {
-    "tennis_atp_french_open":    "clay",
-    "tennis_atp_wimbledon":      "grass",
-    "tennis_atp_us_open":        "hard",
-    "tennis_atp_australian_open": "hard",
-    "tennis_wta_french_open":    "clay",
-    "tennis_wta_wimbledon":      "grass",
-    "tennis_wta_us_open":        "hard",
-    "tennis_wta_australian_open": "hard",
+    # Grand Slams
+    "tennis_atp_french_open":       "clay",
+    "tennis_atp_wimbledon":         "grass",
+    "tennis_atp_us_open":           "hard",
+    "tennis_atp_australian_open":   "hard",
+    "tennis_wta_french_open":       "clay",
+    "tennis_wta_wimbledon":         "grass",
+    "tennis_wta_us_open":           "hard",
+    "tennis_wta_australian_open":   "hard",
+    # ATP/WTA tour events (non-Slam) — no qualifying gate applied
+    "tennis_atp_hamburg_open":      "clay",
+    "tennis_wta_strasbourg":        "clay",
+    "tennis_atp_italian_open":      "clay",
+    "tennis_wta_italian_open":      "clay",
+    "tennis_atp_madrid_open":       "clay",
+    "tennis_wta_madrid_open":       "clay",
+    "tennis_atp_monte_carlo":       "clay",
+    "tennis_atp_barcelona":         "clay",
+    "tennis_atp_canadian_open":     "hard",
+    "tennis_wta_canadian_open":     "hard",
+    "tennis_atp_cincinnati":        "hard",
+    "tennis_wta_cincinnati":        "hard",
+    "tennis_atp_shanghai":          "hard",
+    "tennis_atp_paris_masters":     "hard",
 }
+
+# Main draw start dates — qualifying rounds suppressed (Elo sparse for qualifiers).
+# Non-Slam events are NOT listed here so the gate is skipped for them.
+MAIN_DRAW_STARTS: dict[str, date] = {
+    "tennis_atp_french_open":     date(2026, 5, 25),
+    "tennis_wta_french_open":     date(2026, 5, 25),
+    "tennis_atp_wimbledon":       date(2026, 6, 29),
+    "tennis_wta_wimbledon":       date(2026, 6, 29),
+    "tennis_atp_us_open":         date(2026, 8, 31),
+    "tennis_wta_us_open":         date(2026, 8, 31),
+    "tennis_atp_australian_open": date(2027, 1, 12),
+    "tennis_wta_australian_open": date(2027, 1, 12),
+}
+
+# Cap on recommended player's American odds — anything beyond this is a qualifier-level
+# longshot where Elo ratings are unreliable due to sparse match data.
+MAX_PICK_ODDS = 500
 
 # Active tournament — Roland-Garros starts May 25, 2026
 DEFAULT_SPORT = "tennis_atp_french_open"
+
+
+def fetch_active_tennis_sports() -> list[str]:
+    """Query Odds API and return all currently active tennis sport keys."""
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        return list(TENNIS_SPORTS.keys())
+    try:
+        resp = requests.get(
+            f"{API_BASE}/sports",
+            params={"apiKey": key},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return [
+            s["key"] for s in resp.json()
+            if s.get("active") and s["key"].startswith("tennis_")
+        ]
+    except Exception:
+        return list(TENNIS_SPORTS.keys())
 
 
 def fetch_tennis_odds(sport: str, refresh: bool = False) -> list[dict]:
@@ -106,7 +160,8 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
     pnl_data: dict = {}
     if PNL_FILE.exists():
         try:
-            pnl_data = json.loads(PNL_FILE.read_text())
+            raw = json.loads(PNL_FILE.read_text())
+            pnl_data = {"picks": raw} if isinstance(raw, list) else raw
         except (json.JSONDecodeError, OSError):
             pnl_data = {}
     picks = pnl_data.get("picks", [])
@@ -129,6 +184,7 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
             "sportsbook":  e.get("sportsbook", ""),
             "model_prob":  e.get("model_prob"),
             "edge_pct":    e.get("edge_pct"),
+            "model_tier":  "tier1",  # Kovalchik 2016 / Angelini 2022 peer-reviewed Elo
             "stake":       shadow_stake("tennis", market),
             "card_pick":   is_live("tennis", market),
             "result":      None,
@@ -146,19 +202,82 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
 
     pnl_data["picks"] = picks
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
+    PNL_FILE.write_text(json.dumps(picks, indent=2))
     return added
 
 
+def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
+                           game_date: "date", today_str: str) -> list[dict]:
+    """Run the tennis model for a single sport key. Returns list of edges found."""
+    tournament = sport.replace("tennis_atp_", "").replace("tennis_wta_", "").replace("_", " ").title()
+
+    # Gate: skip qualifying rounds for Grand Slams only
+    main_draw_start = MAIN_DRAW_STARTS.get(sport)
+    if main_draw_start and game_date < main_draw_start:
+        days_left = (main_draw_start - game_date).days
+        print(f"  [{tournament}] Qualifying period — main draw in {days_left}d. Skipping.")
+        return []
+
+    events = fetch_tennis_odds(sport, refresh=refresh)
+    if not events:
+        return []
+
+    import zoneinfo
+    _ET = zoneinfo.ZoneInfo("America/New_York")
+    today_events = []
+    for ev in events:
+        ct = ev.get("commence_time", "")
+        if not ct:
+            continue
+        try:
+            utc_dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
+            if utc_dt.astimezone(_ET).strftime("%Y%m%d") == today_str:
+                today_events.append(ev)
+        except (ValueError, KeyError):
+            pass
+
+    if not today_events:
+        return []
+
+    print(f"\n  [{tournament}] {len(today_events)} match(es) on slate")
+    model = TennisModel(surface=surface)
+    edges = model.find_edges(today_events, surface=surface, best_of=best_of)
+    edges = [e for e in edges if abs(e.get("odds", 0)) <= MAX_PICK_ODDS]
+
+    # Tag sport key on each edge so auto-log knows which tournament
+    for e in edges:
+        e["sport"] = sport
+
+    return edges
+
+
 def run_tennis(args: argparse.Namespace) -> int:
-    sport   = getattr(args, "sport", DEFAULT_SPORT) or DEFAULT_SPORT
-    surface = getattr(args, "surface", None) or TENNIS_SPORTS.get(sport, "clay")
+    sport_arg = getattr(args, "sport", None)
+    surface_arg = getattr(args, "surface", None)
     best_of = getattr(args, "best_of", 3)
     refresh = getattr(args, "refresh", False)
     date_str = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
     game_date = date(int(date_str[:4]), int(date_str[4:6]), int(date_str[6:]))
     today_str = game_date.strftime("%Y%m%d")
 
+    # Determine which sport keys to run
+    if sport_arg:
+        sports_to_run = [sport_arg]
+    else:
+        # Dynamically detect all active tennis events on Odds API
+        active_keys = fetch_active_tennis_sports()
+        sports_to_run = [k for k in active_keys if k in TENNIS_SPORTS or k.startswith("tennis_")]
+        if not sports_to_run:
+            sports_to_run = [DEFAULT_SPORT]
+
+    print(f"\n{'='*60}")
+    print(f"  Tennis Picks — {game_date.strftime('%B %d, %Y')}")
+    print(f"  Scanning {len(sports_to_run)} active tournament(s): {', '.join(sports_to_run)}")
+    print(f"{'='*60}")
+
+    # Legacy single-sport path used below for output/captions — keep surface logic
+    sport   = sport_arg or sports_to_run[0]
+    surface = surface_arg or TENNIS_SPORTS.get(sport, "clay")
     tournament = sport.replace("tennis_atp_", "").replace("tennis_wta_", "").replace("_", " ").title()
 
     print(f"\n{'='*60}")
@@ -175,66 +294,23 @@ def run_tennis(args: argparse.Namespace) -> int:
     except Exception as _elo_err:
         print(f"  [Elo refresh] {_elo_err} — using static ratings")
 
-    # 1. Fetch odds
-    events = fetch_tennis_odds(sport, refresh=refresh)
-    if not events:
-        print(f"  No {tournament} odds found. Tournament may not be active.")
-        return 0
+    # 1. Run all active tournaments
+    all_edges: list[dict] = []
+    for sk in sports_to_run:
+        surf = surface_arg or TENNIS_SPORTS.get(sk, "clay")
+        edges_for_sport = _run_one_tennis_sport(sk, surf, best_of, refresh, game_date, today_str)
+        all_edges.extend(edges_for_sport)
 
-    # Filter to today
-    today_events = []
-    for ev in events:
-        ct = ev.get("commence_time", "")
-        if not ct:
-            continue
-        try:
-            event_date = datetime.fromisoformat(ct.replace("Z", "+00:00")).strftime("%Y%m%d")
-            if event_date == today_str:
-                today_events.append(ev)
-        except ValueError:
-            pass
-
-    if not today_events:
-        upcoming = []
-        for ev in events:
-            ct = ev.get("commence_time", "")
-            try:
-                edate = datetime.fromisoformat(ct.replace("Z", "+00:00"))
-                if edate > datetime.now(timezone.utc):
-                    upcoming.append((edate, ev))
-            except ValueError:
-                pass
-        upcoming.sort(key=lambda x: x[0])
-
-        print(f"\n  No matches scheduled for {today_str}.")
-        if upcoming[:5]:
-            print(f"  Next {tournament} matches:")
-            for dt, ev in upcoming[:5]:
-                print(f"    {dt.strftime('%Y-%m-%d %H:%M UTC')}  {ev.get('away_team')} vs {ev.get('home_team')}")
-        return 0
-
-    print(f"\n  {len(today_events)} match(es) on slate:")
-    for ev in today_events:
-        print(f"    {ev.get('away_team')} vs {ev.get('home_team')}")
-
-    # 2. Run model
-    print(f"\n  Running tennis model ({surface} surface)...")
-    model = TennisModel(surface=surface)
-    edges = model.find_edges(today_events, surface=surface, best_of=best_of)
+    edges = all_edges
 
     if not edges:
-        print("  No edges meet threshold today.")
-        print("\n  Model probabilities (no edge):")
-        for ev in today_events:
-            home = ev.get("home_team", "")
-            away = ev.get("away_team", "")
-            p = model.match_win_prob(home, away, best_of=best_of)
-            print(f"    {away:30s} vs {home:30s}  home={p:.1%}")
+        print(f"  No edges meet threshold today across {len(sports_to_run)} tournament(s).")
     else:
-        print(f"\n  Found {len(edges)} edge(s):")
+        print(f"\n  Found {len(edges)} edge(s) across all tournaments:")
         for e in edges[:10]:
+            tourn_label = e.get("sport", sport).replace("tennis_atp_", "ATP ").replace("tennis_wta_", "WTA ").replace("_", " ").title()
             print(
-                f"    {e['team']:30s}  edge={e['edge_pct']:+.1f}%  "
+                f"    [{tourn_label}] {e['team']:30s}  edge={e['edge_pct']:+.1f}%  "
                 f"odds={e['odds']:+d}  model={e['model_prob']:.1%}  [{e['sportsbook']}]"
             )
 
@@ -249,15 +325,27 @@ def run_tennis(args: argparse.Namespace) -> int:
     except Exception:
         pass
 
-    # 3. Save output
+    # 3. Save output — one file per tournament
+    total_saved = 0
+    by_sport: dict[str, list] = {}
+    for e in edges:
+        sk = e.get("sport", sport)
+        by_sport.setdefault(sk, []).append(e)
+
+    for sk, sk_edges in by_sport.items():
+        sk_dir = Path("output/picks") / sk / today_str
+        sk_dir.mkdir(parents=True, exist_ok=True)
+        (sk_dir / "picks.json").write_text(json.dumps(sk_edges, indent=2, default=str))
+        print(f"\n  Picks saved → {sk_dir}/picks.json ({len(sk_edges)} pick(s))")
+        total_saved += len(sk_edges)
+
     out_dir = Path("output/picks") / sport / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
-    picks_path = out_dir / "picks.json"
-    picks_path.write_text(json.dumps(edges, indent=2, default=str))
-    print(f"\n  Picks saved → {picks_path}")
 
-    # 4. Auto-log
-    added = _auto_log_picks(edges, game_date, sport)
+    # 4. Auto-log — use per-edge sport key
+    added = 0
+    for sk, sk_edges in by_sport.items():
+        added += _auto_log_picks(sk_edges, game_date, sk)
     if added:
         print(f"  Logged {added} pick(s) to PnL.")
 
@@ -269,6 +357,27 @@ def run_tennis(args: argparse.Namespace) -> int:
             print(f"  [CLV] Snapshotted {n_snapped} tennis pick(s)")
     except Exception as _clv_err:
         print(f"  [CLV snapshot] {_clv_err}")
+
+    # 6. Pick card (new ChefTonyBets design)
+    try:
+        from src.output.cards import render_tennis_card
+        card_path = render_tennis_card(
+            edges, tournament=tournament, surface=surface,
+            card_date=game_date, out_dir=out_dir,
+        )
+        if card_path:
+            print(f"  Card → {card_path}")
+    except Exception as _card_err:
+        print(f"  [card] {_card_err}")
+
+    # 7. Captions
+    try:
+        from src.output.captions_sports import tennis_captions, write_sport_captions
+        captions = tennis_captions(edges, tournament, surface, game_date)
+        write_sport_captions(captions, out_dir)
+        print(f"  Captions → {out_dir / 'captions'}/")
+    except Exception as _cap_err:
+        print(f"  [captions] {_cap_err}")
 
     print(f"\n{'='*60}\n")
     return 0
