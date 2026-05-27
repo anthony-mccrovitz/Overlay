@@ -34,6 +34,7 @@ INDIVIDUAL COMMANDS
   python3 chef.py migrate                      # normalize picks.json schema
   python3 chef.py test                         # run grading unit tests
   python3 chef.py stats                        # refresh public_stats.json
+  python3 chef.py deploy                       # rebuild feed + push live to overlay-gray.vercel.app
 ──────────────────────────────────────────────────────────────────────
 """
 from __future__ import annotations
@@ -1525,6 +1526,69 @@ def cmd_evening(args: argparse.Namespace) -> int:
     return 0
 
 
+# ─────────────────────────── deploy ─────────────────────────────────────────
+
+def cmd_deploy(args: argparse.Namespace) -> int:
+    """Rebuild customer_feed + stats, then push live to overlay-gray.vercel.app."""
+    import shutil as _shutil
+
+    sep = "═" * 60
+    print(f"\n  {sep}")
+    print(f"  ChefTonyBets — DEPLOY  →  overlay-gray.vercel.app")
+    print(f"  {sep}\n")
+
+    # 1) Refresh public_stats.json + web/public/data/ JSON files
+    print("  ▸ Refreshing stats (public_stats + today_picks + yesterday_results)...")
+    rc = cmd_stats(argparse.Namespace())
+    if rc != 0:
+        print("  ✗ Stats refresh failed — aborting deploy")
+        return rc
+    print("  ✓ Stats refreshed\n")
+
+    # 2) Rebuild overlay/src/data/customer_feed.json
+    print("  ▸ Building customer_feed.json...")
+    rc = _run([sys.executable, "scripts/build_customer_feed.py"])
+    if rc != 0:
+        print("  ✗ customer_feed build failed — aborting deploy")
+        return rc
+    print("  ✓ customer_feed.json built\n")
+
+    # 3) Locate vercel CLI (installed globally or in ~/.local/bin)
+    vercel_bin: str | None = _shutil.which("vercel")
+    if not vercel_bin:
+        for candidate in [
+            Path.home() / ".local" / "bin" / "vercel",
+            Path("/usr/local/bin/vercel"),
+            Path("/opt/homebrew/bin/vercel"),
+        ]:
+            if candidate.exists():
+                vercel_bin = str(candidate)
+                break
+
+    if not vercel_bin:
+        print("  ✗ vercel CLI not found.")
+        print("    Fix: npm install -g vercel --prefix ~/.local")
+        print("    Then re-run: python3 chef.py deploy")
+        return 1
+
+    # 4) Push to Vercel production
+    print(f"  ▸ Deploying via vercel --prod ...")
+    rc = _run([
+        vercel_bin, "--prod",
+        "--scope",   "anthonymccrovitzs-projects",
+        "--project", "overlay",
+        "--archive=tgz",
+    ])
+    if rc != 0:
+        print("  ✗ Vercel deploy failed")
+        return rc
+
+    print(f"\n  {sep}")
+    print(f"  ✓  LIVE  →  https://overlay-gray.vercel.app")
+    print(f"  {sep}\n")
+    return 0
+
+
 # ─────────────────────────── Entry point ─────────────────────────────────────
 
 def main() -> int:
@@ -1659,6 +1723,9 @@ def main() -> int:
     # timing — print sport-by-sport timing cheat sheet
     sub.add_parser("timing", help="Print bet timing cheat sheet for all sports")
 
+    # deploy — rebuild feed + push to Vercel
+    sub.add_parser("deploy", help="Rebuild customer_feed + stats, then push to overlay-gray.vercel.app")
+
     args = parser.parse_args()
 
     dispatch = {
@@ -1682,6 +1749,7 @@ def main() -> int:
         "result":   cmd_result,
         "bankroll": cmd_record_personal,
         "monthly":  cmd_monthly,
+        "deploy":   cmd_deploy,
     }
     return dispatch[args.command](args)
 
