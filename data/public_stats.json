@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-27T18:15:00.922305+00:00",
+  "updated_at": "2026-05-28T18:18:41.428326+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -203,16 +203,16 @@
     }
   },
   "summary": {
-    "total_picks": 187,
-    "settled": 160,
-    "pending": 22,
-    "wins": 101,
-    "losses": 58,
-    "pushes": 1,
-    "win_rate": 0.6352,
-    "units_profit": 44.03,
-    "roi": 0.2916,
-    "streak": 8
+    "total_picks": 193,
+    "settled": 181,
+    "pending": 7,
+    "wins": 108,
+    "losses": 70,
+    "pushes": 3,
+    "win_rate": 0.6067,
+    "units_profit": 38.41,
+    "roi": 0.2259,
+    "streak": -1
   },
   "nrfi": {
     "total": 0,
@@ -225,16 +225,16 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 80,
-      "settled": 64,
-      "pending": 16,
-      "wins": 34,
-      "losses": 30,
+      "total": 84,
+      "settled": 79,
+      "pending": 5,
+      "wins": 40,
+      "losses": 39,
       "pushes": 0,
-      "win_rate": 0.5312,
-      "units_profit": 10.9,
-      "roi": 0.1896,
-      "streak": 1
+      "win_rate": 0.5063,
+      "units_profit": 7.31,
+      "roi": 0.1008,
+      "streak": -1
     },
     "puck_line": {
       "total": 1,
@@ -261,33 +261,33 @@
       "streak": 1
     },
     "total": {
-      "total": 104,
-      "settled": 93,
-      "pending": 6,
-      "wins": 65,
-      "losses": 27,
-      "pushes": 1,
-      "win_rate": 0.7065,
-      "units_profit": 32.83,
-      "roi": 0.3608,
-      "streak": 7
+      "total": 106,
+      "settled": 99,
+      "pending": 2,
+      "wins": 66,
+      "losses": 30,
+      "pushes": 3,
+      "win_rate": 0.6875,
+      "units_profit": 30.8,
+      "roi": 0.3242,
+      "streak": 1
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 89,
-      "settled": 68,
-      "pending": 21,
-      "wins": 41,
-      "losses": 26,
-      "win_rate": 0.6119,
-      "units_profit": 17.06,
-      "roi": 0.2546
+      "total": 94,
+      "settled": 89,
+      "pending": 5,
+      "wins": 48,
+      "losses": 38,
+      "win_rate": 0.5581,
+      "units_profit": 11.44,
+      "roi": 0.133
     },
     "nba": {
-      "total": 81,
+      "total": 82,
       "settled": 76,
-      "pending": 5,
+      "pending": 6,
       "wins": 52,
       "losses": 24,
       "win_rate": 0.6842,
@@ -353,114 +353,114 @@
   ],
   "recent_picks": [
     {
-      "date": "2026-05-26",
+      "date": "2026-05-27",
       "sport": "mlb",
-      "market": "total",
-      "team": "OVER 8.0",
-      "matchup": "Arizona Diamondbacks @ San Francisco Giants",
-      "odds": -105,
-      "result": "win",
-      "profit": 0.95,
-      "edge_pct": 1.5
+      "market": "moneyline",
+      "team": "Colorado Rockies",
+      "matchup": "",
+      "odds": 340,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 16.43
     },
     {
-      "date": "2026-05-26",
+      "date": "2026-05-27",
       "sport": "mlb",
       "market": "total",
       "team": "UNDER 8.0",
-      "matchup": "Philadelphia Phillies @ San Diego Padres",
-      "odds": 100,
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "odds": -103,
       "result": "win",
-      "profit": 1.0,
-      "edge_pct": 2.6
+      "profit": 0.97,
+      "edge_pct": 1.3
     },
     {
-      "date": "2026-05-26",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 10.5",
-      "matchup": "Seattle Mariners @ Athletics",
-      "odds": -105,
-      "result": "win",
-      "profit": 0.95,
-      "edge_pct": 4.0
-    },
-    {
-      "date": "2026-05-26",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Seattle Mariners",
-      "matchup": "",
-      "odds": -115,
-      "result": "win",
-      "profit": 0.87,
-      "edge_pct": 10.17
-    },
-    {
-      "date": "2026-05-26",
-      "sport": "nhl",
-      "market": "total",
-      "team": "Under 6.0",
-      "matchup": "Colorado Avalanche @ Vegas Golden Knights",
-      "odds": 100,
-      "result": "win",
-      "profit": 0.5,
-      "edge_pct": 10.07
-    },
-    {
-      "date": "2026-05-26",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 216.5",
-      "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
-      "odds": -105,
-      "result": "win",
-      "profit": 0.91,
-      "edge_pct": 14.31
-    },
-    {
-      "date": "2026-05-26",
-      "sport": "mlb",
-      "market": "total",
-      "team": "OVER 8.75",
-      "matchup": "New York Yankees @ Kansas City Royals",
-      "odds": -105,
-      "result": "win",
-      "profit": 0.95,
-      "edge_pct": 1.2
-    },
-    {
-      "date": "2026-05-26",
+      "date": "2026-05-27",
       "sport": "mlb",
       "market": "total",
       "team": "OVER 7.5",
-      "matchup": "Minnesota Twins @ Chicago White Sox",
+      "matchup": "Houston Astros @ Texas Rangers",
       "odds": -115,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.0
+    },
+    {
+      "date": "2026-05-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Houston Astros",
+      "matchup": "",
+      "odds": 140,
       "result": "win",
-      "profit": 0.87,
-      "edge_pct": 1.5
+      "profit": 1.4,
+      "edge_pct": 15.9
+    },
+    {
+      "date": "2026-05-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Cincinnati Reds",
+      "matchup": "",
+      "odds": 105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 12.08
+    },
+    {
+      "date": "2026-05-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "New York Yankees",
+      "matchup": "",
+      "odds": -149,
+      "result": "win",
+      "profit": 0.67,
+      "edge_pct": 14.7
+    },
+    {
+      "date": "2026-05-26",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 9.0",
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "odds": 105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.9
     },
     {
       "date": "2026-05-26",
       "sport": "mlb",
       "market": "moneyline",
-      "team": "St. Louis Cardinals",
+      "team": "Colorado Rockies",
       "matchup": "",
-      "odds": 146,
+      "odds": 270,
       "result": "loss",
       "profit": -1.0,
-      "edge_pct": 14.71
+      "edge_pct": 17.09
     },
     {
-      "date": "2026-05-26",
+      "date": "2026-05-27",
       "sport": "mlb",
       "market": "moneyline",
-      "team": "Miami Marlins",
+      "team": "Minnesota Twins",
       "matchup": "",
-      "odds": 124,
+      "odds": 110,
       "result": "loss",
       "profit": -1.0,
-      "edge_pct": 12.56
+      "edge_pct": 9.09
+    },
+    {
+      "date": "2026-05-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Chicago Cubs",
+      "matchup": "",
+      "odds": 101,
+      "result": "win",
+      "profit": 1.01,
+      "edge_pct": 11.5
     }
   ]
 }

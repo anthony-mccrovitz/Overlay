@@ -1,0 +1,25 @@
+**ChefTonyBets AI — Pick of the Day · 5/28/26 (Thursday)**
+
+**Sport:** MLB
+**Pick:** Toronto Blue Jays Moneyline +110 @ theScore Bet
+**Event:** Toronto Blue Jays
+**Bet Size:** 1.0 units
+
+---
+
+**Model Edge:** +19.4% (model: 0.0% vs market: 47.6%)
+**Season Record:** 48-38 (55.8% WR, +0.0u)
+
+---
+
+**About the Model**
+
+XGBoost + Pythagorean expectation ensemble trained on 10 years of MLB/NBA data. Walk-forward validated on held-out seasons. Edges calculated by comparing model win probability to sportsbook implied probability after vig removal. Kelly criterion used for sizing.
+
+The model runs daily before first pitch/tip-off. All picks are timestamped and logged publicly — you can verify the record at any point. No retroactive changes.
+
+This pick was selected as POTD because it has the highest positive expected value among today's plays within the -200/+200 odds requirement.
+
+---
+
+*Not financial advice. Bet responsibly. 21+*

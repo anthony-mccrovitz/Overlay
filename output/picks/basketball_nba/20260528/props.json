@@ -1,0 +1,36 @@
+[
+  {
+    "type": "nba_prop",
+    "market": "player_steals",
+    "player": "Cason Wallace",
+    "matchup": "Oklahoma City Thunder @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "Oklahoma City Thunder",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 1.9,
+    "model_prob": 0.574,
+    "implied_prob": 0.429,
+    "edge_pct": 14.5,
+    "odds": 118,
+    "book": "DraftKings",
+    "label": "Cason Wallace UNDER 1.5 STL"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_assists",
+    "player": "Isaiah Hartenstein",
+    "matchup": "Oklahoma City Thunder @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "Oklahoma City Thunder",
+    "line": 2.5,
+    "direction": "UNDER",
+    "projected": 3.5,
+    "model_prob": 0.579,
+    "implied_prob": 0.444,
+    "edge_pct": 13.5,
+    "odds": 111,
+    "book": "DraftKings",
+    "label": "Isaiah Hartenstein UNDER 2.5 AST"
+  }
+]
