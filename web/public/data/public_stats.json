@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-29T03:36:00.417672+00:00",
+  "updated_at": "2026-05-29T03:46:00.903060+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -17,9 +17,9 @@
       "label": "Tennis Elo (4-25 -8u, retired)"
     },
     "soccer_moneyline": {
-      "status": "live",
-      "tier": "t1",
-      "label": "Soccer Dixon-Coles"
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"
     },
     "mlb_moneyline": {
       "status": "live",
@@ -203,15 +203,15 @@
     }
   },
   "summary": {
-    "total_picks": 214,
-    "settled": 187,
-    "pending": 22,
-    "wins": 112,
-    "losses": 72,
+    "total_picks": 195,
+    "settled": 175,
+    "pending": 15,
+    "wins": 108,
+    "losses": 64,
     "pushes": 3,
-    "win_rate": 0.6087,
-    "units_profit": 40.75,
-    "roi": 0.2315,
+    "win_rate": 0.6279,
+    "units_profit": 39.65,
+    "roi": 0.2332,
     "streak": -1
   },
   "nrfi": {
@@ -225,21 +225,21 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 100,
-      "settled": 83,
-      "pending": 17,
-      "wins": 43,
-      "losses": 40,
+      "total": 82,
+      "settled": 71,
+      "pending": 11,
+      "wins": 39,
+      "losses": 32,
       "pushes": 0,
-      "win_rate": 0.5181,
-      "units_profit": 9.65,
-      "roi": 0.1262,
+      "win_rate": 0.5493,
+      "units_profit": 8.55,
+      "roi": 0.1213,
       "streak": 3
     },
     "puck_line": {
-      "total": 2,
+      "total": 1,
       "settled": 1,
-      "pending": 1,
+      "pending": 0,
       "wins": 1,
       "losses": 0,
       "pushes": 0,
@@ -275,9 +275,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 112,
+      "total": 107,
       "settled": 94,
-      "pending": 18,
+      "pending": 13,
       "wins": 52,
       "losses": 39,
       "win_rate": 0.5714,
@@ -295,44 +295,14 @@
       "roi": 0.3013
     },
     "nhl": {
-      "total": 7,
+      "total": 5,
       "settled": 4,
-      "pending": 3,
+      "pending": 1,
       "wins": 4,
       "losses": 0,
       "win_rate": 1.0,
       "units_profit": 1.67,
       "roi": 0.8362
-    },
-    "soccer_germany_bundesliga": {
-      "total": 1,
-      "settled": 1,
-      "pending": 0,
-      "wins": 1,
-      "losses": 0,
-      "win_rate": 1.0,
-      "units_profit": 1.2,
-      "roi": 2.4
-    },
-    "soccer_italy_serie_a": {
-      "total": 3,
-      "settled": 3,
-      "pending": 0,
-      "wins": 0,
-      "losses": 3,
-      "win_rate": 0.0,
-      "units_profit": -1.5,
-      "roi": -1.0
-    },
-    "soccer_spain_la_liga": {
-      "total": 8,
-      "settled": 8,
-      "pending": 0,
-      "wins": 3,
-      "losses": 5,
-      "win_rate": 0.375,
-      "units_profit": 1.4,
-      "roi": 0.35
     }
   },
   "backtest_mlb": [
