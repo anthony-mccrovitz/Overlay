@@ -52,22 +52,27 @@ def _fmt_edge(edge) -> str:
 
 
 def _load_totals_record() -> str:
-    """Return 'Totals: W-L (WR%)' from public_stats.json, or empty string."""
+    """Return overall card-pick record from picks.json."""
     try:
-        stats_path = Path("data/public_stats.json")
-        if not stats_path.exists():
+        import json as _json
+        picks_path = Path("data/pnl/picks.json")
+        if not picks_path.exists():
             return ""
-        with open(stats_path) as f:
-            stats = json.load(f)
-        by_market = stats.get("by_market", {})
-        t = by_market.get("total", {})
-        w = t.get("wins", 0)
-        l = t.get("losses", 0)
+        raw = _json.loads(picks_path.read_text())
+        picks = raw if isinstance(raw, list) else raw.get("picks", [])
+        settled = [p for p in picks
+                   if isinstance(p, dict)
+                   and p.get("card_pick")
+                   and p.get("result") in ("win", "loss", "push")]
+        w = sum(1 for p in settled if p["result"] == "win")
+        l = sum(1 for p in settled if p["result"] == "loss")
         n = w + l
         if n < 5:
             return ""
         wr = round(w / n * 100, 1)
-        return f"Totals: {w}-{l} ({wr}% WR)"
+        profit = sum(p.get("profit") or 0 for p in settled)
+        sign = "+" if profit >= 0 else ""
+        return f"{w}-{l} ({wr}% WR, {sign}{profit:.1f}u)"
     except Exception:
         return ""
 

@@ -48,7 +48,8 @@ def _load_picks() -> list[dict]:
     if not PICKS_FILE.exists():
         return []
     try:
-        return json.loads(PICKS_FILE.read_text()).get("picks", [])
+        raw = json.loads(PICKS_FILE.read_text())
+        return raw if isinstance(raw, list) else raw.get("picks", [])
     except (json.JSONDecodeError, OSError):
         return []
 

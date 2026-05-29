@@ -10,10 +10,47 @@ import { readFeed } from "@/lib/feed";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://overlay-gray.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Overlay — Quant-backed NBA & MLB picks",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "Overlay — ML Sports Betting Edge Detection",
+    template: "%s | Overlay",
+  },
   description:
-    "Three-model ensemble. Public ledger. Founding seats $29/mo. No touts, no parlays, no hype.",
+    "Three-model ensemble (XGBoost + LightGBM + CatBoost) finds positive EV in NBA, MLB, and NHL lines. Public ledger, SHA-256 timestamped picks, free tools.",
+  keywords: [
+    "sports betting model",
+    "MLB totals model",
+    "NBA totals picks",
+    "positive EV betting",
+    "sports betting edge",
+    "closing line value",
+    "no vig calculator",
+    "NRFI picks",
+    "sports betting ML model",
+    "quantitative sports betting",
+  ],
+  authors: [{ name: "Anthony McCrovitz" }],
+  openGraph: {
+    type: "website",
+    siteName: "Overlay",
+    title: "Overlay — ML Sports Betting Edge Detection",
+    description:
+      "Three-model ensemble finds positive EV in NBA, MLB, and NHL lines. 108-70 (60.7%) with +38u profit. Public ledger, free tools.",
+    url: BASE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@ChefTonyAIBets",
+    creator: "@ChefTonyAIBets",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 };
 
 export const viewport = {

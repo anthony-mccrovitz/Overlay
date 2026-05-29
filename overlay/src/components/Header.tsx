@@ -56,6 +56,7 @@ export function Header() {
         {/* Desktop nav */}
         <nav className="nav-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
           <Link href="/picks" style={navLink}>Picks</Link>
+          <Link href="/slate" style={navLink}>Slate</Link>
           <Link href="/models" style={navLink}>Models</Link>
           <Link href="/tools" style={navLink}>Tools</Link>
           <Link href="/record" style={navLink}>Record</Link>
@@ -85,6 +86,7 @@ export function Header() {
           }}
         >
           <Link href="/picks" style={navLinkMobile}>Picks</Link>
+          <Link href="/slate" style={navLinkMobile}>Slate</Link>
           <Link href="/models" style={navLinkMobile}>Models</Link>
           <Link href="/tools" style={navLinkMobile}>Tools</Link>
           <Link href="/record" style={navLinkMobile}>Record</Link>

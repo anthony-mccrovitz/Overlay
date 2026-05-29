@@ -38,7 +38,7 @@ MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 1 (proven) — these go on the card ────────────────────────────────
     ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
     ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
-    ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo (4W-27L shadow, rebuilding)"},
+    ("tennis", "moneyline"): {"status": "retired",    "tier": "shadow", "label": "Tennis Elo (4-25 -8u, retired)"},
     ("soccer", "moneyline"): {"status": "live",       "tier": "t1", "label": "Soccer Dixon-Coles"},
 
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
@@ -49,10 +49,10 @@ MODELS: dict[tuple[str, str], dict] = {
     ("f1",     "outright"):  {"status": "retired",    "tier": "shadow", "label": "F1 Outright Elo"},
 
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
-    ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (rebuild)"},
-    ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals (line-validated, building sample)"},
-    ("mlb", "nrfi"):               {"status": "incubating", "tier": "shadow", "label": "MLB NRFI"},
-    ("nba", "moneyline"):          {"status": "incubating", "tier": "shadow", "label": "NBA Moneyline"},
+    ("mlb", "pitcher_strikeouts"): {"status": "retired",    "tier": "shadow", "label": "MLB Pitcher Ks (83-108 -16u, retired)"},
+    ("mlb", "f5_total"):           {"status": "live",       "tier": "t2",     "label": "MLB F5 Totals"},
+    ("mlb", "nrfi"):               {"status": "incubating", "tier": "paused", "label": "MLB NRFI (81-82 -7u, paused)"},
+    ("nba", "moneyline"):          {"status": "incubating", "tier": "paused", "label": "NBA Moneyline (28-24 -4u, paused)"},
     ("nba", "player_points"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Points"},
     ("nba", "player_rebounds"):    {"status": "incubating", "tier": "shadow", "label": "NBA Player Rebounds"},
     ("nba", "player_assists"):     {"status": "incubating", "tier": "shadow", "label": "NBA Player Assists"},
@@ -79,8 +79,8 @@ MODELS: dict[tuple[str, str], dict] = {
     ("mlb",  "batter_rbis"):       {"status": "incubating", "tier": "paused", "label": "MLB Batter RBIs"},
     ("nba",  "spread"):            {"status": "incubating", "tier": "paused", "label": "NBA Spread"},
     ("nba",  "prop"):              {"status": "incubating", "tier": "paused", "label": "NBA Props (generic bucket)"},
-    ("wnba", "moneyline"):         {"status": "incubating", "tier": "shadow", "label": "WNBA Moneyline"},
-    ("wnba", "spread"):            {"status": "incubating", "tier": "shadow", "label": "WNBA Spread"},
+    ("wnba", "moneyline"):         {"status": "incubating", "tier": "shadow", "label": "WNBA Moneyline (3-2 shadow, need 30+ picks)"},
+    ("wnba", "spread"):            {"status": "incubating", "tier": "paused", "label": "WNBA Spread (0-8 -6u, paused)"},
     ("wnba", "total"):             {"status": "incubating", "tier": "shadow", "label": "WNBA Totals"},
 }
 

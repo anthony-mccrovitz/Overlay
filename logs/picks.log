@@ -19663,3 +19663,521 @@ Step 11: Writing captions (Instagram / Twitter / Reddit)...
 ============================================================
   [wnba] Fetched 7 events from The Odds API.
   No WNBA games scheduled for 20260526.
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+  ✅  MLB — 15 games confirmed on 2026-05-27. Running picks.
+Step 1: Fetching MLB schedule and team stats...
+  Found 15 games
+    Miami Marlins (Eury Pérez) @ Toronto Blue Jays (Kevin Gausman)
+    Washington Nationals (Miles Mikolas) @ Cleveland Guardians (Gavin Williams)
+    St. Louis Cardinals (Dustin May) @ Milwaukee Brewers (TBD)
+    Seattle Mariners (Logan Gilbert) @ Athletics (Jeffrey Springs)
+    Arizona Diamondbacks (Michael Soroka) @ San Francisco Giants (Trevor McDonald)
+    Philadelphia Phillies (Cristopher Sánchez) @ San Diego Padres (Walker Buehler)
+    Tampa Bay Rays (Steven Matz) @ Baltimore Orioles (TBD)
+    Los Angeles Angels (José Soriano) @ Detroit Tigers (Casey Mize)
+    Chicago Cubs (Jameson Taillon) @ Pittsburgh Pirates (Bubba Chandler)
+    Atlanta Braves (Bryce Elder) @ Boston Red Sox (Connelly Early)
+    Cincinnati Reds (Andrew Abbott) @ New York Mets (Huascar Brazobán)
+    Minnesota Twins (Connor Prielipp) @ Chicago White Sox (Davis Martin)
+    New York Yankees (Gerrit Cole) @ Kansas City Royals (Noah Cameron)
+    Houston Astros (Mike Burrows) @ Texas Rangers (Jacob deGrom)
+    Colorado Rockies (Tomoyuki Sugano) @ Los Angeles Dodgers (Shohei Ohtani)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Miami Marlins @ Toronto Blue Jays: Toronto Blue Jays 53.7% [SPLIT]
+    Pyth: 60.2%  XGB: 48.4%  Ens: 53.7%
+  Washington Nationals @ Cleveland Guardians: Cleveland Guardians 64.7% [AGREE]
+    Pyth: 72.6%  XGB: 58.2%  Ens: 64.7%
+  St. Louis Cardinals @ Milwaukee Brewers: Milwaukee Brewers 59.4% [SPLIT]
+    Pyth: 72.7%  XGB: 48.4%  Ens: 59.4%
+  Seattle Mariners @ Athletics: Seattle Mariners 51.3% [AGREE]
+    Pyth: 49.0%  XGB: 48.4%  Ens: 48.7%
+  Arizona Diamondbacks @ San Francisco Giants: Arizona Diamondbacks 56.9% [AGREE]
+    Pyth: 36.6%  XGB: 48.4%  Ens: 43.1%
+  Philadelphia Phillies @ San Diego Padres: Philadelphia Phillies 62.1% [AGREE]
+    Pyth: 31.8%  XGB: 42.9%  Ens: 37.9%
+  Tampa Bay Rays @ Baltimore Orioles: Tampa Bay Rays 58.3% [AGREE]
+    Pyth: 40.3%  XGB: 42.9%  Ens: 41.7%
+  Los Angeles Angels @ Detroit Tigers: Detroit Tigers 58.1% [SPLIT]
+    Pyth: 69.8%  XGB: 48.4%  Ens: 58.1%
+  Chicago Cubs @ Pittsburgh Pirates: Pittsburgh Pirates 54.6% [SPLIT]
+    Pyth: 62.2%  XGB: 48.4%  Ens: 54.6%
+  Atlanta Braves @ Boston Red Sox: Atlanta Braves 62.0% [AGREE]
+    Pyth: 25.3%  XGB: 48.4%  Ens: 38.0%
+  Cincinnati Reds @ New York Mets: New York Mets 51.1% [SPLIT]
+    Pyth: 54.4%  XGB: 48.4%  Ens: 51.1%
+  Minnesota Twins @ Chicago White Sox: Chicago White Sox 55.7% [SPLIT]
+    Pyth: 64.7%  XGB: 48.4%  Ens: 55.7%
+  New York Yankees @ Kansas City Royals: New York Yankees 59.5% [AGREE]
+    Pyth: 30.9%  XGB: 48.4%  Ens: 40.5%
+  Houston Astros @ Texas Rangers: Texas Rangers 53.9% [AGREE]
+    Pyth: 54.8%  XGB: 53.1%  Ens: 53.9%
+  Colorado Rockies @ Los Angeles Dodgers: Los Angeles Dodgers 68.9% [SPLIT]
+    Pyth: 93.2%  XGB: 48.4%  Ens: 68.9%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 09:04:13. API requests remaining: 15163
+  Odds freshness: LIVE (range 0–2 min old)
+  Pinnacle fair-prob anchor: 15/15 games on Pinnacle, rest on median devig.
+  Dropped 2 ML row(s) with edge > 20% (likely bad odds).
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Colorado Rockies vs Los Angeles Dodgers
+    Model: 44.7% | Vegas: 22.3% | Edge: +16.4% *** STRONG ***
+    Best odds: +340 at Fliff
+
+  Tampa Bay Rays vs Baltimore Orioles
+    Model: 66.7% | Vegas: 50.9% | Edge: +15.7% *** STRONG ***
+    Best odds: -108 at FanDuel
+
+  Houston Astros vs Texas Rangers
+    Model: 56.2% | Vegas: 40.7% | Edge: +15.6% *** STRONG ***
+    Best odds: +145 at theScore Bet
+
+  Miami Marlins vs Toronto Blue Jays
+    Model: 56.2% | Vegas: 41.9% | Edge: +14.3% *** STRONG ***
+    Best odds: +130 at Fliff
+
+  New York Yankees vs Kansas City Royals
+    Model: 71.3% | Vegas: 58.6% | Edge: +12.7% *** STRONG ***
+    Best odds: -150 at theScore Bet
+
+  Cincinnati Reds vs New York Mets
+    Model: 60.0% | Vegas: 47.5% | Edge: +12.5% *** STRONG ***
+    Best odds: +105 at theScore Bet
+
+  Minnesota Twins vs Chicago White Sox
+    Model: 54.7% | Vegas: 46.1% | Edge: +8.6% ** GOOD **
+    Best odds: +110 at Fliff
+
+  Los Angeles Angels vs Detroit Tigers
+    Model: 54.7% | Vegas: 46.3% | Edge: +8.4% ** GOOD **
+    Best odds: +110 at theScore Bet
+
+  Total value bets: 8
+  Average edge: +13.0%
+======================================================================
+
+
+  Method B — Sharp consensus (10 edges):
+    Miami Marlins vs Toronto Blue Jays: Consensus 54.7% → Edge +12.8%
+    St. Louis Cardinals vs Milwaukee Brewers: Consensus 54.7% → Edge +12.3%
+    Philadelphia Phillies vs San Diego Padres: Consensus 70.9% → Edge +11.6%
+    Atlanta Braves vs Boston Red Sox: Consensus 60.2% → Edge +10.7%
+    Chicago Cubs vs Pittsburgh Pirates: Consensus 60.0% → Edge +10.2%
+    Tampa Bay Rays vs Baltimore Orioles: Consensus 61.1% → Edge +10.2%
+    Minnesota Twins vs Chicago White Sox: Consensus 56.2% → Edge +10.2%
+    Los Angeles Angels vs Detroit Tigers: Consensus 56.2% → Edge +10.0%
+    Cincinnati Reds vs New York Mets: Consensus 56.2% → Edge +8.8%
+    New York Yankees vs Kansas City Royals: Consensus 66.7% → Edge +8.0%
+
+  LOCK picks (both methods agree): cincinnati reds, los angeles angels, miami marlins, minnesota twins, new york yankees, tampa bay rays
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · May 27, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   RUN LINE   Athletics +1.5 RL                -150    +2.21R        —  Hard Rock 
+  2   MONEYLINE  Colorado Rockies ML              +340    +16.4%     7.1%  Fliff
+  3   MONEYLINE  Tampa Bay Rays ML                -108    +15.7%     7.7%  FanDuel
+  4   MONEYLINE  Houston Astros ML                +145    +15.6%     6.5%  theScore B
+  5   MONEYLINE  Miami Marlins ML                 +130    +14.3%     5.6%  Fliff
+  6   TOTAL      UNDER 9.0 (Mariners@Athleti)     +105    +1.30R        —  theScore B
+  7   MONEYLINE  New York Yankees ML              -150    +12.7%     7.1%  theScore B
+  8   MONEYLINE  Cincinnati Reds ML               +105    +12.5%     5.5%  theScore B
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: Athletics +1.5 -150 @ Hard Rock Bet
+     2.21 run RL edge
+
+  Moneyline: 6  |  Run Line: 1  |  Totals: 1
+══════════════════════════════════════════════════════════════════════
+
+  [CLV] Snapshotted opening lines for 3 pick(s) [2026-05-27]
+  Moneyline card → output/picks/baseball_mlb/20260527/pick_card.png
+  [ml card new] 'float' object has no attribute 'lower'
+  Totals card (new) → output/picks/baseball_mlb/20260527/mlb_totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260527/caption_picks.txt
+  Auto-logged 13 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260527/
+
+Step 6: Scanning player props for edges...
+  Found 12 prop edge(s):
+    Gerrit Cole UNDER 4.5 Ks  edge=46.6%  odds=-128  [FanDuel]
+    Kevin Gausman UNDER 6.5 Ks  edge=18.3%  odds=-245  [BetRivers]
+    Andrew Abbott UNDER 5.5 Ks  edge=15.3%  odds=-400  [theScore Bet]
+    Dustin May UNDER 5.5 Ks  edge=14.3%  odds=-260  [theScore Bet]
+    Steven Matz UNDER 5.5 Ks  edge=14.0%  odds=-400  [theScore Bet]
+    Logan Gilbert UNDER 6.5 Ks  edge=12.3%  odds=-215  [theScore Bet]
+    Jeffrey Springs UNDER 5.5 Ks  edge=12.2%  odds=-265  [BetRivers]
+    Casey Mize UNDER 6.5 Ks  edge=8.4%  odds=-300  [theScore Bet]
+    Michael Soroka UNDER 6.5 Ks  edge=8.0%  odds=-375  [theScore Bet]
+    Connelly Early UNDER 6.5 Ks  edge=7.8%  odds=-425  [theScore Bet]
+  Props saved → output/picks/baseball_mlb/20260527/props.json
+  Auto-logged 12 prop(s) to pnl for tracking
+  Pitcher Ks card → output/picks/baseball_mlb/20260527/mlb_pitcher_ks_card.png
+  Props caption → output/picks/baseball_mlb/20260527/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 13 NRFI/YRFI play(s):
+    Seattle Mariners @ Athletics NRFI  edge=18.6%
+    New York Yankees @ Kansas City Royals NRFI  edge=17.6%
+    Cincinnati Reds @ New York Mets NRFI  edge=17.2%
+    Minnesota Twins @ Chicago White Sox NRFI  edge=16.8%
+    Chicago Cubs @ Pittsburgh Pirates NRFI  edge=16.7%
+  NRFI picks logged to pnl (5 picks)
+  (11 NRFI play(s) have live odds; 2 missing book line)
+  NRFI caption → output/picks/baseball_mlb/20260527/caption_nrfi.txt
+
+Step 8: Building F5 (first 5 innings) totals...
+  Found 8 F5 edge(s):
+    F5 UNDER 4.5 (Cincinnati Reds @ New York Mets)  edge=32.6%  odds=-110  [BetMGM]  proj=2.43
+    F5 UNDER 4.5 (Atlanta Braves @ Boston Red Sox)  edge=23.2%  odds=-130  [BetMGM]  proj=3.14
+    F5 UNDER 4.5 (Minnesota Twins @ Chicago White Sox)  edge=22.3%  odds=-128  [FanDuel]  proj=3.26
+    F5 UNDER 4.0 (Philadelphia Phillies @ San Diego Padres)  edge=20.1%  odds=-118  [BetMGM]  proj=3.21
+    F5 UNDER 5.0 (Tampa Bay Rays @ Baltimore Orioles)  edge=19.0%  odds=-110  [BetMGM]  proj=4.48
+  F5 picks logged to pnl (2 added)
+  F5 card → output/picks/baseball_mlb/20260527/f5_card.png
+  F5 caption → output/picks/baseball_mlb/20260527/caption_f5.txt
+  O/U card (game totals + F5, 5 picks) → output/picks/baseball_mlb/20260527/totals_card.png
+
+Step 10: Generating MLB parlay card...
+  ✓  Parlay card → output/picks/baseball_mlb/20260527/parlay_card.png
+
+Step 11: Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/baseball_mlb/20260527/captions/instagram.txt
+  ✓  twitter      → output/picks/baseball_mlb/20260527/captions/twitter.txt
+  ✓  reddit       → output/picks/baseball_mlb/20260527/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/baseball_mlb/20260527/captions/reddit_potd.txt
+  ✓  reddit_mlb_props  → output/picks/baseball_mlb/20260527/captions/reddit_mlb_props.txt
+  ✓  reddit_mlb_picks  → output/picks/baseball_mlb/20260527/captions/reddit_mlb_picks.txt
+  ✓  receipts_post.txt → output/picks/baseball_mlb/20260527/receipts_post.txt
+  [card] Playwright render failed: ElementHandle.screenshot: Timeout 30000ms exceeded.
+Call log:
+  - taking element screenshot
+  - waiting for fonts to load...
+  - fonts loaded
+  - attempting scroll into view action
+    - waiting for element to be stable
+
+  ✓  show_your_work.md → output/picks/baseball_mlb/20260527/talking_head/show_your_work.md
+
+  ChefTonyBets — NBA Picks Pipeline
+  Date: 20260527
+  ⛔  NBA — 0 games on 2026-05-27. Skipping picks generation.
+       (No games confirmed via live schedule API)
+
+============================================================
+  Tennis Picks — May 27, 2026
+  Scanning 1 active tournament(s): tennis_atp_french_open
+============================================================
+
+============================================================
+  Tennis Picks — French Open (Clay)
+  May 27, 2026  |  Best of 3
+============================================================
+  [Elo] Refreshing ATP Elo from 2023-2026 match history...
+  [tennis_elo] Processed 10328 matches across 4 years.
+  [tennis_elo] Top clay Elo:
+             Jannik Sinner                   clay=1902
+             Carlos Alcaraz                  clay=1892
+             Alexander Zverev                clay=1781
+             Casper Ruud                     clay=1773
+             Novak Djokovic                  clay=1762
+             Lorenzo Musetti                 clay=1755
+             Tommy Paul                      clay=1727
+             Arthur Fils                     clay=1716
+             Luciano Darderi                 clay=1710
+             Daniil Medvedev                 clay=1675
+  [tennis_elo] PLAYER_DB updated (27 players).
+  [tennis] Fetched 25 matches from The Odds API.
+
+  [French Open] 8 match(es) on slate
+
+  Found 3 edge(s) across all tournaments:
+    [Atp French Open] Lorenzo Sonego                  edge=+38.1%  odds=+500  model=54.0%  [FanDuel]
+    [Atp French Open] Joao Fonseca                    edge=+19.1%  odds=+210  model=50.0%  [Hard Rock Bet]
+    [Atp French Open] Hamad Medjedovic                edge=+16.8%  odds=+220  model=46.7%  [FanDuel]
+
+  ⚠  MANUAL REVIEW: 3 pick(s) with edge >8%:
+    Lorenzo Sonego  edge=+38.1%  — verify Elo is current
+    Joao Fonseca  edge=+19.1%  — verify Elo is current
+    Hamad Medjedovic  edge=+16.8%  — verify Elo is current
+
+  Picks saved → output/picks/tennis_atp_french_open/20260527/picks.json (3 pick(s))
+  Logged 3 pick(s) to PnL.
+  [CLV snapshot] 'list' object has no attribute 'get'
+  Card → output/picks/tennis_atp_french_open/20260527/tennis_card.png
+  Captions → output/picks/tennis_atp_french_open/20260527/captions/
+
+============================================================
+
+
+============================================================
+  Soccer Picks — May 27, 2026
+============================================================
+  ⛔  SOCCER — 0 games on 2026-05-27. Skipping picks generation.
+       (No games confirmed via live schedule API)
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+  ✅  MLB — 6 games confirmed on 2026-05-28. Running picks.
+Step 1: Fetching MLB schedule and team stats...
+  Found 6 games
+    Los Angeles Angels (Grayson Rodriguez) @ Detroit Tigers (Jack Flaherty)
+    Minnesota Twins (Kendry Rojas) @ Chicago White Sox (Davis Martin)
+    Atlanta Braves (Chris Sale) @ Boston Red Sox (Payton Tolle)
+    Toronto Blue Jays (Patrick Corbin) @ Baltimore Orioles (Chris Bassitt)
+    Chicago Cubs (Colin Rea) @ Pittsburgh Pirates (Paul Skenes)
+    Houston Astros (Spencer Arrighetti) @ Texas Rangers (Nathan Eovaldi)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Los Angeles Angels @ Detroit Tigers: Los Angeles Angels 52.7% [AGREE]
+    Pyth: 45.8%  XGB: 48.4%  Ens: 47.3%
+  Minnesota Twins @ Chicago White Sox: Minnesota Twins 51.8% [AGREE]
+    Pyth: 48.0%  XGB: 48.4%  Ens: 48.2%
+  Atlanta Braves @ Boston Red Sox: Atlanta Braves 60.7% [AGREE]
+    Pyth: 28.1%  XGB: 48.4%  Ens: 39.3%
+  Toronto Blue Jays @ Baltimore Orioles: Toronto Blue Jays 52.4% [AGREE]
+    Pyth: 46.5%  XGB: 48.4%  Ens: 47.6%
+  Chicago Cubs @ Pittsburgh Pirates: Pittsburgh Pirates 58.3% [AGREE]
+    Pyth: 64.7%  XGB: 53.1%  Ens: 58.3%
+  Houston Astros @ Texas Rangers: Houston Astros 53.7% [AGREE]
+    Pyth: 43.6%  XGB: 48.4%  Ens: 46.3%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 09:00:08. API requests remaining: 14648
+  Odds freshness: LIVE (range 0–5 min old)
+  Pinnacle fair-prob anchor: 6/6 games on Pinnacle, rest on median devig.
+  Dropped 4 ML row(s) with edge > 20% (likely bad odds).
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Toronto Blue Jays vs Baltimore Orioles
+    Model: 65.0% | Vegas: 45.6% | Edge: +19.4% *** STRONG ***
+    Best odds: +110 at theScore Bet
+
+  Chicago Cubs vs Pittsburgh Pirates
+    Model: 55.8% | Vegas: 38.6% | Edge: +17.3% *** STRONG ***
+    Best odds: +146 at FanDuel
+
+  Total value bets: 2
+  Average edge: +18.3%
+======================================================================
+
+
+  Method B — Sharp consensus (3 edges):
+    Minnesota Twins vs Chicago White Sox: Consensus 55.8% → Edge +13.7%
+    Toronto Blue Jays vs Baltimore Orioles: Consensus 56.0% → Edge +10.4%
+    Atlanta Braves vs Boston Red Sox: Consensus 65.0% → Edge +9.2%
+
+  LOCK picks (both methods agree): toronto blue jays
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · May 28, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   MONEYLINE  Toronto Blue Jays ML             +110    +19.4%     8.3%  theScore B
+  2   MONEYLINE  Chicago Cubs ML                  +146    +17.3%     6.4%  FanDuel
+  3   TOTAL      UNDER 8.5 (Angels@Tigers)        +100    +1.50R        —  Fliff
+  4   MONEYLINE  Minnesota Twins ML               +138    +13.7%     6.0%  Betfair
+  5   MONEYLINE  Atlanta Braves ML                -128     +9.2%     5.1%  Betfair
+  6   RUN LINE   Minnesota Twins +1.5 RL          -162    +0.79R        —  FanDuel
+  7   RUN LINE   Houston Astros +1.5 RL           -175    +0.79R        —  Hard Rock 
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: Toronto Blue Jays ML +110 @ theScore Bet
+     19.4% ML edge
+     Kelly: 8.3% of bankroll  ($50 → $4.15/bet  |  $200 → $16.59/bet)
+
+  Moneyline: 4  |  Run Line: 2  |  Totals: 1
+══════════════════════════════════════════════════════════════════════
+
+  Moneyline card → output/picks/baseball_mlb/20260528/pick_card.png
+  ML card (new) → output/picks/baseball_mlb/20260528/mlb_moneyline_card.png
+  Totals card (new) → output/picks/baseball_mlb/20260528/mlb_totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260528/caption_picks.txt
+  Auto-logged 5 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260528/
+
+Step 6: Scanning player props for edges...
+  Found 7 prop edge(s):
+    Chris Sale UNDER 8.5 Ks  edge=21.1%  odds=-180  [theScore Bet]
+    Patrick Corbin UNDER 4.5 Ks  edge=12.7%  odds=-190  [theScore Bet]
+    Paul Skenes UNDER 7.5 Ks  edge=11.9%  odds=-260  [theScore Bet]
+    Chris Bassitt UNDER 5.5 Ks  edge=8.9%  odds=-450  [theScore Bet]
+    Colin Rea UNDER 5.5 Ks  edge=6.3%  odds=-375  [theScore Bet]
+    Payton Tolle UNDER 6.5 Ks  edge=5.4%  odds=-325  [theScore Bet]
+    Grayson Rodriguez UNDER 5.5 Ks  edge=4.1%  odds=-145  [DraftKings]
+  Props saved → output/picks/baseball_mlb/20260528/props.json
+  Auto-logged 7 prop(s) to pnl for tracking
+  Pitcher Ks card → output/picks/baseball_mlb/20260528/mlb_pitcher_ks_card.png
+  Props caption → output/picks/baseball_mlb/20260528/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 5 NRFI/YRFI play(s):
+    Toronto Blue Jays @ Baltimore Orioles NRFI  edge=13.3%
+    Minnesota Twins @ Chicago White Sox NRFI  edge=13.2%
+    Chicago Cubs @ Pittsburgh Pirates NRFI  edge=9.4%
+    Atlanta Braves @ Boston Red Sox NRFI  edge=9.2%
+    Houston Astros @ Texas Rangers NRFI  proj 67% NRFI
+  NRFI picks logged to pnl (5 picks)
+  (4 NRFI play(s) have live odds; 1 missing book line)
+  NRFI caption → output/picks/baseball_mlb/20260528/caption_nrfi.txt
+
+Step 8: Building F5 (first 5 innings) totals...
+  Found 3 F5 edge(s):
+    F5 OVER 4.5 (Los Angeles Angels @ Detroit Tigers)  edge=34.0%  odds=-114  [FanDuel]  proj=9.18
+    F5 UNDER 4.5 (Minnesota Twins @ Chicago White Sox)  edge=32.4%  odds=-140  [FanDuel]  proj=1.76
+    F5 UNDER 3.5 (Atlanta Braves @ Boston Red Sox)  edge=24.1%  odds=-125  [BetMGM]  proj=2.14
+  F5 picks logged to pnl (0 added, card_pick=True)
+  F5 card → output/picks/baseball_mlb/20260528/f5_card.png
+  F5 caption → output/picks/baseball_mlb/20260528/caption_f5.txt
+  O/U card (game totals, 1 picks) → output/picks/baseball_mlb/20260528/totals_card.png
+
+Step 10: Generating MLB parlay card...
+  ✓  Parlay card → output/picks/baseball_mlb/20260528/parlay_card.png
+
+Step 11: Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/baseball_mlb/20260528/captions/instagram.txt
+  ✓  twitter      → output/picks/baseball_mlb/20260528/captions/twitter.txt
+  ✓  reddit       → output/picks/baseball_mlb/20260528/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/baseball_mlb/20260528/captions/reddit_potd.txt
+  ✓  reddit_mlb_props  → output/picks/baseball_mlb/20260528/captions/reddit_mlb_props.txt
+  ✓  reddit_mlb_picks  → output/picks/baseball_mlb/20260528/captions/reddit_mlb_picks.txt
+  ✓  receipts_post.txt → output/picks/baseball_mlb/20260528/receipts_post.txt
+  ✓  calibration_card.png → output/picks/baseball_mlb/20260528/calibration_card.png
+  ✓  show_your_work.md → output/picks/baseball_mlb/20260528/talking_head/show_your_work.md
+
+  ChefTonyBets — NBA Picks Pipeline
+  Date: 20260528
+  ✅  NBA — 1 game confirmed on 2026-05-28. Running picks.
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  ✓  Team ratings loaded: 30 teams
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  Found 1 upcoming games
+    Oklahoma City Thunder @ San Antonio Spurs  07:40 PM ET
+
+  Running NBA model...
+  ✓  1 game edges found
+
+  Game projections:
+    Oklahoma City Thunder @ San Antonio Spurs  07:40 PM ET
+      Proj: 111.8 - 117.2  | Total: 222.6  | Away ML: 35%  | Home ML: 65%
+
+  Fetching NBA player props...
+  ✓  2 prop edges found
+  ✓  2 unique-player props after dedup + confidence filter (0.53 ≤ p ≤ 0.78)
+
+  Context: NBA PLAYOFFS
+
+  Saved → output/picks/basketball_nba/20260528/picks.json
+  Saved → output/picks/basketball_nba/20260528/props.json
+  ✓  1 NBA pick(s) logged to pnl
+  Auto-logged 2 NBA prop(s) to pnl for tracking
+
+                        NBA PICKS — ChefTonyBets                        
+                              May 28, 2026                              
+────────────────────────────────────────────────────────────────────────
+
+  GAME PICKS (Model vs Market)
+  GAME                             BET                      EDGE    ODDS  BOOK
+  ────────────────────────────────────────────────────────────────────
+  Oklahoma City Thunder @ San Ant  OVER 220.5             +12.4%    -105  theScore Bet  [proj total 223]
+
+  PLAYER PROPS (Top 10 by edge)
+  PLAYER                 BET                            PROJ   EDGE    ODDS  BOOK
+  ────────────────────────────────────────────────────────────────────
+  Cason Wallace          UNDER 1.5 STEALS                1.9 +14.5%    +118  DraftKings
+  Isaiah Hartenstein     UNDER 2.5 ASSISTS               3.5 +13.5%    +111  DraftKings
+
+────────────────────────────────────────────────────────────────────────
+
+  Generating NBA totals card (new design)...
+  ✓  NBA totals card → output/picks/basketball_nba/20260528/nba_totals_card.png
+
+  Generating captions...
+
+====================================================================
+  NBA PLAYOFFS CAPTIONS — MAY 28, 2026
+====================================================================
+
+── GAME PICKS ─────────────────────────────────────────────────────
+
+Tonight's NBA slate — algorithm found the best value plays.
+
+May 28 NBA PLAYOFFS Picks 🔥
+━━━━━━━━━━━━━━━
+🔒 OVER 220.5 (OKL vs SAN) -105 — +12.4% edge [theScore Bet]
+━━━━━━━━━━━━━━━
+
+Picks generated by our efficiency-rating model (ORtg/DRtg/Pace). We track every result publicly — link in bio.
+
+Not financial advice. Bet responsibly. 21+
+
+#NBA #NBAPlayoffs #sportsbetting #NBApicks #NBATwitter #sharpbetting #valuebet #edgebetting #NBAPlayoffs2026 #playoffs #NBAplayoff
+
+── PLAYER PROPS ───────────────────────────────────────────────────
+
+NBA props sheet is up. Player lines with real model edge 🎯
+
+May 28 NBA Player Props 🧮
+━━━━━━━━━━━━━━━
+🎯 Assists:
+  • Isaiah Hartenstein UNDER 2.5 AST +111 [DraftKings]
+━━━━━━━━━━━━━━━
+
+Model projects each stat using season averages + opponent defensive rating. Only posts when we find real edge vs the book line.
+
+Swipe for game picks 👆
+
+Not financial advice. Bet responsibly. 21+
+
+#NBA #NBAPlayoffs #sportsbetting #NBApicks #NBATwitter #sharpbetting #valuebet #edgebetting #NBAPlayoffs2026 #playoffs #NBAplayoff #NBApropbets #propbets #NBAprops #pointsprop #reboundsprop
+
+====================================================================
+
+
+  NBA parlay card skipped — moneyline model incubating.
+
+  Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/basketball_nba/20260528/captions/instagram.txt
+  ✓  twitter      → output/picks/basketball_nba/20260528/captions/twitter.txt
+  ✓  reddit       → output/picks/basketball_nba/20260528/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/basketball_nba/20260528/captions/reddit_potd.txt
+  ✓  reddit_nba_picks  → output/picks/basketball_nba/20260528/captions/reddit_nba_picks.txt
+  ✓  receipts_post.txt → output/picks/basketball_nba/20260528/receipts_post.txt
+  ✓  calibration_card.png → output/picks/basketball_nba/20260528/calibration_card.png
+  ✓  show_your_work.md → output/picks/basketball_nba/20260528/talking_head/show_your_work.md
+  [CLV] Snapshotted opening lines for 8 NBA pick(s)

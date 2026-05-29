@@ -931,28 +931,58 @@ def _load_recent_form_strip(sport_key: str) -> str:
 
 
 def _load_record_strip(sport: str, market: str | None) -> str:
-    """Load W-L record from public_stats.json and return record strip HTML."""
+    """Load W-L record filtered by sport AND market from picks.json."""
     try:
         import json
-        stats_path = Path("data/public_stats.json")
-        if not stats_path.exists():
+
+        picks_path = Path("data/pnl/picks.json")
+        if not picks_path.exists():
             return ""
-        stats = json.loads(stats_path.read_text())
-        by_market = stats.get("by_market", {})
-        data = by_market.get(market or "", {})
-        wins = data.get("wins", 0)
-        losses = data.get("losses", 0)
-        total = wins + losses
+        raw = json.loads(picks_path.read_text())
+        all_picks = raw if isinstance(raw, list) else raw.get("picks", [])
+
+        # Normalize sport key — cards.py passes e.g. "mlb", "nba", "tennis"
+        sport_lower = (sport or "").lower()
+
+        settled = [
+            p for p in all_picks
+            if isinstance(p, dict)
+            and p.get("card_pick")
+            and p.get("result") in ("win", "loss", "push")
+            and (p.get("market") or "").lower() == (market or "").lower()
+            and (p.get("sport") or "").lower().replace("baseball_", "").replace("basketball_", "").replace("icehockey_", "").replace("americanfootball_", "") == sport_lower
+        ]
+
+        wins   = sum(1 for p in settled if p["result"] == "win")
+        losses = sum(1 for p in settled if p["result"] == "loss")
+        total  = wins + losses
         if total < 3:
             return ""
-        profit = data.get("units_profit", 0)
-        wr = round(wins / total * 100, 1) if total else 0
-        streak = int(data.get("streak", 0))
+
+        profit = sum(p.get("profit") or 0 for p in settled)
+        wr     = round(wins / total * 100, 1) if total else 0
+
+        # Current streak: positive = win streak, negative = loss streak
+        streak = 0
+        for p in sorted(settled, key=lambda x: x.get("date", ""), reverse=True):
+            r = p["result"]
+            if r == "push":
+                continue
+            if streak == 0:
+                streak = 1 if r == "win" else -1
+            elif streak > 0 and r == "win":
+                streak += 1
+            elif streak < 0 and r == "loss":
+                streak -= 1
+            else:
+                break
+
         streak_html = ""
         if streak >= 3:
             streak_html = f'<div class="record-dot"></div><div class="record-item">{_ICON_FLAME}<span class="rec-val">{streak}-PICK WIN STREAK</span></div>'
         elif streak <= -3:
             streak_html = f'<div class="record-dot"></div><div class="record-item">{_ICON_SNOWFLAKE}<span class="rec-val">{abs(streak)}-PICK COLD STREAK</span></div>'
+
         sign = "+" if profit >= 0 else ""
         return f"""<div class="record-strip">
   <div class="record-item">RECORD <span class="rec-val">{wins}-{losses}</span></div>
@@ -1124,23 +1154,23 @@ def render_mlb_moneyline_card(picks: list[dict], card_date: date | None = None) 
     rows: list[dict] = []
     for p in picks[:5]:
         edge = _resolve_edge_pct(p)
-        opponent = p.get("Opponent") or p.get("matchup") or ""
-        matchup = p.get("Matchup") or p.get("matchup") or opponent
+        opponent = str(p.get("Opponent") or p.get("matchup") or "")
+        matchup = str(p.get("Matchup") or p.get("matchup") or opponent)
         if matchup and "vs" not in matchup.lower() and " @ " not in matchup:
             vs_line = f"vs {opponent}"
         else:
             if " @ " in matchup:
                 parts = matchup.split(" @ ")
-                team_name = p.get("Team", "")
+                team_name = str(p.get("Team") or "")
                 other = parts[0] if parts[1].lower() in team_name.lower() else parts[1]
                 vs_line = f"vs {other}"
             else:
                 vs_line = f"vs {opponent}" if opponent else matchup
         rows.append({
-            "team": p.get("Team", ""),
+            "team": str(p.get("Team") or ""),
             "vs_line": vs_line,
             "odds": p.get("BestOdds") or p.get("odds") or 0,
-            "book": p.get("Sportsbook") or p.get("sportsbook") or "",
+            "book": str(p.get("Sportsbook") or p.get("sportsbook") or ""),
             "edge_pct": edge,
             "game_time": _fmt_game_time(p.get("CommenceTime") or p.get("commence_time")),
             "units": f"{float(p.get('stake', 1.0) or 1.0):.1f}u",

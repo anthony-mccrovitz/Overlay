@@ -48,6 +48,7 @@ def main() -> int:
     SPORTS = ("mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc")
 
     rc_total = 0
+    any_graded = False
     for sport in SPORTS:
         cmd = [sys.executable, str(ROOT / "grade.py"), "--date", target, "--sport", sport]
         try:
@@ -56,13 +57,23 @@ def main() -> int:
                 _log(f"  {sport.upper()} grader exit {result.returncode}: {result.stderr[:200]}")
                 rc_total += 1
             else:
-                # Only log if it actually graded something
                 if "WIN" in result.stdout or "LOSS" in result.stdout or "win" in result.stdout or "loss" in result.stdout:
                     last_lines = "\n".join(result.stdout.strip().splitlines()[-3:])
                     _log(f"  {sport.upper()} graded: {last_lines}")
+                    any_graded = True
         except subprocess.TimeoutExpired:
             _log(f"  {sport.upper()} grader TIMEOUT after 120s")
             rc_total += 1
+
+    # Generate result cards immediately after grading — no waiting until 4 AM
+    if any_graded:
+        try:
+            card_date = f"{target[:4]}-{target[4:6]}-{target[6:]}"
+            result_card_cmd = [sys.executable, str(ROOT / "scripts" / "gen_result_cards.py"), "--date", card_date]
+            subprocess.run(result_card_cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+            _log(f"  Result cards generated for {card_date}")
+        except Exception as e:
+            _log(f"  Result cards failed: {e}")
 
     return rc_total
 

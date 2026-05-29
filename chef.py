@@ -1416,6 +1416,10 @@ def cmd_morning(args: argparse.Namespace) -> int:
     print("\n  ▸ Building daily brief...")
     _run([sys.executable, "scripts/gen_morning_brief.py", today])
 
+    # 15) Rebuild overlay slate data (for /slate page on overlay-gray.vercel.app)
+    print("  ▸ Rebuilding slate_data.json for overlay...")
+    _run([sys.executable, "scripts/build_slate_data.py"])
+
     brief_path = Path(f"output/briefs/{today}.md")
     if brief_path.exists():
         print(f"\n  {sep}")
@@ -1545,13 +1549,21 @@ def cmd_deploy(args: argparse.Namespace) -> int:
         return rc
     print("  ✓ Stats refreshed\n")
 
-    # 2) Rebuild overlay/src/data/customer_feed.json
+    # 2a) Rebuild overlay/src/data/customer_feed.json
     print("  ▸ Building customer_feed.json...")
     rc = _run([sys.executable, "scripts/build_customer_feed.py"])
     if rc != 0:
         print("  ✗ customer_feed build failed — aborting deploy")
         return rc
     print("  ✓ customer_feed.json built\n")
+
+    # 2b) Rebuild overlay/src/data/slate_data.json (powers /slate page)
+    print("  ▸ Building slate_data.json...")
+    rc = _run([sys.executable, "scripts/build_slate_data.py"])
+    if rc != 0:
+        print("  ✗ slate_data build failed — continuing anyway")
+    else:
+        print("  ✓ slate_data.json built\n")
 
     # 3) Locate vercel CLI (installed globally or in ~/.local/bin)
     vercel_bin: str | None = _shutil.which("vercel")
@@ -1572,6 +1584,9 @@ def cmd_deploy(args: argparse.Namespace) -> int:
         return 1
 
     # 4) Push to Vercel production
+    # Vercel project rootDirectory is set to "overlay/" in the dashboard,
+    # so we run from the march-madness/ root. The .vercelignore at the root
+    # excludes output/, data/, logs/ etc. to stay under the 250MB limit.
     print(f"  ▸ Deploying via vercel --prod ...")
     rc = _run([
         vercel_bin, "--prod",

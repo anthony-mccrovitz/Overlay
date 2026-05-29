@@ -50,9 +50,10 @@ class TestAutoLogPicks:
         assert len(picks) == 1
         assert picks[0]["card_pick"] is False
 
-    def test_stake_zero_for_auto_log(self, tmp_path):
+    def test_stake_for_auto_log(self, tmp_path):
+        # MLB moneyline is an established shadow market → shadow_stake returns 1.0u
         picks = self._run_auto_log([self._sample_ml_pick()], tmp_path)
-        assert picks[0]["stake"] == 0.0
+        assert picks[0]["stake"] == 1.0
 
     def test_edge_pct_percentage_points_for_moneyline(self, tmp_path):
         picks = self._run_auto_log([self._sample_ml_pick(edge_fraction=0.082)], tmp_path)

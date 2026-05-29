@@ -4,9 +4,14 @@ Tests for value_bets.py edge cases introduced/fixed in session.
 import math
 import pandas as pd
 import pytest
+from unittest.mock import patch
 
 from src.betting.value_bets import find_value_bets
 from src.betting.markets import BetType
+
+# Calibration is trained on real data and is irrelevant to edge-detection logic.
+# These tests patch it to a no-op so they verify pure pick/skip reasoning.
+_NO_CAL = patch("src.betting.value_bets.apply_calibration", side_effect=lambda p, *a, **kw: p)
 
 
 def _odds_row(home="Team A", away="Team B", home_ml=None, away_ml=None):
@@ -59,7 +64,8 @@ def test_real_odds_finds_edge():
     # Home -110 → implied 52.4%. Model says 62% → edge ~9.6%
     odds = _odds_row(home_ml=-110, away_ml=100)
     preds = {("Team A", "Team B"): 0.62}
-    bets = find_value_bets(preds, odds, min_edge=0.03, market=BetType.MONEYLINE)
+    with _NO_CAL:
+        bets = find_value_bets(preds, odds, min_edge=0.03, market=BetType.MONEYLINE)
     assert len(bets) == 1
     assert bets.iloc[0]["Team"] == "Team A"
     assert bets.iloc[0]["BestOdds"] == -110
@@ -71,7 +77,8 @@ def test_no_edge_below_threshold():
     # Home -110 → implied 52.4%. Model says 54% → edge ~1.6%
     odds = _odds_row(home_ml=-110, away_ml=100)
     preds = {("Team A", "Team B"): 0.54}
-    bets = find_value_bets(preds, odds, min_edge=0.03, market=BetType.MONEYLINE)
+    with _NO_CAL:
+        bets = find_value_bets(preds, odds, min_edge=0.03, market=BetType.MONEYLINE)
     assert bets.empty
 
 
@@ -80,7 +87,8 @@ def test_away_team_edge_detected():
     # Away +150 → implied 40%. Model says 52% on away → edge ~12%
     odds = _odds_row(home_ml=-170, away_ml=150)
     preds = {("Team A", "Team B"): 0.48}  # 48% home = 52% away
-    bets = find_value_bets(preds, odds, min_edge=0.03, market=BetType.MONEYLINE)
+    with _NO_CAL:
+        bets = find_value_bets(preds, odds, min_edge=0.03, market=BetType.MONEYLINE)
     assert len(bets) == 1
     assert bets.iloc[0]["Team"] == "Team B"
     assert bets.iloc[0]["BestOdds"] == 150

@@ -34,7 +34,12 @@ def main() -> int:
         return 1
 
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Retry once — catches mid-write race condition from concurrent pipeline jobs
     n_now = count_picks(SRC)
+    if n_now < 0:
+        import time; time.sleep(2)
+        n_now = count_picks(SRC)
     if n_now < 0:
         print(f"[backup] source is unreadable JSON — NOT backing up", file=sys.stderr)
         return 1
