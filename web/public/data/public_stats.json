@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-29T03:15:03.637422+00:00",
+  "updated_at": "2026-05-29T03:23:26.765070+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -203,9 +203,9 @@
     }
   },
   "summary": {
-    "total_picks": 211,
+    "total_picks": 222,
     "settled": 187,
-    "pending": 19,
+    "pending": 30,
     "wins": 112,
     "losses": 72,
     "pushes": 3,
@@ -224,10 +224,22 @@
     "streak": 0
   },
   "by_market": {
+    "f5_total": {
+      "total": 6,
+      "settled": 0,
+      "pending": 6,
+      "wins": 0,
+      "losses": 0,
+      "pushes": 0,
+      "win_rate": 0.0,
+      "units_profit": 0,
+      "roi": 0.0,
+      "streak": 0
+    },
     "moneyline": {
-      "total": 99,
+      "total": 100,
       "settled": 83,
-      "pending": 16,
+      "pending": 17,
       "wins": 43,
       "losses": 40,
       "pushes": 0,
@@ -237,9 +249,9 @@
       "streak": 3
     },
     "puck_line": {
-      "total": 1,
+      "total": 2,
       "settled": 1,
-      "pending": 0,
+      "pending": 1,
       "wins": 1,
       "losses": 0,
       "pushes": 0,
@@ -261,9 +273,9 @@
       "streak": 1
     },
     "total": {
-      "total": 109,
+      "total": 112,
       "settled": 101,
-      "pending": 3,
+      "pending": 6,
       "wins": 67,
       "losses": 31,
       "pushes": 3,
@@ -275,9 +287,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 112,
+      "total": 118,
       "settled": 94,
-      "pending": 18,
+      "pending": 24,
       "wins": 52,
       "losses": 39,
       "win_rate": 0.5714,
@@ -285,9 +297,9 @@
       "roi": 0.1624
     },
     "nba": {
-      "total": 82,
+      "total": 85,
       "settled": 77,
-      "pending": 5,
+      "pending": 8,
       "wins": 52,
       "losses": 25,
       "win_rate": 0.6753,
@@ -295,9 +307,9 @@
       "roi": 0.3013
     },
     "nhl": {
-      "total": 5,
+      "total": 7,
       "settled": 4,
-      "pending": 1,
+      "pending": 3,
       "wins": 4,
       "losses": 0,
       "win_rate": 1.0,
