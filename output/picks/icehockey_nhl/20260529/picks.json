@@ -1,0 +1,75 @@
+{
+  "date": "2026-05-29",
+  "sport": "nhl",
+  "generated_at": "2026-05-29T03:17:26.952663+00:00",
+  "picks": [
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Carolina Hurricanes",
+      "team": "Montr\u00e9al Canadiens +1.5",
+      "market": "puck_line",
+      "direction": "AWAY +1.5",
+      "line": 1.5,
+      "odds": -125,
+      "fair_odds": -119,
+      "model_prob": 0.6241,
+      "market_prob": 0.5443,
+      "fair_prob": 0.5443,
+      "edge_pct": 7.98,
+      "commence": "2026-05-30T00:15:00Z",
+      "proj_total": 5.31,
+      "notes": [
+        "Base: Carolina Hurricanes 3.49 exp goals | Montr\u00e9al Canadiens 2.70 exp goals",
+        "Home goalie SV%: 0.928 (+0.030) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.912 (+0.014) \u2192 home -+0.42g",
+        "Trained model win prob: 74.1%",
+        "Projected total: 5.3 | Home win: 74.1% | Home -1.5: 37.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Carolina Hurricanes",
+      "team": "Carolina Hurricanes",
+      "market": "moneyline",
+      "direction": "HOME",
+      "line": null,
+      "odds": -238,
+      "fair_odds": -211,
+      "model_prob": 0.7407,
+      "market_prob": 0.6783,
+      "fair_prob": 0.6783,
+      "edge_pct": 6.24,
+      "commence": "2026-05-30T00:15:00Z",
+      "proj_total": 5.31,
+      "notes": [
+        "Base: Carolina Hurricanes 3.49 exp goals | Montr\u00e9al Canadiens 2.70 exp goals",
+        "Home goalie SV%: 0.928 (+0.030) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.912 (+0.014) \u2192 home -+0.42g",
+        "Trained model win prob: 74.1%",
+        "Projected total: 5.3 | Home win: 74.1% | Home -1.5: 37.6%"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "matchup": "Montr\u00e9al Canadiens @ Carolina Hurricanes",
+      "commence": "2026-05-30T00:15:00Z",
+      "time_et": "07:15 PM ET",
+      "home_team": "Carolina Hurricanes",
+      "away_team": "Montr\u00e9al Canadiens",
+      "home_exp_goals": 3.55,
+      "away_exp_goals": 2.69,
+      "total_exp_goals": 6.24,
+      "home_win_prob": 0.7405,
+      "away_win_prob": 0.2595,
+      "home_cover_1_5": 0.3601,
+      "away_cover_1_5": 0.6399,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Carolina Hurricanes 3.49 exp goals | Montr\u00e9al Canadiens 2.70 exp goals",
+        "Trained model win prob: 74.0%",
+        "Projected total: 6.2 | Home win: 74.0% | Home -1.5: 36.0%"
+      ]
+    }
+  ]
+}
