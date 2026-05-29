@@ -39,7 +39,7 @@ MODELS: dict[tuple[str, str], dict] = {
     ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
     ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
     ("tennis", "moneyline"): {"status": "retired",    "tier": "shadow", "label": "Tennis Elo (4-25 -8u, retired)"},
-    ("soccer", "moneyline"): {"status": "live",       "tier": "t1", "label": "Soccer Dixon-Coles"},
+    ("soccer", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"},
 
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
     ("mlb",    "moneyline"): {"status": "live",       "tier": "t2", "label": "MLB Moneyline (bias-fixed)"},
