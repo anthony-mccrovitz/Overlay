@@ -601,7 +601,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             except (ValueError, TypeError):
                 line = None
 
-        from src.config.models import is_live as _is_live
+        from src.config.models import is_live as _is_live, is_card_pick as _is_card_pick
         new_entries.append({
             "pick_id":     pick_id,
             "date":        date_str,
@@ -617,7 +617,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             "edge_pct":    e.get("edge_pct"),
             "model_tier":  _NBA_TIER.get(market, "shadow"),
             "stake":       1.0,
-            "card_pick":   _is_live("nba", market),
+            "card_pick":   _is_card_pick("nba", market, e.get("edge_pct")),
             "result":      None,
             "profit":      None,
             "recorded_at": now_ts,
@@ -638,7 +638,7 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
             "edge_pct":    e.get("edge_pct"),
             "model_tier":  _NBA_TIER.get(market, "shadow"),
             "stake":       1.0,
-            "card_pick":   _is_live("nba", market),
+            "card_pick":   _is_card_pick("nba", market, e.get("edge_pct")),
             "result":      None,
             "profit":      None,
             "recorded_at": now_ts,

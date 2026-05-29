@@ -50,7 +50,7 @@ MODELS: dict[tuple[str, str], dict] = {
 
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
     ("mlb", "pitcher_strikeouts"): {"status": "retired",    "tier": "shadow", "label": "MLB Pitcher Ks (83-108 -16u, retired)"},
-    ("mlb", "f5_total"):           {"status": "live",       "tier": "t2",     "label": "MLB F5 Totals"},
+    ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals (63-47 shadow, promoting after first 30 live picks)"},
     ("mlb", "nrfi"):               {"status": "incubating", "tier": "paused", "label": "MLB NRFI (81-82 -7u, paused)"},
     ("nba", "moneyline"):          {"status": "incubating", "tier": "paused", "label": "NBA Moneyline (28-24 -4u, paused)"},
     ("nba", "player_points"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player Points"},
@@ -119,15 +119,48 @@ def model_tier(sport: str, market: str) -> str:
     return MODELS.get(_key(sport, market), {}).get("tier", "shadow")
 
 
+# Minimum edge to post publicly (card_pick=True) per market.
+# Models with a different edge metric (totals use run differential, not %)
+# are marked None — they always post if the model is live.
+_CARD_EDGE_MIN: dict[str, float | None] = {
+    "moneyline":  12.0,   # 54% WR model — only high-conviction edges
+    "ml":         12.0,
+    "total":      None,   # 66-68% WR — always post, edge metric is run differential
+    "f5_total":   None,   # shadow — handled by model status
+    "spread":     12.0,
+    "run_line":   12.0,
+    "puck_line":  10.0,
+    "nrfi":       None,   # paused
+    "outright":   10.0,
+}
+
+
 def is_live(sport: str, market: str, prop_market: str | None = None) -> bool:
     """True if this model's picks should be posted publicly (card_pick=True).
 
-    For props, prefer the specific sub-market (e.g. pitcher_strikeouts) over the
-    generic 'prop' bucket so each prop type can graduate independently.
+    Checks both model status AND edge threshold — call is_card_pick() instead
+    if you have an edge value and want the full gate.
     """
     if market == "prop" and prop_market:
         return model_status(sport, prop_market) == "live"
     return model_status(sport, market) == "live"
+
+
+def is_card_pick(sport: str, market: str, edge_pct: float | None,
+                 prop_market: str | None = None) -> bool:
+    """Full card_pick gate: model must be live AND edge must meet the threshold.
+
+    Use this everywhere a pick is logged to picks.json.
+    """
+    if not is_live(sport, market, prop_market):
+        return False
+    mkt_key = (market or "").lower()
+    min_edge = _CARD_EDGE_MIN.get(mkt_key)
+    if min_edge is None:
+        return True   # no edge threshold for this market type
+    if edge_pct is None:
+        return False  # can't confirm edge — don't post
+    return float(edge_pct) >= min_edge
 
 
 def is_paused(sport: str, market: str) -> bool:

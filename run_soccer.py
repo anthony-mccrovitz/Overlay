@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.models.soccer_model_v2 import SoccerModelV2, load_or_fit_model_v2
 from src.data.odds_api import MY_BOOKS_PARAM
 from src.tracking.schema import normalize_pick
-from src.config.models import is_live, shadow_stake
+from src.config.models import is_live, shadow_stake, is_card_pick
 
 import requests
 
@@ -158,7 +158,7 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport_key: str) -> int:
             "edge_pct":    e.get("edge_pct"),
             "model_tier":  "tier1",  # Dixon-Coles is Tier 1 (peer-reviewed)
             "stake":       shadow_stake("soccer", market),
-            "card_pick":   is_live("soccer", market),
+            "card_pick":   is_card_pick("soccer", market, e.get("edge_pct")),
             "result":      None,
             "profit":      None,
             "recorded_at": now,

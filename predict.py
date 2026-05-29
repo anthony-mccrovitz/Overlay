@@ -1711,8 +1711,8 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
         # card_pick is gated by model status in src/config/models.py
         # Only LIVE models get card_pick=True (post publicly, counted in record)
         # Incubating models log silently for performance tracking
-        from src.config.models import is_live
-        card_pick = is_live("mlb", market)
+        from src.config.models import is_card_pick
+        card_pick = is_card_pick("mlb", market, edge_pct)
         # ModelAgreement: True = Pythagorean + XGBoost both agree on direction
         agreement = pick.get("ModelAgreement")
         if agreement is None:

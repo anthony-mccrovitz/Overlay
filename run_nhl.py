@@ -98,7 +98,7 @@ def _auto_log_picks(picks: list[dict], game_date: date) -> int:
         return 0
 
     from src.tracking.schema import append_picks_safe
-    from src.config.models import is_live, shadow_stake
+    from src.config.models import is_live, shadow_stake, is_card_pick
 
     existing_ids: set[str] = set()
     date_str = game_date.isoformat()
@@ -131,7 +131,7 @@ def _auto_log_picks(picks: list[dict], game_date: date) -> int:
             "edge_pct":      pick["edge_pct"],
             "proj_total":    pick.get("proj_total"),
             "stake":         shadow_stake("nhl", market),
-            "card_pick":     is_live("nhl", market),
+            "card_pick":     is_card_pick("nhl", market, pick.get("edge_pct")),
             "result":        None,
             "profit":        None,
             "recorded_at":   now_ts,
