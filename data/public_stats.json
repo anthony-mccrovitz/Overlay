@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-30T18:15:01.236652+00:00",
+  "updated_at": "2026-05-31T03:36:01.025839+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -203,16 +203,16 @@
     }
   },
   "summary": {
-    "total_picks": 203,
-    "settled": 189,
-    "pending": 9,
-    "wins": 113,
+    "total_picks": 211,
+    "settled": 192,
+    "pending": 14,
+    "wins": 116,
     "losses": 72,
     "pushes": 4,
-    "win_rate": 0.6108,
-    "units_profit": 36.3,
-    "roi": 0.1984,
-    "streak": -1
+    "win_rate": 0.617,
+    "units_profit": 39.29,
+    "roi": 0.2112,
+    "streak": 3
   },
   "nrfi": {
     "total": 0,
@@ -261,43 +261,43 @@
       "streak": 1
     },
     "total": {
-      "total": 118,
-      "settled": 105,
-      "pending": 8,
-      "wins": 69,
+      "total": 126,
+      "settled": 108,
+      "pending": 13,
+      "wins": 72,
       "losses": 32,
       "pushes": 4,
-      "win_rate": 0.6832,
-      "units_profit": 31.62,
-      "roi": 0.3162,
-      "streak": -1
+      "win_rate": 0.6923,
+      "units_profit": 34.61,
+      "roi": 0.336,
+      "streak": 3
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 111,
-      "settled": 108,
-      "pending": 3,
-      "wins": 57,
+      "total": 116,
+      "settled": 110,
+      "pending": 6,
+      "wins": 59,
       "losses": 47,
-      "win_rate": 0.5481,
-      "units_profit": 11.43,
-      "roi": 0.1099
+      "win_rate": 0.5566,
+      "units_profit": 13.5,
+      "roi": 0.1273
     },
     "nba": {
-      "total": 87,
-      "settled": 77,
-      "pending": 10,
-      "wins": 52,
+      "total": 89,
+      "settled": 78,
+      "pending": 11,
+      "wins": 53,
       "losses": 25,
-      "win_rate": 0.6753,
-      "units_profit": 23.2,
-      "roi": 0.3013
+      "win_rate": 0.6795,
+      "units_profit": 24.12,
+      "roi": 0.3092
     },
     "nhl": {
-      "total": 5,
+      "total": 6,
       "settled": 4,
-      "pending": 1,
+      "pending": 2,
       "wins": 4,
       "losses": 0,
       "win_rate": 1.0,
@@ -322,6 +322,39 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-05-30",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 213.0",
+      "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+      "odds": -109,
+      "result": "win",
+      "profit": 0.92,
+      "edge_pct": 15.94
+    },
+    {
+      "date": "2026-05-30",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 7.0",
+      "matchup": "Los Angeles Angels @ Tampa Bay Rays",
+      "odds": 115,
+      "result": "win",
+      "profit": 1.15,
+      "edge_pct": 1.0
+    },
+    {
+      "date": "2026-05-30",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 7.5",
+      "matchup": "San Diego Padres @ Washington Nationals",
+      "odds": -109,
+      "result": "win",
+      "profit": 0.92,
+      "edge_pct": 3.6
+    },
     {
       "date": "2026-05-29",
       "sport": "mlb",
@@ -398,39 +431,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 14.86
-    },
-    {
-      "date": "2026-05-29",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Minnesota Twins",
-      "matchup": "",
-      "odds": 115,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 15.67
-    },
-    {
-      "date": "2026-05-29",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "San Diego Padres",
-      "matchup": "",
-      "odds": -110,
-      "result": "win",
-      "profit": 0.91,
-      "edge_pct": 16.9
-    },
-    {
-      "date": "2026-05-29",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Kansas City Royals",
-      "matchup": "",
-      "odds": 108,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 18.99
     }
   ]
 }
