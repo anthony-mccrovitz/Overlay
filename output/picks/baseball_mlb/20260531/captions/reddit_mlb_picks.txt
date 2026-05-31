@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 5/31/26 (Sunday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 59-48 (55.1% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Toronto Blue Jays vs  | +110 | +18.3% | Fanatics |
+| Chicago Cubs vs  | -103 | +16.9% | DraftKings |
+| Boston Red Sox vs  | +100 | +16.4% | theScore Bet |
+| Kansas City Royals vs  | -102 | +15.9% | FanDuel |
+| Minnesota Twins vs  | +135 | +15.6% | Fanatics |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Philadelphia Phillies @ Los Angeles Dodgers NRFI (Andrew Painter vs Yoshinobu Yamamoto) | NRFI +112 | 63% | FanDuel |
+| New York Yankees @ Athletics NRFI (Will Warren vs Jacob Lopez) | NRFI +118 | 62% | FanDuel |
+| San Francisco Giants @ Colorado Rockies NRFI (Robbie Ray vs Tanner Gordon) | NRFI +120 | 59% | BetMGM |
+| Toronto Blue Jays @ Baltimore Orioles NRFI (Spencer Miles vs Kyle Bradish) | NRFI -125 | 67% | BetMGM |
+| Atlanta Braves @ Cincinnati Reds NRFI (Spencer Strider vs Nick Lodolo) | NRFI -118 | 64% | BetMGM |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-31T03:46:00.912196+00:00",
+  "updated_at": "2026-05-31T18:17:21.677284+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -203,16 +203,16 @@
     }
   },
   "summary": {
-    "total_picks": 211,
-    "settled": 192,
-    "pending": 14,
+    "total_picks": 213,
+    "settled": 193,
+    "pending": 15,
     "wins": 116,
-    "losses": 72,
+    "losses": 73,
     "pushes": 4,
-    "win_rate": 0.617,
-    "units_profit": 39.29,
-    "roi": 0.2112,
-    "streak": 3
+    "win_rate": 0.6138,
+    "units_profit": 38.29,
+    "roi": 0.2047,
+    "streak": -1
   },
   "nrfi": {
     "total": 0,
@@ -261,28 +261,28 @@
       "streak": 1
     },
     "total": {
-      "total": 126,
-      "settled": 108,
-      "pending": 13,
+      "total": 128,
+      "settled": 109,
+      "pending": 14,
       "wins": 72,
-      "losses": 32,
+      "losses": 33,
       "pushes": 4,
-      "win_rate": 0.6923,
-      "units_profit": 34.61,
-      "roi": 0.336,
-      "streak": 3
+      "win_rate": 0.6857,
+      "units_profit": 33.61,
+      "roi": 0.3231,
+      "streak": -1
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 116,
-      "settled": 110,
-      "pending": 6,
+      "total": 118,
+      "settled": 111,
+      "pending": 7,
       "wins": 59,
-      "losses": 47,
-      "win_rate": 0.5566,
-      "units_profit": 13.5,
-      "roi": 0.1273
+      "losses": 48,
+      "win_rate": 0.5514,
+      "units_profit": 12.5,
+      "roi": 0.1168
     },
     "nba": {
       "total": 89,
@@ -322,6 +322,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-05-30",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 9.5",
+      "matchup": "New York Yankees @ Athletics",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.5
+    },
     {
       "date": "2026-05-30",
       "sport": "nba",
@@ -420,17 +431,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 16.42
-    },
-    {
-      "date": "2026-05-29",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Arizona Diamondbacks",
-      "matchup": "",
-      "odds": 134,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 14.86
     }
   ]
 }
