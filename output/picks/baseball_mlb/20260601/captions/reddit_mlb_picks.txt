@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 6/1/26 (Monday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 61-53 (53.5% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| New York Mets vs  | +115 | +19.9% | theScore Bet |
+| Detroit Tigers vs  | +145 | +19.0% | Hard Rock Bet (OH) |
+| Chicago White Sox vs  | +145 | +18.9% | theScore Bet |
+| Miami Marlins vs  | +130 | +15.4% | GTbets |
+| San Francisco Giants vs  | +132 | +15.1% | Betfair |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Texas Rangers @ St. Louis Cardinals NRFI (Jacob deGrom vs Michael McGreevy) | NRFI -120 | 67% | Caesars |
+| Kansas City Royals @ Cincinnati Reds NRFI (Luinder Avila vs Chase Burns) | NRFI -113 | 65% | FanDuel |
+| San Francisco Giants @ Milwaukee Brewers NRFI (Landen Roupp vs Shane Drohan) | NRFI -125 | 67% | Caesars |
+| Detroit Tigers @ Tampa Bay Rays NRFI (Ty Madden vs Griffin Jax) | NRFI -125 | 67% | FanDuel |
+| Miami Marlins @ Washington Nationals NRFI (Sandy Alcantara vs Cade Cavalli) | NRFI -110 | 61% | Caesars |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

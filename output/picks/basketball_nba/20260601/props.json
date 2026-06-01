@@ -1,0 +1,53 @@
+[
+  {
+    "type": "nba_prop",
+    "market": "player_assists",
+    "player": "OG Anunoby",
+    "matchup": "New York Knicks @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "New York Knicks",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 2.2,
+    "model_prob": 0.573,
+    "implied_prob": 0.446,
+    "edge_pct": 12.7,
+    "odds": 110,
+    "book": "Hard Rock Bet",
+    "label": "OG Anunoby UNDER 1.5 AST"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_threes",
+    "player": "Victor Wembanyama",
+    "matchup": "New York Knicks @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "New York Knicks",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 1.9,
+    "model_prob": 0.57,
+    "implied_prob": 0.444,
+    "edge_pct": 12.6,
+    "odds": 110,
+    "book": "betPARX",
+    "label": "Victor Wembanyama UNDER 1.5 3PM"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_rebounds",
+    "player": "Mitchell Robinson",
+    "matchup": "New York Knicks @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "New York Knicks",
+    "line": 4.5,
+    "direction": "UNDER",
+    "projected": 8.7,
+    "model_prob": 0.6,
+    "implied_prob": 0.48,
+    "edge_pct": 12.1,
+    "odds": -105,
+    "book": "theScore Bet",
+    "label": "Mitchell Robinson UNDER 4.5 REB"
+  }
+]
