@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-01T08:50:05.704457+00:00",
+  "updated_at": "2026-06-02T02:36:00.562001+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -203,16 +203,16 @@
     }
   },
   "summary": {
-    "total_picks": 217,
-    "settled": 200,
-    "pending": 12,
-    "wins": 118,
+    "total_picks": 221,
+    "settled": 202,
+    "pending": 14,
+    "wins": 120,
     "losses": 78,
     "pushes": 4,
-    "win_rate": 0.602,
-    "units_profit": 35.16,
-    "roi": 0.1813,
-    "streak": -4
+    "win_rate": 0.6061,
+    "units_profit": 37.17,
+    "roi": 0.1897,
+    "streak": 2
   },
   "nrfi": {
     "total": 0,
@@ -261,33 +261,33 @@
       "streak": 1
     },
     "total": {
-      "total": 132,
-      "settled": 116,
-      "pending": 11,
-      "wins": 74,
+      "total": 136,
+      "settled": 118,
+      "pending": 13,
+      "wins": 76,
       "losses": 38,
       "pushes": 4,
-      "win_rate": 0.6607,
-      "units_profit": 30.48,
-      "roi": 0.2746,
-      "streak": -4
+      "win_rate": 0.6667,
+      "units_profit": 32.49,
+      "roi": 0.2875,
+      "streak": 2
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 120,
-      "settled": 118,
-      "pending": 2,
-      "wins": 61,
+      "total": 125,
+      "settled": 120,
+      "pending": 5,
+      "wins": 63,
       "losses": 53,
-      "win_rate": 0.5351,
-      "units_profit": 9.38,
-      "roi": 0.0822
+      "win_rate": 0.5431,
+      "units_profit": 11.38,
+      "roi": 0.0981
     },
     "nba": {
-      "total": 90,
+      "total": 89,
       "settled": 78,
-      "pending": 12,
+      "pending": 11,
       "wins": 53,
       "losses": 25,
       "win_rate": 0.6795,
@@ -322,6 +322,28 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-01",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.0",
+      "matchup": "Chicago White Sox @ Minnesota Twins",
+      "odds": 110,
+      "result": "win",
+      "profit": 1.1,
+      "edge_pct": 1.8
+    },
+    {
+      "date": "2026-06-01",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.5",
+      "matchup": "Miami Marlins @ Washington Nationals",
+      "odds": -110,
+      "result": "win",
+      "profit": 0.91,
+      "edge_pct": 1.7
+    },
     {
       "date": "2026-05-31",
       "sport": "mlb",
@@ -409,28 +431,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 1.5
-    },
-    {
-      "date": "2026-05-30",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 213.0",
-      "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
-      "odds": -109,
-      "result": "win",
-      "profit": 0.92,
-      "edge_pct": 15.94
-    },
-    {
-      "date": "2026-05-30",
-      "sport": "mlb",
-      "market": "total",
-      "team": "OVER 7.0",
-      "matchup": "Los Angeles Angels @ Tampa Bay Rays",
-      "odds": 115,
-      "result": "win",
-      "profit": 1.15,
-      "edge_pct": 1.0
     }
   ]
 }
