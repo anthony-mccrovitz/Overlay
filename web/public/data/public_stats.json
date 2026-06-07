@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-07T07:50:05.941214+00:00",
+  "updated_at": "2026-06-07T17:15:00.700835+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,9 +204,9 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.057,
-      "positive_pct": 40.1,
-      "n": 658,
+      "avg_clv_pct": -0.094,
+      "positive_pct": 39.7,
+      "n": 672,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
@@ -225,11 +225,11 @@
         "matched_price_n": 85
       },
       "f5_total": {
-        "count": 25,
-        "avg_line_clv": 0.12,
-        "beat_close_pct": 36.0,
-        "avg_price_clv_pct": -4.209,
-        "matched_price_n": 14
+        "count": 37,
+        "avg_line_clv": 0.108,
+        "beat_close_pct": 40.5,
+        "avg_price_clv_pct": -4.364,
+        "matched_price_n": 16
       }
     },
     "totals_coverage": {
@@ -244,9 +244,9 @@
     }
   },
   "summary": {
-    "total_picks": 249,
+    "total_picks": 250,
     "settled": 231,
-    "pending": 13,
+    "pending": 14,
     "wins": 132,
     "losses": 95,
     "pushes": 4,
@@ -302,9 +302,9 @@
       "streak": 1
     },
     "total": {
-      "total": 162,
+      "total": 163,
       "settled": 145,
-      "pending": 12,
+      "pending": 13,
       "wins": 87,
       "losses": 54,
       "pushes": 4,
@@ -316,9 +316,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 146,
+      "total": 147,
       "settled": 143,
-      "pending": 3,
+      "pending": 4,
       "wins": 74,
       "losses": 65,
       "win_rate": 0.5324,
