@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 6/7/26 (Sunday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 74-64 (53.6% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Los Angeles Angels vs  | +310 | +18.1% | Betfair |
+| Boston Red Sox vs  | +150 | +12.6% | Pinnacle |
+| Washington Nationals vs  | +115 | +14.3% | theScore Bet |
+| Baltimore Orioles vs  | +115 | +13.3% | Fanatics |
+| Kansas City Royals vs  | -110 | +10.1% | Fanatics |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Kansas City Royals @ Minnesota Twins NRFI (Noah Cameron vs Connor Prielipp) | NRFI -102 | 65% | FanDuel |
+| Pittsburgh Pirates @ Atlanta Braves NRFI (Bubba Chandler vs Bryce Elder) | NRFI -106 | 65% | FanDuel |
+| Athletics @ Houston Astros NRFI (Gage Jump vs Mike Burrows) | NRFI +102 | 63% | FanDuel |
+| Washington Nationals @ Arizona Diamondbacks NRFI (Cade Cavalli vs Michael Soroka) | NRFI -128 | 67% | FanDuel |
+| Los Angeles Angels @ Los Angeles Dodgers NRFI (José Soriano vs Emmet Sheehan) | NRFI -128 | 67% | FanDuel |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*
