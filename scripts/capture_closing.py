@@ -48,6 +48,18 @@ SPORTS = {
     "f1":      "auto_racing_formula_one",
 }
 
+# Base full-game markets captured for every sport.
+_BASE_MARKETS = "h2h,spreads,totals"
+
+# Sport-specific alternate markets (period/derivative). Per-event endpoint only.
+# MLB: first-5-innings total (F5) + first-inning total (NRFI = Under 0.5 in 1st).
+# These let us score CLV on F5/NRFI picks, which the base markets can't cover.
+# Captured once per game near close (idempotent), so the extra credit cost is
+# ~one call's worth of additional markets per MLB game per day.
+_EXTRA_MARKETS = {
+    "baseball_mlb": "totals_1st_5_innings,totals_1st_1_innings",
+}
+
 
 def _now_utc() -> datetime:
     return datetime.now(timezone.utc)
@@ -116,11 +128,16 @@ def capture_sport(
         if not _within_window(ev.get("commence_time", ""), lo_min, hi_min):
             continue
 
+        markets = _BASE_MARKETS
+        extra = _EXTRA_MARKETS.get(odds_api_sport)
+        if extra:
+            markets = f"{_BASE_MARKETS},{extra}"
+
         try:
             odds_df = fetch_event_odds(
                 event_id=ev_id,
                 sport=odds_api_sport,
-                markets="h2h,spreads,totals",
+                markets=markets,
                 refresh=True,
             )
         except Exception as e:
@@ -177,14 +194,20 @@ def capture_sport(
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["all"], default="all")
-    ap.add_argument("--window", type=float, default=5.0,
-                    help="Capture games starting within ±window/2 minutes (default 5 → 2.5-7.5 min)")
+    ap.add_argument("--window", type=float, default=14.0,
+                    help="Width of the pre-game capture band in minutes (default 14 → "
+                         "-2 to +12 min around start). Capture is idempotent, so the "
+                         "first run that sees a game inside this band locks its close; "
+                         "a wide band means a single missed 2-min cron tick no longer "
+                         "loses the game's closing line forever.")
     ap.add_argument("--force", action="store_true",
                     help="Re-capture even if event already in archive")
     args = ap.parse_args()
 
     half = args.window / 2.0
-    lo, hi = 5.0 - half, 5.0 + half  # capture window centered ~5 min before first pitch
+    # Band centered ~5 min before start. Default width 14 → [-2, +12] min: catches
+    # games up to 12 min out (reliable) down to 2 min after start (cron-lag grace).
+    lo, hi = 5.0 - half, 5.0 + half
 
     sports_to_run = list(SPORTS.keys()) if args.sport == "all" else [args.sport]
     total = 0
