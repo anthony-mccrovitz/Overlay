@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-08T02:46:00.651245+00:00",
+  "updated_at": "2026-06-08T07:50:06.830729+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -245,15 +245,15 @@
   },
   "summary": {
     "total_picks": 254,
-    "settled": 235,
-    "pending": 14,
+    "settled": 236,
+    "pending": 13,
     "wins": 135,
-    "losses": 96,
+    "losses": 97,
     "pushes": 4,
-    "win_rate": 0.5844,
-    "units_profit": 34.98,
-    "roi": 0.1541,
-    "streak": -1
+    "win_rate": 0.5819,
+    "units_profit": 33.98,
+    "roi": 0.149,
+    "streak": -2
   },
   "nrfi": {
     "total": 0,
@@ -303,27 +303,27 @@
     },
     "total": {
       "total": 167,
-      "settled": 149,
-      "pending": 13,
+      "settled": 150,
+      "pending": 12,
       "wins": 90,
-      "losses": 55,
+      "losses": 56,
       "pushes": 4,
-      "win_rate": 0.6207,
-      "units_profit": 31.12,
-      "roi": 0.2184,
-      "streak": -1
+      "win_rate": 0.6164,
+      "units_profit": 30.12,
+      "roi": 0.2099,
+      "streak": -2
     }
   },
   "by_sport": {
     "mlb": {
       "total": 150,
-      "settled": 147,
-      "pending": 3,
+      "settled": 148,
+      "pending": 2,
       "wins": 77,
-      "losses": 66,
-      "win_rate": 0.5385,
-      "units_profit": 12.51,
-      "roi": 0.0875
+      "losses": 67,
+      "win_rate": 0.5347,
+      "units_profit": 11.51,
+      "roi": 0.0799
     },
     "nba": {
       "total": 94,
@@ -363,6 +363,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-07",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.0",
+      "matchup": "San Francisco Giants @ Chicago Cubs",
+      "odds": 110,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.1
+    },
     {
       "date": "2026-06-07",
       "sport": "mlb",
@@ -461,17 +472,6 @@
       "result": "win",
       "profit": 1.05,
       "edge_pct": 1.1
-    },
-    {
-      "date": "2026-06-06",
-      "sport": "mlb",
-      "market": "total",
-      "team": "OVER 8.5",
-      "matchup": "Kansas City Royals @ Minnesota Twins",
-      "odds": 100,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.2
     }
   ]
 }
