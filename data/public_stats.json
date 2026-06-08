@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-07T17:15:00.700835+00:00",
+  "updated_at": "2026-06-08T02:36:00.773404+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -234,8 +234,8 @@
     },
     "totals_coverage": {
       "scored": 79,
-      "scoreable": 209,
-      "pct": 37.8
+      "scoreable": 210,
+      "pct": 37.6
     },
     "spread_coverage": {
       "scored": 133,
@@ -244,16 +244,16 @@
     }
   },
   "summary": {
-    "total_picks": 250,
-    "settled": 231,
+    "total_picks": 254,
+    "settled": 235,
     "pending": 14,
-    "wins": 132,
-    "losses": 95,
+    "wins": 135,
+    "losses": 96,
     "pushes": 4,
-    "win_rate": 0.5815,
-    "units_profit": 32.83,
-    "roi": 0.1472,
-    "streak": 1
+    "win_rate": 0.5844,
+    "units_profit": 34.98,
+    "roi": 0.1541,
+    "streak": -1
   },
   "nrfi": {
     "total": 0,
@@ -302,33 +302,33 @@
       "streak": 1
     },
     "total": {
-      "total": 163,
-      "settled": 145,
+      "total": 167,
+      "settled": 149,
       "pending": 13,
-      "wins": 87,
-      "losses": 54,
+      "wins": 90,
+      "losses": 55,
       "pushes": 4,
-      "win_rate": 0.617,
-      "units_profit": 28.97,
-      "roi": 0.2092,
+      "win_rate": 0.6207,
+      "units_profit": 31.12,
+      "roi": 0.2184,
       "streak": -1
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 147,
-      "settled": 143,
-      "pending": 4,
-      "wins": 74,
-      "losses": 65,
-      "win_rate": 0.5324,
-      "units_profit": 10.36,
-      "roi": 0.0746
+      "total": 150,
+      "settled": 147,
+      "pending": 3,
+      "wins": 77,
+      "losses": 66,
+      "win_rate": 0.5385,
+      "units_profit": 12.51,
+      "roi": 0.0875
     },
     "nba": {
-      "total": 93,
+      "total": 94,
       "settled": 80,
-      "pending": 13,
+      "pending": 14,
       "wins": 53,
       "losses": 27,
       "win_rate": 0.6625,
@@ -363,6 +363,50 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-07",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 7.5",
+      "matchup": "New York Mets @ San Diego Padres",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.4
+    },
+    {
+      "date": "2026-06-07",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 9.5",
+      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
+      "odds": 100,
+      "result": "win",
+      "profit": 1.0,
+      "edge_pct": 1.7
+    },
+    {
+      "date": "2026-06-07",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 9.0",
+      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
+      "odds": 115,
+      "result": "win",
+      "profit": 1.15,
+      "edge_pct": 1.2
+    },
+    {
+      "date": "2026-06-07",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 8.5",
+      "matchup": "Boston Red Sox @ New York Yankees",
+      "odds": 100,
+      "result": "win",
+      "profit": 1.0,
+      "edge_pct": 2.0
+    },
     {
       "date": "2026-06-06",
       "sport": "nhl",
@@ -428,50 +472,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 1.2
-    },
-    {
-      "date": "2026-06-06",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 9.5",
-      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
-      "odds": -114,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.4
-    },
-    {
-      "date": "2026-06-06",
-      "sport": "mlb",
-      "market": "total",
-      "team": "OVER 8.0",
-      "matchup": "San Francisco Giants @ Chicago Cubs",
-      "odds": 105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.6
-    },
-    {
-      "date": "2026-06-05",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 215.0",
-      "matchup": "New York Knicks @ San Antonio Spurs",
-      "odds": -109,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 15.78
-    },
-    {
-      "date": "2026-06-05",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 9.0",
-      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
-      "odds": 100,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.3
     }
   ]
 }
