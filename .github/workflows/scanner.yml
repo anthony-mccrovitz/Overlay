@@ -1,0 +1,23 @@
+name: Dynamic event scanner
+
+# Scans tennis/soccer/WNBA/NHL for new events and generates picks. Was every 2h;
+# trimmed to every 6h to stay inside free-tier minutes (it can pull models, so
+# it runs the full dependency stack).
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: scanner
+  cancel-in-progress: false
+
+jobs:
+  scanner:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: full
+      command: python scripts/dynamic_picks_scanner.py

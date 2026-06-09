@@ -1,0 +1,30 @@
+name: Night picks
+
+# 9:30 PM ET (01:30 UTC, EDT) — generate next-day picks at line-open + deploy.
+# Was: chef.py night mlb/nba/nhl/wnba (21:30–21:45 ET) + deploy (22:36/22:46 ET).
+on:
+  schedule:
+    - cron: "30 1 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: night
+  cancel-in-progress: false
+
+jobs:
+  night:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: full
+      command: |
+        set +e   # one sport failing must not block the others
+        python chef.py night --sport mlb
+        python chef.py night --sport nba
+        python chef.py night --sport nhl
+        python chef.py night --sport wnba
+        python scripts/deploy_picks.py --sport mlb
+        python scripts/deploy_picks.py --sport nba
+        true

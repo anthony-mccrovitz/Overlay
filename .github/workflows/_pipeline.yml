@@ -1,0 +1,103 @@
+name: _pipeline
+
+# Reusable engine for every scheduled pipeline job. Callers pass the command(s)
+# to run; this handles checkout, Python, deps, secrets, and committing any
+# tracked-file changes back to the repo (Actions runners are ephemeral, so a
+# job that writes picks/results MUST commit or the work is lost).
+#
+# level: "light" = pandas/numpy/requests stack (grading, CLV, deploys, captions)
+#        "full"  = full requirements.txt incl. xgboost/lightgbm/catboost (picks)
+
+on:
+  workflow_call:
+    inputs:
+      command:
+        description: "Shell command(s) to run from repo root"
+        required: true
+        type: string
+      level:
+        description: "Dependency level: light or full"
+        required: false
+        type: string
+        default: light
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git identity
+        # Set early so scripts that self-commit (e.g. deploy_picks.py) work too.
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip --quiet
+          if [ "${{ inputs.level }}" = "full" ]; then
+            pip install --quiet -r requirements.txt
+          else
+            pip install --quiet pandas numpy requests python-dotenv pillow \
+              beautifulsoup4 lxml scipy
+          fi
+
+      - name: Write .env from secrets
+        # Mirrors the local .env so load_dotenv() and os.environ.get() both work.
+        run: |
+          cat > .env <<EOF
+          ODDS_API_KEY=${{ secrets.ODDS_API_KEY }}
+          OPENWEATHER_API_KEY=${{ secrets.OPENWEATHER_API_KEY }}
+          KALSHI_API_KEY=${{ secrets.KALSHI_API_KEY }}
+          KALSHI_EMAIL=${{ secrets.KALSHI_EMAIL }}
+          KALSHI_PASSWORD=${{ secrets.KALSHI_PASSWORD }}
+          SPORTS_GAME_ODDS_API_KEY=${{ secrets.SPORTS_GAME_ODDS_API_KEY }}
+          EOF
+
+      - name: Run pipeline command
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+          KALSHI_API_KEY: ${{ secrets.KALSHI_API_KEY }}
+          KALSHI_EMAIL: ${{ secrets.KALSHI_EMAIL }}
+          KALSHI_PASSWORD: ${{ secrets.KALSHI_PASSWORD }}
+          SPORTS_GAME_ODDS_API_KEY: ${{ secrets.SPORTS_GAME_ODDS_API_KEY }}
+          PYTHONUNBUFFERED: "1"
+        run: ${{ inputs.command }}
+
+      - name: Commit & push changes
+        if: ${{ always() }}
+        # Some scripts (deploy_picks.py) already commit+push themselves; this is a
+        # catch-all for everything else (grades, CLV, archives, cards). Logs are
+        # skipped to avoid churn — Actions captures stdout in the run console.
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          rm -f .env
+          git add -A
+          git reset -q -- logs/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No tracked changes to commit."
+            exit 0
+          fi
+          git commit -m "pipeline: automated update $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+              && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            echo "push attempt $i failed, retrying…"; sleep 5
+          done
+          echo "::error::failed to push after 3 attempts"; exit 1

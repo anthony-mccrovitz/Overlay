@@ -1,0 +1,23 @@
+name: Backup picks
+
+# Rotating backup of picks.json. Was hourly; trimmed to once daily at 5:00 AM ET
+# (09:00 UTC, EDT) — git history already versions every change, so hourly local
+# snapshots are redundant in the cloud.
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: python scripts/backup_picks.py
