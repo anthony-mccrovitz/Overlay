@@ -34,9 +34,9 @@ output/**/caption_*.txt
 Thumbs.db
 
 # Model artifacts
-models/*.pkl
-models/*.joblib
-models/*.cbm
+# NOTE: trained model .pkl/.joblib/.cbm are now COMMITTED so GitHub Actions can
+# run picks generation in the cloud (no laptop needed). They're small (~5M total).
+# Re-add the ignores below only if models grow large enough to warrant git-lfs.
 catboost_info/
 
 # Node / Next.js
