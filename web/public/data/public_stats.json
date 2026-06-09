@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-09T07:50:05.885371+00:00",
+  "updated_at": "2026-06-09T17:15:01.167215+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,16 +204,16 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.116,
-      "positive_pct": 39.5,
-      "n": 683,
+      "avg_clv_pct": -0.13,
+      "positive_pct": 39.3,
+      "n": 698,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 79,
-        "avg_line_clv": 0.215,
-        "beat_close_pct": 50.6,
+        "count": 80,
+        "avg_line_clv": 0.188,
+        "beat_close_pct": 50.0,
         "avg_price_clv_pct": -0.851,
         "matched_price_n": 27
       },
@@ -225,17 +225,17 @@
         "matched_price_n": 85
       },
       "f5_total": {
-        "count": 40,
-        "avg_line_clv": 0.075,
-        "beat_close_pct": 35.0,
-        "avg_price_clv_pct": -4.082,
-        "matched_price_n": 19
+        "count": 52,
+        "avg_line_clv": 0.077,
+        "beat_close_pct": 38.5,
+        "avg_price_clv_pct": -3.895,
+        "matched_price_n": 24
       }
     },
     "totals_coverage": {
-      "scored": 79,
+      "scored": 80,
       "scoreable": 211,
-      "pct": 37.4
+      "pct": 37.9
     },
     "spread_coverage": {
       "scored": 133,
@@ -244,9 +244,9 @@
     }
   },
   "summary": {
-    "total_picks": 260,
+    "total_picks": 258,
     "settled": 241,
-    "pending": 14,
+    "pending": 12,
     "wins": 136,
     "losses": 100,
     "pushes": 5,
@@ -302,9 +302,9 @@
       "streak": 1
     },
     "total": {
-      "total": 173,
+      "total": 171,
       "settled": 155,
-      "pending": 13,
+      "pending": 11,
       "wins": 91,
       "losses": 59,
       "pushes": 5,
@@ -316,9 +316,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 155,
+      "total": 153,
       "settled": 152,
-      "pending": 3,
+      "pending": 1,
       "wins": 77,
       "losses": 70,
       "win_rate": 0.5238,
