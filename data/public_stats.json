@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-10T02:46:00.667464+00:00",
+  "updated_at": "2026-06-10T07:50:05.782139+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -245,15 +245,15 @@
   },
   "summary": {
     "total_picks": 260,
-    "settled": 241,
-    "pending": 14,
-    "wins": 136,
-    "losses": 100,
+    "settled": 243,
+    "pending": 12,
+    "wins": 137,
+    "losses": 101,
     "pushes": 5,
-    "win_rate": 0.5763,
-    "units_profit": 31.93,
-    "roi": 0.1376,
-    "streak": -2
+    "win_rate": 0.5756,
+    "units_profit": 32.48,
+    "roi": 0.1391,
+    "streak": 1
   },
   "nrfi": {
     "total": 0,
@@ -303,27 +303,27 @@
     },
     "total": {
       "total": 173,
-      "settled": 155,
-      "pending": 13,
-      "wins": 91,
-      "losses": 59,
+      "settled": 157,
+      "pending": 11,
+      "wins": 92,
+      "losses": 60,
       "pushes": 5,
-      "win_rate": 0.6067,
-      "units_profit": 28.07,
-      "roi": 0.1903,
-      "streak": -2
+      "win_rate": 0.6053,
+      "units_profit": 28.62,
+      "roi": 0.1921,
+      "streak": 1
     }
   },
   "by_sport": {
     "mlb": {
       "total": 154,
-      "settled": 152,
-      "pending": 2,
-      "wins": 77,
+      "settled": 153,
+      "pending": 1,
+      "wins": 78,
       "losses": 70,
-      "win_rate": 0.5238,
-      "units_profit": 8.51,
-      "roi": 0.0579
+      "win_rate": 0.527,
+      "units_profit": 9.56,
+      "roi": 0.0646
     },
     "nba": {
       "total": 95,
@@ -337,13 +337,13 @@
     },
     "nhl": {
       "total": 11,
-      "settled": 8,
-      "pending": 3,
+      "settled": 9,
+      "pending": 2,
       "wins": 5,
-      "losses": 3,
-      "win_rate": 0.625,
-      "units_profit": 0.35,
-      "roi": 0.0886
+      "losses": 4,
+      "win_rate": 0.5556,
+      "units_profit": -0.15,
+      "roi": -0.0324
     }
   },
   "backtest_mlb": [
@@ -363,6 +363,28 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-09",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 13.0",
+      "matchup": "Milwaukee Brewers @ Athletics",
+      "odds": 105,
+      "result": "win",
+      "profit": 1.05,
+      "edge_pct": 4.5
+    },
+    {
+      "date": "2026-06-09",
+      "sport": "nhl",
+      "market": "total",
+      "team": "Under 6.0",
+      "matchup": "Carolina Hurricanes @ Vegas Golden Knights",
+      "odds": -110,
+      "result": "loss",
+      "profit": -0.5,
+      "edge_pct": 5.88
+    },
     {
       "date": "2026-06-08",
       "sport": "mlb",
@@ -450,28 +472,6 @@
       "result": "win",
       "profit": 1.15,
       "edge_pct": 1.2
-    },
-    {
-      "date": "2026-06-07",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 8.5",
-      "matchup": "Boston Red Sox @ New York Yankees",
-      "odds": 100,
-      "result": "win",
-      "profit": 1.0,
-      "edge_pct": 2.0
-    },
-    {
-      "date": "2026-06-06",
-      "sport": "nhl",
-      "market": "puck_line",
-      "team": "Carolina Hurricanes +1.5",
-      "matchup": "Carolina Hurricanes @ Vegas Golden Knights",
-      "odds": -275,
-      "result": "win",
-      "profit": 0.18,
-      "edge_pct": 11.54
     }
   ]
 }
