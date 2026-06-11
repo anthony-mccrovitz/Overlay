@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-11T02:46:00.759836+00:00",
+  "updated_at": "2026-06-11T07:50:06.010312+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -245,14 +245,14 @@
   },
   "summary": {
     "total_picks": 262,
-    "settled": 243,
-    "pending": 14,
-    "wins": 137,
-    "losses": 101,
+    "settled": 245,
+    "pending": 12,
+    "wins": 138,
+    "losses": 102,
     "pushes": 5,
-    "win_rate": 0.5756,
-    "units_profit": 32.48,
-    "roi": 0.1391,
+    "win_rate": 0.575,
+    "units_profit": 32.44,
+    "roi": 0.1377,
     "streak": 1
   },
   "nrfi": {
@@ -303,37 +303,37 @@
     },
     "total": {
       "total": 174,
-      "settled": 157,
-      "pending": 12,
-      "wins": 92,
-      "losses": 60,
+      "settled": 159,
+      "pending": 10,
+      "wins": 93,
+      "losses": 61,
       "pushes": 5,
-      "win_rate": 0.6053,
-      "units_profit": 28.62,
-      "roi": 0.1921,
+      "win_rate": 0.6039,
+      "units_profit": 28.58,
+      "roi": 0.1892,
       "streak": 1
     }
   },
   "by_sport": {
     "mlb": {
       "total": 155,
-      "settled": 153,
-      "pending": 2,
-      "wins": 78,
+      "settled": 154,
+      "pending": 1,
+      "wins": 79,
       "losses": 70,
-      "win_rate": 0.527,
-      "units_profit": 9.56,
-      "roi": 0.0646
+      "win_rate": 0.5302,
+      "units_profit": 10.52,
+      "roi": 0.0706
     },
     "nba": {
       "total": 95,
-      "settled": 81,
-      "pending": 14,
+      "settled": 82,
+      "pending": 13,
       "wins": 54,
-      "losses": 27,
-      "win_rate": 0.6667,
-      "units_profit": 23.07,
-      "roi": 0.2848
+      "losses": 28,
+      "win_rate": 0.6585,
+      "units_profit": 22.07,
+      "roi": 0.2691
     },
     "nhl": {
       "total": 12,
@@ -363,6 +363,28 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-10",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 14.0",
+      "matchup": "Milwaukee Brewers @ Athletics",
+      "odds": -105,
+      "result": "win",
+      "profit": 0.95,
+      "edge_pct": 5.3
+    },
+    {
+      "date": "2026-06-10",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "San Antonio Spurs @ New York Knicks",
+      "odds": -109,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 15.42
+    },
     {
       "date": "2026-06-09",
       "sport": "mlb",
@@ -450,28 +472,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 1.4
-    },
-    {
-      "date": "2026-06-07",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 9.5",
-      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
-      "odds": 100,
-      "result": "win",
-      "profit": 1.0,
-      "edge_pct": 1.7
-    },
-    {
-      "date": "2026-06-07",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 9.0",
-      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
-      "odds": 115,
-      "result": "win",
-      "profit": 1.15,
-      "edge_pct": 1.2
     }
   ]
 }
