@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-11T17:15:00.803866+00:00",
+  "updated_at": "2026-06-12T02:36:00.846946+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -245,15 +245,15 @@
   },
   "summary": {
     "total_picks": 262,
-    "settled": 245,
-    "pending": 12,
-    "wins": 138,
+    "settled": 246,
+    "pending": 11,
+    "wins": 139,
     "losses": 102,
     "pushes": 5,
-    "win_rate": 0.575,
-    "units_profit": 32.44,
-    "roi": 0.1377,
-    "streak": 1
+    "win_rate": 0.5768,
+    "units_profit": 33.14,
+    "roi": 0.1401,
+    "streak": 2
   },
   "nrfi": {
     "total": 0,
@@ -267,15 +267,15 @@
   "by_market": {
     "moneyline": {
       "total": 84,
-      "settled": 82,
-      "pending": 2,
-      "wins": 42,
+      "settled": 83,
+      "pending": 1,
+      "wins": 43,
       "losses": 40,
       "pushes": 0,
-      "win_rate": 0.5122,
-      "units_profit": 3.38,
-      "roi": 0.0415,
-      "streak": -3
+      "win_rate": 0.5181,
+      "units_profit": 4.09,
+      "roi": 0.0495,
+      "streak": 1
     },
     "puck_line": {
       "total": 2,
@@ -317,13 +317,13 @@
   "by_sport": {
     "mlb": {
       "total": 155,
-      "settled": 154,
-      "pending": 1,
-      "wins": 79,
+      "settled": 155,
+      "pending": 0,
+      "wins": 80,
       "losses": 70,
-      "win_rate": 0.5302,
-      "units_profit": 10.52,
-      "roi": 0.0706
+      "win_rate": 0.5333,
+      "units_profit": 11.22,
+      "roi": 0.0748
     },
     "nba": {
       "total": 95,
@@ -363,6 +363,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-11",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Chicago Cubs",
+      "matchup": "Colorado Rockies",
+      "odds": -142,
+      "result": "win",
+      "profit": 0.7,
+      "edge_pct": 8.19
+    },
     {
       "date": "2026-06-10",
       "sport": "mlb",
@@ -461,17 +472,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 1.1
-    },
-    {
-      "date": "2026-06-07",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 7.5",
-      "matchup": "New York Mets @ San Diego Padres",
-      "odds": 100,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.4
     }
   ]
 }
