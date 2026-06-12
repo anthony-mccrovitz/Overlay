@@ -1,0 +1,35 @@
+**Overlay AI — MLB Picks · 6/12/26 (Friday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 80-70 (53.3% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Atlanta Braves vs  | -102 | +16.6% | DraftKings |
+| Arizona Diamondbacks vs  | -110 | +15.3% | theScore Bet |
+| New York Yankees vs  | -104 | +14.4% | FanDuel |
+| St. Louis Cardinals vs  | +120 | +14.3% | FanDuel |
+| Colorado Rockies vs  | +160 | +13.7% | Fliff |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Seattle Mariners @ Washington Nationals NRFI (Bryce Miller vs Zack Littell) | NRFI +100 | 66% | Caesars |
+| Los Angeles Dodgers @ Chicago White Sox NRFI (Roki Sasaki vs Anthony Kay) | NRFI -105 | 67% | Caesars |
+| Arizona Diamondbacks @ Cincinnati Reds NRFI (Eduardo Rodriguez vs Nick Lodolo) | NRFI +105 | 64% | Caesars |
+| Texas Rangers @ Boston Red Sox NRFI (Jack Leiter vs Sonny Gray) | NRFI -115 | 67% | Caesars |
+| San Diego Padres @ Baltimore Orioles NRFI (Griffin Canning vs Shane Baz) | NRFI +104 | 63% | FanDuel |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*
