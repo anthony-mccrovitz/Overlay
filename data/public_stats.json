@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-12T17:15:00.414015+00:00",
+  "updated_at": "2026-06-13T17:15:00.537912+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,49 +204,49 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.207,
-      "positive_pct": 37.8,
-      "n": 743,
+      "avg_clv_pct": -0.212,
+      "positive_pct": 37.5,
+      "n": 758,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 82,
-        "avg_line_clv": 0.183,
-        "beat_close_pct": 50.0,
-        "avg_price_clv_pct": -0.758,
-        "matched_price_n": 29
+        "count": 85,
+        "avg_line_clv": 0.179,
+        "beat_close_pct": 49.4,
+        "avg_price_clv_pct": -0.814,
+        "matched_price_n": 31
       },
       "spread": {
-        "count": 134,
-        "avg_line_clv": 0.388,
-        "beat_close_pct": 41.8,
-        "avg_price_clv_pct": 1.718,
-        "matched_price_n": 85
+        "count": 135,
+        "avg_line_clv": 0.385,
+        "beat_close_pct": 41.5,
+        "avg_price_clv_pct": 1.668,
+        "matched_price_n": 86
       },
       "f5_total": {
-        "count": 81,
-        "avg_line_clv": 0.074,
-        "beat_close_pct": 35.8,
-        "avg_price_clv_pct": -3.79,
-        "matched_price_n": 42
+        "count": 104,
+        "avg_line_clv": 0.067,
+        "beat_close_pct": 33.7,
+        "avg_price_clv_pct": -3.62,
+        "matched_price_n": 59
       }
     },
     "totals_coverage": {
-      "scored": 82,
-      "scoreable": 213,
-      "pct": 38.5
+      "scored": 85,
+      "scoreable": 217,
+      "pct": 39.2
     },
     "spread_coverage": {
-      "scored": 134,
-      "scoreable": 273,
-      "pct": 49.1
+      "scored": 135,
+      "scoreable": 274,
+      "pct": 49.3
     }
   },
   "summary": {
-    "total_picks": 264,
+    "total_picks": 268,
     "settled": 247,
-    "pending": 12,
+    "pending": 16,
     "wins": 139,
     "losses": 102,
     "pushes": 6,
@@ -266,9 +266,9 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 85,
+      "total": 86,
       "settled": 83,
-      "pending": 2,
+      "pending": 3,
       "wins": 43,
       "losses": 40,
       "pushes": 0,
@@ -302,9 +302,9 @@
       "streak": 1
     },
     "total": {
-      "total": 175,
+      "total": 178,
       "settled": 160,
-      "pending": 10,
+      "pending": 13,
       "wins": 93,
       "losses": 61,
       "pushes": 6,
@@ -316,9 +316,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 157,
+      "total": 159,
       "settled": 155,
-      "pending": 2,
+      "pending": 4,
       "wins": 80,
       "losses": 70,
       "win_rate": 0.5333,
@@ -326,9 +326,9 @@
       "roi": 0.0748
     },
     "nba": {
-      "total": 95,
+      "total": 97,
       "settled": 82,
-      "pending": 13,
+      "pending": 15,
       "wins": 54,
       "losses": 28,
       "win_rate": 0.6585,
