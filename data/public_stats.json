@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-14T07:50:08.966547+00:00",
+  "updated_at": "2026-06-14T17:17:36.154932+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,16 +204,16 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.212,
-      "positive_pct": 37.5,
-      "n": 758,
+      "avg_clv_pct": -0.264,
+      "positive_pct": 37.0,
+      "n": 789,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 85,
-        "avg_line_clv": 0.179,
-        "beat_close_pct": 49.4,
+        "count": 87,
+        "avg_line_clv": 0.135,
+        "beat_close_pct": 48.3,
         "avg_price_clv_pct": -0.814,
         "matched_price_n": 31
       },
@@ -225,17 +225,17 @@
         "matched_price_n": 86
       },
       "f5_total": {
-        "count": 104,
-        "avg_line_clv": 0.067,
-        "beat_close_pct": 33.7,
-        "avg_price_clv_pct": -3.62,
-        "matched_price_n": 59
+        "count": 147,
+        "avg_line_clv": 0.027,
+        "beat_close_pct": 32.0,
+        "avg_price_clv_pct": -3.969,
+        "matched_price_n": 74
       }
     },
     "totals_coverage": {
-      "scored": 85,
+      "scored": 87,
       "scoreable": 217,
-      "pct": 39.2
+      "pct": 40.1
     },
     "spread_coverage": {
       "scored": 135,
@@ -244,9 +244,9 @@
     }
   },
   "summary": {
-    "total_picks": 270,
+    "total_picks": 271,
     "settled": 249,
-    "pending": 16,
+    "pending": 17,
     "wins": 139,
     "losses": 104,
     "pushes": 6,
@@ -266,9 +266,9 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 87,
+      "total": 88,
       "settled": 83,
-      "pending": 4,
+      "pending": 5,
       "wins": 43,
       "losses": 40,
       "pushes": 0,
@@ -316,9 +316,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 161,
+      "total": 162,
       "settled": 155,
-      "pending": 6,
+      "pending": 7,
       "wins": 80,
       "losses": 70,
       "win_rate": 0.5333,
