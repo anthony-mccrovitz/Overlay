@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-14T02:46:00.633198+00:00",
+  "updated_at": "2026-06-14T07:50:08.966547+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -245,15 +245,15 @@
   },
   "summary": {
     "total_picks": 270,
-    "settled": 247,
-    "pending": 18,
+    "settled": 249,
+    "pending": 16,
     "wins": 139,
-    "losses": 102,
+    "losses": 104,
     "pushes": 6,
-    "win_rate": 0.5768,
-    "units_profit": 33.14,
-    "roi": 0.1401,
-    "streak": 2
+    "win_rate": 0.572,
+    "units_profit": 31.14,
+    "roi": 0.1306,
+    "streak": -2
   },
   "nrfi": {
     "total": 0,
@@ -303,15 +303,15 @@
     },
     "total": {
       "total": 179,
-      "settled": 160,
-      "pending": 14,
+      "settled": 162,
+      "pending": 12,
       "wins": 93,
-      "losses": 61,
+      "losses": 63,
       "pushes": 6,
-      "win_rate": 0.6039,
-      "units_profit": 28.58,
-      "roi": 0.1892,
-      "streak": 1
+      "win_rate": 0.5962,
+      "units_profit": 26.58,
+      "roi": 0.1737,
+      "streak": -2
     }
   },
   "by_sport": {
@@ -327,13 +327,13 @@
     },
     "nba": {
       "total": 97,
-      "settled": 82,
-      "pending": 15,
+      "settled": 84,
+      "pending": 13,
       "wins": 54,
-      "losses": 28,
-      "win_rate": 0.6585,
-      "units_profit": 22.07,
-      "roi": 0.2691
+      "losses": 30,
+      "win_rate": 0.6429,
+      "units_profit": 20.07,
+      "roi": 0.2389
     },
     "nhl": {
       "total": 12,
@@ -363,6 +363,28 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-13",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 217.0",
+      "matchup": "New York Knicks @ San Antonio Spurs",
+      "odds": -108,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 14.19
+    },
+    {
+      "date": "2026-06-13",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "New York Knicks @ San Antonio Spurs",
+      "odds": -110,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 13.95
+    },
     {
       "date": "2026-06-11",
       "sport": "mlb",
@@ -450,28 +472,6 @@
       "result": "win",
       "profit": 0.95,
       "edge_pct": 15.18
-    },
-    {
-      "date": "2026-06-08",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 8.0",
-      "matchup": "New York Yankees @ Cleveland Guardians",
-      "odds": 105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.1
-    },
-    {
-      "date": "2026-06-07",
-      "sport": "mlb",
-      "market": "total",
-      "team": "OVER 8.0",
-      "matchup": "San Francisco Giants @ Chicago Cubs",
-      "odds": 110,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 1.1
     }
   ]
 }

@@ -1,0 +1,35 @@
+**Overlay AI — MLB Picks · 6/14/26 (Sunday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 80-70 (53.3% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Atlanta Braves vs  | +102 | +18.4% | FanDuel |
+| Tampa Bay Rays vs  | -112 | +17.4% | FanDuel |
+| Colorado Rockies vs  | +136 | +16.8% | FanDuel |
+| Houston Astros vs  | +105 | +16.2% | Fanatics |
+| St. Louis Cardinals vs  | +100 | +14.5% | theScore Bet |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Philadelphia Phillies @ Milwaukee Brewers YRFI (Cristopher Sánchez vs Kyle Harrison) | NRFI +120 | 44% | Caesars |
+| Miami Marlins @ Pittsburgh Pirates YRFI (Max Meyer vs Paul Skenes) | NRFI +115 | 44% | Caesars |
+| Detroit Tigers @ Cleveland Guardians YRFI (Casey Mize vs Gavin Williams) | NRFI +110 | 44% | Caesars |
+| Chicago Cubs @ San Francisco Giants YRFI (Colin Rea vs Logan Webb) | NRFI -105 | 42% | Caesars |
+| Colorado Rockies @ Athletics NRFI (Tomoyuki Sugano vs Jeffrey Springs) | NRFI +172 | 42% | FanDuel |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*
