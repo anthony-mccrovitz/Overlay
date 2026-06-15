@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-14T17:17:36.154932+00:00",
+  "updated_at": "2026-06-15T03:39:33.887226+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -244,16 +244,16 @@
     }
   },
   "summary": {
-    "total_picks": 271,
-    "settled": 249,
-    "pending": 17,
+    "total_picks": 272,
+    "settled": 253,
+    "pending": 14,
     "wins": 139,
-    "losses": 104,
+    "losses": 108,
     "pushes": 6,
-    "win_rate": 0.572,
-    "units_profit": 31.14,
-    "roi": 0.1306,
-    "streak": -2
+    "win_rate": 0.5628,
+    "units_profit": 27.14,
+    "roi": 0.1119,
+    "streak": -6
   },
   "nrfi": {
     "total": 0,
@@ -267,15 +267,15 @@
   "by_market": {
     "moneyline": {
       "total": 88,
-      "settled": 83,
-      "pending": 5,
+      "settled": 85,
+      "pending": 3,
       "wins": 43,
-      "losses": 40,
+      "losses": 42,
       "pushes": 0,
-      "win_rate": 0.5181,
-      "units_profit": 4.09,
-      "roi": 0.0495,
-      "streak": 1
+      "win_rate": 0.5059,
+      "units_profit": 2.09,
+      "roi": 0.0247,
+      "streak": -2
     },
     "puck_line": {
       "total": 2,
@@ -302,28 +302,28 @@
       "streak": 1
     },
     "total": {
-      "total": 179,
-      "settled": 162,
-      "pending": 12,
+      "total": 180,
+      "settled": 164,
+      "pending": 11,
       "wins": 93,
-      "losses": 63,
+      "losses": 65,
       "pushes": 6,
-      "win_rate": 0.5962,
-      "units_profit": 26.58,
-      "roi": 0.1737,
-      "streak": -2
+      "win_rate": 0.5886,
+      "units_profit": 24.58,
+      "roi": 0.1586,
+      "streak": -4
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 162,
-      "settled": 155,
-      "pending": 7,
+      "total": 163,
+      "settled": 159,
+      "pending": 4,
       "wins": 80,
-      "losses": 70,
-      "win_rate": 0.5333,
-      "units_profit": 11.22,
-      "roi": 0.0748
+      "losses": 74,
+      "win_rate": 0.5195,
+      "units_profit": 7.22,
+      "roi": 0.0469
     },
     "nba": {
       "total": 97,
@@ -363,6 +363,50 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 13.5",
+      "matchup": "Colorado Rockies @ Athletics",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 4.1
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Chicago Cubs",
+      "matchup": "San Francisco Giants",
+      "odds": 120,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 19.93
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "St. Louis Cardinals",
+      "matchup": "Minnesota Twins",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 14.54
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 14.0",
+      "matchup": "Colorado Rockies @ Athletics",
+      "odds": -105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 6.8
+    },
     {
       "date": "2026-06-13",
       "sport": "nba",
@@ -428,50 +472,6 @@
       "result": "win",
       "profit": 1.05,
       "edge_pct": 4.5
-    },
-    {
-      "date": "2026-06-09",
-      "sport": "nhl",
-      "market": "total",
-      "team": "Under 6.0",
-      "matchup": "Carolina Hurricanes @ Vegas Golden Knights",
-      "odds": -110,
-      "result": "loss",
-      "profit": -0.5,
-      "edge_pct": 5.88
-    },
-    {
-      "date": "2026-06-08",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 11.0",
-      "matchup": "Milwaukee Brewers @ Athletics",
-      "odds": 110,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 2.4
-    },
-    {
-      "date": "2026-06-08",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 10.5",
-      "matchup": "Milwaukee Brewers @ Athletics",
-      "odds": 105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 2.1
-    },
-    {
-      "date": "2026-06-08",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 216.5",
-      "matchup": "San Antonio Spurs @ New York Knicks",
-      "odds": -105,
-      "result": "win",
-      "profit": 0.95,
-      "edge_pct": 15.18
     }
   ]
 }
