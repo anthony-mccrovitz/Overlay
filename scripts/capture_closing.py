@@ -60,16 +60,38 @@ _BASE_MARKETS = "h2h,spreads,totals"
 # MMA: method-of-victory + total_rounds for fight prop CLV.
 # Each market widens the per-event call payload but the event count stays the
 # same — the cost is "extra markets per call", not extra API calls.
+# Measurement-first (2026-06-16): capture the full standard catalog per sport so
+# CLV can eventually be read on every market, not just the 5 we model today.
+# Props are the documented soft market — books set lower limits / pay them less
+# attention — so we archive every available prop closing now, even for markets we
+# don't yet bet, to build the closing-line history a future model validates against.
+# These ride a SEPARATE per-event call from h2h/spreads/totals, so an unsupported
+# key for a given sport degrades to "no props that event", never losing the base.
+_SOCCER_EXTRA = ("alternate_spreads,alternate_totals,btts,draw_no_bet,double_chance,"
+                 "player_goal_scorer_anytime,player_shots_on_target,player_shots,"
+                 "player_assists")
 _EXTRA_MARKETS = {
-    "baseball_mlb":                "totals_1st_5_innings,totals_1st_1_innings,pitcher_strikeouts",
-    "basketball_nba":              "player_points,player_rebounds,player_assists,player_threes",
-    "basketball_wnba":             "player_points,player_rebounds,player_assists",
-    "icehockey_nhl":               "player_points,player_goals,player_assists,player_shots_on_goal",
-    "soccer_fifa_world_cup":       "alternate_spreads,player_goal_scorer_anytime",
-    "soccer_spain_la_liga":        "alternate_spreads,player_goal_scorer_anytime",
-    "soccer_italy_serie_a":        "alternate_spreads,player_goal_scorer_anytime",
-    "soccer_germany_bundesliga":   "alternate_spreads,player_goal_scorer_anytime",
-    "soccer_usa_mls":              "alternate_spreads,player_goal_scorer_anytime",
+    "baseball_mlb": ("totals_1st_5_innings,totals_1st_1_innings,"
+                     "pitcher_strikeouts,pitcher_hits_allowed,pitcher_walks,"
+                     "pitcher_earned_runs,pitcher_outs,"
+                     "batter_hits,batter_total_bases,batter_home_runs,batter_rbis,"
+                     "batter_runs_scored,batter_walks,batter_strikeouts,"
+                     "batter_stolen_bases,batter_singles,batter_doubles"),
+    "basketball_nba": ("player_points,player_rebounds,player_assists,player_threes,"
+                       "player_blocks,player_steals,player_turnovers,"
+                       "player_points_rebounds_assists,player_points_rebounds,"
+                       "player_points_assists,player_rebounds_assists,"
+                       "player_double_double"),
+    "basketball_wnba": ("player_points,player_rebounds,player_assists,player_threes,"
+                        "player_blocks,player_steals,player_points_rebounds_assists"),
+    "icehockey_nhl": ("player_points,player_goals,player_assists,player_shots_on_goal,"
+                      "player_blocked_shots,player_power_play_points,"
+                      "player_total_saves,player_goal_scorer_anytime"),
+    "soccer_fifa_world_cup":       _SOCCER_EXTRA,
+    "soccer_spain_la_liga":        _SOCCER_EXTRA,
+    "soccer_italy_serie_a":        _SOCCER_EXTRA,
+    "soccer_germany_bundesliga":   _SOCCER_EXTRA,
+    "soccer_usa_mls":              _SOCCER_EXTRA,
     "mma_mixed_martial_arts":      "fight_result_method,total_rounds",
 }
 
@@ -141,27 +163,44 @@ def capture_sport(
         if not _within_window(ev.get("commence_time", ""), lo_min, hi_min):
             continue
 
-        markets = _BASE_MARKETS
-        extra = _EXTRA_MARKETS.get(odds_api_sport)
-        if extra:
-            markets = f"{_BASE_MARKETS},{extra}"
-
+        # Base markets (h2h/spreads/totals) in their own call — these must never
+        # be lost to an unsupported prop key, so capture + save them regardless of
+        # whether the props call below succeeds.
         try:
-            odds_df = fetch_event_odds(
+            base_df = fetch_event_odds(
                 event_id=ev_id,
                 sport=odds_api_sport,
-                markets=markets,
+                markets=_BASE_MARKETS,
                 refresh=True,
             )
         except Exception as e:
-            _log(f"  ERROR fetching {sport_key} event {ev_id}: {e}")
+            _log(f"  ERROR fetching {sport_key} base markets {ev_id}: {e}")
             continue
 
-        if odds_df is None or odds_df.empty:
+        if base_df is None or base_df.empty:
             continue
 
-        # Pull the best (most favorable) ML for each side from the DataFrame
-        ml_rows = odds_df[odds_df["Market"] == "h2h"]
+        all_rows = base_df.to_dict(orient="records")
+
+        # Props / period markets — separate call so a 422 on any one key only
+        # costs that event's props, not the base capture. API bills per
+        # market×region regardless of how calls are grouped, so cost is unchanged.
+        extra = _EXTRA_MARKETS.get(odds_api_sport)
+        if extra:
+            try:
+                extra_df = fetch_event_odds(
+                    event_id=ev_id,
+                    sport=odds_api_sport,
+                    markets=extra,
+                    refresh=True,
+                )
+                if extra_df is not None and not extra_df.empty:
+                    all_rows += extra_df.to_dict(orient="records")
+            except Exception as e:
+                _log(f"  WARN props fetch failed {sport_key} {ev_id}: {e}")
+
+        # Pull the best (most favorable) ML for each side from the base markets
+        ml_rows = base_df[base_df["Market"] == "h2h"]
         home_ml = away_ml = None
         home_book = away_book = None
         if not ml_rows.empty:
@@ -187,7 +226,7 @@ def capture_sport(
             "BestAwayML":    int(away_ml) if away_ml is not None else None,
             "HomeBook":      home_book,
             "AwayBook":      away_book,
-            "all_odds":      odds_df.to_dict(orient="records"),
+            "all_odds":      all_rows,
         }
         # If forcing re-capture, replace the existing entry
         if force and ev_id in captured_ids:
