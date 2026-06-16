@@ -53,3 +53,7 @@ web/.env.local
 dashboard/node_modules/
 dashboard/.next/
 .vercel
+
+# archived frontends — never track their deps/build output
+legacy/**/node_modules/
+legacy/**/.next/

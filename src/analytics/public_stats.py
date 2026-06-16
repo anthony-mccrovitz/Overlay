@@ -15,7 +15,6 @@ from pathlib import Path
 
 _PNL_FILE    = Path("data/pnl/picks.json")
 _OUT_FILE    = Path("data/public_stats.json")
-_WEB_OUT_FILE = Path("web/public/data/public_stats.json")
 
 
 def _streak(picks: list[dict]) -> int:
@@ -191,19 +190,8 @@ def write_public_stats() -> None:
         "count":       len(yesterday_graded),
     }
 
-    # Write to web/public/data/ so Vercel can serve them
-    for fname, obj in [
-        ("today_picks.json",     _today_meta),
-        ("yesterday_results.json", _yesterday_meta),
-    ]:
-        try:
-            out = _WEB_OUT_FILE.parent / fname
-            out.parent.mkdir(parents=True, exist_ok=True)
-            with open(out, "w", encoding="utf-8") as _f:
-                import json as _json
-                _json.dump(obj, _f, indent=2)
-        except Exception as _we:
-            print(f"  [stats] warning: {fname} write failed: {_we}")
+    # today_picks/yesterday_results were a web/-only mirror (archived to legacy/);
+    # overlay doesn't consume them, so they're no longer written.
 
     # ── Recent picks — last 10 settled card picks, newest first ───────────────
     recent_settled = sorted(
@@ -247,9 +235,52 @@ def write_public_stats() -> None:
     except Exception:
         algo_status = {}
 
+    # ── CLV — the honest edge test (did we beat the closing line?) ──────────────
+    # A high win-rate can be variance; positive CLV over a real sample is the only
+    # signal that an edge is repeatable. `coverage` exposes how much of the slate we
+    # can actually score — a low number means "unproven", not "no edge".
+    try:
+        from src.analytics.clv_tracker import (
+            get_clv_summary, get_spread_total_clv_summary, _load_snapshots,
+        )
+        ml_clv = get_clv_summary()
+        st_clv = get_spread_total_clv_summary()
+        snaps = _load_snapshots()
+
+        def _coverage(market_names: set[str]) -> dict:
+            scoreable = [
+                s for s in snaps
+                if str(s.get("market", "")).lower() in market_names
+                and s.get("opening_line") is not None and s.get("direction")
+            ]
+            scored = [s for s in scoreable if s.get("line_clv") is not None]
+            n = len(scoreable)
+            return {
+                "scored":    len(scored),
+                "scoreable": n,
+                "pct":       round(len(scored) / n * 100, 1) if n else 0.0,
+            }
+
+        clv_block = {
+            "moneyline": {
+                "avg_clv_pct":  ml_clv.get("avg_clv_pct"),
+                "positive_pct": ml_clv.get("positive_clv_pct"),
+                "n":            ml_clv.get("with_clv"),
+                "verdict":      ml_clv.get("verdict"),
+            },
+            "spread_total":     st_clv.get("by_market", {}),
+            "totals_coverage":  _coverage({"total", "totals"}),
+            "spread_coverage":  _coverage({"spread", "run_line", "runline",
+                                           "puck_line", "puckline"}),
+        }
+    except Exception as e:  # CLV is additive — never block the stats write on it
+        clv_block = {}
+        print(f"  [stats] warning: clv block failed: {e}")
+
     stats = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "algo_status": algo_status,
+        "clv": clv_block,
         "summary": {
             "total_picks":    len(card_picks),
             "settled":        len(settled),
@@ -281,13 +312,8 @@ def write_public_stats() -> None:
     with open(_OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(stats, f, indent=2)
 
-    # Mirror for Vercel — web app reads from public/data/
-    try:
-        _WEB_OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-        with open(_WEB_OUT_FILE, "w", encoding="utf-8") as f:
-            json.dump(stats, f, indent=2)
-    except Exception as e:
-        print(f"  [stats] warning: web mirror failed: {e}")
+    # web/ frontend archived to legacy/; overlay reads customer_feed/slate_data,
+    # not public_stats.json — no mirror needed.
 
     w, l = len(wins), len(losses)
     print(

@@ -53,12 +53,8 @@ def refresh_stats() -> bool:
             print(f"  ⚠  stats refresh failed: {result.stderr[:200]}")
             return False
 
-        # Mirror to web/public/data/
-        src = ROOT / "data" / "public_stats.json"
-        dst = WEB_DIR / "public" / "data" / "public_stats.json"
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src, dst)
-        print(f"  ✓ Stats refreshed → {dst.relative_to(ROOT)}")
+        # web/ frontend archived to legacy/ (overlay is the live app); no mirror.
+        print(f"  ✓ Stats refreshed → data/public_stats.json")
         return True
     except Exception as e:
         print(f"  ⚠  Stats refresh error: {e}")
@@ -69,7 +65,6 @@ def get_changed_files(date_str: str, sport: str | None = None) -> list[str]:
     """Return list of pick-related files changed/untracked for git staging."""
     files_to_stage = [
         "data/public_stats.json",
-        "web/public/data/public_stats.json",
         "data/pnl/picks.json",
     ]
 
