@@ -17,8 +17,11 @@ from __future__ import annotations
 import json
 from datetime import date as _date, datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import pandas as pd
+
+_ET = ZoneInfo("America/New_York")
 
 from src.data.odds_api import fetch_odds
 from src.tracking.schema import normalize_pick, make_pick_id
@@ -143,6 +146,21 @@ def log_shadow_strategies(date_str: str | None = None,
             continue
         if odds_df is None or odds_df.empty:
             continue
+
+        # Restrict to TODAY'S slate (ET). The odds feed returns future fixtures
+        # (e.g. the whole World Cup schedule), but a shadow pick must be a today's-
+        # game opening — otherwise its close lands in a future-dated archive and the
+        # CLV join (±1 day) never matches it, orphaning the pick.
+        if "CommenceTime" in odds_df.columns:
+            def _is_today(ct) -> bool:
+                try:
+                    dt = datetime.fromisoformat(str(ct).replace("Z", "+00:00"))
+                    return dt.astimezone(_ET).date().isoformat() == eff_date
+                except (ValueError, TypeError):
+                    return False
+            odds_df = odds_df[odds_df["CommenceTime"].map(_is_today)]
+            if odds_df.empty:
+                continue
 
         for name in strat_names:
             fn = STRATEGIES.get(name)
