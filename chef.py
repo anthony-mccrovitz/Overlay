@@ -1530,6 +1530,98 @@ def cmd_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_health(args: argparse.Namespace) -> int:
+    """Daily 30-second health check — is the instrument still recording?
+
+    The automation runs without you but fails silently. This answers one
+    question: did today's data actually get collected, and is CLV fresh?
+    Each line is ✓ (good), 🟡 (check), or ✗ (broken) with the fix.
+    """
+    from datetime import date as _date, timedelta
+    import os, glob
+
+    today = _date.today()
+    yest  = today - timedelta(days=1)
+    print(f"\n  ─ Daily Health — {today.strftime('%A %b %d, %Y')} ─────────────────────")
+    issues = 0
+
+    # 1. Picks generated today (any sport)
+    picks_root = Path("output/picks")
+    sport_dirs = [d for d in (picks_root.iterdir() if picks_root.exists() else [])
+                  if d.is_dir() and (d / today.strftime("%Y%m%d") / "picks.json").exists()]
+    n_today = 0
+    for d in sport_dirs:
+        try:
+            blob = json.loads((d / today.strftime("%Y%m%d") / "picks.json").read_text())
+            n_today += len(blob) if isinstance(blob, list) else len(blob.get("picks", []))
+        except (json.JSONDecodeError, ValueError, OSError):
+            pass
+    if sport_dirs:
+        print(f"  ✓ Picks today        {len(sport_dirs)} sport(s), {n_today} picks")
+    else:
+        print(f"  🟡 Picks today        none yet  →  chef.py morning  (or wait for AM cron)")
+        issues += 1
+
+    # 2. Closing-line capture today (the irreplaceable data — the moat)
+    close_files = glob.glob("data/clv/closing/*.json")
+    today_iso = today.isoformat()
+    todays = [f for f in close_files if Path(f).stem[-10:] == today_iso]
+    events = 0
+    for f in todays:
+        try:
+            d = json.loads(Path(f).read_text().replace("NaN", "null"))
+            events += len(d) if isinstance(d, list) else 0
+        except (json.JSONDecodeError, ValueError, OSError):
+            pass
+    newest = max(close_files, key=os.path.getmtime) if close_files else None
+    if todays and events:
+        print(f"  ✓ Closing capture    {events} events across {len(todays)} sport file(s) today")
+    elif newest:
+        age = (today - _date.fromtimestamp(os.path.getmtime(newest))).days
+        print(f"  ✗ Closing capture    NONE today (newest archive {age}d old)  →  check capture-closing.yml Action")
+        issues += 1
+    else:
+        print(f"  ✗ Closing capture    no archives at all  →  check capture-closing.yml Action")
+        issues += 1
+
+    # 3. CLV freshness (snapshots scored)
+    try:
+        snaps = json.loads(Path("data/clv/snapshots.json").read_text())
+        scored = [s for s in snaps if s.get("clv_pct") is not None or s.get("line_clv") is not None]
+        last_dates = sorted({s.get("date") for s in scored if s.get("date")})
+        last = last_dates[-1] if last_dates else None
+        if last and last >= yest.isoformat():
+            print(f"  ✓ CLV fresh          {len(scored)} scored, latest {last}")
+        elif last:
+            print(f"  🟡 CLV stale          latest scored {last}  →  chef.py clv --refresh")
+            issues += 1
+        else:
+            print(f"  🟡 CLV                no scored snapshots yet")
+            issues += 1
+    except (json.JSONDecodeError, ValueError, OSError):
+        print(f"  ✗ CLV                snapshots.json unreadable")
+        issues += 1
+
+    # 4. Grading current (yesterday settled?)
+    try:
+        allp = json.loads(Path("data/pnl/picks.json").read_text())
+        allp = allp.get("picks", allp) if isinstance(allp, dict) else allp
+        graded_dates = {p.get("date") for p in allp
+                        if isinstance(p, dict) and p.get("result") in ("win", "loss", "push")}
+        if yest.isoformat() in graded_dates:
+            print(f"  ✓ Grading current    {yest.isoformat()} settled")
+        else:
+            print(f"  🟡 Grading            {yest.isoformat()} not graded yet  →  chef.py grade --date {yest.strftime('%Y%m%d')}")
+            issues += 1
+    except (json.JSONDecodeError, ValueError, OSError):
+        print(f"  ✗ Grading            picks.json unreadable")
+        issues += 1
+
+    print(f"  {'─' * 58}")
+    print(f"  {'✓ ALL GREEN — instrument recording' if issues == 0 else f'⚠ {issues} item(s) need a look (see → fixes above)'}")
+    return 0
+
+
 def cmd_stats(args: argparse.Namespace) -> int:
     """Refresh public_stats.json from current picks.json."""
     try:
@@ -2151,6 +2243,8 @@ def main() -> int:
     p_status = sub.add_parser("status", help="Show which sport pipelines produced picks today")
     p_status.add_argument("--date", help="Date YYYYMMDD (default: today)")
 
+    sub.add_parser("health", help="Daily 30s health check: picks/closings/CLV/grading fresh?")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -2246,6 +2340,7 @@ def main() -> int:
         "test":     cmd_test,
         "stats":    cmd_stats,
         "status":   cmd_status,
+        "health":   cmd_health,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,
