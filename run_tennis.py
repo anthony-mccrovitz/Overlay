@@ -1,5 +1,5 @@
 """
-Tennis Daily Picks Pipeline — ChefTonyBets
+Tennis Daily Picks Pipeline — Overlay
 
 Generates picks for today's tennis slate using surface-specific Elo + Markov chain.
 Default tournament: Roland-Garros (clay). Automatically detects surface from sport key.
@@ -358,7 +358,7 @@ def run_tennis(args: argparse.Namespace) -> int:
     except Exception as _clv_err:
         print(f"  [CLV snapshot] {_clv_err}")
 
-    # 6. Pick card (new ChefTonyBets design)
+    # 6. Pick card (new Overlay design)
     try:
         from src.output.cards import render_tennis_card
         card_path = render_tennis_card(

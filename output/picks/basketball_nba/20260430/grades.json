@@ -1,0 +1,179 @@
+{
+  "date": "20260430",
+  "total_picks": 12,
+  "graded": 12,
+  "pending": 0,
+  "wins": 6,
+  "losses": 6,
+  "win_rate": 0.5,
+  "total_staked": 12.0,
+  "total_profit": 1.666005167705114,
+  "roi": 13.883376397542616,
+  "by_type": {
+    "moneyline": {
+      "wins": 2,
+      "losses": 1,
+      "profit": 2.95,
+      "win_rate": 0.6667
+    },
+    "total": {
+      "wins": 1,
+      "losses": 2,
+      "profit": -1.09,
+      "win_rate": 0.3333
+    },
+    "spread": {
+      "wins": 3,
+      "losses": 3,
+      "profit": -0.19,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "moneyline",
+      "team": "Minnesota Timberwolves",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": 200,
+      "model_prob": 0.7413,
+      "edge_pct": 39.92,
+      "won": true,
+      "profit": 2.0,
+      "score": "Denver Nuggets 98, Minnesota Timberwolves 110",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 213.5",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": -110,
+      "model_prob": 0.8879,
+      "edge_pct": 38.23,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "New York Knicks 140, Atlanta Hawks 89",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Minnesota Timberwolves +5.5",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": -102,
+      "model_prob": 0.8625,
+      "edge_pct": 37.59,
+      "won": true,
+      "profit": 0.9803921568627451,
+      "score": "Denver Nuggets 98, Minnesota Timberwolves 110",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 212.5",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": -110,
+      "model_prob": 0.82,
+      "edge_pct": 31.56,
+      "won": false,
+      "profit": -1.0,
+      "score": "Boston Celtics 93, Philadelphia 76ers 106",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Philadelphia 76ers +6.0",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": -109,
+      "model_prob": 0.7632,
+      "edge_pct": 25.87,
+      "won": true,
+      "profit": 0.9174311926605505,
+      "score": "Boston Celtics 93, Philadelphia 76ers 106",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Atlanta Hawks",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": 128,
+      "model_prob": 0.69,
+      "edge_pct": 25.86,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 140, Atlanta Hawks 89",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Atlanta Hawks +2.5",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": -108,
+      "model_prob": 0.7554,
+      "edge_pct": 25.76,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 140, Atlanta Hawks 89",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Philadelphia 76ers",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": 195,
+      "model_prob": 0.5865,
+      "edge_pct": 23.93,
+      "won": true,
+      "profit": 1.95,
+      "score": "Boston Celtics 93, Philadelphia 76ers 106",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 224.5",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": -110,
+      "model_prob": 0.6611,
+      "edge_pct": 15.66,
+      "won": false,
+      "profit": -1.0,
+      "score": "Denver Nuggets 98, Minnesota Timberwolves 110",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "New York Knicks -2.5",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": -110,
+      "model_prob": 0.2446,
+      "edge_pct": -25.76,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "New York Knicks 140, Atlanta Hawks 89",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Boston Celtics -6.5",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": -105,
+      "model_prob": 0.2241,
+      "edge_pct": -27.14,
+      "won": false,
+      "profit": -1.0,
+      "score": "Boston Celtics 93, Philadelphia 76ers 106",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Denver Nuggets -5.5",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": -114,
+      "model_prob": 0.1375,
+      "edge_pct": -37.59,
+      "won": false,
+      "profit": -1.0,
+      "score": "Denver Nuggets 98, Minnesota Timberwolves 110",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-20T05:27:10.746842+00:00"
+}

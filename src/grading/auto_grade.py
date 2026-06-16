@@ -377,6 +377,17 @@ def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: dat
 
         # Only count toward public record if we have real odds to bet
         has_odds = np_.get("odds") is not None and not np_.get("no_odds")
+        # Translate side-aware model probability so the calibrator can train on
+        # NRFI history. Without this, model_prob was None on every NRFI pick
+        # and recalibrate_all() had no data to fit a calibrator with — leaving
+        # NRFI silently uncalibrated. (Bug found 2026-06-12.)
+        projected_nrfi = np_.get("projected_nrfi")
+        if projected_nrfi is not None:
+            model_prob = float(projected_nrfi) if direction == "NRFI" else 1.0 - float(projected_nrfi)
+        else:
+            model_prob = None
+        implied = np_.get("implied_nrfi")
+        edge_pct = np_.get("edge_pct")
         entry = {
             "date": date_str,
             "sport": "mlb",
@@ -390,7 +401,10 @@ def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: dat
             "odds": np_.get("odds") if has_odds else None,
             "stake": 1.0 if has_odds else 0.0,
             "card_pick": False,
-            "projected_nrfi": np_.get("projected_nrfi"),
+            "projected_nrfi": projected_nrfi,
+            "model_prob": model_prob,
+            "implied_prob": implied,
+            "edge_pct": edge_pct,
             "result": None,
             "profit": None,
             "recorded_at": now_ts,

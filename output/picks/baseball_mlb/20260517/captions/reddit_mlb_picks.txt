@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 5/17/26 (Sunday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 23-18 (56.1% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| San Diego Padres vs  | +139 | +14.7% | DraftKings |
+| Cincinnati Reds vs  | +136 | +13.5% | FanDuel |
+| Boston Red Sox vs  | +135 | +12.4% | LeoVegas (SE) |
+| New York Yankees vs  | +105 | +12.0% | theScore Bet |
+| San Francisco Giants vs  | +132 | +11.5% | Betfair |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Miami Marlins @ Tampa Bay Rays NRFI (Eury Pérez vs Drew Rasmussen) | NRFI -120 | 67% | – |
+| Philadelphia Phillies @ Pittsburgh Pirates NRFI (Zack Wheeler vs Paul Skenes) | NRFI -120 | 67% | – |
+| Texas Rangers @ Houston Astros NRFI (Nathan Eovaldi vs Peter Lambert) | NRFI -120 | 67% | – |
+| Milwaukee Brewers @ Minnesota Twins NRFI (Robert Gasser vs Bailey Ober) | NRFI -120 | 67% | – |
+| San Diego Padres @ Seattle Mariners NRFI (Lucas Giolito vs George Kirby) | NRFI -120 | 67% | – |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260611_chicago-cubs_moneyline_away",
+  "date": "2026-06-11",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "Chicago Cubs",
+  "matchup": "Colorado Rockies",
+  "odds": -142,
+  "line": null,
+  "sportsbook": "1xBet",
+  "model_prob": 0.6594851828572509,
+  "edge_pct": 8.19,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-11T01:30:55.637266+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 115,
+      "season_rs_per_g": 4.28,
+      "season_ra_per_g": 5.69,
+      "form_7d": {
+        "games": 6,
+        "lookback_days": 7,
+        "rs_per_game": 5.17,
+        "ra_per_game": 7.33,
+        "wins": 2,
+        "losses": 4,
+        "wl": "2-4"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 5.54,
+        "ra_per_game": 8.0,
+        "wins": 5,
+        "losses": 8,
+        "wl": "5-8"
+      }
+    },
+    "away": {
+      "team_id": 112,
+      "season_rs_per_g": 4.51,
+      "season_ra_per_g": 4.51,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 3.14,
+        "ra_per_game": 6.0,
+        "wins": 2,
+        "losses": 5,
+        "wl": "2-5"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 3.79,
+        "ra_per_game": 5.29,
+        "wins": 5,
+        "losses": 9,
+        "wl": "5-9"
+      }
+    },
+    "snapshot_date": "2026-06-11"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "mixed",
+    "recommendation": "keep",
+    "reason": "mixed matchup passes neutral-skip filter"
+  }
+}

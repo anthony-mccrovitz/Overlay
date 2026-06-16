@@ -19,8 +19,8 @@ const TIER_META: Record<Tier, { label: string; sub: string; accent: string; chip
     label: "Tier 2 — Theoretically sound",
     sub: "Strong practitioner backing, mechanically defensible. Smaller stake.",
     accent: "var(--accent-hi)",
-    chipBg: "rgba(45,127,255,0.10)",
-    chipBorder: "rgba(45,127,255,0.35)",
+    chipBg: "rgba(18,197,138,0.10)",
+    chipBorder: "rgba(18,197,138,0.35)",
   },
   shadow: {
     label: "Shadow — Tracking only",

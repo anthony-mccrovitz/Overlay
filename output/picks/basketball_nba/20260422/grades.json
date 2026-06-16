@@ -1,0 +1,131 @@
+{
+  "date": "20260422",
+  "total_picks": 8,
+  "graded": 8,
+  "pending": 0,
+  "wins": 5,
+  "losses": 3,
+  "win_rate": 0.625,
+  "total_staked": 8.0,
+  "total_profit": 0.05607355607355591,
+  "roi": 0.7009194509194488,
+  "by_type": {
+    "spread": {
+      "wins": 2,
+      "losses": 2,
+      "profit": -0.18,
+      "win_rate": 0.5
+    },
+    "total": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.07,
+      "win_rate": 0.5
+    },
+    "moneyline": {
+      "wins": 2,
+      "losses": 0,
+      "profit": 0.31,
+      "win_rate": 1.0
+    }
+  },
+  "details": [
+    {
+      "market": "spread",
+      "team": "Phoenix Suns +17.5",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -110,
+      "model_prob": 0.8,
+      "edge_pct": 29.44,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Phoenix Suns 107, Oklahoma City Thunder 120",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -108,
+      "model_prob": 0.6583,
+      "edge_pct": 15.83,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Phoenix Suns 107, Oklahoma City Thunder 120",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 218.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -106,
+      "model_prob": 0.6238,
+      "edge_pct": 12.82,
+      "won": false,
+      "profit": -1.0,
+      "score": "Orlando Magic 83, Detroit Pistons 98",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Orlando Magic +8.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -105,
+      "model_prob": 0.5662,
+      "edge_pct": 7.18,
+      "won": false,
+      "profit": -1.0,
+      "score": "Orlando Magic 83, Detroit Pistons 98",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Detroit Pistons",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -390,
+      "model_prob": 0.7063,
+      "edge_pct": -5.91,
+      "won": true,
+      "profit": 0.2564102564102564,
+      "score": "Orlando Magic 83, Detroit Pistons 98",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Detroit Pistons -8.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -110,
+      "model_prob": 0.4338,
+      "edge_pct": -7.18,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Orlando Magic 83, Detroit Pistons 98",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Oklahoma City Thunder",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -1800,
+      "model_prob": 0.7315,
+      "edge_pct": -18.76,
+      "won": true,
+      "profit": 0.05555555555555555,
+      "score": "Phoenix Suns 107, Oklahoma City Thunder 120",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Oklahoma City Thunder -17.5",
+      "matchup": "Phoenix Suns @ Oklahoma City Thunder",
+      "odds": -105,
+      "model_prob": 0.2,
+      "edge_pct": -29.44,
+      "won": false,
+      "profit": -1.0,
+      "score": "Phoenix Suns 107, Oklahoma City Thunder 120",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-10T22:40:47.251162+00:00"
+}

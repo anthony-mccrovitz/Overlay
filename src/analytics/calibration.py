@@ -24,7 +24,10 @@ MIN_PICKS_TO_CALIBRATE = 30
 # Isotonic regression overfits on small samples; use Platt (logistic on log-odds) instead.
 # Prop markets almost always have high model_prob and low actual win rates — Platt handles
 # this gracefully because it learns temperature + bias rather than memorizing percentiles.
-_PLATT_MARKETS = {"prop", "nrfi"}   # always use Platt for these
+# Moneyline is added here because isotonic regression overfits badly on ML data:
+# the model clusters probs in a narrow band (0.48-0.70) and isotonic maps the
+# tail (0.75+) to 1.0, producing absurd 60% "edges". Platt is safer everywhere.
+_PLATT_MARKETS = {"prop", "nrfi", "moneyline"}
 _PLATT_THRESHOLD = 150              # also use Platt if n < threshold (not enough for isotonic)
 
 

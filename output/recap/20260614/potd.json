@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260614_st-louis-cardinals_moneyline_away",
+  "date": "2026-06-14",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "St. Louis Cardinals",
+  "matchup": "Minnesota Twins",
+  "odds": 100,
+  "line": null,
+  "sportsbook": "theScore Bet",
+  "model_prob": 0.6338192986092175,
+  "edge_pct": 14.54,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-14T01:31:23.673634+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 142,
+      "season_rs_per_g": 4.62,
+      "season_ra_per_g": 5.22,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 4.43,
+        "ra_per_game": 6.43,
+        "wins": 3,
+        "losses": 4,
+        "wl": "3-4"
+      },
+      "form_15d": {
+        "games": 15,
+        "lookback_days": 15,
+        "rs_per_game": 4.73,
+        "ra_per_game": 6.8,
+        "wins": 5,
+        "losses": 10,
+        "wl": "5-10"
+      }
+    },
+    "away": {
+      "team_id": 138,
+      "season_rs_per_g": 4.63,
+      "season_ra_per_g": 4.44,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 7.0,
+        "ra_per_game": 3.86,
+        "wins": 5,
+        "losses": 2,
+        "wl": "5-2"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 5.71,
+        "ra_per_game": 4.07,
+        "wins": 9,
+        "losses": 5,
+        "wl": "9-5"
+      }
+    },
+    "snapshot_date": "2026-06-14"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "one_hot",
+    "recommendation": "keep",
+    "reason": "one_hot matchup passes neutral-skip filter"
+  }
+}

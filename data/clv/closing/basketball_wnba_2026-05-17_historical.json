@@ -1,0 +1,3281 @@
+{
+  "timestamp": "2026-05-17T17:25:37Z",
+  "previous_timestamp": "2026-05-17T17:20:37Z",
+  "next_timestamp": "2026-05-17T17:30:37Z",
+  "data": [
+    {
+      "id": "047db7f84e653a32537af273bd8eabd8",
+      "sport_key": "basketball_wnba",
+      "sport_title": "WNBA",
+      "commence_time": "2026-05-17T17:40:00Z",
+      "home_team": "Atlanta Dream",
+      "away_team": "Las Vegas Aces",
+      "bookmakers": [
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 142
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 134
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -164
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -114,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -106,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 135
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -160
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-17T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 143
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 135
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -165
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 146
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -166
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -106,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 146
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -166
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -112,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -108,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-17T17:23:28Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 140
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -165
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 140
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -175
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -114,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -109,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -113,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-17T17:24:38Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 145
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -165
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-17T17:25:16Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": 146
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -181
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta Dream",
+                  "price": -110,
+                  "point": 3.0
+                },
+                {
+                  "name": "Las Vegas Aces",
+                  "price": -110,
+                  "point": -3.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 172.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 172.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c3252d1d30beda6bdd6d3f599ae44ed6",
+      "sport_key": "basketball_wnba",
+      "sport_title": "WNBA",
+      "commence_time": "2026-05-17T22:00:00Z",
+      "home_team": "Indiana Fever",
+      "away_team": "Seattle Storm",
+      "bookmakers": [
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 470
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -115,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -105,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 440
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -112,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -108,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -625
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 450
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -115,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -105,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-17T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 460
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -110,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -110,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 460
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -110,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -110,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 476
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -110,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -106,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -103,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -113,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 476
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -112,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -108,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-17T17:23:28Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -700
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 475
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -105,
+                  "point": -12.0
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -115,
+                  "point": 12.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -715
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 460
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -114,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -109,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -114,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -109,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-17T17:24:38Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -650
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 480
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -110,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -110,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-17T17:25:16Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -649
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": 450
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Indiana Fever",
+                  "price": -110,
+                  "point": -11.5
+                },
+                {
+                  "name": "Seattle Storm",
+                  "price": -110,
+                  "point": 11.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 176.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 176.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49270c3572f53e9f3fc477a5d52a6a44",
+      "sport_key": "basketball_wnba",
+      "sport_title": "WNBA",
+      "commence_time": "2026-05-17T23:00:00Z",
+      "home_team": "Minnesota Lynx",
+      "away_team": "Chicago Sky",
+      "bookmakers": [
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 168
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -210
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -106,
+                  "point": 4.5
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -114,
+                  "point": -4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 167.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 167.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 180
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -220
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -115,
+                  "point": 5.5
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -105,
+                  "point": -5.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 167.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 167.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 180
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -218
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -102,
+                  "point": 4.5
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -118,
+                  "point": -4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 167.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 167.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 175
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -215
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -110,
+                  "point": 5.0
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -110,
+                  "point": -5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 167.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 167.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-17T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 185
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -225
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -110,
+                  "point": 5.0
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -110,
+                  "point": -5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 167.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 167.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 185
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -218
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -110,
+                  "point": 5.0
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -106,
+                  "point": -5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -113,
+                  "point": 166.5
+                },
+                {
+                  "name": "Under",
+                  "price": -103,
+                  "point": 166.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 185
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -218
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -112,
+                  "point": 5.0
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -108,
+                  "point": -5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 166.5
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 166.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-17T17:23:28Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 180
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -220
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -115,
+                  "point": 5.0
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -105,
+                  "point": -5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 167.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 167.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 170
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -215
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -109,
+                  "point": 4.5
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -113,
+                  "point": -4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -113,
+                  "point": 167.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 167.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-17T17:24:38Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 180
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -220
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -110,
+                  "point": 5.0
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -110,
+                  "point": -5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 167.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 167.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-17T17:25:16Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": 164
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -204
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Sky",
+                  "price": -110,
+                  "point": 4.5
+                },
+                {
+                  "name": "Minnesota Lynx",
+                  "price": -110,
+                  "point": -4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 169.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 169.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ab43b3c029d14d941319d1802764dcd4",
+      "sport_key": "basketball_wnba",
+      "sport_title": "WNBA",
+      "commence_time": "2026-05-17T23:00:00Z",
+      "home_team": "Los Angeles Sparks",
+      "away_team": "Toronto Tempo",
+      "bookmakers": [
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -340
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -115,
+                  "point": -7.5
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -105,
+                  "point": 7.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 173.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 173.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -340
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -115,
+                  "point": -7.5
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -105,
+                  "point": 7.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 173.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 173.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -340
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -114,
+                  "point": -7.5
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -106,
+                  "point": 7.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -325
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 173.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 173.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-17T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -345
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -110,
+                  "point": -8.0
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -110,
+                  "point": 8.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -325
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 263
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -105,
+                  "point": -8.0
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -111,
+                  "point": 8.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 174.0
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 174.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -325
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 263
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -107,
+                  "point": -8.0
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -113,
+                  "point": 8.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-17T17:23:28Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -360
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 280
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -105,
+                  "point": -8.0
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -115,
+                  "point": 8.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 174.0
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 174.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -335
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 250
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -108,
+                  "point": -8.0
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -115,
+                  "point": 8.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -113,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-17T17:24:38Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -325
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -110,
+                  "point": -7.5
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -110,
+                  "point": 7.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:38Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-17T17:25:16Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -350
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles Sparks",
+                  "price": -110,
+                  "point": -8.0
+                },
+                {
+                  "name": "Toronto Tempo",
+                  "price": -110,
+                  "point": 8.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:16Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c23aadbf6103e8e588fa48978ef27763",
+      "sport_key": "basketball_wnba",
+      "sport_title": "WNBA",
+      "commence_time": "2026-05-19T00:00:00Z",
+      "home_team": "Dallas Wings",
+      "away_team": "Washington Mystics",
+      "bookmakers": [
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -215
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 172
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -115,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -105,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -215
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 175
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -110,
+                  "point": -5.0
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -110,
+                  "point": 5.0
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 171.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -230
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 190
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -105,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -115,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 170.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 170.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-17T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -225
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 185
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -105,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -115,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 170.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 170.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -103,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -113,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 170.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 170.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -105,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -115,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 170.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 170.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -235
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 195
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -110,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -110,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 170.5
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 170.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -215
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -112,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -112,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -113,
+                  "point": 171.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 171.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-17T17:23:28Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -230
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": 190
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Dallas Wings",
+                  "price": -105,
+                  "point": -4.5
+                },
+                {
+                  "name": "Washington Mystics",
+                  "price": -115,
+                  "point": 4.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 170.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 170.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "34ad6990a059cba1f7d0fb218d6babc1",
+      "sport_key": "basketball_wnba",
+      "sport_title": "WNBA",
+      "commence_time": "2026-05-19T02:00:00Z",
+      "home_team": "Portland Fire",
+      "away_team": "Connecticut Sun",
+      "bookmakers": [
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 138
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -112,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -108,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 140
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-17T17:24:58Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 142
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:58Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-17T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 140
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -165
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -108,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -108,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-17T17:24:39Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 140
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -170
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:39Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 174.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 174.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-17T17:24:57Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 140
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -175
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -117,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -107,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:24:57Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-17T17:23:28Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": 140
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -165
+                }
+              ]
+            },
+            {
+              "key": "spreads",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Connecticut Sun",
+                  "price": -110,
+                  "point": 3.5
+                },
+                {
+                  "name": "Portland Fire",
+                  "price": -110,
+                  "point": -3.5
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-17T17:23:28Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 175.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 175.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

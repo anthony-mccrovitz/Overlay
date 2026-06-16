@@ -1,0 +1,443 @@
+{
+  "date": "2026-04-24",
+  "sport": "nhl",
+  "generated_at": "2026-04-24T17:25:32.934088+00:00",
+  "picks": [
+    {
+      "sport": "nhl",
+      "matchup": "Edmonton Oilers @ Anaheim Ducks",
+      "team": "Over 7.0",
+      "market": "total",
+      "direction": "OVER",
+      "line": 7.0,
+      "odds": -105,
+      "fair_odds": 107,
+      "model_prob": 0.8474,
+      "market_prob": 0.4839,
+      "fair_prob": 0.4839,
+      "edge_pct": 36.34,
+      "commence": "2026-04-25T02:10:00Z",
+      "proj_total": 9.61,
+      "notes": [
+        "Base: Anaheim Ducks 4.28 exp goals | Edmonton Oilers 4.19 exp goals",
+        "Home goalie SV%: 0.887 (-0.011) \u2192 away --0.32g",
+        "Away goalie SV%: 0.855 (-0.043) \u2192 home --0.50g",
+        "Projected total: 9.6 | Home win: 62.4% | Home -1.5: 30.2%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Pittsburgh Penguins @ Philadelphia Flyers",
+      "team": "Philadelphia Flyers",
+      "market": "moneyline",
+      "direction": "HOME",
+      "line": null,
+      "odds": -118,
+      "fair_odds": -109,
+      "model_prob": 0.8654,
+      "market_prob": 0.5216,
+      "fair_prob": 0.5216,
+      "edge_pct": 34.38,
+      "commence": "2026-04-26T00:00:00Z",
+      "proj_total": 5.87,
+      "notes": [
+        "Base: Philadelphia Flyers 3.49 exp goals | Pittsburgh Penguins 2.39 exp goals",
+        "Home goalie SV%: 0.946 (+0.048) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.873 (-0.025) \u2192 home --0.50g",
+        "Projected total: 5.9 | Home win: 86.5% | Home -1.5: 60.7%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Pittsburgh Penguins @ Philadelphia Flyers",
+      "team": "Philadelphia Flyers -1.5",
+      "market": "puck_line",
+      "direction": "HOME -1.5",
+      "line": -1.5,
+      "odds": 210,
+      "fair_odds": 229,
+      "model_prob": 0.6069,
+      "market_prob": 0.3038,
+      "fair_prob": 0.3038,
+      "edge_pct": 30.31,
+      "commence": "2026-04-26T00:00:00Z",
+      "proj_total": 5.87,
+      "notes": [
+        "Base: Philadelphia Flyers 3.49 exp goals | Pittsburgh Penguins 2.39 exp goals",
+        "Home goalie SV%: 0.946 (+0.048) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.873 (-0.025) \u2192 home --0.50g",
+        "Projected total: 5.9 | Home win: 86.5% | Home -1.5: 60.7%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Colorado Avalanche @ Los Angeles Kings",
+      "team": "Colorado Avalanche",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "line": null,
+      "odds": -170,
+      "fair_odds": -153,
+      "model_prob": 0.8327,
+      "market_prob": 0.604,
+      "fair_prob": 0.604,
+      "edge_pct": 22.87,
+      "commence": "2026-04-26T20:30:00Z",
+      "proj_total": 4.19,
+      "notes": [
+        "Base: Los Angeles Kings 1.79 exp goals | Colorado Avalanche 3.09 exp goals",
+        "Away goalie SV%: 0.947 (+0.049) \u2192 home -+0.50g",
+        "Projected total: 4.2 | Home win: 16.7% | Home -1.5: 3.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Colorado Avalanche @ Los Angeles Kings",
+      "team": "Under 5.5",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 5.5,
+      "odds": 100,
+      "fair_odds": 108,
+      "model_prob": 0.6966,
+      "market_prob": 0.4819,
+      "fair_prob": 0.4819,
+      "edge_pct": 21.47,
+      "commence": "2026-04-26T20:30:00Z",
+      "proj_total": 4.19,
+      "notes": [
+        "Base: Los Angeles Kings 1.79 exp goals | Colorado Avalanche 3.09 exp goals",
+        "Away goalie SV%: 0.947 (+0.049) \u2192 home -+0.50g",
+        "Projected total: 4.2 | Home win: 16.7% | Home -1.5: 3.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Carolina Hurricanes @ Ottawa Senators",
+      "team": "Under 5.5",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 5.5,
+      "odds": 100,
+      "fair_odds": 106,
+      "model_prob": 0.698,
+      "market_prob": 0.4864,
+      "fair_prob": 0.4864,
+      "edge_pct": 21.15,
+      "commence": "2026-04-25T19:00:00Z",
+      "proj_total": 4.18,
+      "notes": [
+        "Base: Ottawa Senators 2.33 exp goals | Carolina Hurricanes 2.93 exp goals",
+        "Home goalie SV%: 0.933 (+0.035) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.964 (+0.066) \u2192 home -+0.50g",
+        "Projected total: 4.2 | Home win: 34.1% | Home -1.5: 10.7%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Buffalo Sabres @ Boston Bruins",
+      "team": "Boston Bruins",
+      "market": "moneyline",
+      "direction": "HOME",
+      "line": null,
+      "odds": -114,
+      "fair_odds": -106,
+      "model_prob": 0.7051,
+      "market_prob": 0.5138,
+      "fair_prob": 0.5138,
+      "edge_pct": 19.13,
+      "commence": "2026-04-26T18:10:00Z",
+      "proj_total": 6.16,
+      "notes": [
+        "Base: Boston Bruins 3.08 exp goals | Buffalo Sabres 3.22 exp goals",
+        "Home goalie SV%: 0.931 (+0.033) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.825 (-0.073) \u2192 home --0.50g",
+        "Projected total: 6.2 | Home win: 70.5% | Home -1.5: 38.4%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Edmonton Oilers @ Anaheim Ducks",
+      "team": "Anaheim Ducks",
+      "market": "moneyline",
+      "direction": "HOME",
+      "line": null,
+      "odds": 112,
+      "fair_odds": 121,
+      "model_prob": 0.6235,
+      "market_prob": 0.452,
+      "fair_prob": 0.452,
+      "edge_pct": 17.15,
+      "commence": "2026-04-25T02:10:00Z",
+      "proj_total": 9.61,
+      "notes": [
+        "Base: Anaheim Ducks 4.28 exp goals | Edmonton Oilers 4.19 exp goals",
+        "Home goalie SV%: 0.887 (-0.011) \u2192 away --0.32g",
+        "Away goalie SV%: 0.855 (-0.043) \u2192 home --0.50g",
+        "Projected total: 9.6 | Home win: 62.4% | Home -1.5: 30.2%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Dallas Stars @ Minnesota Wild",
+      "team": "Minnesota Wild",
+      "market": "moneyline",
+      "direction": "HOME",
+      "line": null,
+      "odds": -135,
+      "fair_odds": -125,
+      "model_prob": 0.7121,
+      "market_prob": 0.5564,
+      "fair_prob": 0.5564,
+      "edge_pct": 15.57,
+      "commence": "2026-04-25T21:40:00Z",
+      "proj_total": 6.46,
+      "notes": [
+        "Base: Minnesota Wild 3.40 exp goals | Dallas Stars 3.01 exp goals",
+        "Home goalie SV%: 0.916 (+0.018) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.889 (-0.009) \u2192 home --0.27g",
+        "Projected total: 6.5 | Home win: 71.2% | Home -1.5: 39.2%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Carolina Hurricanes @ Ottawa Senators",
+      "team": "Carolina Hurricanes",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "line": null,
+      "odds": -110,
+      "fair_odds": -107,
+      "model_prob": 0.6586,
+      "market_prob": 0.5161,
+      "fair_prob": 0.5161,
+      "edge_pct": 14.25,
+      "commence": "2026-04-25T19:00:00Z",
+      "proj_total": 4.18,
+      "notes": [
+        "Base: Ottawa Senators 2.33 exp goals | Carolina Hurricanes 2.93 exp goals",
+        "Home goalie SV%: 0.933 (+0.035) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.964 (+0.066) \u2192 home -+0.50g",
+        "Projected total: 4.2 | Home win: 34.1% | Home -1.5: 10.7%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Tampa Bay Lightning @ Montr\u00e9al Canadiens",
+      "team": "Over 6.0",
+      "market": "total",
+      "direction": "OVER",
+      "line": 6.0,
+      "odds": -110,
+      "fair_odds": 101,
+      "model_prob": 0.6189,
+      "market_prob": 0.4977,
+      "fair_prob": 0.4977,
+      "edge_pct": 12.11,
+      "commence": "2026-04-24T23:10:00Z",
+      "proj_total": 6.77,
+      "notes": [
+        "Base: Montr\u00e9al Canadiens 3.23 exp goals | Tampa Bay Lightning 3.29 exp goals",
+        "Projected total: 6.8 | Home win: 51.5% | Home -1.5: 21.3%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Buffalo Sabres @ Boston Bruins",
+      "team": "Boston Bruins -1.5",
+      "market": "puck_line",
+      "direction": "HOME -1.5",
+      "line": -1.5,
+      "odds": 215,
+      "fair_odds": 235,
+      "model_prob": 0.3843,
+      "market_prob": 0.2985,
+      "fair_prob": 0.2985,
+      "edge_pct": 8.58,
+      "commence": "2026-04-26T18:10:00Z",
+      "proj_total": 6.16,
+      "notes": [
+        "Base: Boston Bruins 3.08 exp goals | Buffalo Sabres 3.22 exp goals",
+        "Home goalie SV%: 0.931 (+0.033) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.825 (-0.073) \u2192 home --0.50g",
+        "Projected total: 6.2 | Home win: 70.5% | Home -1.5: 38.4%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Dallas Stars @ Minnesota Wild",
+      "team": "Over 6.0",
+      "market": "total",
+      "direction": "OVER",
+      "line": 6.0,
+      "odds": -105,
+      "fair_odds": 105,
+      "model_prob": 0.5717,
+      "market_prob": 0.4887,
+      "fair_prob": 0.4887,
+      "edge_pct": 8.3,
+      "commence": "2026-04-25T21:40:00Z",
+      "proj_total": 6.46,
+      "notes": [
+        "Base: Minnesota Wild 3.40 exp goals | Dallas Stars 3.01 exp goals",
+        "Home goalie SV%: 0.916 (+0.018) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.889 (-0.009) \u2192 home --0.27g",
+        "Projected total: 6.5 | Home win: 71.2% | Home -1.5: 39.2%"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "matchup": "Tampa Bay Lightning @ Montr\u00e9al Canadiens",
+      "commence": "2026-04-24T23:10:00Z",
+      "time_et": "07:10 PM ET",
+      "home_team": "Montr\u00e9al Canadiens",
+      "away_team": "Tampa Bay Lightning",
+      "home_exp_goals": 3.42,
+      "away_exp_goals": 3.35,
+      "total_exp_goals": 6.77,
+      "home_win_prob": 0.5149,
+      "away_win_prob": 0.4851,
+      "home_cover_1_5": 0.2131,
+      "away_cover_1_5": 0.1919,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Montr\u00e9al Canadiens 3.23 exp goals | Tampa Bay Lightning 3.29 exp goals",
+        "Projected total: 6.8 | Home win: 51.5% | Home -1.5: 21.3%"
+      ]
+    },
+    {
+      "matchup": "Vegas Golden Knights @ Utah Mammoth",
+      "commence": "2026-04-25T01:40:00Z",
+      "time_et": "09:40 PM ET",
+      "home_team": "Utah Mammoth",
+      "away_team": "Vegas Golden Knights",
+      "home_exp_goals": 2.85,
+      "away_exp_goals": 3.2,
+      "total_exp_goals": 6.05,
+      "home_win_prob": 0.4216,
+      "away_win_prob": 0.5784,
+      "home_cover_1_5": 0.1513,
+      "away_cover_1_5": 0.2625,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Utah Mammoth 3.01 exp goals | Vegas Golden Knights 2.98 exp goals",
+        "Projected total: 6.1 | Home win: 42.2% | Home -1.5: 15.1%"
+      ]
+    },
+    {
+      "matchup": "Edmonton Oilers @ Anaheim Ducks",
+      "commence": "2026-04-25T02:10:00Z",
+      "time_et": "10:10 PM ET",
+      "home_team": "Anaheim Ducks",
+      "away_team": "Edmonton Oilers",
+      "home_exp_goals": 4.59,
+      "away_exp_goals": 4.2,
+      "total_exp_goals": 8.79,
+      "home_win_prob": 0.5851,
+      "away_win_prob": 0.4149,
+      "home_cover_1_5": 0.2682,
+      "away_cover_1_5": 0.1472,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Anaheim Ducks 4.28 exp goals | Edmonton Oilers 4.19 exp goals",
+        "Projected total: 8.8 | Home win: 58.5% | Home -1.5: 26.8%"
+      ]
+    },
+    {
+      "matchup": "Carolina Hurricanes @ Ottawa Senators",
+      "commence": "2026-04-25T19:00:00Z",
+      "time_et": "03:00 PM ET",
+      "home_team": "Ottawa Senators",
+      "away_team": "Carolina Hurricanes",
+      "home_exp_goals": 2.22,
+      "away_exp_goals": 2.96,
+      "total_exp_goals": 5.18,
+      "home_win_prob": 0.3414,
+      "away_win_prob": 0.6586,
+      "home_cover_1_5": 0.1071,
+      "away_cover_1_5": 0.3355,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Ottawa Senators 2.33 exp goals | Carolina Hurricanes 2.93 exp goals",
+        "Projected total: 5.2 | Home win: 34.1% | Home -1.5: 10.7%"
+      ]
+    },
+    {
+      "matchup": "Dallas Stars @ Minnesota Wild",
+      "commence": "2026-04-25T21:40:00Z",
+      "time_et": "05:40 PM ET",
+      "home_team": "Minnesota Wild",
+      "away_team": "Dallas Stars",
+      "home_exp_goals": 3.46,
+      "away_exp_goals": 3.23,
+      "total_exp_goals": 6.68,
+      "home_win_prob": 0.5516,
+      "away_win_prob": 0.4484,
+      "home_cover_1_5": 0.2409,
+      "away_cover_1_5": 0.1677,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Minnesota Wild 3.40 exp goals | Dallas Stars 3.01 exp goals",
+        "Projected total: 6.7 | Home win: 55.2% | Home -1.5: 24.1%"
+      ]
+    },
+    {
+      "matchup": "Pittsburgh Penguins @ Philadelphia Flyers",
+      "commence": "2026-04-26T00:00:00Z",
+      "time_et": "08:00 PM ET",
+      "home_team": "Philadelphia Flyers",
+      "away_team": "Pittsburgh Penguins",
+      "home_exp_goals": 3.43,
+      "away_exp_goals": 2.44,
+      "total_exp_goals": 5.87,
+      "home_win_prob": 0.7085,
+      "away_win_prob": 0.2915,
+      "home_cover_1_5": 0.3881,
+      "away_cover_1_5": 0.0834,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Philadelphia Flyers 3.49 exp goals | Pittsburgh Penguins 2.39 exp goals",
+        "Projected total: 5.9 | Home win: 70.9% | Home -1.5: 38.8%"
+      ]
+    },
+    {
+      "matchup": "Buffalo Sabres @ Boston Bruins",
+      "commence": "2026-04-26T18:10:00Z",
+      "time_et": "02:10 PM ET",
+      "home_team": "Boston Bruins",
+      "away_team": "Buffalo Sabres",
+      "home_exp_goals": 3.07,
+      "away_exp_goals": 3.1,
+      "total_exp_goals": 6.16,
+      "home_win_prob": 0.4934,
+      "away_win_prob": 0.5066,
+      "home_cover_1_5": 0.1977,
+      "away_cover_1_5": 0.207,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Boston Bruins 3.08 exp goals | Buffalo Sabres 3.22 exp goals",
+        "Projected total: 6.2 | Home win: 49.3% | Home -1.5: 19.8%"
+      ]
+    },
+    {
+      "matchup": "Colorado Avalanche @ Los Angeles Kings",
+      "commence": "2026-04-26T20:30:00Z",
+      "time_et": "04:30 PM ET",
+      "home_team": "Los Angeles Kings",
+      "away_team": "Colorado Avalanche",
+      "home_exp_goals": 1.73,
+      "away_exp_goals": 2.97,
+      "total_exp_goals": 4.69,
+      "home_win_prob": 0.246,
+      "away_win_prob": 0.754,
+      "home_cover_1_5": 0.0642,
+      "away_cover_1_5": 0.4419,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Los Angeles Kings 1.79 exp goals | Colorado Avalanche 3.09 exp goals",
+        "Projected total: 4.7 | Home win: 24.6% | Home -1.5: 6.4%"
+      ]
+    }
+  ]
+}

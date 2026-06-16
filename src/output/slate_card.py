@@ -1,5 +1,5 @@
 """
-Full-slate pick card — ChefTonyBets.
+Full-slate pick card — Overlay.
 Shows every game: matchup | ML pick | Run Line pick | Total pick.
 One tall card, all games, share with friends.
 """
@@ -184,16 +184,16 @@ def generate_slate_card(
     draw.rectangle([0, HDR_H - 3, W, HDR_H], fill=_GOLD)
 
     # Brand
-    draw.text((PAD, 16), "ChefTony", fill=_WHITE, font=f_brand_lg)
-    cw = draw.textlength("ChefTony", font=f_brand_lg)
+    draw.text((PAD, 16), "Overlay", fill=_WHITE, font=f_brand_lg)
+    cw = draw.textlength("Overlay", font=f_brand_lg)
     draw.text((PAD + cw + 5, 22), "Bets", fill=_GOLD, font=f_brand_sm)
 
     # Date + handle (right)
     date_str = f"{sport_label}  ·  {d.strftime('%b %d, %Y').upper()}"
     dw = draw.textlength(date_str, font=f_hdr)
     draw.text((W - PAD - dw, 16), date_str, fill=_WHITE, font=f_hdr)
-    hw = draw.textlength("@ChefTonyBets", font=f_hdr)
-    draw.text((W - PAD - hw, 44), "@ChefTonyBets", fill=_GOLD, font=f_hdr)
+    hw = draw.textlength("@Overlay", font=f_hdr)
+    draw.text((W - PAD - hw, 44), "@Overlay", fill=_GOLD, font=f_hdr)
 
     # Tagline + stats
     draw.text((PAD, 82), "A.I. Sports Picks  ·  Cooking Up Parlays", fill=_GRAY_MID, font=f_hdr_sm)
@@ -304,7 +304,7 @@ def generate_slate_card(
     fy = gy + 8
     draw.rectangle([PAD, fy, W - PAD, fy + 2], fill=_GOLD)
 
-    cta = "Follow @ChefTonyBets · Free picks every day  ·  All picks AI-model backed"
+    cta = "Follow @Overlay · Free picks every day  ·  All picks AI-model backed"
     ctaw = draw.textlength(cta, font=f_footer)
     draw.text(((W - ctaw) // 2, fy + 10), cta, fill=_GOLD, font=f_footer)
 

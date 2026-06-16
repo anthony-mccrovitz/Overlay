@@ -1,0 +1,155 @@
+{
+  "date": "20260428",
+  "total_picks": 10,
+  "graded": 10,
+  "pending": 0,
+  "wins": 5,
+  "losses": 5,
+  "win_rate": 0.5,
+  "total_staked": 10.0,
+  "total_profit": -1.6459355459355458,
+  "roi": -16.459355459355457,
+  "by_type": {
+    "total": {
+      "wins": 1,
+      "losses": 2,
+      "profit": -1.07,
+      "win_rate": 0.3333
+    },
+    "moneyline": {
+      "wins": 2,
+      "losses": 1,
+      "profit": -0.43,
+      "win_rate": 0.6667
+    },
+    "spread": {
+      "wins": 2,
+      "losses": 2,
+      "profit": -0.14,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 214.5",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -108,
+      "model_prob": 0.8319,
+      "edge_pct": 32.84,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Atlanta Hawks 97, New York Knicks 126",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 215.5",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -110,
+      "model_prob": 0.8159,
+      "edge_pct": 31.37,
+      "won": false,
+      "profit": -1.0,
+      "score": "Philadelphia 76ers 113, Boston Celtics 97",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 217.5",
+      "matchup": "Portland Trail Blazers @ San Antonio Spurs",
+      "odds": -110,
+      "model_prob": 0.8013,
+      "edge_pct": 29.91,
+      "won": false,
+      "profit": -1.0,
+      "score": "Portland Trail Blazers 95, San Antonio Spurs 114",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "New York Knicks",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -250,
+      "model_prob": 0.8078,
+      "edge_pct": 13.55,
+      "won": true,
+      "profit": 0.4,
+      "score": "Atlanta Hawks 97, New York Knicks 126",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "New York Knicks -6.5",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -105,
+      "model_prob": 0.6211,
+      "edge_pct": 12.67,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Atlanta Hawks 97, New York Knicks 126",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Boston Celtics",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -470,
+      "model_prob": 0.8455,
+      "edge_pct": 9.06,
+      "won": false,
+      "profit": -1.0,
+      "score": "Philadelphia 76ers 113, Boston Celtics 97",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Boston Celtics -10.5",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -105,
+      "model_prob": 0.5497,
+      "edge_pct": 5.53,
+      "won": false,
+      "profit": -1.0,
+      "score": "Philadelphia 76ers 113, Boston Celtics 97",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "San Antonio Spurs",
+      "matchup": "Portland Trail Blazers @ San Antonio Spurs",
+      "odds": -600,
+      "model_prob": 0.8306,
+      "edge_pct": 3.81,
+      "won": true,
+      "profit": 0.16666666666666666,
+      "score": "Portland Trail Blazers 95, San Antonio Spurs 114",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Philadelphia 76ers +10.5",
+      "matchup": "Philadelphia 76ers @ Boston Celtics",
+      "odds": -110,
+      "model_prob": 0.4503,
+      "edge_pct": -5.53,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Philadelphia 76ers 113, Boston Celtics 97",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Atlanta Hawks +6.5",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -110,
+      "model_prob": 0.3789,
+      "edge_pct": -12.67,
+      "won": false,
+      "profit": -1.0,
+      "score": "Atlanta Hawks 97, New York Knicks 126",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-18T14:20:56.533170+00:00"
+}

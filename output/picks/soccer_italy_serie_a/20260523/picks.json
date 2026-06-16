@@ -1,0 +1,59 @@
+[
+  {
+    "sport": "soccer",
+    "market": "moneyline",
+    "direction": "Pisa",
+    "team": "Pisa",
+    "matchup": "Pisa @ Lazio",
+    "odds": 390,
+    "best_odds": 390,
+    "model_prob": 0.3528,
+    "implied_prob": 0.193,
+    "edge_pct": 15.98,
+    "sportsbook": "FanDuel",
+    "exp_total": 2.519
+  },
+  {
+    "sport": "soccer",
+    "market": "total",
+    "direction": "UNDER",
+    "team": "UNDER 2.5",
+    "matchup": "Inter Milan @ Bologna",
+    "odds": 106,
+    "best_odds": 106,
+    "line": 2.5,
+    "model_prob": 0.5388,
+    "implied_prob": 0.4535,
+    "edge_pct": 8.53,
+    "sportsbook": "BetRivers",
+    "exp_total": 2.519
+  },
+  {
+    "sport": "soccer",
+    "market": "moneyline",
+    "direction": "Bologna",
+    "team": "Bologna",
+    "matchup": "Inter Milan @ Bologna",
+    "odds": 225,
+    "best_odds": 225,
+    "model_prob": 0.3528,
+    "implied_prob": 0.2795,
+    "edge_pct": 7.33,
+    "sportsbook": "BetRivers",
+    "exp_total": 2.519
+  },
+  {
+    "sport": "soccer",
+    "market": "moneyline",
+    "direction": "Draw",
+    "team": "Draw",
+    "matchup": "Pisa @ Lazio",
+    "odds": 280,
+    "best_odds": 280,
+    "model_prob": 0.2944,
+    "implied_prob": 0.2475,
+    "edge_pct": 4.69,
+    "sportsbook": "theScore Bet",
+    "exp_total": 2.519
+  }
+]

@@ -320,11 +320,22 @@ def find_totals_edges(
         ht = matchup.home_team
         at = matchup.away_team
 
+        # ── TBD-pitcher guard ────────────────────────────────────────────────
+        # If either starter is missing/TBD, the projection collapses to team
+        # ERA averages. The Rockies/A's incident on 2026-06-12 surfaced a 7.8
+        # vs 14.0 line gap because the Rockies starter was a debut call-up
+        # the model had no data on — we projected as if Rotation Average were
+        # pitching, while the books priced in the actual chaos. Skip the bet.
+        home_sp_ok = bool(matchup.home_pitcher and getattr(matchup.home_pitcher, "era", 0) > 0)
+        away_sp_ok = bool(matchup.away_pitcher and getattr(matchup.away_pitcher, "era", 0) > 0)
+        if not (home_sp_ok and away_sp_ok):
+            continue   # TBD-pitcher game — model can't see it, don't surface an edge
+
         # Estimate bullpen ERA from team ERA minus SP contribution
         # SP covers ~61% of innings; remainder is bullpen
         _SP_FRAC = 0.61
-        h_sp_era = matchup.home_pitcher.era if matchup.home_pitcher and matchup.home_pitcher.era > 0 else (ht.era or 4.5)
-        a_sp_era = matchup.away_pitcher.era if matchup.away_pitcher and matchup.away_pitcher.era > 0 else (at.era or 4.5)
+        h_sp_era = matchup.home_pitcher.era
+        a_sp_era = matchup.away_pitcher.era
         h_team_era = ht.era or 4.5
         a_team_era = at.era or 4.5
         h_bp_era = max(2.5, min(7.5, (h_team_era - h_sp_era * _SP_FRAC) / max(1 - _SP_FRAC, 0.2)))

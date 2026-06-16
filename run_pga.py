@@ -1,5 +1,5 @@
 """
-PGA Tour Major Picks Pipeline — ChefTonyBets
+PGA Tour Major Picks Pipeline — Overlay
 
 Runs Monte Carlo simulation for the active major, finds edges vs book odds.
 Output saved to output/picks/golf_pga_championship/YYYYMMDD/picks.json
@@ -136,7 +136,7 @@ def main(args: argparse.Namespace) -> int:
     tournament_name = _sport_key_to_tournament(sport_key)
     out_dir = out.parent  # same dir as picks.json
 
-    # Pick card (new ChefTonyBets design)
+    # Pick card (new Overlay design)
     try:
         from src.output.cards import render_pga_card
         card_path = render_pga_card(

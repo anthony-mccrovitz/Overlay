@@ -38,8 +38,8 @@ export function EquityCurve({ data, height = 280 }: { data: EquityPoint[]; heigh
     <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" style={{ width: "100%", height }}>
       <defs>
         <linearGradient id="eq-fill" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#2D7FFF" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="#2D7FFF" stopOpacity="0" />
+          <stop offset="0%" stopColor="#12C58A" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#12C58A" stopOpacity="0" />
         </linearGradient>
       </defs>
       {gridYs.map((y, i) => (
@@ -62,7 +62,7 @@ export function EquityCurve({ data, height = 280 }: { data: EquityPoint[]; heigh
         strokeDasharray="2 3"
       />
       <path d={areaPath} fill="url(#eq-fill)" />
-      <path d={linePath} fill="none" stroke="#4D95FF" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d={linePath} fill="none" stroke="#2FE0A3" strokeWidth="2.5" strokeLinejoin="round" />
     </svg>
   );
 }

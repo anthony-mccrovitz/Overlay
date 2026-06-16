@@ -1,5 +1,5 @@
 """
-HTML/CSS pick card renderer — ChefTonyBets AI.
+HTML/CSS pick card renderer — Overlay AI.
 
 Renders via Playwright (headless Chrome) for photorealistic quality:
   - Glassmorphism cards with backdrop-blur
@@ -437,7 +437,7 @@ def _v2_data_strip(ec: str, prob_pct: float, edge_pct: float, book: str) -> str:
         f'</div>'
         f'<div style="width:1px;background:{_BORDER}"></div>'
         f'<div style="flex:1;text-align:center">'
-        f'<div style="{lbl}">AI EDGE</div>'
+        f'<div style="{lbl}">ML EDGE</div>'
         f'<div style="font-size:22px;font-weight:900;color:{ec}">+{edge_pct:.1f}%</div>'
         f'</div>'
         f'<div style="width:1px;background:{_BORDER}"></div>'
@@ -701,15 +701,10 @@ def _build_html(picks: list[dict], sport: str, d: date, card_type: str = "moneyl
         f'<div style="font-size:14px;font-weight:700;color:{_MUT};letter-spacing:0.14em;margin-bottom:10px">'
         f'{sport_emoji} {sport_lbl} &nbsp;·&nbsp; {date_str}</div>'
         f'<div style="font-size:56px;font-weight:900;letter-spacing:-2px;line-height:1">'
-        f'<span style="color:#fff">ChefTony</span>'
-        f'<span style="background:linear-gradient(135deg,#FFD700,#FF8C00);'
-        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Bets</span>'
-        f'<span style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#00FFFF,#7B61FF);'
-        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;'
-        f'margin-left:10px;vertical-align:middle">AI</span>'
+        f'<span style="color:#fff">Overlay</span>'
         f'</div>'
         f'<div style="font-size:16px;color:{_MUT};margin-top:8px;letter-spacing:0.04em">'
-        f'@ChefTonyAIBets &nbsp;·&nbsp; A.I. Edge Detection</div>'
+        f'@getoverlay &nbsp;·&nbsp; ML Picks Model</div>'
         f'</div>'
         f'<div style="text-align:right;padding-top:6px">'
         f'<div style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;'
@@ -737,7 +732,7 @@ def _build_html(picks: list[dict], sport: str, d: date, card_type: str = "moneyl
         f'<div style="font-size:15px;color:{_MUT}">{footer_left}Results posted daily · Not financial advice · 21+</div>'
         f'<div style="font-size:22px;font-weight:900;background:linear-gradient(135deg,#00FF9D,#00C8FF);'
         f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;'
-        f'letter-spacing:0.02em">@ChefTonyAIBets</div>'
+        f'letter-spacing:0.02em">@getoverlay</div>'
         f'</div>'
     )
 
@@ -1104,11 +1099,9 @@ def _build_game_slate_html(
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -1120,7 +1113,7 @@ def _build_game_slate_html(
 
   <div class="footer">
     <div class="footer-left">{pill_label} · {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-handle">@getoverlay</div>
     <div class="footer-right">A.I. Verified</div>
   </div>
 </div>
@@ -1463,11 +1456,9 @@ def _build_props_html(props: list[dict], sport: str, d: date,
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -1483,7 +1474,7 @@ def _build_props_html(props: list[dict], sport: str, d: date,
 
   <div class="footer">
     <div class="footer-left">{sport_lbl} Props &nbsp;·&nbsp; {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-handle">@getoverlay</div>
     <div class="footer-right">A.I. Verified</div>
   </div>
 </div>
@@ -1834,8 +1825,7 @@ def _build_nrfi_html(games: list[dict], sport: str, d: date) -> str:
   <div class="nrfi-header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span><span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
     </div>
     <div class="header-right">
@@ -1852,8 +1842,8 @@ def _build_nrfi_html(games: list[dict], sport: str, d: date) -> str:
 
   <div class="nrfi-footer">
     <div class="footer-l">MLB · {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
-    <div class="footer-r">AI Verified</div>
+    <div class="footer-handle">@getoverlay</div>
+    <div class="footer-r">Verified Picks</div>
   </div>
 </div>
 </body>
@@ -2268,11 +2258,9 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection  ·  @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -2286,7 +2274,7 @@ def _build_nba_html(picks: list[dict], d: date, context_label: str = "NBA",
   {props_html}
   <div class="footer">
     <div class="footer-left">{context_label}  ·  {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-handle">@getoverlay</div>
     <div class="footer-right">A.I. Verified</div>
   </div>
 </div>
@@ -2477,11 +2465,9 @@ def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA"
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -2497,7 +2483,7 @@ def _build_nba_props_html(props: list[dict], d: date, context_label: str = "NBA"
 
   <div class="footer">
     <div class="footer-left">{context_label} Props &nbsp;·&nbsp; {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-handle">@getoverlay</div>
     <div class="footer-right">A.I. Verified</div>
   </div>
 </div>
@@ -2945,10 +2931,9 @@ def _build_mlb_story_html(picks: list[dict], d: date) -> str:
   <div class="s-header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span><span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="s-header-right">
       <div class="s-date">{date_str}</div>
@@ -2963,8 +2948,8 @@ def _build_mlb_story_html(picks: list[dict], d: date) -> str:
 
   <div class="s-footer">
     <div class="s-footer-l">MLB · {date_str}</div>
-    <div class="s-footer-handle">@ChefTonyAIBets</div>
-    <div class="s-footer-r">AI Verified</div>
+    <div class="s-footer-handle">@getoverlay</div>
+    <div class="s-footer-r">Verified Picks</div>
   </div>
   <div class="s-disclaimer">Not financial advice. Bet responsibly. 21+</div>
 </div>
@@ -3231,7 +3216,7 @@ def _build_pick_of_day_html(pick: dict, sport: str, d: date) -> str:
   <div class="glow"></div>
 
   <div class="header">
-    <span class="h-brand">@ChefTonyAIBets</span>
+    <span class="h-brand">@getoverlay</span>
     <span class="h-pill">Pick of the Day</span>
     <span class="h-date">{sport_lbl} · {date_str}</span>
   </div>
@@ -3342,7 +3327,7 @@ def _build_clean_totals_html(picks: list[dict], sport: str, d: date) -> str:
     <div class="meta-row">
       <span class="odds">{odds_str}</span>
       {_book_badge_html(book, font_size=15, padding="5px 14px", radius="8px")}
-      <span class="edge-pill" style="color:{edge_color};border-color:{edge_color}55">+{edge_pct:.1f}% EDGE</span>
+      <span class="edge-pill" style="color:{edge_color};border-color:{edge_color}55">AI SCORE {min(99, max(50, 50 + round(edge_pct * 4.0)))}</span>
     </div>
   </div>"""
 
@@ -3448,9 +3433,13 @@ def _build_clean_totals_html(picks: list[dict], sport: str, d: date) -> str:
 <body>
 <div class="card-wrap">
   <div class="header">
-    <span class="h-sport">{sport_lbl} Totals</span>
+    <div>
+      <span class="h-sport" style="font-size:36px;font-weight:900;color:#fff;letter-spacing:-0.5px">Overlay</span>
+      <div style="font-size:12px;color:rgba(255,255,255,0.38);letter-spacing:0.15em;margin-top:4px">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
+    </div>
+    <div style="background:#6480ff18;border:1.5px solid #6480ff55;border-radius:999px;padding:10px 24px;
+         font-size:14px;font-weight:800;color:#6480ff;letter-spacing:0.14em">{sport_lbl.upper()} TOTALS</div>
     <span class="h-date">{date_str}</span>
-    <span class="h-brand">@ChefTonyAIBets</span>
   </div>
 
   <div class="picks-body">
@@ -3459,7 +3448,8 @@ def _build_clean_totals_html(picks: list[dict], sport: str, d: date) -> str:
 
   <div class="footer">
     <span class="footer-record">{record_str}</span>
-    <span class="footer-note">Picks logged before tip-off · Not financial advice · 21+</span>
+    <span style="font-size:16px;font-weight:900;color:#6480ff;letter-spacing:0.14em">@GETOVERLAY</span>
+    <span class="footer-note">overlay-gray.vercel.app</span>
   </div>
 </div>
 </body>
@@ -3681,10 +3671,9 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
   <div class="s-header">
     <div>
       <div class="s-brand">
-        <span class="s-brand-chef">Chef</span><span class="s-brand-chef">Tony</span><span class="s-brand-bets">Bets</span>
-        <span class="s-brand-ai">AI</span>
+        <span class="s-brand-chef">Overlay</span>
       </div>
-      <div class="s-brand-sub">A.I. Edge Detection · @ChefTonyAIBets</div>
+      <div class="s-brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="s-header-right">
       <div class="s-header-date">{date_str}</div>
@@ -3696,7 +3685,7 @@ def _build_slate_html(picks: list[dict], sport: str, d: date) -> str:
   </div>
   <div class="s-footer">
     <span>{sport_lbl} · {date_str}</span>
-    <span class="s-footer-handle">@ChefTonyAIBets</span>
+    <span class="s-footer-handle">@getoverlay</span>
   </div>
 </div>
 </body>
@@ -3855,11 +3844,9 @@ def _build_f5_html(plays: list[dict], sport: str, d: date) -> str:
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -3869,7 +3856,7 @@ def _build_f5_html(plays: list[dict], sport: str, d: date) -> str:
   <div class="picks-list">{pick_rows_html}</div>
   <div class="footer">
     <div class="footer-left">MLB F5 TOTALS &nbsp;·&nbsp; {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-handle">@getoverlay</div>
     <div class="footer-right">A.I. Verified</div>
   </div>
 </div>
@@ -4050,11 +4037,9 @@ def _build_batter_props_html(props: list[dict], sport: str, d: date) -> str:
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -4064,7 +4049,7 @@ def _build_batter_props_html(props: list[dict], sport: str, d: date) -> str:
   <div class="picks-list">{rows_html}</div>
   <div class="footer">
     <div class="footer-left">MLB BATTER PROPS &nbsp;·&nbsp; {date_str}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
+    <div class="footer-handle">@getoverlay</div>
     <div class="footer-right">A.I. Verified</div>
   </div>
 </div>

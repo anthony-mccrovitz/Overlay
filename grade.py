@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ChefTonyBets — Grading Script
+Overlay — Grading Script
 Run this each evening after games finish.
 
 Usage:
@@ -631,7 +631,7 @@ def interactive():
         return
 
     print(f"\n  {'='*50}")
-    print(f"  ChefTonyBets — Grade {len(picks)} pending pick(s)")
+    print(f"  Overlay — Grade {len(picks)} pending pick(s)")
     print(f"  {'='*50}\n")
 
     for pick in picks:
@@ -747,11 +747,11 @@ def generate_recap_card(grade_date: str) -> Path | None:
 
     # Header
     draw.rectangle([0, 0, W, 110], fill=_HDR)
-    draw.text((PAD, 20), "ChefTony", fill=_WHITE, font=f_brand)
-    bw = draw.textlength("ChefTony", font=f_brand)
+    draw.text((PAD, 20), "Overlay", fill=_WHITE, font=f_brand)
+    bw = draw.textlength("Overlay", font=f_brand)
     draw.text((PAD + bw + 8, 26), "Bets", fill=_GOLD, font=_load_font(42, bold=True))
-    hw = draw.textlength("@ChefTonyBets", font=f_handle)
-    draw.text((W - PAD - hw, 40), "@ChefTonyBets", fill=_GOLD, font=f_handle)
+    hw = draw.textlength("@Overlay", font=f_handle)
+    draw.text((W - PAD - hw, 40), "@Overlay", fill=_GOLD, font=f_handle)
 
     draw.rectangle([0, 110, W, 114], fill=_GOLD)
 

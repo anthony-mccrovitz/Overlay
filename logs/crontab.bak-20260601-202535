@@ -1,0 +1,66 @@
+# ChefTonyBets daily pipeline (rev 2026-05-21 — live feed updates throughout day)
+# All times are ET (system local).
+# build_customer_feed.py runs after EACH pick batch + every 30 min overnight during grading.
+#
+# --- Picks generation (morning) ---
+# Feed rebuild: MLB + early sports picks live by 8:40 AM
+
+# --- Picks generation (late morning — needs injury / goalie info) ---
+# Feed rebuild: full slate live by 11:38 AM (NBA + NHL + WNBA all in)
+
+# --- Customer feed + content (after all picks land) ---
+
+# --- CLV: closing-line capture across all sports (5 min before game time) ---
+
+# --- Grading: live throughout evening + full sweep overnight ---
+
+# --- Auto-grade outright markets (NASCAR/F1/IndyCar/PGA) via ESPN API ---
+
+# --- Feed rebuild during grading window: every 30 min so overlay shows grades as they land ---
+
+# --- Post-grade: final feed rebuild + CLV backfill ---
+
+# --- Hourly safety: rotating backup of picks.json ---
+
+# --- Short-form video scripts (TikTok / YT Shorts) ---
+# ChefTonyBets timing-aware pipeline
+# ── NIGHT BEFORE (opening lines) ──
+# ── DEPLOY (night picks → Vercel) ──
+# ── MORNING (morning-of sports) ──
+# ── GATE CHECKS (BET NOW vs HOLD) ──
+# ── CLOSING LINES + GRADING ──
+# ChefTonyBets timing-aware pipeline
+# ── NIGHT BEFORE (opening lines) ──
+30 21 * * * cd /Users/anthonymccrovitz/march-madness && /usr/bin/caffeinate -i /usr/local/bin/python3 chef.py night --sport mlb >> /Users/anthonymccrovitz/march-madness/logs/night.log 2>&1
+35 21 * * * cd /Users/anthonymccrovitz/march-madness && /usr/bin/caffeinate -i /usr/local/bin/python3 chef.py night --sport nba >> /Users/anthonymccrovitz/march-madness/logs/night.log 2>&1
+40 21 * * * cd /Users/anthonymccrovitz/march-madness && /usr/bin/caffeinate -i /usr/local/bin/python3 chef.py night --sport nhl >> /Users/anthonymccrovitz/march-madness/logs/night.log 2>&1
+45 21 * * * cd /Users/anthonymccrovitz/march-madness && /usr/bin/caffeinate -i /usr/local/bin/python3 chef.py night --sport wnba >> /Users/anthonymccrovitz/march-madness/logs/night.log 2>&1
+# ── DEPLOY (night picks → Vercel) ──
+36 22 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/deploy_picks.py --sport mlb >> /Users/anthonymccrovitz/march-madness/logs/deploy.log 2>&1
+46 22 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/deploy_picks.py --sport nba >> /Users/anthonymccrovitz/march-madness/logs/deploy.log 2>&1
+# ── MORNING (morning-of sports) ──
+0 12 * * 1 cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 run_pga.py >> /Users/anthonymccrovitz/march-madness/logs/picks.log 2>&1
+10 13 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/gen_caption.py >> /Users/anthonymccrovitz/march-madness/logs/captions.log 2>&1
+15 13 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/deploy_picks.py >> /Users/anthonymccrovitz/march-madness/logs/deploy.log 2>&1
+# ── GATE CHECKS (BET NOW vs HOLD) ──
+0 21 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 chef.py gates >> /Users/anthonymccrovitz/march-madness/logs/gates.log 2>&1
+0 22 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 chef.py gates >> /Users/anthonymccrovitz/march-madness/logs/gates.log 2>&1
+0 23 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 chef.py gates >> /Users/anthonymccrovitz/march-madness/logs/gates.log 2>&1
+# ── CLOSING LINES + GRADING ──
+*/2 * * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/capture_closing.py --sport all --window 5 >> /Users/anthonymccrovitz/march-madness/logs/capture_closing.log 2>&1
+*/15 20-23,0-7 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/grade_completed.py >> /Users/anthonymccrovitz/march-madness/logs/grade_completed.log 2>&1
+45 3 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 chef.py grade >> /Users/anthonymccrovitz/march-madness/logs/grade.log 2>&1
+50 3 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/nightly_recap.py --deploy >> /Users/anthonymccrovitz/march-madness/logs/recap.log 2>&1
+0 8 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/backfill_clv.py >> /Users/anthonymccrovitz/march-madness/logs/backfill_clv.log 2>&1
+# ── WEEKLY AUDIT (Sunday 9 AM) ──
+0 9 * * 0 cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/weekly_audit.py >> /Users/anthonymccrovitz/march-madness/logs/weekly_audit.log 2>&1
+# ── RESULT CARDS (after evening grade sweep) ──
+0 4 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/gen_result_cards.py >> /Users/anthonymccrovitz/march-madness/logs/result_cards.log 2>&1
+# ── DYNAMIC EVENT SCANNER (tennis/soccer/WNBA/NHL — checks every 2h) ──
+0 */2 * * * /usr/local/bin/python3 /Users/anthonymccrovitz/march-madness/scripts/dynamic_picks_scanner.py >> /Users/anthonymccrovitz/march-madness/logs/scanner.log 2>&1
+0 * * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/backup_picks.py >> /Users/anthonymccrovitz/march-madness/logs/backup.log 2>&1
+# ── DAILY CRONTAB SELF-CHECK (catches relative-path drift) ──
+30 9 * * * cd /Users/anthonymccrovitz/march-madness && bash scripts/check_crontab.sh >> /Users/anthonymccrovitz/march-madness/logs/crontab_check.log 2>&1
+# ── JUNE CHALLENGE (grade + daily card after morning grade sweep) ──
+55 3 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/june_challenge.py grade >> /Users/anthonymccrovitz/march-madness/logs/june_challenge.log 2>&1
+57 3 * * * cd /Users/anthonymccrovitz/march-madness && /usr/local/bin/python3 scripts/june_challenge.py card >> /Users/anthonymccrovitz/march-madness/logs/june_challenge.log 2>&1

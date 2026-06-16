@@ -1,0 +1,50 @@
+{
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Esmerlyn Valdez",
+      "team": "Esmerlyn Valdez OVER 0.5",
+      "matchup": "Chicago Cubs @ Pittsburgh Pirates",
+      "line": 0.5,
+      "odds": -125,
+      "model_prob": 1.0,
+      "implied_prob": 0.5,
+      "edge_pct": 50.0,
+      "model_mu": 4.853560739928869e+16,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Bryan Torres",
+      "team": "Bryan Torres OVER 0.5",
+      "matchup": "St. Louis Cardinals @ Milwaukee Brewers",
+      "line": 0.5,
+      "odds": 105,
+      "model_prob": 0.7999,
+      "implied_prob": 0.4452,
+      "edge_pct": 35.47,
+      "model_mu": 4.0,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Shane McClanahan",
+      "team": "Shane McClanahan UNDER 4.5",
+      "matchup": "Tampa Bay Rays @ Baltimore Orioles",
+      "line": 4.5,
+      "odds": 215,
+      "model_prob": 0.6805,
+      "implied_prob": 0.2899,
+      "edge_pct": 39.06,
+      "model_mu": 3.9,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}

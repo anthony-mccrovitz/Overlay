@@ -335,7 +335,7 @@ def build_html(date_str: str, picks: list[dict], potd: dict | None) -> str:
   <!-- Header -->
   <div class="header">
     <div>
-      <div class="brand">ChefTonyBets</div>
+      <div class="brand">Overlay</div>
       <div class="brand-sub">ML-Powered Edge Detection</div>
     </div>
     <div class="date-badge">{date_disp}</div>
@@ -368,7 +368,7 @@ def build_html(date_str: str, picks: list[dict], potd: dict | None) -> str:
   {rows_html}
 
   <div class="footer">
-    ChefTonyBets · AI-powered sports betting edges · Not financial advice
+    Overlay · AI-powered sports betting edges · Not financial advice
   </div>
 
 </body>

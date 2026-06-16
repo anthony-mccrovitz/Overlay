@@ -1,5 +1,5 @@
 """
-Reddit daily thread templates — ChefTonyBets AI.
+Reddit daily thread templates — Overlay AI.
 
 Generates four templates per day:
   1. r/sportsbook Pick of the Day (POTD) — one pick, -200/+200 range, model write-up
@@ -130,7 +130,7 @@ def _potd_template(
 
     why_line = f"\n\n**Why:** {why}" if why and why.strip() else ""
 
-    return f"""**ChefTonyBets AI — Pick of the Day · {_day_str(d)}**
+    return f"""**Overlay AI — Pick of the Day · {_day_str(d)}**
 
 **Sport:** {sport_str}
 **Pick:** {team} {market_label} {_odds_str(odds)} @ {book}
@@ -194,7 +194,7 @@ def _mlb_props_template(props: list[dict], d: date, record: str) -> str:
 
     body = "\n\n".join(sections)
 
-    return f"""**ChefTonyBets AI — MLB Props · {_day_str(d)}**
+    return f"""**Overlay AI — MLB Props · {_day_str(d)}**
 
 Running XGBoost prop model on pitcher K-rate, batter contact, park factors, and weather. {len(props)} edges found today.
 
@@ -244,7 +244,7 @@ def _mlb_picks_template(picks: list[dict], nrfi_picks: list[dict], d: date, reco
             nrfi_lines.append(f"| {matchup}{sp_note} | NRFI {odds} | {prob:.0f}% | {book} |")
         nrfi_rows = "\n**⚡ NRFI Plays**\n\n| Game | Bet | Proj% | Book |\n|------|-----|-------|------|\n" + "\n".join(nrfi_lines)
 
-    return f"""**ChefTonyBets AI — MLB Picks · {_day_str(d)}**
+    return f"""**Overlay AI — MLB Picks · {_day_str(d)}**
 
 XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: {record}**
 
@@ -304,7 +304,7 @@ def _nba_picks_template(picks: list[dict], d: date, record: str) -> str:
 
     body = "\n\n".join(sections)
 
-    return f"""**ChefTonyBets AI — NBA Picks · {_day_str(d)}**
+    return f"""**Overlay AI — NBA Picks · {_day_str(d)}**
 
 XGBoost on ORtg/DRtg/Pace efficiency ratings | **Season: {record}**
 

@@ -1,5 +1,5 @@
 """
-NBA Daily Picks Pipeline — ChefTonyBets
+NBA Daily Picks Pipeline — Overlay
 
 Generates picks + player props for today's NBA slate and saves to:
     output/picks/basketball_nba/YYYYMMDD/picks.json
@@ -101,7 +101,7 @@ def _format_time(iso: str) -> str:
 
 def print_picks_table(edges: list[dict], props: list[dict]) -> None:
     line = "─" * 72
-    print(f"\n{'NBA PICKS — ChefTonyBets':^72}")
+    print(f"\n{'NBA PICKS — Overlay':^72}")
     print(f"{date.today().strftime('%B %d, %Y'):^72}")
     print(line)
 
@@ -168,18 +168,8 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     out_dir = Path(f"output/picks/basketball_nba/{today}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    print("\n  ChefTonyBets — NBA Picks Pipeline")
+    print("\n  Overlay — NBA Picks Pipeline")
     print(f"  Date: {today}")
-
-    # ── Schedule guard: skip if no NBA games today ─────────────────────────────
-    try:
-        from scripts.schedule_check import validate_and_log
-        date_fmt = f"{today[:4]}-{today[4:6]}-{today[6:]}"
-        if not validate_and_log("nba", date_fmt):
-            return
-    except Exception as _sce:
-        print(f"  ⚠  Schedule check skipped ({_sce})")
-    # ──────────────────────────────────────────────────────────────────────────
 
     print("  Fetching NBA team ratings...")
 
@@ -206,29 +196,17 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     print("  Fetching NBA odds...")
     events = fetch_nba_odds(refresh=refresh)
 
-    # Filter to games whose local Eastern Time date matches target_date.
-    # NBA tip-offs run 7 PM – midnight ET; late games cross into next UTC day
-    # so we can't compare UTC date strings directly. Instead convert to ET.
-    from zoneinfo import ZoneInfo
-    ET = ZoneInfo("America/New_York")
-    target_dt = date(int(today[:4]), int(today[4:6]), int(today[6:]))
-
-    def _et_date(iso: str) -> date:
-        try:
-            return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(ET).date()
-        except Exception:
-            return date.min
-
-    upcoming = [e for e in events if _et_date(e.get("commence_time", "")) == target_dt]
+    # Keep only games whose local Eastern Time date matches the slate date.
+    # NBA tip-offs run 7 PM – midnight ET; late games cross into the next UTC
+    # day, so we compare in ET rather than on the raw UTC date string. On a true
+    # off-day this returns empty — we do NOT reach into the next upcoming game,
+    # which would otherwise put a future Finals/playoff game on today's card.
+    from src.data.slate import filter_to_slate
+    upcoming = filter_to_slate(events, today)
 
     if not upcoming:
-        now_utc = datetime.now(timezone.utc)
-        upcoming = [
-            e for e in events
-            if datetime.fromisoformat(
-                e.get("commence_time", "2000-01-01T00:00:00Z").replace("Z", "+00:00")
-            ) > now_utc
-        ]
+        print(f"  ℹ  No NBA games on the {today} slate (off-day) — skipping. No card pick.")
+        return
 
     print(f"  Found {len(upcoming)} upcoming games")
     for ev in upcoming:
@@ -338,7 +316,7 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     top_picks = [e for e in edges if e.get("edge_pct", 0) > 0][:6]
     all_positive = [e for e in edges if e.get("edge_pct", 0) > 0]
 
-    # ── New ChefTonyBets NBA totals card ──────────────────────────────────
+    # ── New Overlay NBA totals card ──────────────────────────────────
     totals_picks = [e for e in all_positive if e.get("market") == "total"]
     if totals_picks:
         print("\n  Generating NBA totals card (new design)...")

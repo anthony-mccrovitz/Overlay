@@ -1,0 +1,179 @@
+{
+  "date": "20260425",
+  "total_picks": 12,
+  "graded": 12,
+  "pending": 0,
+  "wins": 7,
+  "losses": 5,
+  "win_rate": 0.5833333333333334,
+  "total_staked": 12.0,
+  "total_profit": 0.9641487706193588,
+  "roi": 8.034573088494657,
+  "by_type": {
+    "spread": {
+      "wins": 3,
+      "losses": 3,
+      "profit": -0.2,
+      "win_rate": 0.5
+    },
+    "total": {
+      "wins": 2,
+      "losses": 1,
+      "profit": 0.88,
+      "win_rate": 0.6667
+    },
+    "moneyline": {
+      "wins": 2,
+      "losses": 1,
+      "profit": 0.29,
+      "win_rate": 0.6667
+    }
+  },
+  "details": [
+    {
+      "market": "spread",
+      "team": "Phoenix Suns +8.5",
+      "matchup": "Oklahoma City Thunder @ Phoenix Suns",
+      "odds": -105,
+      "model_prob": 0.723,
+      "edge_pct": 23.07,
+      "won": false,
+      "profit": -1.0,
+      "score": "Oklahoma City Thunder 121, Phoenix Suns 109",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 214.5",
+      "matchup": "Oklahoma City Thunder @ Phoenix Suns",
+      "odds": -105,
+      "model_prob": 0.7128,
+      "edge_pct": 21.84,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Oklahoma City Thunder 121, Phoenix Suns 109",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 215.0",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": -109,
+      "model_prob": 0.7206,
+      "edge_pct": 21.72,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 114, Atlanta Hawks 98",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "UNDER 230.0",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": -108,
+      "model_prob": 0.6805,
+      "edge_pct": 18.17,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Denver Nuggets 96, Minnesota Timberwolves 112",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Minnesota Timberwolves +1.5",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": -108,
+      "model_prob": 0.6179,
+      "edge_pct": 11.57,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Denver Nuggets 96, Minnesota Timberwolves 112",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Minnesota Timberwolves",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": 102,
+      "model_prob": 0.568,
+      "edge_pct": 9.03,
+      "won": true,
+      "profit": 1.02,
+      "score": "Denver Nuggets 96, Minnesota Timberwolves 112",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Atlanta Hawks",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": 116,
+      "model_prob": 0.5354,
+      "edge_pct": 8.51,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 114, Atlanta Hawks 98",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Atlanta Hawks +1.5",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": -105,
+      "model_prob": 0.5858,
+      "edge_pct": 8.22,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 114, Atlanta Hawks 98",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "New York Knicks -2.5",
+      "matchup": "New York Knicks @ Atlanta Hawks",
+      "odds": -102,
+      "model_prob": 0.3821,
+      "edge_pct": -11.44,
+      "won": true,
+      "profit": 0.9803921568627451,
+      "score": "New York Knicks 114, Atlanta Hawks 98",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Denver Nuggets -1.5",
+      "matchup": "Denver Nuggets @ Minnesota Timberwolves",
+      "odds": -106,
+      "model_prob": 0.3821,
+      "edge_pct": -11.57,
+      "won": false,
+      "profit": -1.0,
+      "score": "Denver Nuggets 96, Minnesota Timberwolves 112",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Oklahoma City Thunder",
+      "matchup": "Oklahoma City Thunder @ Phoenix Suns",
+      "odds": -375,
+      "model_prob": 0.5468,
+      "edge_pct": -21.94,
+      "won": true,
+      "profit": 0.26666666666666666,
+      "score": "Oklahoma City Thunder 121, Phoenix Suns 109",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Oklahoma City Thunder -8.5",
+      "matchup": "Oklahoma City Thunder @ Phoenix Suns",
+      "odds": -112,
+      "model_prob": 0.277,
+      "edge_pct": -23.07,
+      "won": true,
+      "profit": 0.8928571428571429,
+      "score": "Oklahoma City Thunder 121, Phoenix Suns 109",
+      "status": "win"
+    }
+  ],
+  "graded_at": "2026-05-20T05:27:01.310684+00:00"
+}

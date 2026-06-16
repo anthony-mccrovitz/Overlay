@@ -1,5 +1,5 @@
 """
-MLB Player Props Pipeline — ChefTonyBets
+MLB Player Props Pipeline — Overlay
 
 Fetches live player prop odds, enriches with MLB Stats API stats,
 runs through the Negative Binomial model, and finds edges.
@@ -207,6 +207,30 @@ def run_mlb_props(args: argparse.Namespace) -> int:
             print(f"  [CLV] Snapshotted {n_snapped} prop pick(s)")
     except Exception as err:
         print(f"  [CLV snapshot] {err}")
+
+    # 7b. Render batter prop cards (HR, RBI, Total Bases, Hits)
+    batter_markets = {
+        "batter_home_runs", "batter_rbis", "batter_total_bases",
+        "batter_hits", "batter_runs_scored",
+    }
+    batter_props = [e for e in all_edges if e.get("market") in batter_markets]
+    pitcher_props = [e for e in all_edges if e.get("market") not in batter_markets]
+    try:
+        from src.output.card_html import render_props_cards_by_type
+        if batter_props:
+            batter_cards = render_props_cards_by_type(
+                batter_props, sport="baseball_mlb", card_date=game_date
+            )
+            for mkt, p in batter_cards.items():
+                print(f"  Card: {mkt} → {p.name}")
+        if pitcher_props:
+            pitcher_cards = render_props_cards_by_type(
+                pitcher_props, sport="baseball_mlb", card_date=game_date
+            )
+            for mkt, p in pitcher_cards.items():
+                print(f"  Card: {mkt} → {p.name}")
+    except Exception as err:
+        print(f"  [prop cards] {err}")
 
     # 8. Best pick per market
     if all_edges:

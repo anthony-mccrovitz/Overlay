@@ -1,0 +1,53 @@
+{
+  "date": "20260524",
+  "total_picks": 2,
+  "graded": 2,
+  "pending": 0,
+  "wins": 1,
+  "losses": 1,
+  "win_rate": 0.5,
+  "total_staked": 2.0,
+  "total_profit": -0.180327868852459,
+  "roi": -9.016393442622949,
+  "by_type": {
+    "total": {
+      "wins": 0,
+      "losses": 1,
+      "profit": -1.0,
+      "win_rate": 0.0
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 0,
+      "profit": 0.82,
+      "win_rate": 1.0
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 219.5",
+      "matchup": "Oklahoma City Thunder @ San Antonio Spurs",
+      "odds": -106,
+      "model_prob": 0.6167,
+      "edge_pct": 11.55,
+      "won": false,
+      "profit": -1.0,
+      "score": "Oklahoma City Thunder 82, San Antonio Spurs 103",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "San Antonio Spurs",
+      "matchup": "Oklahoma City Thunder @ San Antonio Spurs",
+      "odds": -122,
+      "model_prob": 0.5741,
+      "edge_pct": 4.43,
+      "won": true,
+      "profit": 0.819672131147541,
+      "score": "Oklahoma City Thunder 82, San Antonio Spurs 103",
+      "status": "win"
+    }
+  ],
+  "graded_at": "2026-05-25T12:59:29.183900+00:00"
+}

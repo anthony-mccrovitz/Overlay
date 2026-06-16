@@ -38,13 +38,16 @@ export const metadata: Metadata = {
     siteName: "Overlay",
     title: "Overlay — ML Sports Betting Edge Detection",
     description:
-      "Three-model ensemble finds positive EV in NBA, MLB, and NHL lines. 108-70 (60.7%) with +38u profit. Public ledger, free tools.",
+      "A three-model ensemble (XGBoost + LightGBM + CatBoost) finds positive EV in NBA & MLB lines. Every pick SHA-256 timestamped before tip-off and tracked in a public ledger. No touts, no parlays, no hype.",
     url: BASE_URL,
   },
   twitter: {
     card: "summary_large_image",
     site: "@ChefTonyAIBets",
     creator: "@ChefTonyAIBets",
+    title: "Overlay — ML Sports Betting Edge Detection",
+    description:
+      "Three models have to agree before a pick posts. Every result timestamped and tracked in public. NBA & MLB daily, plus a calibrated World Cup 2026 model.",
   },
   robots: {
     index: true,

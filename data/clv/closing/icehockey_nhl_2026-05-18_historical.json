@@ -1,0 +1,841 @@
+{
+  "timestamp": "2026-05-18T17:25:38Z",
+  "previous_timestamp": "2026-05-18T17:20:37Z",
+  "next_timestamp": "2026-05-18T17:30:37Z",
+  "data": [
+    {
+      "id": "45a3337bdc751e814fd37929a9d94834",
+      "sport_key": "icehockey_nhl",
+      "sport_title": "NHL",
+      "commence_time": "2026-05-18T23:40:03Z",
+      "home_team": "Buffalo Sabres",
+      "away_team": "Montr\u00e9al Canadiens",
+      "bookmakers": [
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-18T17:24:45Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -120
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": 100
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 100,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -122,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-18T17:25:04Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:04Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -118
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": -102
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:04Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-18T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -110
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": -104
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -106,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-18T17:24:43Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -118
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": -102
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-18T17:25:26Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -110
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": -104
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -106,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-18T17:24:43Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -125
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": 105
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-18T17:24:45Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -118
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": -103
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -104,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -117,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-18T17:24:42Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:42Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -120
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": 100
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:42Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-18T17:25:26Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -121
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": 100
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -107,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -120,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-18T17:22:42Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:22:41Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -122
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": 102
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:22:41Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-18T17:25:26Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Buffalo Sabres",
+                  "price": -120
+                },
+                {
+                  "name": "Montr\u00e9al Canadiens",
+                  "price": 100
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 5.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 5.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "15f3905f9616dd694d6ad7ee037c73b6",
+      "sport_key": "icehockey_nhl",
+      "sport_title": "NHL",
+      "commence_time": "2026-05-21T00:00:47Z",
+      "home_team": "Colorado Avalanche",
+      "away_team": "Vegas Golden Knights",
+      "bookmakers": [
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-18T17:24:45Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -194
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 162
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 104,
+                  "point": 6.5
+                },
+                {
+                  "name": "Under",
+                  "price": -128,
+                  "point": 6.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-18T17:24:43Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -192
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 160
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 110,
+                  "point": 6.5
+                },
+                {
+                  "name": "Under",
+                  "price": -130,
+                  "point": 6.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-18T17:25:26Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -191
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 167
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 6.0
+                },
+                {
+                  "name": "Under",
+                  "price": 104,
+                  "point": 6.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-18T17:25:05Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -191
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 167
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:05Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 6.0
+                },
+                {
+                  "name": "Under",
+                  "price": 104,
+                  "point": 6.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-18T17:24:43Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -190
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 158
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:43Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 6.0
+                },
+                {
+                  "name": "Under",
+                  "price": 100,
+                  "point": 6.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-18T17:25:04Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:04Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -200
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 165
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:04Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 6.0
+                },
+                {
+                  "name": "Under",
+                  "price": 100,
+                  "point": 6.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-18T17:24:45Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -196
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 158
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:45Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -121,
+                  "point": 6.0
+                },
+                {
+                  "name": "Under",
+                  "price": -101,
+                  "point": 6.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-18T17:25:26Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -195
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 160
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 100,
+                  "point": 6.5
+                },
+                {
+                  "name": "Under",
+                  "price": -125,
+                  "point": 6.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-18T17:22:42Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:22:41Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -195
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 165
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:22:41Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -103,
+                  "point": 6.5
+                },
+                {
+                  "name": "Under",
+                  "price": -117,
+                  "point": 6.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-18T17:25:26Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -190
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 163
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:25:26Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 6.0
+                },
+                {
+                  "name": "Under",
+                  "price": 100,
+                  "point": 6.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-18T17:24:42Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-18T17:24:42Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Avalanche",
+                  "price": -195
+                },
+                {
+                  "name": "Vegas Golden Knights",
+                  "price": 160
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-18T17:24:42Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 105,
+                  "point": 6.5
+                },
+                {
+                  "name": "Under",
+                  "price": -125,
+                  "point": 6.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

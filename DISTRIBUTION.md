@@ -1,215 +1,257 @@
-# ChefTonyBets / Overlay — Daily Distribution Playbook
+# Distribution Strategy
+**Updated: June 7, 2026**
+**Handle: @getoverlay (all platforms)**
 
-**Time budget: 30-60 min/day**
-**Goal: Build audience → prove track record → convert to subscribers**
+## Why the old approach failed
 
----
+Templated AI captions pasted directly. Hashtag blocks. Scheduled Reddit drops with the same format every day. Instagram and Reddit both banned the accounts. New accounts running the same strategy get banned just as fast — the content pattern is what triggers it, not the account age.
 
-## Morning Routine (15-20 min, after `python3 morning.py`)
-
-### Step 1: Post the Pick Card (5 min)
-```
-output/picks/baseball_mlb/YYYYMMDD/pick_card.png
-```
-- Platform: **Instagram feed post**
-- Caption template:
-  ```
-  🎯 MLB Picks — [DATE]
-
-  [PICK 1] [ODDS] (+X% edge)
-  [PICK 2] [ODDS] (+X% edge)
-  [PICK 3] [ODDS] (+X% edge)
-  [PICK 4] [ODDS] (+X% edge)
-  [PICK 5] [ODDS] (+X% edge)
-
-  Season: [W]-[L] | +[PROFIT]u | [ROI]% ROI
-
-  All picks AI-model backed. Link in bio for free slate card.
-
-  #mlbbets #sportsbetting #mlb #freepicks
-  ```
-- Always include season record in caption — that's the trust signal.
-
-### Step 2: Post the Slate Card to Stories (2 min)
-```
-output/picks/baseball_mlb/YYYYMMDD/slate_card.png
-```
-- Instagram Stories + X (Twitter)
-- No caption needed — the card explains itself
-- Add poll sticker: "Which game do YOU like today?" → drives engagement
-
-### Step 3: Tweet the Top Pick (3 min)
-```
-Template:
-🔥 Best Bet Today: [TEAM] ML [ODDS] @ [BOOK]
-
-Model: [X]% | Market: [X]% | Edge: +[X]%
-
-My model is finding value here because [one-sentence reason from edge drivers].
-
-Season: [W]-[L], +[ROI]% ROI
-
-Full slate 👇 [link to slate card image or landing page]
-```
+The fix: human voice, AI scaffolded not AI-written. Platform-appropriate behavior. One record, everywhere.
 
 ---
 
-## Evening Routine (5-10 min, after games end + `python3 grade.py`)
+## The brand
 
-### Step 4: Post Nightly Recap to Stories (5 min)
-```
-output/picks/recaps/YYYYMMDD.png  (once recap card feature is built)
-```
+**Name:** Overlay
+**Handle:** `@getoverlay` — same on every platform, no exceptions
+**Tagline:** "Every pick timestamped before game time."
+**What it means:** Your face, your voice, the model behind you. People follow the person. Overlay is the product they subscribe to.
 
-Until recap card is automated, screenshot `track.py status` output or type manually:
-
-```
-Stories caption:
-Last Night:
-✅ [TEAM] [ODDS] — WIN +[PROFIT]u
-✅ [TEAM] [ODDS] — WIN +[PROFIT]u
-❌ [TEAM] [ODDS] — LOSS -1.0u
-❌ [TEAM] [ODDS] — LOSS -1.0u
-
-[W]-[L] | [ROI]% ROI season
-
-Picks are free daily. Link in bio 🔗
-```
-
-**Why this matters:** People see the losses too. That's what makes you different from
-scammy pick sellers who only show wins. Transparent track record = trust = conversions.
+**"Timestamped before game time"** — this is the differentiator nobody else can claim. Every pick goes into `data/pnl/picks.json` with a timestamp before the game starts. That's the receipts. That's what you say when someone asks how they know you didn't post it after.
 
 ---
 
-## Weekly (Tuesday or Wednesday, 20-30 min)
+## Cards (locked in)
 
-### Step 5: Reddit r/sportsbook Track Record Post
-Post once per week when your record looks good. Format:
+Two cards, both generated daily by the pipeline:
 
-```
-Title: "My ML model's MLB picks — Week [N] recap and methodology"
+**Calibration card** (`calibration_card.png`) — single pick, big bold format. `@GETOVERLAY` bottom center. Use this on Twitter, TikTok thumbnail, Instagram.
 
-Body:
-Week [N] results: [W]-[L], [PROFIT]u profit, [ROI]% ROI
-Season to date: [W]-[L], [ROI]% ROI
+**Pick card** (`pick_card.png`) — full slate view, Overlay logo, team logos, `@getoverlay · overlay-gray.vercel.app` footer. Use this for the full slate post, Reddit, YouTube thumbnail.
 
-[Brief model explanation: "I built an ensemble of Pythagorean expectation + XGBoost
-on 65 features including real-time pitcher matchups, park factors, and line movement.
-Finding edges where my model's win probability differs from market implied probability."]
+Colors locked: dark navy background, blue accent (`#6366f1`/`#818CF8`), green for positive edge. Don't change this.
 
-[Link to pick card image if allowed, or just the record]
-```
+**Run `python3 chef.py picks mlb` to regenerate both cards with current branding.**
 
-Rules:
-- r/sportsbook allows track record posts. Picks-for-sale posts get removed.
-- Position as "sharing my results" not "buy my picks"
-- Respond to every comment — engagement = visibility
+---
 
-### Step 6: Twitter Thread (3x/week, 10 min each)
-Pick one game from yesterday where your model was right OR wrong and explain it.
+## Platform stack
+
+### 1. Twitter/X — post here first, every day
+New account: `@getoverlay`
+One tweet per morning. Your words, built from the voice brief scaffold.
+4 lines max. No hashtags in body. No emoji spam.
 
 ```
-Template:
-Thread: What my model saw on [TEAM] vs [TEAM] yesterday 🧵
+MLB UNDER 7.5 tonight — Mets @ Padres.
 
-1/ My model had [TEAM] at [X]%, market implied [Y]%. Edge: +[Z]%.
-Result: [WIN/LOSS] [SCORE]
+Both starters under 3.0 ERA last 5, wind blowing in, both bullpens fresh.
+Model: 52% · Market: 50% · Edge: +1.4%
 
-2/ Why the model liked [TEAM]:
-- Pythagorean: [X]% vs opponent's [Y]%
-- SP matchup: [pitcher] [ERA] vs [pitcher] [ERA]
-- Last 10 games: [X]-[Y]
+Totals: 87-54 (62%). Every pick logged before first pitch.
+→ overlay-gray.vercel.app
+```
 
-3/ What the market was missing:
-[1-2 sentence explanation]
-
-4/ CLV (Closing Line Value): opened [ODDS], closed [ODDS].
-[Beat/missed] the close by [N] points → [positive/negative] CLV signal.
-
-5/ Follow for daily picks. Full slate posted every morning.
-[Link to Instagram or landing page]
+Evening: tweet yesterday's result. One line. Always.
+```
+Yesterday: WIN. MLB UNDER 8.5, logged 10:47 AM. Model 59%, final 4-2.
+Totals: 88-54 (62%). Season continues.
 ```
 
 ---
 
-## Channel Priority (ranked by ROI on your time)
+### 2. TikTok — highest discovery, record daily
+New account: `@getoverlay`
 
-| Channel | Effort | Follower Growth | Conversion | Priority |
-|---------|--------|----------------|------------|----------|
-| Instagram feed (pick card) | 5 min/day | High | High (bio link) | #1 |
-| Instagram stories (slate + recap) | 5 min/day | Medium | Medium | #2 |
-| Twitter/X (top pick + threads) | 10-15 min/day | Medium | Medium | #3 |
-| Reddit (weekly track record) | 20-30 min/week | High (bursts) | Low | #4 |
-| TikTok ("how I use AI to bet") | 30 min/week | Very high | Low | #5 (later) |
+30-60 seconds, face on camera, no script. Pick up phone, record, post.
+- "Here's my pick tonight and why the model likes it"
+- Show the calibration card on screen
+- One stat, one reason, no hype language
 
----
+**Cross-post the same video to YouTube Shorts and Instagram Reels.**
+Key: download the original file before posting to TikTok (TikTok watermarks the video). Post the clean file to all three:
+- TikTok → post directly
+- YouTube Shorts → upload original
+- Instagram Reels → upload original
 
-## What NOT to do
-
-- **Don't post only wins.** Post every result. Transparency is the whole product.
-- **Don't sell picks in Reddit posts.** You get banned and it looks scammy.
-- **Don't buy followers.** The only number that matters is conversion to email/paid.
-- **Don't post without the season record visible.** Every post should show W-L-ROI.
-- **Don't ghost after a bad day.** Post the recap even when it's 0W-5L. That's what builds trust.
+One recording → three platforms. This is the force multiplier.
 
 ---
 
-## Content Calendar (4-week view)
+### 3. YouTube — weekly breakdown, long game
+New channel: Overlay (face thumbnail)
 
-**Week 1 (now):** Daily pick cards + manual recaps. Establish posting rhythm.
-**Week 2:** Add NRFI card as second daily post. Start Reddit weekly thread.
-**Week 3:** Launch landing page. Bio link = email capture. Start Twitter threads.
-**Week 4:** First 30+ bets settled. Post "30-day track record" breakdown post.
-  This is your first real conversion play — show the receipts.
+One video per week, Sunday. 10-15 minutes.
+Format: "Here's every pick I made this week, why I took each one, what hit, what missed."
+Also: model explainer videos ("How I built an ML model that's 87-54 on totals").
 
----
+The weekly recap is the highest-trust content you can make. Showing losses openly is more powerful than 10 wins.
 
-## The Conversion Funnel
-
-```
-Instagram post (free pick card)
-    ↓
-  Bio link → edgefinder.ai landing page
-    ↓
-  Email capture
-    ↓
-  Email: "Here's today's full slate (free)"
-    ↓
-  Email: "Here's last week's record: 18W-12L +12.4u"
-    ↓
-  Email: "Upgrade for $25/mo → today's picks + NRFI + Kelly sizing"
-    ↓
-  Stripe checkout
-```
-
-The track record email is the closer. Don't rush to Stripe. Build 30 days of
-transparent results first. Then the conversion rate on that email will be high.
+YouTube Shorts (daily): the TikTok cross-post above. Same video, no extra work.
 
 ---
 
-## Metrics to Track (weekly)
+### 4. Beehiiv (email) — build this in parallel, own your audience
+Set up at beehiiv.com — 10 minutes, free tier.
 
-- Instagram: follower count, story views, link in bio clicks
-- Landing page: email signups (once built)
-- Track record: W-L, ROI, CLV vs closing line
-- Twitter: impressions on pick threads
-- Reddit: upvotes and comments on weekly post
+One email per day. Send it yourself by copying from the voice brief.
+- Today's top pick + one paragraph of reasoning in your voice
+- The record
+- Link to overlay-gray.vercel.app
+
+**Why email first:** If Twitter or TikTok bans your account, the email list survives. Every subscriber you add is yours forever. This is the only channel with no platform risk.
+
+Link in every bio. Mention it in every TikTok. One CTA: "Free daily picks — link in bio."
 
 ---
 
-## Quick Reference: Daily Commands
+### 5. Reddit — participate, don't post (yet)
+New account: `@getoverlay`
+
+**For 30 days: comments only. No posts.** Build karma first.
+
+Daily habit:
+- Find the r/sportsbook megathread or the game thread for your top pick
+- Reply with one fact — not the pick, a stat. "Mets starter under 3.0 ERA last 5 starts."
+- No link. No "DM me." Just the fact.
+
+After 30 days of karma: post a picks thread. By then the account has credibility.
+
+---
+
+### 6. Instagram — June Challenge arc only
+New account: `@getoverlay`
+
+One post per day: bankroll update.
+- "Day 7. $131 on the line."
+- "Day 8 — WIN. $157 now."
+- No hashtags. No pick spam.
+
+That's a story. Stories build followers. Daily pick cards are spam.
+
+---
+
+### 7. Whop — set up now, charge July 1
+Create a page at whop.com.
+
+Free tier to start. List the record: "ML model. 87-54 on totals. Every pick logged before game time."
+
+July 1: open paid tier at $29/month. Founding member rate.
+
+Pricing ladder:
+- $29/month — founding member (limited spots)
+- $49/month — regular
+- $99/month — premium (includes model breakdown + franchise tracker alerts)
+
+Your verifiable timestamped record is what makes this work on Whop. Most services there can't prove anything.
+
+---
+
+### 8. Discord — later, paid only
+Don't open Discord until you have 30+ paying customers. An empty server kills trust.
+
+When you open it: free tier gets the email newsletter. Paid tier gets Discord (real-time picks, model alerts, Q&A). That's the upgrade path.
+
+---
+
+## TOS — what's safe, what isn't
+
+| Platform | Safe | Never say |
+|----------|------|-----------|
+| Twitter/X | Picks, record, model stats, odds | "Guaranteed," "can't miss" |
+| TikTok | Organic picks content, face video, model breakdowns | "Guaranteed," paid ads (banned for gambling) |
+| YouTube | Everything — breakdowns, model explainers, recaps | Gambling ads without disclosure |
+| Reddit | Organic participation, picks with methodology | Spam patterns, same template repeatedly |
+| Instagram | Personal content, bankroll arc, results | Guaranteed wins, deceptive stats |
+| Beehiiv | Everything | Nothing — email has no TOS issue |
+| Whop | Built for this | "Guaranteed" picks |
+
+The rule everywhere: "Model has 59%, market pricing 50%" is fine. "Can't miss tonight" is not.
+
+---
+
+## Complete daily system
+
+### Morning (45 min total)
 
 ```bash
-# Morning (8am)
-python3 morning.py
-
-# Post pick_card.png to Instagram + stories (slate_card.png)
-open output/picks/baseball_mlb/$(date +%Y%m%d)/pick_card.png
-open output/picks/baseball_mlb/$(date +%Y%m%d)/slate_card.png
-
-# Evening (after games end)
-python3 grade.py
-
-# Check record for caption
-python3 track.py card
+python3 chef.py voice    # → output/briefs/voice_YYYYMMDD.md
 ```
+
+**Step 1 — Twitter (5 min)**
+Open the brief → edit the tweet scaffold (change 2-3 words, make it yours) → post.
+Attach the calibration card PNG.
+
+**Step 2 — TikTok/Shorts/Reels (10 min)**
+Record 30-60 seconds on your phone:
+- Show the pick, explain the reasoning in plain english
+- One stat from the model notes
+- "Timestamped before game time, record in bio"
+Save the original → post to TikTok, YouTube Shorts, Instagram Reels (3 platforms, 1 video).
+
+**Step 3 — Beehiiv email (5 min)**
+Copy the tweet text + add 1-2 sentences of context → send.
+
+**Step 4 — Outreach (15 min)**
+From the brief's outreach block:
+- Search Twitter for the matchup → reply to 3 conversations with a fact, no link
+- Find the r/sportsbook megathread → one reply with a stat
+- DM anyone who engages: "Want today's slate for free? [Beehiiv link]"
+
+**Step 5 — Reddit (5 min)**
+One comment in the game thread. A fact. No link.
+
+---
+
+### Evening (5 min)
+
+Tweet yesterday's W/L result. One line.
+
+---
+
+### Weekly — Sunday (45 min)
+
+**YouTube video (30 min record/upload):**
+"Week in review — every pick, every result, what the model saw."
+Post the calibration cards from the week as B-roll.
+
+**Beehiiv newsletter (15 min):**
+Week in review + next week's angles. What sports are coming up. What the franchise tracker is showing.
+
+---
+
+## The user acquisition funnel
+
+```
+Twitter/TikTok post (1 video/tweet per day)
+    ↓
+Outreach — reply to conversations, DM anyone who engages
+    ↓
+DM: "Want today's picks for free?" → Beehiiv signup
+    ↓
+Free email list — daily picks, build trust with the record
+    ↓
+After 2 weeks: "Paid tier launching July 1 — founding rate $29/month"
+    ↓
+Whop page → recurring revenue
+    ↓
+$29 × 100 people = $2,900/month
+```
+
+**The step everyone skips:** the DM. You can't convert from a post alone. Someone likes your tweet → you DM them. That's where subscribers come from.
+
+Target: 3 DM conversations per day → 1 new email subscriber per day → 30 subscribers by end of June → 5-10 paid by July.
+
+---
+
+## Commands
+
+```bash
+python3 chef.py morning        # generate picks + cards + voice brief
+python3 chef.py voice          # just the brief (if picks already ran)
+python3 chef.py record         # current record for bio updates
+python3 chef.py franchise --leaderboard   # franchise tracker
+```
+
+Voice brief output: `output/briefs/voice_YYYYMMDD.md`
+Cards: `output/picks/baseball_mlb/YYYYMMDD/calibration_card.png`

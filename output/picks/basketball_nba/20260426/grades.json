@@ -1,0 +1,131 @@
+{
+  "date": "20260426",
+  "total_picks": 8,
+  "graded": 8,
+  "pending": 0,
+  "wins": 5,
+  "losses": 3,
+  "win_rate": 0.625,
+  "total_staked": 8.0,
+  "total_profit": 1.4107744107744105,
+  "roi": 17.63468013468013,
+  "by_type": {
+    "total": {
+      "wins": 2,
+      "losses": 0,
+      "profit": 1.88,
+      "win_rate": 1.0
+    },
+    "spread": {
+      "wins": 2,
+      "losses": 2,
+      "profit": -0.18,
+      "win_rate": 0.5
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.29,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 205.5",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -108,
+      "model_prob": 0.9713,
+      "edge_pct": 47.35,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Los Angeles Lakers 96, Houston Rockets 115",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 214.5",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": -105,
+      "model_prob": 0.7969,
+      "edge_pct": 30.26,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Boston Celtics 128, Philadelphia 76ers 96",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Philadelphia 76ers +6.5",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": -105,
+      "model_prob": 0.7709,
+      "edge_pct": 27.65,
+      "won": false,
+      "profit": -1.0,
+      "score": "Boston Celtics 128, Philadelphia 76ers 96",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Philadelphia 76ers",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": 210,
+      "model_prob": 0.5825,
+      "edge_pct": 25.14,
+      "won": false,
+      "profit": -1.0,
+      "score": "Boston Celtics 128, Philadelphia 76ers 96",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Houston Rockets",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -140,
+      "model_prob": 0.7291,
+      "edge_pct": 16.48,
+      "won": true,
+      "profit": 0.7142857142857143,
+      "score": "Los Angeles Lakers 96, Houston Rockets 115",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Houston Rockets -2.5",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -110,
+      "model_prob": 0.6523,
+      "edge_pct": 14.32,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Los Angeles Lakers 96, Houston Rockets 115",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Los Angeles Lakers +2.5",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -102,
+      "model_prob": 0.3477,
+      "edge_pct": -14.32,
+      "won": false,
+      "profit": -1.0,
+      "score": "Los Angeles Lakers 96, Houston Rockets 115",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Boston Celtics -7.5",
+      "matchup": "Boston Celtics @ Philadelphia 76ers",
+      "odds": -110,
+      "model_prob": 0.2047,
+      "edge_pct": -30.09,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Boston Celtics 128, Philadelphia 76ers 96",
+      "status": "win"
+    }
+  ],
+  "graded_at": "2026-05-20T05:27:04.266254+00:00"
+}

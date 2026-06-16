@@ -224,7 +224,7 @@ def reddit_post(picks: list[dict], sport: str, card_date: date) -> str:
     )
 
     lines = [
-        f"**ChefTonyBets AI Model — {sl} {dl}**",
+        f"**Overlay AI Model — {sl} {dl}**",
         "",
         model_note,
         "",

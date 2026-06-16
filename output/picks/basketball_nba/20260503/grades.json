@@ -1,0 +1,107 @@
+{
+  "date": "20260503",
+  "total_picks": 6,
+  "graded": 6,
+  "pending": 0,
+  "wins": 5,
+  "losses": 1,
+  "win_rate": 0.8333333333333334,
+  "total_staked": 6.0,
+  "total_profit": 2.468434509633342,
+  "roi": 41.1405751605557,
+  "by_type": {
+    "total": {
+      "wins": 2,
+      "losses": 0,
+      "profit": 1.84,
+      "win_rate": 1.0
+    },
+    "moneyline": {
+      "wins": 2,
+      "losses": 0,
+      "profit": 0.67,
+      "win_rate": 1.0
+    },
+    "spread": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.05,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 201.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -108,
+      "model_prob": 0.9884,
+      "edge_pct": 49.06,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Orlando Magic 94, Detroit Pistons 116",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 210.5",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -109,
+      "model_prob": 0.8432,
+      "edge_pct": 34.21,
+      "won": true,
+      "profit": 0.9174311926605505,
+      "score": "Toronto Raptors 102, Cleveland Cavaliers 114",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Detroit Pistons",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -305,
+      "model_prob": 0.8424,
+      "edge_pct": 14.92,
+      "won": true,
+      "profit": 0.32786885245901637,
+      "score": "Orlando Magic 94, Detroit Pistons 116",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Detroit Pistons -8.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -105,
+      "model_prob": 0.6083,
+      "edge_pct": 11.39,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Orlando Magic 94, Detroit Pistons 116",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Cleveland Cavaliers",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -290,
+      "model_prob": 0.7528,
+      "edge_pct": 5.94,
+      "won": true,
+      "profit": 0.3448275862068966,
+      "score": "Toronto Raptors 102, Cleveland Cavaliers 114",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Orlando Magic +8.0",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -110,
+      "model_prob": 0.3757,
+      "edge_pct": -12.99,
+      "won": false,
+      "profit": -1.0,
+      "score": "Orlando Magic 94, Detroit Pistons 116",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-20T05:27:12.730007+00:00"
+}

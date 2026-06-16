@@ -1,0 +1,53 @@
+{
+  "date": "20260603",
+  "total_picks": 2,
+  "graded": 2,
+  "pending": 0,
+  "wins": 0,
+  "losses": 2,
+  "win_rate": 0.0,
+  "total_staked": 2.0,
+  "total_profit": -2.0,
+  "roi": -100.0,
+  "by_type": {
+    "total": {
+      "wins": 0,
+      "losses": 1,
+      "profit": -1.0,
+      "win_rate": 0.0
+    },
+    "moneyline": {
+      "wins": 0,
+      "losses": 1,
+      "profit": -1.0,
+      "win_rate": 0.0
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 219.0",
+      "matchup": "New York Knicks @ San Antonio Spurs",
+      "odds": -109,
+      "model_prob": 0.6465,
+      "edge_pct": 14.2,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 105, San Antonio Spurs 95",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "San Antonio Spurs",
+      "matchup": "New York Knicks @ San Antonio Spurs",
+      "odds": -185,
+      "model_prob": 0.6755,
+      "edge_pct": 4.31,
+      "won": false,
+      "profit": -1.0,
+      "score": "New York Knicks 105, San Antonio Spurs 95",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-06-04T21:00:57.341183+00:00"
+}

@@ -1,5 +1,5 @@
 """
-Motorsport Unified Race Engine — ChefTonyBets
+Motorsport Unified Race Engine — Overlay
 
 Single simulation engine that prices any motorsport series via swappable SeriesConfig.
 Supports: NASCAR Cup, IndyCar, F1

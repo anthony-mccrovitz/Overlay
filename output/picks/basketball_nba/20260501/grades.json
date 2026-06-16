@@ -1,0 +1,167 @@
+{
+  "date": "20260501",
+  "total_picks": 11,
+  "graded": 11,
+  "pending": 0,
+  "wins": 5,
+  "losses": 6,
+  "win_rate": 0.45454545454545453,
+  "total_staked": 11.0,
+  "total_profit": -0.5478987678987679,
+  "roi": -4.9808978899888,
+  "by_type": {
+    "total": {
+      "wins": 1,
+      "losses": 2,
+      "profit": -1.09,
+      "win_rate": 0.3333
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 1,
+      "profit": 0.72,
+      "win_rate": 0.5
+    },
+    "spread": {
+      "wins": 3,
+      "losses": 3,
+      "profit": -0.18,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 205.5",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -105,
+      "model_prob": 0.9616,
+      "edge_pct": 46.72,
+      "won": false,
+      "profit": -1.0,
+      "score": "Los Angeles Lakers 98, Houston Rockets 78",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 210.5",
+      "matchup": "Detroit Pistons @ Orlando Magic",
+      "odds": -105,
+      "model_prob": 0.8693,
+      "edge_pct": 37.27,
+      "won": false,
+      "profit": -1.0,
+      "score": "Detroit Pistons 93, Orlando Magic 79",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Toronto Raptors",
+      "matchup": "Cleveland Cavaliers @ Toronto Raptors",
+      "odds": 172,
+      "model_prob": 0.6993,
+      "edge_pct": 31.99,
+      "won": true,
+      "profit": 1.72,
+      "score": "Cleveland Cavaliers 110, Toronto Raptors 112",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Toronto Raptors +4.5",
+      "matchup": "Cleveland Cavaliers @ Toronto Raptors",
+      "odds": -105,
+      "model_prob": 0.8115,
+      "edge_pct": 31.71,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Cleveland Cavaliers 110, Toronto Raptors 112",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 219.5",
+      "matchup": "Cleveland Cavaliers @ Toronto Raptors",
+      "odds": -110,
+      "model_prob": 0.7257,
+      "edge_pct": 22.13,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Cleveland Cavaliers 110, Toronto Raptors 112",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Houston Rockets",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -162,
+      "model_prob": 0.7365,
+      "edge_pct": 14.11,
+      "won": false,
+      "profit": -1.0,
+      "score": "Los Angeles Lakers 98, Houston Rockets 78",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Houston Rockets -3.5",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -108,
+      "model_prob": 0.6274,
+      "edge_pct": 12.28,
+      "won": false,
+      "profit": -1.0,
+      "score": "Los Angeles Lakers 98, Houston Rockets 78",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Orlando Magic +3.5",
+      "matchup": "Detroit Pistons @ Orlando Magic",
+      "odds": -105,
+      "model_prob": 0.5987,
+      "edge_pct": 10.43,
+      "won": false,
+      "profit": -1.0,
+      "score": "Detroit Pistons 93, Orlando Magic 79",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Detroit Pistons -3.5",
+      "matchup": "Detroit Pistons @ Orlando Magic",
+      "odds": -110,
+      "model_prob": 0.4013,
+      "edge_pct": -10.43,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Detroit Pistons 93, Orlando Magic 79",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Los Angeles Lakers +3.5",
+      "matchup": "Los Angeles Lakers @ Houston Rockets",
+      "odds": -104,
+      "model_prob": 0.3726,
+      "edge_pct": -12.28,
+      "won": true,
+      "profit": 0.9615384615384616,
+      "score": "Los Angeles Lakers 98, Houston Rockets 78",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Cleveland Cavaliers -4.5",
+      "matchup": "Cleveland Cavaliers @ Toronto Raptors",
+      "odds": -110,
+      "model_prob": 0.1885,
+      "edge_pct": -31.71,
+      "won": false,
+      "profit": -1.0,
+      "score": "Cleveland Cavaliers 110, Toronto Raptors 112",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-18T14:20:58.286800+00:00"
+}

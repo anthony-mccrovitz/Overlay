@@ -1,5 +1,5 @@
 """
-src/tracking/schema.py — Canonical pick schema for ChefTonyBets.
+src/tracking/schema.py — Canonical pick schema for Overlay.
 
 Every pick written to data/pnl/picks.json uses this schema.
 Both MLB and NBA write paths import from here — one format, no surprises.
@@ -89,11 +89,21 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                 data = {"picks": []}
 
             existing_ids = {p.get("pick_id", "") for p in data["picks"] if isinstance(p, dict)}
+            # Lazy import to avoid circular: every write gets shadow_filter classified
+            try:
+                from src.analytics.shadow_filters import classify_form_filter as _classify
+            except Exception:
+                _classify = None
             added = 0
             for pick in new_picks:
                 pid = pick.get("pick_id", "")
                 if pid and pid in existing_ids:
                     continue
+                if _classify and not pick.get("shadow_filter"):
+                    try:
+                        pick["shadow_filter"] = _classify(pick)
+                    except Exception:
+                        pass
                 data["picks"].append(pick)
                 existing_ids.add(pid)
                 added += 1
@@ -417,7 +427,7 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
     # ── Pick ID ───────────────────────────────────────────────────────────────
     pick_id = raw.get("pick_id") or make_pick_id(sport, date_, team, market, direction)
 
-    return {
+    norm = {
         "pick_id":         pick_id,
         "date":            date_,
         "sport":           sport,
@@ -439,7 +449,18 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         "model_version":   raw.get("model_version"),
         "model_tier":      raw.get("model_tier") or None,
         "weather_context": raw.get("weather_context") or None,
+        "team_form":       raw.get("team_form") or None,
+        "shadow_filter":   raw.get("shadow_filter") or None,
     }
+    # Auto-classify shadow_filter if missing — keeps every pipeline tagged
+    # without each one needing to import the filter explicitly.
+    if not norm["shadow_filter"]:
+        try:
+            from src.analytics.shadow_filters import classify_form_filter
+            norm["shadow_filter"] = classify_form_filter(norm)
+        except Exception:
+            pass
+    return norm
 
 
 def migrate_picks_file(path_in: str, path_out: str | None = None) -> dict:

@@ -1,0 +1,38 @@
+[
+  {
+    "type": "prop",
+    "market": "pitcher_strikeouts",
+    "player": "Seth Lugo",
+    "team": "Kansas City Royals",
+    "opp": "Minnesota Twins",
+    "line": 5.5,
+    "direction": "UNDER",
+    "projected": 4.7,
+    "model_prob": 0.735,
+    "implied_prob": 0.632,
+    "edge_pct": 10.3,
+    "confidence": "MED",
+    "odds": -220,
+    "book": "theScore Bet",
+    "label": "Seth Lugo UNDER 5.5 Ks",
+    "validation": "Proj 4.7 vs 5.5 line [MED]"
+  },
+  {
+    "type": "prop",
+    "market": "pitcher_strikeouts",
+    "player": "Chris Sale",
+    "team": "Atlanta Braves",
+    "opp": "Toronto Blue Jays",
+    "line": 8.5,
+    "direction": "UNDER",
+    "projected": 7.0,
+    "model_prob": 0.795,
+    "implied_prob": 0.72,
+    "edge_pct": 7.5,
+    "confidence": "HIGH",
+    "odds": -375,
+    "book": "theScore Bet",
+    "label": "Chris Sale UNDER 8.5 Ks",
+    "validation": "Proj 7.0 vs 8.5 line [HIGH]"
+  }
+]

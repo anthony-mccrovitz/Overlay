@@ -1,0 +1,53 @@
+[
+  {
+    "type": "nba_prop",
+    "market": "player_rebounds",
+    "player": "Cason Wallace",
+    "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+    "home_team": "Oklahoma City Thunder",
+    "away_team": "San Antonio Spurs",
+    "line": 2.5,
+    "direction": "UNDER",
+    "projected": 3.0,
+    "model_prob": 0.611,
+    "implied_prob": 0.454,
+    "edge_pct": 15.7,
+    "odds": 106,
+    "book": "FanDuel",
+    "label": "Cason Wallace UNDER 2.5 REB"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_blocks",
+    "player": "Chet Holmgren",
+    "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+    "home_team": "Oklahoma City Thunder",
+    "away_team": "San Antonio Spurs",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 1.9,
+    "model_prob": 0.612,
+    "implied_prob": 0.458,
+    "edge_pct": 15.4,
+    "odds": 104,
+    "book": "FanDuel",
+    "label": "Chet Holmgren UNDER 1.5 BLK"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_rebounds",
+    "player": "Jalen Williams",
+    "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+    "home_team": "Oklahoma City Thunder",
+    "away_team": "San Antonio Spurs",
+    "line": 4.5,
+    "direction": "UNDER",
+    "projected": 4.5,
+    "model_prob": 0.614,
+    "implied_prob": 0.478,
+    "edge_pct": 13.6,
+    "odds": -104,
+    "book": "DraftKings",
+    "label": "Jalen Williams UNDER 4.5 REB"
+  }
+]

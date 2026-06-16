@@ -1,0 +1,53 @@
+[
+  {
+    "type": "nba_prop",
+    "market": "player_assists",
+    "player": "Donovan Mitchell",
+    "matchup": "Cleveland Cavaliers @ New York Knicks",
+    "home_team": "New York Knicks",
+    "away_team": "Cleveland Cavaliers",
+    "line": 3.5,
+    "direction": "UNDER",
+    "projected": 5.6,
+    "model_prob": 0.605,
+    "implied_prob": 0.449,
+    "edge_pct": 15.5,
+    "odds": 110,
+    "book": "Hard Rock Bet",
+    "label": "Donovan Mitchell UNDER 3.5 AST"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_assists",
+    "player": "Max Strus",
+    "matchup": "Cleveland Cavaliers @ New York Knicks",
+    "home_team": "New York Knicks",
+    "away_team": "Cleveland Cavaliers",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 2.0,
+    "model_prob": 0.611,
+    "implied_prob": 0.488,
+    "edge_pct": 12.3,
+    "odds": -109,
+    "book": "DraftKings",
+    "label": "Max Strus UNDER 1.5 AST"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_points",
+    "player": "Josh Hart",
+    "matchup": "Cleveland Cavaliers @ New York Knicks",
+    "home_team": "New York Knicks",
+    "away_team": "Cleveland Cavaliers",
+    "line": 11.5,
+    "direction": "UNDER",
+    "projected": 11.9,
+    "model_prob": 0.612,
+    "implied_prob": 0.492,
+    "edge_pct": 12.1,
+    "odds": -109,
+    "book": "DraftKings",
+    "label": "Josh Hart UNDER 11.5 PTS"
+  }
+]

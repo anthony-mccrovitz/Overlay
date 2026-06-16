@@ -226,7 +226,7 @@ body {{ background:#000; font-family:'Inter',sans-serif; display:flex; justify-c
   <div class="rainbow-bar"></div>
 
   <div class="header">
-    <div class="brand">⛳ ChefTonyBets AI</div>
+    <div class="brand">⛳ Overlay AI</div>
     <div class="event-badge">PGA Championship 2026</div>
   </div>
 
@@ -381,7 +381,7 @@ table {{
   <div class="rainbow-bar"></div>
   <div class="header">
     <div class="title-block">
-      <div class="brand">⛳ ChefTonyBets AI · Field Preview</div>
+      <div class="brand">⛳ Overlay AI · Field Preview</div>
       <div class="title">PGA Championship 2026</div>
       <div class="subtitle">Model Win% vs Market · 150k Monte Carlo simulations</div>
     </div>
@@ -406,7 +406,7 @@ table {{
 
   <div class="footer">
     <div class="footer-note">Course-fit adjusted SG model · Quail Hollow weights: SG App 40%, OTT 25%, Putt 25%</div>
-    <div class="footer-note">@ChefTonyBets</div>
+    <div class="footer-note">@Overlay</div>
   </div>
 </div>
 </body>

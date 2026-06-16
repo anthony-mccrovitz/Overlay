@@ -1,5 +1,5 @@
 """
-Best Picks Recommender — ChefTonyBets
+Best Picks Recommender — Overlay
 
 For each prop market (and game market), selects the single highest-conviction
 bet using a composite score:

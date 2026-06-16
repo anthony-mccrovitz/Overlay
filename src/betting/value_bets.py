@@ -243,6 +243,15 @@ def _find_spread_value(
     """predictions values are model-implied margins (home - away)."""
     from src.models.mlb_spreads import win_prob_to_margin
 
+    # Calibrate model_prob before converting to run margin.
+    # Spread calibration_factor is typically ~1.05 for MLB (model is slightly
+    # conservative) — applying it gives slightly larger but more accurate margins.
+    try:
+        from src.analytics.team_tracker import calibration_factor as _rl_cal
+        _rl_factor = _rl_cal(sport, "spread")
+    except Exception:
+        _rl_factor = 1.0
+
     bets = []
     for _, row in odds_df.iterrows():
         home = row.get("HomeTeam", "")
@@ -258,6 +267,8 @@ def _find_spread_value(
         else:
             continue
 
+        # Apply calibration factor to win probability before margin conversion
+        model_prob = max(0.01, min(0.99, model_prob * _rl_factor))
         model_margin = win_prob_to_margin(model_prob)
         edge = model_margin - market_spread
 

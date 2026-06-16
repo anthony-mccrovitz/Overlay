@@ -33,7 +33,7 @@ export function Header() {
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "white",
+              color: "#04130C",
               fontWeight: 800,
               fontSize: 13,
               fontFamily: "var(--font-mono)",
@@ -55,6 +55,7 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="nav-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          <Link href="/world-cup" style={{ ...navLink, color: "var(--accent-hi)", fontWeight: 700 }}>World Cup</Link>
           <Link href="/picks" style={navLink}>Picks</Link>
           <Link href="/slate" style={navLink}>Slate</Link>
           <Link href="/models" style={navLink}>Models</Link>
@@ -67,7 +68,7 @@ export function Header() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Subscribe — $29/mo
+            Subscribe — $19/mo
           </a>
         </nav>
 
@@ -85,6 +86,7 @@ export function Header() {
             scrollbarWidth: "none",
           }}
         >
+          <Link href="/world-cup" style={{ ...navLinkMobile, color: "var(--accent-hi)" }}>World Cup</Link>
           <Link href="/picks" style={navLinkMobile}>Picks</Link>
           <Link href="/slate" style={navLinkMobile}>Slate</Link>
           <Link href="/models" style={navLinkMobile}>Models</Link>
@@ -97,7 +99,7 @@ export function Header() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            $29/mo
+            $19/mo
           </a>
         </nav>
       </div>

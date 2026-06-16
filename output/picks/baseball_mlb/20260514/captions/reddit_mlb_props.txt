@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Props · 5/14/26 (Thursday)**
+
+Running XGBoost prop model on pitcher K-rate, batter contact, park factors, and weather. 24 edges found today.
+
+**Season Record (props):** 16-12 (57.1% WR, +0.0u)
+
+---
+
+**🎯 Pitcher Strikeouts**
+
+| Player | Bet | Odds | Edge | Book |
+|--------|-----|------|------|------|
+| Ben Brown | OVER Strikeouts 4.5 | +195 | +25.8% (proj: 5.1) | BetRivers |
+| Jacob Lopez | UNDER Strikeouts 5.5 | -205 | +7.7% (proj: 4.5) | BetRivers |
+| Chris Sale | UNDER Strikeouts 7.5 | -180 | +7.4% (proj: 6.5) | theScore Bet |
+| Kris Bubic | UNDER Strikeouts 6.5 | -265 | +6.4% (proj: 5.1) | BetRivers |
+| Ranger Suarez | UNDER Strikeouts 6.5 | -500 | +4.2% (proj: 4.8) | theScore Bet |
+
+**💣 Home Run Props**
+
+| Player | Bet | Odds | Edge | Book |
+|--------|-----|------|------|------|
+| Nick Kurtz | UNDER Home Runs 0.5 | -390 | +15.2% (proj: 0.1) | theScore Bet |
+| Jordan Walker | UNDER Home Runs 0.5 | -475 | +12.0% (proj: 0.1) | theScore Bet |
+| Shea Langeliers | UNDER Home Runs 0.5 | -475 | +12.0% (proj: 0.1) | theScore Bet |
+| Matt Olson | UNDER Home Runs 0.5 | -500 | +11.4% (proj: 0.1) | theScore Bet |
+| Kyle Schwarber | UNDER Home Runs 0.5 | -600 | +9.1% (proj: 0.1) | theScore Bet |
+
+---
+
+**How the prop model works:** Projects pitcher strikeout totals using K/9, opposing team K%, umpire tendencies, and ballpark factors. Batter props use wOBA, hard-hit rate, and matchup data vs. starter handedness.
+
+All picks logged before first pitch. Verified record in post history.
+
+*Not financial advice. Bet responsibly. 21+*

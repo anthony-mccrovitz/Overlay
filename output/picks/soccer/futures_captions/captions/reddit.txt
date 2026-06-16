@@ -1,0 +1,24 @@
+**World Cup 2026 — title odds from 8,000 Monte Carlo simulations (model vs market)**
+
+Built a rolling-Elo + Dixon-Coles model (calibrated on 800+ tournament matches), simulated the full 48-team bracket 8,000 times, and blended the output with the de-vigged market (35% model / 65% market). As of June 06, 2026:
+
+| # | Team | Our blend | Model | Market | Reach final |
+|---|------|-----------|-------|--------|-------------|
+| 1 | Spain | 19% | 25% | 16% | 42% |
+| 2 | England | 18% | 30% | 11% | 43% |
+| 3 | France | 12% | 7% | 15% | 15% |
+| 4 | Argentina | 11% | 16% | 9% | 28% |
+| 5 | Portugal | 6% | 2% | 9% | 6% |
+| 6 | Brazil | 6% | 1% | 9% | 3% |
+| 7 | Germany | 4% | 1% | 6% | 4% |
+| 8 | Netherlands | 3% | 2% | 4% | 6% |
+
+**Where the model disagrees with the market (the interesting part):**
+- 📈 **England** — model 30% vs market 11% (+20pp)
+- 📈 **Spain** — model 25% vs market 16% (+10pp)
+- 📉 **France** — model 7% vs market 15% (-8pp)
+- 📉 **Brazil** — model 1% vs market 9% (-8pp)
+
+Honest caveat: these are *probabilities*, not locks — the value is calibration, not claiming an edge over the closing line. CLV tracked publicly all tournament.
+
+Not financial advice. Bet responsibly. 21+

@@ -1,5 +1,5 @@
 """
-UFC Daily Picks Pipeline — ChefTonyBets
+UFC Daily Picks Pipeline — Overlay
 
 Fetches moneyline odds for upcoming UFC/UFC Fight Night cards and runs
 the Glicko-2 + style matchup simulator to find edges.
@@ -63,6 +63,8 @@ def fetch_ufc_odds(refresh: bool = False) -> list[dict]:
             params={
                 "apiKey":     key,
                 "regions":    "us,us2",
+                # h2h = moneyline. Method/round prop markets are per-event-only on
+                # this API for MMA; we fetch them per-event below.
                 "markets":    "h2h",
                 "oddsFormat": "american",
                 "bookmakers": MY_BOOKS_PARAM,
@@ -80,6 +82,35 @@ def fetch_ufc_odds(refresh: bool = False) -> list[dict]:
         if cache.exists():
             with open(cache) as f:
                 return json.load(f)
+        return []
+
+
+def fetch_ufc_props(event_id: str) -> list[dict]:
+    """
+    Fetch method-of-victory + total-rounds markets for one event.
+    Returns a list of bookmaker dicts to be MERGED into the event's bookmakers.
+    Failures are silent — props are nice-to-have, ML is the core market.
+    """
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        return []
+    try:
+        r = requests.get(
+            f"{API_BASE}/sports/{SPORT_KEY}/events/{event_id}/odds",
+            params={
+                "apiKey":     key,
+                "regions":    "us",
+                "markets":    "fight_result_method,total_rounds",
+                "oddsFormat": "american",
+                "bookmakers": MY_BOOKS_PARAM,
+            },
+            timeout=15,
+        )
+        if r.status_code != 200:
+            return []
+        data = r.json()
+        return data.get("bookmakers", [])
+    except Exception:
         return []
 
 
@@ -180,6 +211,16 @@ def run_ufc(args: argparse.Namespace) -> int:
     print(f"\n  {len(today_events)} fight(s) on slate (n_rounds={n_rounds}):")
     for ev in today_events:
         print(f"    {ev.get('away_team')} vs {ev.get('home_team')}")
+
+    # 1b. Enrich each event with method + total_rounds prop books (per-event endpoint)
+    print(f"\n  Fetching method + round prop markets per-event...")
+    enriched = 0
+    for ev in today_events:
+        prop_bms = fetch_ufc_props(ev.get("id", ""))
+        if prop_bms:
+            ev.setdefault("bookmakers", []).extend(prop_bms)
+            enriched += 1
+    print(f"    → {enriched}/{len(today_events)} events have prop markets posted")
 
     # 2. Run model
     print(f"\n  Running UFC fight simulator...")

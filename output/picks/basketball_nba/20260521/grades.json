@@ -1,0 +1,53 @@
+{
+  "date": "20260521",
+  "total_picks": 2,
+  "graded": 2,
+  "pending": 0,
+  "wins": 0,
+  "losses": 2,
+  "win_rate": 0.0,
+  "total_staked": 2.0,
+  "total_profit": -2.0,
+  "roi": -100.0,
+  "by_type": {
+    "total": {
+      "wins": 0,
+      "losses": 1,
+      "profit": -1.0,
+      "win_rate": 0.0
+    },
+    "moneyline": {
+      "wins": 0,
+      "losses": 1,
+      "profit": -1.0,
+      "win_rate": 0.0
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "Cleveland Cavaliers @ New York Knicks",
+      "odds": -105,
+      "model_prob": 0.6568,
+      "edge_pct": 16.13,
+      "won": false,
+      "profit": -1.0,
+      "score": "Cleveland Cavaliers 93, New York Knicks 109",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Cleveland Cavaliers",
+      "matchup": "Cleveland Cavaliers @ New York Knicks",
+      "odds": 200,
+      "model_prob": 0.3897,
+      "edge_pct": 3.76,
+      "won": false,
+      "profit": -1.0,
+      "score": "Cleveland Cavaliers 93, New York Knicks 109",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-25T12:59:14.964610+00:00"
+}

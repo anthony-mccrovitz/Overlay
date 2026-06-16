@@ -218,7 +218,7 @@ def receipts_caption(
     if model_prob_s != "—":
         lines.append(f"Model {model_prob_s} · Edge {edge_s}")
     lines.append("")
-    lines.append("Every pick logged before tip-off. Full record: cheftonybets.com/record")
+    lines.append("Every pick logged before tip-off. Full record: overlay-gray.vercel.app")
     return "\n".join(lines)
 
 

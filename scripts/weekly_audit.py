@@ -147,13 +147,18 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"  [recap card] {e}")
 
-    # Generate weekly recap card
+    # Generate algo stockboard (summary table + per-algo drilldowns)
     try:
         import sys
         sys.path.insert(0, str(ROOT))
-        from src.output.result_cards import render_weekly_recap_card
-        path = render_weekly_recap_card()
-        if path:
-            print(f"  Weekly recap card → {path}")
+        from src.output.algo_stockboard import (
+            compute_algo_grid, render_stockboard_card, render_all_detail_cards,
+        )
+        rows = compute_algo_grid()
+        board = render_stockboard_card(rows)
+        if board:
+            print(f"  Algo stockboard → {board}")
+        details = render_all_detail_cards(rows)
+        print(f"  Per-algo drilldowns → {len(details)} cards in {board.parent / 'detail' if board else '?'}")
     except Exception as e:
-        print(f"  [recap card] {e}")
+        print(f"  [stockboard] {e}")

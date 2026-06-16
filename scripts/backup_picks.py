@@ -24,7 +24,11 @@ KEEP = 48  # 48 hourly = 2 days
 def count_picks(path: Path) -> int:
     try:
         d = json.loads(path.read_text())
-        return len(d.get("picks", d) if isinstance(d, (dict, list)) else [])
+        if isinstance(d, list):
+            return len(d)
+        if isinstance(d, dict):
+            return len(d.get("picks", []))
+        return -1
     except Exception:
         return -1
 

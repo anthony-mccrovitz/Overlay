@@ -1,0 +1,135 @@
+{
+  "date": "20260420",
+  "total_picks": 10,
+  "graded": 8,
+  "pending": 2,
+  "wins": 4,
+  "losses": 4,
+  "win_rate": 0.5,
+  "total_staked": 8.0,
+  "total_profit": -0.9549202719014042,
+  "roi": -11.936503398767552,
+  "by_type": {
+    "spread": {
+      "wins": 3,
+      "losses": 3,
+      "profit": -0.22,
+      "win_rate": 0.5
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.73,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "UNDER 230.5",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "Toronto Raptors +9.5",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -110,
+      "model_prob": 0.6885,
+      "edge_pct": 18.85,
+      "won": false,
+      "profit": -1.0,
+      "score": "Toronto Raptors 105, Cleveland Cavaliers 115",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 218.5",
+      "status": "pending"
+    },
+    {
+      "market": "spread",
+      "team": "Minnesota Timberwolves +7.0",
+      "matchup": "Minnesota Timberwolves @ Denver Nuggets",
+      "odds": -106,
+      "model_prob": 0.6019,
+      "edge_pct": 10.08,
+      "won": true,
+      "profit": 0.9433962264150944,
+      "score": "Minnesota Timberwolves 119, Denver Nuggets 114",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Atlanta Hawks +6.0",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -108,
+      "model_prob": 0.5365,
+      "edge_pct": 3.31,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Atlanta Hawks 107, New York Knicks 106",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "New York Knicks -6.5",
+      "matchup": "Atlanta Hawks @ New York Knicks",
+      "odds": -105,
+      "model_prob": 0.447,
+      "edge_pct": -4.96,
+      "won": false,
+      "profit": -1.0,
+      "score": "Atlanta Hawks 107, New York Knicks 106",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Denver Nuggets",
+      "matchup": "Minnesota Timberwolves @ Denver Nuggets",
+      "odds": -285,
+      "model_prob": 0.6288,
+      "edge_pct": -8.69,
+      "won": false,
+      "profit": -1.0,
+      "score": "Minnesota Timberwolves 119, Denver Nuggets 114",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Denver Nuggets -7.5",
+      "matchup": "Minnesota Timberwolves @ Denver Nuggets",
+      "odds": -105,
+      "model_prob": 0.3821,
+      "edge_pct": -11.68,
+      "won": false,
+      "profit": -1.0,
+      "score": "Minnesota Timberwolves 119, Denver Nuggets 114",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Cleveland Cavaliers",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -375,
+      "model_prob": 0.6174,
+      "edge_pct": -16.29,
+      "won": true,
+      "profit": 0.26666666666666666,
+      "score": "Toronto Raptors 105, Cleveland Cavaliers 115",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Cleveland Cavaliers -9.5",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -110,
+      "model_prob": 0.3115,
+      "edge_pct": -18.85,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Toronto Raptors 105, Cleveland Cavaliers 115",
+      "status": "win"
+    }
+  ],
+  "graded_at": "2026-04-22T13:06:43.977362+00:00"
+}

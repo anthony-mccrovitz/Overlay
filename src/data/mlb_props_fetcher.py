@@ -1,5 +1,5 @@
 """
-MLB Player Props Fetcher — ChefTonyBets
+MLB Player Props Fetcher — Overlay
 
 Fetches live player prop odds from The Odds API and enriches them with
 pitcher/batter stats from the MLB Stats API for use with mlb_props_nb.NegBinPropModel.

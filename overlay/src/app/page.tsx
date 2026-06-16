@@ -3,6 +3,8 @@ import { readFeed } from "@/lib/feed";
 import { ActivePickCard } from "@/components/ActivePickCard";
 import { EquityCurve } from "@/components/EquityCurve";
 import { RecentPicksTable } from "@/components/RecentPicksTable";
+import { WorldCupHero } from "@/components/wc/HomeHero";
+import { LeadCapture } from "@/components/LeadCapture";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,17 @@ export default async function HomePage() {
 
   return (
     <div className="landing-wrap" style={{ maxWidth: 1280, margin: "0 auto", padding: "32px 24px 0", display: "flex", flexDirection: "column", gap: 64 }}>
+      {/* WORLD CUP CAMPAIGN TAKEOVER */}
+      <WorldCupHero />
+
+      {/* framing divider */}
+      <div style={{ textAlign: "center", marginTop: -32 }}>
+        <div className="eyebrow">The engine behind it</div>
+        <p style={{ fontSize: 14, color: "var(--text-secondary)", maxWidth: 540, margin: "8px auto 0", lineHeight: 1.6 }}>
+          The same quantitative discipline that prices the World Cup runs our daily NBA &amp; MLB card — every pick timestamped before game time, tracked in public.
+        </p>
+      </div>
+
       {/* HERO */}
       <section className="hero-grid">
         <div>
@@ -28,7 +41,7 @@ export default async function HomePage() {
               padding: "5px 10px",
               borderRadius: 3,
               background: "var(--accent-dim)",
-              border: "1px solid rgba(45,127,255,0.35)",
+              border: "1px solid rgba(18,197,138,0.35)",
               color: "var(--accent-hi)",
               fontSize: 10,
               fontWeight: 700,
@@ -79,7 +92,7 @@ export default async function HomePage() {
             </div>
           )}
           <div style={{ display: "flex", gap: 10 }}>
-            <a href={PAYMENT_LINK} className="btn-primary" target="_blank" rel="noopener noreferrer">Get today&apos;s picks — $29/mo</a>
+            <a href={PAYMENT_LINK} className="btn-primary" target="_blank" rel="noopener noreferrer">Get today&apos;s picks — $19/mo</a>
             <Link href="/record" className="btn-ghost">See the full ledger</Link>
           </div>
         </div>
@@ -146,6 +159,80 @@ export default async function HomePage() {
         <RecentPicksTable rows={feed?.recent_picks || []} />
       </section>
 
+      {/* HOW IT WORKS */}
+      <section>
+        <div className="eyebrow">How it works</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: "var(--text-bright)", margin: "6px 0 28px", letterSpacing: "-0.015em", lineHeight: 1.15 }}>
+          From slate to inbox in three steps.
+        </h2>
+        <div className="grid-3">
+          <Step
+            idx="01"
+            title="The models price the slate"
+            body="Three independent models project every game overnight. A pick only posts when all three agree and the number beats the book — most games produce nothing, and that's the point."
+          />
+          <Step
+            idx="02"
+            title="You get it before the line moves"
+            body="Picks land on your dashboard and in your inbox each morning — timestamped before tip-off so you can verify every call was made early, not after the fact."
+          />
+          <Step
+            idx="03"
+            title="Everything is graded in public"
+            body="Win or lose, every card pick hits the public ledger. No deleting losers, no cherry-picked screenshots. The record above is the whole record."
+          />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section>
+        <div className="eyebrow">Before you ask</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: "var(--text-bright)", margin: "6px 0 24px", letterSpacing: "-0.015em" }}>
+          The honest answers.
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <Faq
+            q="Do you guarantee winning picks?"
+            a="No — and anyone who does is lying to you. Sports betting has real variance and losing weeks are part of every honest record. What we guarantee is process: positive-EV picks, sized with Kelly, every result posted in public so the edge shows over volume instead of in a highlight reel."
+          />
+          <Faq
+            q="How do I actually get the picks?"
+            a="They post to your subscriber dashboard every morning and go out by email the same time — before lines move. Each pick is SHA-256 timestamped so the call is provably early."
+          />
+          <Faq
+            q="What's the edge, in plain terms?"
+            a="Three models (XGBoost, LightGBM, CatBoost) each project the game. A pick only fires when they agree and the projection beats the sportsbook's number by a meaningful margin. We bet the book's mistake, not a hunch — no parlays, no chasing."
+          />
+          <Faq
+            q="Which sports are covered?"
+            a="NBA and MLB daily during their seasons, plus a calibrated World Cup 2026 model running now. NHL and others rotate in seasonally. Your subscription covers everything on the card."
+          />
+          <Faq
+            q="Can I cancel?"
+            a="Anytime, in one click — no email, no phone call, no retention maze. You keep access through the end of the period you already paid for."
+          />
+          <Faq
+            q="Is this legal?"
+            a="Overlay is research and analysis, not a sportsbook — we never hold your money. Bet only where it's legal in your jurisdiction, and only if you're 21+. Wager what you can afford to lose."
+          />
+        </div>
+      </section>
+
+      {/* FREE LIST CAPTURE — catch the not-ready-to-pay visitor before they bounce */}
+      <section style={{ textAlign: "center", padding: "44px 24px", borderTop: "1px solid var(--border)" }}>
+        <div className="eyebrow">Not ready to subscribe?</div>
+        <h2 style={{ fontSize: 30, fontWeight: 800, color: "var(--text-bright)", margin: "8px 0 10px", letterSpacing: "-0.015em" }}>
+          Get a free play before the next big slate.
+        </h2>
+        <p style={{ color: "var(--text-secondary)", maxWidth: 460, margin: "0 auto 22px", fontSize: 14, lineHeight: 1.6 }}>
+          One sharp pick from the same engine, straight to your inbox. No card required. See the edge for yourself, then decide.
+        </p>
+        <LeadCapture source="landing-free-list" cta="Send me a free play" />
+        <div className="mono" style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 11, letterSpacing: "0.12em" }}>
+          NO SPAM · UNSUBSCRIBE IN ONE CLICK
+        </div>
+      </section>
+
       {/* FINAL CTA */}
       <section id="pricing" style={{ textAlign: "center", padding: "56px 24px", borderTop: "1px solid var(--border)" }}>
         <div
@@ -157,7 +244,7 @@ export default async function HomePage() {
             padding: "6px 12px",
             borderRadius: 3,
             background: "var(--accent-dim)",
-            border: "1px solid rgba(45,127,255,0.35)",
+            border: "1px solid rgba(18,197,138,0.35)",
             color: "var(--accent-hi)",
             fontSize: 10,
             fontWeight: 700,
@@ -177,13 +264,16 @@ export default async function HomePage() {
             letterSpacing: "-0.025em",
           }}
         >
-          Lock in <span style={{ color: "var(--accent)" }}>$29/mo</span> for life.
+          Lock in <span style={{ color: "var(--accent)" }}>$19/mo</span> for life.
         </h2>
-        <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto 28px" }}>
-          Founding price ends when the seat counter hits zero. After that it&apos;s $59/mo.
+        <p style={{ color: "var(--text-secondary)", maxWidth: 480, margin: "0 auto 12px" }}>
+          Founding price ends when the seat counter hits zero. After that it's $29/mo.
+        </p>
+        <p style={{ color: "var(--text-muted)", maxWidth: 520, margin: "0 auto 28px", fontSize: 13, lineHeight: 1.6 }}>
+          Every pick we&apos;ve ever posted — wins and losses — is on the public ledger before you pay a cent. Cancel in one click, anytime.
         </p>
         <a href={PAYMENT_LINK} className="btn-primary" style={{ fontSize: 14, padding: "16px 32px" }} target="_blank" rel="noopener noreferrer">
-          SUBSCRIBE — $29/MO
+          SUBSCRIBE — $19/MO
         </a>
         <div className="mono" style={{ marginTop: 14, color: "var(--text-muted)", fontSize: 11, letterSpacing: "0.12em" }}>
           CANCEL ANYTIME · DELIVERED DAILY VIA WEB &amp; EMAIL
@@ -210,6 +300,42 @@ function KpiCard({ label, value, color }: { label: string; value: string; color?
         {value}
       </div>
     </div>
+  );
+}
+
+function Step({ idx, title, body }: { idx: string; title: string; body: string }) {
+  return (
+    <div className="panel" style={{ padding: 24 }}>
+      <span className="mono" style={{ fontSize: 11, fontWeight: 700, color: "var(--accent)", letterSpacing: "0.1em" }}>
+        [{idx}]
+      </span>
+      <div style={{ fontSize: 18, fontWeight: 800, color: "var(--text-bright)", letterSpacing: "-0.01em", margin: "12px 0 10px" }}>{title}</div>
+      <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, margin: 0 }}>{body}</p>
+    </div>
+  );
+}
+
+function Faq({ q, a }: { q: string; a: string }) {
+  return (
+    <details className="panel" style={{ padding: "16px 20px" }}>
+      <summary
+        style={{
+          cursor: "pointer",
+          listStyle: "none",
+          fontSize: 15,
+          fontWeight: 700,
+          color: "var(--text-bright)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 16,
+        }}
+      >
+        {q}
+        <span className="mono" style={{ color: "var(--accent)", fontSize: 18, fontWeight: 700, flexShrink: 0 }}>+</span>
+      </summary>
+      <p style={{ fontSize: 13.5, color: "var(--text-secondary)", lineHeight: 1.65, margin: "12px 0 0" }}>{a}</p>
+    </details>
   );
 }
 

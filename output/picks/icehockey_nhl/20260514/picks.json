@@ -1,0 +1,141 @@
+{
+  "date": "2026-05-14",
+  "sport": "nhl",
+  "generated_at": "2026-05-14T23:54:54.413562+00:00",
+  "picks": [
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Buffalo Sabres",
+      "team": "Under 9.5",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 9.5,
+      "odds": -154,
+      "fair_odds": -110,
+      "model_prob": 0.9505,
+      "market_prob": 0.5227,
+      "fair_prob": 0.5227,
+      "edge_pct": 42.78,
+      "commence": "2026-05-14T23:10:46Z",
+      "proj_total": 5.3,
+      "notes": [
+        "Base: Buffalo Sabres 3.28 exp goals | Montr\u00e9al Canadiens 2.99 exp goals",
+        "Home goalie SV%: 0.921 (+0.023) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.914 (+0.016) \u2192 home -+0.48g",
+        "Trained model win prob: 57.7%",
+        "Projected total: 5.3 | Home win: 57.7% | Home -1.5: 25.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Buffalo Sabres",
+      "team": "Montr\u00e9al Canadiens +1.5",
+      "market": "puck_line",
+      "direction": "AWAY +1.5",
+      "line": 1.5,
+      "odds": -145,
+      "fair_odds": -125,
+      "model_prob": 0.7444,
+      "market_prob": 0.5564,
+      "fair_prob": 0.5564,
+      "edge_pct": 18.8,
+      "commence": "2026-05-14T23:10:46Z",
+      "proj_total": 5.3,
+      "notes": [
+        "Base: Buffalo Sabres 3.28 exp goals | Montr\u00e9al Canadiens 2.99 exp goals",
+        "Home goalie SV%: 0.921 (+0.023) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.914 (+0.016) \u2192 home -+0.48g",
+        "Trained model win prob: 57.7%",
+        "Projected total: 5.3 | Home win: 57.7% | Home -1.5: 25.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Anaheim Ducks",
+      "team": "Over 6.0",
+      "market": "total",
+      "direction": "OVER",
+      "line": 6.0,
+      "odds": -120,
+      "fair_odds": -112,
+      "model_prob": 0.6757,
+      "market_prob": 0.5282,
+      "fair_prob": 0.5282,
+      "edge_pct": 14.75,
+      "commence": "2026-05-15T01:50:00Z",
+      "proj_total": 7.16,
+      "notes": [
+        "Base: Anaheim Ducks 3.27 exp goals | Vegas Golden Knights 3.69 exp goals",
+        "Home goalie SV%: 0.878 (-0.020) \u2192 away --0.50g",
+        "Away goalie SV%: 0.912 (+0.014) \u2192 home -+0.43g",
+        "Trained model win prob: 47.3%",
+        "Projected total: 7.2 | Home win: 47.3% | Home -1.5: 4.8%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Buffalo Sabres",
+      "team": "Montr\u00e9al Canadiens",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "line": null,
+      "odds": 175,
+      "fair_odds": 207,
+      "model_prob": 0.4234,
+      "market_prob": 0.3257,
+      "fair_prob": 0.3257,
+      "edge_pct": 9.77,
+      "commence": "2026-05-14T23:10:46Z",
+      "proj_total": 5.3,
+      "notes": [
+        "Base: Buffalo Sabres 3.28 exp goals | Montr\u00e9al Canadiens 2.99 exp goals",
+        "Home goalie SV%: 0.921 (+0.023) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.914 (+0.016) \u2192 home -+0.48g",
+        "Trained model win prob: 57.7%",
+        "Projected total: 5.3 | Home win: 57.7% | Home -1.5: 25.6%"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "matchup": "Montr\u00e9al Canadiens @ Buffalo Sabres",
+      "commence": "2026-05-14T23:10:46Z",
+      "time_et": "07:10 PM ET",
+      "home_team": "Buffalo Sabres",
+      "away_team": "Montr\u00e9al Canadiens",
+      "home_exp_goals": 3.29,
+      "away_exp_goals": 2.99,
+      "total_exp_goals": 6.28,
+      "home_win_prob": 0.5765,
+      "away_win_prob": 0.4235,
+      "home_cover_1_5": 0.2524,
+      "away_cover_1_5": 0.7476,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Buffalo Sabres 3.28 exp goals | Montr\u00e9al Canadiens 2.99 exp goals",
+        "Trained model win prob: 57.7%",
+        "Projected total: 6.3 | Home win: 57.7% | Home -1.5: 25.2%"
+      ]
+    },
+    {
+      "matchup": "Vegas Golden Knights @ Anaheim Ducks",
+      "commence": "2026-05-15T01:50:00Z",
+      "time_et": "09:50 PM ET",
+      "home_team": "Anaheim Ducks",
+      "away_team": "Vegas Golden Knights",
+      "home_exp_goals": 3.26,
+      "away_exp_goals": 3.83,
+      "total_exp_goals": 7.09,
+      "home_win_prob": 0.4731,
+      "away_win_prob": 0.5269,
+      "home_cover_1_5": 0.1249,
+      "away_cover_1_5": 0.8751,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Anaheim Ducks 3.27 exp goals | Vegas Golden Knights 3.69 exp goals",
+        "Trained model win prob: 47.3%",
+        "Projected total: 7.1 | Home win: 47.3% | Home -1.5: 12.5%"
+      ]
+    }
+  ]
+}

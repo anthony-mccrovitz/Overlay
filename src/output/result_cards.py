@@ -1,5 +1,5 @@
 """
-Result cards + weekly recap cards for ChefTonyBets.
+Result cards + weekly recap cards for Overlay.
 
 Result card  — 1080×1080 square. Centered, logo-forward, bold.
 Weekly recap — 1080×1350 portrait. Generated every Sunday.
@@ -370,7 +370,7 @@ body::before {{
 {logo_html}
 
 <div class="card-inner">
-  <div class="brand">ChefTonyBets &nbsp;·&nbsp; AI Model</div>
+  <div class="brand">Overlay &nbsp;·&nbsp; AI Model</div>
 
   <div class="result-wrap">
     <span class="result-icon">{badge_icon}</span>
@@ -488,7 +488,7 @@ def render_weekly_recap_card(week_end: date | None = None) -> Optional[Path]:
         b_logo   = _logo_url(b_team, best.get("sport",""))
         b_logo_html = f'<img src="{b_logo}" class="best-logo" onerror="this.style.display=\'none\'">' if b_logo else ""
         best_html = f"""
-    <div class="section-label">🏆 Best Pick of the Week</div>
+    <div class="section-label">Best Pick of the Week</div>
     <div class="best-pick">
       {b_logo_html}
       <div class="best-inner">
@@ -521,8 +521,8 @@ body::before {{
   background-size:60px 60px;
 }}
 .accent-bar {{
-  height:6px;
-  background:linear-gradient(90deg, #00e87a 0%, #3a86ff 50%, #a855f7 100%);
+  height:3px;
+  background:#00e87a;
 }}
 .content {{
   position:relative; z-index:10;
@@ -611,7 +611,7 @@ body::before {{
 </head><body>
 <div class="accent-bar"></div>
 <div class="content">
-  <div class="brand">ChefTonyBets &nbsp;·&nbsp; AI Model</div>
+  <div class="brand">Overlay &nbsp;·&nbsp; AI Model</div>
   <div class="title">Week in Review</div>
   <div class="subtitle">{date_range}</div>
 

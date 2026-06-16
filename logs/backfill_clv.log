@@ -1,0 +1,476 @@
+Traceback (most recent call last):
+  File "/Users/anthonymccrovitz/march-madness/src/analytics/historical_clv.py", line 595, in <module>
+    backfill_historical_clv(
+  File "/Users/anthonymccrovitz/march-madness/src/analytics/historical_clv.py", line 318, in backfill_historical_clv
+    all_picks = pnl_data.get("picks", [])
+                ^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+
+============================================================
+  Historical CLV Backfiller
+  days_back=3  |  dry_run=False
+============================================================
+  2192 total picks in pnl
+  16 picks need CLV data
+  3 (sport, date) groups → 3 API calls needed
+  Estimated credits: 30
+
+  [baseball_mlb] 2026-05-22 — 12 picks
+  [API] baseball_mlb @ 2026-05-22 — used=3487, remaining=16513
+    New York Mets                 open=-102  close=-141  CLV=+8.0%
+    Athletics                     open=+121  close=+114  CLV=+1.5%
+    Los Angeles Dodgers           open=-110  close=-105  CLV=-1.2%
+    Texas Rangers                 open=-154  close=-160  CLV=+0.9%
+    Tampa Bay Rays                open=+135  close=+135  CLV=-0.0%
+    Houston Astros                open=+120  close=+130  CLV=-2.0%
+    St. Louis Cardinals           open=+112  close=+109  CLV=+0.7%
+    Colorado Rockies              open=+180  close=+187  CLV=-0.9%
+    Minnesota Twins               open=+138  close=+131  CLV=+1.3%
+    Cleveland Guardians           open=+158  close=+158  CLV=-0.0%
+    Seattle Mariners              open=-118  close=-110  CLV=-1.7%
+    Chicago White Sox             open=-104  close=-141  CLV=+7.5%
+
+  [basketball_nba] 2026-05-22 — 2 picks
+  [API] basketball_nba @ 2026-05-22 — used=3507, remaining=16493
+    OVER 217.5                    open=-110  close=-109  CLV=-0.2%
+    San Antonio Spurs             open=-124  close=-122  CLV=-0.4%
+
+  [icehockey_nhl] 2026-05-22 — 2 picks
+  [API] icehockey_nhl @ 2026-05-22 — used=3527, remaining=16473
+    Under 6.0                     open=+100  close=-102  CLV=+0.5%
+    Vegas Golden Knights          open=+180  close=+158  CLV=+3.0%
+
+  Saved 16 CLV entries to data/clv/snapshots.json
+
+============================================================
+  SUMMARY
+  Picks examined:  16
+  Picks updated:   16
+  API calls made:  3
+  Credits used:    ~30
+============================================================
+
+
+============================================================
+  Historical CLV Backfiller
+  days_back=3  |  dry_run=False
+============================================================
+  2357 total picks in pnl
+  85 picks need CLV data
+  13 (sport, date) groups → 13 API calls needed
+  Estimated credits: 130
+
+  [baseball_mlb] 2026-05-23 — 12 picks
+  [API] baseball_mlb @ 2026-05-23 — used=4160, remaining=15840
+    Houston Astros                open=+130  close=+135  CLV=-0.9%
+    Minnesota Twins               open=+110  close=+113  CLV=-0.7%
+    No closing line found for: Detroit Tigers (moneyline)
+    New York Mets                 open=-102  close=+102  CLV=-1.0%
+    Chicago White Sox             open=+109  close=-145  CLV=+11.3%
+    Cleveland Guardians           open=+166  close=+160  CLV=+0.9%
+    St. Louis Cardinals           open=-103  close=+100  CLV=-0.7%
+    Athletics                     open=-108  close=-115  CLV=+1.6%
+    Los Angeles Dodgers           open=-111  close=-111  CLV=+0.0%
+    Pittsburgh Pirates            open=-137  close=-150  CLV=+2.2%
+    UNDER 9.0                     open=+100  close=+105  CLV=-1.2%
+    OVER 8.5                      open=-103  close=-107  CLV=+1.0%
+
+  [baseball_mlb] 2026-05-25 — 11 picks
+  [API] baseball_mlb @ 2026-05-25 — used=4180, remaining=15820
+    Cincinnati Reds               open=+140  close=+128  CLV=+2.2%
+    Arizona Diamondbacks          open=+120  close=+116  CLV=+0.8%
+    Minnesota Twins               open=-105  close=-101  CLV=-1.0%
+    Seattle Mariners              open=-108  close=-110  CLV=+0.5%
+    Tampa Bay Rays                open=-112  close=-110  CLV=-0.4%
+    UNDER 8.75                    open=+105  close=+105  CLV=-0.0%
+    Houston Astros                open=+114  close=+110  CLV=+0.9%
+    Chicago Cubs                  open=-114  close=-120  CLV=+1.3%
+    Philadelphia Phillies         open=-114  close=-111  CLV=-0.7%
+    UNDER 10.5                    open=-110  close=-105  CLV=-1.2%
+    OVER 7.5                      open=-105  close=-115  CLV=+2.3%
+
+  [basketball_nba] 2026-05-23 — 1 picks
+  [API] basketball_nba @ 2026-05-23 — used=4190, remaining=15810
+    OVER 215.5                    open=-105  close=-110  CLV=+1.2%
+
+  [basketball_nba] 2026-05-24 — 2 picks
+  [API] basketball_nba @ 2026-05-24 — used=4210, remaining=15790
+    OVER 219.5                    open=-106  close=-105  CLV=-0.2%
+    San Antonio Spurs             open=-122  close=-141  CLV=+3.6%
+
+  [basketball_nba] 2026-05-25 — 2 picks
+  [API] basketball_nba @ 2026-05-25 — used=4230, remaining=15770
+    OVER 218.5                    open=-110  close=-107  CLV=-0.7%
+    Cleveland Cavaliers           open=+120  close=+114  CLV=+1.3%
+
+  [icehockey_nhl] 2026-05-23 — 1 picks
+  [API] icehockey_nhl @ 2026-05-23 — used=4240, remaining=15760
+    Under 6.0                     open=-110  close=+114  CLV=-5.7%
+
+  [icehockey_nhl] 2026-05-25 — 1 picks
+  [API] icehockey_nhl @ 2026-05-25 — used=4250, remaining=15750
+    Carolina Hurricanes           open=-134  close=-135  CLV=+0.2%
+
+  [soccer_germany_bundesliga] 2026-05-25 — 1 picks
+  [API] soccer_germany_bundesliga @ 2026-05-25 — used=4260, remaining=15740
+    SC Paderborn                  open=+240  close=+262  CLV=-1.8%
+
+  [soccer_italy_serie_a] 2026-05-23 — 4 picks
+  [API] soccer_italy_serie_a @ 2026-05-23 — used=4280, remaining=15720
+    Pisa                          open=+390  close=+400  CLV=-0.4%
+    UNDER 2.5                     open=+130  close=+200  CLV=-10.1%
+    Bologna                       open=+225  close=-900  CLV=+59.2%
+    No closing line found for: Draw (moneyline)
+
+  [soccer_spain_la_liga] 2026-05-23 — 11 picks
+  [API] soccer_spain_la_liga @ 2026-05-23 — used=4300, remaining=15700
+    Oviedo                        open=+650  close=+665  CLV=-0.3%
+    Athletic Bilbao               open=+550  close=+500  CLV=+1.3%
+    UNDER 3.5                     open=-165  close=+110  CLV=-14.6%
+    OVER 1.5                      open=-165  close=-115  CLV=-8.8%
+    Elche CF                      open=+330  close=+340  CLV=-0.5%
+    UNDER 2.5                     open=+130  close=+130  CLV=-0.0%
+    Sevilla                       open=+300  close=+314  CLV=-0.8%
+    No closing line found for: Draw (moneyline)
+    Valencia                      open=+230  close=+246  CLV=-1.4%
+    Real Sociedad                 open=+220  close=+230  CLV=-0.9%
+    CA Osasuna                    open=+210  close=+218  CLV=-0.8%
+
+  [soccer_usa_mls] 2026-05-23 — 13 picks
+  [API] soccer_usa_mls @ 2026-05-23 — used=4320, remaining=15680
+    UNDER 3.5                     open=-165  close=+117  CLV=-16.2%
+    Toronto FC                    open=+500  close=+525  CLV=-0.7%
+    Austin FC                     open=+380  close=+380  CLV=+0.0%
+    New York City FC              open=+360  close=+380  CLV=-0.9%
+    UNDER 2.5                     open=+130  close=+138  CLV=-1.5%
+    Orlando City SC               open=+350  close=+335  CLV=+0.8%
+    New England Revolution        open=+300  close=+335  CLV=-2.0%
+    CF Montreal                   open=+275  close=+275  CLV=-0.0%
+    No closing line found for: Draw (moneyline)
+    San Diego FC                  open=+250  close=+260  CLV=-0.8%
+    Houston Dynamo                open=+230  close=+238  CLV=-0.7%
+    Real Salt Lake                open=+220  close=+240  CLV=-1.8%
+    Sporting Kansas City          open=+200  close=+204  CLV=-0.4%
+
+  [tennis_atp_french_open] 2026-05-25 — 11 picks
+  [API] tennis_atp_french_open @ 2026-05-25 — used=4330, remaining=15670
+    Daniel Merida Aguilar         open=+310  close=+1440  CLV=-17.9%
+    Botic van de Zandschulp       open=+480  close=+2300  CLV=-13.1%
+    No closing line found for: Roberto Bautista Agut (moneyline)
+    Ignacio Buse                  open=+174  close=+458  CLV=-18.6%
+    No closing line found for: Thanasi Kokkinakis (moneyline)
+    Jaume Munar                   open=+125  close=-150  CLV=+15.6%
+    Andrea Pellegrino             open=+250  close=+10000  CLV=-27.6%
+    Stan Wawrinka                 open=+230  close=+143  CLV=+10.8%
+    No closing line found for: Vilius Gaubas (moneyline)
+    Hugo Gaston                   open=+106  close=+110  CLV=-0.9%
+    Wu Yibing                     open=+110  close=-600  CLV=+38.1%
+
+  [tennis_atp_french_open] 2026-05-26 — 15 picks
+  [API] tennis_atp_french_open @ 2026-05-26 — used=4340, remaining=15660
+    No closing line found for: Kamil Majchrzak (moneyline)
+    Alexandre Muller              open=+480  close=+460  CLV=+0.6%
+    Juan Carlos Prado Angelo      open=+250  close=+300  CLV=-3.6%
+    Jacob Fearnley                open=+340  close=+330  CLV=+0.5%
+    Thomas Faurel                 open=+500  close=+1200  CLV=-9.0%
+    Roman Andres Burruchaga       open=+115  close=+129  CLV=-2.8%
+    Moise Kouame                  open=+285  close=-10000  CLV=+73.0%
+    Jan-Lennard Struff            open=+294  close=+310  CLV=-1.0%
+    Ethan Quinn                   open=+128  close=+130  CLV=-0.4%
+    Daniel Altmaier               open=+275  close=+275  CLV=-0.0%
+    Vit Kopriva                   open=+155  close=+135  CLV=+3.3%
+    Cristian Garin                open=+145  close=+168  CLV=-3.5%
+    Denis Shapovalov              open=+130  close=+149  CLV=-3.3%
+    Luciano Darderi               open=-295  close=-300  CLV=+0.3%
+    Matteo Arnaldi                open=-130  close=-120  CLV=-2.0%
+
+  Saved 77 CLV entries to data/clv/snapshots.json
+
+============================================================
+  SUMMARY
+  Picks examined:  85
+  Picks updated:   77
+  API calls made:  13
+  Credits used:    ~130
+============================================================
+
+CLV backfill complete:
+  backfilled records      : 36
+  matched picks           : 36
+  skipped (already had)   : 125
+  no closing snapshot     : 2274
+  no matching market odds : 213
+
+CLV summary (after backfill):
+  total_picks              192
+  with_closing_line        185
+  settled                  148
+  wins                     84
+  losses                   64
+  win_rate                 0.5675675675675675
+  clv_mean_cents           -1.39
+  clv_median_cents         -1.61
+  clv_positive_pct         0.2649
+  clv_total_cents          -257.42
+  avg_model_edge           0.0816
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 43
+  matched picks           : 43
+  skipped (already had)   : 161
+  no closing snapshot     : 2400
+  no matching market odds : 228
+
+CLV summary (after backfill):
+  total_picks              235
+  with_closing_line        228
+  settled                  191
+  wins                     99
+  losses                   92
+  win_rate                 0.518324607329843
+  clv_mean_cents           -1.79
+  clv_median_cents         -1.71
+  clv_positive_pct         0.2632
+  clv_total_cents          -407.64
+  avg_model_edge           0.0845
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 12
+  matched picks           : 12
+  skipped (already had)   : 204
+  no closing snapshot     : 2437
+  no matching market odds : 232
+
+CLV summary (after backfill):
+  total_picks              247
+  with_closing_line        240
+  settled                  199
+  wins                     102
+  losses                   97
+  win_rate                 0.5125628140703518
+  clv_mean_cents           -1.97
+  clv_median_cents         -1.85
+  clv_positive_pct         0.2583
+  clv_total_cents          -473.24
+  avg_model_edge           0.0861
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 5
+  matched picks           : 5
+  skipped (already had)   : 216
+  no closing snapshot     : 2447
+  no matching market odds : 234
+
+CLV summary (after backfill):
+  total_picks              252
+  with_closing_line        245
+  settled                  199
+  wins                     102
+  losses                   97
+  win_rate                 0.5125628140703518
+  clv_mean_cents           -1.96
+  clv_median_cents         -1.85
+  clv_positive_pct         0.2571
+  clv_total_cents          -481.3
+  avg_model_edge           0.0864
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 3
+  matched picks           : 3
+  skipped (already had)   : 221
+  no closing snapshot     : 2499
+  no matching market odds : 235
+
+CLV summary (after backfill):
+  total_picks              255
+  with_closing_line        248
+  settled                  202
+  wins                     103
+  losses                   99
+  win_rate                 0.5099009900990099
+  clv_mean_cents           -2.0
+  clv_median_cents         -1.85
+  clv_positive_pct         0.254
+  clv_total_cents          -496.47
+  avg_model_edge           0.0864
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 1
+  matched picks           : 1
+  skipped (already had)   : 224
+  no closing snapshot     : 2587
+  no matching market odds : 237
+
+CLV summary (after backfill):
+  total_picks              256
+  with_closing_line        249
+  settled                  202
+  wins                     103
+  losses                   99
+  win_rate                 0.5099009900990099
+  clv_mean_cents           -2.02
+  clv_median_cents         -1.92
+  clv_positive_pct         0.253
+  clv_total_cents          -502.12
+  avg_model_edge           0.0864
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 8
+  matched picks           : 8
+  skipped (already had)   : 225
+  no closing snapshot     : 2616
+  no matching market odds : 241
+
+CLV summary (after backfill):
+  total_picks              264
+  with_closing_line        257
+  settled                  209
+  wins                     104
+  losses                   105
+  win_rate                 0.49760765550239233
+  clv_mean_cents           -2.09
+  clv_median_cents         -1.92
+  clv_positive_pct         0.2451
+  clv_total_cents          -536.58
+  avg_model_edge           0.0858
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 22
+  matched picks           : 22
+  skipped (already had)   : 233
+  no closing snapshot     : 2724
+  no matching market odds : 246
+
+CLV summary (after backfill):
+  total_picks              286
+  with_closing_line        279
+  settled                  228
+  wins                     111
+  losses                   117
+  win_rate                 0.4868421052631579
+  clv_mean_cents           -2.29
+  clv_median_cents         -2.2
+  clv_positive_pct         0.2509
+  clv_total_cents          -639.45
+  avg_model_edge           0.0843
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 21
+  matched picks           : 21
+  skipped (already had)   : 255
+  no closing snapshot     : 2751
+  no matching market odds : 251
+
+CLV summary (after backfill):
+  total_picks              307
+  with_closing_line        300
+  settled                  247
+  wins                     121
+  losses                   126
+  win_rate                 0.4898785425101215
+  clv_mean_cents           -2.39
+  clv_median_cents         -2.2
+  clv_positive_pct         0.25
+  clv_total_cents          -717.02
+  avg_model_edge           0.0871
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 10
+  matched picks           : 10
+  skipped (already had)   : 276
+  no closing snapshot     : 2788
+  no matching market odds : 256
+
+CLV summary (after backfill):
+  total_picks              317
+  with_closing_line        310
+  settled                  252
+  wins                     122
+  losses                   130
+  win_rate                 0.48412698412698413
+  clv_mean_cents           -2.43
+  clv_median_cents         -2.21
+  clv_positive_pct         0.2516
+  clv_total_cents          -752.81
+  avg_model_edge           0.0867
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 23
+  matched picks           : 23
+  skipped (already had)   : 286
+  no closing snapshot     : 2814
+  no matching market odds : 262
+
+CLV summary (after backfill):
+  total_picks              340
+  with_closing_line        333
+  settled                  267
+  wins                     131
+  losses                   136
+  win_rate                 0.49063670411985016
+  clv_mean_cents           -2.51
+  clv_median_cents         -2.33
+  clv_positive_pct         0.2462
+  clv_total_cents          -836.94
+  avg_model_edge           0.0853
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 16
+  matched picks           : 16
+  skipped (already had)   : 309
+  no closing snapshot     : 2845
+  no matching market odds : 269
+
+CLV summary (after backfill):
+  total_picks              356
+  with_closing_line        349
+  settled                  280
+  wins                     139
+  losses                   141
+  win_rate                 0.49642857142857144
+  clv_mean_cents           -2.58
+  clv_median_cents         -2.34
+  clv_positive_pct         0.2436
+  clv_total_cents          -899.4
+  avg_model_edge           0.0867
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 14
+  matched picks           : 14
+  skipped (already had)   : 325
+  no closing snapshot     : 2882
+  no matching market odds : 274
+
+CLV summary (after backfill):
+  total_picks              370
+  with_closing_line        363
+  settled                  294
+  wins                     145
+  losses                   149
+  win_rate                 0.4931972789115646
+  clv_mean_cents           -2.56
+  clv_median_cents         -2.33
+  clv_positive_pct         0.2479
+  clv_total_cents          -930.85
+  avg_model_edge           0.0859
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line
+CLV backfill complete:
+  backfilled records      : 25
+  matched picks           : 25
+  skipped (already had)   : 339
+  no closing snapshot     : 2974
+  no matching market odds : 286
+
+CLV summary (after backfill):
+  total_picks              395
+  with_closing_line        388
+  settled                  315
+  wins                     157
+  losses                   158
+  win_rate                 0.4984126984126984
+  clv_mean_cents           -2.6
+  clv_median_cents         -2.38
+  clv_positive_pct         0.2448
+  clv_total_cents          -1008.4
+  avg_model_edge           0.0853
+  verdict                  NEGATIVE CLV — model is getting worse odds than the closing line

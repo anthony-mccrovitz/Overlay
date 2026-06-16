@@ -1,0 +1,164 @@
+{
+  "date": "2026-05-22",
+  "sport": "nhl",
+  "generated_at": "2026-05-22T15:15:03.956824+00:00",
+  "picks": [
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Colorado Avalanche",
+      "team": "Under 6.0",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 6.0,
+      "odds": 100,
+      "fair_odds": 110,
+      "model_prob": 0.6038,
+      "market_prob": 0.4772,
+      "fair_prob": 0.4772,
+      "edge_pct": 12.66,
+      "commence": "2026-05-23T00:00:00Z",
+      "proj_total": 5.33,
+      "notes": [
+        "Base: Colorado Avalanche 3.61 exp goals | Vegas Golden Knights 2.64 exp goals",
+        "Home goalie SV%: 0.911 (+0.013) \u2192 away -+0.40g",
+        "Away goalie SV%: 0.920 (+0.022) \u2192 home -+0.50g",
+        "Trained model win prob: 58.2%",
+        "Projected total: 5.3 | Home win: 58.2% | Home -1.5: 34.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Carolina Hurricanes",
+      "team": "Under 6.0",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 6.0,
+      "odds": -115,
+      "fair_odds": -106,
+      "model_prob": 0.5932,
+      "market_prob": 0.5136,
+      "fair_prob": 0.5136,
+      "edge_pct": 7.96,
+      "commence": "2026-05-23T23:00:00Z",
+      "proj_total": 5.4,
+      "notes": [
+        "Base: Carolina Hurricanes 3.44 exp goals | Montr\u00e9al Canadiens 2.80 exp goals",
+        "Home goalie SV%: 0.932 (+0.034) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.911 (+0.013) \u2192 home -+0.39g",
+        "Trained model win prob: 68.0%",
+        "Projected total: 5.4 | Home win: 68.0% | Home -1.5: 35.4%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Montr\u00e9al Canadiens @ Carolina Hurricanes",
+      "team": "Montr\u00e9al Canadiens +1.5",
+      "market": "puck_line",
+      "direction": "AWAY +1.5",
+      "line": 1.5,
+      "odds": -145,
+      "fair_odds": -133,
+      "model_prob": 0.6459,
+      "market_prob": 0.5711,
+      "fair_prob": 0.5711,
+      "edge_pct": 7.48,
+      "commence": "2026-05-23T23:00:00Z",
+      "proj_total": 5.4,
+      "notes": [
+        "Base: Carolina Hurricanes 3.44 exp goals | Montr\u00e9al Canadiens 2.80 exp goals",
+        "Home goalie SV%: 0.932 (+0.034) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.911 (+0.013) \u2192 home -+0.39g",
+        "Trained model win prob: 68.0%",
+        "Projected total: 5.4 | Home win: 68.0% | Home -1.5: 35.4%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Colorado Avalanche",
+      "team": "Vegas Golden Knights +1.5",
+      "market": "puck_line",
+      "direction": "AWAY +1.5",
+      "line": 1.5,
+      "odds": -141,
+      "fair_odds": -141,
+      "model_prob": 0.6544,
+      "market_prob": 0.5853,
+      "fair_prob": 0.5853,
+      "edge_pct": 6.91,
+      "commence": "2026-05-23T00:00:00Z",
+      "proj_total": 5.33,
+      "notes": [
+        "Base: Colorado Avalanche 3.61 exp goals | Vegas Golden Knights 2.64 exp goals",
+        "Home goalie SV%: 0.911 (+0.013) \u2192 away -+0.40g",
+        "Away goalie SV%: 0.920 (+0.022) \u2192 home -+0.50g",
+        "Trained model win prob: 58.2%",
+        "Projected total: 5.3 | Home win: 58.2% | Home -1.5: 34.6%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Colorado Avalanche",
+      "team": "Vegas Golden Knights",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "line": null,
+      "odds": 180,
+      "fair_odds": 180,
+      "model_prob": 0.418,
+      "market_prob": 0.357,
+      "fair_prob": 0.357,
+      "edge_pct": 6.1,
+      "commence": "2026-05-23T00:00:00Z",
+      "proj_total": 5.33,
+      "notes": [
+        "Base: Colorado Avalanche 3.61 exp goals | Vegas Golden Knights 2.64 exp goals",
+        "Home goalie SV%: 0.911 (+0.013) \u2192 away -+0.40g",
+        "Away goalie SV%: 0.920 (+0.022) \u2192 home -+0.50g",
+        "Trained model win prob: 58.2%",
+        "Projected total: 5.3 | Home win: 58.2% | Home -1.5: 34.6%"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "matchup": "Vegas Golden Knights @ Colorado Avalanche",
+      "commence": "2026-05-23T00:00:00Z",
+      "time_et": "08:00 PM ET",
+      "home_team": "Colorado Avalanche",
+      "away_team": "Vegas Golden Knights",
+      "home_exp_goals": 3.56,
+      "away_exp_goals": 2.67,
+      "total_exp_goals": 6.23,
+      "home_win_prob": 0.5822,
+      "away_win_prob": 0.4178,
+      "home_cover_1_5": 0.3671,
+      "away_cover_1_5": 0.6329,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Colorado Avalanche 3.61 exp goals | Vegas Golden Knights 2.64 exp goals",
+        "Trained model win prob: 58.2%",
+        "Projected total: 6.2 | Home win: 58.2% | Home -1.5: 36.7%"
+      ]
+    },
+    {
+      "matchup": "Montr\u00e9al Canadiens @ Carolina Hurricanes",
+      "commence": "2026-05-23T23:00:00Z",
+      "time_et": "07:00 PM ET",
+      "home_team": "Carolina Hurricanes",
+      "away_team": "Montr\u00e9al Canadiens",
+      "home_exp_goals": 3.5,
+      "away_exp_goals": 2.79,
+      "total_exp_goals": 6.29,
+      "home_win_prob": 0.6794,
+      "away_win_prob": 0.3206,
+      "home_cover_1_5": 0.3316,
+      "away_cover_1_5": 0.6684,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Carolina Hurricanes 3.44 exp goals | Montr\u00e9al Canadiens 2.80 exp goals",
+        "Trained model win prob: 67.9%",
+        "Projected total: 6.3 | Home win: 67.9% | Home -1.5: 33.2%"
+      ]
+    }
+  ]
+}

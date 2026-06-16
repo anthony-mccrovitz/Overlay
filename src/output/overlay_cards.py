@@ -2,7 +2,7 @@
 Overlay-branded pick card renderer.
 
 Clean, professional design for daily MLB / NBA pick cards.
-Replaces the legacy ChefTonyBets template:
+Replaces the legacy Overlay template:
   - ◈ Overlay wordmark + indigo/violet brand mark
   - Team color accent bar on every pick
   - Sportsbook brand colors for book pills
@@ -312,7 +312,7 @@ def _header_html(date_str: str, meta: str) -> str:
     <div class="brand-mark">&#9672;</div>
     <div class="brand-text">
       <div class="brand-name">Overlay</div>
-      <div class="brand-sub">AI Edge Detection</div>
+      <div class="brand-sub">ML Picks Model</div>
     </div>
   </div>
   <div class="header-right">
@@ -344,7 +344,7 @@ def _summary_html(n_picks: int, avg_edge: float, top_edge: float, top_pick: str)
 </div>'''
 
 
-def _footer_html(record_str: str, handle: str = "ChefTonyAIBets") -> str:
+def _footer_html(record_str: str, handle: str = "getoverlay") -> str:
     rec_inner = ""
     if record_str:
         rec_inner = (
@@ -357,7 +357,7 @@ def _footer_html(record_str: str, handle: str = "ChefTonyAIBets") -> str:
   <div class="footer-right">
     <span class="handle">@{handle}</span>
     &nbsp;·&nbsp;
-    <span class="url">overlay.ai</span>
+    <span class="url">overlay-gray.vercel.app</span>
   </div>
 </div>'''
 
@@ -974,7 +974,7 @@ def _build_pick_of_day(pick: dict, sport: str, d: date, record_str: str = "") ->
       <div class="pod-mark">&#9672;</div>
       <div>
         <div class="pod-name">Overlay</div>
-        <div class="pod-sub">AI Edge Detection</div>
+        <div class="pod-sub">ML Picks Model</div>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
@@ -1004,9 +1004,9 @@ def _build_pick_of_day(pick: dict, sport: str, d: date, record_str: str = "") ->
   <div class="pod-footer">
     <div class="pod-record">{record_inner}</div>
     <div class="pod-handle">
-      <span class="at">@ChefTonyAIBets</span>
+      <span class="at">@getoverlay</span>
       &nbsp;·&nbsp;
-      <span class="url">overlay.ai</span>
+      <span class="url">overlay-gray.vercel.app</span>
     </div>
   </div>
 </div>

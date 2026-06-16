@@ -1,5 +1,5 @@
 """
-Pinnacle Motorsport Odds Fetcher — ChefTonyBets
+Pinnacle Motorsport Odds Fetcher — Overlay
 
 Fetches live outright odds for IndyCar, F1, and NASCAR from Pinnacle's
 guest API (no auth required for read-only outrights on special events).
