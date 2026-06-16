@@ -1622,6 +1622,25 @@ def cmd_health(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_strategies(args: argparse.Namespace) -> int:
+    """Shadow strategies — research-rule picks logged (never bet) and measured by
+    CLV against the close. Proves which edges beat the market before risking money.
+    """
+    from src.analytics.clv_tracker import print_clv_by_strategy
+
+    if not getattr(args, "report", False):
+        from src.strategies.shadow_strategies import log_shadow_strategies, STRATEGIES
+        date_str = None
+        if getattr(args, "date", None):
+            d = args.date
+            date_str = f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else d
+        n = log_shadow_strategies(date_str=date_str)
+        print(f"  Logged {n} shadow strategy pick(s) across {len(STRATEGIES)} strategy(ies).")
+
+    print_clv_by_strategy()
+    return 0
+
+
 def cmd_stats(args: argparse.Namespace) -> int:
     """Refresh public_stats.json from current picks.json."""
     try:
@@ -2245,6 +2264,10 @@ def main() -> int:
 
     sub.add_parser("health", help="Daily 30s health check: picks/closings/CLV/grading fresh?")
 
+    p_strat = sub.add_parser("strategies", help="Log + measure shadow strategies (research-rule picks, CLV-tracked, never bet)")
+    p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
+    p_strat.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -2341,6 +2364,7 @@ def main() -> int:
         "stats":    cmd_stats,
         "status":   cmd_status,
         "health":   cmd_health,
+        "strategies": cmd_strategies,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,

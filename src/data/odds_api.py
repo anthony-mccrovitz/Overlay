@@ -75,8 +75,11 @@ TIER1_BOOKS     = MY_BOOKS_TITLES
 SUPPORTED_SPORTS = {
     "basketball_ncaab",
     "basketball_nba",
+    "basketball_wnba",
     "baseball_mlb",
     "americanfootball_nfl",
+    "icehockey_nhl",
+    "soccer_fifa_world_cup",
 }
 
 

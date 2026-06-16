@@ -451,6 +451,9 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         "weather_context": raw.get("weather_context") or None,
         "team_form":       raw.get("team_form") or None,
         "shadow_filter":   raw.get("shadow_filter") or None,
+        # Shadow-strategy tag: which research rule/model produced this pick.
+        # null = a normal model/card pick. Used to slice CLV by strategy.
+        "strategy":        raw.get("strategy") or None,
     }
     # Auto-classify shadow_filter if missing — keeps every pipeline tagged
     # without each one needing to import the filter explicitly.

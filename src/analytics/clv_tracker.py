@@ -251,8 +251,12 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         return 0
 
     snapshots = _load_snapshots()
+    # Dedup key includes strategy so a shadow-strategy pick gets its own snapshot
+    # even when a card pick exists for the same team/market. Existing rows have
+    # strategy=None, so their grouping is unchanged.
     snap_keys = {
-        (s.get("date", ""), s.get("team", "").lower().strip(), s.get("market", ""))
+        (s.get("date", ""), s.get("team", "").lower().strip(),
+         s.get("market", ""), s.get("strategy"))
         for s in snapshots
     }
 
@@ -264,7 +268,8 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         if not team:
             continue
         market = str(pick.get("market") or "moneyline")
-        key = (effective_date, team.lower().strip(), market)
+        strategy = pick.get("strategy")
+        key = (effective_date, team.lower().strip(), market, strategy)
         if key in snap_keys:
             continue
 
@@ -299,6 +304,7 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
             "opponent":             str(pick.get("matchup") or "?").strip(),
             "sport":                _normalize_sport(str(pick.get("sport") or "mlb")),
             "market":               market,
+            "strategy":             strategy,
             # opening_line + direction are needed to score spread/total CLV
             # (the points you got, not just the price). Null for moneyline.
             "opening_line":         float(line) if line is not None else None,
@@ -1271,6 +1277,67 @@ def print_clv_by_market(sport_filter: str | None = None) -> None:
             metric = "no closing line joined yet"
         beat = f", beat close {e['beat_close_pct']}%" if "beat_close_pct" in e else ""
         print(f"    {mk:<11} {e['scored']}/{e['picks']} scored — {metric}{beat}")
+
+
+def get_clv_by_strategy() -> dict:
+    """Per-strategy CLV — the view that answers "which shadow strategy beats the
+    close?" Same buckets as get_clv_by_market but keyed on the `strategy` tag;
+    untagged picks (normal model/card picks) bucket under "model".
+
+    Returns: {strategy: {picks, scored, metric, avg_*, beat_close_pct}}
+    """
+    snaps = _load_snapshots()
+    buckets: dict[str, dict] = {}
+    for s in snaps:
+        strat = s.get("strategy") or "model"
+        b = buckets.setdefault(strat, {"picks": 0, "prob": [], "line": [], "beats": 0, "scored": 0})
+        b["picks"] += 1
+        if s.get("clv_pct") is not None:            # moneyline-style prob-CLV
+            b["scored"] += 1
+            b["prob"].append(s["clv_pct"])
+            if s["clv_pct"] > 0:
+                b["beats"] += 1
+        elif s.get("line_clv") is not None:         # spread/total line-CLV
+            b["scored"] += 1
+            b["line"].append(s["line_clv"])
+            if s.get("beat_close"):
+                b["beats"] += 1
+
+    out: dict[str, dict] = {}
+    for strat, b in buckets.items():
+        entry = {"picks": b["picks"], "scored": b["scored"]}
+        if b["prob"]:
+            entry["metric"] = "prob_clv_pct"
+            entry["avg_clv_pct"] = round(sum(b["prob"]) / len(b["prob"]), 3)
+        elif b["line"]:
+            entry["metric"] = "line_clv_points"
+            entry["avg_line_clv"] = round(sum(b["line"]) / len(b["line"]), 3)
+        else:
+            entry["metric"] = "none"
+        if b["scored"]:
+            entry["beat_close_pct"] = round(b["beats"] / b["scored"] * 100, 1)
+        out[strat] = entry
+    return out
+
+
+def print_clv_by_strategy() -> None:
+    """Pretty-print the per-strategy CLV breakdown (see get_clv_by_strategy)."""
+    data = get_clv_by_strategy()
+    print(f"\n  CLV BY STRATEGY")
+    if not data:
+        print("    (no snapshots yet)")
+        return
+    for strat, e in sorted(data.items(), key=lambda x: -x[1]["picks"]):
+        if e["metric"] == "prob_clv_pct":
+            sign = "+" if e["avg_clv_pct"] >= 0 else ""
+            metric = f"avg CLV {sign}{e['avg_clv_pct']}%"
+        elif e["metric"] == "line_clv_points":
+            sign = "+" if e["avg_line_clv"] >= 0 else ""
+            metric = f"avg line-CLV {sign}{e['avg_line_clv']} pts"
+        else:
+            metric = "no closing line joined yet"
+        beat = f", beat close {e['beat_close_pct']}%" if "beat_close_pct" in e else ""
+        print(f"    {strat:<16} {e['scored']}/{e['picks']} scored — {metric}{beat}")
 
 
 def get_clv_summary() -> dict:
