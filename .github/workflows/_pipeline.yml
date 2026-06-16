@@ -21,6 +21,13 @@ on:
         type: string
         default: light
 
+# Serialize every pipeline that commits to the repo so two runs never race to
+# push to the same branch (which conflicts on shared files like picks.json).
+# Queue rather than cancel — each scheduled job's work must still happen.
+concurrency:
+  group: repo-commit-${{ github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -95,9 +102,15 @@ jobs:
             exit 0
           fi
           git commit -m "pipeline: automated update $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-          for i in 1 2 3; do
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
-              && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
-            echo "push attempt $i failed, retrying…"; sleep 5
+          for i in 1 2 3 4 5; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            # A conflicted rebase leaves unmerged files that doom every later
+            # attempt ("Pulling is not possible…"). Abort so the next try starts
+            # clean and can re-apply our commit on top of the updated branch.
+            git rebase --abort 2>/dev/null || true
+            echo "push attempt $i failed, retrying…"; sleep $((i * 4))
           done
-          echo "::error::failed to push after 3 attempts"; exit 1
+          echo "::error::failed to push after 5 attempts"; exit 1
