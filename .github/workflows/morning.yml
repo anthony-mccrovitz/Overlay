@@ -21,5 +21,9 @@ jobs:
       command: |
         set +e
         python scripts/gen_caption.py
+        # Log shadow-strategy picks while morning lines are still soft (favorite-
+        # longshot etc.) — the opening half of CLV. Closings captured at tipoff,
+        # scored by clv.yml next morning. card_pick=False → never the real record.
+        python chef.py strategies
         python scripts/deploy_picks.py
         true
