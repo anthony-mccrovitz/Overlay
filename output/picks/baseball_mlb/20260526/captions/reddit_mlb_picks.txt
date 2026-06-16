@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 5/26/26 (Tuesday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 34-22 (60.7% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| New York Yankees vs  | -200 | +15.4% | FanDuel |
+| Atlanta Braves vs  | -106 | +11.5% | FanDuel |
+| Seattle Mariners vs  | -105 | +11.3% | theScore Bet |
+| St. Louis Cardinals vs  | +157 | +14.2% | DraftKings |
+| Philadelphia Phillies vs  | +107 | +10.9% | 1xBet |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Atlanta Braves @ Boston Red Sox NRFI (Spencer Strider vs Ranger Suarez) | NRFI -115 | 67% | FanDuel |
+| Tampa Bay Rays @ Baltimore Orioles NRFI (Griffin Jax vs Shane Baz) | NRFI -113 | 65% | FanDuel |
+| Miami Marlins @ Toronto Blue Jays NRFI (Sandy Alcantara vs Braydon Fisher) | NRFI -111 | 65% | FanDuel |
+| Chicago Cubs @ Pittsburgh Pirates NRFI (Jordan Wicks vs Braxton Ashcraft) | NRFI -125 | 67% | BetMGM |
+| St. Louis Cardinals @ Milwaukee Brewers NRFI (Michael McGreevy vs Kyle Harrison) | NRFI -125 | 67% | BetMGM |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

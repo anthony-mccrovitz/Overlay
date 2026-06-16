@@ -1,0 +1,46 @@
+{
+  "description": "Franchise bet tracker — all 30 MLB teams, shadow until validated.",
+  "status": "shadow",
+  "track_all_teams": true,
+  "started": "2026-06-06",
+  "review_date": "2026-06-30",
+
+  "teams": [
+    {"name": "Arizona Diamondbacks", "slug": "dbacks",    "aliases": ["d-backs", "diamondbacks"]},
+    {"name": "Atlanta Braves",        "slug": "braves"},
+    {"name": "Baltimore Orioles",     "slug": "orioles"},
+    {"name": "Boston Red Sox",        "slug": "redsox",   "aliases": ["red sox"]},
+    {"name": "Chicago Cubs",          "slug": "cubs"},
+    {"name": "Chicago White Sox",     "slug": "whitesox", "aliases": ["white sox"]},
+    {"name": "Cincinnati Reds",       "slug": "reds"},
+    {"name": "Cleveland Guardians",   "slug": "guardians"},
+    {"name": "Colorado Rockies",      "slug": "rockies"},
+    {"name": "Detroit Tigers",        "slug": "tigers"},
+    {"name": "Houston Astros",        "slug": "astros"},
+    {"name": "Kansas City Royals",    "slug": "royals"},
+    {"name": "Los Angeles Angels",    "slug": "angels",   "aliases": ["la angels", "anaheim angels", "angels"]},
+    {"name": "Los Angeles Dodgers",   "slug": "dodgers",  "aliases": ["la dodgers"]},
+    {"name": "Miami Marlins",         "slug": "marlins"},
+    {"name": "Milwaukee Brewers",     "slug": "brewers"},
+    {"name": "Minnesota Twins",       "slug": "twins"},
+    {"name": "New York Mets",         "slug": "mets"},
+    {"name": "New York Yankees",      "slug": "yankees"},
+    {"name": "Athletics",             "slug": "athletics","aliases": ["oakland athletics", "sacramento athletics"]},
+    {"name": "Philadelphia Phillies", "slug": "phillies"},
+    {"name": "Pittsburgh Pirates",    "slug": "pirates"},
+    {"name": "San Diego Padres",      "slug": "padres"},
+    {"name": "San Francisco Giants",  "slug": "giants"},
+    {"name": "Seattle Mariners",      "slug": "mariners"},
+    {"name": "St. Louis Cardinals",   "slug": "cardinals"},
+    {"name": "Tampa Bay Rays",        "slug": "rays"},
+    {"name": "Texas Rangers",         "slug": "rangers"},
+    {"name": "Toronto Blue Jays",     "slug": "bluejays", "aliases": ["blue jays"]},
+    {"name": "Washington Nationals",  "slug": "nationals"}
+  ],
+
+  "validation": {
+    "min_picks_per_market": 30,
+    "min_roi": 0.05,
+    "note": "ROI-primary: ≥30 picks + ROI ≥5% + WR ≥ break-even at avg odds. Fixed WR thresholds (56%, 53%) are wrong because odds change the target — a +150 underdog system only needs 40% WR to profit."
+  }
+}

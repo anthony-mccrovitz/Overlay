@@ -167,7 +167,7 @@ def _build_html(
   <div class="bottom">
     <div class="record">{record_line}</div>
     <div class="brier">{brier_line}</div>
-    <div class="brand">@ChefTony<span class="brand-handle">AIBets</span></div>
+    <div class="brand">@<span class="brand-handle">getoverlay</span></div>
   </div>
 </div></body></html>"""
 

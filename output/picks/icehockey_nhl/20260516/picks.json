@@ -1,0 +1,141 @@
+{
+  "date": "2026-05-16",
+  "sport": "nhl",
+  "generated_at": "2026-05-16T22:39:01.198904+00:00",
+  "picks": [
+    {
+      "sport": "nhl",
+      "matchup": "Buffalo Sabres @ Montr\u00e9al Canadiens",
+      "team": "Buffalo Sabres +1.5",
+      "market": "puck_line",
+      "direction": "AWAY +1.5",
+      "line": 1.5,
+      "odds": -170,
+      "fair_odds": -159,
+      "model_prob": 0.7468,
+      "market_prob": 0.6135,
+      "fair_prob": 0.6135,
+      "edge_pct": 13.33,
+      "commence": "2026-05-17T00:10:00Z",
+      "proj_total": 5.47,
+      "notes": [
+        "Base: Montr\u00e9al Canadiens 3.36 exp goals | Buffalo Sabres 3.08 exp goals",
+        "Home goalie SV%: 0.914 (+0.016) \u2192 away -+0.49g",
+        "Away goalie SV%: 0.917 (+0.019) \u2192 home -+0.50g",
+        "Trained model win prob: 55.5%",
+        "Projected total: 5.5 | Home win: 55.5% | Home -1.5: 25.3%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Buffalo Sabres @ Montr\u00e9al Canadiens",
+      "team": "Under 6.5",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 6.5,
+      "odds": -120,
+      "fair_odds": -112,
+      "model_prob": 0.6571,
+      "market_prob": 0.5282,
+      "fair_prob": 0.5282,
+      "edge_pct": 12.9,
+      "commence": "2026-05-17T00:10:00Z",
+      "proj_total": 5.47,
+      "notes": [
+        "Base: Montr\u00e9al Canadiens 3.36 exp goals | Buffalo Sabres 3.08 exp goals",
+        "Home goalie SV%: 0.914 (+0.016) \u2192 away -+0.49g",
+        "Away goalie SV%: 0.917 (+0.019) \u2192 home -+0.50g",
+        "Trained model win prob: 55.5%",
+        "Projected total: 5.5 | Home win: 55.5% | Home -1.5: 25.3%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Colorado Avalanche",
+      "team": "Under 6.0",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 6.0,
+      "odds": 100,
+      "fair_odds": 102,
+      "model_prob": 0.6174,
+      "market_prob": 0.4955,
+      "fair_prob": 0.4955,
+      "edge_pct": 12.19,
+      "commence": "2026-05-21T00:00:47Z",
+      "proj_total": 5.24,
+      "notes": [
+        "Base: Colorado Avalanche 3.67 exp goals | Vegas Golden Knights 2.59 exp goals",
+        "Home goalie SV%: 0.914 (+0.016) \u2192 away -+0.49g",
+        "Away goalie SV%: 0.917 (+0.019) \u2192 home -+0.50g",
+        "Trained model win prob: 64.5%",
+        "Projected total: 5.2 | Home win: 64.5% | Home -1.5: 38.9%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Buffalo Sabres @ Montr\u00e9al Canadiens",
+      "team": "Buffalo Sabres",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "line": null,
+      "odds": 150,
+      "fair_odds": 160,
+      "model_prob": 0.4445,
+      "market_prob": 0.3851,
+      "fair_prob": 0.3851,
+      "edge_pct": 5.94,
+      "commence": "2026-05-17T00:10:00Z",
+      "proj_total": 5.47,
+      "notes": [
+        "Base: Montr\u00e9al Canadiens 3.36 exp goals | Buffalo Sabres 3.08 exp goals",
+        "Home goalie SV%: 0.914 (+0.016) \u2192 away -+0.49g",
+        "Away goalie SV%: 0.917 (+0.019) \u2192 home -+0.50g",
+        "Trained model win prob: 55.5%",
+        "Projected total: 5.5 | Home win: 55.5% | Home -1.5: 25.3%"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "matchup": "Buffalo Sabres @ Montr\u00e9al Canadiens",
+      "commence": "2026-05-17T00:10:00Z",
+      "time_et": "08:10 PM ET",
+      "home_team": "Montr\u00e9al Canadiens",
+      "away_team": "Buffalo Sabres",
+      "home_exp_goals": 3.39,
+      "away_exp_goals": 3.07,
+      "total_exp_goals": 6.46,
+      "home_win_prob": 0.5555,
+      "away_win_prob": 0.4445,
+      "home_cover_1_5": 0.2548,
+      "away_cover_1_5": 0.7452,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Montr\u00e9al Canadiens 3.36 exp goals | Buffalo Sabres 3.08 exp goals",
+        "Trained model win prob: 55.6%",
+        "Projected total: 6.5 | Home win: 55.6% | Home -1.5: 25.5%"
+      ]
+    },
+    {
+      "matchup": "Vegas Golden Knights @ Colorado Avalanche",
+      "commence": "2026-05-21T00:00:47Z",
+      "time_et": "08:00 PM ET",
+      "home_team": "Colorado Avalanche",
+      "away_team": "Vegas Golden Knights",
+      "home_exp_goals": 3.61,
+      "away_exp_goals": 2.61,
+      "total_exp_goals": 6.23,
+      "home_win_prob": 0.6451,
+      "away_win_prob": 0.3549,
+      "home_cover_1_5": 0.3905,
+      "away_cover_1_5": 0.6095,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Colorado Avalanche 3.67 exp goals | Vegas Golden Knights 2.59 exp goals",
+        "Trained model win prob: 64.5%",
+        "Projected total: 6.2 | Home win: 64.5% | Home -1.5: 39.0%"
+      ]
+    }
+  ]
+}

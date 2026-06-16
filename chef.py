@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-chef.py — ChefTonyBets unified CLI
+chef.py — Overlay unified CLI
 
 DAILY WORKFLOW (just two commands)
 ──────────────────────────────────────────────────────────────────────
@@ -212,6 +212,20 @@ def cmd_grade(args: argparse.Namespace) -> int:
     except Exception:
         pass
 
+    # June Challenge — auto-generate result card for any graded bet
+    try:
+        from src.output.june_challenge_card import grade_challenge_bets
+        grade_challenge_bets(grade_date=grade_date)
+    except Exception as _jc_err:
+        print(f"  [june_challenge] skipped: {_jc_err}")
+
+    # Franchise shadow bets — grade yesterday's results
+    try:
+        from scripts.run_franchise_bets import grade_yesterday
+        grade_yesterday(verbose=True)
+    except Exception as _fe:
+        pass  # non-blocking, franchise tracker is supplementary
+
     return rc
 
 
@@ -248,7 +262,7 @@ def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str)
 
     sep = "═" * 60
     print(f"\n  {sep}")
-    print(f"  ChefTonyBets — SHADOW RECORD (Model Only / Not Bet)")
+    print(f"  Overlay — SHADOW RECORD (Model Only / Not Bet)")
     print(f"  {date.today().strftime('%B %d, %Y')}  |  All picks card_pick=False")
     print(f"  {'─'*58}")
     print(f"  OVERALL   {len(wins)}-{len(losses)}  ({wr:.1%} WR)  "
@@ -356,7 +370,7 @@ def cmd_record(args: argparse.Namespace) -> int:
 
     sep = "═" * 60
     print(f"\n  {sep}")
-    title = "ChefTonyBets — RECORD"
+    title = "Overlay — RECORD"
     if filter_sport != "all":
         title += f" ({filter_sport.upper()})"
     if filter_market != "all":
@@ -465,7 +479,7 @@ def cmd_record(args: argparse.Namespace) -> int:
 
     # ── CLV dashboard ──────────────────────────────────────────────────────────
     try:
-        from src.analytics.clv_tracker import get_clv_summary
+        from src.analytics.clv_tracker import get_clv_summary, print_clv_by_market, get_clv_by_market
         clv = get_clv_summary()
         if clv.get("with_clv", 0) > 0:
             avg  = clv["avg_clv_pct"]
@@ -486,6 +500,9 @@ def cmd_record(args: argparse.Namespace) -> int:
                 if parts:
                     print(f"  By sport:     {' | '.join(parts)}")
             print(f"  {clv['verdict']}")
+        # Per-market split for soccer / World Cup — the moneyline-vs-totals test.
+        if get_clv_by_market("soccer"):
+            print_clv_by_market("soccer")
     except Exception:
         pass
 
@@ -667,7 +684,7 @@ def cmd_record_personal(args: argparse.Namespace) -> int:
 
     sep = "═" * 60
     print(f"\n  {sep}")
-    print(f"  ChefTonyBets — PERSONAL BANKROLL")
+    print(f"  Overlay — PERSONAL BANKROLL")
     print(f"  {date.today().strftime('%B %d, %Y')}")
     print(f"  {'─'*58}")
     print(f"  Starting bankroll:  ${_PERSONAL_BANKROLL_START:.2f}")
@@ -762,6 +779,267 @@ def _reddit_track_record(stats: dict) -> str:
     )
 
 
+def cmd_daily(args: argparse.Namespace) -> int:
+    """Daily personal-bet ritual: pick → tweet → video script → record."""
+    from datetime import datetime, timedelta
+    from src.output import social
+
+    subcmd = (getattr(args, "subcmd", None) or "pre").lower()
+    today = (getattr(args, "date", None) or datetime.now().strftime("%Y%m%d"))
+    out_dir = Path("output/daily") / today
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    if subcmd in ("status",):
+        return _cmd_daily_status()
+
+    if subcmd in ("result", "post", "post-game"):
+        return _cmd_daily_result(args)
+
+    # Default: pre-game flow.
+    picks_path = Path("output/picks/baseball_mlb") / today / "picks.json"
+    if not picks_path.exists():
+        print(f"  No MLB picks for {today}. Run: python3 chef.py picks mlb --date {today}")
+        return 1
+
+    book_filter = getattr(args, "book", None)
+    all_books = bool(getattr(args, "all_books", False))
+    top = social.pick_of_day_mlb(
+        picks_path, top=5,
+        partner_only=not all_books,
+        book=book_filter,
+    )
+    if not top:
+        scope = (f"at {book_filter}" if book_filter
+                 else "at partner books (FanDuel/DraftKings/BetMGM)" if not all_books
+                 else "")
+        print(f"  No edges found for {today} {scope}.")
+        if not all_books and not book_filter:
+            print(f"  Try: python3 chef.py daily --all-books")
+        return 1
+
+    print(f"\n  ── TOP MLB EDGES — {today} ──────────────────────────────────")
+    for i, p in enumerate(top, 1):
+        team = p.get("Team", "?")
+        opp = p.get("Opponent", "?")
+        market = (p.get("Market") or "").lower()
+        odds = int(p.get("BestOdds") or 0)
+        book = p.get("Sportsbook", "?")
+        mp = (p.get("ModelProb") or 0) * 100
+        ip = (p.get("ImpliedProb") or 0) * 100
+        edge_pp = mp - ip
+        print(f"  {i}.  {team:25}  vs  {opp:20}  {market:9} {odds:+4d}  "
+              f"model {mp:4.0f}% / mkt {ip:4.0f}%  edge {edge_pp:+5.1f}pp  ({book})")
+    print()
+
+    # Auto-pick mode (--auto N) skips the prompt.
+    auto = getattr(args, "auto", None)
+    if auto is not None:
+        try:
+            choice = int(auto)
+            if not (1 <= choice <= len(top)):
+                raise ValueError()
+        except (TypeError, ValueError):
+            print(f"  --auto must be 1..{len(top)}")
+            return 1
+    else:
+        try:
+            raw = input(f"  Pick one [1-{len(top)}, q to quit]: ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            return 0
+        if raw in ("q", "quit", "exit", ""):
+            print("  Skipped — no bet logged.\n")
+            return 0
+        try:
+            choice = int(raw)
+            if not (1 <= choice <= len(top)):
+                raise ValueError()
+        except ValueError:
+            print(f"  Invalid pick. Use 1..{len(top)}.")
+            return 1
+
+    pick = top[choice - 1]
+    stake = float(getattr(args, "stake", None) or 30)
+    book = getattr(args, "book", None) or pick.get("Sportsbook") or "FanDuel"
+
+    # Record via the existing personal-bet plumbing.
+    import re
+    slug = re.sub(r"[^a-z0-9]+", "-", pick["Team"].lower()).strip("-")
+    bet_date_iso = f"{today[:4]}-{today[4:6]}-{today[6:]}"
+    sport = "mlb"
+    market = (pick.get("Market") or "moneyline").lower()
+    pick_id = f"personal_{sport}_{today}_{slug}_{market}"
+    odds = int(pick.get("BestOdds") or 0)
+    matchup = f"{pick.get('Team','')} vs {pick.get('Opponent','')}"
+    line_val = pick.get("Spread")
+    if line_val is None and pick.get("BetLine") is not None:
+        try:
+            line_val = float(str(pick["BetLine"]).replace("+", ""))
+        except ValueError:
+            line_val = None
+
+    picks_existing = _load_personal()
+    if not any(p["pick_id"] == pick_id for p in picks_existing):
+        from datetime import timezone
+        now_iso = datetime.now(timezone.utc).isoformat()
+        picks_existing.append({
+            "pick_id": pick_id,
+            "date": bet_date_iso,
+            "sport": sport,
+            "market": market,
+            "direction": "WIN",
+            "team": pick["Team"],
+            "matchup": matchup,
+            "odds": odds,
+            "line": line_val,
+            "sportsbook": book,
+            "stake": stake,
+            "stake_dollars": stake,
+            "model_prob": pick.get("ModelProb"),
+            "edge_pct": (pick.get("Edge") or 0) * 100,
+            "card_pick": False,
+            "result": None,
+            "profit": None,
+            "profit_dollars": None,
+            "recorded_at": now_iso,
+            "resulted_at": None,
+            "source": "daily_personal",
+        })
+        _save_personal(picks_existing)
+        print(f"\n  ✓  Personal bet logged: {pick_id}")
+    else:
+        print(f"\n  • Already logged: {pick_id}")
+
+    out = social.format_pre_game(pick, stake=stake,
+                                 raf_link=social.raf_link_for(book), book=book)
+
+    (out_dir / "tweet_pregame.txt").write_text(out["tweet"])
+    (out_dir / "script_pregame.txt").write_text(out["script"])
+
+    print("\n  ── TWEET (pre-game) ──")
+    print("  " + out["tweet"].replace("\n", "\n  "))
+    print("\n  ── VIDEO SCRIPT (read aloud, ~45-60s) ──")
+    print("  " + out["script"].replace("\n", "\n  "))
+    print(f"\n  Saved → {out_dir}/")
+    print(f"  After the game:  python3 chef.py daily result\n")
+    return 0
+
+
+def _cmd_daily_result(args: argparse.Namespace) -> int:
+    """Generate post-game tweet + reaction script for the most recent personal bet."""
+    from datetime import datetime
+    from src.output import social
+
+    picks = _load_personal()
+    if not picks:
+        print("  No personal bets logged yet.")
+        return 1
+
+    target_id = getattr(args, "pick_id", None)
+    if target_id:
+        pick = next((p for p in picks if p["pick_id"] == target_id
+                     or target_id.lower() in p.get("team", "").lower()), None)
+    else:
+        # Most recent settled personal bet.
+        settled = [p for p in picks if p.get("result") in ("win", "loss", "push")]
+        pick = settled[-1] if settled else None
+
+    if not pick:
+        print("  No graded personal bet found. Run `chef.py result <team> win|loss|push` first.")
+        return 1
+
+    if not pick.get("result"):
+        print(f"  Pick is still pending: {pick['pick_id']}")
+        print(f"  Grade it: python3 chef.py result {pick['team'].split()[0]} win|loss|push")
+        return 1
+
+    running = social.running_record(picks, days=30)
+    out = social.format_post_game(pick, running,
+                                  raf_link=social.raf_link_for(pick.get("sportsbook")))
+
+    date_compact = pick["date"].replace("-", "")
+    out_dir = Path("output/daily") / date_compact
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "tweet_postgame.txt").write_text(out["tweet"])
+    (out_dir / "script_postgame.txt").write_text(out["script"])
+
+    print("\n  ── TWEET (post-game) ──")
+    print("  " + out["tweet"].replace("\n", "\n  "))
+    print("\n  ── REACTION SCRIPT (15-30s) ──")
+    print("  " + out["script"].replace("\n", "\n  "))
+    print(f"\n  Saved → {out_dir}/\n")
+    return 0
+
+
+def _cmd_daily_status() -> int:
+    """Show personal record + $ P&L so far."""
+    from src.output import social
+    picks = _load_personal()
+    if not picks:
+        print("  No personal bets logged yet.")
+        return 0
+    r30 = social.running_record(picks, days=30)
+    r_all = social.running_record(picks, days=365 * 10)
+    pending = [p for p in picks if not p.get("result")]
+    sign30 = "+" if r30["pnl"] >= 0 else "-"
+    sign_all = "+" if r_all["pnl"] >= 0 else "-"
+    print("\n  ── PERSONAL BANKROLL ──")
+    print(f"  Last 30 days:  {r30['wins']}-{r30['losses']}"
+          f"{'-'+str(r30['pushes']) if r30['pushes'] else ''}  "
+          f"{sign30}${abs(r30['pnl']):.2f}")
+    print(f"  All-time:      {r_all['wins']}-{r_all['losses']}"
+          f"{'-'+str(r_all['pushes']) if r_all['pushes'] else ''}  "
+          f"{sign_all}${abs(r_all['pnl']):.2f}")
+    print(f"  Pending:       {len(pending)}")
+    if pending:
+        for p in pending[-3:]:
+            print(f"     • {p['date']}  {p['team']}  {p['odds']:+d}  ${float(p.get('stake_dollars') or 0):.0f}")
+    print()
+    return 0
+
+
+def cmd_wc_post(args: argparse.Namespace) -> int:
+    """Generate a World Cup content post (tweet + video script) for today's marquee match."""
+    from datetime import datetime
+    from src.output import social
+
+    fixtures_path = Path("output/picks/soccer/wc/fixtures.json")
+    if not fixtures_path.exists():
+        print(f"  No WC fixtures found. Run: python3 chef.py wc")
+        return 1
+
+    date_str = None
+    if getattr(args, "date", None):
+        d = args.date
+        if len(d) == 8 and d.isdigit():
+            date_str = f"{d[:4]}-{d[4:6]}-{d[6:]}"
+        else:
+            date_str = d
+
+    match = social.wc_match_of_day(fixtures_path, date_str=date_str)
+    if not match:
+        print("  No WC match found for that date.")
+        return 1
+
+    product_link = getattr(args, "product_link", None) or social.WC_PRODUCT_LINK
+    price = getattr(args, "price", None) or social.WC_PRODUCT_PRICE
+    out = social.format_wc_post(match, product_link=product_link, price=price)
+
+    today = (date_str or datetime.now().strftime("%Y-%m-%d")).replace("-", "")
+    out_dir = Path("output/daily") / today
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "tweet_wc.txt").write_text(out["tweet"])
+    (out_dir / "script_wc.txt").write_text(out["script"])
+
+    print(f"\n  ── WORLD CUP — {match['date']} · {out['matchup']} ──")
+    print("\n  ── TWEET ──")
+    print("  " + out["tweet"].replace("\n", "\n  "))
+    print("\n  ── VIDEO SCRIPT (~30-45s) ──")
+    print("  " + out["script"].replace("\n", "\n  "))
+    print(f"\n  Saved → {out_dir}/\n")
+    return 0
+
+
 def cmd_reddit(args: argparse.Namespace) -> int:
     """Generate ready-to-paste Reddit posts for today's picks."""
     import json as _json
@@ -841,7 +1119,7 @@ def cmd_reddit(args: argparse.Namespace) -> int:
         book = p.get("sportsbook", p.get("Sportsbook", ""))
         nba_bullets += f"- {team} {int(odds):+d} @ {book} ({edge:.1f}% edge)\n"
 
-    posts["daily"] = f"""**ChefTonyBets AI Model — {day_str} {date_str}**
+    posts["daily"] = f"""**Overlay AI Model — {day_str} {date_str}**
 
 Running an XGBoost ensemble on MLB + NBA. Picks logged before tip-off, results posted daily.
 
@@ -876,7 +1154,7 @@ GL everyone. Drop your plays below."""
     for p in f5_picks[:5]:
         f5_rows += f"| {p.get('label','')} | {int(p.get('odds',0)):+d} | {p.get('book','')} | {float(p.get('edge_pct',0)):.1f}% |\n"
 
-    posts["mlb"] = f"""**ChefTonyBets AI — MLB {day_str} {date_str}**
+    posts["mlb"] = f"""**Overlay AI — MLB {day_str} {date_str}**
 
 XGBoost ensemble (Pythagorean + team efficiency + park factors) vs live lines. Edges calculated post-vig.
 
@@ -909,7 +1187,7 @@ GL today. Posting results tomorrow morning."""
     for p in mlb_props[:8]:
         prop_rows += f"| {p.get('label','')} | {int(p.get('odds',0)):+d} | {p.get('book','')} | {float(p.get('edge_pct',0)):.1f}% |\n"
 
-    posts["mlb_props"] = f"""**ChefTonyBets AI — MLB Props {day_str} {date_str}**
+    posts["mlb_props"] = f"""**Overlay AI — MLB Props {day_str} {date_str}**
 
 Pitcher K model: compares K/9 projection to book line using opponent strikeout rate + park factor. Edges calculated post-vig.
 
@@ -940,7 +1218,7 @@ GL. Results posted tomorrow."""
     for p in nba_props[:6]:
         nba_prop_rows += f"| {p.get('label','')} | {int(p.get('odds',0)):+d} | {p.get('book','')} | {float(p.get('edge_pct',0)):.1f}% |\n"
 
-    posts["nba"] = f"""**ChefTonyBets AI — NBA Playoffs {day_str} {date_str}**
+    posts["nba"] = f"""**Overlay AI — NBA Playoffs {day_str} {date_str}**
 
 XGBoost model using team efficiency ratings (ORtg/DRtg/Pace) + Platt-calibrated probabilities. Props use Poisson/Normal distribution vs season averages.
 
@@ -1140,13 +1418,21 @@ def cmd_arb(args: argparse.Namespace) -> int:
 def cmd_clv(args: argparse.Namespace) -> int:
     """Show Closing Line Value dashboard — the signal that proves edge is real."""
     try:
-        from src.analytics.clv_tracker import print_clv_report, compute_clv
+        from src.analytics.clv_tracker import (
+            print_clv_report, print_clv_by_market, compute_clv,
+            backfill_snapshots_from_pnl, upgrade_snapshots,
+        )
 
         refresh = getattr(args, "refresh", False)
         if refresh:
             from pathlib import Path
+            # 1. Snapshot every pick across history (no-op for ones already stored)
+            backfill_snapshots_from_pnl()
+            # 2. Repair legacy prop snapshots missing player/line/direction
+            upgrade_snapshots()
+            # 3. Recompute CLV for every date that has a closing archive — scores
+            #    moneyline, spread, total, F5, NRFI, and props in one pass.
             archive_dir = Path("data/clv/closing")
-            # Extract date portion (last 10 chars: YYYY-MM-DD) from all archive files
             dates = {f.stem[-10:] for f in archive_dir.glob("*.json") if len(f.stem) >= 10}
             if dates:
                 print(f"  Recomputing CLV for {len(dates)} archive dates...")
@@ -1154,6 +1440,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
                     compute_clv(date_str=d)
 
         print_clv_report()
+        print_clv_by_market()   # per-market: which market actually beats the close
         return 0
     except Exception as e:
         print(f"  CLV error: {e}")
@@ -1193,7 +1480,7 @@ def cmd_status(args: argparse.Namespace) -> int:
         ("PGA",     ["golf_pga", "golf_masters", "golf_us_open"], "run_pga.py"),
     ]
 
-    print(f"\n  ChefTonyBets Pipeline Status — {target_dt.strftime('%A %B %d, %Y')}")
+    print(f"\n  Overlay Pipeline Status — {target_dt.strftime('%A %B %d, %Y')}")
     print(f"  Current time: {_dt.now().strftime('%H:%M:%S %Z')}")
     print(f"  {'─' * 70}")
     print(f"  {'Sport':<10} {'Status':<10} {'Picks':>7}  {'Files':>6}  Re-run command")
@@ -1275,7 +1562,7 @@ def cmd_morning(args: argparse.Namespace) -> int:
     banner_date = datetime.strptime(today, "%Y%m%d").strftime("%B %d, %Y")
     sep = "═" * 60
     print(f"\n  {sep}")
-    print(f"  ChefTonyBets — MORNING PIPELINE — {banner_date}  (folder {today})")
+    print(f"  Overlay — MORNING PIPELINE — {banner_date}  (folder {today})")
     print(f"  {sep}\n")
 
     # 1) MLB picks + cards
@@ -1322,6 +1609,119 @@ def cmd_morning(args: argparse.Namespace) -> int:
     else:
         print("  ✓ Tennis picks done\n")
 
+    # 4b) June Challenge — auto-select bet of day and generate morning card
+    print("  ▸ June Challenge — generating Bet of the Day card...")
+    try:
+        from src.output.june_challenge_card import (
+            load_state, save_state, register_bet,
+            generate_morning_card, get_todays_bet,
+        )
+        import json as _jc_json
+        from pathlib import Path as _P
+        _jc_state  = load_state()
+        _jc_today  = datetime.strptime(today, "%Y%m%d").strftime("%Y-%m-%d")
+        _jc_day    = len([b for b in _jc_state.get("bets", [])
+                          if b.get("date", "") <= _jc_today]) + 1
+        if not get_todays_bet(_jc_state, _jc_today):
+            # Auto-select: highest-edge card pick from VALIDATED sports only.
+            # WNBA, soccer, NASCAR, PGA are shadow/incubating — excluded.
+            _VALIDATED_SPORTS = {
+                "baseball_mlb",
+                "basketball_nba",
+                "icehockey_nhl",
+                "tennis_atp_french_open",
+                "tennis_wta_french_open",
+                "tennis_atp_roland_garros",
+            }
+            # Priority: profitable markets only (avoid F5/NRFI which are losing)
+            _SKIP_MARKETS = {"f5_total", "nrfi"}
+            _jc_best = None
+            _jc_best_sport = None
+            _picks_root = _P("output/picks")
+            for _sport_dir in sorted(_picks_root.iterdir()):
+                if not _sport_dir.is_dir():
+                    continue
+                # Only consider validated sports
+                if _sport_dir.name not in _VALIDATED_SPORTS:
+                    continue
+                _pf = _sport_dir / today / "picks.json"
+                if not _pf.exists():
+                    continue
+                try:
+                    _tp = _jc_json.loads(_pf.read_text())
+                    _tp = _tp if isinstance(_tp, list) else _tp.get("picks", [])
+                    for _p in _tp:
+                        # Skip bad markets
+                        if (_p.get("market") or _p.get("Market") or "").lower() in _SKIP_MARKETS:
+                            continue
+                        # Skip shadow picks (CardPick explicitly False)
+                        if _p.get("CardPick") is False or _p.get("card_pick") is False:
+                            continue
+                        _e = float(_p.get("edge_pct") or _p.get("Edge") or _p.get("edge") or 0)
+                        if _e < 8:  # minimum edge threshold
+                            continue
+                        if _jc_best is None or _e > float(
+                                _jc_best.get("edge_pct") or _jc_best.get("Edge") or 0):
+                            _jc_best = dict(_p)
+                            _jc_best_sport = _sport_dir.name
+                except Exception:
+                    pass
+
+            if _jc_best:
+                _sp = _jc_best_sport or ""
+                # Normalise field names across different pick formats
+                _team  = (_jc_best.get("team") or _jc_best.get("Team") or
+                          _jc_best.get("player") or "")
+                _opp   = (_jc_best.get("opponent") or _jc_best.get("Opponent") or
+                          _jc_best.get("matchup") or _jc_best.get("Matchup") or "")
+                _odds  = int(float(_jc_best.get("odds") or _jc_best.get("BestOdds") or -110))
+                _edge  = float(_jc_best.get("edge_pct") or _jc_best.get("Edge") or 0)
+                _mprob = float(_jc_best.get("model_prob") or _jc_best.get("ModelProb") or 0)
+                _iprob = float(_jc_best.get("market_prob") or _jc_best.get("implied_prob") or
+                               _jc_best.get("ImpliedProb") or 0)
+                _book  = (_jc_best.get("sportsbook") or _jc_best.get("Sportsbook") or "")
+                _mkt   = (_jc_best.get("market") or _jc_best.get("Market") or "moneyline").lower()
+                # Sport display labels
+                _tour  = (_jc_best.get("tournament") or
+                          {"tennis_atp_french_open": "Roland-Garros",
+                           "baseball_mlb": "MLB", "basketball_nba": "NBA",
+                           "icehockey_nhl": "NHL", "basketball_wnba": "WNBA"
+                           }.get(_sp, _sp.replace("_", " ").title()))
+                _surf  = _jc_best.get("surface") or ""
+
+                _jc_bet = {
+                    "date":            _jc_today,
+                    "day":             _jc_day,
+                    "player":          _team,
+                    "opponent":        _opp,
+                    "tournament":      _tour,
+                    "surface":         _surf,
+                    "sport":           _sp,
+                    "market":          _mkt,
+                    "odds":            _odds,
+                    "edge":            _edge,
+                    "model_prob":      _mprob,
+                    "market_prob":     _iprob,
+                    "book":            _book,
+                    "unit":            _jc_state.get("unit", 20.0),
+                    "bankroll_before": _jc_state.get("bankroll", 200.0),
+                    "result":          None,
+                }
+                _jc_state  = register_bet(_jc_state, _jc_bet)
+                save_state(_jc_state)
+                _card_path = generate_morning_card(_jc_bet)
+                if _card_path:
+                    print(f"  ✓ June Challenge card → {_card_path}")
+                    print(f"     Bet: {_team} ({_tour}) {_odds:+d} @ {_book}  edge={_edge:.1f}%")
+                else:
+                    print("  ✗ June Challenge card render failed")
+            else:
+                print("  ✗ No qualifying picks found for June Challenge card (need edge > 8%)")
+        else:
+            print(f"  ✓ June Challenge bet already registered for {_jc_today}")
+    except Exception as _jc_err:
+        print(f"  ✗ June Challenge card skipped: {_jc_err}")
+
     # 5) Soccer picks (EPL/La Liga/Bundesliga/Serie A/Ligue 1 club leagues + tournaments)
     print("  ▸ Generating Soccer picks...")
     soccer_cmd = [sys.executable, "run_soccer.py"]
@@ -1363,6 +1763,17 @@ def cmd_morning(args: argparse.Namespace) -> int:
         print("  ✗ NHL props skipped (no games or API unavailable)")
     else:
         print("  ✓ NHL props done\n")
+
+    # 8) MLB player props (pitcher Ks + batter HR/RBI/Total Bases/Hits)
+    print("  ▸ Generating MLB player props + cards...")
+    mlb_props_cmd = [sys.executable, "run_mlb_props.py"]
+    if getattr(args, "date", None):
+        mlb_props_cmd += ["--date", args.date]
+    rc_mlb_props = _run(mlb_props_cmd)
+    if rc_mlb_props != 0:
+        print("  ✗ MLB props skipped (API unavailable or no games today)")
+    else:
+        print("  ✓ MLB props + batter cards done\n")
 
     # 9) Generate Reddit posts
     print("  ▸ Generating Reddit posts...")
@@ -1415,6 +1826,26 @@ def cmd_morning(args: argparse.Namespace) -> int:
     # 14) Generate the unified daily brief (one page, everything you need)
     print("\n  ▸ Building daily brief...")
     _run([sys.executable, "scripts/gen_morning_brief.py", today])
+
+    # 14b) Voice brief — short scaffold in Anthony's voice
+    print("  ▸ Building voice brief...")
+    try:
+        from scripts.gen_voice_brief import build_voice_brief
+        from datetime import date as _date
+        _vd = datetime.strptime(today, "%Y%m%d").date()
+        _vpath = build_voice_brief(_vd)
+        print(f"  ✓ Voice brief → {_vpath}")
+    except Exception as _ve:
+        print(f"  ✗ Voice brief skipped: {_ve}")
+
+    # 14c) Franchise shadow bets — log today's franchise team games
+    print("  ▸ Logging franchise shadow bets...")
+    try:
+        from scripts.run_franchise_bets import log_franchise_bets
+        _fvd = datetime.strptime(today, "%Y%m%d").date()
+        log_franchise_bets(_fvd)
+    except Exception as _fe:
+        print(f"  ✗ Franchise bets skipped: {_fe}")
 
     # 15) Rebuild overlay slate data (for /slate page on overlay-gray.vercel.app)
     print("  ▸ Rebuilding slate_data.json for overlay...")
@@ -1479,7 +1910,7 @@ def cmd_evening(args: argparse.Namespace) -> int:
 
     sep = "═" * 60
     print(f"\n  {sep}")
-    print(f"  ChefTonyBets — EVENING GRADING — {datetime.now().strftime('%B %d, %Y')}")
+    print(f"  Overlay — EVENING GRADING — {datetime.now().strftime('%B %d, %Y')}")
     print(f"  Grading picks from: {grade_date}")
     print(f"  {sep}\n")
 
@@ -1538,11 +1969,11 @@ def cmd_deploy(args: argparse.Namespace) -> int:
 
     sep = "═" * 60
     print(f"\n  {sep}")
-    print(f"  ChefTonyBets — DEPLOY  →  overlay-gray.vercel.app")
+    print(f"  Overlay — DEPLOY  →  overlay-gray.vercel.app")
     print(f"  {sep}\n")
 
-    # 1) Refresh public_stats.json + web/public/data/ JSON files
-    print("  ▸ Refreshing stats (public_stats + today_picks + yesterday_results)...")
+    # 1) Refresh public_stats.json (data/) — overlay consumes customer_feed/slate
+    print("  ▸ Refreshing stats (public_stats.json)...")
     rc = cmd_stats(argparse.Namespace())
     if rc != 0:
         print("  ✗ Stats refresh failed — aborting deploy")
@@ -1564,6 +1995,14 @@ def cmd_deploy(args: argparse.Namespace) -> int:
         print("  ✗ slate_data build failed — continuing anyway")
     else:
         print("  ✓ slate_data.json built\n")
+
+    # 2c) Regenerate World Cup 2026 data (powers /world-cup pages)
+    print("  ▸ Building World Cup data (fixtures, futures, scorers, groups)...")
+    rc = _run([sys.executable, "scripts/wc_data.py", "--sims", "20000"])
+    if rc != 0:
+        print("  ✗ World Cup data build failed — continuing anyway")
+    else:
+        print("  ✓ World Cup data built\n")
 
     # 3) Locate vercel CLI (installed globally or in ~/.local/bin)
     vercel_bin: str | None = _shutil.which("vercel")
@@ -1609,7 +2048,7 @@ def cmd_deploy(args: argparse.Namespace) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="chef",
-        description="ChefTonyBets unified picks + grading CLI",
+        description="Overlay unified picks + grading CLI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
@@ -1741,6 +2180,59 @@ def main() -> int:
     # deploy — rebuild feed + push to Vercel
     sub.add_parser("deploy", help="Rebuild customer_feed + stats, then push to overlay-gray.vercel.app")
 
+    # wc — World Cup 2026 data generator (web app source of truth)
+    p_wc = sub.add_parser("wc", help="Generate World Cup 2026 web data (fixtures, futures, groups)")
+    p_wc.add_argument("--sims", type=int, default=20000, help="Monte Carlo sims (default 20000)")
+    p_wc.add_argument("--blend", type=float, default=0.40, help="Model weight in blended numbers")
+    p_voice = sub.add_parser("voice", help="Daily voice brief — what to post + outreach scaffold")
+    p_voice.add_argument("--date", default=None, help="YYYYMMDD (default: today)")
+
+    # daily — personal-bet content ritual (tweet + video script)
+    p_daily = sub.add_parser("daily",
+                             help="Daily personal-bet ritual: pick → tweet + video script → log")
+    p_daily.add_argument("subcmd", nargs="?", default="pre",
+                         choices=["pre", "result", "post", "post-game", "status"],
+                         help="pre (default) = morning pick & content; result = post-game; status = record")
+    p_daily.add_argument("--date",  help="YYYYMMDD slate date (default: today)")
+    p_daily.add_argument("--stake", type=float, default=30.0, help="Dollar stake (default 30)")
+    p_daily.add_argument("--book",  help="Sportsbook (default: best-odds book)")
+    p_daily.add_argument("--auto",  help="Auto-select pick #N (skip prompt)")
+    p_daily.add_argument("--all-books", dest="all_books", action="store_true",
+                         help="Don't filter to RAF partner books (FD/DK/MGM)")
+    p_daily.add_argument("--pick-id", dest="pick_id",
+                         help="Specific pick_id or team substring to grade (result subcmd)")
+
+    # wc-post — World Cup daily content generator
+    p_wcp = sub.add_parser("wc-post",
+                           help="World Cup content: tweet + video script for today's marquee match")
+    p_wcp.add_argument("--date", help="YYYYMMDD or YYYY-MM-DD (default: today)")
+    p_wcp.add_argument("--product-link", dest="product_link",
+                       help=f"Override CTA link (default {None})")
+    p_wcp.add_argument("--price", help="Override price string (default $9)")
+
+    # franchise — shadow franchise team bet tracker
+    p_fran = sub.add_parser("franchise", help="Franchise shadow bet tracker — all 30 MLB teams")
+    p_fran.add_argument("--date",        default=None, help="YYYYMMDD to log bets for (default: today)")
+    p_fran.add_argument("--grade",       action="store_true", help="Grade yesterday's bets")
+    p_fran.add_argument("--report",      action="store_true", help="Per-team report")
+    p_fran.add_argument("--leaderboard", action="store_true", help="ROI-ranked leaderboard (default view)")
+    p_fran.add_argument("--min-picks",   type=int, default=5, help="Min picks to show in leaderboard (default 5)")
+
+    # challenge — June 2026 bankroll challenge
+    p_chal = sub.add_parser("challenge", help="June 2026 bankroll challenge: add/grade/card/recap/status")
+    p_chal.add_argument("subcmd", choices=["add","grade","card","recap","status"],
+                        help="Subcommand: add <pick_id> | grade | card | recap | status")
+    p_chal.add_argument("pick_id", nargs="?", help="Pick ID (only for 'add')")
+    p_chal.add_argument("--stake-units", type=float, default=1.0,
+                        help="Stake in units when adding a bet (default 1.0)")
+
+    # shadow — Phase 2.5 A/B filter analysis (hot/cold form gates)
+    p_shadow = sub.add_parser("shadow", help="Shadow A/B filter analysis (hot/cold form gates)")
+    p_shadow.add_argument("--include-shadow", action="store_true",
+                          help="Include card_pick=False picks (shows full thesis)")
+    p_shadow.add_argument("--backfill", action="store_true",
+                          help="Re-run shadow_filter classification on all picks first")
+
     args = parser.parse_args()
 
     dispatch = {
@@ -1765,8 +2257,85 @@ def main() -> int:
         "bankroll": cmd_record_personal,
         "monthly":  cmd_monthly,
         "deploy":   cmd_deploy,
+        "challenge": cmd_challenge,
+        "shadow":   cmd_shadow,
+        "voice":    cmd_voice,
+        "franchise": cmd_franchise,
+        "wc":       cmd_wc,
+        "daily":    cmd_daily,
+        "wc-post":  cmd_wc_post,
     }
     return dispatch[args.command](args)
+
+
+def cmd_wc(args: argparse.Namespace) -> int:
+    """Generate World Cup 2026 web data (fixtures, futures, group standings)."""
+    from scripts.wc_data import main as wc_main
+    sys.argv = ["wc_data", "--sims", str(args.sims), "--blend", str(args.blend)]
+    return wc_main()
+
+
+def cmd_shadow(args: argparse.Namespace) -> int:
+    """Run shadow A/B filter analysis (hot/cold form gates)."""
+    import subprocess
+    scripts = Path(__file__).parent / "scripts"
+    if args.backfill:
+        subprocess.run([sys.executable, str(scripts / "backfill_shadow_filter.py"), "--force"], check=False)
+    cmd = [sys.executable, str(scripts / "analyze_shadow_filters.py")]
+    if args.include_shadow:
+        cmd.append("--include-shadow")
+    return subprocess.run(cmd, check=False).returncode
+
+
+def cmd_voice(args: argparse.Namespace) -> int:
+    """Generate daily voice brief — scaffold for tweets, Instagram, outreach, challenge."""
+    from scripts.gen_voice_brief import build_voice_brief
+    ts = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
+    d  = datetime.strptime(ts, "%Y%m%d").date()
+    path = build_voice_brief(d)
+    print(path.read_text())
+    print(f"\n→ {path}")
+    return 0
+
+
+def cmd_franchise(args: argparse.Namespace) -> int:
+    """Franchise shadow bet tracker — all 30 MLB teams."""
+    from scripts.run_franchise_bets import log_franchise_bets, grade_yesterday
+    from src.analytics.franchise_tracker import print_report, print_leaderboard
+
+    min_picks = getattr(args, "min_picks", 5)
+
+    if getattr(args, "grade", False):
+        n = grade_yesterday()
+        print(f"  Graded {n} franchise bet(s).")
+        print_leaderboard(min_picks=min_picks)
+        return 0
+
+    if getattr(args, "report", False):
+        print_report()
+        return 0
+
+    # Default view: log today + show leaderboard
+    ts = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
+    d  = datetime.strptime(ts, "%Y%m%d").date()
+
+    if not getattr(args, "leaderboard", False):
+        log_franchise_bets(d)
+
+    print_leaderboard(min_picks=min_picks)
+    return 0
+
+
+def cmd_challenge(args: argparse.Namespace) -> int:
+    """Dispatch to scripts/june_challenge.py subcommands."""
+    import subprocess
+    sub_args = [sys.executable, str(Path(__file__).parent / "scripts" / "june_challenge.py"), args.subcmd]
+    if args.subcmd == "add":
+        if not args.pick_id:
+            print("Usage: chef.py challenge add <pick_id> [--stake-units N]")
+            return 1
+        sub_args += [args.pick_id, "--stake-units", str(args.stake_units)]
+    return subprocess.call(sub_args)
 
 
 if __name__ == "__main__":

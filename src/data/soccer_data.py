@@ -396,18 +396,27 @@ def get_team_universe(matches: list[dict]) -> list[str]:
 
 
 # Odds API name → openfootball canonical name
+# Maps every name variant (Odds API, openfootball bracket, FIFA "official")
+# onto the martj42 canonical form the model is actually TRAINED on. The model's
+# Elo / attack / defense are keyed on martj42 names, so all lookups must resolve
+# there or the team silently falls back to a 1500 default (an invisible bug that
+# previously hit South Korea, Czech Republic, Ivory Coast, DR Congo, Bosnia).
 TEAM_ALIASES: dict[str, str] = {
     "USA":                    "United States",
-    "South Korea":            "Korea Republic",
-    "North Korea":            "Korea DPR",
-    "Bosnia & Herzegovina":   "Bosnia-Herzegovina",
-    "Bosnia and Herzegovina": "Bosnia-Herzegovina",
-    "Czech Republic":         "Czechia",
-    "Ivory Coast":            "Côte d'Ivoire",
-    "DR Congo":               "Congo DR",
+    # South Korea — martj42 uses "South Korea"
+    "Korea Republic":         "South Korea",
+    "Korea DPR":              "North Korea",
+    # Bosnia — martj42 uses "Bosnia and Herzegovina"
+    "Bosnia & Herzegovina":   "Bosnia and Herzegovina",
+    "Bosnia-Herzegovina":     "Bosnia and Herzegovina",
+    # Czechia — martj42 uses "Czech Republic"
+    "Czechia":                "Czech Republic",
+    # Ivory Coast — martj42 uses "Ivory Coast"
+    "Côte d'Ivoire":          "Ivory Coast",
+    "Cote d'Ivoire":          "Ivory Coast",
+    # DR Congo — martj42 uses "DR Congo"
+    "Congo DR":               "DR Congo",
     "Trinidad & Tobago":      "Trinidad and Tobago",
-    "Korea DPR":              "Korea DPR",
-    "Korea Republic":         "Korea Republic",
     "Macao":                  "Macau",
 }
 

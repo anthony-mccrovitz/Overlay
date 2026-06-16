@@ -98,7 +98,7 @@ export default function ToolsPage() {
                 fontSize: 10,
                 fontWeight: 700,
                 background: "var(--accent)",
-                color: "#fff",
+                color: "#04130C",
                 padding: "2px 8px",
                 borderRadius: 10,
               }}
@@ -138,7 +138,7 @@ export default function ToolsPage() {
                 EV calculator, Kelly sizing, CLV tracker, parlay builder
               </div>
               <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, maxWidth: 400 }}>
-                Subscribe to unlock the full workbench. $29/mo — cancel anytime.
+                Subscribe to unlock the full workbench. $19/mo — cancel anytime.
                 Founding price locked for life.
               </div>
             </div>

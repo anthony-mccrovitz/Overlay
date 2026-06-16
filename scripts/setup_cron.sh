@@ -1,5 +1,5 @@
 #!/bin/bash
-# ChefTonyBets — timing-aware automated daily pipeline
+# Overlay — timing-aware automated daily pipeline
 #
 # RESEARCH-BACKED SCHEDULE (all times Eastern / EDT = UTC-4):
 #
@@ -133,7 +133,14 @@ GATES_3="0 23 * * * cd $PROJECT_DIR && $PYTHON chef.py gates >> $LOG_DIR/gates.l
 # ══════════════════════════════════════════════════════════════════
 
 # ── Every 2 min — per-game closing-line capture ──────────────────────────────
-CAPTURE_CLOSING="*/2 * * * * cd $PROJECT_DIR && $PYTHON scripts/capture_closing.py --sport all --window 5 >> $LOG_DIR/capture_closing.log 2>&1"
+# caffeinate -i wraps each run so the machine doesn't idle-sleep mid-capture.
+CAPTURE_CLOSING="*/2 * * * * cd $PROJECT_DIR && /usr/bin/caffeinate -i $PYTHON scripts/capture_closing.py --sport all --window 5 >> $LOG_DIR/capture_closing.log 2>&1"
+
+# ── 5:00 PM ET (21:00 UTC) — hold the laptop awake through the game window ────
+# THE fix for missed captures: one long caffeinate hold (9h → ~2 AM ET) keeps an
+# OPEN, POWERED laptop from idle-sleeping so every */2 capture above fires.
+# Does NOT help if the lid is closed or the laptop is off (see notes below).
+STAY_AWAKE="0 21 * * * /usr/bin/caffeinate -i -t 32400 >> $LOG_DIR/caffeinate.log 2>&1"
 
 # ══════════════════════════════════════════════════════════════════
 # GRADING
@@ -150,16 +157,22 @@ GRADE="45 3 * * * cd $PROJECT_DIR && $PYTHON chef.py grade >> $LOG_DIR/grade.log
 # Then pushes grades + recap to Vercel so subs see final results.
 NIGHTLY_RECAP="50 3 * * * cd $PROJECT_DIR && $PYTHON scripts/nightly_recap.py --deploy >> $LOG_DIR/recap.log 2>&1"
 
-# ── 4:00 AM ET (08:00 UTC) — CLV backfill ────────────────────────────────────
+# ── 4:00 AM ET (08:00 UTC) — CLV backfill (clv_records.json store) ───────────
 BACKFILL_CLV="0 8 * * * cd $PROJECT_DIR && $PYTHON scripts/backfill_clv.py >> $LOG_DIR/backfill_clv.log 2>&1"
 
-echo "Installing ChefTonyBets cron jobs..."
+# ── 4:10 AM ET (08:10 UTC) — recompute the CLV DASHBOARD (snapshots.json) ─────
+# This is the store `chef.py clv` / `chef.py record` read. Without it the
+# dashboard never updates post-game (snapshots.json has no other daily compute).
+# Runs after closing capture + backfill so every settled game gets scored.
+CLV_REFRESH="10 8 * * * cd $PROJECT_DIR && $PYTHON chef.py clv --refresh >> $LOG_DIR/clv_refresh.log 2>&1"
+
+echo "Installing Overlay cron jobs..."
 echo "  Project: $PROJECT_DIR"
 echo "  Python:  $PYTHON"
 echo ""
 
 (crontab -l 2>/dev/null | grep -v 'march-madness'; \
- echo "# ChefTonyBets timing-aware pipeline"; \
+ echo "# Overlay timing-aware pipeline"; \
  echo "# ── NIGHT BEFORE (opening lines) ──"; \
  echo "$NIGHT_MLB"; \
  echo "$NIGHT_NBA"; \
@@ -181,13 +194,15 @@ echo ""
  echo "$GATES_2"; \
  echo "$GATES_3"; \
  echo "# ── CLOSING LINES + GRADING ──"; \
+ echo "$STAY_AWAKE"; \
  echo "$CAPTURE_CLOSING"; \
  echo "$GRADE_LIVE"; \
  echo "$GRADE"; \
  echo "$NIGHTLY_RECAP"; \
- echo "$BACKFILL_CLV") | crontab -
+ echo "$BACKFILL_CLV"; \
+ echo "$CLV_REFRESH") | crontab -
 
-echo "Installed ChefTonyBets timing-aware cron jobs:"
+echo "Installed Overlay timing-aware cron jobs:"
 echo ""
 crontab -l | grep -v '^#' | grep 'march-madness' | head -20
 echo ""

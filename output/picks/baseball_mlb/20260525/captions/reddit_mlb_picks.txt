@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 5/25/26 (Monday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 30-21 (58.8% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Arizona Diamondbacks vs  | +120 | +15.5% | BetRivers |
+| Cincinnati Reds vs  | +140 | +13.2% | Tipico |
+| Tampa Bay Rays vs  | -108 | +9.7% | Matchbook |
+| Minnesota Twins vs  | -105 | +9.7% | Matchbook |
+| Seattle Mariners vs  | -110 | +9.4% | William Hill |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| New York Yankees @ Kansas City Royals NRFI (Will Warren vs Michael Wacha) | NRFI -104 | 67% | FanDuel |
+| Minnesota Twins @ Chicago White Sox NRFI (Zebby Matthews vs Anthony Kay) | NRFI -118 | 67% | BetMGM |
+| Tampa Bay Rays @ Baltimore Orioles NRFI (Shane McClanahan vs Kyle Bradish) | NRFI -130 | 67% | FanDuel |
+| Chicago Cubs @ Pittsburgh Pirates NRFI (Ben Brown vs Carmen Mlodzinski) | NRFI -125 | 65% | BetMGM |
+| Philadelphia Phillies @ San Diego Padres NRFI (Jesús Luzardo vs Randy Vásquez) | NRFI -140 | 67% | BetMGM |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

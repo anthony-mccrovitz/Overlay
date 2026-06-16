@@ -61,12 +61,12 @@ function signInHtml(link: string): string {
   return `<!DOCTYPE html>
 <html><body style="font-family: -apple-system, sans-serif; background:#0A0B0D; color:#F2F4F8; padding:32px;">
   <div style="max-width:480px; margin:0 auto; background:#0F1115; border:1px solid #2A2F3A; border-radius:8px; padding:32px;">
-    <div style="font-size:14px; letter-spacing:0.16em; color:#2D7FFF; font-weight:700; margin-bottom:24px;">OVERLAY</div>
+    <div style="font-size:14px; letter-spacing:0.16em; color:#12C58A; font-weight:700; margin-bottom:24px;">OVERLAY</div>
     <h1 style="font-size:22px; margin:0 0 12px; color:#F2F4F8;">Sign in to your account</h1>
     <p style="color:#8A93A3; line-height:1.6; margin:0 0 24px;">
       Click the button below to access your subscriber dashboard. This link expires in 15 minutes.
     </p>
-    <a href="${link}" style="display:inline-block; background:#2D7FFF; color:white; padding:12px 22px; border-radius:4px; text-decoration:none; font-weight:700;">
+    <a href="${link}" style="display:inline-block; background:#12C58A; color:white; padding:12px 22px; border-radius:4px; text-decoration:none; font-weight:700;">
       Sign in to Overlay
     </a>
     <p style="color:#5A6171; font-size:12px; margin-top:24px;">

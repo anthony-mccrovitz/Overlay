@@ -1,0 +1,155 @@
+{
+  "date": "20260429",
+  "total_picks": 10,
+  "graded": 10,
+  "pending": 0,
+  "wins": 5,
+  "losses": 5,
+  "win_rate": 0.5,
+  "total_staked": 10.0,
+  "total_profit": -1.0509877692540233,
+  "roi": -10.509877692540233,
+  "by_type": {
+    "total": {
+      "wins": 2,
+      "losses": 1,
+      "profit": 0.84,
+      "win_rate": 0.6667
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.74,
+      "win_rate": 0.5
+    },
+    "spread": {
+      "wins": 2,
+      "losses": 3,
+      "profit": -1.14,
+      "win_rate": 0.4
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 211.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -108,
+      "model_prob": 0.9332,
+      "edge_pct": 43.54,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Orlando Magic 109, Detroit Pistons 116",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 209.0",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": -109,
+      "model_prob": 0.9071,
+      "edge_pct": 40.26,
+      "won": false,
+      "profit": -1.0,
+      "score": "Houston Rockets 99, Los Angeles Lakers 93",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -110,
+      "model_prob": 0.7075,
+      "edge_pct": 20.31,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Toronto Raptors 120, Cleveland Cavaliers 125",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Detroit Pistons",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -390,
+      "model_prob": 0.8424,
+      "edge_pct": 11.06,
+      "won": true,
+      "profit": 0.2564102564102564,
+      "score": "Orlando Magic 109, Detroit Pistons 116",
+      "status": "win"
+    },
+    {
+      "market": "moneyline",
+      "team": "Los Angeles Lakers",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": -178,
+      "model_prob": 0.6917,
+      "edge_pct": 7.62,
+      "won": false,
+      "profit": -1.0,
+      "score": "Houston Rockets 99, Los Angeles Lakers 93",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Los Angeles Lakers -4.5",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": -104,
+      "model_prob": 0.5464,
+      "edge_pct": 5.74,
+      "won": false,
+      "profit": -1.0,
+      "score": "Houston Rockets 99, Los Angeles Lakers 93",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Detroit Pistons -10.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -105,
+      "model_prob": 0.5431,
+      "edge_pct": 3.96,
+      "won": false,
+      "profit": -1.0,
+      "score": "Orlando Magic 109, Detroit Pistons 116",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Cleveland Cavaliers -9.5",
+      "matchup": "Toronto Raptors @ Cleveland Cavaliers",
+      "odds": -102,
+      "model_prob": 0.4503,
+      "edge_pct": -4.97,
+      "won": false,
+      "profit": -1.0,
+      "score": "Toronto Raptors 120, Cleveland Cavaliers 125",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Orlando Magic +9.5",
+      "matchup": "Orlando Magic @ Detroit Pistons",
+      "odds": -102,
+      "model_prob": 0.424,
+      "edge_pct": -7.24,
+      "won": true,
+      "profit": 0.9803921568627451,
+      "score": "Orlando Magic 109, Detroit Pistons 116",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Houston Rockets +4.0",
+      "matchup": "Houston Rockets @ Los Angeles Lakers",
+      "odds": -114,
+      "model_prob": 0.4371,
+      "edge_pct": -7.39,
+      "won": true,
+      "profit": 0.8771929824561403,
+      "score": "Houston Rockets 99, Los Angeles Lakers 93",
+      "status": "win"
+    }
+  ],
+  "graded_at": "2026-05-20T05:27:08.703969+00:00"
+}

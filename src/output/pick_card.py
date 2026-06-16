@@ -1,5 +1,5 @@
 """
-Social media pick card generator — ChefTonyBets AI.
+Social media pick card generator — Overlay AI.
 
 1080 x 1350 (Instagram portrait 4:5).
 Design: dark space, team logo circles, neon edge tier colors, zero clutter.
@@ -22,7 +22,7 @@ _BG_CARD     = ( 14,  16,  28)   # card surface
 _BG_BEST     = ( 16,  20,  36)   # best bet card — slightly brighter
 _DIVIDER     = ( 28,  32,  52)   # separator lines
 
-_GOLD        = (255, 190,   0)   # ChefTonyBets gold
+_GOLD        = (255, 190,   0)   # Overlay gold
 _GOLD_DIM    = (160, 120,   0)
 _GREEN       = ( 57, 255, 120)   # HIGH edge neon
 _AMBER       = (255, 165,  20)   # MED edge
@@ -372,11 +372,11 @@ def generate_pick_card_image(
     # Top neon gold line
     _glow_line(draw, 0, 0, W, _GOLD, spread=4)
 
-    # "ChefTony" in white + "Bets" in gold + " AI" in cyan
+    # "Overlay" in white + "Bets" in gold + " AI" in cyan
     bx = PAD
     by = 22
-    draw.text((bx, by), "ChefTony", fill=_WHITE, font=f_brand)
-    cw = int(draw.textlength("ChefTony", font=f_brand))
+    draw.text((bx, by), "Overlay", fill=_WHITE, font=f_brand)
+    cw = int(draw.textlength("Overlay", font=f_brand))
     draw.text((bx + cw + 6, by + 14), "Bets", fill=_GOLD, font=f_brand_sm)
     bw2 = int(draw.textlength("Bets", font=f_brand_sm))
 
@@ -393,7 +393,7 @@ def generate_pick_card_image(
     draw.text((ai_x, ai_y), ai_txt, fill=_CYAN, font=f_ai)
 
     # Subtitle line
-    sub_txt = f"A.I. Edge Detection  ·  @ChefTonyBets"
+    sub_txt = f"A.I. Edge Detection  ·  @Overlay"
     draw.text((PAD + 2, by + 104), sub_txt, fill=_GRAY_MID, font=f_sub_hdr)
 
     # Date + sport — right aligned
@@ -544,7 +544,7 @@ def generate_pick_card_image(
     _glow_line(draw, PAD, fy - 2, W - PAD, _GOLD, spread=2)
 
     # Centered handle
-    handle = "@ChefTonyBets"
+    handle = "@Overlay"
     hw = int(draw.textlength(handle, font=f_footer))
     draw.text(((W - hw) // 2, fy + 10), handle, fill=_GOLD, font=f_footer)
 
@@ -575,7 +575,7 @@ def generate_pick_card_text(
 ) -> str:
     """Generate a markdown pick card for Discord / Twitter captions."""
     d = card_date or date.today()
-    header = f"ChefTonyBets AI | {_sport_label(sport)} | {d.strftime('%B %d, %Y')}"
+    header = f"Overlay AI | {_sport_label(sport)} | {d.strftime('%B %d, %Y')}"
     lines = [header, "=" * len(header), ""]
 
     if not picks:
@@ -616,7 +616,7 @@ def generate_pick_card_text(
             lines.append(f"  Bet: {odds:+d}{book_str}")
         lines.append("")
 
-    lines.append("ChefTonyBets AI — Edge Detection · @ChefTonyBets")
+    lines.append("Overlay AI — Edge Detection · @Overlay")
     lines.append("Free daily picks · Follow for more")
 
     save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d")

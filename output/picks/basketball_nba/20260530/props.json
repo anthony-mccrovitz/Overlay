@@ -1,0 +1,53 @@
+[
+  {
+    "type": "nba_prop",
+    "market": "player_rebounds",
+    "player": "Jalen Brunson",
+    "matchup": "New York Knicks @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "New York Knicks",
+    "line": 2.5,
+    "direction": "UNDER",
+    "projected": 3.3,
+    "model_prob": 0.573,
+    "implied_prob": 0.408,
+    "edge_pct": 16.5,
+    "odds": 128,
+    "book": "FanDuel",
+    "label": "Jalen Brunson UNDER 2.5 REB"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_threes",
+    "player": "Victor Wembanyama",
+    "matchup": "New York Knicks @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "New York Knicks",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 1.9,
+    "model_prob": 0.57,
+    "implied_prob": 0.428,
+    "edge_pct": 14.1,
+    "odds": 118,
+    "book": "FanDuel",
+    "label": "Victor Wembanyama UNDER 1.5 3PM"
+  },
+  {
+    "type": "nba_prop",
+    "market": "player_assists",
+    "player": "OG Anunoby",
+    "matchup": "New York Knicks @ San Antonio Spurs",
+    "home_team": "San Antonio Spurs",
+    "away_team": "New York Knicks",
+    "line": 1.5,
+    "direction": "UNDER",
+    "projected": 2.2,
+    "model_prob": 0.573,
+    "implied_prob": 0.445,
+    "edge_pct": 12.8,
+    "odds": 110,
+    "book": "FanDuel",
+    "label": "OG Anunoby UNDER 1.5 AST"
+  }
+]

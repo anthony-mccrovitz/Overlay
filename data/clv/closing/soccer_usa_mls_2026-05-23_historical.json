@@ -1,0 +1,5962 @@
+{
+  "timestamp": "2026-05-23T17:25:37Z",
+  "previous_timestamp": "2026-05-23T17:20:37Z",
+  "next_timestamp": "2026-05-23T17:30:38Z",
+  "data": [
+    {
+      "id": "ef978450f880d76aaa1bee4b40b3cc84",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-23T18:45:00Z",
+      "home_team": "St. Louis City SC",
+      "away_team": "Austin FC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 380
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -155
+                },
+                {
+                  "name": "Draw",
+                  "price": 295
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -165,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 125,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 350
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -144
+                },
+                {
+                  "name": "Draw",
+                  "price": 310
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 130,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -174,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 360
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -165
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 375
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -145
+                },
+                {
+                  "name": "Draw",
+                  "price": 310
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 340
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -145
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 130,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -185,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:14Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 370
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -153
+                },
+                {
+                  "name": "Draw",
+                  "price": 305
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:14Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 350
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -155
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 370
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -153
+                },
+                {
+                  "name": "Draw",
+                  "price": 305
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 360
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -145
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 380
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -143
+                },
+                {
+                  "name": "Draw",
+                  "price": 320
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Austin FC",
+                  "price": 380
+                },
+                {
+                  "name": "St. Louis City SC",
+                  "price": -143
+                },
+                {
+                  "name": "Draw",
+                  "price": 320
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4350d4459af9f23dccb84318c8763c23",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-23T20:30:00Z",
+      "home_team": "Minnesota United FC",
+      "away_team": "Real Salt Lake",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 110
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 215
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -180,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 135,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 110
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 220
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 113
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 218
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -163,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 122,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 115
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 220
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 110
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 220
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -165,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 115,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 112
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 225
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 2.75
+                },
+                {
+                  "name": "Under",
+                  "price": 100,
+                  "point": 2.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 115
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 240
+                },
+                {
+                  "name": "Draw",
+                  "price": 262
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 104,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -124,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 115
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 240
+                },
+                {
+                  "name": "Draw",
+                  "price": 262
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 104,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -124,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 105
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 220
+                },
+                {
+                  "name": "Draw",
+                  "price": 255
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 110
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 230
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -125,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Minnesota United FC",
+                  "price": 115
+                },
+                {
+                  "name": "Real Salt Lake",
+                  "price": 230
+                },
+                {
+                  "name": "Draw",
+                  "price": 240
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c28c61c699d11a94477c4f3046eda644",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-23T23:30:00Z",
+      "home_team": "D.C. United",
+      "away_team": "CF Montreal",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 260
+                },
+                {
+                  "name": "D.C. United",
+                  "price": -104
+                },
+                {
+                  "name": "Draw",
+                  "price": 255
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -132,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 102,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 240
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 100
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 230
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 100
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -150,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 105,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 236
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 104
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -148,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 111,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 240
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 100
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 240
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 102
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 2.75
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 2.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 275
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 101
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -128,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 108,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 275
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 101
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -128,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 108,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 230
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 100
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 240
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 102
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -143,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 113,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "CF Montreal",
+                  "price": 250
+                },
+                {
+                  "name": "D.C. United",
+                  "price": 100
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "13ed03b3230333002b23b15e373c083d",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-23T23:30:00Z",
+      "home_team": "Charlotte FC",
+      "away_team": "New England Revolution",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -122
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 300
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -152,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 117,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -120
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 300
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -120
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -160,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 110,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -120
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 295
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -150,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 113,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -125
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 300
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -121
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -118,
+                  "point": 2.75
+                },
+                {
+                  "name": "Under",
+                  "price": -102,
+                  "point": 2.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -123
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 335
+                },
+                {
+                  "name": "Draw",
+                  "price": 296
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -140,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 120,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -123
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 335
+                },
+                {
+                  "name": "Draw",
+                  "price": 296
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -140,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 120,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -125
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 285
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -121
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -150,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 120,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Charlotte FC",
+                  "price": -120
+                },
+                {
+                  "name": "New England Revolution",
+                  "price": 320
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "456fb6936198c9b7ee1cabaf0d30b12f",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-23T23:30:00Z",
+      "home_team": "FC Cincinnati",
+      "away_team": "Orlando City SC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -165
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 335
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -152,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": 117,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -144
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 300
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -142,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": 107,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -145
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -150,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": 105,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -140
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 310
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -165
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 320
+                },
+                {
+                  "name": "Draw",
+                  "price": 360
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -145
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 305
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.75
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 3.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -139
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 320
+                },
+                {
+                  "name": "Draw",
+                  "price": 365
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -130,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": 110,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -139
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 320
+                },
+                {
+                  "name": "Draw",
+                  "price": 365
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -130,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": 110,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -150
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 340
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -145
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 305
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 3.75
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 3.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "FC Cincinnati",
+                  "price": -145
+                },
+                {
+                  "name": "Orlando City SC",
+                  "price": 320
+                },
+                {
+                  "name": "Draw",
+                  "price": 340
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b630995bc6d17e0d15a59bd044f9b0df",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T00:30:00Z",
+      "home_team": "Chicago Fire",
+      "away_team": "Toronto FC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -215
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 360
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 118,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -155,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -225
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 375
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -220
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 360
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 115,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -165,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -210
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 480
+                },
+                {
+                  "name": "Draw",
+                  "price": 380
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 120,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -160,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -240
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 380
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -212
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 475
+                },
+                {
+                  "name": "Draw",
+                  "price": 375
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 100,
+                  "point": 3.25
+                },
+                {
+                  "name": "Under",
+                  "price": -120,
+                  "point": 3.25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -208
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 525
+                },
+                {
+                  "name": "Draw",
+                  "price": 399
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -129,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": 109,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -208
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 525
+                },
+                {
+                  "name": "Draw",
+                  "price": 399
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -129,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": 109,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -220
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 475
+                },
+                {
+                  "name": "Draw",
+                  "price": 360
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -212
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 475
+                },
+                {
+                  "name": "Draw",
+                  "price": 375
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -130,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": 100,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Chicago Fire",
+                  "price": -200
+                },
+                {
+                  "name": "Toronto FC",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 340
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5457005c32ec13cdfd83708f0cb71766",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T00:30:00Z",
+      "home_team": "Nashville SC",
+      "away_team": "New York City FC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -143
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 350
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -136,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 105,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -145
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 350
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -135
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 340
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -135,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -138
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 350
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -127,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -135
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 350
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -132
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 380
+                },
+                {
+                  "name": "Draw",
+                  "price": 287
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -121,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 101,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -132
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 380
+                },
+                {
+                  "name": "Draw",
+                  "price": 287
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -121,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 101,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -142
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 360
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 100,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -145
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 340
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -142
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 360
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -121,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": -109,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Nashville SC",
+                  "price": -135
+                },
+                {
+                  "name": "New York City FC",
+                  "price": 360
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cb99154cba501f1ac3ac8fb61b71a1bb",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T00:30:00Z",
+      "home_team": "Sporting Kansas City",
+      "away_team": "New York Red Bulls",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 108
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 200
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 100,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -130,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 112
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 196
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -126,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 115
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 190
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 110
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 190
+                },
+                {
+                  "name": "Draw",
+                  "price": 310
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 110
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 190
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -120,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 107
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 195
+                },
+                {
+                  "name": "Draw",
+                  "price": 315
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 114
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 204
+                },
+                {
+                  "name": "Draw",
+                  "price": 318
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -104,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -116,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 114
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 204
+                },
+                {
+                  "name": "Draw",
+                  "price": 318
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -104,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -116,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 105
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 190
+                },
+                {
+                  "name": "Draw",
+                  "price": 295
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 107
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 195
+                },
+                {
+                  "name": "Draw",
+                  "price": 315
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "New York Red Bulls",
+                  "price": 115
+                },
+                {
+                  "name": "Sporting Kansas City",
+                  "price": 200
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "42ebb42684615720e446ea34843460dc",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T01:30:00Z",
+      "home_team": "Colorado Rapids",
+      "away_team": "FC Dallas",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 123
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 190
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -182,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 138,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 125
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 188
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -175,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 120,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 125
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 200
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 123
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 191
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -173,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 129,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 120
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 200
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 115
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 200
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -102,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -118,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 115
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 190
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 113
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 205
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -118,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 125
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 200
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 128
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 195
+                },
+                {
+                  "name": "Draw",
+                  "price": 288
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -101,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -119,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Colorado Rapids",
+                  "price": 128
+                },
+                {
+                  "name": "FC Dallas",
+                  "price": 195
+                },
+                {
+                  "name": "Draw",
+                  "price": 288
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -101,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -119,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7404e88c82b37eb84260bcb668335adf",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T01:30:00Z",
+      "home_team": "Portland Timbers",
+      "away_team": "San Jose Earthquakes",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 145
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 155
+                },
+                {
+                  "name": "Draw",
+                  "price": 285
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -121,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 145
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 152
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -114,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -116,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 145
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 145
+                },
+                {
+                  "name": "Draw",
+                  "price": 310
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 145
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 155
+                },
+                {
+                  "name": "Draw",
+                  "price": 310
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 140
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 150
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -125,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 145
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 148
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 135
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 150
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 145
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 148
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 140
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 152
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 148
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 159
+                },
+                {
+                  "name": "Draw",
+                  "price": 307
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 100,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -120,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Portland Timbers",
+                  "price": 148
+                },
+                {
+                  "name": "San Jose Earthquakes",
+                  "price": 159
+                },
+                {
+                  "name": "Draw",
+                  "price": 307
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 100,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -120,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12e3f45889cddc57b63900c59614ddc1",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T01:30:00Z",
+      "home_team": "San Diego FC",
+      "away_team": "Vancouver Whitecaps FC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 240
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -109
+                },
+                {
+                  "name": "Draw",
+                  "price": 295
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 108,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -141,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 232
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -103
+                },
+                {
+                  "name": "Draw",
+                  "price": 295
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 109,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -145,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 225
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -105
+                },
+                {
+                  "name": "Draw",
+                  "price": 290
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 105,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -150,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 250
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -115
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 250
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -105
+                },
+                {
+                  "name": "Draw",
+                  "price": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 245
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -112
+                },
+                {
+                  "name": "Draw",
+                  "price": 305
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.25
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 3.25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 235
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -110
+                },
+                {
+                  "name": "Draw",
+                  "price": 295
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 245
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -112
+                },
+                {
+                  "name": "Draw",
+                  "price": 305
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -140,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": 110,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 260
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -110
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 255
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -105
+                },
+                {
+                  "name": "Draw",
+                  "price": 315
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -142,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": 122,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "San Diego FC",
+                  "price": 255
+                },
+                {
+                  "name": "Vancouver Whitecaps FC",
+                  "price": -105
+                },
+                {
+                  "name": "Draw",
+                  "price": 315
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -142,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": 122,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "070d5333a8710d53fc66b4bc12b0585b",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T02:30:00Z",
+      "home_team": "LA Galaxy",
+      "away_team": "Houston Dynamo",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 215
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 107
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 130,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -175,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 220
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 110
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -185,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 125,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 220
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 115
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 200
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 115
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 214
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 115
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 132,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -178,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 212
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 116
+                },
+                {
+                  "name": "Draw",
+                  "price": 255
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -108,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 210
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 110
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 212
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 116
+                },
+                {
+                  "name": "Draw",
+                  "price": 255
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -112,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 220
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 115
+                },
+                {
+                  "name": "Draw",
+                  "price": 250
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 238
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 115
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -106,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -114,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Houston Dynamo",
+                  "price": 238
+                },
+                {
+                  "name": "LA Galaxy",
+                  "price": 115
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -106,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -114,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bdd5478025348693f3832fce36316804",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T21:00:00Z",
+      "home_team": "Columbus Crew SC",
+      "away_team": "Atlanta United FC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 500
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -210
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 135,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -180,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 425
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -190
+                },
+                {
+                  "name": "Draw",
+                  "price": 333
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 130,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -190,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 470
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -210
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 440
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -200
+                },
+                {
+                  "name": "Draw",
+                  "price": 340
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": 131,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -184,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 460
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -195
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -110,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -110,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 475
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -200
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 450
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -205
+                },
+                {
+                  "name": "Draw",
+                  "price": 340
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 460
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -195
+                },
+                {
+                  "name": "Draw",
+                  "price": 350
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 475
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -190
+                },
+                {
+                  "name": "Draw",
+                  "price": 340
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 505
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -205
+                },
+                {
+                  "name": "Draw",
+                  "price": 370
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Atlanta United FC",
+                  "price": 505
+                },
+                {
+                  "name": "Columbus Crew SC",
+                  "price": -205
+                },
+                {
+                  "name": "Draw",
+                  "price": 370
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.0
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 3.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b526e8360f770b479c7be8ccd6a9b362",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-24T23:00:00Z",
+      "home_team": "Inter Miami CF",
+      "away_team": "Philadelphia Union",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -250
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 550
+                },
+                {
+                  "name": "Draw",
+                  "price": 400
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -114,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -113,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -270
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 430
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -225
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 450
+                },
+                {
+                  "name": "Draw",
+                  "price": 400
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -120,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -118,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -242
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 480
+                },
+                {
+                  "name": "Draw",
+                  "price": 400
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -117,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -118,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -250
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 500
+                },
+                {
+                  "name": "Draw",
+                  "price": 425
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -230
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 460
+                },
+                {
+                  "name": "Draw",
+                  "price": 430
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -112,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -108,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -245
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 475
+                },
+                {
+                  "name": "Draw",
+                  "price": 400
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -230
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 460
+                },
+                {
+                  "name": "Draw",
+                  "price": 430
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -111,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -230
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 525
+                },
+                {
+                  "name": "Draw",
+                  "price": 400
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -240
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 525
+                },
+                {
+                  "name": "Draw",
+                  "price": 445
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Inter Miami CF",
+                  "price": -240
+                },
+                {
+                  "name": "Philadelphia Union",
+                  "price": 525
+                },
+                {
+                  "name": "Draw",
+                  "price": 445
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -105,
+                  "point": 3.5
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 3.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bd4d698a8f3f8f0519ebbf98d7f397a4",
+      "sport_key": "soccer_usa_mls",
+      "sport_title": "MLS",
+      "commence_time": "2026-05-25T01:15:00Z",
+      "home_team": "Los Angeles FC",
+      "away_team": "Seattle Sounders FC",
+      "bookmakers": [
+        {
+          "key": "betrivers",
+          "title": "BetRivers",
+          "last_update": "2026-05-23T17:25:35Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -114
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 270
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:35Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -159,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 123,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betmgm",
+          "title": "BetMGM",
+          "last_update": "2026-05-23T17:24:51Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -115
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 270
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:24:51Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -155,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 110,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanduel",
+          "title": "FanDuel",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -120
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 260
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "mybookieag",
+          "title": "MyBookie.ag",
+          "last_update": "2026-05-23T17:23:50Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -111
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 260
+                },
+                {
+                  "name": "Draw",
+                  "price": 265
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:23:50Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -152,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 109,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fanatics",
+          "title": "Fanatics",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -105
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 280
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "draftkings",
+          "title": "DraftKings",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -115
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 260
+                },
+                {
+                  "name": "Draw",
+                  "price": 270
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "bovada",
+          "title": "Bovada",
+          "last_update": "2026-05-23T17:25:15Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -112
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 270
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:15Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -115,
+                  "point": 2.75
+                },
+                {
+                  "name": "Under",
+                  "price": -105,
+                  "point": 2.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betus",
+          "title": "BetUS",
+          "last_update": "2026-05-23T17:25:36Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -112
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 270
+                },
+                {
+                  "name": "Draw",
+                  "price": 275
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:36Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -113,
+                  "point": 2.75
+                },
+                {
+                  "name": "Under",
+                  "price": -115,
+                  "point": 2.75
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "williamhill_us",
+          "title": "Caesars",
+          "last_update": "2026-05-23T17:21:13Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:21:13Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -110
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 280
+                },
+                {
+                  "name": "Draw",
+                  "price": 260
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "lowvig",
+          "title": "LowVig.ag",
+          "last_update": "2026-05-23T17:25:11Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -113
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:11Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -138,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 118,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "betonlineag",
+          "title": "BetOnline.ag",
+          "last_update": "2026-05-23T17:25:34Z",
+          "markets": [
+            {
+              "key": "h2h",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Los Angeles FC",
+                  "price": -113
+                },
+                {
+                  "name": "Seattle Sounders FC",
+                  "price": 290
+                },
+                {
+                  "name": "Draw",
+                  "price": 280
+                }
+              ]
+            },
+            {
+              "key": "totals",
+              "last_update": "2026-05-23T17:25:34Z",
+              "outcomes": [
+                {
+                  "name": "Over",
+                  "price": -138,
+                  "point": 2.5
+                },
+                {
+                  "name": "Under",
+                  "price": 118,
+                  "point": 2.5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

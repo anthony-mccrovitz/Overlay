@@ -1,0 +1,82 @@
+{
+  "spread_std": 13.301271326405839,
+  "spread_mae": 11.35235341389974,
+  "total_mae": 15.065899213155111,
+  "n_games": 13991,
+  "seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "features": [
+    "home_ortg_20g",
+    "home_drtg_20g",
+    "home_pace_20g",
+    "away_ortg_20g",
+    "away_drtg_20g",
+    "away_pace_20g",
+    "net_rtg_diff",
+    "home_rest_days",
+    "away_rest_days",
+    "rest_diff",
+    "home_b2b",
+    "away_b2b",
+    "home_form_5g",
+    "home_form_10g",
+    "away_form_5g",
+    "away_form_10g",
+    "is_playoff",
+    "season_progress",
+    "h2h_margin"
+  ],
+  "top_features": [
+    [
+      "net_rtg_diff",
+      0.3162696361541748
+    ],
+    [
+      "home_form_10g",
+      0.1029772236943245
+    ],
+    [
+      "away_form_10g",
+      0.08935366570949554
+    ],
+    [
+      "is_playoff",
+      0.04113912209868431
+    ],
+    [
+      "home_b2b",
+      0.040820907801389694
+    ],
+    [
+      "away_b2b",
+      0.039317455142736435
+    ],
+    [
+      "home_drtg_20g",
+      0.03701198846101761
+    ],
+    [
+      "away_rest_days",
+      0.03680882975459099
+    ],
+    [
+      "rest_diff",
+      0.03630472719669342
+    ],
+    [
+      "home_rest_days",
+      0.03577667102217674
+    ]
+  ]
+}

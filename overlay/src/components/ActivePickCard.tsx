@@ -16,7 +16,7 @@ export function ActivePickCard({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          color: "white",
+          color: "#04130C",
           fontFamily: "var(--font-mono)",
           fontSize: 11,
           fontWeight: 700,

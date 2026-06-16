@@ -42,18 +42,25 @@ MY_BOOKS_KEYS: list[str] = [
     "fanduel",
     "betmgm",
     "betrivers",
-    "espnbet",       # ESPN Bet
-    "fliff",         # Fliff
-    "hardrockbet",   # Hard Rock Bet
+    "espnbet",       # ESPN Bet / theScore Bet
+    "fliff",
+    "hardrockbet",
+    "caesars",
+    "fanatics",
+    "ballybet",
+    "thescore",
+    "betparx",
+    "bet365",
+    "tipico",
 ]
-MY_BOOKS_PARAM = ",".join(MY_BOOKS_KEYS)   # ready for bookmakers= API param
+MY_BOOKS_PARAM = ",".join(MY_BOOKS_KEYS)
 
 # Display names matching the Odds API title field (used for filtering response objects)
+# These are the ONLY books we ever show as bet destinations — no offshore, no EU books.
 MY_BOOKS_TITLES = frozenset({
     "DraftKings", "FanDuel", "BetMGM", "BetRivers",
-    "theScore Bet",    # ESPN Bet
-    "Fliff",
-    "Hard Rock Bet",
+    "theScore Bet", "Fliff", "Hard Rock Bet", "Hard Rock Bet (OH)",
+    "Caesars", "Fanatics", "Bally Bet", "betPARX", "Bet365", "Tipico",
 })
 
 # Sharp books used for de-vigged true probability (CLV/EV baseline).
@@ -351,9 +358,8 @@ def get_best_odds(
     if all_books:
         working_df = odds_df
     else:
-        preferred = odds_df[odds_df["Sportsbook"].isin(PREFERRED_BOOKS)]
-        # Fall back to full feed if none of the preferred books have this game
-        working_df = preferred if not preferred.empty else odds_df
+        # Always filter to US books — never fall back to offshore/EU books
+        working_df = odds_df[odds_df["Sportsbook"].isin(PREFERRED_BOOKS)]
 
     best = []
     for game_id in working_df["GameID"].unique():

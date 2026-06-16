@@ -1,0 +1,25 @@
+name: Morning captions + deploy
+
+# 9:10 AM ET (13:10 UTC, EDT) — generate captions from overnight picks, deploy.
+on:
+  schedule:
+    - cron: "10 13 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: morning
+  cancel-in-progress: false
+
+jobs:
+  morning:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: |
+        set +e
+        python scripts/gen_caption.py
+        python scripts/deploy_picks.py
+        true

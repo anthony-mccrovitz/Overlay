@@ -173,12 +173,27 @@ class SoccerModelV2:
 
     DEFAULT_ELO = 1500.0
     RHO = -0.10  # Fixed DC correction (same as v1 default)
+    AD_DECAY = 0.12   # EWMA weight for rolling attack/defense (recent form)
+    HOST_BONUS = 60.0  # Elo-equivalent home edge for 2026 co-hosts at home venues
+    # Calibration temperature (>1 softens favorite overconfidence). Value is the
+    # cross-validated optimum from scripts/validate_soccer.py across ~800
+    # walk-forward tournament matches — NOT fit per-model (a random recent slice
+    # of friendlies/qualifiers does not reflect tournament overconfidence).
+    CALIBRATION_T = 1.25
 
     def __init__(self) -> None:
         self.elo_ratings: dict[str, float] = {}
+        # Rolling attack (goals scored) / defense (goals conceded) tendencies.
+        # Captured causally like Elo; feed the goals/tempo side of the model.
+        self.atk_ratings: dict[str, float] = {}
+        self.dfn_ratings: dict[str, float] = {}
+        self.league_avg: float = 1.30   # avg goals per team per game (refit)
         self.mu: float = 0.0
         self.alpha: float = 1.0
+        self.beta: float = 0.0    # own-attack coefficient (goals/tempo)
+        self.delta: float = 0.0   # opponent-leak coefficient (goals/tempo)
         self.rho: float = self.RHO
+        self.temperature: float = 1.0   # calibration: >1 softens overconfidence
         self.fitted_on: date | None = None
 
     # ── Elo helpers ───────────────────────────────────────────────────────────
@@ -211,27 +226,48 @@ class SoccerModelV2:
         self.elo_ratings[home] = elo_h + k * (actual_h - exp_h)
         self.elo_ratings[away] = elo_a + k * (actual_a - exp_a)
 
-    def _compute_rolling_elo(self, matches: list[dict]) -> dict[str, list[tuple]]:
+    def _compute_rolling_elo(self, matches: list[dict]) -> list[tuple]:
         """
-        Sequentially update Elo from all matches (sorted by date).
-        Returns a dict mapping match index → (elo_home_before, elo_away_before).
-        We store the Elo BEFORE each match so the fit uses Elo-at-game-time.
+        Sequentially update Elo AND rolling attack/defense from all matches.
+        Returns a list of per-match snapshots taken BEFORE each match, so the
+        fit only ever sees information available at game time:
+            (elo_h, elo_a, atk_h, dfn_a, atk_a, dfn_h)
+        atk = rolling goals scored, dfn = rolling goals conceded (EWMA).
         """
         self.elo_ratings = {}
-        elo_snapshots: list[tuple[float, float]] = []
+        self.atk_ratings = {}
+        self.dfn_ratings = {}
+
+        # League average goals/team/game — used to centre the attack/defense
+        # features so β, δ ≈ 0 means "no tempo signal".
+        scored = [m["home_score"] + m["away_score"] for m in matches]
+        self.league_avg = (sum(scored) / (2 * len(scored))) if scored else 1.30
+        avg = self.league_avg
+        decay = self.AD_DECAY
+
+        snapshots: list[tuple] = []
 
         for m in sorted(matches, key=lambda x: x["date"]):
-            home = m["home_team"]
-            away = m["away_team"]
+            home, away = m["home_team"], m["away_team"]
+            x, y = m["home_score"], m["away_score"]
 
-            elo_h_before = self._elo(home)
-            elo_a_before = self._elo(away)
-            elo_snapshots.append((elo_h_before, elo_a_before))
+            elo_h, elo_a = self._elo(home), self._elo(away)
+            atk_h = self.atk_ratings.get(home, avg)
+            dfn_h = self.dfn_ratings.get(home, avg)
+            atk_a = self.atk_ratings.get(away, avg)
+            dfn_a = self.dfn_ratings.get(away, avg)
+            snapshots.append((elo_h, elo_a, atk_h, dfn_a, atk_a, dfn_h))
 
-            k = _k_factor(m.get("tournament", ""))
-            self._update_elo(home, away, m["home_score"], m["away_score"], k)
+            # Elo update
+            self._update_elo(home, away, x, y, _k_factor(m.get("tournament", "")))
 
-        return elo_snapshots
+            # Rolling attack/defense (EWMA toward the goals just observed)
+            self.atk_ratings[home] = (1 - decay) * atk_h + decay * x
+            self.dfn_ratings[home] = (1 - decay) * dfn_h + decay * y
+            self.atk_ratings[away] = (1 - decay) * atk_a + decay * y
+            self.dfn_ratings[away] = (1 - decay) * dfn_a + decay * x
+
+        return snapshots
 
     # ── Negative log-likelihood ───────────────────────────────────────────────
 
@@ -239,19 +275,24 @@ class SoccerModelV2:
     def _neg_ll(
         params: np.ndarray,
         matches: list[dict],
-        elo_snapshots: list[tuple[float, float]],
+        snapshots: list[tuple],
         rho: float,
+        avg: float,
     ) -> float:
-        mu, alpha = params
+        mu, alpha, beta, delta = params
         ll = 0.0
 
         for i, m in enumerate(matches):
-            elo_h, elo_a = elo_snapshots[i]
+            elo_h, elo_a, atk_h, dfn_a, atk_a, dfn_h = snapshots[i]
             d_h = (elo_h - elo_a) / 400.0
-            d_a = -d_h
 
-            lam_h = math.exp(mu + alpha * d_h)
-            lam_a = math.exp(mu + alpha * d_a)
+            la_h = math.log(max(atk_h, 0.05) / avg)
+            lc_a = math.log(max(dfn_a, 0.05) / avg)
+            la_a = math.log(max(atk_a, 0.05) / avg)
+            lc_h = math.log(max(dfn_h, 0.05) / avg)
+
+            lam_h = math.exp(mu + alpha * d_h + beta * la_h + delta * lc_a)
+            lam_a = math.exp(mu - alpha * d_h + beta * la_a + delta * lc_h)
 
             x = m["home_score"]
             y = m["away_score"]
@@ -262,6 +303,15 @@ class SoccerModelV2:
             ll += math.log(max(p, 1e-12))
 
         return -ll
+
+    def _apply_temperature(self, ph: float, pd: float, pa: float) -> tuple[float, float, float]:
+        """Soften (h,d,a) by self.temperature via logit scaling (>1 softens)."""
+        T = self.temperature
+        logits = [math.log(max(p, 1e-9)) / T for p in (ph, pd, pa)]
+        mx = max(logits)
+        exps = [math.exp(z - mx) for z in logits]
+        s = sum(exps)
+        return exps[0] / s, exps[1] / s, exps[2] / s
 
     # ── Public API ────────────────────────────────────────────────────────────
 
@@ -295,31 +345,39 @@ class SoccerModelV2:
             print(f"  [soccer_v2] {len(matches):,} matches from {min_year}+. "
                   f"Computing rolling Elo...")
 
-        # Step 1: compute Elo-at-game-time snapshots
-        elo_snapshots = self._compute_rolling_elo(matches)
+        # Step 1: compute Elo + attack/defense snapshots at game time
+        snapshots = self._compute_rolling_elo(matches)
 
         if verbose:
-            print(f"  [soccer_v2] Elo computed for {len(self.elo_ratings)} teams. Fitting μ, α...")
+            print(f"  [soccer_v2] Elo + attack/defense computed for "
+                  f"{len(self.elo_ratings)} teams. Fitting μ, α, β, δ...")
 
-        # Step 2: fit μ and α via MLE
-        x0 = np.array([0.3, 1.0])  # sensible starting point
-        bounds = [(0.1, 1.5), (0.0, 3.0)]
+        # Step 2: fit μ, α (Elo→supremacy), β (own attack), δ (opp leak) via MLE
+        x0 = np.array([0.3, 1.0, 0.3, 0.3])
+        bounds = [(0.1, 1.5), (0.0, 3.0), (-1.0, 2.0), (-1.0, 2.0)]
 
         result = minimize(
             self._neg_ll,
             x0,
-            args=(matches, elo_snapshots, self.rho),
+            args=(matches, snapshots, self.rho, self.league_avg),
             method="L-BFGS-B",
             bounds=bounds,
             options={"maxiter": 2000, "ftol": 1e-10},
         )
 
-        self.mu = float(result.x[0])
+        self.mu    = float(result.x[0])
         self.alpha = float(result.x[1])
+        self.beta  = float(result.x[2])
+        self.delta = float(result.x[3])
         self.fitted_on = matches[-1]["date"]
+
+        # Step 3: apply the cross-validated calibration temperature. See
+        # CALIBRATION_T — fitting per-model on an in-sample slice is unreliable.
+        self.temperature = self.CALIBRATION_T
 
         if verbose:
             print(f"  [soccer_v2] Fit complete. μ={self.mu:.4f}, α={self.alpha:.4f}, "
+                  f"β={self.beta:.4f}, δ={self.delta:.4f}, T={self.temperature:.2f}, "
                   f"converged={result.success}")
             # Top 10 Elo ratings
             top10 = sorted(self.elo_ratings.items(), key=lambda x: x[1], reverse=True)[:10]
@@ -335,9 +393,15 @@ class SoccerModelV2:
         with open(MODEL_PATH_V2, "wb") as f:
             pickle.dump({
                 "elo_ratings": self.elo_ratings,
+                "atk_ratings": self.atk_ratings,
+                "dfn_ratings": self.dfn_ratings,
+                "league_avg":  self.league_avg,
                 "mu":          self.mu,
                 "alpha":       self.alpha,
+                "beta":        self.beta,
+                "delta":       self.delta,
                 "rho":         self.rho,
+                "temperature": self.temperature,
                 "fitted_on":   self.fitted_on.isoformat(),
             }, f)
         print(f"  [soccer_v2] Model saved → {MODEL_PATH_V2}")
@@ -351,9 +415,15 @@ class SoccerModelV2:
         with open(MODEL_PATH_V2, "rb") as f:
             data = pickle.load(f)
         self.elo_ratings = data["elo_ratings"]
+        self.atk_ratings = data.get("atk_ratings", {})
+        self.dfn_ratings = data.get("dfn_ratings", {})
+        self.league_avg  = data.get("league_avg", 1.30)
         self.mu          = data["mu"]
         self.alpha       = data["alpha"]
+        self.beta        = data.get("beta", 0.0)
+        self.delta       = data.get("delta", 0.0)
         self.rho         = data.get("rho", self.RHO)
+        self.temperature = data.get("temperature", 1.0)
         self.fitted_on   = date.fromisoformat(data["fitted_on"])
         return self
 
@@ -401,8 +471,14 @@ class SoccerModelV2:
         home_team: str,
         away_team: str,
         neutral: bool = True,
+        home_adv_elo: float = 0.0,
     ) -> tuple[float, float]:
-        """Compute expected goals for each team using fitted μ/α and Elo."""
+        """
+        Expected goals for each team. Combines:
+          - Elo difference (μ, α) → who's stronger / supremacy
+          - rolling attack/defense (β, δ) → absolute scoring tempo
+          - home_adv_elo → venue edge in Elo points (0 if neutral)
+        """
         from src.data.soccer_data import normalize_team_name
         home_team = normalize_team_name(home_team)
         away_team = normalize_team_name(away_team)
@@ -410,17 +486,23 @@ class SoccerModelV2:
         elo_h = self._elo(home_team)
         elo_a = self._elo(away_team)
 
-        d_h = (elo_h - elo_a) / 400.0
-        d_a = -d_h
+        # Home-field edge as an Elo bump. Generic venues get a small default;
+        # 2026 co-hosts at home get HOST_BONUS via home_adv_elo.
+        adv = home_adv_elo if home_adv_elo else (0.0 if neutral else 50.0)
+        d_h = (elo_h - elo_a + adv) / 400.0
 
-        # Small home advantage: +50 Elo points ≈ +0.125 d for home team
-        # Neutral venue → no adjustment
-        if not neutral:
-            d_h += 50.0 / 400.0
-            d_a -= 50.0 / 400.0
+        avg = self.league_avg
+        atk_h = self.atk_ratings.get(home_team, avg)
+        dfn_h = self.dfn_ratings.get(home_team, avg)
+        atk_a = self.atk_ratings.get(away_team, avg)
+        dfn_a = self.dfn_ratings.get(away_team, avg)
 
-        lam_h = math.exp(self.mu + self.alpha * d_h)
-        lam_a = math.exp(self.mu + self.alpha * d_a)
+        lam_h = math.exp(self.mu + self.alpha * d_h
+                         + self.beta * math.log(max(atk_h, 0.05) / avg)
+                         + self.delta * math.log(max(dfn_a, 0.05) / avg))
+        lam_a = math.exp(self.mu - self.alpha * d_h
+                         + self.beta * math.log(max(atk_a, 0.05) / avg)
+                         + self.delta * math.log(max(dfn_h, 0.05) / avg))
         return lam_h, lam_a
 
     def score_grid(
@@ -429,12 +511,13 @@ class SoccerModelV2:
         away_team: str,
         neutral: bool = True,
         max_goals: int = MAX_GOALS,
+        home_adv_elo: float = 0.0,
     ) -> np.ndarray:
         """
         Compute P(home=i, away=j) score probability matrix with DC correction.
         Shape: (max_goals+1, max_goals+1).
         """
-        lam_h, lam_a = self._get_lambdas(home_team, away_team, neutral)
+        lam_h, lam_a = self._get_lambdas(home_team, away_team, neutral, home_adv_elo)
         grid = np.zeros((max_goals + 1, max_goals + 1))
         for i in range(max_goals + 1):
             for j in range(max_goals + 1):
@@ -451,6 +534,7 @@ class SoccerModelV2:
         home_team: str,
         away_team: str,
         neutral: bool = True,
+        home_adv_elo: float = 0.0,
     ) -> dict:
         """
         Compute full market probabilities for a matchup.
@@ -460,12 +544,18 @@ class SoccerModelV2:
             home_over_0_5, away_over_0_5, exp_home, exp_away, exp_total,
             home_team, away_team
         """
-        grid = self.score_grid(home_team, away_team, neutral=neutral)
+        grid = self.score_grid(home_team, away_team, neutral=neutral,
+                               home_adv_elo=home_adv_elo)
         n = grid.shape[0]
 
         home_win = float(np.tril(grid, -1).sum())
         draw     = float(np.trace(grid))
         away_win = float(np.triu(grid, 1).sum())
+
+        # Calibration: temperature-scale the 1X2 probs to curb favorite
+        # overconfidence (T>1 softens). Totals are left on the raw grid.
+        if self.temperature and abs(self.temperature - 1.0) > 1e-6:
+            home_win, draw, away_win = self._apply_temperature(home_win, draw, away_win)
 
         # BTTS
         btts = float(1.0 - grid[0, :].sum() - grid[:, 0].sum() + grid[0, 0])
@@ -511,13 +601,19 @@ class SoccerModelV2:
         self,
         events: list[dict],
         min_edge_pct: float = 4.0,
+        host_nations: set[str] | None = None,
     ) -> list[dict]:
         """
         Find edges against book odds for a list of soccer events.
 
         events: Odds API format (h2h, totals markets)
+        host_nations: teams that get a home edge regardless of home/away label
+            (the 2026 World Cup co-hosts — USA/Mexico/Canada — are effectively
+            home at every match). Pass None for ordinary neutral fixtures.
         Returns list of edge dicts compatible with pnl schema.
         """
+        from src.data.soccer_data import normalize_team_name
+        hosts = {normalize_team_name(h) for h in (host_nations or set())}
         edges = []
         for event in events:
             home = event.get("home_team", "")
@@ -526,7 +622,16 @@ class SoccerModelV2:
             if not home or not away:
                 continue
 
-            m = self.matchup(home, away, neutral=neutral)
+            # Co-host home edge (only one side can be a host in a given match).
+            host_adv = 0.0
+            if hosts:
+                nh, na = normalize_team_name(home), normalize_team_name(away)
+                if nh in hosts and na not in hosts:
+                    host_adv = self.HOST_BONUS
+                elif na in hosts and nh not in hosts:
+                    host_adv = -self.HOST_BONUS
+
+            m = self.matchup(home, away, neutral=neutral, home_adv_elo=host_adv)
 
             for bookmaker in event.get("bookmakers", []):
                 book = bookmaker.get("title", "")

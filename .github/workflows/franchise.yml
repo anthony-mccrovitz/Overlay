@@ -1,0 +1,21 @@
+name: Franchise tracker
+
+# 9:30 AM ET (13:30 UTC, EDT) — log morning futures odds for franchise bets.
+on:
+  schedule:
+    - cron: "30 13 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: franchise
+  cancel-in-progress: false
+
+jobs:
+  franchise:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: python scripts/run_franchise_bets.py

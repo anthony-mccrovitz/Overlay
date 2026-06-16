@@ -1,0 +1,72 @@
+{
+  "pick_id": "mlb_20260607_under-8-5_total_under",
+  "date": "2026-06-07",
+  "sport": "mlb",
+  "market": "total",
+  "direction": "UNDER",
+  "team": "UNDER 8.5",
+  "matchup": "Boston Red Sox @ New York Yankees",
+  "odds": 100,
+  "line": 8.5,
+  "sportsbook": "FanDuel",
+  "model_prob": 0.5012,
+  "edge_pct": 2.0,
+  "model_agreement": true,
+  "model_tier": "tier1",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-07T01:31:30.055861+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 147,
+      "season_rs_per_g": 5.05,
+      "season_ra_per_g": 3.6,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 5.43,
+        "ra_per_game": 5.14,
+        "wins": 3,
+        "losses": 4,
+        "wl": "3-4"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 5.23,
+        "ra_per_game": 3.54,
+        "wins": 7,
+        "losses": 6,
+        "wl": "7-6"
+      }
+    },
+    "away": {
+      "team_id": 111,
+      "season_rs_per_g": 4.0,
+      "season_ra_per_g": 4.06,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 5.43,
+        "ra_per_game": 3.57,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 5.15,
+        "ra_per_game": 4.62,
+        "wins": 5,
+        "losses": 8,
+        "wl": "5-8"
+      }
+    },
+    "snapshot_date": "2026-06-07"
+  }
+}

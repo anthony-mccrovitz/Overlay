@@ -891,7 +891,7 @@ def print_report(picks: list[dict], top_n: int = 20) -> None:
 
     print("\n" + "=" * 82)
     print("  PGA CHAMPIONSHIP 2026 — QUAIL HOLLOW · MAY 14–17")
-    print("  ChefTonyBets AI  |  Course-fit Monte Carlo  |  100k simulations")
+    print("  Overlay AI  |  Course-fit Monte Carlo  |  100k simulations")
     print("=" * 82)
     hdr = f"  {'PLAYER':<26} {'ODDS':>7} {'MODEL%':>7} {'MKT%':>6} {'EDGE':>7} {'TOP5%':>6} {'TOP10%':>7}"
     print(f"\n{hdr}")

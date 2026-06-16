@@ -1,0 +1,25 @@
+**ChefTonyBets AI — Pick of the Day · 5/25/26 (Monday)**
+
+**Sport:** MLB
+**Pick:** Arizona Diamondbacks Moneyline +120 @ BetRivers
+**Event:** Arizona Diamondbacks
+**Bet Size:** 1.0 units
+
+---
+
+**Model Edge:** +15.5% (model: 0.0% vs market: 45.5%)
+**Season Record:** 30-21 (58.8% WR, +0.0u)
+
+---
+
+**About the Model**
+
+XGBoost + Pythagorean expectation ensemble trained on 10 years of MLB/NBA data. Walk-forward validated on held-out seasons. Edges calculated by comparing model win probability to sportsbook implied probability after vig removal. Kelly criterion used for sizing.
+
+The model runs daily before first pitch/tip-off. All picks are timestamped and logged publicly — you can verify the record at any point. No retroactive changes.
+
+This pick was selected as POTD because it has the highest positive expected value among today's plays within the -200/+200 odds requirement.
+
+---
+
+*Not financial advice. Bet responsibly. 21+*

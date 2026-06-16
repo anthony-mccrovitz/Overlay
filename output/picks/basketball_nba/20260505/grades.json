@@ -1,0 +1,119 @@
+{
+  "date": "20260505",
+  "total_picks": 7,
+  "graded": 7,
+  "pending": 0,
+  "wins": 3,
+  "losses": 4,
+  "win_rate": 0.42857142857142855,
+  "total_staked": 7.0,
+  "total_profit": -1.4536949536949537,
+  "roi": -20.767070767070766,
+  "by_type": {
+    "total": {
+      "wins": 0,
+      "losses": 2,
+      "profit": -2.0,
+      "win_rate": 0.0
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 0,
+      "profit": 0.68,
+      "win_rate": 1.0
+    },
+    "spread": {
+      "wins": 2,
+      "losses": 2,
+      "profit": -0.13,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 214.5",
+      "matchup": "Los Angeles Lakers @ Oklahoma City Thunder",
+      "odds": -105,
+      "model_prob": 0.8505,
+      "edge_pct": 35.16,
+      "won": false,
+      "profit": -1.0,
+      "score": "Los Angeles Lakers 90, Oklahoma City Thunder 108",
+      "status": "loss"
+    },
+    {
+      "market": "total",
+      "team": "OVER 215.5",
+      "matchup": "Cleveland Cavaliers @ Detroit Pistons",
+      "odds": -108,
+      "model_prob": 0.8505,
+      "edge_pct": 34.71,
+      "won": false,
+      "profit": -1.0,
+      "score": "Cleveland Cavaliers 101, Detroit Pistons 111",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "Detroit Pistons",
+      "matchup": "Cleveland Cavaliers @ Detroit Pistons",
+      "odds": -148,
+      "model_prob": 0.7685,
+      "edge_pct": 19.43,
+      "won": true,
+      "profit": 0.6756756756756757,
+      "score": "Cleveland Cavaliers 101, Detroit Pistons 111",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Detroit Pistons -3.5",
+      "matchup": "Cleveland Cavaliers @ Detroit Pistons",
+      "odds": -104,
+      "model_prob": 0.6646,
+      "edge_pct": 17.14,
+      "won": true,
+      "profit": 0.9615384615384616,
+      "score": "Cleveland Cavaliers 101, Detroit Pistons 111",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Los Angeles Lakers +15.5",
+      "matchup": "Los Angeles Lakers @ Oklahoma City Thunder",
+      "odds": -104,
+      "model_prob": 0.6585,
+      "edge_pct": 16.53,
+      "won": false,
+      "profit": -1.0,
+      "score": "Los Angeles Lakers 90, Oklahoma City Thunder 108",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "Oklahoma City Thunder -15.5",
+      "matchup": "Los Angeles Lakers @ Oklahoma City Thunder",
+      "odds": -110,
+      "model_prob": 0.3415,
+      "edge_pct": -16.53,
+      "won": true,
+      "profit": 0.9090909090909091,
+      "score": "Los Angeles Lakers 90, Oklahoma City Thunder 108",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Cleveland Cavaliers +3.0",
+      "matchup": "Cleveland Cavaliers @ Detroit Pistons",
+      "odds": -110,
+      "model_prob": 0.3204,
+      "edge_pct": -18.64,
+      "won": false,
+      "profit": -1.0,
+      "score": "Cleveland Cavaliers 101, Detroit Pistons 111",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-18T14:21:00.552630+00:00"
+}

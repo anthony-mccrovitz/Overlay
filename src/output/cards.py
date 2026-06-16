@@ -1,5 +1,5 @@
 """
-New card design system — ChefTonyBets 2026.
+New card design system — Overlay 2026.
 Clean, bold, math-backed. 1080×1350px (4:5 portrait).
 
 Cards generated only for active markets:
@@ -22,7 +22,7 @@ from typing import Optional
 # Shared utilities
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _render_html_to_png(html: str, out_path: Path) -> Optional[Path]:
+def _render_html_to_png(html: str, out_path: Path, card_height: int = 1350) -> Optional[Path]:
     """Render HTML string to PNG via Playwright. Returns path or None."""
     try:
         from playwright.sync_api import sync_playwright
@@ -33,12 +33,12 @@ def _render_html_to_png(html: str, out_path: Path) -> Optional[Path]:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            page = browser.new_page(viewport={"width": 1080, "height": 1350})
+            page = browser.new_page(viewport={"width": 1080, "height": card_height})
             page.set_content(html, wait_until="networkidle")
             out_path.parent.mkdir(parents=True, exist_ok=True)
             page.screenshot(
                 path=str(out_path),
-                clip={"x": 0, "y": 0, "width": 1080, "height": 1350},
+                clip={"x": 0, "y": 0, "width": 1080, "height": card_height},
             )
             browser.close()
         return out_path
@@ -133,12 +133,38 @@ def _card_html(
     market_banner: str | None = None,
     record_strip_html: str | None = None,
     form_strip_html: str | None = None,
+    card_height: int = 1350,
+    brand: str = "overlay",
 ) -> str:
     """
     Wrap body_html in the full card template.
-    Returns complete HTML string for a 1080×1350px card.
+    Returns complete HTML string for a 1080×{card_height}px card.
     """
     badge = _sport_badge(sport_key, label=badge_label or sport_label, color=badge_color)
+
+    _is_overlay = (brand == "overlay")
+    _root_vars = """
+      --bg:           #06080F;
+      --surface:      #0d1117;
+      --surface-border: rgba(255,255,255,0.07);
+      --top-border:   rgba(99,102,241,0.30);
+      --accent:       #6366f1;
+      --accent2:      #8b5cf6;
+      --text:         #F1F5F9;
+      --text-sec:     rgba(255,255,255,0.45);
+      --text-muted:   rgba(255,255,255,0.25);
+    """ if _is_overlay else """
+      --bg:           #080c14;
+      --surface:      #0f1623;
+      --surface-border: rgba(255,255,255,0.07);
+      --top-border:   rgba(0,232,122,0.25);
+      --accent:       #00e87a;
+      --accent2:      #00e87a;
+      --text:         #ffffff;
+      --text-sec:     rgba(255,255,255,0.45);
+      --text-muted:   rgba(255,255,255,0.25);
+    """
+    _body_bg = """background: radial-gradient(ellipse 90% 55% at 50% -5%, rgba(99,102,241,0.10) 0%, transparent 65%), #06080F;""" if _is_overlay else "background: var(--bg);"
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -149,23 +175,14 @@ def _card_html(
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet" />
   <style>
-    :root {{
-      --bg:           #080c14;
-      --surface:      #0f1623;
-      --surface-border: rgba(255,255,255,0.07);
-      --top-border:   rgba(0,232,122,0.25);
-      --accent:       #00e87a;
-      --text:         #ffffff;
-      --text-sec:     rgba(255,255,255,0.45);
-      --text-muted:   rgba(255,255,255,0.25);
-    }}
+    :root {{{_root_vars}}}
 
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
     body {{
       width: 1080px;
-      height: 1350px;
-      background: var(--bg);
+      height: {card_height}px;
+      {_body_bg}
       font-family: 'Inter', sans-serif;
       color: var(--text);
       overflow: hidden;
@@ -221,11 +238,11 @@ def _card_html(
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8px 56px;
-      gap: 16px;
+      padding: 8px 56px 40px;
+      gap: 20px;
     }}
     /* When few picks, let each row breathe vertically so we don't get dead space */
-    .picks .pick-row {{ min-height: 180px; }}
+    .picks .pick-row {{ min-height: 200px; }}
 
     /* ── Pick row ── */
     .pick-row {{
@@ -260,17 +277,17 @@ def _card_html(
 
     /* ── Market banner (full-width type identifier) ── */
     .market-banner {{
-      padding: 0 56px 28px;
+      padding: 0 56px 20px;
       flex-shrink: 0;
     }}
     .market-banner-text {{
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0.20em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.30);
       border-top: 1px solid rgba(255,255,255,0.07);
-      padding-top: 20px;
+      padding-top: 16px;
     }}
 
     /* ── Left section ── */
@@ -364,10 +381,10 @@ def _card_html(
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      min-width: 120px;
+      min-width: 130px;
     }}
     .edge-value {{
-      font-size: 22px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--accent);
       letter-spacing: -0.01em;
@@ -725,16 +742,7 @@ def _card_html(
 </head>
 <body>
   <!-- Header -->
-  <div class="header">
-    <div class="logo-block">
-      <div class="logo">ChefTony<span class="accent">Bets</span></div>
-      <div class="logo-sub">@ChefTonyAIBets</div>
-    </div>
-    <div class="header-right">
-      <div class="header-date">{date_str}</div>
-      {badge}
-    </div>
-  </div>
+  {'<div class="header"><div style="display:flex;align-items:center;gap:14px;"><div style="width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;font-weight:900;box-shadow:0 4px 20px rgba(99,102,241,0.32);">&#9672;</div><div style="display:flex;flex-direction:column;gap:3px;"><div style="font-size:34px;font-weight:900;color:#F1F5F9;letter-spacing:-0.5px;line-height:1;">Overlay</div><div style="font-size:11px;color:rgba(255,255,255,0.32);letter-spacing:0.12em;font-weight:600;">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div></div></div><div class="header-right"><div class="header-date">' + date_str + '</div>' + badge + '</div></div>' if brand == 'overlay' else '<div class="header"><div class="logo-block"><div class="logo">Overlay<span class="accent">Bets</span></div><div class="logo-sub">@getoverlay</div></div><div class="header-right"><div class="header-date">' + date_str + '</div>' + badge + '</div></div>'}
 
   <!-- Market type banner -->
   {f'<div class="market-banner"><div class="market-banner-text">{market_banner}</div></div>' if market_banner else ''}
@@ -752,7 +760,7 @@ def _card_html(
 
   <!-- Footer -->
   <div class="footer">
-    <div class="footer-handle">TAIL @ChefTonyAIBets &nbsp;·&nbsp; Link in bio</div>
+    {'<div class="footer-handle">@getoverlay &nbsp;·&nbsp; overlay-gray.vercel.app</div>' if brand == 'overlay' else '<div class="footer-handle">TAIL @getoverlay &nbsp;·&nbsp; Link in bio</div>'}
     <div class="footer-disclaimer">Not financial advice &nbsp;·&nbsp; 21+</div>
   </div>
 </body>
@@ -1018,6 +1026,9 @@ def _pick_row_html(
     time_html = f'<div class="game-time">{_ICON_CLOCK}{game_time}</div>' if game_time else ""
     conf_html = _confidence_html(edge_pct)
 
+    # AI Score: 0-99, scaled so 6% edge ≈ 74, 12% edge ≈ 96
+    ai_score = min(99, max(50, 50 + round(edge_pct * 4.0)))
+
     return f"""
 <div class="{row_class}">
   {top_badge}
@@ -1034,7 +1045,8 @@ def _pick_row_html(
     <div class="odds-book">{sportsbook}</div>
   </div>
   <div class="pick-edge">
-    <div class="edge-value">+{edge_pct:.1f}%</div>
+    <div class="edge-value">{ai_score}</div>
+    <div class="edge-label">AI SCORE</div>
     {conf_html}
     <div class="edge-bar-track">
       <div class="edge-bar-fill" style="width:{bar_pct}%"></div>
@@ -1118,7 +1130,8 @@ def _hero_pick_html(
   <div class="hero-edge-row">
     <div class="hero-odds-chip">{odds_str}</div>
     <div class="hero-edge-block">
-      <div class="hero-edge-pct">+{edge_pct:.1f}%</div>
+      <div class="hero-edge-pct">{min(99, max(50, 50 + round(edge_pct * 4.0)))}</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;color:rgba(255,255,255,0.35);margin-top:2px">AI SCORE</div>
       {conf_html}
       <div class="hero-edge-bar"><div class="hero-edge-fill" style="width:{bar_pct}%"></div></div>
     </div>
@@ -1139,73 +1152,154 @@ def _hero_pick_html(
 
 def render_mlb_moneyline_card(picks: list[dict], card_date: date | None = None) -> Optional[Path]:
     """
-    Render MLB moneyline picks card.
+    Render MLB moneyline picks card — head-to-head logo format (away vs home).
     picks keys: Team, Opponent/Matchup, BestOdds, Edge (fraction) or edge_pct, Sportsbook
     """
     if not picks:
         return None
 
+    from src.output.card_html import (
+        _logo_url, _MLB_HEX, _ESPN_ABBR, _book_badge_html,
+        _playwright_render, _format_record_str,
+    )
+
     card_date = card_date or date.today()
-    date_str = card_date.strftime("%B %d, %Y").upper()
     ts = card_date.strftime("%Y%m%d")
+    date_str = card_date.strftime("%b %d, %Y").upper()
     out_path = Path("output/picks/baseball_mlb") / ts / "mlb_moneyline_card.png"
 
-    # Normalize and pick top 5
+    # Normalize picks
     rows: list[dict] = []
-    for p in picks[:5]:
+    for p in picks[:4]:
         edge = _resolve_edge_pct(p)
-        opponent = str(p.get("Opponent") or p.get("matchup") or "")
-        matchup = str(p.get("Matchup") or p.get("matchup") or opponent)
-        if matchup and "vs" not in matchup.lower() and " @ " not in matchup:
-            vs_line = f"vs {opponent}"
-        else:
-            if " @ " in matchup:
-                parts = matchup.split(" @ ")
-                team_name = str(p.get("Team") or "")
-                other = parts[0] if parts[1].lower() in team_name.lower() else parts[1]
-                vs_line = f"vs {other}"
-            else:
-                vs_line = f"vs {opponent}" if opponent else matchup
+        team = str(p.get("Team") or p.get("team") or "")
+        matchup = str(p.get("Matchup") or p.get("matchup") or p.get("Opponent") or "")
+        away_t = home_t = ""
+        if " @ " in matchup:
+            away_t, home_t = matchup.split(" @ ", 1)
+            away_t = away_t.strip(); home_t = home_t.strip()
+        pick_side = "AWAY" if away_t and away_t.lower() in team.lower() else "HOME"
         rows.append({
-            "team": str(p.get("Team") or ""),
-            "vs_line": vs_line,
-            "odds": p.get("BestOdds") or p.get("odds") or 0,
+            "team": team,
+            "away": away_t or team,
+            "home": home_t or str(p.get("Opponent") or ""),
+            "pick_side": pick_side,
+            "odds": int(p.get("BestOdds") or p.get("odds") or 0),
             "book": str(p.get("Sportsbook") or p.get("sportsbook") or ""),
             "edge_pct": edge,
             "game_time": _fmt_game_time(p.get("CommenceTime") or p.get("commence_time")),
-            "units": f"{float(p.get('stake', 1.0) or 1.0):.1f}u",
         })
 
     if not rows:
         return None
 
-    max_edge_idx = max(range(len(rows)), key=lambda i: rows[i]["edge_pct"])
-    record_html = _load_record_strip("mlb", "moneyline")
-    body_parts = []
-    for i, row in enumerate(rows):
-        body_parts.append(_pick_row_html(
-            market_label="Moneyline",
-            team_name=row["team"],
-            matchup_line=row["vs_line"],
-            odds=row["odds"],
-            sportsbook=row["book"],
-            edge_pct=row["edge_pct"],
-            is_top_play=(i == max_edge_idx),
-            game_time=row["game_time"],
-            units=row["units"],
-        ))
+    record_str = _format_record_str("mlb")
 
-    html = _card_html(
-        sport_label="MLB",
-        date_str=date_str,
-        body_html="\n".join(body_parts),
-        badge_color="#00e87a",
-        badge_label="MLB",
-        sport_key="baseball_mlb",
-        market_banner="Moneyline Picks — AI Edge Detection",
-        record_strip_html=record_html,
-    )
-    return _render_html_to_png(html, out_path)
+    def _logo_img(team: str, sz: int = 80) -> str:
+        url = _logo_url(team)
+        abbr = _ESPN_ABBR.get(team, team[:3].upper())
+        hex_c = _MLB_HEX.get(team, "#4080FF")
+        if url:
+            return (f'<img src="{url}" width="{sz}" height="{sz}" '
+                    f'style="object-fit:contain;filter:drop-shadow(0 0 12px rgba(255,255,255,0.15))">')
+        return (f'<div style="width:{sz}px;height:{sz}px;border-radius:50%;'
+                f'background:{hex_c};display:flex;align-items:center;justify-content:center;'
+                f'font-size:{sz//3}px;font-weight:900;color:#fff">{abbr}</div>')
+
+    pick_rows = ""
+    for i, r in enumerate(rows):
+        away_logo = _logo_img(r["away"], 72)
+        home_logo = _logo_img(r["home"], 72)
+        away_abbr = _ESPN_ABBR.get(r["away"], r["away"][:3].upper())
+        home_abbr = _ESPN_ABBR.get(r["home"], r["home"][:3].upper())
+        odds_str = f"{r['odds']:+d}" if r["odds"] else "—"
+        edge_color = "#00E676" if r["edge_pct"] >= 12 else ("#FFA514" if r["edge_pct"] >= 6 else "#6B8CFF")
+        pick_hex = _MLB_HEX.get(r["team"], "#4080FF")
+
+        away_hl = "font-weight:900;color:#fff" if r["pick_side"] == "AWAY" else "color:rgba(255,255,255,0.45)"
+        home_hl = "font-weight:900;color:#fff" if r["pick_side"] == "HOME" else "color:rgba(255,255,255,0.45)"
+        pick_arrow = "← PICK" if r["pick_side"] == "AWAY" else "PICK →"
+
+        is_best = (i == 0)
+        bg = f"linear-gradient(135deg,rgba(64,128,255,0.12),rgba(0,0,0,0))" if is_best else "rgba(255,255,255,0.025)"
+        bdr = "rgba(64,128,255,0.4)" if is_best else "rgba(255,255,255,0.07)"
+        top_badge = (
+            '<div style="position:absolute;top:10px;right:14px;background:linear-gradient(135deg,#FFD700,#FF8C00);'
+            'padding:4px 12px;border-radius:999px;font-size:11px;font-weight:900;color:#000;letter-spacing:0.1em">⚡ TOP</div>'
+        ) if is_best else ""
+
+        # Adaptive height: picks fill the 1080px card (subtract ~180 header + ~80 footer)
+        n_picks = len(rows)
+        row_min_h = max(160, (1080 - 180 - 80) // n_picks)
+
+        # Picked side: full brightness. Other side: visible but subdued (0.55 not 0.38)
+        away_op = "1" if r["pick_side"] == "AWAY" else "0.55"
+        home_op = "1" if r["pick_side"] == "HOME" else "0.55"
+        pick_label = "← PICK" if r["pick_side"] == "AWAY" else "PICK →"
+        accent_bar = f'<div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:{pick_hex};border-radius:3px 0 0 3px"></div>' if is_best else ""
+
+        pick_rows += f"""
+  <div style="position:relative;display:flex;align-items:center;
+       background:{bg};border:1px solid {bdr};border-radius:18px;
+       min-height:{row_min_h}px;padding:20px 24px;gap:16px;margin-bottom:12px;overflow:hidden">
+    {accent_bar}{top_badge}
+    <!-- away team -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;opacity:{away_op};min-width:88px">
+      {away_logo}
+      <span style="font-size:14px;font-weight:900;letter-spacing:2px;color:#fff">{away_abbr}</span>
+    </div>
+    <!-- center -->
+    <div style="flex:1;text-align:center">
+      <div style="font-size:12px;font-weight:800;color:{pick_hex};letter-spacing:0.14em;margin-bottom:6px">{pick_label}</div>
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.18em;margin-bottom:4px">MONEYLINE</div>
+      <div style="font-size:52px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1">{odds_str}</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <span style="font-size:13px;font-weight:800;color:{edge_color};
+              border:1.5px solid {edge_color}55;border-radius:999px;padding:3px 12px">AI SCORE {min(99, max(50, 50 + round(r['edge_pct'] * 4)))}</span>
+        {_book_badge_html(r['book'], font_size=12, padding="3px 10px", radius="6px")}
+      </div>
+    </div>
+    <!-- home team -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;opacity:{home_op};min-width:88px">
+      {home_logo}
+      <span style="font-size:14px;font-weight:900;letter-spacing:2px;color:#fff">{home_abbr}</span>
+    </div>
+  </div>"""
+
+    html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>* {{ box-sizing:border-box; margin:0; padding:0; }}
+body {{ background:#0a0b14; font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;
+  width:1080px; height:1080px; color:#fff; }}</style></head>
+<body>
+<div style="width:1080px;height:1080px;background:linear-gradient(160deg,#0e1022 0%,#080810 50%);
+     display:flex;flex-direction:column;overflow:hidden">
+  <!-- header -->
+  <div style="display:flex;justify-content:space-between;align-items:center;
+       padding:36px 52px 28px;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0">
+    <div>
+      <div style="font-size:40px;font-weight:900;color:#fff;letter-spacing:-1px">Overlay</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.35);letter-spacing:0.15em;margin-top:4px">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
+    </div>
+    <div style="background:#6480ff18;border:1.5px solid #6480ff55;border-radius:999px;
+         padding:10px 24px;font-size:14px;font-weight:800;color:#6480ff;letter-spacing:0.14em">MLB MONEYLINE</div>
+    <div style="font-size:16px;font-weight:700;color:rgba(255,255,255,0.5)">{date_str}</div>
+  </div>
+  <!-- picks -->
+  <div style="flex:1;padding:18px 44px 0;display:flex;flex-direction:column;justify-content:center">
+    {pick_rows}
+  </div>
+  <!-- footer -->
+  <div style="display:flex;justify-content:space-between;align-items:center;
+       padding:14px 52px 26px;border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0">
+    <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.5)">{record_str}</div>
+    <div style="font-size:16px;font-weight:900;color:#6480ff;letter-spacing:0.14em">@GETOVERLAY</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.28)">overlay-gray.vercel.app</div>
+  </div>
+</div></body></html>"""
+
+    html_path = out_path.with_suffix(".html")
+    html_path.parent.mkdir(parents=True, exist_ok=True)
+    return _playwright_render(html, html_path, out_path, target_height=1080)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1299,37 +1393,54 @@ def render_mlb_totals_card(picks: list[dict], card_date: date | None = None) -> 
             weather_html = ""
             if row["weather"]:
                 weather_html = f'<div class="weather-badge">{row["weather"]}</div>'
-            center_html = (
-                f'<div class="direction-label">{row["direction"]}</div>'
-                f'<div class="line-label">{row["line"]}</div>'
-            )
+            direction_line = f"{row['direction']} {row['line']}".strip()
             body_parts.append(_pick_row_html(
-                market_label="Over / Under",
-                team_name=row["matchup"],
-                matchup_line="Game Total",
+                market_label="Game Total",
+                team_name=direction_line,
+                matchup_line=row["matchup"],
                 odds=row["odds"],
                 sportsbook=row["book"],
                 edge_pct=row["edge_pct"],
                 is_top_play=(i == max_edge_idx),
-                center_html=center_html,
                 extra_left_html=weather_html,
                 game_time=row["game_time"],
                 units=row["units"],
             ))
         body_html = "\n".join(body_parts)
 
-    html = _card_html(
-        sport_label="MLB",
-        date_str=date_str,
-        body_html=body_html,
-        badge_color="#00e87a",
-        badge_label="MLB",
-        sport_key="baseball_mlb",
-        market_banner="Over / Under Picks — AI Edge Detection",
-        record_strip_html=record_html,
-        form_strip_html=_load_recent_form_strip("baseball_mlb"),
-    )
-    return _render_html_to_png(html, out_path)
+    # ── Render using the clean team-logo totals template ──────────────────────
+    # Normalize to lowercase schema expected by _build_clean_totals_html
+    from src.output.card_html import _build_clean_totals_html, _playwright_render
+
+    clean_picks: list[dict] = []
+    for r in rows:
+        clean_picks.append({
+            "market":    "total",
+            "matchup":   r["matchup"],
+            "direction": r["direction"],
+            "bet_line":  r["line"],
+            "best_odds": r["odds"],
+            "sportsbook": r["book"],
+            "edge_pct":  r["edge_pct"],
+        })
+
+    clean_html = _build_clean_totals_html(clean_picks, "baseball_mlb", card_date)
+    if not clean_html:
+        # Fallback: use old dashboard card if clean returns empty
+        html = _card_html(
+            sport_label="MLB",
+            date_str=date_str,
+            body_html=body_html,
+            badge_color="#00e87a",
+            badge_label="MLB",
+            sport_key="baseball_mlb",
+            market_banner="Totals Model",
+            record_strip_html=record_html,
+        )
+        return _render_html_to_png(html, out_path)
+
+    html_path = out_path.with_suffix(".html")
+    return _playwright_render(clean_html, html_path, out_path, target_height=1080)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1407,7 +1518,7 @@ def render_mlb_pitcher_ks_card(picks: list[dict], card_date: date | None = None)
         badge_color="#00e87a",
         badge_label="MLB",
         sport_key="baseball_mlb",
-        market_banner="Pitcher Strikeouts — AI Edge Detection",
+        market_banner="Pitcher Strikeouts",
         record_strip_html=record_html,
     )
     return _render_html_to_png(html, out_path)
@@ -1506,7 +1617,7 @@ def render_nba_totals_card(picks: list[dict], card_date: date | None = None) -> 
         badge_color="#3a86ff",
         badge_label="NBA PLAYOFFS",
         sport_key="basketball_nba",
-        market_banner="Over / Under Picks — AI Edge Detection",
+        market_banner="Totals Model",
         record_strip_html=record_html,
         form_strip_html=_load_recent_form_strip("basketball_nba"),
     )
@@ -1608,6 +1719,8 @@ def render_tennis_card(
         ))
 
     tournament_badge_label = tournament.upper()
+    # Dynamic height: 300px fixed chrome + ~230px per pick row, min 600, max 1350
+    _pick_height = max(600, min(1350, 300 + len(rows) * 230))
     html = _card_html(
         sport_label=tournament_badge_label,
         date_str=date_str,
@@ -1617,8 +1730,10 @@ def render_tennis_card(
         sport_key="tennis",
         market_banner="Moneyline Picks — Elo Model Edge Detection",
         record_strip_html=record_html,
+        card_height=_pick_height,
+        brand="overlay",
     )
-    return _render_html_to_png(html, out_path)
+    return _render_html_to_png(html, out_path, card_height=_pick_height)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1803,7 +1918,8 @@ def render_pga_card(
     <div class="odds-book">{row["book"]}</div>
   </div>
   <div class="pick-edge">
-    <div class="edge-value">+{row["edge_pct"]:.1f}%</div>
+    <div class="edge-value">{min(99, max(50, 50 + round(row["edge_pct"] * 4.0)))}</div>
+    <div class="edge-label">AI SCORE</div>
     {conf_html}
     <div class="edge-bar-track">
       <div class="edge-bar-fill" style="width:{bar_pct}%"></div>
@@ -1824,3 +1940,244 @@ def render_pga_card(
         record_strip_html=record_html,
     )
     return _render_html_to_png(html, out_path)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Card 8: FIFA World Cup 2026
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ISO 3166-1 alpha-2 codes for World Cup nations → flagcdn.com path
+_WC_FLAG_CODES: dict[str, str] = {
+    "Algeria": "dz", "Argentina": "ar", "Australia": "au",
+    "Austria": "at", "Belgium": "be", "Bolivia": "bo",
+    "Brazil": "br", "Cameroon": "cm", "Canada": "ca",
+    "Chile": "cl", "China": "cn", "Colombia": "co",
+    "Costa Rica": "cr", "Croatia": "hr", "Cuba": "cu",
+    "Czech Republic": "cz", "Denmark": "dk", "Ecuador": "ec",
+    "Egypt": "eg", "England": "gb-eng", "France": "fr",
+    "Germany": "de", "Ghana": "gh", "Greece": "gr",
+    "Honduras": "hn", "Hungary": "hu", "Iceland": "is",
+    "Indonesia": "id", "Iran": "ir", "Iraq": "iq",
+    "Italy": "it", "Jamaica": "jm", "Japan": "jp",
+    "Kenya": "ke", "Mali": "ml", "Mexico": "mx",
+    "Morocco": "ma", "Netherlands": "nl", "New Zealand": "nz",
+    "Nigeria": "ng", "North Korea": "kp", "Panama": "pa",
+    "Paraguay": "py", "Peru": "pe", "Philippines": "ph",
+    "Poland": "pl", "Portugal": "pt", "Qatar": "qa",
+    "Romania": "ro", "Saudi Arabia": "sa", "Scotland": "gb-sct",
+    "Senegal": "sn", "Serbia": "rs", "Slovakia": "sk",
+    "Slovenia": "si", "South Africa": "za", "South Korea": "kr",
+    "Spain": "es", "Sweden": "se", "Switzerland": "ch",
+    "Thailand": "th", "Trinidad and Tobago": "tt", "Tunisia": "tn",
+    "Turkey": "tr", "Ukraine": "ua", "United States": "us",
+    "Uruguay": "uy", "Uzbekistan": "uz", "Venezuela": "ve",
+    "Wales": "gb-wls",
+}
+
+_WC_FLAG_CACHE: dict[str, str] = {}
+
+
+def _wc_flag_b64(country: str) -> str:
+    """Return base64 data URI for a country flag, or empty string."""
+    if country in _WC_FLAG_CACHE:
+        return _WC_FLAG_CACHE[country]
+    code = _WC_FLAG_CODES.get(country)
+    if not code:
+        _WC_FLAG_CACHE[country] = ""
+        return ""
+    try:
+        import requests, base64 as _b64
+        url = f"https://flagcdn.com/w160/{code}.png"
+        r = requests.get(url, timeout=6)
+        if r.status_code == 200 and len(r.content) > 500:
+            b64 = _b64.b64encode(r.content).decode()
+            data_uri = f"data:image/png;base64,{b64}"
+            _WC_FLAG_CACHE[country] = data_uri
+            return data_uri
+    except Exception:
+        pass
+    _WC_FLAG_CACHE[country] = ""
+    return ""
+
+
+def _wc_flag_img(country: str, sz: int = 100) -> str:
+    """Return HTML <img> or text fallback for a country flag."""
+    uri = _wc_flag_b64(country)
+    code = _WC_FLAG_CODES.get(country, "")
+    abbr = country[:3].upper()
+    if uri:
+        return (
+            f'<img src="{uri}" width="{sz}" height="{int(sz*0.67)}" '
+            f'style="object-fit:cover;border-radius:6px;'
+            f'box-shadow:0 2px 12px rgba(0,0,0,0.5);display:block">'
+        )
+    # Fallback: colored block with country abbreviation
+    return (
+        f'<div style="width:{sz}px;height:{int(sz*0.67)}px;border-radius:6px;'
+        f'background:#2a2f45;display:flex;align-items:center;justify-content:center;'
+        f'font-size:{sz//4}px;font-weight:900;color:#fff;letter-spacing:2px">{abbr}</div>'
+    )
+
+
+def render_world_cup_card(
+    picks: list[dict],
+    card_date: date | None = None,
+    out_dir: Path | None = None,
+) -> Optional[Path]:
+    """
+    Render FIFA World Cup 2026 picks card with country flags.
+
+    Handles all three market types:
+      - moneyline (Match Winner — team or Draw)
+      - total (Over/Under total goals)
+      - btts (Both Teams to Score)
+
+    picks keys: team, matchup, market, direction, odds, edge_pct, sportsbook
+    """
+    if not picks:
+        return None
+
+    card_date = card_date or date.today()
+    ts = card_date.strftime("%Y%m%d")
+    date_str = card_date.strftime("%b %d, %Y").upper()
+
+    if out_dir is None:
+        out_dir = Path("output/picks/soccer_fifa_world_cup") / ts
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "world_cup_card.png"
+
+    # Limit to 4 picks max
+    picks = picks[:4]
+    n = len(picks)
+    row_min_h = max(180, (1080 - 200 - 80) // n)
+
+    record_str = _load_record_strip("soccer", "moneyline")
+
+    pick_rows_html = ""
+    for i, p in enumerate(picks):
+        matchup = p.get("matchup") or ""
+        market  = (p.get("market") or "moneyline").lower()
+        direction = p.get("direction") or p.get("team") or ""
+        odds_raw  = p.get("odds") or p.get("best_odds") or 0
+        odds_str  = f"{int(odds_raw):+d}" if odds_raw else "—"
+        book      = p.get("sportsbook") or ""
+        edge_pct  = float(p.get("edge_pct") or 0)
+        ai_score  = min(99, max(50, 50 + round(edge_pct * 4.0)))
+
+        # Parse teams from matchup
+        away_t = home_t = ""
+        if " @ " in matchup:
+            away_t, home_t = matchup.split(" @ ", 1)
+            away_t = away_t.strip(); home_t = home_t.strip()
+
+        away_flag = _wc_flag_img(away_t, sz=88) if away_t else ""
+        home_flag = _wc_flag_img(home_t, sz=88) if home_t else ""
+
+        # Market label
+        if market == "total":
+            bet_line = p.get("line") or ""
+            mkt_label = "TOTAL GOALS"
+            pick_display = f"{direction.upper()} {bet_line}"
+            pick_color = "#00E676" if "OVER" in direction.upper() else "#FF5C5C"
+        elif market in ("btts", "both_teams_to_score"):
+            mkt_label = "BOTH TEAMS TO SCORE"
+            pick_display = direction.upper()
+            pick_color = "#6480ff"
+        else:
+            mkt_label = "MATCH WINNER"
+            pick_display = direction
+            pick_color = "#fff"
+
+        is_draw = direction.lower() == "draw"
+        edge_color = "#00E676" if edge_pct >= 12 else ("#FFA514" if edge_pct >= 6 else "#6B8CFF")
+        is_best = (i == 0)
+        bg = "rgba(100,128,255,0.08)" if is_best else "rgba(255,255,255,0.025)"
+        bdr = "rgba(100,128,255,0.35)" if is_best else "rgba(255,255,255,0.07)"
+
+        # Which side is picked (for draw: both muted, draw highlighted)
+        if is_draw:
+            away_op = "0.5"; home_op = "0.5"
+        elif direction.lower() in (away_t.lower() if away_t else ""):
+            away_op = "1.0"; home_op = "0.5"
+        elif direction.lower() in (home_t.lower() if home_t else ""):
+            away_op = "0.5"; home_op = "1.0"
+        else:
+            away_op = "1.0"; home_op = "1.0"
+
+        top_badge = (
+            '<div style="position:absolute;top:10px;right:14px;background:linear-gradient(135deg,#FFD700,#FF8C00);'
+            'padding:4px 12px;border-radius:999px;font-size:11px;font-weight:900;color:#000;letter-spacing:0.1em">⚡ TOP</div>'
+        ) if is_best else ""
+
+        pick_rows_html += f"""
+  <div style="position:relative;display:flex;align-items:center;
+       background:{bg};border:1px solid {bdr};border-radius:18px;
+       min-height:{row_min_h}px;padding:18px 28px;gap:16px;margin-bottom:12px;overflow:hidden">
+    {top_badge}
+    <!-- away country -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;opacity:{away_op};min-width:96px">
+      {away_flag}
+      <span style="font-size:12px;font-weight:800;letter-spacing:1.5px;color:rgba(255,255,255,0.85)">{(away_t or '').upper()[:12]}</span>
+    </div>
+    <!-- center -->
+    <div style="flex:1;text-align:center">
+      <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,0.3);letter-spacing:0.20em;margin-bottom:8px">{mkt_label}</div>
+      <div style="font-size:38px;font-weight:900;color:{pick_color};letter-spacing:-0.5px;line-height:1.1">{pick_display}</div>
+      <div style="font-size:44px;font-weight:900;color:#fff;letter-spacing:-1px;margin-top:6px">{odds_str}</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:12px;font-weight:800;color:{edge_color};
+              border:1.5px solid {edge_color}55;border-radius:999px;padding:3px 12px">AI SCORE {ai_score}</span>
+        <span style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);
+              background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+              border-radius:999px;padding:3px 10px">{book.upper()[:12]}</span>
+      </div>
+    </div>
+    <!-- home country -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;opacity:{home_op};min-width:96px">
+      {home_flag}
+      <span style="font-size:12px;font-weight:800;letter-spacing:1.5px;color:rgba(255,255,255,0.85)">{(home_t or '').upper()[:12]}</span>
+    </div>
+  </div>"""
+
+    html = f"""<!DOCTYPE html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>* {{ box-sizing:border-box; margin:0; padding:0; }}
+body {{ background:#080b14; font-family:'Inter',-apple-system,sans-serif;
+  width:1080px; height:1080px; color:#fff; }}</style></head>
+<body>
+<div style="width:1080px;height:1080px;
+     background:linear-gradient(160deg,#0c1024 0%,#060810 50%,#0a0c18 100%);
+     display:flex;flex-direction:column;overflow:hidden">
+
+  <!-- header -->
+  <div style="display:flex;justify-content:space-between;align-items:center;
+       padding:34px 52px 26px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0">
+    <div>
+      <div style="font-size:40px;font-weight:900;color:#fff;letter-spacing:-1px">Overlay</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.32);letter-spacing:0.14em;margin-top:4px">EVERY PICK TIMESTAMPED BEFORE GAME TIME</div>
+    </div>
+    <div style="background:#FFD70018;border:1.5px solid #FFD70060;border-radius:999px;
+         padding:10px 26px;font-size:13px;font-weight:900;color:#FFD700;letter-spacing:0.14em">
+      🌍 WORLD CUP 2026
+    </div>
+    <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.45)">{date_str}</div>
+  </div>
+
+  <!-- picks -->
+  <div style="flex:1;padding:20px 44px 0;display:flex;flex-direction:column;justify-content:center">
+    {pick_rows_html}
+  </div>
+
+  <!-- footer -->
+  <div style="display:flex;justify-content:space-between;align-items:center;
+       padding:14px 52px 26px;border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0">
+    <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,0.45)">Dixon-Coles Poisson Model</div>
+    <div style="font-size:16px;font-weight:900;color:#6480ff;letter-spacing:0.14em">@GETOVERLAY</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.25)">overlay-gray.vercel.app</div>
+  </div>
+</div></body></html>"""
+
+    html_path = out_path.with_suffix(".html")
+    html_path.parent.mkdir(parents=True, exist_ok=True)
+    from src.output.card_html import _playwright_render
+    return _playwright_render(html, html_path, out_path, target_height=1080)

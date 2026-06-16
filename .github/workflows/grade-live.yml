@@ -1,0 +1,23 @@
+name: Live grader
+
+# Grades completed games through the evening. Live crontab was every 15 min over
+# 20-23,0-7 ET; trimmed to every 30 min (0-11 UTC = 8 PM–7 AM ET) to stay inside
+# the free-tier minutes. Bump back to */15 if you want faster result posting.
+on:
+  schedule:
+    - cron: "*/30 0-11 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: grade-live
+  cancel-in-progress: false
+
+jobs:
+  grade:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: python scripts/grade_completed.py

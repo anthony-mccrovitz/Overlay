@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Carlos Rodon",
+      "team": "Carlos Rodon UNDER 3.5",
+      "matchup": "Toronto Blue Jays @ New York Yankees",
+      "line": 3.5,
+      "odds": 290,
+      "model_prob": 0.6032,
+      "implied_prob": 0.2397,
+      "edge_pct": 36.34,
+      "model_mu": 3.85,
+      "sportsbook": "betPARX"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Davis Schneider",
+      "team": "Davis Schneider OVER 0.5",
+      "matchup": "Toronto Blue Jays @ New York Yankees",
+      "line": 0.5,
+      "odds": 145,
+      "model_prob": 0.6561,
+      "implied_prob": 0.3797,
+      "edge_pct": 27.63,
+      "model_mu": 1.91,
+      "sportsbook": "BetMGM"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Jhostynxon Garcia",
+      "team": "Jhostynxon Garcia OVER 1.5",
+      "matchup": "Pittsburgh Pirates @ St. Louis Cardinals",
+      "line": 1.5,
+      "odds": 360,
+      "model_prob": 0.4298,
+      "implied_prob": 0.2023,
+      "edge_pct": 22.75,
+      "model_mu": 1.9,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}

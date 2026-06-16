@@ -1,0 +1,119 @@
+{
+  "date": "20260504",
+  "total_picks": 7,
+  "graded": 7,
+  "pending": 0,
+  "wins": 4,
+  "losses": 3,
+  "win_rate": 0.5714285714285714,
+  "total_staked": 7.0,
+  "total_profit": 0.14661526394988478,
+  "roi": 2.0945037707126395,
+  "by_type": {
+    "total": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.08,
+      "win_rate": 0.5
+    },
+    "moneyline": {
+      "wins": 1,
+      "losses": 0,
+      "profit": 0.35,
+      "win_rate": 1.0
+    },
+    "spread": {
+      "wins": 2,
+      "losses": 2,
+      "profit": -0.12,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "total",
+      "team": "OVER 213.5",
+      "matchup": "Philadelphia 76ers @ New York Knicks",
+      "odds": -109,
+      "model_prob": 0.845,
+      "edge_pct": 34.61,
+      "won": true,
+      "profit": 0.9174311926605505,
+      "score": "Philadelphia 76ers 98, New York Knicks 137",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "OVER 217.5",
+      "matchup": "Minnesota Timberwolves @ San Antonio Spurs",
+      "odds": -106,
+      "model_prob": 0.7434,
+      "edge_pct": 24.78,
+      "won": false,
+      "profit": -1.0,
+      "score": "Minnesota Timberwolves 104, San Antonio Spurs 102",
+      "status": "loss"
+    },
+    {
+      "market": "moneyline",
+      "team": "New York Knicks",
+      "matchup": "Philadelphia 76ers @ New York Knicks",
+      "odds": -285,
+      "model_prob": 0.802,
+      "edge_pct": 10.94,
+      "won": true,
+      "profit": 0.3508771929824561,
+      "score": "Philadelphia 76ers 98, New York Knicks 137",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "New York Knicks -7.5",
+      "matchup": "Philadelphia 76ers @ New York Knicks",
+      "odds": -108,
+      "model_prob": 0.5825,
+      "edge_pct": 8.36,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Philadelphia 76ers 98, New York Knicks 137",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Minnesota Timberwolves +12.5",
+      "matchup": "Minnesota Timberwolves @ San Antonio Spurs",
+      "odds": -105,
+      "model_prob": 0.5563,
+      "edge_pct": 5.52,
+      "won": true,
+      "profit": 0.9523809523809523,
+      "score": "Minnesota Timberwolves 104, San Antonio Spurs 102",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Philadelphia 76ers +7.5",
+      "matchup": "Philadelphia 76ers @ New York Knicks",
+      "odds": -109,
+      "model_prob": 0.4175,
+      "edge_pct": -8.36,
+      "won": false,
+      "profit": -1.0,
+      "score": "Philadelphia 76ers 98, New York Knicks 137",
+      "status": "loss"
+    },
+    {
+      "market": "spread",
+      "team": "San Antonio Spurs -13.5",
+      "matchup": "Minnesota Timberwolves @ San Antonio Spurs",
+      "odds": -104,
+      "model_prob": 0.411,
+      "edge_pct": -8.78,
+      "won": false,
+      "profit": -1.0,
+      "score": "Minnesota Timberwolves 104, San Antonio Spurs 102",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-05-18T14:20:59.948777+00:00"
+}

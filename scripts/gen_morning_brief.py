@@ -367,7 +367,7 @@ def build_brief(today: str) -> str:
     pretty_y     = datetime.strptime(yesterday, "%Y%m%d").strftime("%A %b %-d")
 
     sections = [
-        "# ChefTonyBets — Daily Brief",
+        "# Overlay — Daily Brief",
         f"**{pretty_today}**",
         "",
         "---",

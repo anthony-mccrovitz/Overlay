@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 6/4/26 (Thursday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 69-55 (55.6% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Kansas City Royals vs  | +104 | +11.9% | 1xBet |
+| Pittsburgh Pirates vs  | +100 | +11.6% | Fliff |
+| Athletics vs  | +124 | +12.9% | Betfair |
+| Cincinnati Reds vs  | +120 | +12.5% | GTbets |
+| Washington Nationals vs  | +117 | +12.2% | 1xBet |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Kansas City Royals @ Minnesota Twins NRFI (Seth Lugo vs Andrew Morris) | NRFI -102 | 66% | BetMGM |
+| Toronto Blue Jays @ Atlanta Braves NRFI (Mason Fluharty vs Chris Sale) | NRFI -130 | 67% | BetMGM |
+| Los Angeles Dodgers @ Arizona Diamondbacks NRFI (Justin Wrobleski vs Ryne Nelson) | NRFI -120 | 66% | – |
+| Athletics @ Chicago Cubs NRFI (J.T. Ginn vs Shota Imanaga) | NRFI -120 | 63% | – |
+| Pittsburgh Pirates @ Houston Astros NRFI (Jared Jones vs Kai-Wei Teng) | NRFI -120 | 58% | – |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

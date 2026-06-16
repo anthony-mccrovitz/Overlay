@@ -1,5 +1,5 @@
 """
-Caption generators for Tennis, Soccer, and PGA — ChefTonyBets.
+Caption generators for Tennis, Soccer, and PGA — Overlay.
 
 Each sport returns 4 platform formats:
     instagram, x_twitter, reddit, tiktok_script
@@ -222,7 +222,7 @@ def _tennis_reddit(
     top: list[dict], tournament: str, surface: str, dl_long: str, record: str
 ) -> str:
     lines = [
-        f"**ChefTonyBets Elo Model — {tournament} {dl_long}**",
+        f"**Overlay Elo Model — {tournament} {dl_long}**",
         "",
         f"Surface: {surface}",
         "",
@@ -435,7 +435,7 @@ def _soccer_reddit(
 ) -> str:
     leagues_str = " / ".join(leagues_active) if leagues_active else "Soccer"
     lines = [
-        f"**ChefTonyBets Dixon-Coles Model — {leagues_str} {dl_long}**",
+        f"**Overlay Dixon-Coles Model — {leagues_str} {dl_long}**",
         "",
         (
             "Model: Rolling Elo + 2-parameter Poisson (Dixon-Coles v2). "
@@ -647,7 +647,7 @@ def _pga_reddit(
     top: list[dict], tournament: str, dl_long: str, record: str
 ) -> str:
     lines = [
-        f"**ChefTonyBets SG Model — {tournament} {dl_long}**",
+        f"**Overlay SG Model — {tournament} {dl_long}**",
         "",
         (
             "Model: Strokes Gained (SG) composite + Monte Carlo tournament simulation. "
@@ -752,6 +752,95 @@ OUTRO:
 # ═══════════════════════════════════════════════════════════════════════════════
 # Writer
 # ═══════════════════════════════════════════════════════════════════════════════
+
+def wc_futures_captions(
+    rows: list[dict],
+    blend_weight: float,
+    card_date: date,
+    n_sims: int = 20000,
+) -> dict[str, str]:
+    """
+    Content captions for the World Cup 2026 title-odds table (model vs market).
+    `rows`: futures_2026.json "teams" — each {team, model, market, blend,
+    reach_final, edge_pp}. Leads with the credible BLEND, features the biggest
+    model-vs-Vegas disagreements as the hook. Returns the 4-platform dict.
+    """
+    def pct(x):
+        return f"{x*100:.0f}%" if x is not None else "—"
+
+    ranked = [r for r in rows if r.get("blend")]
+    top = ranked[:8]
+    # Disagreements among teams the market takes seriously (≥3%).
+    serious = [r for r in rows if r.get("edge_pp") is not None and (r.get("market") or 0) >= 0.03]
+    high = sorted(serious, key=lambda r: r["edge_pp"], reverse=True)[:2]   # model loves
+    low = sorted(serious, key=lambda r: r["edge_pp"])[:2]                  # model fades
+    dl_long = card_date.strftime("%B %d, %Y")
+
+    # ── X / Twitter ──────────────────────────────────────────────────────────
+    x = [f"🏆 WHO WINS WORLD CUP 2026? — {n_sims:,} model simulations\n"]
+    for i, r in enumerate(top[:5], 1):
+        x.append(f"{i}. {r['team']} — {pct(r['blend'])}")
+    if high:
+        h = high[0]
+        x.append(f"\n📈 We're HIGHER than Vegas on {h['team']} ({pct(h['model'])} vs {pct(h['market'])})")
+    if low:
+        l = low[0]
+        x.append(f"📉 LOWER on {l['team']} ({pct(l['model'])} vs {pct(l['market'])})")
+    x.append(f"\nFull board + daily picks in bio. {DISCLAIMER}\n#WorldCup2026 #sportsbetting")
+    x_twitter = "\n".join(x)
+
+    # ── Instagram ────────────────────────────────────────────────────────────
+    ig = [f"🏆 WORLD CUP 2026 — TITLE ODDS", f"Model vs Vegas · {n_sims:,} simulations", ""]
+    ig.append("OUR NUMBER (model + market blend):")
+    for i, r in enumerate(top, 1):
+        ig.append(f"{i}. {r['team']:<16} {pct(r['blend'])}")
+    if high or low:
+        ig += ["", "WHERE WE DISAGREE WITH VEGAS 👀"]
+        for r in high:
+            ig.append(f"📈 {r['team']}: us {pct(r['model'])} / book {pct(r['market'])}")
+        for r in low:
+            ig.append(f"📉 {r['team']}: us {pct(r['model'])} / book {pct(r['market'])}")
+    ig += ["", "Rolling Elo + Dixon-Coles, calibrated on 800+ tournament matches.",
+           "Daily match picks + full board — link in bio.", "", DISCLAIMER,
+           "#WorldCup2026 #WorldCup #soccer #sportsbetting #bettingtwitter"]
+    instagram = "\n".join(ig)
+
+    # ── Reddit (show your work) ──────────────────────────────────────────────
+    rd = [f"**World Cup 2026 — title odds from {n_sims:,} Monte Carlo simulations (model vs market)**", ""]
+    rd.append(f"Built a rolling-Elo + Dixon-Coles model (calibrated on 800+ tournament matches), "
+              f"simulated the full 48-team bracket {n_sims:,} times, and blended the output with the "
+              f"de-vigged market ({int(blend_weight*100)}% model / {int((1-blend_weight)*100)}% market). "
+              f"As of {dl_long}:")
+    rd += ["", "| # | Team | Our blend | Model | Market | Reach final |",
+           "|---|------|-----------|-------|--------|-------------|"]
+    for i, r in enumerate(top, 1):
+        rd.append(f"| {i} | {r['team']} | {pct(r['blend'])} | {pct(r['model'])} | "
+                  f"{pct(r['market'])} | {pct(r.get('reach_final'))} |")
+    rd += ["", "**Where the model disagrees with the market (the interesting part):**"]
+    for r in high:
+        rd.append(f"- 📈 **{r['team']}** — model {pct(r['model'])} vs market {pct(r['market'])} (+{r['edge_pp']:.0f}pp)")
+    for r in low:
+        rd.append(f"- 📉 **{r['team']}** — model {pct(r['model'])} vs market {pct(r['market'])} ({r['edge_pp']:.0f}pp)")
+    rd += ["", "Honest caveat: these are *probabilities*, not locks — the value is calibration, not "
+           "claiming an edge over the closing line. CLV tracked publicly all tournament.", "", DISCLAIMER]
+    reddit = "\n".join(rd)
+
+    # ── TikTok / Shorts script ───────────────────────────────────────────────
+    leader = top[0] if top else {"team": "?", "blend": 0}
+    surprise = high[0] if high else leader
+    tk = [
+        "[HOOK] I simulated the World Cup 20,000 times. Here's who wins.",
+        f"[BEAT] Favorite: {leader['team']} at {pct(leader['blend'])}.",
+        f"[TURN] But here's where my model fights Vegas — it's way higher on "
+        f"{surprise['team']} than the books are.",
+        "[PROOF] Rolling Elo, Dixon-Coles, calibrated on 800 tournament games.",
+        "[CTA] Full board + daily picks — follow, link in bio.",
+    ]
+    tiktok_script = "\n".join(tk)
+
+    return {"instagram": instagram, "x_twitter": x_twitter,
+            "reddit": reddit, "tiktok_script": tiktok_script}
+
 
 def write_sport_captions(captions: dict[str, str], out_dir: Path) -> None:
     """Write captions dict to out_dir/captions/{platform}.txt"""

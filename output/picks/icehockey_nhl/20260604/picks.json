@@ -1,0 +1,75 @@
+{
+  "date": "2026-06-04",
+  "sport": "nhl",
+  "generated_at": "2026-06-04T21:02:11.900448+00:00",
+  "picks": [
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Carolina Hurricanes",
+      "team": "Under 5.5",
+      "market": "total",
+      "direction": "UNDER",
+      "line": 5.5,
+      "odds": 110,
+      "fair_odds": 107,
+      "model_prob": 0.5516,
+      "market_prob": 0.4829,
+      "fair_prob": 0.4829,
+      "edge_pct": 6.87,
+      "commence": "2026-06-05T00:20:00Z",
+      "proj_total": 5.17,
+      "notes": [
+        "Base: Carolina Hurricanes 3.38 exp goals | Vegas Golden Knights 2.80 exp goals",
+        "Home goalie SV%: 0.920 (+0.022) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.921 (+0.023) \u2192 home -+0.50g",
+        "Trained model win prob: 55.8%",
+        "Projected total: 5.2 | Home win: 55.8% | Home -1.5: 30.0%"
+      ]
+    },
+    {
+      "sport": "nhl",
+      "matchup": "Vegas Golden Knights @ Carolina Hurricanes",
+      "team": "Vegas Golden Knights +1.5",
+      "market": "puck_line",
+      "direction": "AWAY +1.5",
+      "line": 1.5,
+      "odds": -190,
+      "fair_odds": -176,
+      "model_prob": 0.6996,
+      "market_prob": 0.6371,
+      "fair_prob": 0.6371,
+      "edge_pct": 6.25,
+      "commence": "2026-06-05T00:20:00Z",
+      "proj_total": 5.17,
+      "notes": [
+        "Base: Carolina Hurricanes 3.38 exp goals | Vegas Golden Knights 2.80 exp goals",
+        "Home goalie SV%: 0.920 (+0.022) \u2192 away -+0.50g",
+        "Away goalie SV%: 0.921 (+0.023) \u2192 home -+0.50g",
+        "Trained model win prob: 55.8%",
+        "Projected total: 5.2 | Home win: 55.8% | Home -1.5: 30.0%"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "matchup": "Vegas Golden Knights @ Carolina Hurricanes",
+      "commence": "2026-06-05T00:20:00Z",
+      "time_et": "08:20 PM ET",
+      "home_team": "Carolina Hurricanes",
+      "away_team": "Vegas Golden Knights",
+      "home_exp_goals": 3.36,
+      "away_exp_goals": 2.8,
+      "total_exp_goals": 6.17,
+      "home_win_prob": 0.5579,
+      "away_win_prob": 0.4421,
+      "home_cover_1_5": 0.3004,
+      "away_cover_1_5": 0.6996,
+      "goalie_adj": 0.0,
+      "notes": [
+        "Base: Carolina Hurricanes 3.38 exp goals | Vegas Golden Knights 2.80 exp goals",
+        "Trained model win prob: 55.8%",
+        "Projected total: 6.2 | Home win: 55.8% | Home -1.5: 30.0%"
+      ]
+    }
+  ]
+}

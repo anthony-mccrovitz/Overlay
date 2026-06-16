@@ -1,0 +1,35 @@
+**ChefTonyBets AI — MLB Picks · 5/29/26 (Friday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 52-39 (57.1% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Kansas City Royals vs  | +110 | +19.0% | theScore Bet |
+| Miami Marlins vs  | +105 | +18.4% | theScore Bet |
+| San Diego Padres vs  | -108 | +16.7% | DraftKings |
+| San Francisco Giants vs  | -154 | +16.1% | Betfair |
+| Arizona Diamondbacks vs  | +130 | +13.8% | DraftKings |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| San Diego Padres @ Washington Nationals NRFI (Lucas Giolito vs Paxton Schultz) | NRFI +110 | 66% | FanDuel |
+| Los Angeles Angels @ Tampa Bay Rays NRFI (Walbert Ureña vs Nick Martinez) | NRFI -113 | 67% | FanDuel |
+| Boston Red Sox @ Cleveland Guardians NRFI (Tyler Samaniego vs Slade Cecconi) | NRFI -113 | 66% | FanDuel |
+| Miami Marlins @ New York Mets NRFI (Max Meyer vs Freddy Peralta) | NRFI -128 | 67% | FanDuel |
+| Chicago Cubs @ St. Louis Cardinals NRFI (Shota Imanaga vs Andre Pallante) | NRFI -122 | 66% | FanDuel |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

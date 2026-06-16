@@ -76,10 +76,14 @@ def _best_book_legs(
         raw = float(p.get("edge_pct") or p.get("Edge", 0) or 0)
         return raw * 100 if raw < 1.0 and raw > 0 else raw
 
+    # Parlay cards are DraftKings / FanDuel only — these books offer sign-up
+    # bonuses that make the parlay content actionable for new bettors.
+    _BONUS_BOOKS = {"draftkings", "fanduel"}
+
     qualified = [
         p for p in picks
         if _edge(p) >= min_edge_pct
-        and (p.get("sportsbook") or p.get("Sportsbook") or p.get("book"))
+        and _normalize_book(p.get("sportsbook") or p.get("Sportsbook") or p.get("book") or "") in _BONUS_BOOKS
     ]
     if not qualified:
         return []
@@ -143,11 +147,12 @@ def _best_book_legs(
 def build_parlay(
     picks: list[dict],
     max_legs: int = 4,
-    min_edge_pct: float = 5.0,
+    min_edge_pct: float = 1.0,
     allow_sgp: bool = False,
 ) -> list[dict]:
     """
-    Select parlay legs — all from the SAME sportsbook (real parlays can't mix books).
+    Select parlay legs — all from the SAME sportsbook (DK/FanDuel only for sign-up bonus angle).
+    Low edge floor (1%) because parlay content is about action + sign-up bonus use, not pure edge.
     """
     return _best_book_legs(picks, max_legs, min_edge_pct, allow_sgp)
 
@@ -580,11 +585,9 @@ def _build_parlay_html(
   <div class="header">
     <div>
       <div class="brand">
-        <span class="brand-chef">ChefTony</span>
-        <span class="brand-bets">Bets</span>
-        <span class="brand-ai">AI</span>
+        <span class="brand-chef">Overlay</span>
       </div>
-      <div class="brand-sub">A.I. Edge Detection &nbsp;·&nbsp; @ChefTonyAIBets</div>
+      <div class="brand-sub">ML Picks Model &nbsp;·&nbsp; @getoverlay</div>
     </div>
     <div class="header-right">
       <div class="header-date">{date_str}</div>
@@ -621,8 +624,8 @@ def _build_parlay_html(
 
   <div class="footer">
     <div class="footer-left">{sport_label} · {date_str} · {book_clean}</div>
-    <div class="footer-handle">@ChefTonyAIBets</div>
-    <div class="footer-right">A.I. Verified</div>
+    <div class="footer-handle">@getoverlay</div>
+    <div class="footer-right">Verified Picks</div>
   </div>
 </div>
 </body>
@@ -662,7 +665,15 @@ def render_parlay_card(
     payout = parlay_payout(legs, stake=100)
     html   = _build_parlay_html(legs, sport, d, odds, payout, book_label, is_sgp=is_sgp)
 
-    save_dir  = OUTPUT_DIR / sport / d.strftime("%Y%m%d")
+    # Normalize sport dir to match rest of pipeline (mlb → baseball_mlb, etc.)
+    _SPORT_DIR = {
+        "mlb":  "baseball_mlb",
+        "nba":  "basketball_nba",
+        "nhl":  "icehockey_nhl",
+        "wnba": "basketball_wnba",
+    }
+    sport_dir = _SPORT_DIR.get(sport.lower(), sport.lower())
+    save_dir  = OUTPUT_DIR / sport_dir / d.strftime("%Y%m%d")
     save_dir.mkdir(parents=True, exist_ok=True)
     html_path = save_dir / f"{filename}.html"
     png_path  = save_dir / f"{filename}.png"
@@ -781,7 +792,7 @@ def write_parlay_captions(
 
     # Reddit
     rd_lines = [
-        f"**ChefTonyBets AI — {sport_lbl} {parlay_lbl} · {d.strftime('%B %d, %Y').upper()}**",
+        f"**Overlay AI — {sport_lbl} {parlay_lbl} · {d.strftime('%B %d, %Y').upper()}**",
         "",
         f"AI model identified {len(legs)} correlated edges — built into a {len(legs)}-leg {parlay_lbl.lower()} on **{book_clean}**.",
         "",
@@ -810,7 +821,8 @@ def write_parlay_captions(
     ]
     reddit = "\n".join(rd_lines)
 
-    save_dir = OUTPUT_DIR / sport / d.strftime("%Y%m%d") / "captions"
+    _SD = {"mlb": "baseball_mlb", "nba": "basketball_nba", "nhl": "icehockey_nhl", "wnba": "basketball_wnba"}
+    save_dir = OUTPUT_DIR / _SD.get(sport.lower(), sport.lower()) / d.strftime("%Y%m%d") / "captions"
     save_dir.mkdir(parents=True, exist_ok=True)
     paths = {}
     for platform, content in [("parlay_instagram", instagram), ("parlay_twitter", twitter), ("parlay_reddit", reddit)]:

@@ -1,5 +1,5 @@
 """
-Results reveal card generator — ChefTonyBets.
+Results reveal card generator — Overlay.
 
 Professional-quality social media card showing WIN/LOSS outcomes.
 Same dark design language as pick_card.py, with:
@@ -340,8 +340,8 @@ def generate_results_card(
     draw.rectangle([0, 0, W, 5], fill=_GOLD)   # top gold strip
 
     # Brand left
-    draw.text((PAD, 14), "ChefTony", fill=_WHITE, font=f_brand_lg)
-    cw = draw.textlength("ChefTony", font=f_brand_lg)
+    draw.text((PAD, 14), "Overlay", fill=_WHITE, font=f_brand_lg)
+    cw = draw.textlength("Overlay", font=f_brand_lg)
     draw.text((PAD + cw + 6, 22), "Bets", fill=_GOLD, font=f_brand_sm)
     draw.text((PAD + 2, 90), "RESULTS  ·  A.I. Sports Picks", fill=_GRAY_MID, font=f_hdr_sm)
 
@@ -349,8 +349,8 @@ def generate_results_card(
     sport_date = f"{sport_lbl}  ·  {d.strftime('%b %d, %Y').upper()}"
     sdw = draw.textlength(sport_date, font=f_hdr)
     draw.text((W - PAD - sdw, 14), sport_date, fill=_WHITE, font=f_hdr)
-    hw = draw.textlength("@ChefTonyBets", font=f_hdr)
-    draw.text((W - PAD - hw, 42), "@ChefTonyBets", fill=_GOLD, font=f_hdr)
+    hw = draw.textlength("@getoverlay", font=f_hdr)
+    draw.text((W - PAD - hw, 42), "@getoverlay", fill=_GOLD, font=f_hdr)
 
     # Band 2: record bar (below brand, above picks)
     BAND2_Y0 = BAND1_H
@@ -561,7 +561,7 @@ def generate_results_card(
     day_str = f"{wins}-{losses}  ·  {profit_sign}{total_profit / 100:.2f} units"
     draw.text((PAD, fy + 8), day_str, fill=_GOLD, font=f_footer)
 
-    cta = "Follow @ChefTonyBets for free daily picks"
+    cta = "Follow @getoverlay for free daily picks"
     cta_w = draw.textlength(cta, font=f_footer)
     draw.text(((W - cta_w) // 2, fy + 8), cta, fill=_GOLD, font=f_footer)
 

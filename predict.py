@@ -603,15 +603,6 @@ def _run_mlb_daily(args, sport: str):
     game_date = _daily_game_date(args)
     date_label = game_date.strftime("%Y-%m-%d")
 
-    # ── Schedule guard: skip if no MLB games today ─────────────────────────────
-    try:
-        from scripts.schedule_check import validate_and_log
-        if not validate_and_log("mlb", date_label):
-            return
-    except Exception as _sce:
-        print(f"  ⚠  Schedule check skipped ({_sce})")
-    # ──────────────────────────────────────────────────────────────────────────
-
     print(f"Step 1: Fetching MLB schedule and team stats...")
     matchups = get_todays_matchups(game_date=game_date)
     if not matchups:
@@ -1152,9 +1143,11 @@ def _run_mlb_daily(args, sport: str):
                 try:
                     from src.tracking.schema import normalize_pick, append_picks_safe
                     from src.config.models import is_live
+                    from src.data.mlb_stats import build_form_lookup, lookup_form_for_pick
                     from datetime import datetime as _dt, timezone as _tz
                     pnl_path = Path("data/pnl/picks.json")
                     now = _dt.now(_tz.utc).isoformat()
+                    _f5_form_lookup = build_form_lookup(_game_date)
                     f5_entries = []
                     seen_ids: set[str] = set()
                     for fp in f5_plays:
@@ -1178,6 +1171,7 @@ def _run_mlb_daily(args, sport: str):
                             "result":     None,
                             "profit":     None,
                             "recorded_at": now,
+                            "team_form":   lookup_form_for_pick(_f5_form_lookup, team_str, fp["matchup"]),
                         }
                         norm = normalize_pick(raw)
                         pid = norm.get("pick_id")
@@ -1651,6 +1645,15 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
     today  = (game_date or date.today()).isoformat()
     now_ts = datetime.now(tz=timezone.utc).isoformat()
 
+    # ── Phase 2: build team-form lookup so each pick can be tagged with
+    # hot/cold context at log time. Non-fatal — if the lookup fails, picks
+    # are still logged with team_form=None.
+    try:
+        from src.data.mlb_stats import build_form_lookup
+        _form_by_team = build_form_lookup(date.fromisoformat(today))
+    except Exception:
+        _form_by_team = {}
+
     existing_ids: set[str] = set()  # populated per-pick to avoid duplicate within batch
 
     added = 0
@@ -1666,8 +1669,9 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
         if market in PAUSED_MARKETS.get("mlb", []):
             continue
 
-        direction = str(pick.get("Direction", "")).upper().strip()
-        if not direction:
+        _dir_raw = pick.get("Direction")
+        direction = "" if _dir_raw is None else str(_dir_raw).upper().strip()
+        if direction in ("", "NAN", "NONE"):
             # Use home/away for moneylines so grader knows which side was picked
             home_team = str(pick.get("HomeTeam", pick.get("Opponent", ""))).strip()
             is_home = team.lower() == home_team.lower() if home_team else False
@@ -1694,8 +1698,11 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             except (ValueError, TypeError):
                 line = None
 
-        _matchup_raw = pick.get("Matchup", "") or pick.get("Opponent", "") or ""
-        matchup = "" if str(_matchup_raw).lower() in ("nan", "none", "") else str(_matchup_raw).strip()
+        def _clean_field(val):
+            if val is None: return ""
+            s = str(val).strip()
+            return "" if s.lower() in ("nan", "none") else s
+        matchup = _clean_field(pick.get("Matchup")) or _clean_field(pick.get("Opponent")) or ""
         edge_raw = pick.get("Edge")
         try:
             edge_val = float(edge_raw) if edge_raw is not None else None
@@ -1708,11 +1715,42 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
         except (ValueError, TypeError):
             edge_pct = None
 
-        # card_pick is gated by model status in src/config/models.py
-        # Only LIVE models get card_pick=True (post publicly, counted in record)
-        # Incubating models log silently for performance tracking
+        # ── Edge calibration + team-tracker gate ─────────────────────────
+        # ModelProb in the pick dict is already Platt-calibrated by value_bets.py.
+        # Compute edge from the calibrated prob directly — no double-calibration.
+        # Use team_tracker WR gating to block teams the model has poor history on.
         from src.config.models import is_card_pick
-        card_pick = is_card_pick("mlb", market, edge_pct)
+        from src.models.bias import adjusted_edge as _adj_edge_fn
+        from src.analytics.team_tracker import team_record as _team_rec
+        _model_prob_cal = float(pick.get("ModelProb") or 0)
+        _implied_raw    = float(pick.get("ImpliedProb") or 0)
+        if market == "moneyline" and _model_prob_cal and _implied_raw:
+            # Edge from Platt-calibrated prob (bias-adjusted)
+            cal_edge = _adj_edge_fn(_model_prob_cal, _implied_raw)  # percentage pts
+            # Team WR gate: block teams with <53% WR on ≥15 picks
+            _rec = _team_rec(team, "mlb", market)
+            if _rec is None or _rec.n < 5:
+                _bet_ok = True   # new team — collecting data
+            elif _rec.n < 15:
+                _bet_ok = False  # building sample (5-14 picks)
+            else:
+                _bet_ok = _rec.wr >= 0.53
+            card_pick = cal_edge >= 8.0 and _bet_ok
+            edge_pct  = round(cal_edge, 2)
+        elif market in ("spread", "run_line") and _model_prob_cal and _implied_raw:
+            # Spread model calibration_factor ~1.05 — edges are real, gate by WR only
+            cal_edge = _adj_edge_fn(_model_prob_cal, _implied_raw)
+            _rec_rl  = _team_rec(team, "mlb", market)
+            if _rec_rl is None or _rec_rl.n < 5:
+                _bet_ok_rl = True
+            elif _rec_rl.n < 15:
+                _bet_ok_rl = False
+            else:
+                _bet_ok_rl = _rec_rl.wr >= 0.53
+            card_pick = cal_edge >= 8.0 and _bet_ok_rl
+            edge_pct  = round(cal_edge, 2)
+        else:
+            card_pick = is_card_pick("mlb", market, edge_pct)
         # ModelAgreement: True = Pythagorean + XGBoost both agree on direction
         agreement = pick.get("ModelAgreement")
         if agreement is None:
@@ -1739,7 +1777,18 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             "profit":           None,
             "recorded_at":      now_ts,
             "resulted_at":      None,
+            # Phase 2: hot/cold tracking — non-fatal lookup by team or matchup
+            "team_form":        _form_by_team.get(team.lower())
+                                or _form_by_team.get(str(matchup).split("@")[0].strip().lower())
+                                or _form_by_team.get(str(matchup).split("@")[-1].strip().lower())
+                                or None,
         }
+        # Phase 2.5: shadow A/B filter recommendation (does not gate card_pick)
+        try:
+            from src.analytics.shadow_filters import classify_form_filter
+            entry["shadow_filter"] = classify_form_filter(entry)
+        except Exception:
+            entry["shadow_filter"] = None
         new_entries.append(entry)
         existing_ids.add(pick_id)
         added += 1
@@ -1763,6 +1812,15 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
     today  = (game_date or date.today()).isoformat()
     now_ts = datetime.now(tz=timezone.utc).isoformat()
     existing_ids: set[str] = set()
+
+    # Phase 2: build form lookup once so each prop can be tagged by matchup
+    _form_by_team: dict[str, dict] = {}
+    if sport == "mlb":
+        try:
+            from src.data.mlb_stats import build_form_lookup
+            _form_by_team = build_form_lookup(date.fromisoformat(today))
+        except Exception:
+            _form_by_team = {}
 
     added = 0
     prop_entries: list[dict] = []
@@ -1788,6 +1846,14 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
             continue
 
         matchup = str(prop.get("matchup") or prop.get("opp") or "").strip()
+        # Form lookup via matchup home/away split — prop "team" is player name
+        _tf = None
+        if _form_by_team and matchup:
+            try:
+                from src.data.mlb_stats import lookup_form_for_pick
+                _tf = lookup_form_for_pick(_form_by_team, "", matchup)
+            except Exception:
+                _tf = None
         entry = {
             "pick_id":     pick_id,
             "date":        today,
@@ -1809,6 +1875,7 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
             "profit":      None,
             "recorded_at": now_ts,
             "resulted_at": None,
+            "team_form":   _tf,
         }
         prop_entries.append(entry)
         existing_ids.add(pick_id)
@@ -1847,6 +1914,14 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
             print(f"  [CLV] Snapshotted opening lines for {n_snapped} pick(s) [{_game_date}]")
     except Exception as _clv_err:
         print(f"  [CLV] Opening-line snapshot failed: {_clv_err}")
+
+    # Auto-log to franchise shadow tracker (the missing daily logger — without
+    # this, bets.json was a frozen 2-day snapshot from June 6/8.)
+    try:
+        from src.analytics.franchise_tracker import log_today
+        log_today(game_date=_game_date, sport=sport, verbose=True)
+    except Exception as _fr_err:
+        print(f"  [franchise] auto-log failed: {_fr_err}")
 
     picks_list = [p for p in value_bets.to_dict(orient="records") if p.get("BestOdds") and p.get("BestOdds") != 0]
 
@@ -1925,14 +2000,14 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     if img_path:
         print(f"  Moneyline card → {img_path}")
 
-    # ── New ChefTonyBets moneyline card ───────────────────────────────────────
+    # ── V2 Overlay moneyline card (clean social design) ─────────────────
     try:
-        from src.output.cards import render_mlb_moneyline_card
-        ml_new_card = render_mlb_moneyline_card(ml_card_picks, card_date=_game_date)
+        from src.output.card_v2 import render_mlb_moneyline_v2
+        ml_new_card = render_mlb_moneyline_v2(ml_card_picks, card_date=_game_date)
         if ml_new_card:
-            print(f"  ML card (new) → {ml_new_card}")
+            print(f"  ML card → {ml_new_card}")
     except Exception as _mlnc:
-        print(f"  [ml card new] {_mlnc}")
+        print(f"  [ml card] {_mlnc}")
 
     # ── Run Line card — always generate, fall back to model top plays ─────────
     spread_picks = [p for p in picks_list if str(p.get("Market", "")).lower() == "spread"]
@@ -1989,14 +2064,14 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     combined_ou = sorted(game_totals, key=lambda x: float(x.get("Edge") or 0), reverse=True)
     ou_top5 = combined_ou[:5]
     if ou_top5:
-        # New ChefTonyBets totals card
+        # V2 Overlay totals card (clean social design)
         try:
-            from src.output.cards import render_mlb_totals_card
-            ou_path = render_mlb_totals_card(ou_top5, card_date=_game_date)
+            from src.output.card_v2 import render_mlb_totals_v2
+            ou_path = render_mlb_totals_v2(ou_top5, card_date=_game_date)
             if ou_path:
-                print(f"  Totals card (new) → {ou_path}")
+                print(f"  Totals card → {ou_path}")
         except Exception as _e:
-            print(f"  [totals card new] {_e}")
+            print(f"  [totals card] {_e}")
         try:
             from src.output.captions import picks_caption
             ou_cap = picks_caption(ou_top5, card_date=_game_date)
@@ -2018,7 +2093,7 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
 
     # ── Pick of the Day + clean totals card (old system — removed) ──────────
     # render_pick_of_day_card_html and render_clean_totals_card replaced by
-    # the new ChefTonyBets card system in src/output/cards.py. No render here.
+    # the new Overlay card system in src/output/cards.py. No render here.
     pass
 
     # Auto-log picks to pnl tracker — pass game_date so grading matches the right entries

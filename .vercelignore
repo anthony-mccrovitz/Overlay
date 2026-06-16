@@ -1,0 +1,24 @@
+# Exclude everything outside the overlay/ app directory.
+# Vercel project rootDirectory is set to "overlay/" in the dashboard.
+# These exclusions keep the upload under the 250 MB serverless function limit.
+# (output/picks/ alone is 260MB+ of historical picks data and PNG cards.)
+
+# Python pipeline output — large, not needed on Vercel
+output/
+logs/
+
+# Raw data files — not needed on Vercel (pre-built JSONs live in overlay/src/data/)
+data/
+
+# Python source
+*.py
+scripts/
+src/
+tests/
+
+# Docs and plans
+*.md
+dashboard/
+
+# Web app (separate Vercel project, not this one)
+web/

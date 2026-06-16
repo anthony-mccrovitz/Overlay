@@ -1,5 +1,5 @@
 """
-NHL Daily Picks Pipeline — ChefTonyBets
+NHL Daily Picks Pipeline — Overlay
 
 Generates picks for today's NHL playoff slate and saves to:
     output/picks/icehockey_nhl/YYYYMMDD/picks.json
@@ -191,15 +191,6 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
 
     print(f"\n  [NHL] Generating picks for {game_date.isoformat()}")
 
-    # ── Schedule guard: skip if no NHL games today ─────────────────────────────
-    try:
-        from scripts.schedule_check import validate_and_log
-        if not validate_and_log("nhl", game_date.isoformat()):
-            return
-    except Exception as _sce:
-        print(f"  ⚠  Schedule check skipped ({_sce})")
-    # ──────────────────────────────────────────────────────────────────────────
-
     # Fetch schedule
     schedule = fetch_today_schedule(game_date)
     if schedule:
@@ -213,7 +204,17 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
         print("  ⚠  No NHL odds available. Check cache or ODDS_API_KEY.")
         return
 
-    print(f"  ✓  {len(odds_data)} game(s) with odds from API")
+    # Keep only games on this slate date. The odds feed returns the next N
+    # upcoming games regardless of date; on an off-day the "next game" can be
+    # days out, so without this filter a future playoff game leaks onto today's
+    # card. Compare in ET (late games cross into the next UTC day).
+    from src.data.slate import filter_to_slate
+    odds_data = filter_to_slate(odds_data, game_date)
+    if not odds_data:
+        print(f"  ℹ  No NHL games on the {game_date.isoformat()} slate (off-day) — skipping. No card pick.")
+        return
+
+    print(f"  ✓  {len(odds_data)} game(s) with odds on the slate")
 
     # Find edges
     picks = find_nhl_edges(odds_data, game_date=game_date.isoformat())
@@ -286,6 +287,22 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
                 f"{p['home_win_prob']:>4.0%}  {p.get('time_et','')}"
             )
         print(f"  {'═'*W}\n")
+
+    # Render NHL pick cards
+    try:
+        from src.output.nhl_cards import render_all_nhl_cards
+        # Load props if they exist
+        props_path = out_dir / "nhl_props.json"
+        nhl_props = []
+        if props_path.exists():
+            import json as _json
+            nhl_props = _json.loads(props_path.read_text())
+        card_results = render_all_nhl_cards(picks, props=nhl_props, card_date=game_date)
+        for cname, cpath in card_results.items():
+            if cpath:
+                print(f"  ✓  Card: {cname} → {cpath.name}")
+    except Exception as e:
+        print(f"  [nhl cards] {e}")
 
     # Update public stats
     try:

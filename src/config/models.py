@@ -7,7 +7,10 @@ the research pass on academically + practitioner-proven betting edges.
 Status meanings:
   live       → picks marked card_pick=True, posted (cards, captions, Reddit), public record
   incubating → picks logged + graded silently (card_pick=False), no posts, private record
-  retired    → model is not run at all
+  retired    → model is not run at all (AVOID — lose all signal; prefer incubating)
+
+  Convention: when a live model underperforms, demote to incubating (not retired).
+  We keep collecting silent picks so we can detect recovery, drift, or sustained loss.
 
 Tier meanings (display + customer-facing grouping):
   t1     → "Proven" — peer-reviewed academic or documented professional results
@@ -38,18 +41,18 @@ MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 1 (proven) — these go on the card ────────────────────────────────
     ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
     ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
-    ("tennis", "moneyline"): {"status": "retired",    "tier": "shadow", "label": "Tennis Elo (4-25 -8u, retired)"},
+    ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo (4-25 -8u, shadow — keep tracking)"},
     ("soccer", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"},
 
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
-    ("mlb",    "moneyline"): {"status": "live",       "tier": "t2", "label": "MLB Moneyline (bias-fixed)"},
+    ("mlb",    "moneyline"): {"status": "incubating", "tier": "shadow", "label": "MLB Moneyline (41-39 +4u, shadowed 2026-05-30 — soft-book edge inflation)"},
     ("pga",    "outright"):  {"status": "live",       "tier": "t2", "label": "PGA Outright (SG)"},
-    ("nascar", "outright"):  {"status": "retired",    "tier": "shadow", "label": "NASCAR Outright Elo"},
-    ("indycar","outright"):  {"status": "retired",    "tier": "shadow", "label": "IndyCar Outright Elo"},
-    ("f1",     "outright"):  {"status": "retired",    "tier": "shadow", "label": "F1 Outright Elo"},
+    ("nascar", "outright"):  {"status": "incubating", "tier": "shadow", "label": "NASCAR Outright Elo (shadow)"},
+    ("indycar","outright"):  {"status": "incubating", "tier": "shadow", "label": "IndyCar Outright Elo (shadow)"},
+    ("f1",     "outright"):  {"status": "incubating", "tier": "shadow", "label": "F1 Outright Elo (shadow)"},
 
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
-    ("mlb", "pitcher_strikeouts"): {"status": "retired",    "tier": "shadow", "label": "MLB Pitcher Ks (83-108 -16u, retired)"},
+    ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (83-108 -16u, shadow — rebuild)"},
     ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals (63-47 shadow, promoting after first 30 live picks)"},
     ("mlb", "nrfi"):               {"status": "incubating", "tier": "paused", "label": "MLB NRFI (81-82 -7u, paused)"},
     ("nba", "moneyline"):          {"status": "incubating", "tier": "paused", "label": "NBA Moneyline (28-24 -4u, paused)"},
@@ -125,7 +128,7 @@ def model_tier(sport: str, market: str) -> str:
 _CARD_EDGE_MIN: dict[str, float | None] = {
     "moneyline":  12.0,   # 54% WR model — only high-conviction edges
     "ml":         12.0,
-    "total":      None,   # 66-68% WR — always post, edge metric is run differential
+    "total":      3.0,    # 66-68% WR — minimum 3% edge; sub-3% is statistical noise
     "f5_total":   None,   # shadow — handled by model status
     "spread":     12.0,
     "run_line":   12.0,

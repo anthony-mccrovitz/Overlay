@@ -1,0 +1,26 @@
+name: CLV backfill + refresh
+
+# 8:00 AM ET (12:00 UTC, EDT) — backfill clv_records.json, then recompute the
+# CLV dashboard (snapshots.json). Was: backfill_clv (8:00) + clv --refresh (8:10).
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: clv
+  cancel-in-progress: false
+
+jobs:
+  clv:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: |
+        set +e
+        python scripts/backfill_clv.py
+        python chef.py clv --refresh
+        true

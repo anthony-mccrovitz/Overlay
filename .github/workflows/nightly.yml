@@ -1,0 +1,26 @@
+name: Nightly grade + recap
+
+# 3:45 AM ET (07:45 UTC, EDT) — final grade sweep + stats refresh, then the
+# nightly recap card and deploy. Was: chef.py grade (3:45) + nightly_recap (3:50).
+on:
+  schedule:
+    - cron: "45 7 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  nightly:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: |
+        set +e
+        python chef.py grade
+        python scripts/nightly_recap.py --deploy
+        true

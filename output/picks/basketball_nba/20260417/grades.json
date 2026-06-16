@@ -1,0 +1,82 @@
+{
+  "date": "20260417",
+  "total_picks": 5,
+  "graded": 4,
+  "pending": 1,
+  "wins": 3,
+  "losses": 1,
+  "win_rate": 0.75,
+  "total_staked": 4.0,
+  "total_profit": 1.9552765752765753,
+  "roi": 48.881914381914385,
+  "by_type": {
+    "moneyline": {
+      "wins": 2,
+      "losses": 0,
+      "profit": 2.03,
+      "win_rate": 1.0
+    },
+    "spread": {
+      "wins": 1,
+      "losses": 1,
+      "profit": -0.07,
+      "win_rate": 0.5
+    }
+  },
+  "details": [
+    {
+      "market": "moneyline",
+      "team": "Orlando Magic",
+      "matchup": "Charlotte Hornets @ Orlando Magic",
+      "odds": 138,
+      "model_prob": 0.5354,
+      "edge_pct": 13.08,
+      "won": true,
+      "profit": 1.38,
+      "score": "Charlotte Hornets 90, Orlando Magic 121",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Orlando Magic +3.0",
+      "matchup": "Charlotte Hornets @ Orlando Magic",
+      "odds": -108,
+      "model_prob": 0.6337,
+      "edge_pct": 13.03,
+      "won": true,
+      "profit": 0.9259259259259259,
+      "score": "Charlotte Hornets 90, Orlando Magic 121",
+      "status": "win"
+    },
+    {
+      "market": "total",
+      "team": "UNDER 219.5",
+      "status": "pending"
+    },
+    {
+      "market": "moneyline",
+      "team": "Phoenix Suns",
+      "matchup": "Golden State Warriors @ Phoenix Suns",
+      "odds": -154,
+      "model_prob": 0.626,
+      "edge_pct": 3.84,
+      "won": true,
+      "profit": 0.6493506493506493,
+      "score": "Golden State Warriors 96, Phoenix Suns 111",
+      "status": "win"
+    },
+    {
+      "market": "spread",
+      "team": "Charlotte Hornets -3.5",
+      "matchup": "Charlotte Hornets @ Orlando Magic",
+      "odds": -105,
+      "model_prob": 0.3507,
+      "edge_pct": -14.59,
+      "won": false,
+      "profit": -1.0,
+      "score": "Charlotte Hornets 90, Orlando Magic 121",
+      "status": "loss"
+    }
+  ],
+  "graded_at": "2026-04-22T13:06:42.264513+00:00"
+}

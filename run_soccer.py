@@ -1,5 +1,5 @@
 """
-Soccer Daily Picks Pipeline — ChefTonyBets
+Soccer Daily Picks Pipeline — Overlay
 
 Generates picks for today's soccer slate across all active leagues and saves to:
     output/picks/<sport_key>/YYYYMMDD/picks.json
@@ -130,13 +130,16 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport_key: str) -> int:
     if not edges:
         return 0
 
-    pnl_data: dict = {}
+    # picks.json may be either a bare list or a {"picks": [...]} dict depending
+    # on which writer last touched it; tolerate both and preserve the shape.
+    pnl_data: dict | list = {}
     if PNL_FILE.exists():
         try:
             pnl_data = json.loads(PNL_FILE.read_text())
         except (json.JSONDecodeError, OSError):
             pnl_data = {}
-    picks = pnl_data.get("picks", [])
+    wrapped = isinstance(pnl_data, dict)
+    picks = pnl_data.get("picks", []) if wrapped else pnl_data
     existing_ids = {p.get("pick_id") for p in picks if isinstance(p, dict)}
 
     now = datetime.now(timezone.utc).isoformat()
@@ -172,9 +175,12 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport_key: str) -> int:
             existing_ids.add(pid)
         added += 1
 
-    pnl_data["picks"] = picks
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
-    PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
+    if wrapped:
+        pnl_data["picks"] = picks
+        PNL_FILE.write_text(json.dumps(pnl_data, indent=2))
+    else:
+        PNL_FILE.write_text(json.dumps(picks, indent=2))
     return added
 
 
@@ -189,26 +195,15 @@ def _run_one_league(
     refresh: bool,
 ) -> list[dict]:
     """Run picks pipeline for a single soccer league. Returns edges found."""
-    import zoneinfo
-    _ET = zoneinfo.ZoneInfo("America/New_York")
+    from src.data.slate import filter_to_slate
 
     events = fetch_soccer_odds(sport_key, refresh=refresh)
     if not events:
         return []
 
-    today_events = []
-    for ev in events:
-        ct = ev.get("commence_time", "")
-        if not ct:
-            continue
-        try:
-            utc_dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
-            event_date = utc_dt.astimezone(_ET).strftime("%Y%m%d")
-            if event_date == today_str:
-                today_events.append(ev)
-        except (ValueError, KeyError):
-            pass
-
+    # Keep only fixtures on this slate date (compared in ET so late kickoffs
+    # don't roll into the next calendar day, and future fixtures can't leak in).
+    today_events = filter_to_slate(events, game_date)
     if not today_events:
         return []
 
@@ -216,8 +211,11 @@ def _run_one_league(
     for ev in today_events:
         print(f"    {ev.get('away_team')} @ {ev.get('home_team')}")
 
+    # 2026 World Cup co-hosts are effectively home at every match.
+    host_nations = ({"United States", "Mexico", "Canada"}
+                    if sport_key == "soccer_fifa_world_cup" else None)
     try:
-        edges = model.find_edges(today_events, min_edge_pct=4.0)
+        edges = model.find_edges(today_events, min_edge_pct=4.0, host_nations=host_nations)
     except Exception as e:
         print(f"  [{league_name}] model error: {e}")
         return []
@@ -256,15 +254,6 @@ def run_soccer(args: argparse.Namespace) -> int:
     print(f"\n{'='*60}")
     print(f"  Soccer Picks — {game_date.strftime('%B %d, %Y')}")
     print(f"{'='*60}")
-
-    # ── Schedule guard: skip if no soccer games across any tracked league ──────
-    try:
-        from scripts.schedule_check import validate_and_log
-        if not validate_and_log("soccer", game_date.isoformat()):
-            return 0
-    except Exception as _sce:
-        print(f"  ⚠  Schedule check skipped ({_sce})")
-    # ──────────────────────────────────────────────────────────────────────────
 
     # 1. Load or fit model (v2: rolling Elo + 2-param Poisson)
     if do_fit:
@@ -359,14 +348,37 @@ def run_soccer(args: argparse.Namespace) -> int:
     except Exception as _cap_err:
         print(f"  [captions] {_cap_err}")
 
-    # 6. Pick card (new ChefTonyBets design)
-    try:
-        from src.output.cards import render_soccer_card
-        card_path = render_soccer_card(all_edges, card_date=game_date, out_dir=combined_out_dir)
-        if card_path:
-            print(f"  Card → {card_path}")
-    except Exception as _card_err:
-        print(f"  [card] {_card_err}")
+    # 6. Pick cards — World Cup gets its own card with country flags; other leagues use soccer card
+    wc_picks = [e for e in all_edges if e.get("sport") == "soccer_fifa_world_cup"]
+    non_wc_picks = [e for e in all_edges if e.get("sport") != "soccer_fifa_world_cup"]
+
+    if wc_picks:
+        try:
+            from src.output.card_v2 import render_world_cup_v2
+            wc_out_dir = Path("output/picks/soccer_fifa_world_cup") / today_str
+            wc_out_dir.mkdir(parents=True, exist_ok=True)
+            wc_card_path = render_world_cup_v2(wc_picks, card_date=game_date, out_dir=wc_out_dir)
+            if wc_card_path:
+                print(f"  World Cup card → {wc_card_path}")
+        except Exception as _wc_err:
+            print(f"  [wc card] {_wc_err}")
+
+    if non_wc_picks:
+        try:
+            from src.output.cards import render_soccer_card
+            card_path = render_soccer_card(non_wc_picks, card_date=game_date, out_dir=combined_out_dir)
+            if card_path:
+                print(f"  Soccer card → {card_path}")
+        except Exception as _card_err:
+            print(f"  [card] {_card_err}")
+    elif not wc_picks:
+        try:
+            from src.output.cards import render_soccer_card
+            card_path = render_soccer_card(all_edges, card_date=game_date, out_dir=combined_out_dir)
+            if card_path:
+                print(f"  Card → {card_path}")
+        except Exception as _card_err:
+            print(f"  [card] {_card_err}")
 
     print(f"\n{'='*60}\n")
     return 0

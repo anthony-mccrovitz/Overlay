@@ -494,3 +494,210 @@ def get_todays_matchups(
         ))
 
     return matchups
+
+
+# ---------------------------------------------------------------------------
+# Final scores (for franchise grader)
+# ---------------------------------------------------------------------------
+
+def get_final_scores(game_date: date | None = None) -> list[dict]:
+    """
+    Fetch completed game scores for a given date.
+
+    Returns list of dicts:
+      {"home_team": str, "away_team": str, "home_score": int, "away_score": int}
+
+    Uses the schedule endpoint with linescore hydration to get final scores.
+    """
+    d = game_date or date.today()
+    date_str = d.isoformat()
+    data = _cached_get(
+        f"schedule_final_{date_str}",
+        f"{API_BASE}/schedule",
+        {
+            "date": date_str,
+            "sportId": 1,
+            "hydrate": "linescore,team",
+        },
+        max_age_s=3600,
+    )
+    results = []
+    for date_entry in data.get("dates", []):
+        for game in date_entry.get("games", []):
+            state = game.get("status", {}).get("abstractGameState", "")
+            if state != "Final":
+                continue
+            home_info = game.get("teams", {}).get("home", {})
+            away_info = game.get("teams", {}).get("away", {})
+            home_name = home_info.get("team", {}).get("name", "")
+            away_name = away_info.get("team", {}).get("name", "")
+            home_score = home_info.get("score")
+            away_score = away_info.get("score")
+            # Also try linescore
+            if home_score is None or away_score is None:
+                ls = game.get("linescore", {})
+                teams_ls = ls.get("teams", {})
+                home_score = teams_ls.get("home", {}).get("runs")
+                away_score = teams_ls.get("away", {}).get("runs")
+            if home_score is None or away_score is None:
+                continue
+            results.append({
+                "home_team": home_name,
+                "away_team": away_name,
+                "home_score": int(home_score),
+                "away_score": int(away_score),
+            })
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Team form (Phase 2 — hot/cold tracking)
+# ---------------------------------------------------------------------------
+
+from datetime import timedelta as _td
+
+
+def get_team_form(team_id: int, as_of: date | None = None,
+                  lookback_days: int = 7) -> dict | None:
+    """Rolling team-form snapshot from the last `lookback_days` completed games.
+
+    Returns dict with rs/ra per game, W-L, and games used. None if no data.
+
+    Lightweight wrapper around MLB Stats API schedule endpoint, aggressively cached.
+    Failures are non-fatal — callers should treat None as "form unknown."
+    """
+    if not team_id:
+        return None
+    end = as_of or date.today()
+    start = end - _td(days=lookback_days + 2)  # buffer for off-days
+
+    try:
+        data = _cached_get(
+            f"team_schedule_{team_id}_{start}_{end}",
+            f"{API_BASE}/schedule",
+            {"sportId": 1, "teamId": team_id,
+             "startDate": start.isoformat(), "endDate": end.isoformat()},
+            max_age_s=3600,
+        )
+    except Exception:
+        return None
+
+    games_used = 0
+    runs_scored = 0
+    runs_allowed = 0
+    wins = 0
+    losses = 0
+
+    for date_entry in data.get("dates", []):
+        for g in date_entry.get("games", []):
+            state = g.get("status", {}).get("abstractGameState", "")
+            if state != "Final":
+                continue
+            home = g["teams"]["home"]
+            away = g["teams"]["away"]
+            is_home = home["team"]["id"] == team_id
+            us = home if is_home else away
+            them = away if is_home else home
+            us_score = us.get("score")
+            them_score = them.get("score")
+            if us_score is None or them_score is None:
+                continue
+            games_used += 1
+            runs_scored  += us_score
+            runs_allowed += them_score
+            if us_score > them_score:
+                wins += 1
+            else:
+                losses += 1
+            if games_used >= lookback_days:
+                break
+        if games_used >= lookback_days:
+            break
+
+    if games_used == 0:
+        return None
+
+    return {
+        "games":         games_used,
+        "lookback_days": lookback_days,
+        "rs_per_game":   round(runs_scored  / games_used, 2),
+        "ra_per_game":   round(runs_allowed / games_used, 2),
+        "wins":          wins,
+        "losses":        losses,
+        "wl":            f"{wins}-{losses}",
+    }
+
+
+def get_matchup_form_snapshot(matchup, as_of: date | None = None) -> dict | None:
+    """Bundle home + away team_form into one snapshot suitable for picks.json.
+
+    Includes season baselines so downstream analysis can compute hot/cold
+    deltas without re-fetching season averages.
+
+    Returns None if both teams fail to produce form data.
+    """
+    if matchup is None:
+        return None
+    home = matchup.home_team
+    away = matchup.away_team
+
+    home_7  = get_team_form(home.team_id, as_of=as_of, lookback_days=7)
+    home_15 = get_team_form(home.team_id, as_of=as_of, lookback_days=15)
+    away_7  = get_team_form(away.team_id, as_of=as_of, lookback_days=7)
+    away_15 = get_team_form(away.team_id, as_of=as_of, lookback_days=15)
+
+    if not any([home_7, home_15, away_7, away_15]):
+        return None
+
+    def _bundle(team, f7, f15):
+        return {
+            "team_id":          team.team_id,
+            "season_rs_per_g":  round(team.rs_per_game, 2),
+            "season_ra_per_g":  round(team.ra_per_game, 2),
+            "form_7d":          f7,
+            "form_15d":         f15,
+        }
+
+    return {
+        "home": _bundle(home, home_7, home_15),
+        "away": _bundle(away, away_7, away_15),
+        "snapshot_date": (as_of or date.today()).isoformat(),
+    }
+
+
+def build_form_lookup(game_date: date | None = None) -> dict[str, dict]:
+    """Return {team_name.lower(): matchup_form_snapshot} for all games on `game_date`.
+
+    Shared helper used by every MLB pick-logging pipeline (predict.py main, F5, NRFI,
+    props) so each one can attach team_form without re-implementing the lookup.
+    Non-fatal — returns {} on any error.
+    """
+    d = game_date or date.today()
+    lookup: dict[str, dict] = {}
+    try:
+        for m in get_todays_matchups(game_date=d):
+            snap = get_matchup_form_snapshot(m, as_of=d)
+            if not snap:
+                continue
+            lookup[m.home_team.name.lower()] = snap
+            lookup[m.away_team.name.lower()] = snap
+    except Exception:
+        return {}
+    return lookup
+
+
+def lookup_form_for_pick(lookup: dict[str, dict], team: str, matchup: str) -> dict | None:
+    """Try team name first, then matchup home/away split. Returns None if no hit."""
+    if not lookup:
+        return None
+    t = (team or "").lower().strip()
+    if t in lookup:
+        return lookup[t]
+    m = (matchup or "").lower()
+    if "@" in m:
+        away, home = [s.strip() for s in m.split("@", 1)]
+        if home in lookup:
+            return lookup[home]
+        if away in lookup:
+            return lookup[away]
+    return None

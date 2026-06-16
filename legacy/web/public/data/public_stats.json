@@ -1,0 +1,477 @@
+{
+  "updated_at": "2026-06-16T13:23:14.056079+00:00",
+  "algo_status": {
+    "nba_total": {
+      "status": "live",
+      "tier": "t1",
+      "label": "NBA Totals"
+    },
+    "mlb_total": {
+      "status": "live",
+      "tier": "t1",
+      "label": "MLB Totals (Weather)"
+    },
+    "tennis_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Tennis Elo (4-25 -8u, shadow \u2014 keep tracking)"
+    },
+    "soccer_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"
+    },
+    "mlb_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "MLB Moneyline (41-39 +4u, shadowed 2026-05-30 \u2014 soft-book edge inflation)"
+    },
+    "pga_outright": {
+      "status": "live",
+      "tier": "t2",
+      "label": "PGA Outright (SG)"
+    },
+    "nascar_outright": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NASCAR Outright Elo (shadow)"
+    },
+    "indycar_outright": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "IndyCar Outright Elo (shadow)"
+    },
+    "f1_outright": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "F1 Outright Elo (shadow)"
+    },
+    "mlb_pitcher_strikeouts": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "MLB Pitcher Ks (83-108 -16u, shadow \u2014 rebuild)"
+    },
+    "mlb_f5_total": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "MLB F5 Totals (63-47 shadow, promoting after first 30 live picks)"
+    },
+    "mlb_nrfi": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB NRFI (81-82 -7u, paused)"
+    },
+    "nba_moneyline": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "NBA Moneyline (28-24 -4u, paused)"
+    },
+    "nba_player_points": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player Points"
+    },
+    "nba_player_rebounds": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player Rebounds"
+    },
+    "nba_player_assists": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player Assists"
+    },
+    "nba_player_pra": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player PRA"
+    },
+    "nba_player_blocks": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player Blocks"
+    },
+    "nba_player_steals": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player Steals"
+    },
+    "nba_player_threes": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NBA Player 3PM"
+    },
+    "nhl_moneyline": {
+      "status": "live",
+      "tier": "t2",
+      "label": "NHL Moneyline"
+    },
+    "nhl_puck_line": {
+      "status": "live",
+      "tier": "t2",
+      "label": "NHL Puck Line"
+    },
+    "nhl_total": {
+      "status": "live",
+      "tier": "t2",
+      "label": "NHL Totals"
+    },
+    "nhl_player_points": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NHL Player Points"
+    },
+    "nhl_player_goals": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NHL Player Goals"
+    },
+    "nhl_player_assists": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NHL Player Assists"
+    },
+    "nhl_player_shots_on_goal": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NHL Shots on Goal"
+    },
+    "nhl_player_blocked_shots": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NHL Blocked Shots"
+    },
+    "ufc_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "UFC Moneyline"
+    },
+    "mlb_spread": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB Run Line"
+    },
+    "mlb_prop": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB Batter Props (generic)"
+    },
+    "mlb_batter_home_runs": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB Batter HR"
+    },
+    "mlb_batter_hits": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB Batter Hits"
+    },
+    "mlb_batter_total_bases": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB Batter Total Bases"
+    },
+    "mlb_batter_rbis": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "MLB Batter RBIs"
+    },
+    "nba_spread": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "NBA Spread"
+    },
+    "nba_prop": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "NBA Props (generic bucket)"
+    },
+    "wnba_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "WNBA Moneyline (3-2 shadow, need 30+ picks)"
+    },
+    "wnba_spread": {
+      "status": "incubating",
+      "tier": "paused",
+      "label": "WNBA Spread (0-8 -6u, paused)"
+    },
+    "wnba_total": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "WNBA Totals"
+    }
+  },
+  "clv": {
+    "moneyline": {
+      "avg_clv_pct": -0.31,
+      "positive_pct": 36.6,
+      "n": 809,
+      "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
+    },
+    "spread_total": {
+      "total": {
+        "count": 88,
+        "avg_line_clv": 0.134,
+        "beat_close_pct": 48.9,
+        "avg_price_clv_pct": 0.409,
+        "matched_price_n": 32
+      },
+      "spread": {
+        "count": 135,
+        "avg_line_clv": 0.385,
+        "beat_close_pct": 41.5,
+        "avg_price_clv_pct": 1.668,
+        "matched_price_n": 86
+      },
+      "f5_total": {
+        "count": 157,
+        "avg_line_clv": 0.019,
+        "beat_close_pct": 31.2,
+        "avg_price_clv_pct": -3.918,
+        "matched_price_n": 81
+      }
+    },
+    "totals_coverage": {
+      "scored": 88,
+      "scoreable": 219,
+      "pct": 40.2
+    },
+    "spread_coverage": {
+      "scored": 135,
+      "scoreable": 274,
+      "pct": 49.3
+    }
+  },
+  "summary": {
+    "total_picks": 272,
+    "settled": 253,
+    "pending": 14,
+    "wins": 139,
+    "losses": 108,
+    "pushes": 6,
+    "win_rate": 0.5628,
+    "units_profit": 27.14,
+    "roi": 0.1119,
+    "streak": -6
+  },
+  "nrfi": {
+    "total": 0,
+    "settled": 0,
+    "pending": 0,
+    "wins": 0,
+    "losses": 0,
+    "win_rate": 0.0,
+    "streak": 0
+  },
+  "by_market": {
+    "moneyline": {
+      "total": 88,
+      "settled": 85,
+      "pending": 3,
+      "wins": 43,
+      "losses": 42,
+      "pushes": 0,
+      "win_rate": 0.5059,
+      "units_profit": 2.09,
+      "roi": 0.0247,
+      "streak": -2
+    },
+    "puck_line": {
+      "total": 2,
+      "settled": 2,
+      "pending": 0,
+      "wins": 2,
+      "losses": 0,
+      "pushes": 0,
+      "win_rate": 1.0,
+      "units_profit": 0.53,
+      "roi": 0.5266,
+      "streak": 2
+    },
+    "spread": {
+      "total": 2,
+      "settled": 2,
+      "pending": 0,
+      "wins": 1,
+      "losses": 1,
+      "pushes": 0,
+      "win_rate": 0.5,
+      "units_profit": -0.05,
+      "roi": -0.0238,
+      "streak": 1
+    },
+    "total": {
+      "total": 180,
+      "settled": 164,
+      "pending": 11,
+      "wins": 93,
+      "losses": 65,
+      "pushes": 6,
+      "win_rate": 0.5886,
+      "units_profit": 24.58,
+      "roi": 0.1586,
+      "streak": -4
+    }
+  },
+  "by_sport": {
+    "mlb": {
+      "total": 163,
+      "settled": 159,
+      "pending": 4,
+      "wins": 80,
+      "losses": 74,
+      "win_rate": 0.5195,
+      "units_profit": 7.22,
+      "roi": 0.0469
+    },
+    "nba": {
+      "total": 97,
+      "settled": 84,
+      "pending": 13,
+      "wins": 54,
+      "losses": 30,
+      "win_rate": 0.6429,
+      "units_profit": 20.07,
+      "roi": 0.2389
+    },
+    "nhl": {
+      "total": 12,
+      "settled": 10,
+      "pending": 2,
+      "wins": 5,
+      "losses": 4,
+      "win_rate": 0.5556,
+      "units_profit": -0.15,
+      "roi": -0.0324
+    }
+  },
+  "backtest_mlb": [
+    {
+      "season": 2025,
+      "accuracy": 0.541,
+      "high_conf": 0.583,
+      "games": 2432,
+      "edge_pct": 8
+    },
+    {
+      "season": 2024,
+      "accuracy": 0.538,
+      "high_conf": 0.571,
+      "games": 2430,
+      "edge_pct": 8
+    }
+  ],
+  "recent_picks": [
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 13.5",
+      "matchup": "Colorado Rockies @ Athletics",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 4.1
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Chicago Cubs",
+      "matchup": "San Francisco Giants",
+      "odds": 120,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 19.93
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "St. Louis Cardinals",
+      "matchup": "Minnesota Twins",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 14.54
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 14.0",
+      "matchup": "Colorado Rockies @ Athletics",
+      "odds": -105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 6.8
+    },
+    {
+      "date": "2026-06-13",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 217.0",
+      "matchup": "New York Knicks @ San Antonio Spurs",
+      "odds": -108,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 14.19
+    },
+    {
+      "date": "2026-06-13",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "New York Knicks @ San Antonio Spurs",
+      "odds": -110,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 13.95
+    },
+    {
+      "date": "2026-06-11",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Chicago Cubs",
+      "matchup": "Colorado Rockies",
+      "odds": -142,
+      "result": "win",
+      "profit": 0.7,
+      "edge_pct": 8.19
+    },
+    {
+      "date": "2026-06-10",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 14.0",
+      "matchup": "Milwaukee Brewers @ Athletics",
+      "odds": -105,
+      "result": "win",
+      "profit": 0.95,
+      "edge_pct": 5.3
+    },
+    {
+      "date": "2026-06-10",
+      "sport": "nba",
+      "market": "total",
+      "team": "OVER 216.5",
+      "matchup": "San Antonio Spurs @ New York Knicks",
+      "odds": -109,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 15.42
+    },
+    {
+      "date": "2026-06-09",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 13.0",
+      "matchup": "Milwaukee Brewers @ Athletics",
+      "odds": 105,
+      "result": "win",
+      "profit": 1.05,
+      "edge_pct": 4.5
+    }
+  ]
+}

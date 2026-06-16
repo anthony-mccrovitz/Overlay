@@ -367,7 +367,7 @@ function ParlayBuilder() {
           marginTop: 12,
           padding: "6px 12px",
           background: "var(--accent-dim)",
-          border: "1px solid rgba(45,127,255,0.3)",
+          border: "1px solid rgba(18,197,138,0.3)",
           color: "var(--accent-hi)",
           borderRadius: 4,
           fontSize: 11,

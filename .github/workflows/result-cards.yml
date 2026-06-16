@@ -1,0 +1,21 @@
+name: Result cards
+
+# 4:00 AM ET (08:00 UTC, EDT) — generate result cards after the grade sweep.
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: result-cards
+  cancel-in-progress: false
+
+jobs:
+  result-cards:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: light
+      command: python scripts/gen_result_cards.py

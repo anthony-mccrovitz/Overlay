@@ -1,0 +1,22 @@
+name: PGA picks
+
+# Monday 12:00 PM ET (16:00 UTC, EDT) — PGA lines drop Sunday night.
+# Script no-ops if no active tournament.
+on:
+  schedule:
+    - cron: "0 16 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: pga
+  cancel-in-progress: false
+
+jobs:
+  pga:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: full
+      command: python run_pga.py

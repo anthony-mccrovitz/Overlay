@@ -1,5 +1,5 @@
 """
-NASCAR Cup Series Daily Picks Pipeline — ChefTonyBets
+NASCAR Cup Series Daily Picks Pipeline — Overlay
 
 Fetches outrights (win/top-5/matchups) for the upcoming Cup Series race
 and runs the unified motorsport simulation engine to find edges.

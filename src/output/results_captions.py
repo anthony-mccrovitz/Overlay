@@ -1,3 +1,4 @@
+
 """
 Multi-platform captions for yesterday's graded results.
 
@@ -21,7 +22,7 @@ ROOT       = Path(__file__).resolve().parent.parent.parent
 PICKS_FILE = ROOT / "data" / "pnl" / "picks.json"
 OUTPUT_DIR = ROOT / "output" / "picks"
 
-HANDLE         = "@ChefTonyBets"
+HANDLE         = "@Overlay"
 BIO_LINK_HINT  = "Free daily picks → link in bio"
 
 # ── Loaders ──────────────────────────────────────────────────────────────────
@@ -159,7 +160,7 @@ def caption_instagram(picks: list[dict], date_str: str) -> str:
         "",
         "#sportsbetting #mlbpicks #nbapicks #sportsbettingpicks #freepicks "
         "#sportsbettor #dailypicks #betting #gamblingtwitter #mlbbets #nbabets "
-        "#cheftonybets #aibetting #sportsai #pickoftheday #bettingedge",
+        "#getoverlay #aibetting #sportsai #pickoftheday #bettingedge",
     ]
     return "\n".join(l for l in lines if l != "").replace("\n\n\n", "\n\n")
 

@@ -1,5 +1,5 @@
 """
-UFC Fight Model — ChefTonyBets
+UFC Fight Model — Overlay
 
 Glicko-2 ratings + style-matchup factors + Monte Carlo fight simulator.
 
@@ -127,6 +127,63 @@ FIGHTER_RATINGS: dict[str, dict] = {
     "Alexandre Pantoja": {"mu": 1920, "style": {"striking": 0.78, "wrestling": 0.80, "grappling": 0.90}},
     "Brandon Royval":    {"mu": 1860, "style": {"striking": 0.75, "wrestling": 0.70, "grappling": 0.88}},
     "Amir Albazi":       {"mu": 1850, "style": {"striking": 0.72, "wrestling": 0.78, "grappling": 0.85}},
+
+    # Expanded roster (Tier 2 contenders / regular card fighters) — added 2026-06-12
+    # Heavyweight
+    "Curtis Blaydes":    {"mu": 1850, "style": {"striking": 0.70, "wrestling": 0.92, "grappling": 0.70}},
+    "Alexander Volkov":  {"mu": 1830, "style": {"striking": 0.78, "wrestling": 0.55, "grappling": 0.60}},
+    "Derrick Lewis":     {"mu": 1780, "style": {"striking": 0.85, "wrestling": 0.45, "grappling": 0.40}},
+    "Jailton Almeida":   {"mu": 1820, "style": {"striking": 0.55, "wrestling": 0.88, "grappling": 0.92}},
+    # Light Heavy
+    "Carlos Ulberg":     {"mu": 1840, "style": {"striking": 0.86, "wrestling": 0.50, "grappling": 0.50}},
+    "Khalil Rountree":   {"mu": 1830, "style": {"striking": 0.88, "wrestling": 0.45, "grappling": 0.45}},
+    "Aleksandar Rakic":  {"mu": 1810, "style": {"striking": 0.82, "wrestling": 0.55, "grappling": 0.55}},
+    # Middleweight
+    "Khamzat Chimaev":   {"mu": 1980, "style": {"striking": 0.82, "wrestling": 0.92, "grappling": 0.88}},
+    "Nassourdine Imavov": {"mu": 1870, "style": {"striking": 0.83, "wrestling": 0.72, "grappling": 0.68}},
+    "Caio Borralho":     {"mu": 1860, "style": {"striking": 0.75, "wrestling": 0.80, "grappling": 0.80}},
+    "Roman Dolidze":     {"mu": 1820, "style": {"striking": 0.78, "wrestling": 0.72, "grappling": 0.72}},
+    # Welterweight
+    "Shavkat Rakhmonov": {"mu": 1950, "style": {"striking": 0.82, "wrestling": 0.85, "grappling": 0.92}},
+    "Ian Machado Garry": {"mu": 1860, "style": {"striking": 0.85, "wrestling": 0.65, "grappling": 0.65}},
+    "Jack Della Maddalena": {"mu": 1900, "style": {"striking": 0.88, "wrestling": 0.65, "grappling": 0.65}},
+    "Gilbert Burns":     {"mu": 1840, "style": {"striking": 0.78, "wrestling": 0.75, "grappling": 0.90}},
+    "Michael Page":      {"mu": 1820, "style": {"striking": 0.92, "wrestling": 0.45, "grappling": 0.50}},
+    "Carlos Prates":     {"mu": 1830, "style": {"striking": 0.90, "wrestling": 0.50, "grappling": 0.55}},
+    # Lightweight
+    "Paddy Pimblett":    {"mu": 1820, "style": {"striking": 0.75, "wrestling": 0.68, "grappling": 0.85}},
+    "Renato Moicano":    {"mu": 1840, "style": {"striking": 0.78, "wrestling": 0.65, "grappling": 0.85}},
+    "Mateusz Gamrot":    {"mu": 1850, "style": {"striking": 0.75, "wrestling": 0.90, "grappling": 0.78}},
+    "Beneil Dariush":    {"mu": 1830, "style": {"striking": 0.75, "wrestling": 0.70, "grappling": 0.88}},
+    "Rafael Fiziev":     {"mu": 1830, "style": {"striking": 0.88, "wrestling": 0.55, "grappling": 0.55}},
+    # Featherweight
+    "Movsar Evloev":     {"mu": 1900, "style": {"striking": 0.72, "wrestling": 0.92, "grappling": 0.80}},
+    "Diego Lopes":       {"mu": 1880, "style": {"striking": 0.85, "wrestling": 0.65, "grappling": 0.85}},
+    "Arnold Allen":      {"mu": 1860, "style": {"striking": 0.85, "wrestling": 0.60, "grappling": 0.60}},
+    "Yair Rodriguez":    {"mu": 1840, "style": {"striking": 0.88, "wrestling": 0.55, "grappling": 0.65}},
+    "Lerone Murphy":     {"mu": 1830, "style": {"striking": 0.82, "wrestling": 0.65, "grappling": 0.62}},
+    # Bantamweight
+    "Umar Nurmagomedov": {"mu": 1900, "style": {"striking": 0.80, "wrestling": 0.92, "grappling": 0.85}},
+    "Cory Sandhagen":    {"mu": 1880, "style": {"striking": 0.85, "wrestling": 0.65, "grappling": 0.70}},
+    "Deiveson Figueiredo": {"mu": 1850, "style": {"striking": 0.82, "wrestling": 0.65, "grappling": 0.78}},
+    "Henry Cejudo":      {"mu": 1830, "style": {"striking": 0.78, "wrestling": 0.95, "grappling": 0.60}},
+    "Marlon Vera":       {"mu": 1820, "style": {"striking": 0.82, "wrestling": 0.60, "grappling": 0.78}},
+    # Flyweight
+    "Brandon Moreno":    {"mu": 1900, "style": {"striking": 0.78, "wrestling": 0.72, "grappling": 0.82}},
+    "Kai Kara-France":   {"mu": 1820, "style": {"striking": 0.85, "wrestling": 0.55, "grappling": 0.55}},
+    "Manel Kape":        {"mu": 1820, "style": {"striking": 0.85, "wrestling": 0.55, "grappling": 0.60}},
+
+    # Mid-card / specific upcoming-card fighters (June 2026 White House show + adj.)
+    "Michael Chandler":  {"mu": 1850, "style": {"striking": 0.82, "wrestling": 0.82, "grappling": 0.65}},
+    "Mauricio Ruffy":    {"mu": 1810, "style": {"striking": 0.87, "wrestling": 0.55, "grappling": 0.55}},
+    "Bo Nickal":         {"mu": 1850, "style": {"striking": 0.65, "wrestling": 0.95, "grappling": 0.85}},
+    "Kyle Daukaus":      {"mu": 1750, "style": {"striking": 0.65, "wrestling": 0.78, "grappling": 0.82}},
+    "Tony Ferguson":     {"mu": 1720, "style": {"striking": 0.80, "wrestling": 0.55, "grappling": 0.78}},
+    "Aiemann Zahabi":    {"mu": 1760, "style": {"striking": 0.75, "wrestling": 0.65, "grappling": 0.65}},
+    "Josh Hokit":        {"mu": 1700, "style": {"striking": 0.65, "wrestling": 0.75, "grappling": 0.55}},
+    "Steve Garcia Jr.":  {"mu": 1810, "style": {"striking": 0.82, "wrestling": 0.62, "grappling": 0.65}},
+    "Steve Garcia":      {"mu": 1810, "style": {"striking": 0.82, "wrestling": 0.62, "grappling": 0.65}},
+    "Mauricio Lopes":    {"mu": 1810, "style": {"striking": 0.87, "wrestling": 0.55, "grappling": 0.55}},   # alias for Ruffy
 }
 
 # Base finish probabilities by weight class (from historical UFC data)
@@ -253,36 +310,34 @@ class UFCModel:
                 grappling = s.get("grappling", 0.5),
             )
 
-    def _get_rating(self, fighter: str) -> GlickoRating:
+    def _fuzzy_match(self, fighter: str) -> str | None:
+        """
+        Match last-name only — first-name collisions like "Michael Chandler" vs
+        "Michael Page" silently grabbed the wrong rating before this fix.
+        Two-step: exact, then last-name strict equality.
+        """
         if fighter in self.ratings:
-            return self.ratings[fighter]
-        # Fuzzy last-name match
-        lower = fighter.lower()
-        for name, rating in self.ratings.items():
-            parts = name.lower().split()
-            if any(p in lower or lower in p for p in parts if len(p) > 3):
-                return rating
-        return GlickoRating()  # default
+            return fighter
+        parts = fighter.strip().split()
+        if not parts:
+            return None
+        target_last = parts[-1].lower().strip(".")
+        for name in self.ratings:
+            cand_last = name.split()[-1].lower().strip(".")
+            if cand_last == target_last and len(cand_last) > 3:
+                return name
+        return None
+
+    def _get_rating(self, fighter: str) -> GlickoRating:
+        name = self._fuzzy_match(fighter)
+        return self.ratings[name] if name else GlickoRating()
 
     def _is_known_fighter(self, fighter: str) -> bool:
-        if fighter in self.ratings:
-            return True
-        lower = fighter.lower()
-        for name in self.ratings:
-            parts = name.lower().split()
-            if any(p in lower or lower in p for p in parts if len(p) > 3):
-                return True
-        return False
+        return self._fuzzy_match(fighter) is not None
 
     def _get_style(self, fighter: str) -> StyleProfile:
-        if fighter in self.styles:
-            return self.styles[fighter]
-        for name, style in self.styles.items():
-            parts = name.lower().split()
-            lower = fighter.lower()
-            if any(p in lower or lower in p for p in parts if len(p) > 3):
-                return style
-        return StyleProfile()
+        name = self._fuzzy_match(fighter)
+        return self.styles[name] if name and name in self.styles else StyleProfile()
 
     def simulate_fight(
         self,
@@ -379,15 +434,30 @@ class UFCModel:
         n_sim:          int   = 50_000,
         min_edge_pct:   float = 3.0,
         is_main_card:   bool  = True,
+        blend_alpha:    float = 0.40,
     ) -> list[dict]:
         """
-        Find edges in UFC card odds.
+        Find edges in UFC card odds — moneyline, method-of-victory, round props.
 
-        events: Odds API format events list with h2h markets.
+        events: Odds API format events list with h2h (and optionally
+                fight_result_method, total_rounds) markets.
         weight_classes: {"{fighter_a} vs {fighter_b}": "lightweight"} — optional.
+
+        Calibration: until a fitted MMA calibrator exists, raw model probs are
+        shrunk toward market via blend (alpha=0.40). Same analytic Platt-equivalent
+        used by the WC pipeline (see scripts/wc_data.py). The model_prob written
+        to picks.json is the BLENDED value so edge math and downstream calibrator
+        training agree. Raw simulation output preserved as model_prob_raw.
         """
         wc_map = weight_classes or {}
         edges  = []
+
+        # Calibrator — works once recalibrate_all() has fit a fileset; until then
+        # it's a no-op pass-through (graceful degradation).
+        try:
+            from src.analytics.calibration import apply_calibration
+        except Exception:
+            apply_calibration = lambda p, s, m: p   # noqa: E731
 
         for event in events:
             home = event.get("home_team", "")
@@ -404,59 +474,160 @@ class UFCModel:
 
             sim = self.simulate_fight(home, away, weight_class=wc_key, n_rounds=n_rounds, n_sim=n_sim)
 
+            # Discover all market types this event has so we can attach prop edges
+            mkt_by_key: dict[str, dict] = {}   # market_key -> {book: outcomes_list}
             for bookmaker in event.get("bookmakers", []):
                 book = bookmaker.get("title", "")
                 for market in bookmaker.get("markets", []):
-                    if market.get("key") != "h2h":
-                        continue
-                    outcomes = market.get("outcomes", [])
-                    if len(outcomes) < 2:
-                        continue
+                    k = market.get("key")
+                    mkt_by_key.setdefault(k, {})[book] = market.get("outcomes", [])
 
-                    # Devig
-                    total_imp = sum(
-                        _american_to_imp(float(o.get("price", -110)))
-                        for o in outcomes
-                    )
-                    if total_imp <= 0:
+            # ── Moneyline ─────────────────────────────────────────────────────
+            for book, outcomes in mkt_by_key.get("h2h", {}).items():
+                if len(outcomes) < 2:
+                    continue
+                total_imp = sum(_american_to_imp(float(o.get("price", -110))) for o in outcomes)
+                if total_imp <= 0:
+                    continue
+                for o in outcomes:
+                    fighter = o.get("name", "")
+                    price   = float(o.get("price", 0))
+                    if not price:
                         continue
+                    imp_fair = _american_to_imp(price) / total_imp
+                    raw_p    = sim.win_prob(fighter)
+                    # Calibrate then blend toward market (cascade: file calibrator wins,
+                    # falls back to market-blend shrinkage)
+                    cal_p    = apply_calibration(raw_p, "mma", "moneyline")
+                    if cal_p == raw_p:   # no fitted calibrator yet → fall back to blend
+                        model_p = blend_alpha * raw_p + (1 - blend_alpha) * imp_fair
+                    else:
+                        model_p = cal_p
+                    edge = (model_p - imp_fair) * 100.0
+                    if edge < min_edge_pct:
+                        continue
+                    if both_unknown:
+                        print(f"  [UFC] SKIP {fighter} edge={edge:+.1f}% — both fighters unknown")
+                        continue
+                    summ = sim.summary()
+                    fighter_summ = summ.get(fighter, {})
+                    fighter_known = self._is_known_fighter(fighter)
+                    edges.append({
+                        "market":         "moneyline",
+                        "direction":      "WIN",
+                        "fighter":        fighter,
+                        "team":           fighter,
+                        "matchup":        f"{away} vs {home}",
+                        "odds":           int(price),
+                        "model_prob":     round(model_p, 4),
+                        "model_prob_raw": round(raw_p, 4),
+                        "implied_prob":   round(imp_fair, 4),
+                        "edge_pct":       round(edge, 2),
+                        "sportsbook":     book,
+                        "ko_tko":         round(fighter_summ.get("ko_tko", 0), 3),
+                        "submission":     round(fighter_summ.get("submission", 0), 3),
+                        "decision":       round(fighter_summ.get("decision", 0), 3),
+                        "data_quality":   "known" if fighter_known else "unknown_fighter",
+                    })
 
-                    for o in outcomes:
-                        fighter = o.get("name", "")
-                        price   = float(o.get("price", 0))
-                        if not price:
+            # ── Method-of-victory props (Fighter X by KO/sub/decision) ────────
+            # Market key: "fight_result_method" — outcomes are "{fighter} - {method}"
+            for book, outcomes in mkt_by_key.get("fight_result_method", {}).items():
+                if not outcomes:
+                    continue
+                total_imp = sum(_american_to_imp(float(o.get("price", -110))) for o in outcomes)
+                if total_imp <= 0:
+                    continue
+                summ = sim.summary()
+                for o in outcomes:
+                    nm = o.get("name", "") or o.get("description", "")
+                    price = float(o.get("price", 0))
+                    if not (nm and price):
+                        continue
+                    # Parse "Fighter - Method" — varies by book
+                    parts = nm.split(" - ") if " - " in nm else nm.rsplit(" by ", 1)
+                    if len(parts) != 2:
+                        continue
+                    fighter, method_raw = parts[0].strip(), parts[1].strip().lower()
+                    method = ("ko_tko" if any(k in method_raw for k in ("ko", "tko", "knockout"))
+                              else "submission" if "sub" in method_raw
+                              else "decision" if "decision" in method_raw or "points" in method_raw
+                              else None)
+                    if method is None:
+                        continue
+                    raw_p = summ.get(fighter, {}).get(method, 0.0)
+                    if raw_p <= 0:
+                        continue
+                    imp_fair = _american_to_imp(price) / total_imp
+                    cal_p = apply_calibration(raw_p, "mma", "prop")
+                    if cal_p == raw_p:
+                        model_p = blend_alpha * raw_p + (1 - blend_alpha) * imp_fair
+                    else:
+                        model_p = cal_p
+                    edge = (model_p - imp_fair) * 100.0
+                    if edge < min_edge_pct or both_unknown:
+                        continue
+                    edges.append({
+                        "market":         "method_of_victory",
+                        "direction":      method.upper(),
+                        "fighter":        fighter,
+                        "team":           fighter,
+                        "matchup":        f"{away} vs {home}",
+                        "odds":           int(price),
+                        "model_prob":     round(model_p, 4),
+                        "model_prob_raw": round(raw_p, 4),
+                        "implied_prob":   round(imp_fair, 4),
+                        "edge_pct":       round(edge, 2),
+                        "sportsbook":     book,
+                        "data_quality":   "known" if self._is_known_fighter(fighter) else "unknown_fighter",
+                    })
+
+            # ── Total rounds / Goes-the-distance ─────────────────────────────
+            # Market key: "total_rounds" (Over/Under {1.5,2.5,3.5})
+            for book, outcomes in mkt_by_key.get("total_rounds", {}).items():
+                if len(outcomes) < 2:
+                    continue
+                pairs: dict[float, dict] = {}
+                for o in outcomes:
+                    pt = o.get("point")
+                    if pt is None: continue
+                    pairs.setdefault(float(pt), {})[o.get("name", "").lower()] = float(o.get("price", -110))
+                for pt, sides in pairs.items():
+                    if "over" not in sides or "under" not in sides:
+                        continue
+                    o_p, u_p = sides["over"], sides["under"]
+                    total_imp = _american_to_imp(o_p) + _american_to_imp(u_p)
+                    if total_imp <= 0: continue
+                    # Model P(over): fight goes past round pt → ends in round > pt
+                    # sim records ko_round / sub_round / decision (full distance)
+                    raw_p_over = sim.goes_distance_prob() if pt >= n_rounds - 0.5 else _prob_past_round(sim, pt)
+                    for side, price in (("OVER", o_p), ("UNDER", u_p)):
+                        raw_p = raw_p_over if side == "OVER" else 1 - raw_p_over
+                        if raw_p <= 0: continue
+                        imp_fair = _american_to_imp(price) / total_imp
+                        cal_p = apply_calibration(raw_p, "mma", "total")
+                        if cal_p == raw_p:
+                            model_p = blend_alpha * raw_p + (1 - blend_alpha) * imp_fair
+                        else:
+                            model_p = cal_p
+                        edge = (model_p - imp_fair) * 100.0
+                        if edge < min_edge_pct or both_unknown:
                             continue
-                        imp_raw  = _american_to_imp(price)
-                        imp_fair = imp_raw / total_imp
-                        model_p  = sim.win_prob(fighter)
-                        edge     = (model_p - imp_fair) * 100.0
-                        if edge >= min_edge_pct:
-                            # Skip edges where both fighters are unknown — model is
-                            # coin-flip at default Glicko 1500, producing fake edges.
-                            if both_unknown:
-                                print(
-                                    f"  [UFC] SKIP {fighter} edge={edge:+.1f}% — "
-                                    f"both fighters unknown (default Glicko 1500)"
-                                )
-                                continue
-                            summ = sim.summary()
-                            fighter_summ = summ.get(fighter, {})
-                            fighter_known = self._is_known_fighter(fighter)
-                            edges.append({
-                                "market":       "moneyline",
-                                "direction":    "WIN",
-                                "fighter":      fighter,
-                                "team":         fighter,
-                                "matchup":      f"{away} vs {home}",
-                                "odds":         int(price),
-                                "model_prob":   round(model_p, 4),
-                                "edge_pct":     round(edge, 2),
-                                "sportsbook":   book,
-                                "ko_tko":       round(fighter_summ.get("ko_tko", 0), 3),
-                                "submission":   round(fighter_summ.get("submission", 0), 3),
-                                "decision":     round(fighter_summ.get("decision", 0), 3),
-                                "data_quality": "known" if fighter_known else "unknown_fighter",
-                            })
+                        edges.append({
+                            "market":         "total_rounds",
+                            "direction":      side,
+                            "fighter":        f"{away} vs {home}",   # no fighter — fight-level
+                            "team":           f"{side} {pt} rounds",
+                            "matchup":        f"{away} vs {home}",
+                            "line":           pt,
+                            "odds":           int(price),
+                            "model_prob":     round(model_p, 4),
+                            "model_prob_raw": round(raw_p, 4),
+                            "implied_prob":   round(imp_fair, 4),
+                            "edge_pct":       round(edge, 2),
+                            "sportsbook":     book,
+                            "data_quality":   "known" if (home_known and away_known) else "partial_unknown",
+                        })
 
         return sorted(edges, key=lambda x: x["edge_pct"], reverse=True)
 
@@ -465,6 +636,17 @@ def _american_to_imp(o: float) -> float:
     if o >= 0:
         return 100.0 / (o + 100.0)
     return abs(o) / (abs(o) + 100.0)
+
+
+def _prob_past_round(sim: "FightResult", point: float) -> float:
+    """
+    P(fight ends in a round strictly after `point`).
+    A 1.5-round line cashes OVER iff the fight reaches round 2 or later.
+    Decision-fights (rounds == n_rounds with full distance) count as past every line.
+    """
+    import math as _m
+    cutoff = int(_m.floor(point)) + 1   # 1.5 → past round 1 means round ≥ 2
+    return float((sim.rounds >= cutoff).mean())
 
 
 def get_ufc_model() -> UFCModel:

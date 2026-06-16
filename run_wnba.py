@@ -1,5 +1,5 @@
 """
-WNBA Daily Picks Pipeline — ChefTonyBets
+WNBA Daily Picks Pipeline — Overlay
 
 Generates picks for today's WNBA slate and saves to:
     output/picks/basketball_wnba/YYYYMMDD/picks.json
@@ -140,37 +140,18 @@ def run_wnba(args: argparse.Namespace) -> int:
     print(f"  WNBA Picks — {game_date.strftime('%B %d, %Y')}")
     print(f"{'='*60}")
 
-    # ── Schedule guard: skip if no WNBA games today ────────────────────────────
-    try:
-        from scripts.schedule_check import validate_and_log
-        if not validate_and_log("wnba", game_date.isoformat()):
-            return 0
-    except Exception as _sce:
-        print(f"  ⚠  Schedule check skipped ({_sce})")
-    # ──────────────────────────────────────────────────────────────────────────
-
     # 1. Fetch odds
     events = fetch_wnba_odds(refresh=refresh)
     if not events:
         print("  No WNBA events found. Season may be dark or no odds posted yet.")
         return 0
 
-    # Filter to today's games — compare in Eastern time so late-night games
-    # (e.g. 02:00 UTC = 10 PM ET) aren't misclassified as the next calendar day.
-    import zoneinfo
-    _ET = zoneinfo.ZoneInfo("America/New_York")
-    today_events = []
-    for ev in events:
-        ct = ev.get("commence_time", "")
-        if not ct:
-            continue
-        try:
-            utc_dt = datetime.fromisoformat(ct.replace("Z", "+00:00"))
-            event_date = utc_dt.astimezone(_ET).strftime("%Y%m%d")
-            if event_date == today_str:
-                today_events.append(ev)
-        except (ValueError, KeyError):
-            pass
+    # Keep only games on this slate date. The odds feed returns the next N
+    # upcoming games regardless of date; comparing in ET keeps late-night games
+    # (e.g. 02:00 UTC = 10 PM ET) on the right calendar day and prevents future
+    # games from leaking onto today's card on an off-day.
+    from src.data.slate import filter_to_slate
+    today_events = filter_to_slate(events, game_date)
 
     if not today_events:
         print(f"  No WNBA games scheduled for {today_str}.")
