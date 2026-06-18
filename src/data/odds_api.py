@@ -79,6 +79,12 @@ TIER1_BOOKS     = MY_BOOKS_TITLES
 # line-shopping + Pinnacle as the sharp no-vig fair-line anchor.
 BOOKMAKERS = "draftkings,fanduel,betmgm,williamhill_us,betrivers,espnbet,fanatics,pinnacle"
 
+# Single source of truth: every odds fetch (all sport runners) uses these books.
+# Override the older MY_BOOKS_PARAM so nothing line-shops across books we can't
+# bet — CLV/EV must be measured against lines actually available to us, never
+# foreign sportsbooks or exchanges (e.g. 888sport, betfair_ex_uk).
+MY_BOOKS_PARAM = BOOKMAKERS
+
 SUPPORTED_SPORTS = {
     "basketball_ncaab",
     "basketball_nba",

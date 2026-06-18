@@ -1,0 +1,24 @@
+name: Tennis picks
+
+# Daily 11:00 AM ET (15:00 UTC, EDT). run_tennis.py with no --sport auto-detects
+# every active ATP/WTA tournament (fetch_active_tennis_sports) and runs them all,
+# so concurrent events (e.g. Halle + Queen's Club + German Open in grass season)
+# are all covered. No-ops cleanly when no tennis is in season.
+on:
+  schedule:
+    - cron: "0 15 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: tennis
+  cancel-in-progress: false
+
+jobs:
+  tennis:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: full
+      command: python run_tennis.py

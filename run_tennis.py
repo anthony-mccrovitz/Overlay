@@ -64,6 +64,17 @@ TENNIS_SPORTS = {
     "tennis_wta_cincinnati":        "hard",
     "tennis_atp_shanghai":          "hard",
     "tennis_atp_paris_masters":     "hard",
+    # Grass-court Wimbledon warm-ups (June). Without these they'd default to
+    # clay and the model would use the wrong-surface Elo.
+    "tennis_atp_halle_open":        "grass",
+    "tennis_atp_queens_club_champ": "grass",
+    "tennis_wta_german_open":       "grass",
+    "tennis_wta_queens_club_champ": "grass",
+    "tennis_atp_stuttgart_open":    "grass",
+    "tennis_wta_stuttgart_open":    "grass",
+    "tennis_wta_nottingham":        "grass",
+    "tennis_atp_eastbourne":        "grass",
+    "tennis_wta_eastbourne":        "grass",
 }
 
 # Main draw start dates — qualifying rounds suppressed (Elo sparse for qualifiers).
@@ -385,8 +396,9 @@ def run_tennis(args: argparse.Namespace) -> int:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Tennis picks pipeline")
-    parser.add_argument("--sport",   type=str, default=DEFAULT_SPORT,
-                        help=f"Odds API sport key (default: {DEFAULT_SPORT})")
+    parser.add_argument("--sport",   type=str, default=None,
+                        help="Odds API sport key. Default: auto-detect all active "
+                             "tournaments via fetch_active_tennis_sports().")
     parser.add_argument("--surface", type=str, choices=["clay", "hard", "grass"],
                         help="Court surface (auto-detected from sport key if omitted)")
     parser.add_argument("--best-of", type=int, default=3, choices=[3, 5],

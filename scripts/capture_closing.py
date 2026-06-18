@@ -43,8 +43,10 @@ SPORTS = {
     "soccer":  "soccer_fifa_world_cup",
     "ufc":     "mma_mixed_martial_arts",
     "mma":     "mma_mixed_martial_arts",
-    "tennis":  "tennis_atp_french_open",
-    # NOTE: golf is intentionally NOT here. This capturer fetches game markets
+    # NOTE: tennis & golf are intentionally NOT here. Tennis runs many concurrent
+    # tournaments (this capturer's one-key-per-sport model can't enumerate them)
+    # and golf is an outright market with no game lines. Both get CLV from their
+    # runners' daily snapshots (tennis.yml / pga.yml) instead of this capturer.
     # (h2h/spreads/totals); golf is an outright market with no such lines, so a
     # golf key only wastes calls. Golf outright CLV comes from run_pga.py's daily
     # snapshots (pga.yml runs daily, auto-detecting the active major).
