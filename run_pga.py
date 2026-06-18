@@ -172,8 +172,9 @@ def main(args: argparse.Namespace) -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="PGA major picks pipeline")
     parser.add_argument(
-        "--sport", type=str, default=DEFAULT_SPORT,
-        help=f"Odds API sport key (default: {DEFAULT_SPORT}). Options: {list(_SPORT_TO_COURSE.keys())}",
+        "--sport", type=str, default=None,
+        help=f"Odds API sport key. Default: auto-detect the active major via "
+             f"detect_active_golf_sport(). Options: {list(_SPORT_TO_COURSE.keys())}",
     )
     parser.add_argument("--n-sim", type=int, default=100_000, help="Monte Carlo simulations (default 100k)")
     parser.add_argument("--refresh", action="store_true", help="Force-refresh SG stats + odds caches")

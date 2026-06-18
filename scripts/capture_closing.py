@@ -44,7 +44,10 @@ SPORTS = {
     "ufc":     "mma_mixed_martial_arts",
     "mma":     "mma_mixed_martial_arts",
     "tennis":  "tennis_atp_french_open",
-    "pga":     "golf_pga_championship",
+    # NOTE: golf is intentionally NOT here. This capturer fetches game markets
+    # (h2h/spreads/totals); golf is an outright market with no such lines, so a
+    # golf key only wastes calls. Golf outright CLV comes from run_pga.py's daily
+    # snapshots (pga.yml runs daily, auto-detecting the active major).
     "nascar":  "auto_racing_nascar_cup_series",
     "indycar": "auto_racing_indycar_series",
     "f1":      "auto_racing_formula_one",
