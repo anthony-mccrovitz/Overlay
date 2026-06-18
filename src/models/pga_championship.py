@@ -712,10 +712,11 @@ def fetch_odds(sport_key: str = "golf_pga_championship_winner") -> dict[str, dic
     import requests as req
     key = os.environ.get("ODDS_API_KEY", "")
     try:
+        from src.data.odds_api import BOOKMAKERS
         r = req.get(
             f"https://api.the-odds-api.com/v4/sports/{sport_key}/odds",
             params={
-                "apiKey": key, "regions": "us,uk,eu",
+                "apiKey": key, "bookmakers": BOOKMAKERS,
                 "markets": "outrights", "oddsFormat": "american",
             },
             timeout=10,
