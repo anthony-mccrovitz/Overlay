@@ -1,10 +1,12 @@
 name: PGA picks
 
-# Monday 12:00 PM ET (16:00 UTC, EDT) — PGA lines drop Sunday night.
-# Script no-ops if no active tournament.
+# Daily 12:00 PM ET (16:00 UTC, EDT). run_pga.py auto-detects the active major
+# via detect_active_golf_sport() and no-ops on days with no tournament, so a
+# daily trigger catches every major's Thu–Sun rounds. The old Monday-only cron
+# missed them all (majors are played Thu–Sun). Cheap: ~3 credits when active.
 on:
   schedule:
-    - cron: "0 16 * * 1"
+    - cron: "0 16 * * *"
   workflow_dispatch: {}
 
 permissions:

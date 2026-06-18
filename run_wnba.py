@@ -206,9 +206,14 @@ def run_wnba(args: argparse.Namespace) -> int:
         except Exception as _ce:
             print(f"  [captions] {_ce}")
 
-    # 5. Auto-log to pnl (PAUSED: WNBA market is in shadow/incubating status)
-    # 0-8 on spreads; all markets thin. Track output JSON for CLV but don't log to record.
-    print("  [PAUSED] WNBA picks not logged to pnl (shadow tracking only).")
+    # 5. Auto-log to pnl as shadow picks (card_pick gated by is_live in the log
+    # fn) so WNBA gets opening snapshots + CLV tracking like every other market.
+    # Picks stay out of the official record until is_live("wnba",...) flips on.
+    try:
+        n_logged = _auto_log_wnba_picks(edges, game_date)
+        print(f"  [pnl] Logged {n_logged} WNBA pick(s) for CLV tracking")
+    except Exception as _log_err:
+        print(f"  [pnl] WNBA log failed: {_log_err}")
 
     # 6. CLV snapshot
     try:
