@@ -72,6 +72,13 @@ SHARP_BOOK_KEYS = frozenset({"pinnacle", "matchbook", "draftkings", "fanduel"})
 PREFERRED_BOOKS = MY_BOOKS_TITLES
 TIER1_BOOKS     = MY_BOOKS_TITLES
 
+# Books requested from the Odds API. Using the `bookmakers` param instead of
+# `regions` costs markets×1 for up to 10 books (vs markets×3 for us,us2,eu) —
+# proven 3× cheaper, and keeps every market. Edit this list to change coverage;
+# KEEP IT ≤10 books or the per-call cost doubles. 7 US books for best-price
+# line-shopping + Pinnacle as the sharp no-vig fair-line anchor.
+BOOKMAKERS = "draftkings,fanduel,betmgm,williamhill_us,betrivers,espnbet,fanatics,pinnacle"
+
 SUPPORTED_SPORTS = {
     "basketball_ncaab",
     "basketball_nba",
@@ -143,10 +150,9 @@ def fetch_odds(
     url = f"{API_BASE}/sports/{sport}/odds"
     params = {
         "apiKey": api_key,
-        # us = DraftKings/FanDuel/BetMGM/Caesars/BetRivers
-        # us2 = additional US books (PointsBet, ESPN Bet, etc.)
-        # eu = Pinnacle + bet365 — the sharp reference books for CLV/EV baseline
-        "regions": "us,us2,eu",
+        # Named books (see BOOKMAKERS) instead of regions: 3× cheaper, keeps
+        # every market. Includes Pinnacle for the sharp CLV/EV baseline.
+        "bookmakers": BOOKMAKERS,
         "markets": markets,
         "oddsFormat": "american",
     }
@@ -556,7 +562,7 @@ def fetch_event_odds(
     url = f"{API_BASE}/sports/{sport}/events/{event_id}/odds"
     params = {
         "apiKey": api_key,
-        "regions": "us,us2,eu",
+        "bookmakers": BOOKMAKERS,
         "markets": markets,
         "oddsFormat": "american",
     }
@@ -698,7 +704,7 @@ def fetch_golf_outrights(
     url = f"{API_BASE}/sports/{sport}/odds"
     params = {
         "apiKey": api_key,
-        "regions": "us,us2,eu",
+        "bookmakers": BOOKMAKERS,
         "markets": "outrights",
         "oddsFormat": "american",
     }
