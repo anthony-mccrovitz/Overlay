@@ -173669,6 +173669,37 @@
         "reason": "no MLB shadow filter for this sport"
       },
       "strategy": "fav_longshot"
+    },
+    {
+      "pick_id": "golf_us_open_winner_20260618_scottie-scheffler_outright_win",
+      "date": "2026-06-18",
+      "sport": "golf_us_open_winner",
+      "market": "outright",
+      "direction": "WIN",
+      "team": "Scottie Scheffler",
+      "matchup": "U.S. Open",
+      "odds": 1300,
+      "line": null,
+      "sportsbook": "betfair_ex_uk",
+      "model_prob": 0.1994,
+      "edge_pct": 13.51,
+      "stake": 0.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-18T18:05:01.375043+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "strategy": null
     }
   ]
 }
