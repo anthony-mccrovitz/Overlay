@@ -49,10 +49,11 @@ jobs:
       - name: Capture closing lines
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        # Wide band (-15 to +25 min) absorbs the 15-min cadence + GH cron lag.
-        # Capture is idempotent: first run that sees a game inside the band
-        # locks its close, so a delayed tick never loses the line entirely.
-        run: python scripts/capture_closing.py --window 40
+        # Wide 90-min pre-game lead so capture survives GitHub's sporadic/late
+        # cron (the narrow band silently broke closing capture — and all CLV —
+        # once the laptop's every-2-min cron was removed). Idempotent: the first
+        # run inside the band locks each game's late-pre-game line.
+        run: python scripts/capture_closing.py --window 90
 
       - name: Commit new archives
         run: |

@@ -251,20 +251,23 @@ def capture_sport(
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["all"], default="all")
-    ap.add_argument("--window", type=float, default=14.0,
-                    help="Width of the pre-game capture band in minutes (default 14 → "
-                         "-2 to +12 min around start). Capture is idempotent, so the "
-                         "first run that sees a game inside this band locks its close; "
-                         "a wide band means a single missed 2-min cron tick no longer "
-                         "loses the game's closing line forever.")
+    ap.add_argument("--window", type=float, default=90.0,
+                    help="Pre-game capture LEAD in minutes (default 90): capture any "
+                         "game starting within this many minutes. A WIDE lead is what "
+                         "makes capture survive GitHub's sporadic/late cron — the old "
+                         "narrow ±20 band only worked with the laptop's every-2-min "
+                         "cron; once that was removed, lagged GitHub ticks landed "
+                         "between games and captured nothing (CLV went to 0). Capture "
+                         "is idempotent (first run inside the band locks the line), so "
+                         "this yields a consistent late-pre-game reference for CLV.")
     ap.add_argument("--force", action="store_true",
                     help="Re-capture even if event already in archive")
     args = ap.parse_args()
 
-    half = args.window / 2.0
-    # Band centered ~5 min before start. Default width 14 → [-2, +12] min: catches
-    # games up to 12 min out (reliable) down to 2 min after start (cron-lag grace).
-    lo, hi = 5.0 - half, 5.0 + half
+    # Pre-game band: from GRACE minutes after first pitch (lag grace) out to
+    # --window minutes before start. delta = minutes until commence (>0 = future).
+    GRACE = 5.0
+    lo, hi = -GRACE, float(args.window)
 
     sports_to_run = list(SPORTS.keys()) if args.sport == "all" else [args.sport]
     total = 0
