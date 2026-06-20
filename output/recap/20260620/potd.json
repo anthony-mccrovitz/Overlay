@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260620_san-diego-padres_moneyline_away",
+  "date": "2026-06-20",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "San Diego Padres",
+  "matchup": "Texas Rangers",
+  "odds": 140,
+  "line": null,
+  "sportsbook": "theScore Bet",
+  "model_prob": 0.5396820688808455,
+  "edge_pct": 13.14,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-19T06:38:56.968879+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 140,
+      "season_rs_per_g": 3.95,
+      "season_ra_per_g": 4.11,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 3.0,
+        "ra_per_game": 6.71,
+        "wins": 2,
+        "losses": 5,
+        "wl": "2-5"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 3.54,
+        "ra_per_game": 5.31,
+        "wins": 5,
+        "losses": 8,
+        "wl": "5-8"
+      }
+    },
+    "away": {
+      "team_id": 135,
+      "season_rs_per_g": 3.84,
+      "season_ra_per_g": 3.96,
+      "form_7d": {
+        "games": 6,
+        "lookback_days": 7,
+        "rs_per_game": 4.17,
+        "ra_per_game": 3.17,
+        "wins": 3,
+        "losses": 3,
+        "wl": "3-3"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 3.64,
+        "ra_per_game": 3.79,
+        "wins": 6,
+        "losses": 8,
+        "wl": "6-8"
+      }
+    },
+    "snapshot_date": "2026-06-20"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "one_cold",
+    "recommendation": "keep",
+    "reason": "one_cold matchup passes neutral-skip filter"
+  }
+}
