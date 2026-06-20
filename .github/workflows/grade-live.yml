@@ -5,7 +5,7 @@ name: Live grader
 # the free-tier minutes. Bump back to */15 if you want faster result posting.
 on:
   schedule:
-    - cron: "*/30 0-11 * * *"
+    - cron: "7,37 0-11 * * *"
   workflow_dispatch: {}
 
 permissions:

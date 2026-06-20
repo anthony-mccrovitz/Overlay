@@ -3,7 +3,7 @@ name: Weekly audit
 # Sunday 9:00 AM ET (13:00 UTC, EDT) — weekly P&L / record audit.
 on:
   schedule:
-    - cron: "0 13 * * 0"
+    - cron: "29 13 * * 0"
   workflow_dispatch: {}
 
 permissions:

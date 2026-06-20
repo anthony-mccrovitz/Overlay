@@ -4,7 +4,7 @@ name: Nightly grade + recap
 # nightly recap card and deploy. Was: chef.py grade (3:45) + nightly_recap (3:50).
 on:
   schedule:
-    - cron: "45 7 * * *"
+    - cron: "47 7 * * *"
   workflow_dispatch: {}
 
 permissions:

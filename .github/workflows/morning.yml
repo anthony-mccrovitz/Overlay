@@ -3,7 +3,7 @@ name: Morning captions + deploy
 # 9:10 AM ET (13:10 UTC, EDT) — generate captions from overnight picks, deploy.
 on:
   schedule:
-    - cron: "10 13 * * *"
+    - cron: "13 13 * * *"
   workflow_dispatch: {}
 
 permissions:

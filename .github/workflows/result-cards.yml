@@ -3,7 +3,7 @@ name: Result cards
 # 4:00 AM ET (08:00 UTC, EDT) — generate result cards after the grade sweep.
 on:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "21 8 * * *"
   workflow_dispatch: {}
 
 permissions:
