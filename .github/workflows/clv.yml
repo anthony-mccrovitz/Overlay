@@ -20,7 +20,10 @@ jobs:
     with:
       level: light
       command: |
+        # Surface failures (exit RED) while still running both steps + committing
+        # whatever succeeded (commit step is if:always()).
         set +e
-        python scripts/backfill_clv.py
-        python chef.py clv --refresh
-        true
+        fail=0
+        python scripts/backfill_clv.py || fail=1
+        python chef.py clv --refresh   || fail=1
+        exit $fail
