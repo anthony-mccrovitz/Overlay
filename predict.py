@@ -1665,9 +1665,10 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
 
         market    = str(pick.get("Market", "moneyline")).lower().strip()
 
-        # Skip paused markets — modeled internally but not logged to public record
-        if market in PAUSED_MARKETS.get("mlb", []):
-            continue
+        # Paused markets: modeled but unproven. Log as SHADOW (card_pick forced
+        # False below) so they ARE CLV-tracked but never hit the public record.
+        # Was: skipped entirely — which silently killed spread/prop CLV for weeks.
+        is_paused = market in PAUSED_MARKETS.get("mlb", [])
 
         _dir_raw = pick.get("Direction")
         direction = "" if _dir_raw is None else str(_dir_raw).upper().strip()
@@ -1755,6 +1756,9 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
         agreement = pick.get("ModelAgreement")
         if agreement is None:
             agreement = pick.get("model_agreement")
+        # Paused markets are shadow-only: tracked for CLV, never bet.
+        if is_paused:
+            card_pick = False
         entry = {
             "pick_id":          pick_id,
             "date":             today,
