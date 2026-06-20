@@ -1833,6 +1833,103 @@ def cmd_verify(args: argparse.Namespace) -> int:
     return 1 if issues else 0
 
 
+def cmd_edge(args: argparse.Namespace) -> int:
+    """Statistical promotion gate — is a market's CLV a real edge or just noise?
+
+    For each market: a t-test of mean CLV vs 0, a minimum-sample floor, and a
+    multiple-comparisons (Bonferroni) correction — because testing ~12 markets,
+    one WILL look good by chance. A market is an EDGE CANDIDATE only if it clears
+    all three AND still holds up on the last 30 days. Candidates must then persist
+    out-of-sample before betting real money — this flags them, it doesn't bless them.
+
+    CLV here is measured against a late-pre-game line (the wide capture band), so
+    it's conservative: a positive result understates the true edge.
+    """
+    import math, statistics
+    from datetime import date as _date, timedelta
+    from collections import defaultdict
+
+    min_n = getattr(args, "min_n", None) or 200
+    try:
+        snaps = json.loads(Path("data/clv/snapshots.json").read_text())
+        snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
+    except (json.JSONDecodeError, ValueError, OSError):
+        print("  ✗ snapshots.json unreadable")
+        return 1
+
+    def clv_val(s):
+        # natural per-market metric: prob markets in %, line markets in points
+        if s.get("clv_pct") is not None:
+            return float(s["clv_pct"]), "%"
+        if s.get("line_clv") is not None:
+            return float(s["line_clv"]), "pt"
+        return None, None
+
+    recent_cut = (_date.today() - timedelta(days=30)).isoformat()
+    by_mkt: dict = defaultdict(list)
+    for s in snaps:
+        if not isinstance(s, dict):
+            continue
+        v, unit = clv_val(s)
+        if v is None:
+            continue
+        by_mkt[s.get("market", "?")].append((v, unit, s.get("date", "")))
+
+    testable = [m for m, vals in by_mkt.items() if len(vals) >= min_n]
+    m_tests = max(1, len(testable))
+    alpha = 0.05 / m_tests  # Bonferroni-corrected for the number of markets tested
+
+    def p_gt0(mean, sd, n):
+        """One-sided p-value that the true mean > 0."""
+        if n < 2 or sd == 0:
+            return 1.0
+        t = mean / (sd / math.sqrt(n))
+        try:
+            from scipy import stats
+            return float(stats.t.sf(t, n - 1))
+        except Exception:
+            return 0.5 * math.erfc(t / math.sqrt(2))  # normal approx
+
+    print(f"\n  ─ CLV Promotion Gate ─ min n={min_n}, α={alpha:.4f} (Bonferroni ÷{m_tests}) ─")
+    print(f"  {'market':16}{'n':>6}{'mean':>10}{'30d':>9}{'p(>0)':>9}  verdict")
+    print(f"  {'─'*66}")
+    candidates = []
+    for m in sorted(by_mkt, key=lambda x: -len(by_mkt[x])):
+        vals = by_mkt[m]
+        n = len(vals)
+        unit = vals[0][1]
+        xs = [v for v, _, _ in vals]
+        mean = statistics.fmean(xs)
+        recent = [v for v, _, d in vals if d and d >= recent_cut]
+        rmean = statistics.fmean(recent) if recent else None
+        if n < min_n:
+            verdict = f"insufficient (need {min_n})"
+            pstr = "—"
+        else:
+            sd = statistics.pstdev(xs)
+            p_pos = p_gt0(mean, sd, n)
+            p_neg = p_gt0(-mean, sd, n)
+            if mean > 0 and p_pos < alpha and (rmean is None or rmean > 0):
+                verdict = "✅ EDGE CANDIDATE → out-of-sample watch"
+                candidates.append(m)
+            elif mean < 0 and p_neg < alpha:
+                verdict = "❌ negative — fade or stop modeling"
+            else:
+                verdict = "noise (no edge)"
+            pstr = f"{p_pos:.4f}"
+        rstr = f"{rmean:+.3f}" if rmean is not None else "—"
+        print(f"  {m[:16]:16}{n:>6}{mean:>+9.3f}{unit:<1}{rstr:>9}{pstr:>9}  {verdict}")
+
+    print(f"  {'─'*66}")
+    if candidates:
+        print(f"  ✅ {len(candidates)} edge candidate(s): {', '.join(candidates)}")
+        print(f"     NOT a green light to bet — each must hold positive CLV on NEW")
+        print(f"     picks logged AFTER today before promoting to real money.")
+    else:
+        print(f"  No market clears the bar yet — keep collecting. (More data, not more bets.)")
+    return 0
+
+
 def cmd_strategies(args: argparse.Namespace) -> int:
     """Shadow strategies — research-rule picks logged (never bet) and measured by
     CLV against the close. Proves which edges beat the market before risking money.
@@ -2478,6 +2575,8 @@ def main() -> int:
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
     p_verify = sub.add_parser("verify", help="Trigger core cloud workflows NOW and report pass/fail (~2-5 min, no waiting for cron)")
     p_verify.add_argument("--workflows", type=str, help="Comma-separated workflow files (default: monitor.yml,night.yml,clv.yml)")
+    p_edge = sub.add_parser("edge", help="Statistical promotion gate: which markets have a REAL CLV edge vs noise (t-test + sample floor + multiple-comparison correction)")
+    p_edge.add_argument("--min-n", type=int, dest="min_n", help="Minimum scored picks to test a market (default 200)")
 
     p_strat = sub.add_parser("strategies", help="Log + measure shadow strategies (research-rule picks, CLV-tracked, never bet)")
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
@@ -2581,6 +2680,7 @@ def main() -> int:
         "health":   cmd_health,
         "monitor":  cmd_monitor,
         "verify":   cmd_verify,
+        "edge":     cmd_edge,
         "strategies": cmd_strategies,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
