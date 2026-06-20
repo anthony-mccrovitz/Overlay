@@ -1769,6 +1769,70 @@ def cmd_monitor(args: argparse.Namespace) -> int:
     return 1 if (issues and not getattr(args, "soft", False)) else 0
 
 
+def cmd_verify(args: argparse.Namespace) -> int:
+    """Trigger core workflows in the cloud on-demand and report pass/fail.
+
+    The whole point: confirm a change actually works in the cloud in ~2-5 min,
+    instead of waiting for the overnight cron to find out tomorrow. Dispatches
+    each workflow, waits for it to finish, and prints ✓/✗ per workflow.
+    """
+    import subprocess, time
+
+    wfs = (args.workflows.split(",") if getattr(args, "workflows", None)
+           else ["monitor.yml", "night.yml", "clv.yml"])
+
+    def gh(*a):
+        return subprocess.run(["gh", *a], capture_output=True, text=True)
+
+    if gh("auth", "status").returncode != 0:
+        print("  ✗ gh not authenticated — run `gh auth login` first.")
+        return 1
+
+    print(f"\n  ─ Verify (cloud) — dispatching {len(wfs)} workflow(s) ─────────────")
+    started: dict = {}
+    for wf in wfs:
+        before = gh("run", "list", "--workflow", wf, "--limit", "1",
+                    "--json", "databaseId", "-q", ".[0].databaseId").stdout.strip()
+        if gh("workflow", "run", wf).returncode != 0:
+            print(f"    ✗ {wf}: dispatch failed (does it have workflow_dispatch?)")
+            started[wf] = None
+            continue
+        rid = None
+        for _ in range(15):
+            time.sleep(4)
+            cur = gh("run", "list", "--workflow", wf, "--limit", "1",
+                     "--json", "databaseId", "-q", ".[0].databaseId").stdout.strip()
+            if cur and cur != before:
+                rid = cur
+                break
+        started[wf] = rid
+        print(f"    → {wf:22} dispatched (run {rid or '?'})")
+
+    print(f"  ─ waiting for completion ──────────────────────────────────")
+    issues = 0
+    for wf, rid in started.items():
+        if not rid:
+            print(f"    ✗ {wf:22} never started")
+            issues += 1
+            continue
+        concl = None
+        for _ in range(72):  # ~6 min cap per workflow
+            if gh("run", "view", rid, "--json", "status",
+                  "-q", ".status").stdout.strip() == "completed":
+                concl = gh("run", "view", rid, "--json", "conclusion",
+                           "-q", ".conclusion").stdout.strip()
+                break
+            time.sleep(5)
+        ok = concl == "success"
+        if not ok:
+            issues += 1
+        print(f"    {'✓' if ok else '✗'} {wf:22} {concl or 'TIMEOUT (still running)'}")
+
+    print(f"  {'─' * 58}")
+    print(f"  {'✓ all core workflows GREEN in the cloud' if not issues else f'✗ {issues} workflow(s) failed — gh run view <id> --log'}")
+    return 1 if issues else 0
+
+
 def cmd_strategies(args: argparse.Namespace) -> int:
     """Shadow strategies — research-rule picks logged (never bet) and measured by
     CLV against the close. Proves which edges beat the market before risking money.
@@ -2412,6 +2476,8 @@ def main() -> int:
     sub.add_parser("health", help="Daily 30s health check: picks/closings/CLV/grading fresh?")
     p_monitor = sub.add_parser("monitor", help="Loud integrity check: flag any IN-SEASON market gone dark (exits RED on gaps)")
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
+    p_verify = sub.add_parser("verify", help="Trigger core cloud workflows NOW and report pass/fail (~2-5 min, no waiting for cron)")
+    p_verify.add_argument("--workflows", type=str, help="Comma-separated workflow files (default: monitor.yml,night.yml,clv.yml)")
 
     p_strat = sub.add_parser("strategies", help="Log + measure shadow strategies (research-rule picks, CLV-tracked, never bet)")
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
@@ -2514,6 +2580,7 @@ def main() -> int:
         "status":   cmd_status,
         "health":   cmd_health,
         "monitor":  cmd_monitor,
+        "verify":   cmd_verify,
         "strategies": cmd_strategies,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
