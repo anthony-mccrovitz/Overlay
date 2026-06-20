@@ -1622,6 +1622,153 @@ def cmd_health(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_monitor(args: argparse.Namespace) -> int:
+    """Loud data-integrity monitor — flags any IN-SEASON market that's gone dark.
+
+    The silent-failure trap that bit us repeatedly: workflows exit green even
+    when a component stops producing (props, MLB spreads, motorsport all died
+    when the laptop was retired and nothing noticed for weeks). This asks the
+    Odds API what's *actually* in season, then verifies every market we model
+    for those sports produced a pick in the last 2 days, closings are being
+    captured, and CLV is scoring. Exits NON-ZERO on any gap so the GitHub
+    Action turns RED — a visible alarm instead of a silently-green check.
+    """
+    from datetime import date as _date, timedelta
+    from collections import defaultdict
+    import os, glob
+
+    today  = _date.today()
+    cutoff = (today - timedelta(days=2)).isoformat()
+    print(f"\n  ─ Integrity Monitor — {today.strftime('%A %b %d, %Y')} ────────────────")
+
+    # 1. Ground truth: what's actually in season (Odds API active-sports list)
+    active: set = set()
+    try:
+        import requests
+        key = os.environ.get("ODDS_API_KEY")
+        if key:
+            r = requests.get("https://api.the-odds-api.com/v4/sports",
+                             params={"apiKey": key}, timeout=15)
+            if r.ok:
+                active = {s["key"] for s in r.json() if s.get("active")}
+    except Exception as e:
+        print(f"  ⚠ could not fetch active sports ({e}) — season check skipped")
+
+    # 2. Last pick date per (sport, market) from the canonical record
+    try:
+        allp = json.loads(Path("data/pnl/picks.json").read_text())
+        allp = allp.get("picks", allp) if isinstance(allp, dict) else allp
+    except (json.JSONDecodeError, ValueError, OSError):
+        allp = []
+    last: dict = defaultdict(str)
+    for p in allp:
+        if not isinstance(p, dict):
+            continue
+        k = (str(p.get("sport", "")), str(p.get("market", "")))
+        d = p.get("date", "")
+        if d > last[k]:
+            last[k] = d
+
+    def _last_for(sport_test, market) -> str:
+        best = ""
+        for (sp, mk), d in last.items():
+            if mk == market and sport_test(sp) and d > best:
+                best = d
+        return best
+
+    # 3. What we model per sport + how to tell its season is live. Off-season
+    #    sports (no active key) are skipped, so this never false-alarms.
+    specs = [
+        ("MLB",        lambda a: "baseball_mlb" in a,
+                       lambda s: s in ("mlb", "baseball_mlb"),
+                       ["moneyline", "total", "spread", "f5_total", "nrfi", "pitcher_strikeouts"]),
+        ("NBA",        lambda a: "basketball_nba" in a,
+                       lambda s: s in ("nba", "basketball_nba"),
+                       ["moneyline", "spread", "total"]),
+        ("NHL",        lambda a: "icehockey_nhl" in a,
+                       lambda s: s in ("nhl", "icehockey_nhl"),
+                       ["moneyline", "puck_line", "total"]),
+        ("WNBA",       lambda a: "basketball_wnba" in a,
+                       lambda s: s in ("wnba", "basketball_wnba"),
+                       ["moneyline", "spread", "total"]),
+        ("Soccer/WC",  lambda a: "soccer_fifa_world_cup" in a,
+                       lambda s: s == "soccer_fifa_world_cup",
+                       ["moneyline"]),
+        ("Tennis",     lambda a: any(k.startswith("tennis_") for k in a),
+                       lambda s: s.startswith("tennis_"),
+                       ["moneyline"]),
+        ("Golf",       lambda a: any(k.startswith("golf_") for k in a),
+                       lambda s: s.startswith("golf_"),
+                       ["outright"]),
+        ("MMA/UFC",    lambda a: any(k.startswith("mma_") for k in a),
+                       lambda s: s.startswith("mma_"),
+                       ["moneyline"]),
+        ("Motorsport", lambda a: any("auto_racing" in k for k in a),
+                       lambda s: "auto_racing" in s,
+                       ["win"]),
+    ]
+
+    issues = 0
+    print("  In-season market coverage:")
+    any_active = False
+    for label, active_test, sport_test, markets in specs:
+        if not active or not active_test(active):
+            continue  # off-season → not expected
+        any_active = True
+        for mk in markets:
+            d = _last_for(sport_test, mk)
+            if d and d >= cutoff:
+                print(f"    ✓ {label:11} {mk:18} last {d}")
+            else:
+                shown = f"DARK (last {d})" if d else "NEVER logged"
+                print(f"    ✗ {label:11} {mk:18} {shown}  ← in season, not producing")
+                issues += 1
+    if not any_active:
+        print("    (no active sports detected — Odds API key issue or true off-day)")
+
+    # 4. Closing capture freshness (the irreplaceable data CLV joins against)
+    close_files = glob.glob("data/clv/closing/*.json")
+    nonempty = 0
+    for f in close_files:
+        if Path(f).stem[-10:] < cutoff:
+            continue
+        try:
+            b = json.loads(Path(f).read_text().replace("NaN", "null"))
+            if isinstance(b, list) and b:
+                nonempty += 1
+        except (json.JSONDecodeError, ValueError, OSError):
+            pass
+    if nonempty:
+        print(f"  ✓ Closing capture   {nonempty} non-empty archive(s) in last 2 days")
+    else:
+        print(f"  ✗ Closing capture   NONE in last 2 days  ← CLV can't score (capture-closing.yml)")
+        issues += 1
+
+    # 5. CLV scoring fresh
+    try:
+        snaps = json.loads(Path("data/clv/snapshots.json").read_text())
+        snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
+        scored = [s for s in snaps if isinstance(s, dict)
+                  and (s.get("clv") is not None or s.get("line_clv") is not None)]
+        sd = sorted({s.get("date") for s in scored if s.get("date")})
+        if sd and sd[-1] >= cutoff:
+            print(f"  ✓ CLV scoring       latest scored {sd[-1]}")
+        else:
+            print(f"  ✗ CLV scoring       stale (latest {sd[-1] if sd else 'never'})  ← join not happening")
+            issues += 1
+    except (json.JSONDecodeError, ValueError, OSError):
+        print(f"  ✗ CLV scoring       snapshots.json unreadable")
+        issues += 1
+
+    print(f"  {'─' * 58}")
+    if issues:
+        print(f"  ⚠ {issues} INTEGRITY GAP(S) — see ✗ above. Action exits RED on purpose.")
+    else:
+        print(f"  ✓ ALL GREEN — every in-season market producing, closings + CLV fresh")
+    # Loud by default: non-zero exit turns the GitHub Action RED on any gap.
+    return 1 if (issues and not getattr(args, "soft", False)) else 0
+
+
 def cmd_strategies(args: argparse.Namespace) -> int:
     """Shadow strategies — research-rule picks logged (never bet) and measured by
     CLV against the close. Proves which edges beat the market before risking money.
@@ -2263,6 +2410,8 @@ def main() -> int:
     p_status.add_argument("--date", help="Date YYYYMMDD (default: today)")
 
     sub.add_parser("health", help="Daily 30s health check: picks/closings/CLV/grading fresh?")
+    p_monitor = sub.add_parser("monitor", help="Loud integrity check: flag any IN-SEASON market gone dark (exits RED on gaps)")
+    p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
 
     p_strat = sub.add_parser("strategies", help="Log + measure shadow strategies (research-rule picks, CLV-tracked, never bet)")
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
@@ -2364,6 +2513,7 @@ def main() -> int:
         "stats":    cmd_stats,
         "status":   cmd_status,
         "health":   cmd_health,
+        "monitor":  cmd_monitor,
         "strategies": cmd_strategies,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
