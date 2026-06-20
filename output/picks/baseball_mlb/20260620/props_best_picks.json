@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Yoshinobu Yamamoto",
+      "team": "Yoshinobu Yamamoto UNDER 5.5",
+      "matchup": "Baltimore Orioles @ Los Angeles Dodgers",
+      "line": 5.5,
+      "odds": 225,
+      "model_prob": 0.6248,
+      "implied_prob": 0.2804,
+      "edge_pct": 34.44,
+      "model_mu": 5.63,
+      "sportsbook": "theScore Bet"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Colt Emerson",
+      "team": "Colt Emerson OVER 0.5",
+      "matchup": "Boston Red Sox @ Seattle Mariners",
+      "line": 0.5,
+      "odds": -114,
+      "model_prob": 0.7516,
+      "implied_prob": 0.4886,
+      "edge_pct": 26.3,
+      "model_mu": 3.03,
+      "sportsbook": "ReBet"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Cooper Pratt",
+      "team": "Cooper Pratt OVER 1.5",
+      "matchup": "Milwaukee Brewers @ Atlanta Braves",
+      "line": 1.5,
+      "odds": 450,
+      "model_prob": 0.3813,
+      "implied_prob": 0.1709,
+      "edge_pct": 21.04,
+      "model_mu": 1.61,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}
