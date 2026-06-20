@@ -4,7 +4,7 @@ name: Gate checks
 # Live crontab: 21:00 / 22:00 / 23:00 ET → +4 = 01:00 / 02:00 / 03:00 UTC.
 on:
   schedule:
-    - cron: "0 1,2,3 * * *"
+    - cron: "13 1,2,3 * * *"
   workflow_dispatch: {}
 
 permissions:

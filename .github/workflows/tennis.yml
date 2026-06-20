@@ -6,7 +6,7 @@ name: Tennis picks
 # are all covered. No-ops cleanly when no tennis is in season.
 on:
   schedule:
-    - cron: "0 15 * * *"
+    - cron: "19 15 * * *"
   workflow_dispatch: {}
 
 permissions:

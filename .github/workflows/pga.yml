@@ -6,7 +6,7 @@ name: PGA picks
 # missed them all (majors are played Thu–Sun). Cheap: ~3 credits when active.
 on:
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "19 16 * * *"
   workflow_dispatch: {}
 
 permissions:

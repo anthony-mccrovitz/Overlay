@@ -4,7 +4,7 @@ name: Night picks
 # Was: chef.py night mlb/nba/nhl/wnba (21:30–21:45 ET) + deploy (22:36/22:46 ET).
 on:
   schedule:
-    - cron: "30 1 * * *"
+    - cron: "33 1 * * *"
   workflow_dispatch: {}
 
 permissions:

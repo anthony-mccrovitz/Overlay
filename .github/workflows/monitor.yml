@@ -7,7 +7,7 @@ name: Integrity monitor
 # instead of weeks later. A RED run here = something needs attention.
 on:
   schedule:
-    - cron: "0 17 * * *"
+    - cron: "51 17 * * *"
   workflow_dispatch: {}
 
 permissions:

@@ -5,7 +5,7 @@ name: Backup picks
 # snapshots are redundant in the cloud.
 on:
   schedule:
-    - cron: "0 9 * * *"
+    - cron: "17 9 * * *"
   workflow_dispatch: {}
 
 permissions:

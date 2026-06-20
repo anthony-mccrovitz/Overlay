@@ -3,7 +3,7 @@ name: Franchise tracker
 # 9:30 AM ET (13:30 UTC, EDT) — log morning futures odds for franchise bets.
 on:
   schedule:
-    - cron: "30 13 * * *"
+    - cron: "41 13 * * *"
   workflow_dispatch: {}
 
 permissions:

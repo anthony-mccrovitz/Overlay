@@ -15,8 +15,8 @@ on:
     # Game hours span the UTC day boundary, so two ranges. Every 20 min keeps the
     # whole pipeline inside the free-tier minutes; drop to */15 (≈$2/mo) or */10
     # (≈$5/mo) for a closer-to-the-bell capture.
-    - cron: "*/20 15-23 * * *"   # 15:00–23:59 UTC (incl. 11 AM ET World Cup kicks)
-    - cron: "*/20 0-6 * * *"     # 00:00–06:59 UTC (late west-coast finishes)
+    - cron: "3,23,43 15-23 * * *"   # 15:00–23:59 UTC (incl. 11 AM ET World Cup kicks)
+    - cron: "3,23,43 0-6 * * *"     # 00:00–06:59 UTC (late west-coast finishes)
   workflow_dispatch: {}          # allow manual "Run workflow" for testing
 
 # Don't let a slow run overlap the next scheduled tick.
