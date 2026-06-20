@@ -25,6 +25,10 @@ jobs:
         python chef.py night --sport nba
         python chef.py night --sport nhl
         python chef.py night --sport wnba
+        # Props + UFC were never wired to a workflow — they died with the laptop.
+        # These no-op cleanly off-season / on no-event days.
+        python run_mlb_props.py
+        python run_ufc.py
         python scripts/deploy_picks.py --sport mlb
         python scripts/deploy_picks.py --sport nba
         true
