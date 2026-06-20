@@ -19,11 +19,14 @@ jobs:
     with:
       level: light
       command: |
+        # Surface failures (exit RED) while still running every step + committing
+        # whatever succeeded (commit step is if:always()).
         set +e
-        python scripts/gen_caption.py
+        fail=0
+        python scripts/gen_caption.py || fail=1
         # Log shadow-strategy picks while morning lines are still soft (favorite-
         # longshot etc.) — the opening half of CLV. Closings captured at tipoff,
         # scored by clv.yml next morning. card_pick=False → never the real record.
-        python chef.py strategies
-        python scripts/deploy_picks.py
-        true
+        python chef.py strategies     || fail=1
+        python scripts/deploy_picks.py || fail=1
+        exit $fail

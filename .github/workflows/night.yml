@@ -20,15 +20,20 @@ jobs:
     with:
       level: full
       command: |
-        set +e   # one sport failing must not block the others
-        python chef.py night --sport mlb
-        python chef.py night --sport nba
-        python chef.py night --sport nhl
-        python chef.py night --sport wnba
+        # Run every step even if one fails (resilience), but track failures and
+        # exit non-zero so a broken step turns the run RED instead of silently
+        # green. The _pipeline commit step is if:always(), so whatever DID
+        # succeed still commits — loud failure, no data loss.
+        set +e
+        fail=0
+        python chef.py night --sport mlb  || fail=1
+        python chef.py night --sport nba  || fail=1
+        python chef.py night --sport nhl  || fail=1
+        python chef.py night --sport wnba || fail=1
         # Props + UFC were never wired to a workflow — they died with the laptop.
         # These no-op cleanly off-season / on no-event days.
-        python run_mlb_props.py
-        python run_ufc.py
-        python scripts/deploy_picks.py --sport mlb
-        python scripts/deploy_picks.py --sport nba
-        true
+        python run_mlb_props.py || fail=1
+        python run_ufc.py       || fail=1
+        python scripts/deploy_picks.py --sport mlb || fail=1
+        python scripts/deploy_picks.py --sport nba || fail=1
+        exit $fail
