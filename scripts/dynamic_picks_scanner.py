@@ -22,9 +22,13 @@ LOG = ROOT / "logs" / "scanner.log"
 # Sports to scan dynamically — these have irregular or unpredictable schedules.
 # MLB/NBA are handled by the fixed 9:30 PM night pipeline.
 DYNAMIC_SPORTS = [
-    ("tennis",       "run_tennis.py",   ["tennis_atp_french_open", "tennis_atp_wimbledon",
-                                          "tennis_atp_us_open", "tennis_atp_australian_open",
-                                          "tennis_wta_french_open", "tennis_wta_wimbledon"]),
+    # Tennis trigger keys span the active grass/hard warm-ups + Slams. run_tennis
+    # auto-detects ALL active tournaments anyway (and tennis.yml runs it daily),
+    # so this list just needs to overlap whatever is in season as a backstop.
+    ("tennis",       "run_tennis.py",   ["tennis_atp_wimbledon", "tennis_wta_wimbledon",
+                                          "tennis_atp_us_open", "tennis_wta_us_open",
+                                          "tennis_atp_halle_open", "tennis_atp_queens_club_champ",
+                                          "tennis_wta_german_open", "tennis_atp_french_open"]),
     ("soccer",       "run_soccer.py",   ["soccer_spain_la_liga", "soccer_germany_bundesliga",
                                           "soccer_italy_serie_a", "soccer_usa_mls",
                                           "soccer_fifa_world_cup", "soccer_france_ligue_one"]),

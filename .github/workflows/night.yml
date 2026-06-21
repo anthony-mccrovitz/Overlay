@@ -30,9 +30,11 @@ jobs:
         python chef.py night --sport nba  || fail=1
         python chef.py night --sport nhl  || fail=1
         python chef.py night --sport wnba || fail=1
-        # Props + UFC were never wired to a workflow — they died with the laptop.
-        # These no-op cleanly off-season / on no-event days.
+        # Every prop pipeline runs nightly so each prop type is its own
+        # CLV-tracked market. All no-op cleanly off-season / on no-event days.
         python run_mlb_props.py || fail=1
+        python run_nba_props.py || fail=1
+        python run_nhl_props.py || fail=1
         python run_ufc.py       || fail=1
         python scripts/deploy_picks.py --sport mlb || fail=1
         python scripts/deploy_picks.py --sport nba || fail=1
