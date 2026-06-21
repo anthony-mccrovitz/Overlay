@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "John Rave",
+      "team": "John Rave OVER 0.5",
+      "matchup": "St. Louis Cardinals @ Kansas City Royals",
+      "line": 0.5,
+      "odds": -140,
+      "model_prob": 0.9073,
+      "implied_prob": 0.5325,
+      "edge_pct": 37.48,
+      "model_mu": 9.79,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Logan Gilbert",
+      "team": "Logan Gilbert UNDER 6.5",
+      "matchup": "Boston Red Sox @ Seattle Mariners",
+      "line": 6.5,
+      "odds": 121,
+      "model_prob": 0.713,
+      "implied_prob": 0.4267,
+      "edge_pct": 28.63,
+      "model_mu": 5.12,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Jake Mangum",
+      "team": "Jake Mangum UNDER 0.5",
+      "matchup": "Pittsburgh Pirates @ Colorado Rockies",
+      "line": 0.5,
+      "odds": 275,
+      "model_prob": 0.406,
+      "implied_prob": 0.244,
+      "edge_pct": 16.19,
+      "model_mu": 1.46,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}
