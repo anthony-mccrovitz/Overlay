@@ -53,6 +53,18 @@ def _normalize_sport(sport: str) -> str:
 # moneyline close. Only moneyline-equivalent markets are valid to score today.
 _MONEYLINE_MARKETS = {"moneyline", "h2h", "ml"}
 
+# Map full Odds API sport keys → the short prefix capture_closing.py writes
+# (e.g. archives are "soccer_DATE", not "soccer_fifa_world_cup_DATE"). Shared by
+# every closing-archive reader so soccer/mma resolve consistently.
+_SHORT_PREFIX_MAP = {
+    "soccer_fifa_world_cup":     "soccer",
+    "soccer_spain_la_liga":      "soccer",
+    "soccer_italy_serie_a":      "soccer",
+    "soccer_germany_bundesliga": "soccer",
+    "soccer_usa_mls":            "soccer",
+    "mma_mixed_martial_arts":    "ufc",
+}
+
 
 def _is_moneyline_market(market) -> bool:
     """True if a snapshot can be scored against a moneyline-only closing line.
@@ -114,20 +126,20 @@ def _odds_to_implied(odds: float | int) -> float:
     return abs(odds) / (abs(odds) + 100.0)
 
 
-def _devig_prob(picked_odds: float, opponent_odds: float) -> float:
+def _devig_prob(picked_odds: float, *opponent_odds: float) -> float:
     """
-    De-vig a two-sided market using the additive (Pinnacle) method.
+    De-vig an N-way market using the additive (Pinnacle) method.
     Returns the fair probability for the picked side.
 
-    Example: picked=-150, opponent=+130
-      raw_picked   = 150/250 = 0.600
-      raw_opponent = 100/230 = 0.435
-      overround    = 1.035
-      fair         = 0.600 / 1.035 = 0.580
+    2-way (e.g. baseball ML): picked=-150, opponent=+130 → overround 1.035 → 0.580
+    3-way (soccer W/D/L): pass BOTH other outcomes (opponent + draw). Omitting the
+    draw was a bug — overround summed to ~0.75 (<1), so dividing INFLATED the prob
+    (e.g. a +525 dog reading as a huge positive CLV). The fair prob must divide by
+    the sum of ALL mutually-exclusive outcomes in the market.
     """
-    raw_picked   = _odds_to_implied(picked_odds)
-    raw_opponent = _odds_to_implied(opponent_odds)
-    overround    = raw_picked + raw_opponent
+    raw_picked = _odds_to_implied(picked_odds)
+    overround  = raw_picked + sum(_odds_to_implied(o) for o in opponent_odds
+                                  if o is not None)
     if overround <= 0:
         return raw_picked
     return raw_picked / overround
@@ -464,25 +476,46 @@ def fetch_closing_pairs(
     if date_str is None:
         date_str = date.today().isoformat()
 
-    short_sport = (sport
-                   .replace("baseball_", "")
-                   .replace("basketball_", "")
-                   .replace("hockey_", ""))
+    # Use the same full→short prefix map as _load_closing_records — the naive
+    # .replace() missed soccer/mma (archives are "soccer_DATE", not
+    # "soccer_fifa_world_cup_DATE"), so soccer pairs were never found and
+    # de-vig silently never ran for soccer (raw vigged odds → bad CLV).
+    short_sport = _SHORT_PREFIX_MAP.get(
+        sport,
+        sport.replace("baseball_", "").replace("basketball_", "")
+             .replace("hockey_", "").replace("icehockey_", ""))
 
     for prefix in [sport, short_sport]:
         archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
         if not archive_path.exists():
             continue
         try:
-            records = json.loads(archive_path.read_text())
-            pairs: dict[str, tuple[float, float]] = {}
+            records = json.loads(archive_path.read_text().replace("NaN", "null"))
+            pairs: dict[str, tuple] = {}
+            is_soccer = "soccer" in prefix
             for row in records:
                 # Accept both archive casings (HomeTeam / home_team).
                 home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
                 away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
                 home_ml = row.get("BestHomeML")
                 away_ml = row.get("BestAwayML")
-                if home and away and home_ml is not None and away_ml is not None:
+                if not (home and away and home_ml is not None and away_ml is not None):
+                    continue
+                # Soccer is a 3-way market — pull the Draw price so de-vig divides
+                # by all three outcomes. Without it the overround < 1 and CLV blows up.
+                draw_ml = None
+                if is_soccer:
+                    for o in (row.get("all_odds") or []):
+                        if str(o.get("Market")) == "h2h" and \
+                           str(o.get("Selection") or o.get("Name")).lower() == "draw":
+                            d = o.get("Odds")
+                            if d is not None and (draw_ml is None or float(d) > draw_ml):
+                                draw_ml = float(d)  # best (highest) draw price, matching Best*ML
+                if draw_ml is not None:
+                    pairs[home]   = (float(home_ml), float(away_ml), draw_ml)
+                    pairs[away]   = (float(away_ml), float(home_ml), draw_ml)
+                    pairs["draw"] = (draw_ml, float(home_ml), float(away_ml))
+                else:
                     pairs[home] = (float(home_ml), float(away_ml))
                     pairs[away] = (float(away_ml), float(home_ml))
             if pairs:
@@ -614,16 +647,7 @@ def _resolve_spread_team(label: str, matchup: str) -> str | None:
 
 def _load_closing_records(date_str: str, sport: str) -> list[dict]:
     """Load a closing archive trying both the full and short sport prefixes."""
-    # Map full Odds API sport keys to the short prefix used by capture_closing.py
-    _SHORT_PREFIX = {
-        "soccer_fifa_world_cup":     "soccer",
-        "soccer_spain_la_liga":      "soccer",   # falls back to merged match by date if needed
-        "soccer_italy_serie_a":      "soccer",
-        "soccer_germany_bundesliga": "soccer",
-        "soccer_usa_mls":            "soccer",
-        "mma_mixed_martial_arts":    "ufc",
-    }
-    short = _SHORT_PREFIX.get(sport,
+    short = _SHORT_PREFIX_MAP.get(sport,
             sport.replace("baseball_", "").replace("basketball_", "")
                  .replace("hockey_", "").replace("icehockey_", ""))
     for prefix in (sport, short):
@@ -1244,7 +1268,9 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         # (e.g. live-cache fallback, totals, props).
         pair = sport_pairs.get(team_lower) or merged_pairs.get(team_lower)
         if pair:
-            closing_imp = _devig_prob(pair[0], pair[1])
+            # pair = (picked, opp[, draw]) — pass ALL other outcomes so 3-way
+            # (soccer) de-vigs correctly, not just the 2-way opponent.
+            closing_imp = _devig_prob(pair[0], *pair[1:])
         else:
             closing_imp = _odds_to_implied(closing_odds)
 
