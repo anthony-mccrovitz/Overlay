@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-21T13:53:19.338630+00:00",
+  "updated_at": "2026-06-21T14:33:13.481704+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,23 +204,23 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.296,
-      "positive_pct": 36.8,
-      "n": 829,
+      "avg_clv_pct": -0.307,
+      "positive_pct": 37.0,
+      "n": 836,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 88,
-        "avg_line_clv": 0.134,
-        "beat_close_pct": 48.9,
+        "count": 91,
+        "avg_line_clv": 0.102,
+        "beat_close_pct": 48.4,
         "avg_price_clv_pct": 0.409,
         "matched_price_n": 32
       },
       "spread": {
-        "count": 135,
-        "avg_line_clv": 0.385,
-        "beat_close_pct": 41.5,
+        "count": 140,
+        "avg_line_clv": 0.307,
+        "beat_close_pct": 42.1,
         "avg_price_clv_pct": 1.668,
         "matched_price_n": 86
       },
@@ -240,14 +240,14 @@
       }
     },
     "totals_coverage": {
-      "scored": 88,
+      "scored": 91,
       "scoreable": 227,
-      "pct": 38.8
+      "pct": 40.1
     },
     "spread_coverage": {
-      "scored": 135,
+      "scored": 140,
       "scoreable": 285,
-      "pct": 47.4
+      "pct": 49.1
     }
   },
   "summary": {
