@@ -1421,6 +1421,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
         from src.analytics.clv_tracker import (
             print_clv_report, print_clv_by_market, compute_clv,
             backfill_snapshots_from_pnl, upgrade_snapshots,
+            backfill_snapshot_markets,
         )
 
         refresh = getattr(args, "refresh", False)
@@ -1430,6 +1431,9 @@ def cmd_clv(args: argparse.Namespace) -> int:
             backfill_snapshots_from_pnl()
             # 2. Repair legacy prop snapshots missing player/line/direction
             upgrade_snapshots()
+            # 2b. Recover market on legacy snapshots that had it unset (spread/total
+            #     wrongly scored as moneyline) — clears stale CLV so they re-score.
+            backfill_snapshot_markets()
             # 3. Recompute CLV for every date that has a closing archive — scores
             #    moneyline, spread, total, F5, NRFI, and props in one pass.
             archive_dir = Path("data/clv/closing")
