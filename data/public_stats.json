@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-21T10:04:23.815058+00:00",
+  "updated_at": "2026-06-21T10:56:39.716870+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -252,15 +252,15 @@
   },
   "summary": {
     "total_picks": 276,
-    "settled": 253,
-    "pending": 18,
-    "wins": 139,
+    "settled": 254,
+    "pending": 17,
+    "wins": 140,
     "losses": 108,
     "pushes": 6,
-    "win_rate": 0.5628,
-    "units_profit": 27.14,
-    "roi": 0.1119,
-    "streak": -6
+    "win_rate": 0.5645,
+    "units_profit": 28.54,
+    "roi": 0.1172,
+    "streak": 1
   },
   "nrfi": {
     "total": 0,
@@ -274,15 +274,15 @@
   "by_market": {
     "moneyline": {
       "total": 92,
-      "settled": 85,
-      "pending": 7,
-      "wins": 43,
+      "settled": 86,
+      "pending": 6,
+      "wins": 44,
       "losses": 42,
       "pushes": 0,
-      "win_rate": 0.5059,
-      "units_profit": 2.09,
-      "roi": 0.0247,
-      "streak": -2
+      "win_rate": 0.5116,
+      "units_profit": 3.49,
+      "roi": 0.0408,
+      "streak": 1
     },
     "puck_line": {
       "total": 2,
@@ -324,13 +324,13 @@
   "by_sport": {
     "mlb": {
       "total": 167,
-      "settled": 159,
-      "pending": 8,
-      "wins": 80,
+      "settled": 160,
+      "pending": 7,
+      "wins": 81,
       "losses": 74,
-      "win_rate": 0.5195,
-      "units_profit": 7.22,
-      "roi": 0.0469
+      "win_rate": 0.5226,
+      "units_profit": 8.62,
+      "roi": 0.0556
     },
     "nba": {
       "total": 97,
@@ -370,6 +370,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-20",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "San Diego Padres",
+      "matchup": "Texas Rangers",
+      "odds": 140,
+      "result": "win",
+      "profit": 1.4,
+      "edge_pct": 13.14
+    },
     {
       "date": "2026-06-14",
       "sport": "mlb",
@@ -468,17 +479,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 15.42
-    },
-    {
-      "date": "2026-06-09",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 13.0",
-      "matchup": "Milwaukee Brewers @ Athletics",
-      "odds": 105,
-      "result": "win",
-      "profit": 1.05,
-      "edge_pct": 4.5
     }
   ]
 }
