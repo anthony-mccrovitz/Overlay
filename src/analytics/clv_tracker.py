@@ -291,13 +291,10 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         # Prop picks store "Player Name OVER 5.5" in `team`. Closing-archive
         # rows store just "Player Name". Strip the OVER/UNDER/line suffix so
         # the prop CLV joiner can match them against the closing snapshot.
-        prop_markets = {"pitcher_strikeouts", "player_points", "player_rebounds",
-                        "player_assists", "player_threes", "player_goals",
-                        "player_shots_on_goal", "prop", "anytime_scorer",
-                        "player_goal_scorer_anytime", "method_of_victory",
-                        "fight_result_method"}
+        _extra_prop = {"anytime_scorer", "player_goal_scorer_anytime",
+                       "method_of_victory", "fight_result_method"}
         player = pick.get("player")
-        if not player and market in prop_markets:
+        if not player and (_is_prop_market(market) or market in _extra_prop):
             cleaned = team
             for tok in (" OVER ", " UNDER ", " ATG ", " - "):
                 if tok in cleaned:
@@ -369,6 +366,16 @@ _PROP_MARKETS = {
     "player_assists", "player_threes", "player_goals", "player_shots_on_goal",
     "player_steals", "anytime_scorer", "player_goal_scorer_anytime",
 }
+
+# Over/under player props all share a prefix in the Odds API; detect them
+# generically so every prop type (batter_hits, pitcher_outs, player_blocks, …)
+# is its own CLV-tracked market without maintaining a hardcoded list.
+_PROP_PREFIXES = ("batter_", "pitcher_", "player_")
+
+
+def _is_prop_market(market) -> bool:
+    m = str(market or "").lower()
+    return m in _PROP_MARKETS or m.startswith(_PROP_PREFIXES)
 
 
 def upgrade_snapshots() -> int:
@@ -1078,12 +1085,13 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         total_maps[sport]    = fetch_closing_totals(date_str=date_str, sport=sport)
         f5_maps[sport]       = fetch_closing_f5_totals(date_str=date_str, sport=sport)
         nrfi_maps[sport]     = fetch_closing_nrfi(date_str=date_str, sport=sport)
-        # Prop-style markets — keyed by (player, market). For props we union
-        # several known market keys so a single fetch covers the slate.
+        # Prop-style markets — keyed by (player, market). Fetch closings for
+        # exactly the prop types that appear in THIS day's snapshots (dynamic, so
+        # any prop — batter_hits, player_blocks, etc. — is covered without a list).
         sport_props: dict = {}
-        for mk in ("pitcher_strikeouts", "player_points", "player_rebounds",
-                   "player_assists", "player_threes", "player_goals",
-                   "player_shots_on_goal"):
+        day_prop_types = {str(s.get("market") or "").lower()
+                          for s in day_snaps if _is_prop_market(s.get("market"))}
+        for mk in (day_prop_types or {"pitcher_strikeouts"}):
             sport_props.update(fetch_closing_props(date_str=date_str, sport=sport, market_key=mk))
         prop_maps[sport] = sport_props
         scorer_maps[sport] = fetch_closing_scorer_anytime(date_str=date_str, sport=sport)
@@ -1174,13 +1182,10 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             continue
 
         # ── Player props (pitcher Ks / NBA points / NHL goals / etc) ──────────
-        prop_market_keys = {"pitcher_strikeouts", "player_points", "player_rebounds",
-                            "player_assists", "player_threes", "player_goals",
-                            "player_shots_on_goal", "prop", "player_prop"}
-        # Snapshots store the specific market (e.g. "pitcher_strikeouts") OR
-        # a generic "prop". Use the team field as the player name when the
-        # snapshot was from a prop pipeline.
-        if market in prop_market_keys:
+        # Snapshots store the specific market (e.g. "pitcher_strikeouts",
+        # "batter_hits") OR a generic "prop". Prefix-detected so every prop type
+        # routes here as its own market.
+        if _is_prop_market(market):
             snap_sport = snap.get("sport", "mlb")
             # Find best match in the merged prop map for this sport
             player_lower = (snap.get("player") or snap.get("team") or "").lower().strip()

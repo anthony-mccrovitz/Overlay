@@ -1845,7 +1845,10 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
             continue
 
         team_label = f"{player} {direction} {line}" if line else f"{player} {direction}"
-        pick_id = make_pick_id(sport, today, team_label, "prop", direction)
+        # Use the SPECIFIC prop type (batter_hits, pitcher_strikeouts, …) as the
+        # market so each prop is its own CLV-tracked market, not a generic 'prop'.
+        market_key = market if market and market != "prop" else "prop"
+        pick_id = make_pick_id(sport, today, team_label, market_key, direction)
         if pick_id in existing_ids:
             continue
 
@@ -1862,7 +1865,7 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
             "pick_id":     pick_id,
             "date":        today,
             "sport":       sport,
-            "market":      "prop",
+            "market":      market_key,
             "direction":   direction,
             "team":        team_label,
             "player":      player,
