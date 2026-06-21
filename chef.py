@@ -1956,6 +1956,77 @@ def cmd_edge(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_validate(args: argparse.Namespace) -> int:
+    """Model validation harness — outcome calibration per (sport, market).
+
+    Complements `edge` (which measures CLV vs the close) with a settled-results
+    check: does the model's stated probability match how often picks actually hit?
+    For each market with graded picks it reports n, the model's mean stated prob,
+    the actual hit rate, the Brier score, and a calibration verdict. A model whose
+    hit rate is far below its stated prob is OVERCONFIDENT (its edges are inflated)
+    — exactly the failure that makes raw EV untrustworthy.
+    """
+    import statistics
+    from collections import defaultdict
+
+    try:
+        raw = json.loads(Path("data/pnl/picks.json").read_text())
+        picks = raw["picks"] if isinstance(raw, dict) and "picks" in raw else raw
+    except (json.JSONDecodeError, ValueError, OSError):
+        print("  ✗ picks.json unreadable")
+        return 1
+
+    # group graded picks (win/loss; skip push/void) by (sport, market)
+    by: dict = defaultdict(list)
+    for p in picks:
+        if not isinstance(p, dict):
+            continue
+        res = str(p.get("result") or "").lower()
+        mp = p.get("model_prob")
+        if res not in ("win", "loss") or mp is None:
+            continue
+        try:
+            mp = float(mp)
+        except (ValueError, TypeError):
+            continue
+        if not 0.0 < mp < 1.0:
+            continue
+        by[(p.get("sport", "?"), p.get("market", "?"))].append((mp, 1 if res == "win" else 0))
+
+    min_n = getattr(args, "min_n", None) or 20
+    print(f"\n  ─ Model Validation — outcome calibration (min n={min_n}) ─────────")
+    print(f"  {'sport · market':26}{'n':>5}{'stated':>8}{'actual':>8}{'Brier':>8}  verdict")
+    print(f"  {'─'*74}")
+    flagged = 0
+    rows = sorted(by.items(), key=lambda kv: -len(kv[1]))
+    for (sport, market), obs in rows:
+        n = len(obs)
+        if n < min_n:
+            continue
+        stated = statistics.fmean(p for p, _ in obs)
+        actual = statistics.fmean(o for _, o in obs)
+        brier = statistics.fmean((p - o) ** 2 for p, o in obs)
+        gap = actual - stated
+        # Standard error of a proportion → is the gap beyond noise?
+        se = (actual * (1 - actual) / n) ** 0.5 if 0 < actual < 1 else 0.0
+        if gap < -2 * se and abs(gap) > 0.03:
+            verdict = f"⚠ OVERCONFIDENT ({gap*100:+.0f}pt)"
+            flagged += 1
+        elif gap > 2 * se and abs(gap) > 0.03:
+            verdict = f"underconfident ({gap*100:+.0f}pt)"
+        else:
+            verdict = "✓ calibrated"
+        print(f"  {f'{sport} · {market}'[:26]:26}{n:>5}{stated*100:>7.1f}%{actual*100:>7.1f}%{brier:>8.3f}  {verdict}")
+
+    print(f"  {'─'*74}")
+    tested = sum(1 for _, o in rows if len(o) >= min_n)
+    if flagged:
+        print(f"  ⚠ {flagged} market(s) OVERCONFIDENT — stated edge inflated, trust CLV not EV.")
+    print(f"  {tested} market(s) had >= {min_n} graded picks. Markets below the floor are")
+    print(f"  awaiting results (props/spreads just started — check back as they settle).")
+    return 0
+
+
 def cmd_strategies(args: argparse.Namespace) -> int:
     """Shadow strategies — research-rule picks logged (never bet) and measured by
     CLV against the close. Proves which edges beat the market before risking money.
@@ -2601,6 +2672,8 @@ def main() -> int:
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
     p_verify = sub.add_parser("verify", help="Trigger core cloud workflows NOW and report pass/fail (~2-5 min, no waiting for cron)")
     p_verify.add_argument("--workflows", type=str, help="Comma-separated workflow files (default: monitor.yml,night.yml,clv.yml)")
+    p_validate = sub.add_parser("validate", help="Model validation: outcome calibration (stated prob vs actual hit rate, Brier) per sport·market")
+    p_validate.add_argument("--min-n", type=int, dest="min_n", help="Minimum graded picks to validate a market (default 20)")
     p_edge = sub.add_parser("edge", help="Statistical promotion gate: which markets have a REAL CLV edge vs noise (t-test + sample floor + multiple-comparison correction)")
     p_edge.add_argument("--min-n", type=int, dest="min_n", help="Minimum scored picks to test a market (default 200)")
 
@@ -2707,6 +2780,7 @@ def main() -> int:
         "monitor":  cmd_monitor,
         "verify":   cmd_verify,
         "edge":     cmd_edge,
+        "validate": cmd_validate,
         "strategies": cmd_strategies,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
