@@ -1865,7 +1865,25 @@ def cmd_edge(args: argparse.Namespace) -> int:
             return float(s["line_clv"]), "pt"
         return None, None
 
+    try:
+        from src.analytics.clv_tracker import _normalize_sport
+    except Exception:
+        def _normalize_sport(x): return x
+
+    # Short, readable sport label for the breakdown.
+    def _sport_label(sp: str) -> str:
+        sp = _normalize_sport(str(sp or "?"))
+        return {
+            "baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
+            "icehockey_nhl": "nhl", "mma_mixed_martial_arts": "mma",
+            "soccer_fifa_world_cup": "wc",
+        }.get(sp, sp.replace("soccer_", "").replace("tennis_atp_", "atp-")
+                  .replace("tennis_wta_", "wta-").replace("golf_", "golf-")[:14])
+
     recent_cut = (_date.today() - timedelta(days=30)).isoformat()
+    # Key on (sport, market) — NOT market alone. Pooling sports is Simpson's
+    # paradox: a real tennis-ML edge gets washed out by MLB ML, a soccer outlier
+    # drags the blend. An edge is model+sport specific, so each gets its own row.
     by_mkt: dict = defaultdict(list)
     for s in snaps:
         if not isinstance(s, dict):
@@ -1873,9 +1891,11 @@ def cmd_edge(args: argparse.Namespace) -> int:
         v, unit = clv_val(s)
         if v is None:
             continue
-        by_mkt[s.get("market", "?")].append((v, unit, s.get("date", "")))
+        mkt = s.get("market") or "(unset)"
+        key = (_sport_label(s.get("sport", "?")), mkt)
+        by_mkt[key].append((v, unit, s.get("date", "")))
 
-    testable = [m for m, vals in by_mkt.items() if len(vals) >= min_n]
+    testable = [k for k, vals in by_mkt.items() if len(vals) >= min_n]
     m_tests = max(1, len(testable))
     alpha = 0.05 / m_tests  # Bonferroni-corrected for the number of markets tested
 
@@ -1891,11 +1911,13 @@ def cmd_edge(args: argparse.Namespace) -> int:
             return 0.5 * math.erfc(t / math.sqrt(2))  # normal approx
 
     print(f"\n  ─ CLV Promotion Gate ─ min n={min_n}, α={alpha:.4f} (Bonferroni ÷{m_tests}) ─")
-    print(f"  {'market':16}{'n':>6}{'mean':>10}{'30d':>9}{'p(>0)':>9}  verdict")
-    print(f"  {'─'*66}")
+    print(f"  {'sport · market':26}{'n':>6}{'mean':>10}{'30d':>9}{'p(>0)':>9}  verdict")
+    print(f"  {'─'*72}")
     candidates = []
-    for m in sorted(by_mkt, key=lambda x: -len(by_mkt[x])):
-        vals = by_mkt[m]
+    for key in sorted(by_mkt, key=lambda k: -len(by_mkt[k])):
+        sport, mkt = key
+        label = f"{sport} · {mkt}"
+        vals = by_mkt[key]
         n = len(vals)
         unit = vals[0][1]
         xs = [v for v, _, _ in vals]
@@ -1911,16 +1933,16 @@ def cmd_edge(args: argparse.Namespace) -> int:
             p_neg = p_gt0(-mean, sd, n)
             if mean > 0 and p_pos < alpha and (rmean is None or rmean > 0):
                 verdict = "✅ EDGE CANDIDATE → out-of-sample watch"
-                candidates.append(m)
+                candidates.append(label)
             elif mean < 0 and p_neg < alpha:
                 verdict = "❌ negative — fade or stop modeling"
             else:
                 verdict = "noise (no edge)"
             pstr = f"{p_pos:.4f}"
         rstr = f"{rmean:+.3f}" if rmean is not None else "—"
-        print(f"  {m[:16]:16}{n:>6}{mean:>+9.3f}{unit:<1}{rstr:>9}{pstr:>9}  {verdict}")
+        print(f"  {label[:26]:26}{n:>6}{mean:>+9.3f}{unit:<1}{rstr:>9}{pstr:>9}  {verdict}")
 
-    print(f"  {'─'*66}")
+    print(f"  {'─'*72}")
     if candidates:
         print(f"  ✅ {len(candidates)} edge candidate(s): {', '.join(candidates)}")
         print(f"     NOT a green light to bet — each must hold positive CLV on NEW")
