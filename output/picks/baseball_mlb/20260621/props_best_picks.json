@@ -4,15 +4,15 @@
       "market": "batter_total_bases",
       "direction": "OVER",
       "player": "John Rave",
-      "team": "John Rave OVER 0.5",
+      "team": "John Rave OVER 1.5",
       "matchup": "St. Louis Cardinals @ Kansas City Royals",
-      "line": 0.5,
-      "odds": -140,
-      "model_prob": 0.9073,
-      "implied_prob": 0.5325,
-      "edge_pct": 37.48,
+      "line": 1.5,
+      "odds": 200,
+      "model_prob": 0.8232,
+      "implied_prob": 0.3158,
+      "edge_pct": 50.74,
       "model_mu": 9.79,
-      "sportsbook": "Hard Rock Bet (OH)"
+      "sportsbook": "theScore Bet"
     }
   ],
   "pitcher_strikeouts": [
@@ -20,31 +20,31 @@
       "market": "pitcher_strikeouts",
       "direction": "UNDER",
       "player": "Logan Gilbert",
-      "team": "Logan Gilbert UNDER 6.5",
+      "team": "Logan Gilbert UNDER 5.5",
       "matchup": "Boston Red Sox @ Seattle Mariners",
-      "line": 6.5,
-      "odds": 121,
-      "model_prob": 0.713,
-      "implied_prob": 0.4267,
-      "edge_pct": 28.63,
+      "line": 5.5,
+      "odds": 215,
+      "model_prob": 0.657,
+      "implied_prob": 0.2899,
+      "edge_pct": 36.72,
       "model_mu": 5.12,
-      "sportsbook": "DraftKings"
+      "sportsbook": "theScore Bet"
     }
   ],
   "batter_hits": [
     {
       "market": "batter_hits",
-      "direction": "UNDER",
-      "player": "Jake Mangum",
-      "team": "Jake Mangum UNDER 0.5",
-      "matchup": "Pittsburgh Pirates @ Colorado Rockies",
-      "line": 0.5,
-      "odds": 275,
-      "model_prob": 0.406,
-      "implied_prob": 0.244,
-      "edge_pct": 16.19,
-      "model_mu": 1.46,
-      "sportsbook": "Hard Rock Bet (OH)"
+      "direction": "OVER",
+      "player": "Carson Kelly",
+      "team": "Carson Kelly OVER 1.5",
+      "matchup": "Toronto Blue Jays @ Chicago Cubs",
+      "line": 1.5,
+      "odds": 550,
+      "model_prob": 0.3565,
+      "implied_prob": 0.1447,
+      "edge_pct": 21.17,
+      "model_mu": 1.48,
+      "sportsbook": "theScore Bet"
     }
   ]
 }
