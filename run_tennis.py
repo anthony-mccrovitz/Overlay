@@ -143,7 +143,7 @@ def fetch_tennis_odds(sport: str, refresh: bool = False) -> list[dict]:
             params={
                 "apiKey":     key,
                 "regions":    "us,us2",
-                "markets":    "h2h",
+                "markets":    "h2h,totals",
                 "oddsFormat": "american",
                 "bookmakers": MY_BOOKS_PARAM,
             },
@@ -254,6 +254,51 @@ def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
     model = TennisModel(surface=surface)
     edges = model.find_edges(today_events, surface=surface, best_of=best_of)
     edges = [e for e in edges if abs(e.get("odds", 0)) <= MAX_PICK_ODDS]
+
+    # ── Games-total edges (over/under total games) ────────────────────────────
+    def _imp(o): o=float(o); return (100/(o+100)) if o>0 else (abs(o)/(abs(o)+100))
+    for ev in today_events:
+        a = ev.get("home_team", ""); b = ev.get("away_team", "")
+        if not a or not b:
+            continue
+        for bm in ev.get("bookmakers", []):
+            book = bm.get("title", "")
+            for mk in bm.get("markets", []):
+                if mk.get("key") != "totals":
+                    continue
+                over_o = next((o for o in mk.get("outcomes", []) if o.get("name") == "Over"), None)
+                under_o = next((o for o in mk.get("outcomes", []) if o.get("name") == "Under"), None)
+                if not over_o or not under_o or over_o.get("point") is None:
+                    continue
+                line = float(over_o["point"])
+                gt = model.games_total_prob(a, b, line, best_of=best_of)
+                op = _imp(float(over_o["price"])); up = _imp(float(under_o["price"]))
+                tot = op + up
+                if tot <= 0:
+                    continue
+                for direction, mp, price, imp in [
+                    ("OVER", gt["over"], float(over_o["price"]), op / tot),
+                    ("UNDER", gt["under"], float(under_o["price"]), up / tot),
+                ]:
+                    edge = (mp - imp) * 100.0
+                    if edge >= 4.0 and abs(price) <= MAX_PICK_ODDS:
+                        edges.append({
+                            "sport": sport, "market": "total", "direction": direction,
+                            "team": f"{direction} {line}", "matchup": f"{b} @ {a}",
+                            "odds": int(price), "best_odds": int(price), "line": line,
+                            "model_prob": round(mp, 4), "implied_prob": round(imp, 4),
+                            "edge_pct": round(edge, 2), "sportsbook": book,
+                        })
+
+    # Dedup totals to the best-priced edge per (matchup, direction, line);
+    # moneyline edges (already deduped by find_edges) pass through untouched.
+    non_totals = [e for e in edges if e.get("market") != "total"]
+    best_totals: dict[tuple, dict] = {}
+    for e in (e for e in edges if e.get("market") == "total"):
+        k = (e["matchup"], e["direction"], e["line"])
+        if k not in best_totals or e["edge_pct"] > best_totals[k]["edge_pct"]:
+            best_totals[k] = e
+    edges = non_totals + list(best_totals.values())
 
     # Tag sport key on each edge so auto-log knows which tournament
     for e in edges:
