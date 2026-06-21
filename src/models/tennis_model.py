@@ -219,6 +219,74 @@ class TennisModel:
         p_serve, p_return = self._serve_win_probs(player_a, player_b)
         return p_win_match(p_serve, p_return, best_of=best_of)
 
+    def games_total_prob(
+        self,
+        player_a: str,
+        player_b: str,
+        line: float,
+        best_of: int = 3,
+        n_sims: int = 20000,
+        seed: int = 12345,
+    ) -> dict:
+        """Monte-Carlo distribution of TOTAL GAMES in the match → P(over/under).
+
+        Simulates each set game-by-game from the two players' hold probabilities
+        (derived from the same per-point serve probs as the win model), with a
+        13-game tiebreak set at 6-6. Returns {over, under, exp_games}.
+        """
+        import random
+        rng = random.Random(seed)
+        p_serve, p_return = self._serve_win_probs(player_a, player_b)
+        a_hold = _p_win_game(p_serve)        # A holds when A serves
+        b_hold = _p_win_game(1.0 - p_return) # B holds when B serves (B's serve pt prob)
+        sets_to_win = (best_of // 2) + 1
+
+        total_games_samples = []
+        for _ in range(n_sims):
+            a_sets = b_sets = 0
+            total_games = 0
+            server_a = rng.random() < 0.5
+            while a_sets < sets_to_win and b_sets < sets_to_win:
+                ga = gb = 0
+                srv = server_a
+                while True:
+                    hold_p = a_hold if srv else b_hold
+                    winner_is_server = rng.random() < hold_p
+                    if srv:
+                        ga += 1 if winner_is_server else 0
+                        gb += 0 if winner_is_server else 1
+                    else:
+                        gb += 1 if winner_is_server else 0
+                        ga += 0 if winner_is_server else 1
+                    srv = not srv
+                    # set end conditions
+                    if (ga >= 6 or gb >= 6) and abs(ga - gb) >= 2:
+                        break
+                    if ga == 6 and gb == 6:
+                        # tiebreak: one more game to 7-6, winner ~ serve-weighted
+                        if rng.random() < (a_hold + (1 - b_hold)) / 2:
+                            ga += 1
+                        else:
+                            gb += 1
+                        break
+                total_games += ga + gb
+                if ga > gb:
+                    a_sets += 1
+                else:
+                    b_sets += 1
+                server_a = not server_a
+            total_games_samples.append(total_games)
+
+        over = sum(1 for g in total_games_samples if g > line) / n_sims
+        push = sum(1 for g in total_games_samples if abs(g - line) < 1e-9) / n_sims
+        denom = 1.0 - push
+        over_adj = over / denom if denom > 1e-9 else over
+        return {
+            "over": round(over_adj, 4),
+            "under": round(1.0 - over_adj, 4),
+            "exp_games": round(sum(total_games_samples) / n_sims, 2),
+        }
+
     def find_edges(
         self,
         events: list[dict],
