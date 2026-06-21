@@ -393,6 +393,63 @@ def upgrade_snapshots() -> int:
     return upgraded
 
 
+def backfill_snapshot_markets() -> int:
+    """Repair legacy snapshots whose `market` field was never set.
+
+    Early snapshots (≤ mid-May 2026) were written without a market, so the CLV
+    engine defaulted them to the moneyline scoring path — meaning spread/total
+    picks got scored against a MONEYLINE closing (garbage CLV), not just
+    mislabeled. This recovers the true market by matching each orphan snapshot to
+    its pick in picks.json on a unique (date, team) key, then CLEARS the stale
+    (wrong) CLV fields so the next compute_clv re-scores it on the correct basis.
+    Snapshots with no unambiguous pick match are tagged 'unknown_legacy' and
+    their bad CLV cleared, so they drop out of the edge gate instead of polluting
+    it. Idempotent. Returns the number repaired.
+    """
+    import json as _json
+    snapshots = _load_snapshots()
+    unset = [s for s in snapshots
+             if isinstance(s, dict) and not str(s.get("market") or "").strip()]
+    if not unset:
+        return 0
+
+    # Index picks by (date, team_lower) -> set of markets
+    pnl = Path("data/pnl/picks.json")
+    idx: dict = {}
+    try:
+        blob = _json.loads(pnl.read_text())
+        picks = blob.get("picks", blob) if isinstance(blob, dict) else blob
+        for p in picks:
+            if not isinstance(p, dict):
+                continue
+            k = (p.get("date"), str(p.get("team", "")).lower().strip())
+            idx.setdefault(k, set()).add(p.get("market"))
+    except (OSError, ValueError):
+        pass
+
+    _CLV_FIELDS = ("clv", "clv_pct", "line_clv", "price_clv_pct", "beat_close",
+                   "closing_odds", "closing_line", "closing_implied_prob")
+    repaired = 0
+    for s in unset:
+        k = (s.get("date"), str(s.get("team", "")).lower().strip())
+        mk = idx.get(k)
+        if mk and len(mk) == 1 and next(iter(mk)):
+            s["market"] = next(iter(mk))
+        else:
+            s["market"] = "unknown_legacy"
+        # Clear any CLV computed under the wrong (defaulted-moneyline) basis so it
+        # re-scores correctly for its real market on the next compute_clv pass.
+        for f in _CLV_FIELDS:
+            s.pop(f, None)
+        repaired += 1
+
+    if repaired:
+        _save_snapshots(snapshots)
+        print(f"  [CLV] backfilled market on {repaired} legacy snapshot(s) "
+              f"(stale CLV cleared for re-scoring)")
+    return repaired
+
+
 def fetch_closing_pairs(
     date_str: str | None = None,
     sport: str = "baseball_mlb",
