@@ -38,6 +38,37 @@ PNL_FILE = Path("data/pnl/picks.json")
 
 # ─────────────────────────── Odds fetch ──────────────────────────────────────
 
+def fetch_wnba_player_props(event_id: str, refresh: bool = False) -> dict | None:
+    """Fetch one event's player props (points/rebounds/assists), per-event
+    endpoint. Returns the raw Odds API event dict or None."""
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        return None
+    cache = CACHE_DIR / f"wnba_props_{event_id}.json"
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    if not refresh and cache.exists():
+        age = datetime.now(timezone.utc).timestamp() - cache.stat().st_mtime
+        if age < 1800:
+            with open(cache) as f:
+                return json.load(f)
+    try:
+        resp = requests.get(
+            f"{API_BASE}/sports/{SPORT}/events/{event_id}/odds",
+            params={"apiKey": key, "regions": "us,us2",
+                    "markets": "player_points,player_rebounds,player_assists",
+                    "oddsFormat": "american", "bookmakers": MY_BOOKS_PARAM},
+            timeout=20,
+        )
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        with open(cache, "w") as f:
+            json.dump(data, f)
+        return data
+    except Exception:
+        return None
+
+
 def fetch_wnba_odds(refresh: bool = False) -> list[dict]:
     """Fetch today's WNBA odds from The Odds API."""
     key = os.environ.get("ODDS_API_KEY")
@@ -104,6 +135,7 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
             "market":      market,
             "direction":   e.get("direction", ""),
             "team":        e.get("team", ""),
+            "player":      e.get("player"),  # set for prop markets (CLV join key)
             "matchup":     e.get("matchup", ""),
             "odds":        e.get("odds", -110),
             "line":        e.get("line"),
@@ -164,6 +196,28 @@ def run_wnba(args: argparse.Namespace) -> int:
     # 2. Find edges
     print("\n  Running WNBA model...")
     edges = find_wnba_edges(today_events)
+
+    # 2b. Player props (points/rebounds/assists) — per-event fetch + model
+    try:
+        from src.models.wnba_props import find_wnba_prop_edges
+        from src.data.wnba_stats import fetch_player_stats
+        pstats = fetch_player_stats(refresh=refresh)
+        players_by_name = {str(p.get("PLAYER_NAME", "")).lower(): p for p in pstats}
+        n_props = 0
+        for ev in today_events:
+            eid = ev.get("id")
+            if not eid:
+                continue
+            ev_props = fetch_wnba_player_props(eid, refresh=refresh)
+            if not ev_props:
+                continue
+            pe = find_wnba_prop_edges(ev_props, players_by_name, min_edge_pct=8.0)
+            edges.extend(pe)
+            n_props += len(pe)
+        if n_props:
+            print(f"  +{n_props} WNBA prop edge(s)")
+    except Exception as _pe:
+        print(f"  [wnba props] skipped: {_pe}")
 
     if not edges:
         print("  No edges meet threshold today.")
