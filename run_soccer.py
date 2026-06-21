@@ -80,6 +80,37 @@ _LEAGUE_ALIASES: dict[str, str] = {
 
 # ─────────────────────────── Odds fetch ──────────────────────────────────────
 
+def fetch_event_scorer_odds(sport_key: str, event_id: str, refresh: bool = False) -> dict | None:
+    """Fetch one event's anytime-scorer odds (per-event endpoint). Returns the
+    raw Odds API event dict (with bookmakers→markets→outcomes) or None."""
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        return None
+    cache = CACHE_DIR / f"{sport_key}_scorer_{event_id}.json"
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    if not refresh and cache.exists():
+        age = datetime.now(timezone.utc).timestamp() - cache.stat().st_mtime
+        if age < 1800:
+            with open(cache) as f:
+                return json.load(f)
+    try:
+        resp = requests.get(
+            f"{API_BASE}/sports/{sport_key}/events/{event_id}/odds",
+            params={"apiKey": key, "regions": "us,us2,eu",
+                    "markets": "player_goal_scorer_anytime",
+                    "oddsFormat": "american", "bookmakers": MY_BOOKS_PARAM},
+            timeout=20,
+        )
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        with open(cache, "w") as f:
+            json.dump(data, f)
+        return data
+    except Exception:
+        return None
+
+
 def fetch_soccer_odds(sport_key: str, refresh: bool = False) -> list[dict]:
     """Fetch soccer odds for a specific league from The Odds API."""
     key = os.environ.get("ODDS_API_KEY")
@@ -153,6 +184,7 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport_key: str) -> int:
             "market":      market,
             "direction":   e.get("direction", ""),
             "team":        e.get("team", ""),
+            "player":      e.get("player"),  # set for anytime_scorer props (CLV join key)
             "matchup":     e.get("matchup", ""),
             "odds":        e.get("odds", -110),
             "line":        e.get("line"),
@@ -219,6 +251,31 @@ def _run_one_league(
     except Exception as e:
         print(f"  [{league_name}] model error: {e}")
         return []
+
+    # Anytime-scorer player props (World Cup): per-event fetch + scorer model.
+    if sport_key == "soccer_fifa_world_cup":
+        try:
+            from src.models.soccer_scorer import load_scorer_shares, find_scorer_edges
+            shares = load_scorer_shares()
+            n_scorer = 0
+            for ev in today_events:
+                eid = ev.get("id")
+                if not eid:
+                    continue
+                ev_odds = fetch_event_scorer_odds(sport_key, eid, refresh=refresh)
+                if not ev_odds:
+                    continue
+                ev_odds.setdefault("neutral", True)
+                sc_edges = find_scorer_edges(ev_odds, model, shares,
+                                             min_edge_pct=4.0, host_nations=host_nations)
+                for e in sc_edges:
+                    e["sport"] = sport_key
+                edges.extend(sc_edges)
+                n_scorer += len(sc_edges)
+            if n_scorer:
+                print(f"  [{league_name}] +{n_scorer} anytime-scorer edge(s)")
+        except Exception as _se:
+            print(f"  [{league_name}] scorer props skipped: {_se}")
 
     if not edges:
         print(f"  [{league_name}] No edges meet threshold.")
