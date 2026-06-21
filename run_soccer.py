@@ -104,7 +104,7 @@ def fetch_soccer_odds(sport_key: str, refresh: bool = False) -> list[dict]:
             params={
                 "apiKey":      key,
                 "regions":     "us,us2",
-                "markets":     "h2h,totals",
+                "markets":     "h2h,totals,spreads",
                 "oddsFormat":  "american",
                 "bookmakers":  MY_BOOKS_PARAM,
             },

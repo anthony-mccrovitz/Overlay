@@ -597,6 +597,60 @@ class SoccerModelV2:
             "away_team":     away_team,
         }
 
+    def handicap_cover_prob(
+        self,
+        home_team: str,
+        away_team: str,
+        handicap: float,
+        side: str = "home",
+        neutral: bool = True,
+        home_adv_elo: float = 0.0,
+    ) -> float:
+        """P(picked side covers the Asian handicap) from the score grid.
+
+        handicap is the line on the PICKED side, e.g. home -1.5 → handicap=-1.5,
+        side='home'. Cover = (home_goals - away_goals + handicap) > 0 for home,
+        or (away_goals - home_goals + handicap) > 0 for away. Quarter-lines
+        (e.g. -0.25) split the stake across the two adjacent half-lines, so a
+        push is worth half (standard Asian-handicap settlement).
+        """
+        grid = self.score_grid(home_team, away_team, neutral=neutral,
+                               home_adv_elo=home_adv_elo).copy()
+        n = grid.shape[0]
+
+        # Reweight the score grid so its 1X2 margins match the CALIBRATED
+        # (temperature-scaled) win/draw/loss probs. This makes the handicap model
+        # inherit the same favorite-overconfidence correction as the ML model —
+        # and guarantees the -0.5 cover exactly equals the calibrated win prob.
+        cal = self.matchup(home_team, away_team, neutral=neutral,
+                           home_adv_elo=home_adv_elo)
+        raw_h = float(np.tril(grid, -1).sum())
+        raw_d = float(np.trace(grid))
+        raw_a = float(np.triu(grid, 1).sum())
+        for i in range(n):
+            for j in range(n):
+                if i > j and raw_h > 1e-12:   # home win region
+                    grid[i][j] *= cal["home_win"] / raw_h
+                elif i == j and raw_d > 1e-12:
+                    grid[i][j] *= cal["draw"] / raw_d
+                elif i < j and raw_a > 1e-12:
+                    grid[i][j] *= cal["away_win"] / raw_a
+        tot = grid.sum()
+        if tot > 0:
+            grid /= tot
+
+        win = push = 0.0
+        for i in range(n):
+            for j in range(n):
+                margin = (i - j) if side == "home" else (j - i)
+                adj = margin + handicap
+                if adj > 1e-9:
+                    win += grid[i][j]
+                elif abs(adj) <= 1e-9:
+                    push += grid[i][j]
+        denom = 1.0 - push  # exclude pushes (stake returned), renormalize
+        return float(win / denom) if denom > 1e-9 else float(win)
+
     def find_edges(
         self,
         events: list[dict],
@@ -720,10 +774,51 @@ class SoccerModelV2:
                                     "exp_total":    m["exp_total"],
                                 })
 
-        # Dedup: keep best-odds edge per (matchup, market, direction)
+                    elif mkey == "spreads":
+                        # Asian handicap. Each outcome is a team with a `point`.
+                        home_o = next((o for o in outcomes if o.get("name") == home), None)
+                        away_o = next((o for o in outcomes if o.get("name") == away), None)
+                        if not home_o or not away_o:
+                            continue
+                        ho_price = float(home_o.get("price", -110))
+                        ao_price = float(away_o.get("price", -110))
+                        total_imp = _american_to_imp(ho_price) + _american_to_imp(ao_price)
+                        if total_imp <= 0:
+                            continue
+                        for side_name, side_key, oc, price in [
+                            (home, "home", home_o, ho_price),
+                            (away, "away", away_o, ao_price),
+                        ]:
+                            pt = oc.get("point")
+                            if pt is None:
+                                continue
+                            hcap = float(pt)
+                            model_p = self.handicap_cover_prob(
+                                home, away, hcap, side=side_key,
+                                neutral=neutral, home_adv_elo=host_adv)
+                            imp = _american_to_imp(price) / total_imp
+                            edge = (model_p - imp) * 100.0
+                            if edge >= min_edge_pct:
+                                edges.append({
+                                    "sport":        "soccer",
+                                    "market":       "spread",
+                                    "direction":    "COVER",
+                                    "team":         f"{side_name} {hcap:+g}",
+                                    "matchup":      f"{away} @ {home}",
+                                    "odds":         int(price),
+                                    "best_odds":    int(price),
+                                    "line":         hcap,
+                                    "model_prob":   round(model_p, 4),
+                                    "implied_prob": round(imp, 4),
+                                    "edge_pct":     round(edge, 2),
+                                    "sportsbook":   book,
+                                    "exp_total":    m["exp_total"],
+                                })
+
+        # Dedup: keep best-odds edge per (matchup, market, direction, team)
         best: dict[tuple, dict] = {}
         for e in edges:
-            key = (e["matchup"], e["market"], e["direction"])
+            key = (e["matchup"], e["market"], e["direction"], e.get("team"))
             if key not in best or e["edge_pct"] > best[key]["edge_pct"]:
                 best[key] = e
         return sorted(best.values(), key=lambda x: x["edge_pct"], reverse=True)
