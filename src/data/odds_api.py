@@ -557,7 +557,12 @@ def fetch_event_odds(
     if not api_key or api_key == "your_key_here":
         return pd.DataFrame()
 
-    cache = _cache_path(f"event_{event_id}_{markets.replace(',','_')}", sport=sport)
+    # Hash the markets list — with the full prop catalog (17 keys) the raw string
+    # makes a 289-char filename that hits the OS limit (Errno 63), which crashed
+    # the props fetch and silently killed all prop closing-line capture (→ 0 CLV).
+    import hashlib
+    _mkt_tag = hashlib.md5(markets.encode()).hexdigest()[:12]
+    cache = _cache_path(f"event_{event_id}_{_mkt_tag}", sport=sport)
     if cache.exists() and not refresh:
         cache_age = time.time() - cache.stat().st_mtime
         if cache_age < 3600:
