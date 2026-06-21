@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-21T16:36:11.300676+00:00",
+  "updated_at": "2026-06-21T20:11:03.946790+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,9 +204,9 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.307,
-      "positive_pct": 37.0,
-      "n": 836,
+      "avg_clv_pct": -0.135,
+      "positive_pct": 33.1,
+      "n": 619,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
@@ -246,14 +246,14 @@
     },
     "spread_coverage": {
       "scored": 140,
-      "scoreable": 285,
-      "pct": 49.1
+      "scoreable": 286,
+      "pct": 49.0
     }
   },
   "summary": {
-    "total_picks": 276,
+    "total_picks": 278,
     "settled": 254,
-    "pending": 17,
+    "pending": 19,
     "wins": 140,
     "losses": 108,
     "pushes": 6,
@@ -273,9 +273,9 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 92,
+      "total": 94,
       "settled": 86,
-      "pending": 6,
+      "pending": 8,
       "wins": 44,
       "losses": 42,
       "pushes": 0,
@@ -323,9 +323,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 167,
+      "total": 169,
       "settled": 160,
-      "pending": 7,
+      "pending": 9,
       "wins": 81,
       "losses": 74,
       "win_rate": 0.5226,

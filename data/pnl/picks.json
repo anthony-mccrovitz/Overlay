@@ -186685,6 +186685,842 @@
         "reason": "no MLB shadow filter for this sport"
       },
       "strategy": null
+    },
+    {
+      "pick_id": "mlb_20260622_chicago-cubs_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Chicago Cubs",
+      "matchup": "New York Mets",
+      "odds": -110,
+      "line": null,
+      "sportsbook": "Fanatics",
+      "model_prob": 0.6927598174638082,
+      "edge_pct": 18.84,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": true,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 121,
+          "season_rs_per_g": 4.07,
+          "season_ra_per_g": 4.42,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.29,
+            "ra_per_game": 5.86,
+            "wins": 3,
+            "losses": 4,
+            "wl": "3-4"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 4.14,
+            "ra_per_game": 5.14,
+            "wins": 7,
+            "losses": 7,
+            "wl": "7-7"
+          }
+        },
+        "away": {
+          "team_id": 112,
+          "season_rs_per_g": 4.75,
+          "season_ra_per_g": 4.48,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 6.29,
+            "ra_per_game": 4.43,
+            "wins": 4,
+            "losses": 3,
+            "wl": "4-3"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 5.0,
+            "ra_per_game": 4.79,
+            "wins": 7,
+            "losses": 7,
+            "wl": "7-7"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "one_hot",
+        "recommendation": "keep",
+        "reason": "one_hot matchup passes neutral-skip filter"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_kansas-city-royals_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Kansas City Royals",
+      "matchup": "Tampa Bay Rays",
+      "odds": 146,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.527197551354378,
+      "edge_pct": 13.3,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 139,
+          "season_rs_per_g": 4.42,
+          "season_ra_per_g": 4.31,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 3.29,
+            "ra_per_game": 3.86,
+            "wins": 2,
+            "losses": 5,
+            "wl": "2-5"
+          },
+          "form_15d": {
+            "games": 15,
+            "lookback_days": 15,
+            "rs_per_game": 3.6,
+            "ra_per_game": 3.4,
+            "wins": 7,
+            "losses": 8,
+            "wl": "7-8"
+          }
+        },
+        "away": {
+          "team_id": 118,
+          "season_rs_per_g": 4.21,
+          "season_ra_per_g": 4.81,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 6.29,
+            "ra_per_game": 4.86,
+            "wins": 4,
+            "losses": 3,
+            "wl": "4-3"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 5.36,
+            "ra_per_game": 4.93,
+            "wins": 7,
+            "losses": 7,
+            "wl": "7-7"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "mixed",
+        "recommendation": "keep",
+        "reason": "mixed matchup passes neutral-skip filter"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_new-york-yankees_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "New York Yankees",
+      "matchup": "Detroit Tigers",
+      "odds": -124,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.6569112205273404,
+      "edge_pct": 11.91,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": true,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 116,
+          "season_rs_per_g": 4.05,
+          "season_ra_per_g": 4.14,
+          "form_7d": {
+            "games": 6,
+            "lookback_days": 7,
+            "rs_per_game": 3.67,
+            "ra_per_game": 3.0,
+            "wins": 3,
+            "losses": 3,
+            "wl": "3-3"
+          },
+          "form_15d": {
+            "games": 13,
+            "lookback_days": 15,
+            "rs_per_game": 4.69,
+            "ra_per_game": 3.23,
+            "wins": 7,
+            "losses": 6,
+            "wl": "7-6"
+          }
+        },
+        "away": {
+          "team_id": 147,
+          "season_rs_per_g": 5.12,
+          "season_ra_per_g": 3.63,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 5.86,
+            "ra_per_game": 3.71,
+            "wins": 5,
+            "losses": 2,
+            "wl": "5-2"
+          },
+          "form_15d": {
+            "games": 13,
+            "lookback_days": 15,
+            "rs_per_game": 5.62,
+            "ra_per_game": 3.92,
+            "wins": 9,
+            "losses": 4,
+            "wl": "9-4"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "one_hot",
+        "recommendation": "keep",
+        "reason": "one_hot matchup passes neutral-skip filter"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_arizona-diamondbacks_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Arizona Diamondbacks",
+      "matchup": "St. Louis Cardinals",
+      "odds": 120,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.5605498997258024,
+      "edge_pct": 12.05,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 138,
+          "season_rs_per_g": 4.65,
+          "season_ra_per_g": 4.56,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.43,
+            "ra_per_game": 5.57,
+            "wins": 3,
+            "losses": 4,
+            "wl": "3-4"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 5.71,
+            "ra_per_game": 4.71,
+            "wins": 8,
+            "losses": 6,
+            "wl": "8-6"
+          }
+        },
+        "away": {
+          "team_id": 109,
+          "season_rs_per_g": 4.3,
+          "season_ra_per_g": 4.57,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 5.0,
+            "ra_per_game": 5.29,
+            "wins": 4,
+            "losses": 3,
+            "wl": "4-3"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 3.79,
+            "ra_per_game": 5.71,
+            "wins": 6,
+            "losses": 8,
+            "wl": "6-8"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "one_hot",
+        "recommendation": "keep",
+        "reason": "one_hot matchup passes neutral-skip filter"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_texas-rangers_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Texas Rangers",
+      "matchup": "Miami Marlins",
+      "odds": 106,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.5819620360486117,
+      "edge_pct": 11.46,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 146,
+          "season_rs_per_g": 4.31,
+          "season_ra_per_g": 4.31,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.29,
+            "ra_per_game": 4.29,
+            "wins": 4,
+            "losses": 3,
+            "wl": "4-3"
+          },
+          "form_15d": {
+            "games": 15,
+            "lookback_days": 15,
+            "rs_per_game": 4.53,
+            "ra_per_game": 3.33,
+            "wins": 11,
+            "losses": 4,
+            "wl": "11-4"
+          }
+        },
+        "away": {
+          "team_id": 140,
+          "season_rs_per_g": 4.01,
+          "season_ra_per_g": 4.16,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.14,
+            "ra_per_game": 6.86,
+            "wins": 2,
+            "losses": 5,
+            "wl": "2-5"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 4.0,
+            "ra_per_game": 5.5,
+            "wins": 6,
+            "losses": 8,
+            "wl": "6-8"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "neutral",
+        "recommendation": "skip",
+        "reason": "neutral matchup: -15.8% ROI on n=30 in backtest"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_houston-astros_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Houston Astros",
+      "matchup": "Toronto Blue Jays",
+      "odds": 108,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.5790819211231897,
+      "edge_pct": 11.38,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 141,
+          "season_rs_per_g": 4.1,
+          "season_ra_per_g": 4.43,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 3.86,
+            "ra_per_game": 5.29,
+            "wins": 4,
+            "losses": 3,
+            "wl": "4-3"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 4.21,
+            "ra_per_game": 5.5,
+            "wins": 8,
+            "losses": 6,
+            "wl": "8-6"
+          }
+        },
+        "away": {
+          "team_id": 117,
+          "season_rs_per_g": 4.51,
+          "season_ra_per_g": 5.03,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.14,
+            "ra_per_game": 5.0,
+            "wins": 4,
+            "losses": 3,
+            "wl": "4-3"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 4.64,
+            "ra_per_game": 4.86,
+            "wins": 8,
+            "losses": 6,
+            "wl": "8-6"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "neutral",
+        "recommendation": "skip",
+        "reason": "neutral matchup: -15.8% ROI on n=30 in backtest"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_los-angeles-dodgers_moneyline_away",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Los Angeles Dodgers",
+      "matchup": "Minnesota Twins",
+      "odds": -150,
+      "line": null,
+      "sportsbook": "Fanatics",
+      "model_prob": 0.6726264946734573,
+      "edge_pct": 9.08,
+      "model_agreement": true,
+      "model_tier": "tier2",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 142,
+          "season_rs_per_g": 4.86,
+          "season_ra_per_g": 5.14,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 8.14,
+            "ra_per_game": 5.29,
+            "wins": 5,
+            "losses": 2,
+            "wl": "5-2"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 6.29,
+            "ra_per_game": 5.86,
+            "wins": 8,
+            "losses": 6,
+            "wl": "8-6"
+          }
+        },
+        "away": {
+          "team_id": 119,
+          "season_rs_per_g": 5.25,
+          "season_ra_per_g": 3.38,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.14,
+            "ra_per_game": 3.14,
+            "wins": 5,
+            "losses": 2,
+            "wl": "5-2"
+          },
+          "form_15d": {
+            "games": 14,
+            "lookback_days": 15,
+            "rs_per_game": 5.29,
+            "ra_per_game": 4.5,
+            "wins": 9,
+            "losses": 5,
+            "wl": "9-5"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": "mlb_ml_neutral_skip",
+        "matchup_class": "mixed",
+        "recommendation": "keep",
+        "reason": "mixed matchup passes neutral-skip filter"
+      }
+    },
+    {
+      "pick_id": "mlb_20260622_los-angeles-angels_spread_cover",
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "spread",
+      "direction": "COVER",
+      "team": "Los Angeles Angels",
+      "matchup": "Baltimore Orioles @ Los Angeles Angels",
+      "odds": -122,
+      "line": 1.5,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.547,
+      "edge_pct": 4.7,
+      "model_agreement": false,
+      "model_tier": "shadow",
+      "weather_context": "",
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:09:49.177122+00:00",
+      "resulted_at": null,
+      "team_form": {
+        "home": {
+          "team_id": 108,
+          "season_rs_per_g": 4.46,
+          "season_ra_per_g": 4.94,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 4.71,
+            "ra_per_game": 5.29,
+            "wins": 2,
+            "losses": 5,
+            "wl": "2-5"
+          },
+          "form_15d": {
+            "games": 15,
+            "lookback_days": 15,
+            "rs_per_game": 5.07,
+            "ra_per_game": 4.2,
+            "wins": 7,
+            "losses": 8,
+            "wl": "7-8"
+          }
+        },
+        "away": {
+          "team_id": 110,
+          "season_rs_per_g": 4.58,
+          "season_ra_per_g": 5.04,
+          "form_7d": {
+            "games": 7,
+            "lookback_days": 7,
+            "rs_per_game": 2.71,
+            "ra_per_game": 4.43,
+            "wins": 2,
+            "losses": 5,
+            "wl": "2-5"
+          },
+          "form_15d": {
+            "games": 15,
+            "lookback_days": 15,
+            "rs_per_game": 4.6,
+            "ra_per_game": 4.53,
+            "wins": 6,
+            "losses": 9,
+            "wl": "6-9"
+          }
+        },
+        "snapshot_date": "2026-06-22"
+      },
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "one_cold",
+        "recommendation": "na",
+        "reason": "no shadow filter for market=spread"
+      }
+    },
+    {
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "nrfi",
+      "direction": "YRFI",
+      "home_team": "Detroit Tigers",
+      "away_team": "New York Yankees",
+      "team": "New York Yankees @ Detroit Tigers",
+      "matchup": "New York Yankees @ Detroit Tigers",
+      "opponent": "New York Yankees @ Detroit Tigers",
+      "odds": null,
+      "stake": 0.0,
+      "card_pick": false,
+      "projected_nrfi": 0.42634317910700004,
+      "model_prob": 0.573656820893,
+      "implied_prob": null,
+      "edge_pct": null,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:06.876000+00:00",
+      "resulted_at": null
+    },
+    {
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "nrfi",
+      "direction": "YRFI",
+      "home_team": "Miami Marlins",
+      "away_team": "Texas Rangers",
+      "team": "Texas Rangers @ Miami Marlins",
+      "matchup": "Texas Rangers @ Miami Marlins",
+      "opponent": "Texas Rangers @ Miami Marlins",
+      "odds": null,
+      "stake": 0.0,
+      "card_pick": false,
+      "projected_nrfi": 0.4156285344721388,
+      "model_prob": 0.5843714655278611,
+      "implied_prob": null,
+      "edge_pct": null,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:06.876000+00:00",
+      "resulted_at": null
+    },
+    {
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "nrfi",
+      "direction": "YRFI",
+      "home_team": "Los Angeles Angels",
+      "away_team": "Baltimore Orioles",
+      "team": "Baltimore Orioles @ Los Angeles Angels",
+      "matchup": "Baltimore Orioles @ Los Angeles Angels",
+      "opponent": "Baltimore Orioles @ Los Angeles Angels",
+      "odds": null,
+      "stake": 0.0,
+      "card_pick": false,
+      "projected_nrfi": 0.41503793237270353,
+      "model_prob": 0.5849620676272964,
+      "implied_prob": null,
+      "edge_pct": null,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:06.876000+00:00",
+      "resulted_at": null
+    },
+    {
+      "date": "2026-06-22",
+      "sport": "mlb",
+      "market": "nrfi",
+      "direction": "YRFI",
+      "home_team": "Tampa Bay Rays",
+      "away_team": "Kansas City Royals",
+      "team": "Kansas City Royals @ Tampa Bay Rays",
+      "matchup": "Kansas City Royals @ Tampa Bay Rays",
+      "opponent": "Kansas City Royals @ Tampa Bay Rays",
+      "odds": null,
+      "stake": 0.0,
+      "card_pick": false,
+      "projected_nrfi": 0.4116544450144155,
+      "model_prob": 0.5883455549855845,
+      "implied_prob": null,
+      "edge_pct": null,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:06.876000+00:00",
+      "resulted_at": null
+    },
+    {
+      "pick_id": "mlb_20260621_nathan-eovaldi-under-8-5_pitcher_strikeouts_under",
+      "date": "2026-06-21",
+      "sport": "mlb",
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "team": "Nathan Eovaldi UNDER 8.5",
+      "matchup": "San Diego Padres @ Texas Rangers",
+      "odds": 170,
+      "line": 8.5,
+      "sportsbook": "Hard Rock Bet (OH)",
+      "model_prob": 0.7832,
+      "edge_pct": 43.91,
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:57.256011+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "team_form missing or incomplete"
+      },
+      "strategy": null
+    },
+    {
+      "pick_id": "mlb_20260621_mike-paredes-over-2-5_pitcher_strikeouts_over",
+      "date": "2026-06-21",
+      "sport": "mlb",
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "team": "Mike Paredes OVER 2.5",
+      "matchup": "Minnesota Twins @ Arizona Diamondbacks",
+      "odds": 150,
+      "line": 2.5,
+      "sportsbook": "DraftKings",
+      "model_prob": 0.4773,
+      "edge_pct": 10.16,
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:57.256011+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "team_form missing or incomplete"
+      },
+      "strategy": null
+    },
+    {
+      "pick_id": "mlb_20260621_jack-perkins-under-6-5_pitcher_strikeouts_under",
+      "date": "2026-06-21",
+      "sport": "mlb",
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "team": "Jack Perkins UNDER 6.5",
+      "matchup": "Los Angeles Angels @ Athletics",
+      "odds": -165,
+      "line": 6.5,
+      "sportsbook": "Hard Rock Bet (OH)",
+      "model_prob": 0.6629,
+      "edge_pct": 8.49,
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:57.256011+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "team_form missing or incomplete"
+      },
+      "strategy": null
+    },
+    {
+      "pick_id": "mlb_20260621_michael-lorenzen-under-5-5_pitcher_strikeouts_under",
+      "date": "2026-06-21",
+      "sport": "mlb",
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "team": "Michael Lorenzen UNDER 5.5",
+      "matchup": "Pittsburgh Pirates @ Colorado Rockies",
+      "odds": -240,
+      "line": 5.5,
+      "sportsbook": "Fliff",
+      "model_prob": 0.7284,
+      "edge_pct": 8.11,
+      "stake": 1.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-06-21T20:10:57.256011+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "team_form missing or incomplete"
+      },
+      "strategy": null
     }
   ]
 }

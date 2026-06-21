@@ -3,31 +3,15 @@
     {
       "market": "batter_total_bases",
       "direction": "OVER",
-      "player": "John Rave",
-      "team": "John Rave OVER 1.5",
-      "matchup": "St. Louis Cardinals @ Kansas City Royals",
-      "line": 1.5,
-      "odds": 200,
-      "model_prob": 0.8232,
-      "implied_prob": 0.3158,
-      "edge_pct": 50.74,
-      "model_mu": 9.79,
-      "sportsbook": "theScore Bet"
-    }
-  ],
-  "pitcher_strikeouts": [
-    {
-      "market": "pitcher_strikeouts",
-      "direction": "UNDER",
-      "player": "Logan Gilbert",
-      "team": "Logan Gilbert UNDER 5.5",
-      "matchup": "Boston Red Sox @ Seattle Mariners",
-      "line": 5.5,
-      "odds": 215,
-      "model_prob": 0.657,
-      "implied_prob": 0.2899,
-      "edge_pct": 36.72,
-      "model_mu": 5.12,
+      "player": "James Wood",
+      "team": "James Wood OVER 0.5",
+      "matchup": "Washington Nationals @ Tampa Bay Rays",
+      "line": 0.5,
+      "odds": 2500,
+      "model_prob": 0.7525,
+      "implied_prob": 0.0374,
+      "edge_pct": 71.51,
+      "model_mu": 3.04,
       "sportsbook": "theScore Bet"
     }
   ],
@@ -35,16 +19,32 @@
     {
       "market": "batter_hits",
       "direction": "OVER",
-      "player": "Carson Kelly",
-      "team": "Carson Kelly OVER 1.5",
-      "matchup": "Toronto Blue Jays @ Chicago Cubs",
-      "line": 1.5,
-      "odds": 550,
-      "model_prob": 0.3565,
-      "implied_prob": 0.1447,
-      "edge_pct": 21.17,
-      "model_mu": 1.48,
+      "player": "James Wood",
+      "team": "James Wood OVER 0.5",
+      "matchup": "Washington Nationals @ Tampa Bay Rays",
+      "line": 0.5,
+      "odds": 2000,
+      "model_prob": 0.6051,
+      "implied_prob": 0.046,
+      "edge_pct": 55.91,
+      "model_mu": 1.53,
       "sportsbook": "theScore Bet"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Nathan Eovaldi",
+      "team": "Nathan Eovaldi UNDER 8.5",
+      "matchup": "San Diego Padres @ Texas Rangers",
+      "line": 8.5,
+      "odds": 170,
+      "model_prob": 0.7832,
+      "implied_prob": 0.3441,
+      "edge_pct": 43.91,
+      "model_mu": 5.4,
+      "sportsbook": "Hard Rock Bet (OH)"
     }
   ]
 }
