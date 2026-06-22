@@ -26,4 +26,9 @@ jobs:
         fail=0
         python chef.py grade                   || fail=1
         python scripts/nightly_recap.py --deploy || fail=1
+        # After grading, rebuild the web data so the live site reflects last
+        # night's results/record (the customer feed + slate carry graded picks).
+        # WC futures don't change post-grade, so skip the sim here (morning does it).
+        python scripts/build_customer_feed.py || fail=1
+        python scripts/build_slate_data.py    || fail=1
         exit $fail

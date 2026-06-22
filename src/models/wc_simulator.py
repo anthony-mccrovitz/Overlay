@@ -134,6 +134,10 @@ class WorldCup2026:
         self.bracket = bracket or load_bracket_2026()
         self._grid_cache: dict[tuple, np.ndarray] = {}
         self._rng = np.random.default_rng()
+        # Canonical team names from the group stage. Once the real draw is known,
+        # the 2026 dataset replaces R32 slot codes ('1A') with actual qualified
+        # teams (hosts/seeds, e.g. 'Germany', 'USA'); _resolve matches against this.
+        self._known_teams = {t for g in self.bracket.groups.values() for t in g.teams}
 
     # ── Match sampling ────────────────────────────────────────────────────────
 
@@ -310,11 +314,16 @@ class WorldCup2026:
             return third_team
         if spec in winners:
             return winners[spec]
-        if spec.startswith("W"):
-            try:
-                return results.get(int(spec[1:]))
-            except ValueError:
-                return None
+        # 'Wxx' = winner of match xx (digits only — guard so a literal team like
+        # 'Wales' isn't misread as a winner reference).
+        if spec.startswith("W") and spec[1:].isdigit():
+            return results.get(int(spec[1:]))
+        # Otherwise it's a literal team pre-seeded into the bracket (real draw is
+        # known). Normalize to the canonical group name so milestone counts and
+        # futures-market keys line up; ignore anything we don't recognize.
+        norm = normalize_team_name(spec)
+        if norm in self._known_teams:
+            return norm
         return None
 
     # ── Public: run many sims ─────────────────────────────────────────────────

@@ -28,5 +28,12 @@ jobs:
         # longshot etc.) — the opening half of CLV. Closings captured at tipoff,
         # scored by clv.yml next morning. card_pick=False → never the real record.
         python chef.py strategies     || fail=1
+        # Rebuild the web app's data layer (overlay/src/data/) from today's picks
+        # so the live site updates. These were laptop-only (chef.py deploy) and
+        # never ran in the cloud, leaving the site frozen. The _pipeline commit
+        # step (git add -A) commits the rebuilt JSON → triggers a Vercel deploy.
+        python scripts/build_slate_data.py    || fail=1
+        python scripts/wc_data.py --sims 20000 || fail=1
+        python scripts/build_customer_feed.py || fail=1
         python scripts/deploy_picks.py || fail=1
         exit $fail

@@ -1,23 +1,23 @@
 **World Cup 2026 — title odds from 20,000 Monte Carlo simulations (model vs market)**
 
-Built a rolling-Elo + Dixon-Coles model (calibrated on 800+ tournament matches), simulated the full 48-team bracket 20,000 times, and blended the output with the de-vigged market (40% model / 60% market). As of June 13, 2026:
+Built a rolling-Elo + Dixon-Coles model (calibrated on 800+ tournament matches), simulated the full 48-team bracket 20,000 times, and blended the output with the de-vigged market (40% model / 60% market). As of June 22, 2026:
 
 | # | Team | Our blend | Model | Market | Reach final |
 |---|------|-----------|-------|--------|-------------|
-| 1 | Spain | 20% | 26% | 15% | 43% |
-| 2 | England | 18% | 29% | 10% | 41% |
-| 3 | France | 11% | 6% | 15% | 14% |
-| 4 | Argentina | 11% | 16% | 8% | 28% |
-| 5 | Portugal | 7% | 2% | 9% | 7% |
-| 6 | Brazil | 5% | 1% | 8% | 3% |
-| 7 | Germany | 4% | 1% | 6% | 4% |
-| 8 | Netherlands | 4% | 2% | 4% | 6% |
+| 1 | Argentina | 18% | 29% | 11% | 44% |
+| 2 | Spain | 18% | 23% | 14% | 41% |
+| 3 | England | 14% | 18% | 11% | 29% |
+| 4 | France | 14% | 9% | 17% | 18% |
+| 5 | Germany | 5% | 4% | 6% | 12% |
+| 6 | Portugal | 5% | 1% | 7% | 5% |
+| 7 | Netherlands | 4% | 2% | 6% | 6% |
+| 8 | Brazil | 4% | 1% | 6% | 2% |
 
 **Where the model disagrees with the market (the interesting part):**
-- 📈 **England** — model 29% vs market 10% (+8pp)
-- 📈 **Spain** — model 26% vs market 15% (+4pp)
-- 📉 **France** — model 6% vs market 15% (-3pp)
-- 📉 **Portugal** — model 2% vs market 9% (-3pp)
+- 📈 **Argentina** — model 29% vs market 11% (+7pp)
+- 📈 **Spain** — model 23% vs market 14% (+4pp)
+- 📉 **France** — model 9% vs market 17% (-3pp)
+- 📉 **Brazil** — model 1% vs market 6% (-2pp)
 
 Honest caveat: these are *probabilities*, not locks — the value is calibration, not claiming an edge over the closing line. CLV tracked publicly all tournament.
 
