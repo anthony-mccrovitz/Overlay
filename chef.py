@@ -1956,6 +1956,26 @@ def cmd_edge(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_calibrate(args: argparse.Namespace) -> int:
+    """Refit every sport×market calibrator from settled results.
+
+    The models already de-bias their probabilities through apply_calibration()
+    (per-market .pkl calibrators), but those were stale — never refit as new
+    results arrived — which is why `validate` still flagged props as
+    overconfident. This re-fits them all (Platt for props/small samples, isotonic
+    for large game-line datasets) from the current pnl. Every model that calls
+    apply_calibration() picks up the fresh calibrators automatically.
+    """
+    from src.analytics.calibration import recalibrate_all
+    min_picks = getattr(args, "min_n", None) or 30
+    results = recalibrate_all(min_picks=min_picks, verbose=True)
+    if not results:
+        print("  No market had enough settled picks to (re)calibrate.")
+        return 0
+    print(f"\n  ─ Recalibrated {len(results)} market(s) ─ run `chef.py validate` to confirm")
+    return 0
+
+
 def cmd_validate(args: argparse.Namespace) -> int:
     """Model validation harness — outcome calibration per (sport, market).
 
@@ -2672,6 +2692,8 @@ def main() -> int:
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
     p_verify = sub.add_parser("verify", help="Trigger core cloud workflows NOW and report pass/fail (~2-5 min, no waiting for cron)")
     p_verify.add_argument("--workflows", type=str, help="Comma-separated workflow files (default: monitor.yml,night.yml,clv.yml)")
+    p_cal = sub.add_parser("calibrate", help="Refit all sport×market calibrators from settled results (fixes overconfident edges)")
+    p_cal.add_argument("--min-n", type=int, dest="min_n", help="Minimum settled picks to calibrate a market (default 30)")
     p_validate = sub.add_parser("validate", help="Model validation: outcome calibration (stated prob vs actual hit rate, Brier) per sport·market")
     p_validate.add_argument("--min-n", type=int, dest="min_n", help="Minimum graded picks to validate a market (default 20)")
     p_edge = sub.add_parser("edge", help="Statistical promotion gate: which markets have a REAL CLV edge vs noise (t-test + sample floor + multiple-comparison correction)")
@@ -2781,6 +2803,7 @@ def main() -> int:
         "verify":   cmd_verify,
         "edge":     cmd_edge,
         "validate": cmd_validate,
+        "calibrate": cmd_calibrate,
         "strategies": cmd_strategies,
         "morning":  cmd_morning,
         "evening":  cmd_evening,

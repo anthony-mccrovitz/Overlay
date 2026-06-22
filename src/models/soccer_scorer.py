@@ -139,6 +139,12 @@ def find_scorer_edges(event: dict, model_v2, shares: dict[str, dict[str, float]]
                 if not hit:
                     continue
                 player, model_p = hit
+                # Calibrate against realized scorer hit rates (no-op until fitted).
+                try:
+                    from src.analytics.calibration import apply_calibration
+                    model_p = apply_calibration(model_p, "soccer", "anytime_scorer")
+                except Exception:
+                    pass
                 imp = _american_to_imp(float(price))
                 edge = (model_p - imp) * 100.0
                 if edge >= min_edge_pct:
