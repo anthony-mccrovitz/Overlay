@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Brandon Woodruff",
+      "team": "Brandon Woodruff UNDER 4.5",
+      "matchup": "Milwaukee Brewers @ Cincinnati Reds",
+      "line": 4.5,
+      "odds": 120,
+      "model_prob": 0.6942,
+      "implied_prob": 0.4075,
+      "edge_pct": 28.67,
+      "model_mu": 3.74,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Drew Romo",
+      "team": "Drew Romo OVER 0.5",
+      "matchup": "Cleveland Guardians @ Chicago White Sox",
+      "line": 0.5,
+      "odds": -115,
+      "model_prob": 0.7209,
+      "implied_prob": 0.4951,
+      "edge_pct": 22.58,
+      "model_mu": 2.58,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Kameron Misner",
+      "team": "Kameron Misner OVER 0.5",
+      "matchup": "Kansas City Royals @ Tampa Bay Rays",
+      "line": 0.5,
+      "odds": -105,
+      "model_prob": 0.6216,
+      "implied_prob": 0.4573,
+      "edge_pct": 16.43,
+      "model_mu": 1.64,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
