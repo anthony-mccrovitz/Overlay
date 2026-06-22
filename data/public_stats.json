@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-22T16:14:30.512831+00:00",
+  "updated_at": "2026-06-22T17:47:43.430967+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -204,32 +204,32 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.135,
-      "positive_pct": 33.1,
-      "n": 619,
+      "avg_clv_pct": -0.147,
+      "positive_pct": 32.7,
+      "n": 643,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 91,
-        "avg_line_clv": 0.102,
-        "beat_close_pct": 48.4,
+        "count": 93,
+        "avg_line_clv": 0.035,
+        "beat_close_pct": 47.3,
         "avg_price_clv_pct": 0.409,
         "matched_price_n": 32
       },
       "spread": {
-        "count": 140,
-        "avg_line_clv": 0.307,
-        "beat_close_pct": 42.1,
-        "avg_price_clv_pct": 1.668,
-        "matched_price_n": 86
+        "count": 141,
+        "avg_line_clv": 0.387,
+        "beat_close_pct": 43.3,
+        "avg_price_clv_pct": 1.653,
+        "matched_price_n": 87
       },
       "f5_total": {
-        "count": 164,
-        "avg_line_clv": 0.012,
-        "beat_close_pct": 31.1,
-        "avg_price_clv_pct": -3.97,
-        "matched_price_n": 85
+        "count": 166,
+        "avg_line_clv": 0.009,
+        "beat_close_pct": 30.7,
+        "avg_price_clv_pct": -4.001,
+        "matched_price_n": 86
       },
       "prop": {
         "count": 27,
@@ -237,17 +237,24 @@
         "beat_close_pct": 88.9,
         "avg_price_clv_pct": 2.889,
         "matched_price_n": 14
+      },
+      "pitcher_strikeouts": {
+        "count": 47,
+        "avg_line_clv": -0.149,
+        "beat_close_pct": 48.9,
+        "avg_price_clv_pct": 2.293,
+        "matched_price_n": 18
       }
     },
     "totals_coverage": {
-      "scored": 91,
+      "scored": 93,
       "scoreable": 232,
-      "pct": 39.2
+      "pct": 40.1
     },
     "spread_coverage": {
-      "scored": 140,
+      "scored": 141,
       "scoreable": 287,
-      "pct": 48.8
+      "pct": 49.1
     }
   },
   "summary": {
