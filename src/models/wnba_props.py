@@ -126,6 +126,13 @@ def find_wnba_prop_edges(event: dict, players_by_name: dict,
                 p_over = over_prob(stats, mkey, line)
                 if p_over is None:
                     continue
+                # Calibrate against realized hit rates (no-op until this market has
+                # a fitted calibrator), then apply the OVER-shade bias correction.
+                try:
+                    from src.analytics.calibration import apply_calibration
+                    p_over = apply_calibration(p_over, "wnba", mkey)
+                except Exception:
+                    pass
                 p_over = max(0.0, p_over - _OVER_SHADE)
                 op = _american_to_imp(float(over_o["price"]))
                 up = _american_to_imp(float(under_o["price"]))

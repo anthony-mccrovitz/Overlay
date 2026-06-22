@@ -18,4 +18,11 @@ jobs:
     secrets: inherit
     with:
       level: light
-      command: python scripts/weekly_audit.py
+      command: |
+        set +e
+        fail=0
+        python scripts/weekly_audit.py || fail=1
+        # Refit all calibrators weekly so model probs track realized hit rates
+        # (stale calibrators are what made props overconfident).
+        python chef.py calibrate || fail=1
+        exit $fail

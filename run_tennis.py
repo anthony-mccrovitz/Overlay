@@ -272,6 +272,13 @@ def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
                     continue
                 line = float(over_o["point"])
                 gt = model.games_total_prob(a, b, line, best_of=best_of)
+                # Calibrate the model's Over prob vs realized (no-op until fitted).
+                try:
+                    from src.analytics.calibration import apply_calibration
+                    gt["over"] = apply_calibration(gt["over"], "tennis", "total")
+                    gt["under"] = 1.0 - gt["over"]
+                except Exception:
+                    pass
                 op = _imp(float(over_o["price"])); up = _imp(float(under_o["price"]))
                 tot = op + up
                 if tot <= 0:
