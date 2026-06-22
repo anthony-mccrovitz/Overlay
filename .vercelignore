@@ -1,24 +1,32 @@
-# Exclude everything outside the overlay/ app directory.
-# Vercel project rootDirectory is set to "overlay/" in the dashboard.
+# Exclude everything outside the overlay/ app directory (Vercel rootDirectory = overlay).
 # These exclusions keep the upload under the 250 MB serverless function limit.
 # (output/picks/ alone is 260MB+ of historical picks data and PNG cards.)
+#
+# IMPORTANT: every pattern is anchored with a leading "/" so it matches ONLY the
+# top-level directory. An UNANCHORED pattern like "src/" matches a "src" dir at
+# ANY depth — including overlay/src/ — which strips the entire Next.js app and
+# makes every route 404 with a build that still reports success. Keep them anchored.
 
 # Python pipeline output — large, not needed on Vercel
-output/
-logs/
+/output/
+/logs/
 
 # Raw data files — not needed on Vercel (pre-built JSONs live in overlay/src/data/)
-data/
+/data/
 
 # Python source
 *.py
-scripts/
-src/
-tests/
+/scripts/
+/src/
+/tests/
+/api/
 
 # Docs and plans
-*.md
-dashboard/
+/*.md
+/dashboard/
+
+# Legacy app + its committed .next build caches — large, not this project
+/legacy/
 
 # Web app (separate Vercel project, not this one)
-web/
+/web/
