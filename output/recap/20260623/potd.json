@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260623_philadelphia-phillies_moneyline_away",
+  "date": "2026-06-23",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "Philadelphia Phillies",
+  "matchup": "Washington Nationals",
+  "odds": 100,
+  "line": null,
+  "sportsbook": "Fanatics",
+  "model_prob": 0.6180567899885325,
+  "edge_pct": 13.01,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-22T06:57:19.849727+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 120,
+      "season_rs_per_g": 5.33,
+      "season_ra_per_g": 5.18,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 4.86,
+        "ra_per_game": 3.71,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 5.07,
+        "ra_per_game": 4.43,
+        "wins": 8,
+        "losses": 6,
+        "wl": "8-6"
+      }
+    },
+    "away": {
+      "team_id": 143,
+      "season_rs_per_g": 4.27,
+      "season_ra_per_g": 4.32,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 6.29,
+        "ra_per_game": 4.14,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 5.64,
+        "ra_per_game": 4.5,
+        "wins": 8,
+        "losses": 6,
+        "wl": "8-6"
+      }
+    },
+    "snapshot_date": "2026-06-23"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "one_hot",
+    "recommendation": "keep",
+    "reason": "one_hot matchup passes neutral-skip filter"
+  }
+}
