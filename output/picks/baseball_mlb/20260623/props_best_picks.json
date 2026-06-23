@@ -1,0 +1,50 @@
+{
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Gabriel Rincones Jr.",
+      "team": "Gabriel Rincones Jr. OVER 0.5",
+      "matchup": "Philadelphia Phillies @ Washington Nationals",
+      "line": 0.5,
+      "odds": -175,
+      "model_prob": 1.0,
+      "implied_prob": 0.572,
+      "edge_pct": 42.8,
+      "model_mu": 9941648.04,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Drew Romo",
+      "team": "Drew Romo OVER 0.5",
+      "matchup": "Cleveland Guardians @ Chicago White Sox",
+      "line": 0.5,
+      "odds": -114,
+      "model_prob": 0.7209,
+      "implied_prob": 0.4886,
+      "edge_pct": 23.22,
+      "model_mu": 2.58,
+      "sportsbook": "ReBet"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Robbie Ray",
+      "team": "Robbie Ray UNDER 5.5",
+      "matchup": "Athletics @ San Francisco Giants",
+      "line": 5.5,
+      "odds": 100,
+      "model_prob": 0.6893,
+      "implied_prob": 0.4454,
+      "edge_pct": 24.4,
+      "model_mu": 4.65,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
