@@ -44,6 +44,13 @@ MODELS: dict[tuple[str, str], dict] = {
     ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo (4-25 -8u, shadow — keep tracking)"},
     ("soccer", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"},
 
+    # ── World Cup 2026 — own unit, all incubating until the CLV gate confirms ──
+    # (promote with `chef.py promote wc <market>`; the gate refuses until proven).
+    ("wc", "moneyline"):      {"status": "incubating", "tier": "shadow", "label": "World Cup 1X2 (Dixon-Coles, CLV-incubating)"},
+    ("wc", "total"):          {"status": "incubating", "tier": "shadow", "label": "World Cup Totals (CLV-incubating)"},
+    ("wc", "spread"):         {"status": "incubating", "tier": "shadow", "label": "World Cup Asian Handicap (CLV-incubating)"},
+    ("wc", "anytime_scorer"): {"status": "incubating", "tier": "shadow", "label": "World Cup Anytime Scorer (CLV-incubating)"},
+
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
     ("mlb",    "moneyline"): {"status": "incubating", "tier": "shadow", "label": "MLB Moneyline (41-39 +4u, shadowed 2026-05-30 — soft-book edge inflation)"},
     ("pga",    "outright"):  {"status": "live",       "tier": "t2", "label": "PGA Outright (SG)"},
@@ -93,7 +100,11 @@ def _key(sport: str, market: str) -> tuple[str, str]:
     raw = (sport or "").lower()
     for prefix in ("baseball_", "basketball_", "icehockey_"):
         raw = raw.replace(prefix, "")
-    if raw.startswith("soccer"):
+    if raw.startswith("soccer_fifa_world_cup") or raw == "wc":
+        # World Cup is gated/promoted as its OWN unit (matches chef.py edge's
+        # 'wc' label) — promoting it must NOT also flip MLS/La Liga/etc. live.
+        raw = "wc"
+    elif raw.startswith("soccer"):
         raw = "soccer"
     elif raw.startswith("tennis"):
         raw = "tennis"
@@ -112,14 +123,78 @@ def _key(sport: str, market: str) -> tuple[str, str]:
     return (s, m)
 
 
+# ── Promotion overrides (CLV-gated, set via `chef.py promote`) ───────────────
+# A market is promoted shadow→live ONLY after it clears the CLV gate (chef.py
+# edge). Rather than hand-edit MODELS above, promotions are recorded in this
+# git-committed JSON so every flip is auditable (who/when/on what evidence) and
+# reversible (`chef.py demote`). model_status/model_tier consult it first.
+import json as _json
+from pathlib import Path as _Path
+
+_PROMOTIONS_FILE = _Path("data/models/promotions.json")
+
+
+def _load_promotions() -> dict:
+    try:
+        data = _json.loads(_PROMOTIONS_FILE.read_text())
+        return data if isinstance(data, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _promotion(sport: str, market: str) -> dict | None:
+    """The promotion override record for this market, if one exists."""
+    s, m = _key(sport, market)
+    return _load_promotions().get(f"{s}::{m}")
+
+
 def model_status(sport: str, market: str) -> str:
-    """Return 'live', 'incubating', or 'retired'. Unknown models default to incubating."""
+    """Return 'live', 'incubating', or 'retired'. Unknown models default to incubating.
+
+    A CLV-gated promotion override (data/models/promotions.json) wins over the
+    static registry, so a proven market goes live without a source edit.
+    """
+    p = _promotion(sport, market)
+    if p and p.get("status"):
+        return p["status"]
     return MODELS.get(_key(sport, market), {}).get("status", "incubating")
 
 
 def model_tier(sport: str, market: str) -> str:
     """Return 't1', 't2', 'shadow', or 'paused'. Unknown models default to 'shadow'."""
+    p = _promotion(sport, market)
+    if p and p.get("tier"):
+        return p["tier"]
     return MODELS.get(_key(sport, market), {}).get("tier", "shadow")
+
+
+def set_promotion(sport: str, market: str, status: str, tier: str,
+                  evidence: dict | None = None) -> tuple[str, str]:
+    """Record a promotion/demotion override. Returns the canonical (sport, market).
+
+    Callers MUST gate this on the CLV edge check — this function only persists
+    the decision; it does not re-verify the edge.
+    """
+    s, m = _key(sport, market)
+    proms = _load_promotions()
+    rec = {"status": status, "tier": tier}
+    if evidence:
+        rec.update(evidence)
+    proms[f"{s}::{m}"] = rec
+    _PROMOTIONS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _PROMOTIONS_FILE.write_text(_json.dumps(proms, indent=2, sort_keys=True))
+    return (s, m)
+
+
+def clear_promotion(sport: str, market: str) -> bool:
+    """Remove a promotion override (revert to the static registry). True if removed."""
+    s, m = _key(sport, market)
+    proms = _load_promotions()
+    if f"{s}::{m}" in proms:
+        del proms[f"{s}::{m}"]
+        _PROMOTIONS_FILE.write_text(_json.dumps(proms, indent=2, sort_keys=True))
+        return True
+    return False
 
 
 # Minimum edge to post publicly (card_pick=True) per market.
@@ -135,6 +210,7 @@ _CARD_EDGE_MIN: dict[str, float | None] = {
     "puck_line":  10.0,
     "nrfi":       None,   # paused
     "outright":   10.0,
+    "anytime_scorer": 8.0,  # scorer props: only post a real, sizable edge
 }
 
 
@@ -197,7 +273,7 @@ def models_by_tier(tier: str) -> list[tuple[str, str]]:
 
 
 # New-model shadow stake caps: 0.5u until N≥30 settled with positive CLV
-_NEW_SPORTS = {"wnba", "tennis", "soccer", "pga",
+_NEW_SPORTS = {"wnba", "tennis", "soccer", "wc", "pga",
                "auto_racing_nascar_cup_series",
                "auto_racing_indycar_series",
                "auto_racing_formula_one",

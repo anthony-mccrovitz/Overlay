@@ -192,8 +192,11 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport_key: str) -> int:
             "model_prob":  e.get("model_prob"),
             "edge_pct":    e.get("edge_pct"),
             "model_tier":  "tier1",  # Dixon-Coles is Tier 1 (peer-reviewed)
-            "stake":       shadow_stake("soccer", market),
-            "card_pick":   is_card_pick("soccer", market, e.get("edge_pct")),
+            # Gate by the league-specific sport_key (e.g. soccer_fifa_world_cup
+            # → 'wc'), NOT generic 'soccer', so World Cup is promoted on its own
+            # CLV — promoting WC must not also flip MLS/La Liga live.
+            "stake":       shadow_stake(sport_key, market),
+            "card_pick":   is_card_pick(sport_key, market, e.get("edge_pct")),
             "result":      None,
             "profit":      None,
             "recorded_at": now,
