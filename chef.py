@@ -1837,29 +1837,26 @@ def cmd_verify(args: argparse.Namespace) -> int:
     return 1 if issues else 0
 
 
-def cmd_edge(args: argparse.Namespace) -> int:
-    """Statistical promotion gate — is a market's CLV a real edge or just noise?
+def _clv_gate(min_n: int = 200):
+    """Compute the CLV promotion gate for every (sport, market).
 
-    For each market: a t-test of mean CLV vs 0, a minimum-sample floor, and a
-    multiple-comparisons (Bonferroni) correction — because testing ~12 markets,
-    one WILL look good by chance. A market is an EDGE CANDIDATE only if it clears
-    all three AND still holds up on the last 30 days. Candidates must then persist
-    out-of-sample before betting real money — this flags them, it doesn't bless them.
+    Shared by `chef.py edge` (display) and `chef.py promote` (enforcement) so the
+    two can never diverge. Returns (rows, meta) or None if snapshots unreadable.
 
-    CLV here is measured against a late-pre-game line (the wide capture band), so
-    it's conservative: a positive result understates the true edge.
+    Each row: {sport, market, label, n, mean, unit, rmean, p_pos, verdict,
+               is_candidate}. `sport` is the short label (mlb/nba/wc/...), which
+               matches src.config.models._key so promotion targets line up.
+    meta: {min_n, alpha, m_tests}.
     """
     import math, statistics
     from datetime import date as _date, timedelta
     from collections import defaultdict
 
-    min_n = getattr(args, "min_n", None) or 200
     try:
         snaps = json.loads(Path("data/clv/snapshots.json").read_text())
         snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
     except (json.JSONDecodeError, ValueError, OSError):
-        print("  ✗ snapshots.json unreadable")
-        return 1
+        return None
 
     def clv_val(s):
         # natural per-market metric: prob markets in %, line markets in points
@@ -1874,7 +1871,8 @@ def cmd_edge(args: argparse.Namespace) -> int:
     except Exception:
         def _normalize_sport(x): return x
 
-    # Short, readable sport label for the breakdown.
+    # Short, readable sport label — MUST match src.config.models._key so a row
+    # here maps 1:1 to a promotable registry entry (e.g. 'wc', 'mlb', 'wnba').
     def _sport_label(sp: str) -> str:
         sp = _normalize_sport(str(sp or "?"))
         return {
@@ -1914,13 +1912,9 @@ def cmd_edge(args: argparse.Namespace) -> int:
         except Exception:
             return 0.5 * math.erfc(t / math.sqrt(2))  # normal approx
 
-    print(f"\n  ─ CLV Promotion Gate ─ min n={min_n}, α={alpha:.4f} (Bonferroni ÷{m_tests}) ─")
-    print(f"  {'sport · market':26}{'n':>6}{'mean':>10}{'30d':>9}{'p(>0)':>9}  verdict")
-    print(f"  {'─'*72}")
-    candidates = []
+    rows = []
     for key in sorted(by_mkt, key=lambda k: -len(by_mkt[k])):
         sport, mkt = key
-        label = f"{sport} · {mkt}"
         vals = by_mkt[key]
         n = len(vals)
         unit = vals[0][1]
@@ -1928,31 +1922,136 @@ def cmd_edge(args: argparse.Namespace) -> int:
         mean = statistics.fmean(xs)
         recent = [v for v, _, d in vals if d and d >= recent_cut]
         rmean = statistics.fmean(recent) if recent else None
+        p_pos = None
+        is_candidate = False
         if n < min_n:
             verdict = f"insufficient (need {min_n})"
-            pstr = "—"
         else:
             sd = statistics.pstdev(xs)
             p_pos = p_gt0(mean, sd, n)
             p_neg = p_gt0(-mean, sd, n)
             if mean > 0 and p_pos < alpha and (rmean is None or rmean > 0):
                 verdict = "✅ EDGE CANDIDATE → out-of-sample watch"
-                candidates.append(label)
+                is_candidate = True
             elif mean < 0 and p_neg < alpha:
                 verdict = "❌ negative — fade or stop modeling"
             else:
                 verdict = "noise (no edge)"
-            pstr = f"{p_pos:.4f}"
-        rstr = f"{rmean:+.3f}" if rmean is not None else "—"
-        print(f"  {label[:26]:26}{n:>6}{mean:>+9.3f}{unit:<1}{rstr:>9}{pstr:>9}  {verdict}")
+        rows.append({
+            "sport": sport, "market": mkt, "label": f"{sport} · {mkt}",
+            "n": n, "mean": mean, "unit": unit, "rmean": rmean,
+            "p_pos": p_pos, "verdict": verdict, "is_candidate": is_candidate,
+        })
+    return rows, {"min_n": min_n, "alpha": alpha, "m_tests": m_tests}
+
+
+def cmd_edge(args: argparse.Namespace) -> int:
+    """Statistical promotion gate — is a market's CLV a real edge or just noise?
+
+    For each market: a t-test of mean CLV vs 0, a minimum-sample floor, and a
+    multiple-comparisons (Bonferroni) correction — because testing ~12 markets,
+    one WILL look good by chance. A market is an EDGE CANDIDATE only if it clears
+    all three AND still holds up on the last 30 days. Candidates must then persist
+    out-of-sample before betting real money — this flags them, it doesn't bless them.
+
+    CLV here is measured against a late-pre-game line (the wide capture band), so
+    it's conservative: a positive result understates the true edge.
+    """
+    from src.config.models import model_status
+
+    min_n = getattr(args, "min_n", None) or 200
+    res = _clv_gate(min_n)
+    if res is None:
+        print("  ✗ snapshots.json unreadable")
+        return 1
+    rows, meta = res
+
+    print(f"\n  ─ CLV Promotion Gate ─ min n={meta['min_n']}, α={meta['alpha']:.4f} "
+          f"(Bonferroni ÷{meta['m_tests']}) ─")
+    print(f"  {'sport · market':26}{'n':>6}{'mean':>10}{'30d':>9}{'p(>0)':>9}  verdict")
+    print(f"  {'─'*72}")
+    candidates = []
+    for r in rows:
+        if r["is_candidate"]:
+            candidates.append(r)
+        rstr = f"{r['rmean']:+.3f}" if r["rmean"] is not None else "—"
+        pstr = f"{r['p_pos']:.4f}" if r["p_pos"] is not None else "—"
+        print(f"  {r['label'][:26]:26}{r['n']:>6}{r['mean']:>+9.3f}{r['unit']:<1}"
+              f"{rstr:>9}{pstr:>9}  {r['verdict']}")
 
     print(f"  {'─'*72}")
     if candidates:
-        print(f"  ✅ {len(candidates)} edge candidate(s): {', '.join(candidates)}")
-        print(f"     NOT a green light to bet — each must hold positive CLV on NEW")
-        print(f"     picks logged AFTER today before promoting to real money.")
+        print(f"  ✅ {len(candidates)} edge candidate(s): "
+              f"{', '.join(c['label'] for c in candidates)}")
+        # Flag what's eligible for promotion vs already live (manual-approval model).
+        for c in candidates:
+            if model_status(c["sport"], c["market"]) == "live":
+                print(f"     • {c['label']}: already LIVE (posting card picks)")
+            else:
+                print(f"     • {c['label']}: ELIGIBLE → run "
+                      f"`python3 chef.py promote {c['sport']} {c['market']}` to post it")
+        print(f"     Promotion is your call — each must also hold positive CLV on NEW")
+        print(f"     picks logged AFTER today. This flags; it doesn't bless.")
     else:
         print(f"  No market clears the bar yet — keep collecting. (More data, not more bets.)")
+    return 0
+
+
+def cmd_promote(args: argparse.Namespace) -> int:
+    """Promote a market to live card picks — REFUSES unless it clears the CLV gate.
+
+    Manual, deliberate, auditable: the same gate `chef.py edge` uses decides
+    eligibility; this records the flip in data/models/promotions.json (git-tracked).
+    """
+    from datetime import datetime, timezone
+    from src.config.models import _key, model_status, model_label, set_promotion
+
+    s_label, mkt = _key(args.sport, args.market)
+    res = _clv_gate(getattr(args, "min_n", None) or 200)
+    if res is None:
+        print("  ✗ snapshots.json unreadable")
+        return 1
+    rows, meta = res
+    match = next((r for r in rows if r["sport"] == s_label and r["market"] == mkt), None)
+
+    print(f"\n  ─ Promote {s_label} · {mkt} ─ ({model_label(args.sport, args.market)}) ─")
+    if model_status(args.sport, args.market) == "live":
+        print(f"  ℹ  Already LIVE — nothing to do.")
+        return 0
+    if match is None:
+        print(f"  ✗ REFUSED — no CLV-scored picks for {s_label} · {mkt} yet. Can't confirm an edge.")
+        return 1
+    if not match["is_candidate"]:
+        need = meta["min_n"]
+        extra = f" (have {match['n']}, need {need})" if match["n"] < need else \
+                f" (n={match['n']}, mean {match['mean']:+.3f}{match['unit']}, p={match['p_pos']:.4f} ≥ α={meta['alpha']:.4f})"
+        print(f"  ✗ REFUSED — {match['verdict']}{extra}.")
+        print(f"     The CLV gate is not satisfied. Keep collecting; do not bet.")
+        return 1
+
+    tier = getattr(args, "tier", None) or "t2"
+    set_promotion(args.sport, args.market, "live", tier, evidence={
+        "promoted_at": datetime.now(timezone.utc).isoformat(),
+        "clv_n": match["n"], "clv_mean": round(match["mean"], 4),
+        "clv_unit": match["unit"],
+        "clv_p": round(match["p_pos"], 4) if match["p_pos"] is not None else None,
+        "clv_30d": round(match["rmean"], 4) if match["rmean"] is not None else None,
+    })
+    r30 = f"{match['rmean']:+.3f}" if match["rmean"] is not None else "—"
+    print(f"  ✅ PROMOTED → live (tier {tier}). New {s_label} {mkt} picks meeting the")
+    print(f"     edge threshold will now post as card picks (card_pick=True).")
+    print(f"     Evidence: n={match['n']}, mean CLV {match['mean']:+.3f}{match['unit']}, "
+          f"p(>0)={match['p_pos']:.4f}, 30d {r30}")
+    print(f"     Revert anytime: `python3 chef.py demote {s_label} {mkt}`")
+    return 0
+
+
+def cmd_demote(args: argparse.Namespace) -> int:
+    """Demote a market back to shadow (incubating) — undo a promotion."""
+    from src.config.models import _key, set_promotion
+    s_label, mkt = _key(args.sport, args.market)
+    set_promotion(args.sport, args.market, "incubating", "shadow")
+    print(f"\n  ↩  Demoted {s_label} · {mkt} → incubating (shadow). New picks log as shadow.")
     return 0
 
 
@@ -2699,6 +2798,16 @@ def main() -> int:
     p_edge = sub.add_parser("edge", help="Statistical promotion gate: which markets have a REAL CLV edge vs noise (t-test + sample floor + multiple-comparison correction)")
     p_edge.add_argument("--min-n", type=int, dest="min_n", help="Minimum scored picks to test a market (default 200)")
 
+    p_promote = sub.add_parser("promote", help="Promote a market to live card picks (REFUSED unless it clears the CLV gate). e.g. promote wc moneyline")
+    p_promote.add_argument("sport", help="Sport/league key (e.g. wc, mlb, nba, tennis)")
+    p_promote.add_argument("market", help="Market (e.g. moneyline, total, spread, anytime_scorer)")
+    p_promote.add_argument("--min-n", type=int, dest="min_n", help="Minimum scored picks to test (default 200)")
+    p_promote.add_argument("--tier", choices=["t1", "t2"], help="Tier to assign on promotion (default t2)")
+
+    p_demote = sub.add_parser("demote", help="Demote a market back to shadow/incubating (undo a promotion). e.g. demote wc moneyline")
+    p_demote.add_argument("sport", help="Sport/league key")
+    p_demote.add_argument("market", help="Market")
+
     p_strat = sub.add_parser("strategies", help="Log + measure shadow strategies (research-rule picks, CLV-tracked, never bet)")
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
     p_strat.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
@@ -2802,6 +2911,8 @@ def main() -> int:
         "monitor":  cmd_monitor,
         "verify":   cmd_verify,
         "edge":     cmd_edge,
+        "promote":  cmd_promote,
+        "demote":   cmd_demote,
         "validate": cmd_validate,
         "calibrate": cmd_calibrate,
         "strategies": cmd_strategies,
