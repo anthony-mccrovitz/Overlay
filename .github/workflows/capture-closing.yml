@@ -12,11 +12,14 @@ name: Capture closing lines
 
 on:
   schedule:
-    # Game hours span the UTC day boundary, so two ranges. Every 20 min keeps the
-    # whole pipeline inside the free-tier minutes; drop to */15 (≈$2/mo) or */10
-    # (≈$5/mo) for a closer-to-the-bell capture.
-    - cron: "3,23,43 15-23 * * *"   # 15:00–23:59 UTC (incl. 11 AM ET World Cup kicks)
-    - cron: "3,23,43 0-6 * * *"     # 00:00–06:59 UTC (late west-coast finishes)
+    # ALL 24 hours, every 15 min. The old schedule skipped 07:00–14:59 UTC and ran
+    # only every 20 min, so World Cup games (kickoffs staggered across the globe)
+    # whose 90-min pre-game band didn't line up with a surviving cron tick were
+    # never captured — only 1–3 of 4 WC games/day landed. The events-list poll is
+    # FREE on The Odds API (0 credits); only a game actually inside the capture
+    # band costs a per-event credit, so cost scales with games played, NOT with how
+    # often this runs. Offset minutes (7/22/37/52) dodge GitHub's worst cron-lag marks.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch: {}          # allow manual "Run workflow" for testing
 
 # Don't let a slow run overlap the next scheduled tick.

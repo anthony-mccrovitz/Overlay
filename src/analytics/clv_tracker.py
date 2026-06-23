@@ -551,11 +551,13 @@ def fetch_closing_lines(
 
     # Try date-specific closing archive (most accurate — captured at game time).
     # Closing files may use either the full sport key (e.g. baseball_mlb_DATE.json)
-    # or the short key (e.g. mlb_DATE.json). Try both in order.
-    short_sport = (sport
-                   .replace("baseball_", "")
-                   .replace("basketball_", "")
-                   .replace("hockey_", ""))
+    # or the short key (e.g. mlb_DATE.json). Use the SHARED prefix map — a naive
+    # .replace() misses soccer/mma (archive is "soccer_DATE", not
+    # "soccer_fifa_world_cup_DATE"), so World Cup closings were never read from the
+    # archive and fell back to the live cache (absent in the cloud → 0 WC scored).
+    short_sport = _SHORT_PREFIX_MAP.get(
+        sport,
+        sport.replace("baseball_", "").replace("basketball_", "").replace("hockey_", ""))
     for prefix in [sport, short_sport]:
         archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
         if not archive_path.exists():
