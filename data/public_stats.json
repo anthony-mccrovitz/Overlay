@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-23T14:02:19.360653+00:00",
+  "updated_at": "2026-06-23T16:07:34.849778+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,30 +224,30 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.147,
-      "positive_pct": 32.7,
-      "n": 643,
+      "avg_clv_pct": -0.189,
+      "positive_pct": 32.5,
+      "n": 681,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 93,
-        "avg_line_clv": 0.035,
-        "beat_close_pct": 47.3,
+        "count": 97,
+        "avg_line_clv": -0.064,
+        "beat_close_pct": 45.4,
         "avg_price_clv_pct": 0.409,
         "matched_price_n": 32
       },
       "spread": {
-        "count": 141,
-        "avg_line_clv": 0.387,
-        "beat_close_pct": 43.3,
-        "avg_price_clv_pct": 1.653,
-        "matched_price_n": 87
+        "count": 146,
+        "avg_line_clv": 0.39,
+        "beat_close_pct": 43.8,
+        "avg_price_clv_pct": 1.598,
+        "matched_price_n": 88
       },
       "f5_total": {
-        "count": 166,
-        "avg_line_clv": 0.009,
-        "beat_close_pct": 30.7,
+        "count": 167,
+        "avg_line_clv": 0.006,
+        "beat_close_pct": 30.5,
         "avg_price_clv_pct": -4.001,
         "matched_price_n": 86
       },
@@ -259,22 +259,22 @@
         "matched_price_n": 14
       },
       "pitcher_strikeouts": {
-        "count": 47,
-        "avg_line_clv": -0.149,
-        "beat_close_pct": 48.9,
-        "avg_price_clv_pct": 2.293,
-        "matched_price_n": 18
+        "count": 75,
+        "avg_line_clv": -0.08,
+        "beat_close_pct": 53.3,
+        "avg_price_clv_pct": 1.581,
+        "matched_price_n": 37
       }
     },
     "totals_coverage": {
-      "scored": 93,
+      "scored": 97,
       "scoreable": 234,
-      "pct": 39.7
+      "pct": 41.5
     },
     "spread_coverage": {
-      "scored": 141,
+      "scored": 146,
       "scoreable": 290,
-      "pct": 48.6
+      "pct": 50.3
     }
   },
   "summary": {
