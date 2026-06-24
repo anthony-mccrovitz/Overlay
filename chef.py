@@ -1419,7 +1419,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
     """Show Closing Line Value dashboard — the signal that proves edge is real."""
     try:
         from src.analytics.clv_tracker import (
-            print_clv_report, print_clv_by_market, compute_clv,
+            print_clv_report, print_clv_by_market, print_clv_matrix, compute_clv,
             backfill_snapshots_from_pnl, upgrade_snapshots,
             backfill_snapshot_markets, backfill_snapshot_lines,
         )
@@ -1448,7 +1448,10 @@ def cmd_clv(args: argparse.Namespace) -> int:
                     compute_clv(date_str=d)
 
         print_clv_report()
-        print_clv_by_market()   # per-market: which market actually beats the close
+        if getattr(args, "matrix", False):
+            print_clv_matrix()      # every sport × market broken out (with gap reasons)
+        else:
+            print_clv_by_market()   # per-market pooled: which market beats the close
         return 0
     except Exception as e:
         print(f"  CLV error: {e}")
@@ -2877,6 +2880,8 @@ def main() -> int:
     p_clv = sub.add_parser("clv", help="Closing Line Value dashboard — model edge signal")
     p_clv.add_argument("--refresh", action="store_true",
                        help="Recompute CLV from all date-specific archives")
+    p_clv.add_argument("--matrix", action="store_true",
+                       help="Show the full per-SPORT × per-market grid (every sport broken out)")
 
     # migrate
     sub.add_parser("migrate", help="Normalize picks.json to canonical schema")

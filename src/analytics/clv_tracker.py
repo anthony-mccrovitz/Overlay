@@ -1647,6 +1647,125 @@ def print_clv_by_market(sport_filter: str | None = None) -> None:
         print(f"    {mk:<11} {e['scored']}/{e['picks']} scored — {metric}{beat}{sharp}")
 
 
+def get_clv_matrix() -> dict:
+    """Per-SPORT × per-MARKET CLV — the full grid, every sport broken out (not
+    pooled the way get_clv_by_market sums all sports into one 'moneyline' row).
+
+    Pooling sports hides which sport's market is real: a tennis edge washes out
+    against MLB moneyline. This keys on (sport, market) so each cell stands alone,
+    and it INCLUDES cells with picks but 0 scored CLV so the coverage gaps are
+    visible (off-season archives, futures with no closing source, props that
+    didn't match a closing).
+
+    Returns {sport: {market: {picks, scored, sharp_n, unit, avg, avg_sharp,
+                              beat_pct, sharp_beat_pct}}}.
+    """
+    snaps = _load_snapshots()
+    grid: dict[str, dict[str, dict]] = {}
+    for s in snaps:
+        if not isinstance(s, dict):
+            continue
+        sport = _normalize_sport(s.get("sport", "?"))
+        mk = str(s.get("market") or "(unset)").lower()
+        if mk in ("h2h", "ml"):
+            mk = "moneyline"
+        elif mk == "totals":
+            mk = "total"
+        elif mk in ("run_line", "runline", "puck_line", "puckline"):
+            mk = "spread"
+        b = grid.setdefault(sport, {}).setdefault(
+            mk, {"picks": 0, "scored": 0, "prob": [], "line": [],
+                 "beats": 0, "sharp": [], "sharp_beats": 0})
+        b["picks"] += 1
+        if s.get("clv_pct") is not None:
+            b["scored"] += 1; b["prob"].append(s["clv_pct"])
+            if s["clv_pct"] > 0: b["beats"] += 1
+            if s.get("clv_sharp_pct") is not None:
+                b["sharp"].append(s["clv_sharp_pct"])
+                if s["clv_sharp_pct"] > 0: b["sharp_beats"] += 1
+        elif s.get("line_clv") is not None:
+            b["scored"] += 1; b["line"].append(s["line_clv"])
+            if s.get("beat_close"): b["beats"] += 1
+            if s.get("line_clv_sharp") is not None:
+                b["sharp"].append(s["line_clv_sharp"])
+                if s.get("beat_close_sharp"): b["sharp_beats"] += 1
+
+    out: dict[str, dict] = {}
+    for sport, markets in grid.items():
+        out[sport] = {}
+        for mk, b in markets.items():
+            e = {"picks": b["picks"], "scored": b["scored"], "sharp_n": len(b["sharp"])}
+            if b["prob"]:
+                e["unit"] = "%"; e["avg"] = round(sum(b["prob"]) / len(b["prob"]), 3)
+            elif b["line"]:
+                e["unit"] = "pt"; e["avg"] = round(sum(b["line"]) / len(b["line"]), 3)
+            else:
+                e["unit"] = ""; e["avg"] = None
+            e["beat_pct"] = round(b["beats"] / b["scored"] * 100, 1) if b["scored"] else None
+            if b["sharp"]:
+                e["avg_sharp"] = round(sum(b["sharp"]) / len(b["sharp"]), 3)
+                e["sharp_beat_pct"] = round(b["sharp_beats"] / len(b["sharp"]) * 100, 1)
+            else:
+                e["avg_sharp"] = None; e["sharp_beat_pct"] = None
+            out[sport][mk] = e
+    return out
+
+
+def _sport_short(sp: str) -> str:
+    """Short label for a sport key — matches chef.py's gate labels."""
+    sp = _normalize_sport(str(sp or "?"))
+    return {
+        "baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
+        "icehockey_nhl": "nhl", "mma_mixed_martial_arts": "mma",
+        "soccer_fifa_world_cup": "wc",
+    }.get(sp, sp.replace("soccer_", "").replace("tennis_atp_", "atp-")
+              .replace("tennis_wta_", "wta-").replace("golf_", "golf-")[:14])
+
+
+def print_clv_matrix(min_picks: int = 3) -> None:
+    """Print the full per-sport × per-market CLV grid (see get_clv_matrix).
+
+    Every sport gets its own block; within it, each market shows picks, how many
+    scored CLV, the avg best-price CLV + beat%, and the sharp (Pinnacle) twin.
+    Cells with picks but 0 scored are shown with a reason so gaps are explicit."""
+    data = get_clv_matrix()
+    if not data:
+        print("\n  CLV MATRIX — (no snapshots yet)")
+        return
+    # Futures / season-long markets that have no game-line closing source.
+    _futures = {"outright", "win", "winner", "championship", "futures"}
+    print(f"\n  CLV MATRIX — every sport × market (best price │ vs Pinnacle close)")
+    print(f"  {'─'*86}")
+    # Order sports by total picks desc
+    order = sorted(data, key=lambda sp: -sum(m["picks"] for m in data[sp].values()))
+    for sport in order:
+        markets = data[sport]
+        tot = sum(m["picks"] for m in markets.values())
+        if tot < min_picks:
+            continue
+        print(f"\n  {_sport_short(sport).upper()}  ({tot} picks)")
+        for mk, e in sorted(markets.items(), key=lambda x: -x[1]["picks"]):
+            if e["picks"] < min_picks:
+                continue
+            if e["scored"]:
+                a = e["avg"]; sign = "+" if a is not None and a >= 0 else ""
+                best = f"{sign}{a}{e['unit']} (beat {e['beat_pct']:.0f}%)"
+                if e["sharp_n"]:
+                    sa = e["avg_sharp"]; ssign = "+" if sa >= 0 else ""
+                    sharp = f"│ Pinn {ssign}{sa}{e['unit']} (beat {e['sharp_beat_pct']:.0f}%, n={e['sharp_n']})"
+                else:
+                    sharp = "│ Pinn — (no per-book close in archive)"
+                metric = f"{best:<26} {sharp}"
+            else:
+                # 0 scored — say WHY (the actionable part)
+                why = ("futures — no game-line closing source" if mk in _futures
+                       else "no closing captured/matched yet")
+                metric = f"0 scored — {why}"
+            print(f"    {mk:<20} {e['scored']:>4}/{e['picks']:<5} {metric}")
+    print(f"  {'─'*86}")
+    print(f"  scored = closing line joined · Pinn = same pick vs Pinnacle's close (sharp truth)")
+
+
 def get_clv_by_strategy() -> dict:
     """Per-strategy CLV — the view that answers "which shadow strategy beats the
     close?" Same buckets as get_clv_by_market but keyed on the `strategy` tag;
