@@ -469,6 +469,50 @@ def backfill_snapshot_markets() -> int:
     return repaired
 
 
+def backfill_snapshot_lines() -> int:
+    """Repair total/spread/f5 snapshots missing opening_line / direction.
+
+    The bet is encoded in the team string ('OVER 9.5', 'UNDER 174.5', 'Team -1.5')
+    but legacy snapshots left opening_line/direction null — and the totals/spread
+    scorer needs both to compute line CLV, so those picks NEVER score even when the
+    closing line was captured and the matchup matches. This re-derives both from the
+    team string, in place, and clears any stale CLV so the next compute_clv scores
+    them on the recovered line. Idempotent. Returns the number repaired.
+    """
+    import re
+    snapshots = _load_snapshots()
+    line_markets = {"total", "totals", "f5_total", "f5_totals", "first_5_total",
+                    "spread", "run_line", "runline", "puck_line", "puckline"}
+    fixed = 0
+    for s in snapshots:
+        if not isinstance(s, dict):
+            continue
+        if str(s.get("market") or "").lower() not in line_markets:
+            continue
+        if s.get("opening_line") is not None and s.get("direction"):
+            continue  # already complete
+        team = str(s.get("team") or "")
+        changed = False
+        m = re.search(r"\b(OVER|UNDER)\b\s*([0-9]+(?:\.[0-9]+)?)", team, re.IGNORECASE)
+        if m:  # totals / f5 totals
+            if not s.get("direction"):
+                s["direction"] = m.group(1).upper(); changed = True
+            if s.get("opening_line") is None:
+                s["opening_line"] = float(m.group(2)); changed = True
+        else:  # spread / run line / puck line — trailing signed number
+            m2 = re.search(r"([+-][0-9]+(?:\.[0-9]+)?)\s*$", team.strip())
+            if m2 and s.get("opening_line") is None:
+                s["opening_line"] = float(m2.group(1)); changed = True
+        if changed:
+            for f in ("line_clv", "price_clv_pct", "beat_close", "closing_line"):
+                s.pop(f, None)  # stale → re-score on the recovered line
+            fixed += 1
+    if fixed:
+        _save_snapshots(snapshots)
+        print(f"  [CLV] backfilled opening_line/direction on {fixed} total/spread snapshot(s)")
+    return fixed
+
+
 def fetch_closing_pairs(
     date_str: str | None = None,
     sport: str = "baseball_mlb",
