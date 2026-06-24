@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "John Rave",
+      "team": "John Rave OVER 0.5",
+      "matchup": "Kansas City Royals @ Tampa Bay Rays",
+      "line": 0.5,
+      "odds": 100,
+      "model_prob": 0.8207,
+      "implied_prob": 0.4694,
+      "edge_pct": 35.14,
+      "model_mu": 4.58,
+      "sportsbook": "BetOnline.ag"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Tarik Skubal",
+      "team": "Tarik Skubal UNDER 6.5",
+      "matchup": "New York Yankees @ Detroit Tigers",
+      "line": 6.5,
+      "odds": 105,
+      "model_prob": 0.6926,
+      "implied_prob": 0.4518,
+      "edge_pct": 24.07,
+      "model_mu": 5.45,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Trea Turner",
+      "team": "Trea Turner UNDER 0.5",
+      "matchup": "Philadelphia Phillies @ Washington Nationals",
+      "line": 0.5,
+      "odds": 300,
+      "model_prob": 0.4108,
+      "implied_prob": 0.2308,
+      "edge_pct": 18.01,
+      "model_mu": 1.43,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}
