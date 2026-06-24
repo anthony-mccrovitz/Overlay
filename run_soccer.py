@@ -247,20 +247,24 @@ def _run_one_league(
         print(f"    {ev.get('away_team')} @ {ev.get('home_team')}")
 
     # 2026 World Cup co-hosts are effectively home at every match.
-    host_nations = ({"United States", "Mexico", "Canada"}
-                    if sport_key == "soccer_fifa_world_cup" else None)
+    is_wc = sport_key == "soccer_fifa_world_cup"
+    host_nations = ({"United States", "Mexico", "Canada"} if is_wc else None)
+    # For the World Cup we compute EVERY market lean (low threshold) so the daily
+    # output can show the full board (moneyline/total/spread/scorer) even on days
+    # nothing clears the bet threshold; we then filter to ≥4% for actual logging.
+    LOG_MIN = 4.0
+    full_min = -100.0 if is_wc else LOG_MIN
     try:
-        edges = model.find_edges(today_events, min_edge_pct=4.0, host_nations=host_nations)
+        all_edges = model.find_edges(today_events, min_edge_pct=full_min, host_nations=host_nations)
     except Exception as e:
         print(f"  [{league_name}] model error: {e}")
         return []
 
     # Anytime-scorer player props (World Cup): per-event fetch + scorer model.
-    if sport_key == "soccer_fifa_world_cup":
+    if is_wc:
         try:
             from src.models.soccer_scorer import load_scorer_shares, find_scorer_edges
             shares = load_scorer_shares()
-            n_scorer = 0
             for ev in today_events:
                 eid = ev.get("id")
                 if not eid:
@@ -270,15 +274,33 @@ def _run_one_league(
                     continue
                 ev_odds.setdefault("neutral", True)
                 sc_edges = find_scorer_edges(ev_odds, model, shares,
-                                             min_edge_pct=4.0, host_nations=host_nations)
+                                             min_edge_pct=full_min, host_nations=host_nations)
                 for e in sc_edges:
                     e["sport"] = sport_key
-                edges.extend(sc_edges)
-                n_scorer += len(sc_edges)
-            if n_scorer:
-                print(f"  [{league_name}] +{n_scorer} anytime-scorer edge(s)")
+                all_edges.extend(sc_edges)
         except Exception as _se:
             print(f"  [{league_name}] scorer props skipped: {_se}")
+
+    # Persist the FULL per-market breakdown (every game, every market) for the WC.
+    if is_wc:
+        try:
+            from src.output.wc_breakdown import build_breakdown, render
+            bd = build_breakdown(all_edges)
+            bd_dir = Path("output/picks") / sport_key / today_str
+            bd_dir.mkdir(parents=True, exist_ok=True)
+            (bd_dir / "breakdown.json").write_text(json.dumps(bd, indent=2, default=str))
+            (bd_dir / "breakdown.txt").write_text(render(bd, date_str=today_str))
+            n_leans = sum(len(rows) for mks in bd.values() for rows in mks.values())
+            print(f"  [{league_name}] wrote full breakdown: {len(bd)} game(s), {n_leans} market leans")
+        except Exception as _be:
+            print(f"  [{league_name}] breakdown export skipped: {_be}")
+
+    # Only edges that clear the bet threshold are logged / carded.
+    edges = [e for e in all_edges if (e.get("edge_pct") or -999) >= LOG_MIN]
+    n_scorer = sum(1 for e in edges if str(e.get("market")) in
+                   ("anytime_scorer", "player_goal_scorer_anytime", "scorer"))
+    if n_scorer:
+        print(f"  [{league_name}] +{n_scorer} anytime-scorer edge(s)")
 
     if not edges:
         print(f"  [{league_name}] No edges meet threshold.")
