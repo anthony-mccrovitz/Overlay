@@ -1899,7 +1899,10 @@ def _clv_gate(min_n: int = 200):
             continue
         mkt = s.get("market") or "(unset)"
         key = (_sport_label(s.get("sport", "?")), mkt)
-        by_mkt[key].append((v, unit, s.get("date", "")))
+        # sharp = CLV vs Pinnacle's de-vigged close (moneyline only); None when
+        # Pinnacle didn't price the game or the snapshot predates sharp capture.
+        sharp = s.get("clv_sharp_pct")
+        by_mkt[key].append((v, unit, s.get("date", ""), sharp))
 
     testable = [k for k, vals in by_mkt.items() if len(vals) >= min_n]
     m_tests = max(1, len(testable))
@@ -1922,10 +1925,20 @@ def _clv_gate(min_n: int = 200):
         vals = by_mkt[key]
         n = len(vals)
         unit = vals[0][1]
-        xs = [v for v, _, _ in vals]
+        xs = [v for v, _, _, _ in vals]
         mean = statistics.fmean(xs)
-        recent = [v for v, _, d in vals if d and d >= recent_cut]
+        recent = [v for v, _, d, _ in vals if d and d >= recent_cut]
         rmean = statistics.fmean(recent) if recent else None
+        # Beat-rate: share of picks that beat the (best-price) close. 50% is the
+        # coin-flip line; a real edge sits meaningfully above it. Reported next to
+        # the mean because a high mean dragged by a few outliers ≠ a repeatable edge.
+        beat_pct = round(sum(1 for x in xs if x > 0) / n * 100, 1) if n else None
+        # Sharp side: same picks scored vs Pinnacle's close. This is the honest test.
+        sharps = [sp for _, _, _, sp in vals if sp is not None]
+        sharp_n = len(sharps)
+        sharp_mean = statistics.fmean(sharps) if sharps else None
+        sharp_beat_pct = (round(sum(1 for x in sharps if x > 0) / sharp_n * 100, 1)
+                          if sharp_n else None)
         p_pos = None
         is_candidate = False
         if n < min_n:
@@ -1945,6 +1958,9 @@ def _clv_gate(min_n: int = 200):
             "sport": sport, "market": mkt, "label": f"{sport} · {mkt}",
             "n": n, "mean": mean, "unit": unit, "rmean": rmean,
             "p_pos": p_pos, "verdict": verdict, "is_candidate": is_candidate,
+            "beat_pct": beat_pct,
+            "sharp_n": sharp_n, "sharp_mean": sharp_mean,
+            "sharp_beat_pct": sharp_beat_pct,
         })
     return rows, {"min_n": min_n, "alpha": alpha, "m_tests": m_tests}
 
@@ -1972,18 +1988,35 @@ def cmd_edge(args: argparse.Namespace) -> int:
 
     print(f"\n  ─ CLV Promotion Gate ─ min n={meta['min_n']}, α={meta['alpha']:.4f} "
           f"(Bonferroni ÷{meta['m_tests']}) ─")
-    print(f"  {'sport · market':26}{'n':>6}{'mean':>10}{'30d':>9}{'p(>0)':>9}  verdict")
-    print(f"  {'─'*72}")
+    print(f"  best = CLV vs best price (flatters us) · sharp = CLV vs Pinnacle close (the truth)")
+    print(f"  {'sport · market':24}{'n':>5}{'best':>9}{'beat%':>7}"
+          f"{'sharp':>9}{'beat%':>7}{'p(>0)':>8}  verdict")
+    print(f"  {'─'*84}")
     candidates = []
+    mirages = []
     for r in rows:
         if r["is_candidate"]:
             candidates.append(r)
-        rstr = f"{r['rmean']:+.3f}" if r["rmean"] is not None else "—"
         pstr = f"{r['p_pos']:.4f}" if r["p_pos"] is not None else "—"
-        print(f"  {r['label'][:26]:26}{r['n']:>6}{r['mean']:>+9.3f}{r['unit']:<1}"
-              f"{rstr:>9}{pstr:>9}  {r['verdict']}")
+        bstr = f"{r['beat_pct']:.0f}%" if r["beat_pct"] is not None else "—"
+        if r.get("sharp_n"):
+            sm = f"{r['sharp_mean']:+.2f}{r['unit']}"
+            sb = f"{r['sharp_beat_pct']:.0f}%"
+        else:
+            sm, sb = "—", "—"
+        # Mirage = positive vs best price but negative vs the sharp close: the
+        # "edge" is just us shopping the loosest book, not beating the market.
+        if (r.get("sharp_n") and r["mean"] > 0 and r["sharp_mean"] is not None
+                and r["sharp_mean"] < 0):
+            mirages.append(r)
+        print(f"  {r['label'][:24]:24}{r['n']:>5}{r['mean']:>+8.2f}{r['unit']:<1}"
+              f"{bstr:>7}{sm:>9}{sb:>7}{pstr:>8}  {r['verdict']}")
 
-    print(f"  {'─'*72}")
+    print(f"  {'─'*84}")
+    if mirages:
+        print(f"  ⚠ best-price mirage (positive vs best, NEGATIVE vs Pinnacle close): "
+              f"{', '.join(m['label'] for m in mirages)}")
+        print(f"     These don't beat the sharp market — the 'edge' is book-shopping, not skill.")
     if candidates:
         print(f"  ✅ {len(candidates)} edge candidate(s): "
               f"{', '.join(c['label'] for c in candidates)}")
