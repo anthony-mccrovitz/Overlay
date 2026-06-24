@@ -739,13 +739,50 @@ _SHARP_BOOK_ORDER = ["Pinnacle", "BetOnline.ag", "Circa", "FanDuel",
                      "DraftKings", "BetMGM", "Caesars", "BetRivers"]
 
 
-def _pick_book_row(rows: list[dict]) -> dict | None:
-    """From rows for one event/market/selection, pick the sharpest book's row."""
+def _pick_book_row(rows: list[dict], book: str | None = None) -> dict | None:
+    """From rows for one event/market/selection, pick a book's row.
+
+    book=None → sharpest available (Pinnacle-first via _SHARP_BOOK_ORDER, the
+    "best estimate" map used for scoring). book="Pinnacle" → ONLY that book,
+    returning None if it didn't price the selection — that's the strict sharp
+    benchmark, never silently substituting a softer book.
+    """
     by_book = {str(r.get("Sportsbook", "")): r for r in rows}
+    if book is not None:
+        return by_book.get(book)
     for b in _SHARP_BOOK_ORDER:
         if b in by_book:
             return by_book[b]
     return rows[0] if rows else None
+
+
+# ── Sharp-CLV companion fields ────────────────────────────────────────────────
+# Every market gets a "_sharp" twin of its CLV fields: the SAME pick scored
+# against Pinnacle's close instead of the best price. Stored alongside (never
+# overwriting) the best-price fields so the gate can show both and flag mirages
+# (positive vs best, negative vs sharp = book-shopping, not skill).
+_SHARP_KEY_MAP = {
+    "clv":                  "clv_sharp",
+    "clv_pct":              "clv_sharp_pct",
+    "closing_implied_prob": "closing_imp_sharp",
+    "closing_odds":         "closing_odds_sharp",
+    "closing_line":         "closing_line_sharp",
+    "line_clv":             "line_clv_sharp",
+    "price_clv_pct":        "price_clv_sharp_pct",
+    "beat_close":           "beat_close_sharp",
+}
+_SHARP_KEYS = set(_SHARP_KEY_MAP.values())
+
+
+def _apply_sharp(snap: dict, result: dict | None) -> None:
+    """Clear any stale sharp fields, then stamp the Pinnacle-scored result (if any).
+    Always clearing first means a snapshot never keeps a sharp value from a prior
+    run when Pinnacle no longer prices that game."""
+    for k in _SHARP_KEYS:
+        snap.pop(k, None)
+    if result:
+        for k, v in result.items():
+            snap[_SHARP_KEY_MAP.get(k, k + "_sharp")] = v
 
 
 def _resolve_spread_team(label: str, matchup: str) -> str | None:
@@ -834,9 +871,11 @@ def _select_windowed_records(date_str: str, sport: str,
     return chosen
 
 
-def fetch_closing_spreads(date_str: str, sport: str = "mlb") -> dict[str, dict]:
+def fetch_closing_spreads(date_str: str, sport: str = "mlb",
+                          book: str | None = None) -> dict[str, dict]:
     """{team_lower: {"line", "odds", "opp_odds"}} from the closing archive's
-    spreads rows, using the sharpest available book per side."""
+    spreads rows, using the sharpest available book per side. Pass book="Pinnacle"
+    for the strict sharp benchmark (only games Pinnacle priced)."""
     out: dict[str, dict] = {}
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
         rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == "spreads"]
@@ -849,7 +888,7 @@ def fetch_closing_spreads(date_str: str, sport: str = "mlb") -> dict[str, dict]:
             bysel.setdefault(str(r.get("Selection") or ""), []).append(r)
         chosen: dict[str, tuple[float, float]] = {}
         for team, trows in bysel.items():
-            row = _pick_book_row(trows)
+            row = _pick_book_row(trows, book)
             if row and row.get("Line") is not None and row.get("Odds") is not None:
                 chosen[team] = (float(row["Line"]), float(row["Odds"]))
         for team, (line, odds) in chosen.items():
@@ -860,10 +899,12 @@ def fetch_closing_spreads(date_str: str, sport: str = "mlb") -> dict[str, dict]:
 
 
 def fetch_closing_totals(date_str: str, sport: str = "mlb",
-                         market_key: str = "totals") -> dict[frozenset, dict]:
+                         market_key: str = "totals",
+                         book: str | None = None) -> dict[frozenset, dict]:
     """{frozenset({away_lower, home_lower}): {"line", "over", "under"}} from the
     closing archive's Over/Under rows for `market_key`, using the sharpest book
-    offering both sides. market_key="totals_1st_5_innings" gives F5 totals."""
+    offering both sides. market_key="totals_1st_5_innings" gives F5 totals.
+    Pass book="Pinnacle" for the strict sharp benchmark."""
     out: dict[frozenset, dict] = {}
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
         rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == market_key]
@@ -875,15 +916,20 @@ def fetch_closing_totals(date_str: str, sport: str = "mlb",
         for r in rows:
             by_book.setdefault(str(r.get("Sportsbook", "")), {})[str(r.get("Selection") or "")] = r
         chosen = None
-        for b in _SHARP_BOOK_ORDER:
-            if b in by_book and "Over" in by_book[b] and "Under" in by_book[b]:
-                chosen = by_book[b]
-                break
-        if chosen is None:
-            for sides in by_book.values():
-                if "Over" in sides and "Under" in sides:
-                    chosen = sides
+        if book is not None:
+            sides = by_book.get(book)
+            if sides and "Over" in sides and "Under" in sides:
+                chosen = sides
+        else:
+            for b in _SHARP_BOOK_ORDER:
+                if b in by_book and "Over" in by_book[b] and "Under" in by_book[b]:
+                    chosen = by_book[b]
                     break
+            if chosen is None:
+                for sides in by_book.values():
+                    if "Over" in sides and "Under" in sides:
+                        chosen = sides
+                        break
         if not chosen:
             continue
         o, u = chosen["Over"], chosen["Under"]
@@ -895,22 +941,28 @@ def fetch_closing_totals(date_str: str, sport: str = "mlb",
     return out
 
 
-def fetch_closing_f5_totals(date_str: str, sport: str = "mlb") -> dict[frozenset, dict]:
+def fetch_closing_f5_totals(date_str: str, sport: str = "mlb",
+                            book: str | None = None) -> dict[frozenset, dict]:
     """First-5-innings totals (F5) — same shape as fetch_closing_totals."""
-    return fetch_closing_totals(date_str, sport, market_key="totals_1st_5_innings")
+    return fetch_closing_totals(date_str, sport, market_key="totals_1st_5_innings",
+                                book=book)
 
 
-def fetch_closing_props(date_str: str, sport: str = "mlb", market_key: str = "pitcher_strikeouts") -> dict[tuple, dict]:
+def fetch_closing_props(date_str: str, sport: str = "mlb", market_key: str = "pitcher_strikeouts",
+                        book: str | None = None) -> dict[tuple, dict]:
     """
     Closing prop lines keyed by (player_name_lower, market).
     Returns {(player_lower, market): {"line": float, "over": odds, "under": odds, "book": str}}
 
     Supports any over/under prop market (pitcher_strikeouts, player_points,
     player_rebounds, player_assists, player_threes, player_goals, etc.)
+    Pass book="Pinnacle" for the strict sharp benchmark (Pinnacle-priced props only).
     """
     out: dict[tuple, dict] = {}
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
         rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == market_key]
+        if book is not None:
+            rows = [r for r in rows if str(r.get("Sportsbook", "")) == book]
         if not rows:
             continue
         # Group rows by (player, line) — a prop has Over + Under at the same line.
@@ -948,17 +1000,20 @@ def fetch_closing_props(date_str: str, sport: str = "mlb", market_key: str = "pi
     return out
 
 
-def fetch_closing_scorer_anytime(date_str: str, sport: str = "soccer") -> dict[str, dict]:
+def fetch_closing_scorer_anytime(date_str: str, sport: str = "soccer",
+                                 book: str | None = None) -> dict[str, dict]:
     """
     Closing anytime-scorer prices keyed by player_name_lower.
     Returns {player_lower: {"odds": american_price, "book": book}}.
     No de-vig (markets are 110-130% book; we surface raw odds and let the
     scoring function compare against snapshot opening_implied_prob, which
-    was also raw — apples to apples).
+    was also raw — apples to apples). Pass book="Pinnacle" for the sharp benchmark.
     """
     out: dict[str, dict] = {}
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
         rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == "player_goal_scorer_anytime"]
+        if book is not None:
+            rows = [r for r in rows if str(r.get("Sportsbook", "")) == book]
         if not rows:
             continue
         for r in rows:
@@ -972,14 +1027,18 @@ def fetch_closing_scorer_anytime(date_str: str, sport: str = "soccer") -> dict[s
     return out
 
 
-def fetch_closing_method(date_str: str, sport: str = "ufc") -> dict[tuple, dict]:
+def fetch_closing_method(date_str: str, sport: str = "ufc",
+                         book: str | None = None) -> dict[tuple, dict]:
     """
     MMA fight_result_method closing prices keyed by (fighter_lower, method).
     method ∈ {"ko_tko", "submission", "decision"}.
+    Pass book="Pinnacle" for the sharp benchmark.
     """
     out: dict[tuple, dict] = {}
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
         rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == "fight_result_method"]
+        if book is not None:
+            rows = [r for r in rows if str(r.get("Sportsbook", "")) == book]
         if not rows:
             continue
         for r in rows:
@@ -1063,9 +1122,11 @@ def _score_scorer_anytime(snap: dict, closing: dict) -> dict | None:
             "clv": round(clv, 6), "clv_pct": round(clv * 100, 3)}
 
 
-def fetch_closing_nrfi(date_str: str, sport: str = "mlb") -> dict[frozenset, dict]:
+def fetch_closing_nrfi(date_str: str, sport: str = "mlb",
+                       book: str | None = None) -> dict[frozenset, dict]:
     """{frozenset({away,home}): {"nrfi", "yrfi"}} closing prices from the first-
-    inning total (totals_1st_1_innings). NRFI = Under 0.5 (no run), YRFI = Over."""
+    inning total (totals_1st_1_innings). NRFI = Under 0.5 (no run), YRFI = Over.
+    Pass book="Pinnacle" for the sharp benchmark."""
     out: dict[frozenset, dict] = {}
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
         rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == "totals_1st_1_innings"]
@@ -1077,15 +1138,20 @@ def fetch_closing_nrfi(date_str: str, sport: str = "mlb") -> dict[frozenset, dic
         for r in rows:
             by_book.setdefault(str(r.get("Sportsbook", "")), {})[str(r.get("Selection") or "")] = r
         chosen = None
-        for b in _SHARP_BOOK_ORDER:
-            if b in by_book and "Over" in by_book[b] and "Under" in by_book[b]:
-                chosen = by_book[b]
-                break
-        if chosen is None:
-            for sides in by_book.values():
-                if "Over" in sides and "Under" in sides:
-                    chosen = sides
+        if book is not None:
+            sides = by_book.get(book)
+            if sides and "Over" in sides and "Under" in sides:
+                chosen = sides
+        else:
+            for b in _SHARP_BOOK_ORDER:
+                if b in by_book and "Over" in by_book[b] and "Under" in by_book[b]:
+                    chosen = by_book[b]
                     break
+            if chosen is None:
+                for sides in by_book.values():
+                    if "Over" in sides and "Under" in sides:
+                        chosen = sides
+                        break
         if not chosen or chosen["Under"].get("Odds") is None or chosen["Over"].get("Odds") is None:
             continue
         out[frozenset({away, home})] = {
@@ -1196,6 +1262,16 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     prop_maps: dict[str, dict] = {}      # sport -> {(player_lower, market_key): {line, over, under}}
     scorer_maps: dict[str, dict] = {}    # sport -> {player_lower: {odds, book}}
     method_maps: dict[str, dict] = {}    # sport -> {(fighter, method): {odds, book}}
+    # ── Pinnacle-only "sharp" twins of every map above. Same shapes, restricted
+    #    to Pinnacle's close. These drive the *_sharp CLV fields — the honest test
+    #    (beating the sharp market), vs the best-price maps that flatter us. ──
+    sharp_spread_maps: dict[str, dict] = {}
+    sharp_total_maps: dict[str, dict] = {}
+    sharp_f5_maps: dict[str, dict] = {}
+    sharp_nrfi_maps: dict[str, dict] = {}
+    sharp_prop_maps: dict[str, dict] = {}
+    sharp_scorer_maps: dict[str, dict] = {}
+    sharp_method_maps: dict[str, dict] = {}
     for sport in sports_today:
         closing_maps[sport]   = fetch_closing_lines(date_str=date_str, sport=sport)
         closing_pairs[sport]  = fetch_closing_pairs(date_str=date_str, sport=sport)
@@ -1204,17 +1280,26 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         total_maps[sport]    = fetch_closing_totals(date_str=date_str, sport=sport)
         f5_maps[sport]       = fetch_closing_f5_totals(date_str=date_str, sport=sport)
         nrfi_maps[sport]     = fetch_closing_nrfi(date_str=date_str, sport=sport)
+        sharp_spread_maps[sport] = fetch_closing_spreads(date_str=date_str, sport=sport, book="Pinnacle")
+        sharp_total_maps[sport]  = fetch_closing_totals(date_str=date_str, sport=sport, book="Pinnacle")
+        sharp_f5_maps[sport]     = fetch_closing_f5_totals(date_str=date_str, sport=sport, book="Pinnacle")
+        sharp_nrfi_maps[sport]   = fetch_closing_nrfi(date_str=date_str, sport=sport, book="Pinnacle")
         # Prop-style markets — keyed by (player, market). Fetch closings for
         # exactly the prop types that appear in THIS day's snapshots (dynamic, so
         # any prop — batter_hits, player_blocks, etc. — is covered without a list).
         sport_props: dict = {}
+        sharp_props: dict = {}
         day_prop_types = {str(s.get("market") or "").lower()
                           for s in day_snaps if _is_prop_market(s.get("market"))}
         for mk in (day_prop_types or {"pitcher_strikeouts"}):
             sport_props.update(fetch_closing_props(date_str=date_str, sport=sport, market_key=mk))
+            sharp_props.update(fetch_closing_props(date_str=date_str, sport=sport, market_key=mk, book="Pinnacle"))
         prop_maps[sport] = sport_props
+        sharp_prop_maps[sport] = sharp_props
         scorer_maps[sport] = fetch_closing_scorer_anytime(date_str=date_str, sport=sport)
         method_maps[sport] = fetch_closing_method(date_str=date_str, sport=sport)
+        sharp_scorer_maps[sport] = fetch_closing_scorer_anytime(date_str=date_str, sport=sport, book="Pinnacle")
+        sharp_method_maps[sport] = fetch_closing_method(date_str=date_str, sport=sport, book="Pinnacle")
 
     # Merged maps: all teams from all sports (used as fallback)
     merged_map: dict[str, float] = {}
@@ -1222,12 +1307,16 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     merged_pinnacle: dict[str, tuple] = {}
     merged_spreads: dict[str, dict] = {}
     merged_totals: dict[frozenset, dict] = {}
+    merged_sharp_spreads: dict[str, dict] = {}
+    merged_sharp_totals: dict[frozenset, dict] = {}
     for sport in sports_today:
         merged_map.update(closing_maps[sport])
         merged_pairs.update(closing_pairs[sport])
         merged_pinnacle.update(pinnacle_pairs[sport])
         merged_spreads.update(spread_maps[sport])
         merged_totals.update(total_maps[sport])
+        merged_sharp_spreads.update(sharp_spread_maps[sport])
+        merged_sharp_totals.update(sharp_total_maps[sport])
 
     updated = 0
     cleared = 0
@@ -1244,9 +1333,12 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             if res:
                 snap.update(res)
                 updated += 1
+                sharp_closing = sharp_spread_maps.get(snap_sport, {}).get(key) or merged_sharp_spreads.get(key)
+                _apply_sharp(snap, _score_spread(snap, sharp_closing) if sharp_closing else None)
             elif snap.get("line_clv") is not None:
                 for k in ("closing_line", "closing_odds", "line_clv", "price_clv_pct", "beat_close"):
                     snap.pop(k, None)
+                _apply_sharp(snap, None)
                 cleared += 1
             continue
 
@@ -1264,9 +1356,13 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             if res:
                 snap.update(res)
                 updated += 1
+                sharp_closing = (sharp_total_maps.get(snap_sport, {}).get(tkey) if tkey else None) \
+                                or (merged_sharp_totals.get(tkey) if tkey else None)
+                _apply_sharp(snap, _score_total(snap, sharp_closing) if sharp_closing else None)
             elif snap.get("line_clv") is not None:
                 for k in ("closing_line", "closing_odds", "line_clv", "price_clv_pct", "beat_close"):
                     snap.pop(k, None)
+                _apply_sharp(snap, None)
                 cleared += 1
             continue
 
@@ -1280,9 +1376,12 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             if res:
                 snap.update(res)
                 updated += 1
+                sharp_closing = (sharp_f5_maps.get(snap_sport, {}).get(tkey) if tkey else None)
+                _apply_sharp(snap, _score_total(snap, sharp_closing) if sharp_closing else None)
             elif snap.get("line_clv") is not None:
                 for k in ("closing_line", "closing_odds", "line_clv", "price_clv_pct", "beat_close"):
                     snap.pop(k, None)
+                _apply_sharp(snap, None)
                 cleared += 1
             continue
 
@@ -1296,9 +1395,12 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             if res:
                 snap.update(res)
                 updated += 1
+                sharp_closing = (sharp_nrfi_maps.get(snap_sport, {}).get(tkey) if tkey else None)
+                _apply_sharp(snap, _score_nrfi(snap, sharp_closing) if sharp_closing else None)
             elif snap.get("clv") is not None:
                 for k in ("closing_odds", "closing_implied_prob", "clv", "clv_pct"):
                     snap.pop(k, None)
+                _apply_sharp(snap, None)
                 cleared += 1
             continue
 
@@ -1310,16 +1412,21 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             snap_sport = snap.get("sport", "mlb")
             # Find best match in the merged prop map for this sport
             player_lower = (snap.get("player") or snap.get("team") or "").lower().strip()
+            def _prop_lookup(pmap: dict):
+                c = pmap.get((player_lower, market))
+                if not c:
+                    # Fallback: any market key for this player (model stored generic "prop")
+                    for (p_l, _mk), v in pmap.items():
+                        if p_l == player_lower:
+                            return v
+                return c
             sport_prop_map = prop_maps.get(snap_sport, {})
-            closing = sport_prop_map.get((player_lower, market))
-            if not closing:
-                # Fallback: try any market key for this player (model stored generic "prop")
-                for (p_l, mk), v in sport_prop_map.items():
-                    if p_l == player_lower:
-                        closing = v; break
+            closing = _prop_lookup(sport_prop_map)
             res = _score_prop(snap, closing) if closing else None
             if res:
                 snap.update(res); updated += 1
+                sharp_closing = _prop_lookup(sharp_prop_maps.get(snap_sport, {}))
+                _apply_sharp(snap, _score_prop(snap, sharp_closing) if sharp_closing else None)
             continue
 
         # ── Anytime goal scorer (soccer/WC) ───────────────────────────────────
@@ -1329,15 +1436,20 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             # Some snapshots include "(Team)" in name — strip it
             if "(" in player_lower:
                 player_lower = player_lower.split("(")[0].strip()
+            def _scorer_lookup(smap: dict):
+                c = smap.get(player_lower)
+                if not c:
+                    for k, v in smap.items():
+                        if k.split()[-1] == player_lower.split()[-1] and len(player_lower.split()[-1]) > 3:
+                            return v
+                return c
             sport_map_local = scorer_maps.get(snap_sport, {})
-            closing = sport_map_local.get(player_lower)
-            if not closing:
-                for k, v in sport_map_local.items():
-                    if k.split()[-1] == player_lower.split()[-1] and len(player_lower.split()[-1]) > 3:
-                        closing = v; break
+            closing = _scorer_lookup(sport_map_local)
             res = _score_scorer_anytime(snap, closing) if closing else None
             if res:
                 snap.update(res); updated += 1
+                sharp_closing = _scorer_lookup(sharp_scorer_maps.get(snap_sport, {}))
+                _apply_sharp(snap, _score_scorer_anytime(snap, sharp_closing) if sharp_closing else None)
             continue
 
         # ── MMA method-of-victory ─────────────────────────────────────────────
@@ -1350,14 +1462,20 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
                       else "decision" if "decision" in method else None)
             if method is None:
                 continue
-            closing = method_maps.get(snap_sport, {}).get((fighter_lower, method))
-            if closing:
-                close_imp = _odds_to_implied(closing["odds"])
+            def _method_score(c: dict | None):
+                if not c:
+                    return None
+                close_imp = _odds_to_implied(c["odds"])
                 clv = close_imp - snap["opening_implied_prob"]
-                snap.update({"closing_odds": closing["odds"],
-                             "closing_implied_prob": round(close_imp, 6),
-                             "clv": round(clv, 6), "clv_pct": round(clv * 100, 3)})
+                return {"closing_odds": c["odds"], "closing_implied_prob": round(close_imp, 6),
+                        "clv": round(clv, 6), "clv_pct": round(clv * 100, 3)}
+            closing = method_maps.get(snap_sport, {}).get((fighter_lower, method))
+            res = _method_score(closing)
+            if res:
+                snap.update(res)
                 updated += 1
+                _apply_sharp(snap, _method_score(
+                    sharp_method_maps.get(snap_sport, {}).get((fighter_lower, method))))
             continue
 
         # ── Everything else has no closing archive — moneyline-only closings ──
@@ -1420,16 +1538,15 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         if sharp_pair:
             sharp_imp = _devig_prob(sharp_pair[0], *sharp_pair[1:])
             clv_sharp = sharp_imp - snap["opening_implied_prob"]
-            snap["closing_odds_sharp"]   = sharp_pair[0]
-            snap["closing_imp_sharp"]    = round(sharp_imp, 6)
-            snap["clv_sharp"]            = round(clv_sharp, 6)
-            snap["clv_sharp_pct"]        = round(clv_sharp * 100, 3)
-            snap["beat_close_sharp"]     = bool(clv_sharp > 0)
+            _apply_sharp(snap, {
+                "closing_odds": sharp_pair[0],
+                "closing_implied_prob": round(sharp_imp, 6),
+                "clv": round(clv_sharp, 6),
+                "clv_pct": round(clv_sharp * 100, 3),
+                "beat_close": bool(clv_sharp > 0),
+            })
         else:
-            # Stale sharp fields from a prior run with no Pinnacle data → clear.
-            for k in ("closing_odds_sharp", "closing_imp_sharp", "clv_sharp",
-                      "clv_sharp_pct", "beat_close_sharp"):
-                snap.pop(k, None)
+            _apply_sharp(snap, None)  # clear stale sharp fields if Pinnacle absent
         updated += 1
 
     if updated > 0 or cleared > 0:
@@ -1460,18 +1577,27 @@ def get_clv_by_market(sport_filter: str | None = None) -> dict:
             mk = "total"
         elif mk in ("run_line", "runline", "puck_line", "puckline"):
             mk = "spread"
-        b = buckets.setdefault(mk, {"picks": 0, "prob": [], "line": [], "beats": 0, "scored": 0})
+        b = buckets.setdefault(mk, {"picks": 0, "prob": [], "line": [], "beats": 0,
+                                    "scored": 0, "sharp": [], "sharp_beats": 0})
         b["picks"] += 1
         if s.get("clv_pct") is not None:           # moneyline-style prob-CLV
             b["scored"] += 1
             b["prob"].append(s["clv_pct"])
             if s["clv_pct"] > 0:
                 b["beats"] += 1
+            if s.get("clv_sharp_pct") is not None:  # sharp twin (vs Pinnacle close)
+                b["sharp"].append(s["clv_sharp_pct"])
+                if s["clv_sharp_pct"] > 0:
+                    b["sharp_beats"] += 1
         elif s.get("line_clv") is not None:        # spread/total line-CLV
             b["scored"] += 1
             b["line"].append(s["line_clv"])
             if s.get("beat_close"):
                 b["beats"] += 1
+            if s.get("line_clv_sharp") is not None:
+                b["sharp"].append(s["line_clv_sharp"])
+                if s.get("beat_close_sharp"):
+                    b["sharp_beats"] += 1
 
     out: dict[str, dict] = {}
     for mk, b in buckets.items():
@@ -1486,6 +1612,11 @@ def get_clv_by_market(sport_filter: str | None = None) -> dict:
             entry["metric"] = "none"   # picks logged but no closing line joined yet
         if b["scored"]:
             entry["beat_close_pct"] = round(b["beats"] / b["scored"] * 100, 1)
+        # Sharp (vs Pinnacle close) — the honest read, when Pinnacle priced it.
+        if b["sharp"]:
+            entry["sharp_n"] = len(b["sharp"])
+            entry["avg_sharp"] = round(sum(b["sharp"]) / len(b["sharp"]), 3)
+            entry["sharp_beat_pct"] = round(b["sharp_beats"] / len(b["sharp"]) * 100, 1)
         out[mk] = entry
     return out
 
@@ -1508,7 +1639,12 @@ def print_clv_by_market(sport_filter: str | None = None) -> None:
         else:
             metric = "no closing line joined yet"
         beat = f", beat close {e['beat_close_pct']}%" if "beat_close_pct" in e else ""
-        print(f"    {mk:<11} {e['scored']}/{e['picks']} scored — {metric}{beat}")
+        if "avg_sharp" in e:
+            ssign = "+" if e["avg_sharp"] >= 0 else ""
+            sharp = f"  │ vs Pinnacle: {ssign}{e['avg_sharp']}, beat {e['sharp_beat_pct']}% (n={e['sharp_n']})"
+        else:
+            sharp = ""
+        print(f"    {mk:<11} {e['scored']}/{e['picks']} scored — {metric}{beat}{sharp}")
 
 
 def get_clv_by_strategy() -> dict:
