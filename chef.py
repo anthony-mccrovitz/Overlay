@@ -1584,6 +1584,95 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_slate(args: argparse.Namespace) -> int:
+    """Show every pick the algos logged for a day — the actual bet, book, and odds
+    entered — grouped by sport → market. The 'see it myself' view: what was picked,
+    at which sportsbook, at what price, and the model's edge. ★ = card pick (officially
+    posted, counts toward the record); the rest are shadow (tracked, not bet)."""
+    import json as _json
+    from collections import defaultdict
+    from datetime import date as _date
+    from pathlib import Path
+
+    target = getattr(args, "date", None)
+    if target:
+        # accept YYYYMMDD or YYYY-MM-DD
+        t = target.replace("-", "")
+        target = f"{t[:4]}-{t[4:6]}-{t[6:]}" if len(t) == 8 else target
+    else:
+        target = _date.today().isoformat()
+    sport_filter = (getattr(args, "sport", None) or "").lower() or None
+    card_only = getattr(args, "card", False)
+
+    try:
+        picks = _json.loads(Path("data/pnl/picks.json").read_text())
+        picks = picks.get("picks", picks) if isinstance(picks, dict) else picks
+    except (OSError, ValueError):
+        print("  ✗ picks.json unreadable"); return 1
+
+    day = [p for p in picks if p.get("date") == target]
+    if sport_filter:
+        day = [p for p in day if sport_filter in str(p.get("sport", "")).lower()]
+    if card_only:
+        day = [p for p in day if p.get("card_pick")]
+    if not day:
+        print(f"\n  No picks logged for {target}" +
+              (f" ({sport_filter})" if sport_filter else "") +
+              (" [card only]" if card_only else "") + ".")
+        return 0
+
+    # group: sport -> market -> [picks]
+    grp: dict = defaultdict(lambda: defaultdict(list))
+    for p in day:
+        grp[str(p.get("sport") or "?")][str(p.get("market") or "?")].append(p)
+
+    def desc(p):
+        # human label for the actual selection
+        base = str(p.get("player") or p.get("team") or "").strip()
+        direction = str(p.get("direction") or "")
+        line = p.get("line")
+        mk = str(p.get("market") or "").lower()
+        # Props/totals often store the full bet in the team string ("Name UNDER 4.5")
+        # — if the direction is already there, don't re-append it.
+        if direction and direction.lower() in base.lower():
+            return base
+        if mk in ("total", "totals", "f5_total", "f5_totals") and line is not None:
+            return f"{base} {direction} {line}".strip()
+        if mk in ("spread", "run_line", "runline", "puck_line", "puckline") and line is not None:
+            try: return f"{base} {line:+g}".strip()
+            except (ValueError, TypeError): return f"{base} {line}".strip()
+        if direction in ("OVER", "UNDER") and line is not None:
+            return f"{base} {direction} {line}".strip()
+        if direction in ("AWAY", "HOME") and base:
+            return f"{base} {direction}"
+        return base or direction or "—"
+
+    def odds_str(o):
+        if o in (None, "", 0): return "—"
+        try: o = int(o)
+        except (ValueError, TypeError): return str(o)
+        return f"{o:+d}"
+
+    n_card = sum(1 for p in day if p.get("card_pick"))
+    print(f"\n  ─ SLATE {target} ─ {len(day)} picks ({n_card} card ★, {len(day)-n_card} shadow) ─")
+    if card_only: print("  [card picks only]")
+    for sport in sorted(grp, key=lambda s: -sum(len(v) for v in grp[s].values())):
+        for market in sorted(grp[sport], key=lambda m: -len(grp[sport][m])):
+            rows = sorted(grp[sport][market], key=lambda p: -(p.get("edge_pct") or -999))
+            print(f"\n  {sport.upper()} · {market}")
+            print(f"    {'':1}{'pick':30}{'book':18}{'odds':>7}{'edge':>9}  {'matchup'}")
+            for p in rows:
+                star = "★" if p.get("card_pick") else " "
+                e = p.get("edge_pct")
+                e_s = f"{e:+.1f}%" if e is not None else "—"
+                mu = str(p.get("matchup") or "")
+                book = str(p.get("sportsbook") or "—")
+                print(f"    {star}{desc(p)[:29]:30}{book[:17]:18}{odds_str(p.get('odds')):>7}"
+                      f"{e_s:>9}  {mu[:34]}")
+    print(f"\n  ★ = card pick (posted, counts toward record) · others are shadow (tracked only)")
+    return 0
+
+
 # ─────────────────────────── stats ───────────────────────────────────────────
 
 def cmd_status(args: argparse.Namespace) -> int:
@@ -3015,6 +3104,12 @@ def main() -> int:
     p_dash.add_argument("--min-n", type=int, default=1, dest="min_n",
                         help="Hide markets with fewer than N picks (and no CLV)")
 
+    # slate — list a day's actual picks (bet, book, odds) grouped by sport×market
+    p_slate = sub.add_parser("slate", help="List a day's picks: bet, book, odds entered, edge (per sport×market)")
+    p_slate.add_argument("--date", help="Slate date (YYYYMMDD or YYYY-MM-DD); default today")
+    p_slate.add_argument("--sport", help="Filter to one sport (e.g. mlb, nba, wc)")
+    p_slate.add_argument("--card", action="store_true", help="Card picks only (officially posted)")
+
     # migrate
     sub.add_parser("migrate", help="Normalize picks.json to canonical schema")
 
@@ -3185,6 +3280,7 @@ def main() -> int:
         "arb":      cmd_arb,
         "clv":      cmd_clv,
         "dashboard": cmd_dashboard,
+        "slate":    cmd_slate,
         "migrate":  cmd_migrate,
         "test":     cmd_test,
         "stats":    cmd_stats,
