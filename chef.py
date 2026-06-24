@@ -1899,9 +1899,12 @@ def _clv_gate(min_n: int = 200):
             continue
         mkt = s.get("market") or "(unset)"
         key = (_sport_label(s.get("sport", "?")), mkt)
-        # sharp = CLV vs Pinnacle's de-vigged close (moneyline only); None when
-        # Pinnacle didn't price the game or the snapshot predates sharp capture.
-        sharp = s.get("clv_sharp_pct")
+        # sharp = same pick scored vs PINNACLE's close (the honest benchmark);
+        # None when Pinnacle didn't price the game or the snapshot predates sharp
+        # capture. Unit-matched to the best-price metric: prob markets use the
+        # prob-CLV (%), line markets (spread/total/prop) use the line-CLV (pts).
+        sharp = s.get("clv_sharp_pct") if s.get("clv_pct") is not None \
+            else s.get("line_clv_sharp")
         by_mkt[key].append((v, unit, s.get("date", ""), sharp))
 
     testable = [k for k, vals in by_mkt.items() if len(vals) >= min_n]
