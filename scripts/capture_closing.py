@@ -130,14 +130,26 @@ def _log(msg: str) -> None:
         f.write(line + "\n")
 
 
-def _within_window(commence_iso: str, lo_min: float, hi_min: float) -> bool:
-    """Return True if commence_iso is between [now+lo_min, now+hi_min]."""
+# A capture taken within this many minutes of kickoff is treated as the true
+# CLOSING line and locked (no further re-capture). Earlier captures are kept only
+# as a safety net and get UPGRADED to a closing-window capture when a later cron
+# tick lands inside it — this is what turns "a line 90 min out" into the real close.
+FINAL_WINDOW_MIN = 25.0
+
+
+def _minutes_to_commence(commence_iso: str) -> float | None:
+    """Minutes until kickoff (>0 = future, <0 = already started), or None."""
     try:
         ct = datetime.fromisoformat(commence_iso.replace("Z", "+00:00"))
     except (ValueError, AttributeError):
-        return False
-    delta_min = (ct - _now_utc()).total_seconds() / 60.0
-    return lo_min <= delta_min <= hi_min
+        return None
+    return (ct - _now_utc()).total_seconds() / 60.0
+
+
+def _within_window(commence_iso: str, lo_min: float, hi_min: float) -> bool:
+    """Return True if commence_iso is between [now+lo_min, now+hi_min]."""
+    delta_min = _minutes_to_commence(commence_iso)
+    return delta_min is not None and lo_min <= delta_min <= hi_min
 
 
 def capture_sport(
@@ -156,17 +168,25 @@ def capture_sport(
 
     today_str = _now_utc().date().isoformat()
     archive = _load_archive(sport_key, today_str)
-    captured_ids = {r.get("event_id") for r in archive}
+    existing = {r.get("event_id"): r for r in archive}
 
     captured_now = 0
     for ev in events:
         ev_id = ev.get("id")
         if not ev_id:
             continue
-        if ev_id in captured_ids and not force:
-            continue
         if not _within_window(ev.get("commence_time", ""), lo_min, hi_min):
             continue
+
+        mins = _minutes_to_commence(ev.get("commence_time", ""))
+        in_final_window = mins is not None and mins <= FINAL_WINDOW_MIN
+        prior = existing.get(ev_id)
+        if prior and not force:
+            # Already captured. Re-capture ONLY to upgrade an early (safety-net)
+            # line to the true closing line: skip if it's already locked as final,
+            # or if we're not yet inside the closing window (keep the early capture).
+            if prior.get("closing_final") or not in_final_window:
+                continue
 
         # Base markets (h2h/spreads/totals) in their own call — these must never
         # be lost to an unsupported prop key, so capture + save them regardless of
@@ -227,20 +247,25 @@ def capture_sport(
             "away_team":     ev.get("away_team"),
             "commence_time": ev.get("commence_time"),
             "captured_at":   _now_utc().isoformat(),
+            "mins_to_commence": round(mins, 1) if mins is not None else None,
+            "closing_final": bool(in_final_window),  # True = locked as the true close
             "BestHomeML":    int(home_ml) if home_ml is not None else None,
             "BestAwayML":    int(away_ml) if away_ml is not None else None,
             "HomeBook":      home_book,
             "AwayBook":      away_book,
             "all_odds":      all_rows,
         }
-        # If forcing re-capture, replace the existing entry
-        if force and ev_id in captured_ids:
+        # Replace any prior capture for this event (force or closing-window upgrade)
+        if ev_id in existing:
             archive = [r for r in archive if r.get("event_id") != ev_id]
 
         archive.append(record)
+        existing[ev_id] = record
         captured_now += 1
+        tag = "CLOSING" if in_final_window else "pre-game"
         matchup = f"{ev.get('away_team')} @ {ev.get('home_team')}"
-        _log(f"  ✓ {sport_key.upper()} closing captured: {matchup} (event {ev_id[:8]})")
+        _log(f"  ✓ {sport_key.upper()} {tag} captured: {matchup} "
+             f"({'%+.0f' % mins if mins is not None else '?'}m to start, event {ev_id[:8]})")
 
     if captured_now > 0:
         _save_archive(sport_key, today_str, archive)
