@@ -270,6 +270,16 @@ def validate_pick(pick: dict) -> list[str]:
 
 # ─────────────────────────── Normalization ──────────────────────────────────
 
+def _clv_status_safe(sport: str, market: str) -> str:
+    """CLV honesty tag for a pick; defaults to 'heuristic' if the registry is
+    unavailable (never block pick logging on this)."""
+    try:
+        from src.config.models import clv_status
+        return clv_status(sport, market)
+    except Exception:
+        return "heuristic"
+
+
 def normalize_pick(raw: dict[str, Any]) -> dict | None:
     """
     Map any legacy pick dict to the canonical schema.
@@ -454,6 +464,11 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         # Shadow-strategy tag: which research rule/model produced this pick.
         # null = a normal model/card pick. Used to slice CLV by strategy.
         "strategy":        raw.get("strategy") or None,
+        # CLV honesty tag: 'validated' only if the market passed the CLV gate
+        # (chef.py promote); otherwise 'heuristic'. Stamped on EVERY pick so a
+        # card pick is never mistaken for a proven-edge bet. Auto-flips to
+        # 'validated' the moment a market is promoted — no per-runner change.
+        "clv_status":      raw.get("clv_status") or _clv_status_safe(sport, market),
     }
     # Auto-classify shadow_filter if missing — keeps every pipeline tagged
     # without each one needing to import the filter explicitly.
