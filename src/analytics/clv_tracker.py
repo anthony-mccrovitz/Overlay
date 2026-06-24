@@ -576,6 +576,77 @@ def fetch_closing_pairs(
     return {}
 
 
+def fetch_closing_pinnacle(
+    date_str: str | None = None,
+    sport: str = "baseball_mlb",
+) -> dict[str, tuple]:
+    """
+    Like fetch_closing_pairs, but pulls ONLY Pinnacle's h2h closing prices.
+
+    Returns {team_lower: (pinn_odds, *other_pinn_odds)} from the closing archive's
+    per-book `all_odds` rows. Pinnacle is the sharpest book (lowest margin, fastest
+    to true) — its de-vigged close is the market's best estimate of true probability.
+    CLV measured against THIS line is the honest test: "best price across all books"
+    flatters us (we cherry-pick the loosest book), whereas beating Pinnacle's close
+    is what actually predicts profit. Quants benchmark against the sharp close, not
+    the best available number — this is that benchmark.
+
+    Returns {} when the archive has no Pinnacle h2h rows (older captures, or a sport
+    Pinnacle doesn't price) — callers fall back to the best-price pairs.
+    """
+    from datetime import date
+
+    if date_str is None:
+        date_str = date.today().isoformat()
+
+    short_sport = _SHORT_PREFIX_MAP.get(
+        sport,
+        sport.replace("baseball_", "").replace("basketball_", "")
+             .replace("hockey_", "").replace("icehockey_", ""))
+
+    for prefix in [sport, short_sport]:
+        archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
+        if not archive_path.exists():
+            continue
+        try:
+            records = json.loads(archive_path.read_text().replace("NaN", "null"))
+            pairs: dict[str, tuple] = {}
+            is_soccer = "soccer" in prefix
+            for row in records:
+                home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
+                away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
+                if not (home and away):
+                    continue
+                # Collect Pinnacle's h2h price for each selection in this event.
+                pinn: dict[str, float] = {}
+                for o in (row.get("all_odds") or []):
+                    if str(o.get("Sportsbook")) != "Pinnacle":
+                        continue
+                    if str(o.get("Market")) != "h2h":
+                        continue
+                    sel = str(o.get("Selection") or o.get("Name") or "").lower().strip()
+                    odds = o.get("Odds")
+                    if sel and odds is not None:
+                        pinn[sel] = float(odds)
+                home_ml = pinn.get(home)
+                away_ml = pinn.get(away)
+                if home_ml is None or away_ml is None:
+                    continue
+                draw_ml = pinn.get("draw") if is_soccer else None
+                if draw_ml is not None:
+                    pairs[home]   = (home_ml, away_ml, draw_ml)
+                    pairs[away]   = (away_ml, home_ml, draw_ml)
+                    pairs["draw"] = (draw_ml, home_ml, away_ml)
+                else:
+                    pairs[home] = (home_ml, away_ml)
+                    pairs[away] = (away_ml, home_ml)
+            if pairs:
+                return pairs
+        except (json.JSONDecodeError, ValueError, KeyError):
+            pass
+    return {}
+
+
 def fetch_closing_lines(
     date_str: str | None = None,
     sport: str = "baseball_mlb",
@@ -1116,7 +1187,8 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     # Build per-sport closing maps for all sports present that day
     sports_today = {s.get("sport", "mlb") for s in day_snaps}
     closing_maps: dict[str, dict] = {}
-    closing_pairs: dict[str, dict] = {}  # two-sided for de-vig
+    closing_pairs: dict[str, dict] = {}  # two-sided for de-vig (best price)
+    pinnacle_pairs: dict[str, dict] = {} # two-sided Pinnacle-only (sharp benchmark)
     spread_maps: dict[str, dict] = {}    # team_lower -> {line, odds, opp_odds}
     total_maps: dict[str, dict] = {}     # frozenset({away,home}) -> {line, over, under}
     f5_maps: dict[str, dict] = {}        # frozenset -> {line, over, under} (first 5 inn)
@@ -1125,8 +1197,9 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     scorer_maps: dict[str, dict] = {}    # sport -> {player_lower: {odds, book}}
     method_maps: dict[str, dict] = {}    # sport -> {(fighter, method): {odds, book}}
     for sport in sports_today:
-        closing_maps[sport]  = fetch_closing_lines(date_str=date_str, sport=sport)
-        closing_pairs[sport] = fetch_closing_pairs(date_str=date_str, sport=sport)
+        closing_maps[sport]   = fetch_closing_lines(date_str=date_str, sport=sport)
+        closing_pairs[sport]  = fetch_closing_pairs(date_str=date_str, sport=sport)
+        pinnacle_pairs[sport] = fetch_closing_pinnacle(date_str=date_str, sport=sport)
         spread_maps[sport]   = fetch_closing_spreads(date_str=date_str, sport=sport)
         total_maps[sport]    = fetch_closing_totals(date_str=date_str, sport=sport)
         f5_maps[sport]       = fetch_closing_f5_totals(date_str=date_str, sport=sport)
@@ -1146,11 +1219,13 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     # Merged maps: all teams from all sports (used as fallback)
     merged_map: dict[str, float] = {}
     merged_pairs: dict[str, tuple] = {}
+    merged_pinnacle: dict[str, tuple] = {}
     merged_spreads: dict[str, dict] = {}
     merged_totals: dict[frozenset, dict] = {}
     for sport in sports_today:
         merged_map.update(closing_maps[sport])
         merged_pairs.update(closing_pairs[sport])
+        merged_pinnacle.update(pinnacle_pairs[sport])
         merged_spreads.update(spread_maps[sport])
         merged_totals.update(total_maps[sport])
 
@@ -1332,6 +1407,29 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         snap["clv"]                  = round(clv, 6)
         snap["clv_pct"]              = round(clv * 100, 3)
         snap["clv_devigged"]         = pair is not None  # flag for reporting
+
+        # ── Sharp CLV: same pick measured against PINNACLE's de-vigged close ──
+        # clv_pct above uses the BEST price across all books, which flatters us
+        # (we score against the loosest number any book offered). Pinnacle is the
+        # sharp, low-margin reference — beating ITS close is the honest predictor
+        # of profit. We store it alongside, never overwriting clv_pct, so the gate
+        # can show both and flag "best-price mirages" (positive vs best, negative
+        # vs sharp). Falls back silently when Pinnacle didn't price the game.
+        sharp_pair = (pinnacle_pairs.get(snap_sport, {}).get(team_lower)
+                      or merged_pinnacle.get(team_lower))
+        if sharp_pair:
+            sharp_imp = _devig_prob(sharp_pair[0], *sharp_pair[1:])
+            clv_sharp = sharp_imp - snap["opening_implied_prob"]
+            snap["closing_odds_sharp"]   = sharp_pair[0]
+            snap["closing_imp_sharp"]    = round(sharp_imp, 6)
+            snap["clv_sharp"]            = round(clv_sharp, 6)
+            snap["clv_sharp_pct"]        = round(clv_sharp * 100, 3)
+            snap["beat_close_sharp"]     = bool(clv_sharp > 0)
+        else:
+            # Stale sharp fields from a prior run with no Pinnacle data → clear.
+            for k in ("closing_odds_sharp", "closing_imp_sharp", "clv_sharp",
+                      "clv_sharp_pct", "beat_close_sharp"):
+                snap.pop(k, None)
         updated += 1
 
     if updated > 0 or cleared > 0:
