@@ -1327,7 +1327,9 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-04-22T12:59:34.093954+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-04-22",
@@ -1357,7 +1359,9 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-04-22T12:59:34.093954+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-04-22",
@@ -1457,7 +1461,9 @@
     "opening_odds": -103.0,
     "opening_implied_prob": 0.507389,
     "snapshot_time": "2026-04-22T13:04:29.009380+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 9.5
   },
   {
     "date": "2026-04-22",
@@ -1467,7 +1473,9 @@
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
     "snapshot_time": "2026-04-22T17:00:16.902186+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 12.5
   },
   {
     "date": "2026-04-23",
@@ -1607,7 +1615,9 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-04-24T04:52:33.064719+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-04-24",
@@ -1627,7 +1637,9 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-04-24T04:52:33.064719+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-04-24",
@@ -1747,7 +1759,9 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-04-24T12:15:25.604138+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-04-25",
@@ -1937,7 +1951,14 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-04-25T12:45:55.694171+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "closing_odds": -115.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 4.315,
+    "beat_close": true
   },
   {
     "date": "2026-04-25",
@@ -2015,7 +2036,14 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-04-26T15:26:27.048061+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 9.5,
+    "closing_line": 9.0,
+    "closing_odds": -115.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-04-26",
@@ -2126,7 +2154,14 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-04-26T15:45:50.807102+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 8.5,
+    "closing_odds": -117.0,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-04-26",
@@ -2524,7 +2559,9 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-04-29T13:01:05.685474+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 10.0
   },
   {
     "date": "2026-04-29",
@@ -2544,7 +2581,9 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-04-29T13:01:05.685474+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 6.5
   },
   {
     "date": "2026-04-29",
@@ -2554,7 +2593,9 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-04-29T13:01:05.685474+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.0
   },
   {
     "date": "2026-04-29",
@@ -2804,7 +2845,9 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-04-30T14:03:52.534783+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.0
   },
   {
     "date": "2026-04-30",
@@ -2824,7 +2867,9 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-04-30T14:03:52.534783+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 9.5
   },
   {
     "date": "2026-04-30",
@@ -2864,7 +2909,14 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-05-01T14:01:16.041041+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 7.5,
+    "closing_odds": -108.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-05-01",
@@ -2904,7 +2956,14 @@
     "opening_odds": 120.0,
     "opening_implied_prob": 0.454545,
     "snapshot_time": "2026-05-01T14:01:16.041041+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.0,
+    "closing_line": 7.0,
+    "closing_odds": -101.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 3.399,
+    "beat_close": true
   },
   {
     "date": "2026-05-01",
@@ -2995,7 +3054,14 @@
     "opening_odds": -112.0,
     "opening_implied_prob": 0.528302,
     "snapshot_time": "2026-05-02T14:24:37.938887+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 7.5,
+    "closing_odds": -108.0,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.372,
+    "beat_close": false
   },
   {
     "date": "2026-05-02",
@@ -3026,7 +3092,14 @@
     "opening_odds": -112.0,
     "opening_implied_prob": 0.528302,
     "snapshot_time": "2026-05-02T14:24:37.938887+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 10.5,
+    "closing_line": 10.5,
+    "closing_odds": -102.0,
+    "line_clv": 0.0,
+    "price_clv_pct": -3.747,
+    "beat_close": false
   },
   {
     "date": "2026-05-02",
@@ -3057,7 +3130,14 @@
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
     "snapshot_time": "2026-05-02T14:24:37.938887+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 9.0,
+    "closing_odds": -101.0,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-05-02",
@@ -3155,7 +3235,14 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-03T14:01:10.564836+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 12.0,
+    "closing_line": 7.0,
+    "closing_odds": 107.0,
+    "line_clv": 5.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-05-03",
@@ -3358,7 +3445,14 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-05-03T14:28:48.816953+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 11.5,
+    "closing_line": 7.0,
+    "closing_odds": 107.0,
+    "line_clv": 4.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-05-03",
@@ -3379,7 +3473,14 @@
     "opening_odds": -103.0,
     "opening_implied_prob": 0.507389,
     "snapshot_time": "2026-05-03T17:08:59.914158+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.0,
+    "closing_odds": 105.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-05-03",
@@ -3404,7 +3505,14 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-03T17:08:59.914158+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 10.0,
+    "closing_line": 10.0,
+    "closing_odds": -101.0,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.146,
+    "beat_close": false
   },
   {
     "date": "2026-05-03",
@@ -3945,7 +4053,9 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-08T17:17:11.297684+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 8.0
   },
   {
     "date": "2026-05-08",
@@ -4095,7 +4205,9 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-05-09T15:20:14.152176+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-05-09",
@@ -4402,7 +4514,9 @@
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
     "snapshot_time": "2026-05-11T20:14:05.710118+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-05-11",
@@ -4442,7 +4556,14 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-12T15:17:40.204968+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "UNDER",
+    "opening_line": 10.0,
+    "closing_line": 10.0,
+    "closing_odds": -110.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.917,
+    "beat_close": true
   },
   {
     "date": "2026-05-12",
@@ -4463,7 +4584,9 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-12T15:17:40.204968+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-05-12",
@@ -4557,7 +4680,9 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-05-12T17:00:14.837570+00:00",
-    "market": "total"
+    "market": "total",
+    "direction": "OVER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-05-12",
@@ -6869,7 +6994,9 @@
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-05-15T05:51:25.055372+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.701900+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.701900+00:00",
+    "direction": "OVER",
+    "opening_line": 7.0
   },
   {
     "date": "2026-04-24",
@@ -6881,7 +7008,9 @@
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-15T05:51:25.055372+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.702203+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.702203+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-04-24",
@@ -6909,7 +7038,9 @@
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-05-15T05:51:25.055372+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.703028+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.703028+00:00",
+    "direction": "OVER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-04-24",
@@ -6955,7 +7086,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "opening_line": 1.5
   },
   {
     "date": "2026-04-24",
@@ -7049,7 +7181,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "opening_line": -1.5
   },
   {
     "date": "2026-04-24",
@@ -7143,7 +7276,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "opening_line": -1.5
   },
   {
     "date": "2026-04-24",
@@ -7157,7 +7291,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "opening_line": -1.5
   },
   {
     "date": "2026-04-24",
@@ -10050,7 +10185,9 @@
     "market": "f5_total",
     "opening_odds": -108.0,
     "opening_implied_prob": 0.519231,
-    "snapshot_time": "2026-05-15T05:51:25.086431+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.086431+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-27",
@@ -10060,7 +10197,9 @@
     "market": "f5_total",
     "opening_odds": -148.0,
     "opening_implied_prob": 0.596774,
-    "snapshot_time": "2026-05-15T05:51:25.086431+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.086431+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-27",
@@ -10407,7 +10546,9 @@
     "market": "f5_total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-15T05:51:25.086431+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.086431+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-04-27",
@@ -10462,7 +10603,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-15T05:51:25.086431+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.086431+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-04-27",
@@ -10472,7 +10615,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-15T05:51:25.086431+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.086431+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-04-27",
@@ -11252,7 +11397,9 @@
     "market": "f5_total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-15T05:51:25.096117+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.096117+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-28",
@@ -11262,7 +11409,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-15T05:51:25.096117+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.096117+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-04-28",
@@ -11272,7 +11421,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-15T05:51:25.096117+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.096117+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-04-28",
@@ -11282,7 +11433,9 @@
     "market": "f5_total",
     "opening_odds": -132.0,
     "opening_implied_prob": 0.568966,
-    "snapshot_time": "2026-05-15T05:51:25.096117+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.096117+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-28",
@@ -11292,7 +11445,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-15T05:51:25.096117+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.096117+00:00",
+    "direction": "OVER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-04-28",
@@ -12272,7 +12427,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-29",
@@ -12286,7 +12443,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-04-29",
@@ -12300,7 +12459,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-29",
@@ -12314,7 +12475,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-04-29",
@@ -12328,7 +12491,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-04-29",
@@ -12342,7 +12507,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-04-29",
@@ -12737,7 +12904,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-04-30",
@@ -12751,7 +12920,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-30",
@@ -12765,7 +12936,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-04-30",
@@ -12779,7 +12952,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-04-30",
@@ -13497,7 +13672,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-15T05:51:25.130200+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.130200+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-01",
@@ -13507,7 +13684,9 @@
     "market": "f5_total",
     "opening_odds": 108.0,
     "opening_implied_prob": 0.480769,
-    "snapshot_time": "2026-05-15T05:51:25.130200+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.130200+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-01",
@@ -13517,7 +13696,9 @@
     "market": "f5_total",
     "opening_odds": -128.0,
     "opening_implied_prob": 0.561404,
-    "snapshot_time": "2026-05-15T05:51:25.130200+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.130200+00:00",
+    "direction": "OVER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-01",
@@ -13527,7 +13708,9 @@
     "market": "f5_total",
     "opening_odds": 108.0,
     "opening_implied_prob": 0.480769,
-    "snapshot_time": "2026-05-15T05:51:25.130200+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.130200+00:00",
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-01",
@@ -13851,7 +14034,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-15T05:51:25.130200+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.130200+00:00",
+    "direction": "OVER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-01",
@@ -14734,7 +14919,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-02",
@@ -14744,7 +14931,9 @@
     "market": "f5_total",
     "opening_odds": 116.0,
     "opening_implied_prob": 0.462963,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-02",
@@ -14754,7 +14943,9 @@
     "market": "f5_total",
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-02",
@@ -14764,7 +14955,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "OVER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-02",
@@ -14774,7 +14967,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-02",
@@ -14784,7 +14979,9 @@
     "market": "f5_total",
     "opening_odds": -146.0,
     "opening_implied_prob": 0.593496,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-02",
@@ -14825,7 +15022,9 @@
     "market": "f5_total",
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
-    "snapshot_time": "2026-05-15T05:51:25.141851+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.141851+00:00",
+    "direction": "OVER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-02",
@@ -15504,7 +15703,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-15T05:51:25.153712+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.153712+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-03",
@@ -15514,7 +15715,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-15T05:51:25.153712+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.153712+00:00",
+    "direction": "OVER",
+    "opening_line": 6.5
   },
   {
     "date": "2026-05-03",
@@ -15524,7 +15727,9 @@
     "market": "f5_total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-15T05:51:25.153712+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.153712+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-03",
@@ -15534,7 +15739,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-05-15T05:51:25.153712+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.153712+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-03",
@@ -15544,7 +15751,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-15T05:51:25.153712+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.153712+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-03",
@@ -17375,7 +17584,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-08",
@@ -17389,7 +17600,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-08",
@@ -17403,7 +17616,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-08",
@@ -17417,7 +17632,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-08",
@@ -17431,7 +17648,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-08",
@@ -20700,7 +20919,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-09",
@@ -20714,7 +20935,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-09",
@@ -20728,7 +20951,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-09",
@@ -20742,7 +20967,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-09",
@@ -20756,7 +20983,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-09",
@@ -20770,7 +20999,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-10",
@@ -22435,7 +22666,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-10",
@@ -22449,7 +22682,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-10",
@@ -22463,7 +22698,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-11",
@@ -24061,7 +24298,9 @@
     "market": "f5_total",
     "opening_odds": 102.0,
     "opening_implied_prob": 0.49505,
-    "snapshot_time": "2026-05-15T05:51:25.336440+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.336440+00:00",
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-12",
@@ -24071,7 +24310,9 @@
     "market": "f5_total",
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
-    "snapshot_time": "2026-05-15T05:51:25.336440+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.336440+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-12",
@@ -24081,7 +24322,9 @@
     "market": "f5_total",
     "opening_odds": -120.0,
     "opening_implied_prob": 0.545455,
-    "snapshot_time": "2026-05-15T05:51:25.336440+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.336440+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-12",
@@ -24091,7 +24334,9 @@
     "market": "f5_total",
     "opening_odds": -128.0,
     "opening_implied_prob": 0.561404,
-    "snapshot_time": "2026-05-15T05:51:25.336440+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.336440+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-12",
@@ -25737,7 +25982,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-15T05:51:25.352086+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.352086+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-13",
@@ -25747,7 +25994,9 @@
     "market": "f5_total",
     "opening_odds": -108.0,
     "opening_implied_prob": 0.519231,
-    "snapshot_time": "2026-05-15T05:51:25.352086+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.352086+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-13",
@@ -25757,7 +26006,9 @@
     "market": "f5_total",
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
-    "snapshot_time": "2026-05-15T05:51:25.352086+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.352086+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-13",
@@ -25767,7 +26018,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-15T05:51:25.352086+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.352086+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-13",
@@ -26369,7 +26622,9 @@
     "opening_implied_prob": 0.606299,
     "snapshot_time": "2026-05-15T05:51:25.371285+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:21.470734+00:00"
+    "backfilled_at": "2026-05-17T18:12:21.470734+00:00",
+    "direction": "UNDER",
+    "opening_line": 9.5
   },
   {
     "date": "2026-05-14",
@@ -26379,7 +26634,8 @@
     "market": "puck_line",
     "opening_odds": -145.0,
     "opening_implied_prob": 0.591837,
-    "snapshot_time": "2026-05-15T05:51:25.371285+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.371285+00:00",
+    "opening_line": 1.5
   },
   {
     "date": "2026-05-14",
@@ -26391,7 +26647,9 @@
     "opening_implied_prob": 0.545455,
     "snapshot_time": "2026-05-15T05:51:25.371285+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:21.471335+00:00"
+    "backfilled_at": "2026-05-17T18:12:21.471335+00:00",
+    "direction": "OVER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-14",
@@ -26877,7 +27135,9 @@
     "market": "f5_total",
     "opening_odds": -128.0,
     "opening_implied_prob": 0.561404,
-    "snapshot_time": "2026-05-15T05:51:25.388532+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.388532+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-15",
@@ -26887,7 +27147,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-15T05:51:25.388532+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.388532+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-15",
@@ -26897,7 +27159,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-15T05:51:25.388532+00:00"
+    "snapshot_time": "2026-05-15T05:51:25.388532+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-15",
@@ -27053,11 +27317,11 @@
     "opening_odds": 600.0,
     "opening_implied_prob": 0.142857,
     "snapshot_time": "2026-05-15T05:51:25.405891+00:00",
-    "closing_odds": 510.0,
-    "closing_implied_prob": 0.163934,
-    "clv": 0.021077,
-    "clv_pct": 2.108,
-    "clv_devigged": false
+    "closing_odds": 860.0,
+    "closing_implied_prob": 0.104649,
+    "clv": -0.038208,
+    "clv_pct": -3.821,
+    "clv_devigged": true
   },
   {
     "date": "2026-05-15",
@@ -27138,7 +27402,9 @@
     "market": "f5_total",
     "opening_odds": 114.0,
     "opening_implied_prob": 0.46729,
-    "snapshot_time": "2026-05-15T14:10:16.450469+00:00"
+    "snapshot_time": "2026-05-15T14:10:16.450469+00:00",
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-15",
@@ -28430,7 +28696,9 @@
     "market": "total",
     "opening_odds": -120.0,
     "opening_implied_prob": 0.545455,
-    "snapshot_time": "2026-05-15T14:52:35.053842+00:00"
+    "snapshot_time": "2026-05-15T14:52:35.053842+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.5
   },
   {
     "date": "2026-05-15",
@@ -28440,7 +28708,8 @@
     "market": "puck_line",
     "opening_odds": -172.0,
     "opening_implied_prob": 0.632353,
-    "snapshot_time": "2026-05-15T14:52:35.053842+00:00"
+    "snapshot_time": "2026-05-15T14:52:35.053842+00:00",
+    "opening_line": 1.5
   },
   {
     "date": "2026-05-15",
@@ -28526,7 +28795,9 @@
     "market": "f5_total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-15T17:11:34.609260+00:00"
+    "snapshot_time": "2026-05-15T17:11:34.609260+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-15",
@@ -29276,7 +29547,9 @@
     "market": "f5_total",
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
-    "snapshot_time": "2026-05-16T20:25:21.603735+00:00"
+    "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-16",
@@ -29286,7 +29559,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-16T20:25:21.603735+00:00"
+    "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-16",
@@ -29296,7 +29571,9 @@
     "market": "f5_total",
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
-    "snapshot_time": "2026-05-16T20:25:21.603735+00:00"
+    "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-16",
@@ -29306,7 +29583,9 @@
     "market": "f5_total",
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
-    "snapshot_time": "2026-05-16T20:25:21.603735+00:00"
+    "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-16",
@@ -29316,7 +29595,9 @@
     "market": "f5_total",
     "opening_odds": -122.0,
     "opening_implied_prob": 0.54955,
-    "snapshot_time": "2026-05-16T20:25:21.603735+00:00"
+    "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-16",
@@ -29326,7 +29607,8 @@
     "market": "puck_line",
     "opening_odds": -170.0,
     "opening_implied_prob": 0.62963,
-    "snapshot_time": "2026-05-16T20:25:21.603735+00:00"
+    "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
+    "opening_line": 1.5
   },
   {
     "date": "2026-05-16",
@@ -29338,7 +29620,9 @@
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-05-16T20:25:21.603735+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:22.227480+00:00"
+    "backfilled_at": "2026-05-17T18:12:22.227480+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-16",
@@ -29538,7 +29822,9 @@
     "opening_implied_prob": 0.545455,
     "snapshot_time": "2026-05-16T22:45:18.522724+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:22.227898+00:00"
+    "backfilled_at": "2026-05-17T18:12:22.227898+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.5
   },
   {
     "date": "2026-05-16",
@@ -29831,7 +30117,9 @@
     "market": "total",
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
-    "snapshot_time": "2026-05-17T15:50:33.849795+00:00"
+    "snapshot_time": "2026-05-17T15:50:33.849795+00:00",
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-17",
@@ -29841,7 +30129,9 @@
     "market": "total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-17T15:50:33.849795+00:00"
+    "snapshot_time": "2026-05-17T15:50:33.849795+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-17",
@@ -30599,7 +30889,9 @@
     "market": "f5_total",
     "opening_odds": -130.0,
     "opening_implied_prob": 0.565217,
-    "snapshot_time": "2026-05-17T17:10:22.691687+00:00"
+    "snapshot_time": "2026-05-17T17:10:22.691687+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-17",
@@ -30609,7 +30901,9 @@
     "market": "f5_total",
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
-    "snapshot_time": "2026-05-17T17:10:22.691687+00:00"
+    "snapshot_time": "2026-05-17T17:10:22.691687+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-17",
@@ -30619,7 +30913,9 @@
     "market": "f5_total",
     "opening_odds": 108.0,
     "opening_implied_prob": 0.480769,
-    "snapshot_time": "2026-05-17T17:10:22.691687+00:00"
+    "snapshot_time": "2026-05-17T17:10:22.691687+00:00",
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-17",
@@ -30629,7 +30925,9 @@
     "market": "f5_total",
     "opening_odds": -130.0,
     "opening_implied_prob": 0.565217,
-    "snapshot_time": "2026-05-17T17:10:22.691687+00:00"
+    "snapshot_time": "2026-05-17T17:10:22.691687+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-17",
@@ -30681,7 +30979,8 @@
     "opening_implied_prob": 0.714286,
     "snapshot_time": "2026-04-24T17:21:01.974067+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.704611+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.704611+00:00",
+    "opening_line": 1.5
   },
   {
     "date": "2026-04-24",
@@ -30693,7 +30992,8 @@
     "opening_implied_prob": 0.322581,
     "snapshot_time": "2026-04-24T17:22:10.650768+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.708126+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.708126+00:00",
+    "opening_line": -1.5
   },
   {
     "date": "2026-04-24",
@@ -30705,7 +31005,8 @@
     "opening_implied_prob": 0.31746,
     "snapshot_time": "2026-04-24T17:22:10.650768+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.711242+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.711242+00:00",
+    "opening_line": -1.5
   },
   {
     "date": "2026-04-24",
@@ -30717,7 +31018,8 @@
     "opening_implied_prob": 0.350877,
     "snapshot_time": "2026-04-24T17:22:10.650768+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:20.711684+00:00"
+    "backfilled_at": "2026-05-17T18:12:20.711684+00:00",
+    "opening_line": -1.5
   },
   {
     "date": "2026-05-14",
@@ -30729,7 +31031,8 @@
     "opening_implied_prob": 0.591837,
     "snapshot_time": "2026-05-14T23:54:54.418455+00:00",
     "backfilled": true,
-    "backfilled_at": "2026-05-17T18:12:21.471258+00:00"
+    "backfilled_at": "2026-05-17T18:12:21.471258+00:00",
+    "opening_line": 1.5
   },
   {
     "date": "2026-05-18",
@@ -31597,7 +31900,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-18",
@@ -31611,7 +31916,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-18",
@@ -31625,7 +31932,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-18",
@@ -31639,7 +31948,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-18",
@@ -32297,7 +32608,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-19",
@@ -32311,7 +32624,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-19",
@@ -32325,7 +32640,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-19",
@@ -32339,7 +32656,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-19",
@@ -32353,7 +32672,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 217.5
   },
   {
     "date": "2026-05-19",
@@ -32471,7 +32792,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-19",
@@ -33114,7 +33437,9 @@
     "market": "f5_total",
     "opening_odds": -144.0,
     "opening_implied_prob": 0.590164,
-    "snapshot_time": "2026-05-20T13:38:36.423332+00:00"
+    "snapshot_time": "2026-05-20T13:38:36.423332+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-20",
@@ -33124,7 +33449,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-20T13:38:36.423332+00:00"
+    "snapshot_time": "2026-05-20T13:38:36.423332+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-20",
@@ -33134,7 +33461,9 @@
     "market": "f5_total",
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
-    "snapshot_time": "2026-05-20T13:38:36.423332+00:00"
+    "snapshot_time": "2026-05-20T13:38:36.423332+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-20",
@@ -33694,7 +34023,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-21T14:10:17.874627+00:00"
+    "snapshot_time": "2026-05-21T14:10:17.874627+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-21",
@@ -33704,7 +34035,9 @@
     "market": "f5_total",
     "opening_odds": -146.0,
     "opening_implied_prob": 0.593496,
-    "snapshot_time": "2026-05-21T14:10:17.874627+00:00"
+    "snapshot_time": "2026-05-21T14:10:17.874627+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-21",
@@ -33714,7 +34047,9 @@
     "market": "f5_total",
     "opening_odds": -130.0,
     "opening_implied_prob": 0.565217,
-    "snapshot_time": "2026-05-21T14:10:17.874627+00:00"
+    "snapshot_time": "2026-05-21T14:10:17.874627+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-21",
@@ -34943,7 +35278,9 @@
     "market": "f5_total",
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
-    "snapshot_time": "2026-05-22T15:00:17.445886+00:00"
+    "snapshot_time": "2026-05-22T15:00:17.445886+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-22",
@@ -34953,7 +35290,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-22T15:00:17.445886+00:00"
+    "snapshot_time": "2026-05-22T15:00:17.445886+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-22",
@@ -34963,7 +35302,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-22T15:00:17.445886+00:00"
+    "snapshot_time": "2026-05-22T15:00:17.445886+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-22",
@@ -34973,7 +35314,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-22T15:00:17.445886+00:00"
+    "snapshot_time": "2026-05-22T15:00:17.445886+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-22",
@@ -35125,7 +35468,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-22T16:05:01.359068+00:00"
+    "snapshot_time": "2026-05-22T16:05:01.359068+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-22",
@@ -35750,7 +36095,9 @@
     "market": "f5_total",
     "opening_odds": -154.0,
     "opening_implied_prob": 0.606299,
-    "snapshot_time": "2026-05-23T14:42:38.124755+00:00"
+    "snapshot_time": "2026-05-23T14:42:38.124755+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-23",
@@ -35760,7 +36107,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-23T14:42:38.124755+00:00"
+    "snapshot_time": "2026-05-23T14:42:38.124755+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-23",
@@ -35770,7 +36119,9 @@
     "market": "f5_total",
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
-    "snapshot_time": "2026-05-23T14:42:38.124755+00:00"
+    "snapshot_time": "2026-05-23T14:42:38.124755+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-23",
@@ -38170,7 +38521,9 @@
     "market": "f5_total",
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
-    "snapshot_time": "2026-05-25T14:10:15.298879+00:00"
+    "snapshot_time": "2026-05-25T14:10:15.298879+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-25",
@@ -38180,7 +38533,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-25T14:10:15.298879+00:00"
+    "snapshot_time": "2026-05-25T14:10:15.298879+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-25",
@@ -38190,7 +38545,9 @@
     "market": "f5_total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-25T14:10:15.298879+00:00"
+    "snapshot_time": "2026-05-25T14:10:15.298879+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-25",
@@ -38200,7 +38557,9 @@
     "market": "f5_total",
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
-    "snapshot_time": "2026-05-25T14:10:15.298879+00:00"
+    "snapshot_time": "2026-05-25T14:10:15.298879+00:00",
+    "direction": "OVER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-25",
@@ -38368,7 +38727,9 @@
     "market": "total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-25T15:30:02.974700+00:00"
+    "snapshot_time": "2026-05-25T15:30:02.974700+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-25",
@@ -39086,7 +39447,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-26T12:06:18.781671+00:00"
+    "snapshot_time": "2026-05-26T12:06:18.781671+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-26",
@@ -39096,7 +39459,9 @@
     "market": "f5_total",
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
-    "snapshot_time": "2026-05-26T12:06:18.781671+00:00"
+    "snapshot_time": "2026-05-26T12:06:18.781671+00:00",
+    "direction": "OVER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-26",
@@ -39106,7 +39471,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-26T12:06:18.781671+00:00"
+    "snapshot_time": "2026-05-26T12:06:18.781671+00:00",
+    "direction": "UNDER",
+    "opening_line": 6.0
   },
   {
     "date": "2026-05-26",
@@ -39116,7 +39483,9 @@
     "market": "f5_total",
     "opening_odds": 112.0,
     "opening_implied_prob": 0.471698,
-    "snapshot_time": "2026-05-26T12:06:18.781671+00:00"
+    "snapshot_time": "2026-05-26T12:06:18.781671+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-26",
@@ -40415,7 +40784,9 @@
     "market": "f5_total",
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
-    "snapshot_time": "2026-05-27T03:38:20.990896+00:00"
+    "snapshot_time": "2026-05-27T03:38:20.990896+00:00",
+    "direction": "UNDER",
+    "opening_line": 9.5
   },
   {
     "date": "2026-05-27",
@@ -40425,7 +40796,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-27T03:38:20.990896+00:00"
+    "snapshot_time": "2026-05-27T03:38:20.990896+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-27",
@@ -40435,7 +40808,9 @@
     "market": "f5_total",
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
-    "snapshot_time": "2026-05-27T03:38:20.990896+00:00"
+    "snapshot_time": "2026-05-27T03:38:20.990896+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-27",
@@ -40445,7 +40820,9 @@
     "market": "f5_total",
     "opening_odds": -148.0,
     "opening_implied_prob": 0.596774,
-    "snapshot_time": "2026-05-27T03:38:20.990896+00:00"
+    "snapshot_time": "2026-05-27T03:38:20.990896+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-27",
@@ -40915,7 +41292,9 @@
     "market": "f5_total",
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
-    "snapshot_time": "2026-05-28T13:46:24.358606+00:00"
+    "snapshot_time": "2026-05-28T13:46:24.358606+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-28",
@@ -40925,7 +41304,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-05-28T13:46:24.358606+00:00"
+    "snapshot_time": "2026-05-28T13:46:24.358606+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-28",
@@ -40935,7 +41316,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-05-28T13:46:24.358606+00:00"
+    "snapshot_time": "2026-05-28T13:46:24.358606+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-28",
@@ -41520,7 +41903,9 @@
     "market": "f5_total",
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-29",
@@ -41530,7 +41915,9 @@
     "market": "f5_total",
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-29",
@@ -41540,7 +41927,9 @@
     "market": "f5_total",
     "opening_odds": 108.0,
     "opening_implied_prob": 0.480769,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-29",
@@ -41550,7 +41939,9 @@
     "market": "f5_total",
     "opening_odds": -165.0,
     "opening_implied_prob": 0.622642,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-29",
@@ -41560,7 +41951,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-29",
@@ -41570,7 +41963,9 @@
     "market": "f5_total",
     "opening_odds": -113.0,
     "opening_implied_prob": 0.530516,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-29",
@@ -41580,7 +41975,9 @@
     "market": "total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "OVER",
+    "opening_line": 211.5
   },
   {
     "date": "2026-05-29",
@@ -41590,7 +41987,9 @@
     "market": "total",
     "opening_odds": -108.0,
     "opening_implied_prob": 0.519231,
-    "snapshot_time": "2026-05-29T03:17:08.618753+00:00"
+    "snapshot_time": "2026-05-29T03:17:08.618753+00:00",
+    "direction": "OVER",
+    "opening_line": 217.5
   },
   {
     "date": "2026-05-29",
@@ -42634,7 +43033,9 @@
     "market": "f5_total",
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
-    "snapshot_time": "2026-05-29T14:10:19.341533+00:00"
+    "snapshot_time": "2026-05-29T14:10:19.341533+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-29",
@@ -42644,7 +43045,9 @@
     "market": "f5_total",
     "opening_odds": -130.0,
     "opening_implied_prob": 0.565217,
-    "snapshot_time": "2026-05-29T14:10:19.341533+00:00"
+    "snapshot_time": "2026-05-29T14:10:19.341533+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-29",
@@ -42654,7 +43057,9 @@
     "market": "f5_total",
     "opening_odds": -118.0,
     "opening_implied_prob": 0.541284,
-    "snapshot_time": "2026-05-29T14:10:19.341533+00:00"
+    "snapshot_time": "2026-05-29T14:10:19.341533+00:00",
+    "direction": "UNDER",
+    "opening_line": 5.0
   },
   {
     "date": "2026-05-29",
@@ -43812,7 +44217,9 @@
     "market": "f5_total",
     "opening_odds": -130.0,
     "opening_implied_prob": 0.565217,
-    "snapshot_time": "2026-05-31T04:56:25.457859+00:00"
+    "snapshot_time": "2026-05-31T04:56:25.457859+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-05-30",
@@ -43822,7 +44229,9 @@
     "market": "f5_total",
     "opening_odds": -130.0,
     "opening_implied_prob": 0.565217,
-    "snapshot_time": "2026-05-31T04:56:25.457859+00:00"
+    "snapshot_time": "2026-05-31T04:56:25.457859+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-30",
@@ -43832,7 +44241,9 @@
     "market": "f5_total",
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
-    "snapshot_time": "2026-05-31T04:56:25.457859+00:00"
+    "snapshot_time": "2026-05-31T04:56:25.457859+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-30",
@@ -43842,7 +44253,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-05-31T04:56:25.457859+00:00"
+    "snapshot_time": "2026-05-31T04:56:25.457859+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-30",
@@ -43852,7 +44265,9 @@
     "market": "f5_total",
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
-    "snapshot_time": "2026-05-31T04:56:25.457859+00:00"
+    "snapshot_time": "2026-05-31T04:56:25.457859+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-30",
@@ -43862,7 +44277,9 @@
     "market": "f5_total",
     "opening_odds": -152.0,
     "opening_implied_prob": 0.603175,
-    "snapshot_time": "2026-05-31T04:56:25.457859+00:00"
+    "snapshot_time": "2026-05-31T04:56:25.457859+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-30",
@@ -43973,7 +44390,9 @@
     "market": "f5_total",
     "opening_odds": -128.0,
     "opening_implied_prob": 0.561404,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -43983,7 +44402,9 @@
     "market": "f5_total",
     "opening_odds": 114.0,
     "opening_implied_prob": 0.46729,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-31",
@@ -43993,7 +44414,9 @@
     "market": "f5_total",
     "opening_odds": -128.0,
     "opening_implied_prob": 0.561404,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44003,7 +44426,9 @@
     "market": "f5_total",
     "opening_odds": 102.0,
     "opening_implied_prob": 0.49505,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "OVER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-05-31",
@@ -44013,7 +44438,9 @@
     "market": "f5_total",
     "opening_odds": -165.0,
     "opening_implied_prob": 0.622642,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44023,7 +44450,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44033,7 +44462,9 @@
     "market": "f5_total",
     "opening_odds": -160.0,
     "opening_implied_prob": 0.615385,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44043,7 +44474,9 @@
     "market": "f5_total",
     "opening_odds": 114.0,
     "opening_implied_prob": 0.46729,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "OVER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44053,7 +44486,9 @@
     "market": "f5_total",
     "opening_odds": 104.0,
     "opening_implied_prob": 0.490196,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44063,7 +44498,9 @@
     "market": "f5_total",
     "opening_odds": -152.0,
     "opening_implied_prob": 0.603175,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44073,7 +44510,9 @@
     "market": "f5_total",
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-05-31",
@@ -44248,7 +44687,9 @@
     "market": "f5_total",
     "opening_odds": 116.0,
     "opening_implied_prob": 0.462963,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-31",
@@ -44258,7 +44699,9 @@
     "market": "f5_total",
     "opening_odds": 116.0,
     "opening_implied_prob": 0.462963,
-    "snapshot_time": "2026-05-31T04:57:58.242588+00:00"
+    "snapshot_time": "2026-05-31T04:57:58.242588+00:00",
+    "direction": "UNDER",
+    "opening_line": 3.5
   },
   {
     "date": "2026-05-31",
@@ -44627,7 +45070,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-06-01T02:35:13.670274+00:00"
+    "snapshot_time": "2026-06-01T02:35:13.670274+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-06-01",
@@ -44637,7 +45082,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-06-01T02:35:13.670274+00:00"
+    "snapshot_time": "2026-06-01T02:35:13.670274+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-06-01",
@@ -44647,7 +45094,9 @@
     "market": "f5_total",
     "opening_odds": -148.0,
     "opening_implied_prob": 0.596774,
-    "snapshot_time": "2026-06-01T02:35:13.670274+00:00"
+    "snapshot_time": "2026-06-01T02:35:13.670274+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-06-01",
@@ -44657,7 +45106,9 @@
     "market": "f5_total",
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
-    "snapshot_time": "2026-06-01T02:35:13.670274+00:00"
+    "snapshot_time": "2026-06-01T02:35:13.670274+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-06-01",
@@ -44671,7 +45122,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 218.5
   },
   {
     "date": "2026-06-01",
@@ -44738,7 +45191,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 5.5
   },
   {
     "date": "2026-06-01",
@@ -44840,7 +45295,9 @@
     "market": "f5_total",
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
-    "snapshot_time": "2026-06-01T13:25:45.498357+00:00"
+    "snapshot_time": "2026-06-01T13:25:45.498357+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-06-01",
@@ -44850,7 +45307,9 @@
     "market": "f5_total",
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
-    "snapshot_time": "2026-06-01T13:25:45.498357+00:00"
+    "snapshot_time": "2026-06-01T13:25:45.498357+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.5
   },
   {
     "date": "2026-06-01",
@@ -44860,7 +45319,9 @@
     "market": "f5_total",
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
-    "snapshot_time": "2026-06-01T13:25:45.498357+00:00"
+    "snapshot_time": "2026-06-01T13:25:45.498357+00:00",
+    "direction": "UNDER",
+    "opening_line": 4.0
   },
   {
     "date": "2026-06-02",
@@ -45046,10 +45507,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-02T00:58:37.286917+00:00",
-    "closing_odds": null,
+    "closing_odds": -102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.136,
+    "beat_close": false
   },
   {
     "date": "2026-06-02",
@@ -45091,7 +45558,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-06-02",
@@ -45105,7 +45574,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0
   },
   {
     "date": "2026-06-02",
@@ -45116,10 +45587,16 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-02T00:58:37.286917+00:00",
-    "closing_odds": null,
+    "closing_odds": 109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 7.5,
+    "closing_line": 7.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-02",
@@ -45133,7 +45610,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-06-02",
@@ -45144,10 +45623,16 @@
     "opening_odds": 120.0,
     "opening_implied_prob": 0.454545,
     "snapshot_time": "2026-06-02T15:43:52.179349+00:00",
-    "closing_odds": null,
+    "closing_odds": -102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.0,
+    "closing_line": 7.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 3.629,
+    "beat_close": true
   },
   {
     "date": "2026-06-03",
@@ -45390,10 +45875,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-03T12:19:16.455874+00:00",
-    "closing_odds": null,
+    "closing_odds": -102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 9.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-03",
@@ -45407,7 +45898,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-06-03",
@@ -46084,7 +46577,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.5
   },
   {
     "date": "2026-06-04",
@@ -46098,7 +46593,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-06-04",
@@ -46112,7 +46609,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-06-04",
@@ -46126,7 +46625,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-06-04",
@@ -46711,10 +47212,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-05T12:10:05.119955+00:00",
-    "closing_odds": null,
+    "closing_odds": -106.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 11.0,
+    "closing_line": 10.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-05",
@@ -46810,10 +47317,16 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-05T12:10:05.119955+00:00",
-    "closing_odds": null,
+    "closing_odds": -114.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 7.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.563,
+    "beat_close": false
   },
   {
     "date": "2026-06-05",
@@ -46841,7 +47354,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-06-05",
@@ -47409,7 +47924,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 10.5
   },
   {
     "date": "2026-06-06",
@@ -47420,10 +47937,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-06T12:08:54.918537+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 7.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-06",
@@ -47434,10 +47957,16 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-06T12:08:54.918537+00:00",
-    "closing_odds": null,
+    "closing_odds": 102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-06",
@@ -47448,10 +47977,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-06T12:08:54.918537+00:00",
-    "closing_odds": null,
+    "closing_odds": -109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.569,
+    "beat_close": true
   },
   {
     "date": "2026-06-06",
@@ -47462,10 +47997,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-06T12:08:54.918537+00:00",
-    "closing_odds": null,
+    "closing_odds": -102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.5,
+    "closing_line": 9.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.303,
+    "beat_close": true
   },
   {
     "date": "2026-06-06",
@@ -47958,10 +48499,16 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-06T14:00:14.916483+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 7.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.923,
+    "beat_close": false
   },
   {
     "date": "2026-06-06",
@@ -47987,10 +48534,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-06T14:00:14.916483+00:00",
-    "closing_odds": null,
+    "closing_odds": -106.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.0,
+    "closing_line": 10.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 1.22,
+    "beat_close": true
   },
   {
     "date": "2026-06-07",
@@ -48148,10 +48701,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-07T01:31:21.960834+00:00",
-    "closing_odds": null,
+    "closing_odds": -107.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.229,
+    "beat_close": true
   },
   {
     "date": "2026-06-07",
@@ -48206,10 +48765,16 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-07T01:31:21.960834+00:00",
-    "closing_odds": null,
+    "closing_odds": -116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 9.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-07",
@@ -48223,7 +48788,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0
   },
   {
     "date": "2026-06-07",
@@ -48690,10 +49257,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-07T14:01:12.278865+00:00",
-    "closing_odds": null,
+    "closing_odds": -116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.28,
+    "beat_close": true
   },
   {
     "date": "2026-06-07",
@@ -48734,10 +49307,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-07T19:35:08.309260+00:00",
-    "closing_odds": null,
+    "closing_odds": -109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 7.5,
+    "closing_line": 7.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.687,
+    "beat_close": true
   },
   {
     "date": "2026-06-08",
@@ -48834,10 +49413,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-08T01:30:44.409749+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.5,
+    "closing_line": 11.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-08",
@@ -48863,10 +49448,16 @@
     "opening_odds": -107.0,
     "opening_implied_prob": 0.516908,
     "snapshot_time": "2026-06-08T01:30:44.409749+00:00",
-    "closing_odds": null,
+    "closing_odds": 105.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.0,
+    "closing_line": 9.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-08",
@@ -49096,10 +49687,16 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-08T14:00:45.577260+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 11.0,
+    "closing_line": 11.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 4.438,
+    "beat_close": true
   },
   {
     "date": "2026-06-08",
@@ -49110,10 +49707,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-08T14:00:45.577260+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.0,
+    "closing_line": 8.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 3.153,
+    "beat_close": true
   },
   {
     "date": "2026-06-08",
@@ -49208,10 +49811,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-09T01:31:16.829384+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 11.5,
+    "closing_line": 11.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-09",
@@ -49342,10 +49951,16 @@
     "opening_odds": -102.0,
     "opening_implied_prob": 0.50495,
     "snapshot_time": "2026-06-09T01:31:16.829384+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.037,
+    "beat_close": false
   },
   {
     "date": "2026-06-09",
@@ -49428,10 +50043,16 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-09T01:31:16.829384+00:00",
-    "closing_odds": null,
+    "closing_odds": 100.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -3.862,
+    "beat_close": false
   },
   {
     "date": "2026-06-09",
@@ -49975,10 +50596,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-09T14:01:14.479760+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 13.0,
+    "closing_line": 11.0,
+    "line_clv": 2.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-09",
@@ -49989,10 +50616,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-09T14:01:14.479760+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 12.5,
+    "closing_line": 12.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.761,
+    "beat_close": false
   },
   {
     "date": "2026-06-10",
@@ -50003,10 +50636,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-10T01:31:11.461849+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 14.0,
+    "closing_line": 13.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-10",
@@ -50195,10 +50834,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-10T01:31:11.461849+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 12.0,
+    "closing_line": 12.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-10",
@@ -50209,10 +50854,16 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-10T01:31:11.461849+00:00",
-    "closing_odds": null,
+    "closing_odds": -109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 8.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-10",
@@ -50223,10 +50874,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-10T01:31:11.461849+00:00",
-    "closing_odds": null,
+    "closing_odds": -106.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 10.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-10",
@@ -50266,10 +50923,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-10T01:31:11.461849+00:00",
-    "closing_odds": null,
+    "closing_odds": 104.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.0,
+    "closing_line": 7.0,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-10",
@@ -50698,10 +51361,16 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-10T14:01:05.046266+00:00",
-    "closing_odds": null,
+    "closing_odds": -106.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.0,
+    "closing_line": 10.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.381,
+    "beat_close": true
   },
   {
     "date": "2026-06-10",
@@ -50726,10 +51395,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-10T14:01:05.046266+00:00",
-    "closing_odds": null,
+    "closing_odds": -116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.157,
+    "beat_close": true
   },
   {
     "date": "2026-06-10",
@@ -51160,10 +51835,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-11T01:30:46.668964+00:00",
-    "closing_odds": null,
+    "closing_odds": -112.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.0,
+    "closing_line": 10.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-11",
@@ -51189,10 +51870,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-11T01:30:46.668964+00:00",
-    "closing_odds": null,
+    "closing_odds": -103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 9.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-11",
@@ -51203,10 +51890,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-11T01:30:46.668964+00:00",
-    "closing_odds": null,
+    "closing_odds": -106.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.0,
+    "beat_close": false
   },
   {
     "date": "2026-06-11",
@@ -51217,10 +51910,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-11T01:30:46.668964+00:00",
-    "closing_odds": null,
+    "closing_odds": 100.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 9.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-11",
@@ -51491,10 +52190,16 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-11T14:00:41.292361+00:00",
-    "closing_odds": null,
+    "closing_odds": -112.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.5,
+    "closing_line": 10.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.895,
+    "beat_close": false
   },
   {
     "date": "2026-06-11",
@@ -51592,7 +52297,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 13.5
   },
   {
     "date": "2026-06-12",
@@ -51743,10 +52450,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-12T04:03:51.661317+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.5,
+    "closing_line": 9.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-12",
@@ -51757,10 +52470,16 @@
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
     "snapshot_time": "2026-06-12T04:03:51.661317+00:00",
-    "closing_odds": null,
+    "closing_odds": -107.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 8.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-12",
@@ -51771,10 +52490,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-12T14:07:25.798546+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.7,
+    "beat_close": true
   },
   {
     "date": "2026-06-12",
@@ -51785,10 +52510,16 @@
     "opening_odds": -109.0,
     "opening_implied_prob": 0.521531,
     "snapshot_time": "2026-06-12T14:07:25.798546+00:00",
-    "closing_odds": null,
+    "closing_odds": -106.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5,
+    "closing_line": 7.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-12",
@@ -51799,10 +52530,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-12T14:07:25.798546+00:00",
-    "closing_odds": null,
+    "closing_odds": -110.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.136,
+    "beat_close": true
   },
   {
     "date": "2026-06-13",
@@ -51813,10 +52550,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-13T04:03:36.774058+00:00",
-    "closing_odds": null,
+    "closing_odds": -103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 14.0,
+    "closing_line": 14.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-13",
@@ -52004,10 +52747,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-13T04:03:36.774058+00:00",
-    "closing_odds": null,
+    "closing_odds": -110.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.796,
+    "beat_close": true
   },
   {
     "date": "2026-06-13",
@@ -52018,10 +52767,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-13T04:03:36.774058+00:00",
-    "closing_odds": null,
+    "closing_odds": -104.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 8.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-13",
@@ -52032,10 +52787,16 @@
     "opening_odds": 101.0,
     "opening_implied_prob": 0.497512,
     "snapshot_time": "2026-06-13T04:03:36.774058+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 1.729,
+    "beat_close": true
   },
   {
     "date": "2026-06-13",
@@ -52662,10 +53423,16 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-13T14:00:31.133366+00:00",
-    "closing_odds": null,
+    "closing_odds": -111.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 7.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.247,
+    "beat_close": false
   },
   {
     "date": "2026-06-13",
@@ -58322,10 +59089,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-14T01:31:13.268477+00:00",
-    "closing_odds": null,
+    "closing_odds": -103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 14.0,
+    "closing_line": 14.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-14",
@@ -58463,10 +59236,16 @@
     "opening_odds": -104.0,
     "opening_implied_prob": 0.509804,
     "snapshot_time": "2026-06-14T01:31:13.268477+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.5,
+    "closing_line": 9.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-14",
@@ -58477,10 +59256,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-14T01:31:13.268477+00:00",
-    "closing_odds": null,
+    "closing_odds": -103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.0,
+    "closing_line": 8.5,
+    "line_clv": 1.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-14",
@@ -58491,10 +59276,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-14T01:31:13.268477+00:00",
-    "closing_odds": null,
+    "closing_odds": -107.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.991,
+    "beat_close": false
   },
   {
     "date": "2026-06-14",
@@ -58505,10 +59296,16 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-14T01:31:13.268477+00:00",
-    "closing_odds": null,
+    "closing_odds": -107.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.0,
+    "closing_line": 8.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.61,
+    "beat_close": true
   },
   {
     "date": "2026-06-14",
@@ -58519,10 +59316,16 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-14T01:31:13.268477+00:00",
-    "closing_odds": null,
+    "closing_odds": -107.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.0,
+    "closing_line": 8.5,
+    "line_clv": 1.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-14",
@@ -59071,10 +59874,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-14T12:16:44.424514+00:00",
-    "closing_odds": null,
+    "closing_odds": -104.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.0,
+    "closing_line": 8.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-14",
@@ -59085,10 +59894,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-14T12:16:44.424514+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 10.0,
+    "closing_line": 9.0,
+    "line_clv": -1.0,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-14",
@@ -59099,10 +59914,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-14T17:18:14.137790+00:00",
-    "closing_odds": null,
+    "closing_odds": -103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 13.5,
+    "closing_line": 14.5,
+    "line_clv": -1.0,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-14",
@@ -59113,10 +59934,16 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-14T17:18:14.137790+00:00",
-    "closing_odds": null,
+    "closing_odds": -105.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 8.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.152,
+    "beat_close": true
   },
   {
     "date": "2026-06-14",
@@ -59141,10 +59968,16 @@
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
     "snapshot_time": "2026-06-14T17:18:14.137790+00:00",
-    "closing_odds": null,
+    "closing_odds": -107.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 6.5,
+    "closing_line": 8.5,
+    "line_clv": 2.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-14",
@@ -59155,10 +59988,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-14T17:18:14.137790+00:00",
-    "closing_odds": null,
+    "closing_odds": -102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 7.5,
+    "line_clv": 1.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-15",
@@ -59287,7 +60126,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5
   },
   {
     "date": "2026-06-15",
@@ -59298,10 +60139,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-15T02:36:41.918253+00:00",
-    "closing_odds": null,
+    "closing_odds": -118.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 8.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-15",
@@ -59312,10 +60159,16 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-15T02:36:41.918253+00:00",
-    "closing_odds": null,
+    "closing_odds": -104.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 8.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-15",
@@ -59326,10 +60179,16 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-15T02:36:41.918253+00:00",
-    "closing_odds": null,
+    "closing_odds": -109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 4.176,
+    "beat_close": true
   },
   {
     "date": "2026-06-15",
@@ -59340,10 +60199,16 @@
     "opening_odds": 102.0,
     "opening_implied_prob": 0.49505,
     "snapshot_time": "2026-06-15T02:36:41.918253+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.5,
+    "closing_line": 10.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.552,
+    "beat_close": true
   },
   {
     "date": "2026-06-15",
@@ -59634,11 +60499,11 @@
     "opening_odds": 5000.0,
     "opening_implied_prob": 0.019608,
     "snapshot_time": "2026-06-15T20:58:45.871738+00:00",
-    "closing_odds": 5000.0,
-    "closing_implied_prob": 0.019608,
-    "clv": -0.0,
-    "clv_pct": -0.0,
-    "clv_devigged": false
+    "closing_odds": -165.0,
+    "closing_implied_prob": 0.636364,
+    "clv": 0.616756,
+    "clv_pct": 61.676,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-15",
@@ -59673,11 +60538,11 @@
     "opening_odds": 4000.0,
     "opening_implied_prob": 0.02439,
     "snapshot_time": "2026-06-15T20:58:45.871738+00:00",
-    "closing_odds": 4000.0,
-    "closing_implied_prob": 0.02439,
-    "clv": 0.0,
-    "clv_pct": 0.0,
-    "clv_devigged": false
+    "closing_odds": 660.0,
+    "closing_implied_prob": 0.134479,
+    "clv": 0.110089,
+    "clv_pct": 11.009,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-15",
@@ -59912,10 +60777,16 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-16T01:32:07.294992+00:00",
-    "closing_odds": null,
+    "closing_odds": -109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 9.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 4.176,
+    "beat_close": true
   },
   {
     "date": "2026-06-16",
@@ -59943,7 +60814,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-06-16",
@@ -59954,10 +60827,16 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-16T01:32:07.294992+00:00",
-    "closing_odds": null,
+    "closing_odds": -102.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 9.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-16",
@@ -59968,10 +60847,16 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-16T01:32:07.294992+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 10.5,
+    "closing_line": 10.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.057,
+    "beat_close": true
   },
   {
     "date": "2026-06-16",
@@ -59985,7 +60870,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-06-16",
@@ -59999,7 +60886,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5
   },
   {
     "date": "2026-06-16",
@@ -60436,7 +61325,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0
   },
   {
     "date": "2026-06-14",
@@ -62745,10 +63636,11 @@
     "opening_odds": -188.0,
     "opening_implied_prob": 0.652778,
     "snapshot_time": "2026-06-18T15:29:03.541442+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 149.0,
+    "closing_implied_prob": 0.401606,
+    "clv": -0.251172,
+    "clv_pct": -25.117,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-18",
@@ -62763,10 +63655,11 @@
     "opening_odds": -350.0,
     "opening_implied_prob": 0.777778,
     "snapshot_time": "2026-06-18T15:29:03.541442+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 230.0,
+    "closing_implied_prob": 0.30303,
+    "clv": -0.474748,
+    "clv_pct": -47.475,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-18",
@@ -62963,10 +63856,11 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-18T16:43:50.847520+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -110.0,
+    "closing_implied_prob": 0.52381,
+    "clv": 0.04762,
+    "clv_pct": 4.762,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-18",
@@ -62981,10 +63875,11 @@
     "opening_odds": -169.0,
     "opening_implied_prob": 0.628253,
     "snapshot_time": "2026-06-18T16:43:50.847520+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 149.0,
+    "closing_implied_prob": 0.401606,
+    "clv": -0.226647,
+    "clv_pct": -22.665,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-18",
@@ -62999,10 +63894,11 @@
     "opening_odds": -315.0,
     "opening_implied_prob": 0.759036,
     "snapshot_time": "2026-06-18T16:43:50.847520+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 230.0,
+    "closing_implied_prob": 0.30303,
+    "clv": -0.456006,
+    "clv_pct": -45.601,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-18",
@@ -63031,10 +63927,11 @@
     "opening_odds": 325.0,
     "opening_implied_prob": 0.235294,
     "snapshot_time": "2026-06-18T18:22:48.814736+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 450.0,
+    "closing_implied_prob": 0.181818,
+    "clv": -0.053476,
+    "clv_pct": -5.348,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-18",
@@ -63049,10 +63946,11 @@
     "opening_odds": 130.0,
     "opening_implied_prob": 0.434783,
     "snapshot_time": "2026-06-18T18:22:48.814736+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 124.0,
+    "closing_implied_prob": 0.446429,
+    "clv": 0.011646,
+    "clv_pct": 1.165,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-20",
@@ -63210,10 +64108,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-19T06:38:56.298083+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 9.0,
+    "line_clv": 1.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-20",
@@ -63224,10 +64128,16 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-19T06:38:56.298083+00:00",
-    "closing_odds": null,
+    "closing_odds": -111.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.0,
+    "closing_line": 7.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-20",
@@ -63238,10 +64148,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-19T06:38:56.298083+00:00",
-    "closing_odds": null,
+    "closing_odds": 101.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.825,
+    "beat_close": false
   },
   {
     "date": "2026-06-20",
@@ -63678,10 +64594,11 @@
     "opening_odds": -135.0,
     "opening_implied_prob": 0.574468,
     "snapshot_time": "2026-06-19T10:30:29.327455+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -146.0,
+    "closing_implied_prob": 0.702918,
+    "clv": 0.12845,
+    "clv_pct": 12.845,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-19",
@@ -64097,10 +65014,11 @@
     "opening_odds": -145.0,
     "opening_implied_prob": 0.591837,
     "snapshot_time": "2026-06-19T16:14:32.228720+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -146.0,
+    "closing_implied_prob": 0.702918,
+    "clv": 0.111081,
+    "clv_pct": 11.108,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-19",
@@ -64151,10 +65069,11 @@
     "opening_odds": 126.0,
     "opening_implied_prob": 0.442478,
     "snapshot_time": "2026-06-19T17:11:06.364516+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -700.0,
+    "closing_implied_prob": 0.875,
+    "clv": 0.432522,
+    "clv_pct": 43.252,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-19",
@@ -64169,10 +65088,11 @@
     "opening_odds": 251.0,
     "opening_implied_prob": 0.2849,
     "snapshot_time": "2026-06-19T17:11:06.364516+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 510.0,
+    "closing_implied_prob": 0.163934,
+    "clv": -0.120966,
+    "clv_pct": -12.097,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-19",
@@ -64187,10 +65107,11 @@
     "opening_odds": 135.0,
     "opening_implied_prob": 0.425532,
     "snapshot_time": "2026-06-19T17:11:06.364516+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 156.0,
+    "closing_implied_prob": 0.390625,
+    "clv": -0.034907,
+    "clv_pct": -3.491,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-19",
@@ -64456,10 +65377,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-20T05:51:40.234505+00:00",
-    "closing_odds": null,
+    "closing_odds": -116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 10.0,
+    "closing_line": 10.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -64470,10 +65397,16 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-20T05:51:40.234505+00:00",
-    "closing_odds": null,
+    "closing_odds": -118.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.5,
+    "closing_line": 9.0,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -64484,10 +65417,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-20T05:51:40.234505+00:00",
-    "closing_odds": null,
+    "closing_odds": -113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.0,
+    "closing_line": 8.0,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.261,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -64498,10 +65437,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-20T05:51:40.234505+00:00",
-    "closing_odds": null,
+    "closing_odds": 104.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5,
+    "closing_line": 9.0,
+    "line_clv": 1.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -64512,10 +65457,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-20T05:51:40.234505+00:00",
-    "closing_odds": null,
+    "closing_odds": -109.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.532,
+    "beat_close": false
   },
   {
     "date": "2026-06-21",
@@ -64526,10 +65477,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-20T05:51:40.234505+00:00",
-    "closing_odds": null,
+    "closing_odds": -105.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.448,
+    "beat_close": false
   },
   {
     "date": "2026-06-21",
@@ -64872,10 +65829,11 @@
     "opening_odds": 525.0,
     "opening_implied_prob": 0.16,
     "snapshot_time": "2026-06-20T09:17:48.374222+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 635.0,
+    "closing_implied_prob": 0.134767,
+    "clv": -0.025233,
+    "clv_pct": -2.523,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-20",
@@ -64890,10 +65848,11 @@
     "opening_odds": 2500.0,
     "opening_implied_prob": 0.038462,
     "snapshot_time": "2026-06-20T09:17:48.374222+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 1700.0,
+    "closing_implied_prob": 0.054852,
+    "clv": 0.01639,
+    "clv_pct": 1.639,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-20",
@@ -64908,10 +65867,11 @@
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
     "snapshot_time": "2026-06-20T09:17:48.374222+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -140.0,
+    "closing_implied_prob": 0.573728,
+    "clv": -0.009605,
+    "clv_pct": -0.961,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-20",
@@ -64955,10 +65915,16 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-20T14:52:12.609711+00:00",
-    "closing_odds": null,
+    "closing_odds": 104.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.0,
+    "closing_line": 9.0,
+    "line_clv": 2.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -64969,10 +65935,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-20T14:52:12.609711+00:00",
-    "closing_odds": null,
+    "closing_odds": -116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 10.5,
+    "closing_line": 10.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.938,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -64983,10 +65955,16 @@
     "opening_odds": 105.0,
     "opening_implied_prob": 0.487805,
     "snapshot_time": "2026-06-20T14:52:12.609711+00:00",
-    "closing_odds": null,
+    "closing_odds": -105.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0,
+    "closing_line": 8.5,
+    "line_clv": 0.5,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-21",
@@ -67587,10 +68565,11 @@
     "opening_odds": 700.0,
     "opening_implied_prob": 0.125,
     "snapshot_time": "2026-06-21T10:04:22.019374+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 750.0,
+    "closing_implied_prob": 0.11525,
+    "clv": -0.00975,
+    "clv_pct": -0.975,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-21",
@@ -67623,10 +68602,11 @@
     "opening_odds": 800.0,
     "opening_implied_prob": 0.111111,
     "snapshot_time": "2026-06-21T10:04:22.019374+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 1000.0,
+    "closing_implied_prob": 0.089696,
+    "clv": -0.021415,
+    "clv_pct": -2.142,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-21",
@@ -68739,10 +69719,11 @@
     "opening_odds": -230.0,
     "opening_implied_prob": 0.69697,
     "snapshot_time": "2026-06-21T15:16:04.578242+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -230.0,
+    "closing_implied_prob": 0.682767,
+    "clv": -0.014203,
+    "clv_pct": -1.42,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-21",
@@ -68757,10 +69738,11 @@
     "opening_odds": -215.0,
     "opening_implied_prob": 0.68254,
     "snapshot_time": "2026-06-21T15:16:04.578242+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -250.0,
+    "closing_implied_prob": 0.704752,
+    "clv": 0.022212,
+    "clv_pct": 2.221,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-21",
@@ -68830,10 +69812,11 @@
     "opening_odds": 270.0,
     "opening_implied_prob": 0.27027,
     "snapshot_time": "2026-06-21T16:56:52.376679+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 270.0,
+    "closing_implied_prob": 0.27027,
+    "clv": 0.0,
+    "clv_pct": 0.0,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-21",
@@ -68848,10 +69831,11 @@
     "opening_odds": 255.0,
     "opening_implied_prob": 0.28169,
     "snapshot_time": "2026-06-21T16:56:52.376679+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 262.0,
+    "closing_implied_prob": 0.276243,
+    "clv": -0.005447,
+    "clv_pct": -0.545,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-21",
@@ -68866,10 +69850,11 @@
     "opening_odds": 160.0,
     "opening_implied_prob": 0.384615,
     "snapshot_time": "2026-06-21T16:56:52.376679+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -240.0,
+    "closing_implied_prob": 0.705882,
+    "clv": 0.321267,
+    "clv_pct": 32.127,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-21",
@@ -69312,10 +70297,11 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -163.0,
+    "closing_implied_prob": 0.6068,
+    "clv": 0.1068,
+    "clv_pct": 10.68,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69326,10 +70312,11 @@
     "opening_odds": 106.0,
     "opening_implied_prob": 0.485437,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 140.0,
+    "closing_implied_prob": 0.407933,
+    "clv": -0.077504,
+    "clv_pct": -7.75,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69340,10 +70327,11 @@
     "opening_odds": -124.0,
     "opening_implied_prob": 0.553571,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -152.0,
+    "closing_implied_prob": 0.59144,
+    "clv": 0.037869,
+    "clv_pct": 3.787,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69354,10 +70342,11 @@
     "opening_odds": 125.0,
     "opening_implied_prob": 0.444444,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -104.0,
+    "closing_implied_prob": 0.501187,
+    "clv": 0.056743,
+    "clv_pct": 5.674,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69383,10 +70372,11 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -108.0,
+    "closing_implied_prob": 0.508194,
+    "clv": -0.015616,
+    "clv_pct": -1.562,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69397,10 +70387,11 @@
     "opening_odds": -124.0,
     "opening_implied_prob": 0.553571,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -111.0,
+    "closing_implied_prob": 0.515188,
+    "clv": -0.038383,
+    "clv_pct": -3.838,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69439,10 +70430,11 @@
     "opening_odds": -112.0,
     "opening_implied_prob": 0.528302,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -107.0,
+    "closing_implied_prob": 0.507073,
+    "clv": -0.021229,
+    "clv_pct": -2.123,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -69453,10 +70445,16 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-22T06:57:18.831406+00:00",
-    "closing_odds": null,
+    "closing_odds": -105.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.448,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -69471,10 +70469,10 @@
     "opening_odds": -154.0,
     "opening_implied_prob": 0.606299,
     "snapshot_time": "2026-06-22T06:58:03.882608+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -129.0,
+    "closing_implied_prob": 0.541908,
+    "clv": -0.064391,
+    "clv_pct": -6.439
   },
   {
     "date": "2026-06-23",
@@ -69489,10 +70487,10 @@
     "opening_odds": 0.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-22T06:58:03.882608+00:00",
-    "closing_odds": 107.0,
-    "closing_implied_prob": 0.464237,
-    "clv": -0.035763,
-    "clv_pct": -3.576
+    "closing_odds": 104.0,
+    "closing_implied_prob": 0.471458,
+    "clv": -0.028542,
+    "clv_pct": -2.854
   },
   {
     "date": "2026-06-23",
@@ -69507,10 +70505,10 @@
     "opening_odds": 0.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-22T06:58:03.882608+00:00",
-    "closing_odds": -131.0,
-    "closing_implied_prob": 0.545919,
-    "clv": 0.045919,
-    "clv_pct": 4.592
+    "closing_odds": -120.0,
+    "closing_implied_prob": 0.524221,
+    "clv": 0.024221,
+    "clv_pct": 2.422
   },
   {
     "date": "2026-06-23",
@@ -69525,10 +70523,10 @@
     "opening_odds": 0.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-22T06:58:03.882608+00:00",
-    "closing_odds": 111.0,
-    "closing_implied_prob": 0.456913,
-    "clv": -0.043087,
-    "clv_pct": -4.309
+    "closing_odds": 119.0,
+    "closing_implied_prob": 0.439815,
+    "clv": -0.060185,
+    "clv_pct": -6.018
   },
   {
     "date": "2026-06-23",
@@ -69543,10 +70541,10 @@
     "opening_odds": 0.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-22T06:58:03.882608+00:00",
-    "closing_odds": -113.0,
-    "closing_implied_prob": 0.511141,
-    "clv": 0.011141,
-    "clv_pct": 1.114
+    "closing_odds": -112.0,
+    "closing_implied_prob": 0.508909,
+    "clv": 0.008909,
+    "clv_pct": 0.891
   },
   {
     "date": "2026-06-23",
@@ -69999,10 +70997,14 @@
     "opening_odds": 102.0,
     "opening_implied_prob": 0.49505,
     "snapshot_time": "2026-06-22T06:59:45.913290+00:00",
-    "closing_odds": null,
+    "closing_odds": 103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.244,
+    "beat_close": false
   },
   {
     "date": "2026-06-22",
@@ -70385,10 +71387,11 @@
     "opening_odds": 120.0,
     "opening_implied_prob": 0.454545,
     "snapshot_time": "2026-06-22T12:25:00.634590+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 134.0,
+    "closing_implied_prob": 0.418271,
+    "clv": -0.036274,
+    "clv_pct": -3.627,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-22",
@@ -70702,10 +71705,11 @@
     "opening_odds": 134.0,
     "opening_implied_prob": 0.42735,
     "snapshot_time": "2026-06-22T17:47:43.106456+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 134.0,
+    "closing_implied_prob": 0.418271,
+    "clv": -0.009079,
+    "clv_pct": -0.908,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-22",
@@ -70808,10 +71812,11 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-23T05:39:41.547535+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -104.0,
+    "closing_implied_prob": 0.5,
+    "clv": -0.02381,
+    "clv_pct": -2.381,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-24",
@@ -70948,10 +71953,16 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-23T05:39:41.547535+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 10.5,
+    "closing_line": 10.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.813,
+    "beat_close": false
   },
   {
     "date": "2026-06-24",
@@ -70962,10 +71973,16 @@
     "opening_odds": -112.0,
     "opening_implied_prob": 0.528302,
     "snapshot_time": "2026-06-23T05:39:41.547535+00:00",
-    "closing_odds": null,
+    "closing_odds": -115.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 8.5,
+    "closing_line": 8.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.896,
+    "beat_close": false
   },
   {
     "date": "2026-06-24",
@@ -70976,10 +71993,16 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-23T05:39:41.547535+00:00",
-    "closing_odds": null,
+    "closing_odds": -112.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.0,
+    "closing_line": 8.5,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-24",
@@ -70994,10 +72017,10 @@
     "opening_odds": -115.0,
     "opening_implied_prob": 0.534884,
     "snapshot_time": "2026-06-23T05:40:26.217861+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 102.0,
+    "closing_implied_prob": 0.47673,
+    "clv": -0.058154,
+    "clv_pct": -5.815
   },
   {
     "date": "2026-06-24",
@@ -71030,10 +72053,10 @@
     "opening_odds": -120.0,
     "opening_implied_prob": 0.545455,
     "snapshot_time": "2026-06-23T05:40:26.217861+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -123.0,
+    "closing_implied_prob": 0.530675,
+    "clv": -0.01478,
+    "clv_pct": -1.478
   },
   {
     "date": "2026-06-24",
@@ -71048,10 +72071,10 @@
     "opening_odds": 0.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-23T05:40:26.217861+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -118.0,
+    "closing_implied_prob": 0.521069,
+    "clv": 0.021069,
+    "clv_pct": 2.107
   },
   {
     "date": "2026-06-24",
@@ -71066,10 +72089,10 @@
     "opening_odds": 0.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-23T05:40:26.217861+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -102.0,
+    "closing_implied_prob": 0.485607,
+    "clv": -0.014393,
+    "clv_pct": -1.439
   },
   {
     "date": "2026-06-24",
@@ -71084,10 +72107,14 @@
     "opening_odds": 106.0,
     "opening_implied_prob": 0.485437,
     "snapshot_time": "2026-06-23T05:40:26.217861+00:00",
-    "closing_odds": null,
+    "closing_odds": -101.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.0,
+    "line_clv": -0.5,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-24",
@@ -71120,10 +72147,14 @@
     "opening_odds": -104.0,
     "opening_implied_prob": 0.509804,
     "snapshot_time": "2026-06-23T05:40:26.217861+00:00",
-    "closing_odds": null,
+    "closing_odds": -103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -1.99,
+    "beat_close": false
   },
   {
     "date": "2026-06-24",
@@ -71282,10 +72313,14 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 117.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.429,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71318,10 +72353,14 @@
     "opening_odds": 118.0,
     "opening_implied_prob": 0.458716,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 1.077,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71336,10 +72375,14 @@
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 120.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71354,10 +72397,14 @@
     "opening_odds": 106.0,
     "opening_implied_prob": 0.485437,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -128.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 7.597,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71372,10 +72419,14 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 103.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 2.749,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71390,10 +72441,14 @@
     "opening_odds": 132.0,
     "opening_implied_prob": 0.431034,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 3.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 3.193,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71408,10 +72463,14 @@
     "opening_odds": -114.0,
     "opening_implied_prob": 0.53271,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -161.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 3.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 8.415,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71426,10 +72485,14 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -157.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 6.5,
+    "line_clv": -1.0,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71462,10 +72525,14 @@
     "opening_odds": -120.0,
     "opening_implied_prob": 0.545455,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -136.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 3.082,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71480,10 +72547,14 @@
     "opening_odds": 112.0,
     "opening_implied_prob": 0.471698,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.907,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71498,10 +72569,14 @@
     "opening_odds": 110.0,
     "opening_implied_prob": 0.47619,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -151.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": -1.0,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71516,10 +72591,14 @@
     "opening_odds": -144.0,
     "opening_implied_prob": 0.590164,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 117.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71534,10 +72613,14 @@
     "opening_odds": -156.0,
     "opening_implied_prob": 0.609375,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -161.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.748,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71552,10 +72635,14 @@
     "opening_odds": -107.0,
     "opening_implied_prob": 0.516908,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -108.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 0.232,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71606,10 +72693,14 @@
     "opening_odds": 100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -163.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": -1.0,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71642,10 +72733,14 @@
     "opening_odds": -165.0,
     "opening_implied_prob": 0.622642,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 113.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71660,10 +72755,14 @@
     "opening_odds": -104.0,
     "opening_implied_prob": 0.509804,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 119.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -5.318,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71678,10 +72777,14 @@
     "opening_odds": -140.0,
     "opening_implied_prob": 0.583333,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -122.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -3.378,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71696,10 +72799,14 @@
     "opening_odds": -141.0,
     "opening_implied_prob": 0.585062,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -163.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 3.471,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71714,10 +72821,14 @@
     "opening_odds": -125.0,
     "opening_implied_prob": 0.555556,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 110.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 3.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -7.937,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71732,10 +72843,14 @@
     "opening_odds": -160.0,
     "opening_implied_prob": 0.615385,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -157.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 6.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -0.449,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71750,10 +72865,14 @@
     "opening_odds": -180.0,
     "opening_implied_prob": 0.642857,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": 116.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 3.5,
+    "line_clv": 1.0,
+    "price_clv_pct": null,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71786,10 +72905,14 @@
     "opening_odds": -135.0,
     "opening_implied_prob": 0.574468,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -124.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 4.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.09,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71804,10 +72927,14 @@
     "opening_odds": -170.0,
     "opening_implied_prob": 0.62963,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -151.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 5.5,
+    "line_clv": 0.0,
+    "price_clv_pct": -2.804,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71840,10 +72967,14 @@
     "opening_odds": 130.0,
     "opening_implied_prob": 0.434783,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -156.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 3.5,
+    "line_clv": -1.0,
+    "price_clv_pct": null,
+    "beat_close": false
   },
   {
     "date": "2026-06-23",
@@ -71858,10 +72989,14 @@
     "opening_odds": -135.0,
     "opening_implied_prob": 0.574468,
     "snapshot_time": "2026-06-23T05:41:58.452885+00:00",
-    "closing_odds": null,
+    "closing_odds": -141.0,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "closing_line": 2.5,
+    "line_clv": 0.0,
+    "price_clv_pct": 1.059,
+    "beat_close": true
   },
   {
     "date": "2026-06-23",
@@ -71930,10 +73065,11 @@
     "opening_odds": 640.0,
     "opening_implied_prob": 0.135135,
     "snapshot_time": "2026-06-23T10:01:24.008212+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 700.0,
+    "closing_implied_prob": 0.122481,
+    "clv": -0.012654,
+    "clv_pct": -1.265,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -71948,10 +73084,11 @@
     "opening_odds": -122.0,
     "opening_implied_prob": 0.54955,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -125.0,
+    "closing_implied_prob": 0.545455,
+    "clv": -0.004095,
+    "clv_pct": -0.41,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -71966,10 +73103,11 @@
     "opening_odds": -162.0,
     "opening_implied_prob": 0.618321,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -171.0,
+    "closing_implied_prob": 0.619478,
+    "clv": 0.001157,
+    "clv_pct": 0.116,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -71984,10 +73122,11 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -108.0,
+    "closing_implied_prob": 0.508194,
+    "clv": -0.015616,
+    "clv_pct": -1.562,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72002,10 +73141,11 @@
     "opening_odds": -113.0,
     "opening_implied_prob": 0.530516,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -101.0,
+    "closing_implied_prob": 0.492927,
+    "clv": -0.037589,
+    "clv_pct": -3.759,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72020,10 +73160,11 @@
     "opening_odds": -152.0,
     "opening_implied_prob": 0.603175,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -153.0,
+    "closing_implied_prob": 0.592067,
+    "clv": -0.011108,
+    "clv_pct": -1.111,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72074,10 +73215,11 @@
     "opening_odds": -103.0,
     "opening_implied_prob": 0.507389,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -101.0,
+    "closing_implied_prob": 0.494063,
+    "clv": -0.013326,
+    "clv_pct": -1.333,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72092,10 +73234,11 @@
     "opening_odds": -183.0,
     "opening_implied_prob": 0.646643,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -175.0,
+    "closing_implied_prob": 0.626866,
+    "clv": -0.019777,
+    "clv_pct": -1.978,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72110,10 +73253,11 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -111.0,
+    "closing_implied_prob": 0.515188,
+    "clv": -0.008622,
+    "clv_pct": -0.862,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72128,10 +73272,11 @@
     "opening_odds": -152.0,
     "opening_implied_prob": 0.603175,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -152.0,
+    "closing_implied_prob": 0.59144,
+    "clv": -0.011735,
+    "clv_pct": -1.174,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72146,10 +73291,11 @@
     "opening_odds": -163.0,
     "opening_implied_prob": 0.619772,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -163.0,
+    "closing_implied_prob": 0.6068,
+    "clv": -0.012972,
+    "clv_pct": -1.297,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72164,10 +73310,11 @@
     "opening_odds": -132.0,
     "opening_implied_prob": 0.568966,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -155.0,
+    "closing_implied_prob": 0.601189,
+    "clv": 0.032223,
+    "clv_pct": 3.222,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72182,10 +73329,11 @@
     "opening_odds": -109.0,
     "opening_implied_prob": 0.521531,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 100.0,
+    "closing_implied_prob": 0.489461,
+    "clv": -0.03207,
+    "clv_pct": -3.207,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72200,10 +73348,11 @@
     "opening_odds": -110.0,
     "opening_implied_prob": 0.52381,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -103.0,
+    "closing_implied_prob": 0.498813,
+    "clv": -0.024997,
+    "clv_pct": -2.5,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72290,10 +73439,11 @@
     "opening_odds": -194.0,
     "opening_implied_prob": 0.659864,
     "snapshot_time": "2026-06-23T16:06:48.697250+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -213.0,
+    "closing_implied_prob": 0.666799,
+    "clv": 0.006935,
+    "clv_pct": 0.693,
+    "clv_devigged": true
   },
   {
     "date": "2026-06-23",
@@ -72361,11 +73511,7 @@
     "direction": "WIN",
     "opening_odds": 550.0,
     "opening_implied_prob": 0.153846,
-    "snapshot_time": "2026-06-23T18:20:19.348850+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "snapshot_time": "2026-06-23T18:20:19.348850+00:00"
   },
   {
     "date": "2026-06-23",
@@ -72379,11 +73525,7 @@
     "direction": "WIN",
     "opening_odds": 50000.0,
     "opening_implied_prob": 0.001996,
-    "snapshot_time": "2026-06-23T18:20:19.348850+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "snapshot_time": "2026-06-23T18:20:19.348850+00:00"
   },
   {
     "date": "2026-06-25",
@@ -72481,7 +73623,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 7.5
   },
   {
     "date": "2026-06-25",
@@ -72495,7 +73639,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "OVER",
+    "opening_line": 9.5
   },
   {
     "date": "2026-06-25",
@@ -72509,7 +73655,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 8.0
   },
   {
     "date": "2026-06-25",
@@ -72523,7 +73671,9 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "direction": "UNDER",
+    "opening_line": 9.0
   },
   {
     "date": "2026-06-25",
@@ -73420,10 +74570,11 @@
     "opening_odds": -105.0,
     "opening_implied_prob": 0.512195,
     "snapshot_time": "2026-06-24T09:50:05.995253+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -110.0,
+    "closing_implied_prob": 0.52381,
+    "clv": 0.011615,
+    "clv_pct": 1.161,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-24",
@@ -73438,10 +74589,11 @@
     "opening_odds": 700.0,
     "opening_implied_prob": 0.125,
     "snapshot_time": "2026-06-24T09:50:05.995253+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 650.0,
+    "closing_implied_prob": 0.133333,
+    "clv": 0.008333,
+    "clv_pct": 0.833,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-24",
@@ -73456,10 +74608,11 @@
     "opening_odds": 425.0,
     "opening_implied_prob": 0.190476,
     "snapshot_time": "2026-06-24T09:50:05.995253+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 1114.0,
+    "closing_implied_prob": 0.082372,
+    "clv": -0.108104,
+    "clv_pct": -10.81,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-24",
@@ -73474,10 +74627,11 @@
     "opening_odds": 245.0,
     "opening_implied_prob": 0.289855,
     "snapshot_time": "2026-06-24T09:50:05.995253+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 230.0,
+    "closing_implied_prob": 0.30303,
+    "clv": 0.013175,
+    "clv_pct": 1.318,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-24",
@@ -73492,10 +74646,11 @@
     "opening_odds": 1000.0,
     "opening_implied_prob": 0.090909,
     "snapshot_time": "2026-06-24T09:50:05.995253+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": 750.0,
+    "closing_implied_prob": 0.117647,
+    "clv": 0.026738,
+    "clv_pct": 2.674,
+    "clv_devigged": false
   },
   {
     "date": "2026-06-24",
@@ -73510,9 +74665,10 @@
     "opening_odds": -150.0,
     "opening_implied_prob": 0.6,
     "snapshot_time": "2026-06-24T09:50:05.995253+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null
+    "closing_odds": -170.0,
+    "closing_implied_prob": 0.62963,
+    "clv": 0.02963,
+    "clv_pct": 2.963,
+    "clv_devigged": false
   }
 ]
