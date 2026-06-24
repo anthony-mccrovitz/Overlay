@@ -1459,6 +1459,131 @@ def cmd_clv(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    """One-screen model status check: every (sport, market) with its registry
+    status, sample size, record, ROI, model EV, avg odds entered, and CLV
+    (best price + vs Pinnacle). Joins the settled record (picks.json) with the
+    CLV snapshots and the model registry so you can eyeball — at a glance —
+    which algos are live, which are shadow, and which are actually earning their
+    keep (ROI is realized P&L; CLV is the leading edge signal; EV is the model's
+    own claim, which is only trustworthy where CLV agrees)."""
+    import json as _json
+    from collections import defaultdict
+    from pathlib import Path
+
+    def am_imp(o):
+        o = float(o); return 100/(o+100) if o > 0 else abs(o)/(abs(o)+100)
+    def imp_am(p):
+        if not p or p <= 0 or p >= 1: return None
+        return -round(p/(1-p)*100) if p >= 0.5 else round((1-p)/p*100)
+    def avg(xs): return sum(xs)/len(xs) if xs else None
+
+    try:
+        from src.analytics.clv_tracker import _normalize_sport
+    except Exception:
+        def _normalize_sport(x): return x
+    def lbl(sp):
+        sp = _normalize_sport(str(sp or "?"))
+        return {"baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
+                "icehockey_nhl": "nhl", "mma_mixed_martial_arts": "mma",
+                "soccer_fifa_world_cup": "wc"}.get(
+            sp, sp.replace("soccer_", "").replace("tennis_atp_", "atp-")
+                  .replace("tennis_wta_", "wta-").replace("golf_", "golf-")[:11])
+
+    sport_filter = (getattr(args, "sport", None) or "").lower() or None
+    min_n = getattr(args, "min_n", None) or 1
+    card_only = getattr(args, "card", False)
+
+    try:
+        picks = _json.loads(Path("data/pnl/picks.json").read_text())
+        picks = picks.get("picks", picks) if isinstance(picks, dict) else picks
+    except (OSError, ValueError):
+        print("  ✗ picks.json unreadable"); return 1
+
+    P = defaultdict(lambda: {"n": 0, "card": 0, "w": 0, "l": 0, "p": 0,
+                             "stake": 0.0, "profit": 0.0, "imp": [], "ev": []})
+    for pk in picks:
+        if card_only and not pk.get("card_pick"):
+            continue
+        k = (lbl(pk.get("sport")), str(pk.get("market") or "?").lower())
+        b = P[k]; b["n"] += 1
+        if pk.get("card_pick"): b["card"] += 1
+        r = pk.get("result")
+        if r in ("win", "loss", "push"):
+            b["stake"] += float(pk.get("stake") or 0); b["profit"] += float(pk.get("profit") or 0)
+            b["w"] += r == "win"; b["l"] += r == "loss"; b["p"] += r == "push"
+        o = pk.get("odds")
+        if o not in (None, "", 0):
+            try: b["imp"].append(am_imp(o))
+            except (ValueError, TypeError): pass
+        e = pk.get("edge_pct")
+        if e is not None:
+            try: b["ev"].append(float(e))
+            except (ValueError, TypeError): pass
+
+    try:
+        snaps = _json.loads(Path("data/clv/snapshots.json").read_text())
+        snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
+    except (OSError, ValueError):
+        snaps = []
+    C = defaultdict(lambda: {"best": [], "sharp": [], "unit": "%"})
+    for s in snaps:
+        if not isinstance(s, dict): continue
+        mk = str(s.get("market") or "?").lower()
+        if mk in ("h2h", "ml"): mk = "moneyline"
+        elif mk == "totals": mk = "total"
+        elif mk in ("run_line", "runline", "puck_line", "puckline"): mk = "spread"
+        k = (lbl(s.get("sport")), mk)
+        if s.get("clv_pct") is not None:
+            C[k]["best"].append(s["clv_pct"]); C[k]["unit"] = "%"
+            if s.get("clv_sharp_pct") is not None: C[k]["sharp"].append(s["clv_sharp_pct"])
+        elif s.get("line_clv") is not None:
+            C[k]["best"].append(s["line_clv"]); C[k]["unit"] = "pt"
+            if s.get("line_clv_sharp") is not None: C[k]["sharp"].append(s["line_clv_sharp"])
+
+    try:
+        from src.config.models import MODELS
+        reg = {(k[0], k[1]): v for k, v in MODELS.items()}
+    except Exception:
+        reg = {}
+
+    keys = sorted(set(P) | set(C), key=lambda k: -P[k]["n"])
+    print(f"\n  ─ MODEL DASHBOARD ─ status · realized P&L · CLV (best │ vs Pinnacle) ─")
+    if card_only: print("  [card picks only]")
+    print(f"  {'sport':8}{'market':19}{'stat':5}{'n':>5}{'crd':>4}{'W-L-P':>12}"
+          f"{'ROI':>8}{'EV':>7}{'odds':>6}{'CLVbest':>9}{'CLVpinn':>9}")
+    print(f"  {'─'*98}")
+    for k in keys:
+        sp, mk = k
+        if sport_filter and sport_filter not in sp: continue
+        b = P[k]
+        if card_only and b["n"] == 0: continue   # no card picks here → skip
+        if b["n"] < min_n and not C[k]["best"]: continue
+        c = C[k]
+        settled = b["w"] + b["l"] + b["p"]
+        roi = (b["profit"]/b["stake"]*100) if b["stake"] > 0 else None
+        ev, imp = avg(b["ev"]), avg(b["imp"])
+        odds = imp_am(imp) if imp else None
+        cb, cs = avg(c["best"]), avg(c["sharp"])
+        st = reg.get(k, {}).get("status", "—"); tier = reg.get(k, {}).get("tier", "")
+        stat = {"live": "LIVE", "incubating": "shad", "retired": "ret"}.get(st, "—")
+        if tier == "paused": stat = "paus"
+        rec = f"{b['w']}-{b['l']}-{b['p']}" if settled else "—"
+        roi_s = f"{roi:+.1f}%" if roi is not None else "—"
+        ev_s = f"{ev:+.1f}%" if ev is not None else "—"
+        od_s = f"{odds:+d}" if odds is not None else "—"
+        cb_s = f"{cb:+.2f}{c['unit']}" if cb is not None else "—"
+        cs_s = f"{cs:+.2f}{c['unit']}" if cs is not None else "—"
+        print(f"  {sp[:7]:8}{mk[:18]:19}{stat:5}{b['n']:>5}{b['card']:>4}{rec:>12}"
+              f"{roi_s:>8}{ev_s:>7}{od_s:>6}{cb_s:>9}{cs_s:>9}")
+    print(f"  {'─'*98}")
+    print(f"  stat: LIVE=posting cards · shad=shadow (tracking) · paus=paused")
+    print(f"  ROI=realized P&L on settled bets · EV=model's claimed edge · "
+          f"CLV=closing-line value (the truth)")
+    print(f"  odds=avg price entered (implied-prob space) · crd=# card picks")
+    return 0
+
+
 # ─────────────────────────── stats ───────────────────────────────────────────
 
 def cmd_status(args: argparse.Namespace) -> int:
@@ -2883,6 +3008,13 @@ def main() -> int:
     p_clv.add_argument("--matrix", action="store_true",
                        help="Show the full per-SPORT × per-market grid (every sport broken out)")
 
+    # dashboard — one-screen model status (record/ROI/EV/odds/CLV per sport×market)
+    p_dash = sub.add_parser("dashboard", help="Model status check: ROI/EV/odds/CLV per sport×market")
+    p_dash.add_argument("--sport", help="Filter to one sport (e.g. mlb, nba, wc)")
+    p_dash.add_argument("--card", action="store_true", help="Card picks only (the real posted record)")
+    p_dash.add_argument("--min-n", type=int, default=1, dest="min_n",
+                        help="Hide markets with fewer than N picks (and no CLV)")
+
     # migrate
     sub.add_parser("migrate", help="Normalize picks.json to canonical schema")
 
@@ -3052,6 +3184,7 @@ def main() -> int:
         "shop":     cmd_shop,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
+        "dashboard": cmd_dashboard,
         "migrate":  cmd_migrate,
         "test":     cmd_test,
         "stats":    cmd_stats,
