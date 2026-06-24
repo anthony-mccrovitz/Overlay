@@ -2055,6 +2055,85 @@ def cmd_demote(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_audit(args: argparse.Namespace) -> int:
+    """Bet-tracking completeness audit — guarantees we never silently lose a bet's
+    closing line / CLV / EV / odds / ROI.
+
+    Odds, model prob/EV, result and profit we compute ourselves (should be 100%).
+    The closing line (→ CLV) must be CAPTURED at game time, so it's the only field
+    that can leak. This reports per-field coverage + the headline metrics, then
+    lists any recently-settled card bet MISSING its closing line and exits non-zero
+    (RED) so the gap can never slip by silently. Wire into a daily workflow.
+    """
+    from datetime import date as _date, timedelta
+    days = getattr(args, "days", None) or 21
+    cutoff = (_date.today() - timedelta(days=days)).isoformat()
+    try:
+        picks = json.loads(Path("data/pnl/picks.json").read_text())
+        picks = picks if isinstance(picks, list) else picks.get("picks", [])
+    except (json.JSONDecodeError, ValueError, OSError):
+        print("  ✗ picks.json unreadable"); return 1
+    try:
+        snaps = json.loads(Path("data/clv/snapshots.json").read_text())
+        snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
+    except (json.JSONDecodeError, ValueError, OSError):
+        snaps = []
+
+    clv = {}
+    for s in snaps:
+        if isinstance(s, dict):
+            clv[(str(s.get("date", ""))[:10], str(s.get("team", "")).lower(), s.get("market"))] = s
+
+    def cv(p):
+        s = clv.get((str(p.get("date", ""))[:10], str(p.get("team", "")).lower(), p.get("market")))
+        return s.get("clv_pct") if s else None
+
+    def ev(p):
+        mp, o = p.get("model_prob"), p.get("odds")
+        if mp is None or o is None:
+            return None
+        o = float(o); dec = (o / 100) if o > 0 else (100 / abs(o))
+        return float(mp) * dec - (1 - float(mp))
+
+    card    = [p for p in picks if p.get("card_pick")]
+    settled = [p for p in card if p.get("result") in ("win", "loss", "push")]
+    staked  = [p for p in settled if p["result"] in ("win", "loss")]
+    if not card:
+        print("  No card picks to audit."); return 0
+
+    def cov(cond, pool):
+        n = sum(1 for p in pool if cond(p))
+        return f"{n}/{len(pool)} ({100*n/len(pool):.0f}%)" if pool else "0/0"
+
+    print(f"\n  ─ Bet-Tracking Audit ─ {len(card)} card picks, {len(settled)} settled ─")
+    print(f"    odds entered      {cov(lambda p: p.get('odds') is not None, card)}")
+    print(f"    model prob / EV   {cov(lambda p: p.get('model_prob') is not None, card)}")
+    print(f"    result + profit   {cov(lambda p: p.get('profit') is not None, settled)}")
+    print(f"    closing line+CLV  {cov(lambda p: cv(p) is not None, settled)}   ← capture-dependent")
+
+    od   = [float(p["odds"]) for p in card if p.get("odds") is not None]
+    evs  = [ev(p) for p in card]; evs = [e for e in evs if e is not None]
+    clvs = [cv(p) for p in settled if cv(p) is not None]
+    prof = sum(float(p.get("profit") or 0) for p in staked)
+    w    = sum(1 for p in staked if p["result"] == "win")
+    print(f"\n    avg odds entered  {(sum(od)/len(od)):+.0f}" if od else "    avg odds entered  —")
+    print(f"    avg model EV/bet  {100*sum(evs)/len(evs):+.1f}%" if evs else "    avg model EV/bet  —")
+    print(f"    avg CLV (scored)  {sum(clvs)/len(clvs):+.2f}%  (n={len(clvs)})" if clvs else "    avg CLV (scored)  none")
+    if staked:
+        print(f"    record / ROI      {w}-{len(staked)-w}  {prof:+.2f}u  ({100*prof/len(staked):+.1f}%)")
+
+    gaps = [p for p in settled if cv(p) is None and str(p.get("date", ""))[:10] >= cutoff]
+    print(f"\n    {'⚠' if gaps else '✓'} recent settled card bets (≤{days}d) missing closing/CLV: {len(gaps)}")
+    for p in gaps[:20]:
+        print(f"       {str(p.get('date',''))[:10]} {str(p.get('sport',''))[:5]:5s} "
+              f"{str(p.get('market',''))[:10]:10s} {str(p.get('team',''))[:22]}")
+    if gaps:
+        print(f"    → closing-line capture missed these. Action exits RED on purpose.")
+        return 1
+    print(f"    → every recent settled bet has its closing line + CLV. Tracking intact.")
+    return 0
+
+
 def cmd_calibrate(args: argparse.Namespace) -> int:
     """Refit every sport×market calibrator from settled results.
 
@@ -2808,6 +2887,9 @@ def main() -> int:
     p_demote.add_argument("sport", help="Sport/league key")
     p_demote.add_argument("market", help="Market")
 
+    p_audit = sub.add_parser("audit", help="Bet-tracking completeness: odds/EV/CLV/ROI coverage + flags settled bets missing their closing line (exits RED on gaps)")
+    p_audit.add_argument("--days", type=int, help="Window for the missing-closing alarm (default 21)")
+
     p_strat = sub.add_parser("strategies", help="Log + measure shadow strategies (research-rule picks, CLV-tracked, never bet)")
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
     p_strat.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
@@ -2913,6 +2995,7 @@ def main() -> int:
         "edge":     cmd_edge,
         "promote":  cmd_promote,
         "demote":   cmd_demote,
+        "audit":    cmd_audit,
         "validate": cmd_validate,
         "calibrate": cmd_calibrate,
         "strategies": cmd_strategies,

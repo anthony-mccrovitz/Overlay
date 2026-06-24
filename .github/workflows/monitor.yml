@@ -28,4 +28,12 @@ jobs:
       - name: Integrity check (non-zero exit = RED alarm)
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: python chef.py monitor
+        run: |
+          # Two alarms, both surfaced: dark-market monitor + bet-tracking audit.
+          # audit goes RED if any settled card bet in the window lost its closing
+          # line/CLV — so a tracking leak is caught the day it happens.
+          set +e
+          fail=0
+          python chef.py monitor || fail=1
+          python chef.py audit   || fail=1
+          exit $fail
