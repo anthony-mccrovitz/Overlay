@@ -186,6 +186,25 @@ def set_promotion(sport: str, market: str, status: str, tier: str,
     return (s, m)
 
 
+def is_clv_validated(sport: str, market: str) -> bool:
+    """True ONLY if this market passed the CLV gate (promoted via `chef.py promote`).
+
+    Static-registry 'live' markets (mlb total, nba total, …) are research- and
+    calibration-backed but NOT CLV-proven, so they do NOT count here — only an
+    actual gate-passing promotion (which records clv evidence) does. This is the
+    line between "we proved a closing-line edge" and "this is a model heuristic."
+    """
+    p = _promotion(sport, market)
+    return bool(p and p.get("status") == "live"
+                and (p.get("clv_n") is not None or p.get("clv_mean") is not None))
+
+
+def clv_status(sport: str, market: str) -> str:
+    """'validated' if CLV-gate-proven, else 'heuristic'. Stamped on every pick so
+    the record never implies a proven edge it hasn't earned."""
+    return "validated" if is_clv_validated(sport, market) else "heuristic"
+
+
 def clear_promotion(sport: str, market: str) -> bool:
     """Remove a promotion override (revert to the static registry). True if removed."""
     s, m = _key(sport, market)
