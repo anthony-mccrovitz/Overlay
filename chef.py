@@ -1421,7 +1421,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
         from src.analytics.clv_tracker import (
             print_clv_report, print_clv_by_market, compute_clv,
             backfill_snapshots_from_pnl, upgrade_snapshots,
-            backfill_snapshot_markets,
+            backfill_snapshot_markets, backfill_snapshot_lines,
         )
 
         refresh = getattr(args, "refresh", False)
@@ -1434,6 +1434,10 @@ def cmd_clv(args: argparse.Namespace) -> int:
             # 2b. Recover market on legacy snapshots that had it unset (spread/total
             #     wrongly scored as moneyline) — clears stale CLV so they re-score.
             backfill_snapshot_markets()
+            # 2c. Recover opening_line/direction on total/spread snapshots that had
+            #     them null (parsed from the team string) — without these the
+            #     totals/spread scorer can't compute line CLV, so they never scored.
+            backfill_snapshot_lines()
             # 3. Recompute CLV for every date that has a closing archive — scores
             #    moneyline, spread, total, F5, NRFI, and props in one pass.
             archive_dir = Path("data/clv/closing")
@@ -2084,8 +2088,19 @@ def cmd_audit(args: argparse.Namespace) -> int:
         if isinstance(s, dict):
             clv[(str(s.get("date", ""))[:10], str(s.get("team", "")).lower(), s.get("market"))] = s
 
-    def cv(p):
-        s = clv.get((str(p.get("date", ""))[:10], str(p.get("team", "")).lower(), p.get("market")))
+    def _snap(p):
+        return clv.get((str(p.get("date", ""))[:10], str(p.get("team", "")).lower(), p.get("market")))
+
+    def scored(p):
+        """Closing line captured + CLV computed — prob markets use clv_pct, line
+        markets (totals/spreads) use line_clv. Either counts as tracked."""
+        s = _snap(p)
+        return bool(s and (s.get("clv_pct") is not None or s.get("line_clv") is not None))
+
+    def pct_clv(p):
+        """Probability CLV only (moneyline-type) — safe to average (line CLV is in
+        points, can't be pooled with %)."""
+        s = _snap(p)
         return s.get("clv_pct") if s else None
 
     def ev(p):
@@ -2109,20 +2124,31 @@ def cmd_audit(args: argparse.Namespace) -> int:
     print(f"    odds entered      {cov(lambda p: p.get('odds') is not None, card)}")
     print(f"    model prob / EV   {cov(lambda p: p.get('model_prob') is not None, card)}")
     print(f"    result + profit   {cov(lambda p: p.get('profit') is not None, settled)}")
-    print(f"    closing line+CLV  {cov(lambda p: cv(p) is not None, settled)}   ← capture-dependent")
+    print(f"    closing line+CLV  {cov(scored, settled)}   ← capture-dependent")
 
-    od   = [float(p["odds"]) for p in card if p.get("odds") is not None]
+    # Average odds the RIGHT way: American odds are non-linear (+150 and −150
+    # aren't symmetric), so a raw arithmetic mean is meaningless. Average in
+    # implied-probability space, then convert the mean back to American.
+    def _am_imp(o):
+        o = float(o); return 100/(o+100) if o > 0 else abs(o)/(abs(o)+100)
+    def _imp_am(p):
+        return -round(p/(1-p)*100) if p >= 0.5 else round((1-p)/p*100)
+    imps = [_am_imp(p["odds"]) for p in card if p.get("odds") is not None]
     evs  = [ev(p) for p in card]; evs = [e for e in evs if e is not None]
-    clvs = [cv(p) for p in settled if cv(p) is not None]
+    clvs = [pct_clv(p) for p in settled if pct_clv(p) is not None]
     prof = sum(float(p.get("profit") or 0) for p in staked)
     w    = sum(1 for p in staked if p["result"] == "win")
-    print(f"\n    avg odds entered  {(sum(od)/len(od)):+.0f}" if od else "    avg odds entered  —")
+    if imps:
+        ai = sum(imps)/len(imps)
+        print(f"\n    avg odds entered  {_imp_am(ai):+d}  ({ai*100:.1f}% implied)")
+    else:
+        print("\n    avg odds entered  —")
     print(f"    avg model EV/bet  {100*sum(evs)/len(evs):+.1f}%" if evs else "    avg model EV/bet  —")
-    print(f"    avg CLV (scored)  {sum(clvs)/len(clvs):+.2f}%  (n={len(clvs)})" if clvs else "    avg CLV (scored)  none")
+    print(f"    avg CLV (ML-type) {sum(clvs)/len(clvs):+.2f}%  (n={len(clvs)})" if clvs else "    avg CLV (ML-type) none")
     if staked:
         print(f"    record / ROI      {w}-{len(staked)-w}  {prof:+.2f}u  ({100*prof/len(staked):+.1f}%)")
 
-    gaps = [p for p in settled if cv(p) is None and str(p.get("date", ""))[:10] >= cutoff]
+    gaps = [p for p in settled if not scored(p) and str(p.get("date", ""))[:10] >= cutoff]
     print(f"\n    {'⚠' if gaps else '✓'} recent settled card bets (≤{days}d) missing closing/CLV: {len(gaps)}")
     for p in gaps[:20]:
         print(f"       {str(p.get('date',''))[:10]} {str(p.get('sport',''))[:5]:5s} "
