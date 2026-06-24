@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260624_athletics_moneyline_away",
+  "date": "2026-06-24",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "Athletics",
+  "matchup": "San Francisco Giants",
+  "odds": 105,
+  "line": null,
+  "sportsbook": "Caesars",
+  "model_prob": 0.6665588980723477,
+  "edge_pct": 19.28,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-23T05:39:42.567851+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 137,
+      "season_rs_per_g": 4.12,
+      "season_ra_per_g": 4.82,
+      "form_7d": {
+        "games": 6,
+        "lookback_days": 7,
+        "rs_per_game": 4.67,
+        "ra_per_game": 3.5,
+        "wins": 3,
+        "losses": 3,
+        "wl": "3-3"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 4.15,
+        "ra_per_game": 4.15,
+        "wins": 6,
+        "losses": 7,
+        "wl": "6-7"
+      }
+    },
+    "away": {
+      "team_id": 133,
+      "season_rs_per_g": 4.67,
+      "season_ra_per_g": 5.36,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 6.29,
+        "ra_per_game": 6.71,
+        "wins": 3,
+        "losses": 4,
+        "wl": "3-4"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 6.86,
+        "ra_per_game": 7.29,
+        "wins": 8,
+        "losses": 6,
+        "wl": "8-6"
+      }
+    },
+    "snapshot_date": "2026-06-24"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "hot_both",
+    "recommendation": "keep",
+    "reason": "hot_both matchup passes neutral-skip filter"
+  }
+}

@@ -1,66 +1,94 @@
 {
-  "updated_at": "2026-06-23T16:07:34.624415Z",
-  "date": "2026-06-23",
+  "updated_at": "2026-06-24T10:36:40.074309Z",
+  "date": "2026-06-24",
   "record": {
-    "wins": 142,
+    "wins": 145,
     "losses": 111,
     "pushes": 6,
-    "units": 27.98,
-    "roi_pct": 11.26,
-    "win_rate_pct": 56.1,
-    "streak": -2,
-    "settled": 259,
+    "units": 30.68,
+    "roi_pct": 12.2,
+    "win_rate_pct": 56.6,
+    "streak": 3,
+    "settled": 262,
     "avg_odds": "-26",
-    "total_card": 259
+    "total_card": 262
   },
   "picks": {
     "mlb": [
       {
-        "matchup": "Washington Nationals",
-        "selection": "Philadelphia Phillies ML",
+        "matchup": "San Francisco Giants",
+        "selection": "Athletics ML",
         "market": "moneyline",
-        "odds": "+100",
+        "odds": "+105",
         "stake": "1u",
-        "sportsbook": "Fanatics",
-        "reasoning": "Philadelphia Phillies moneyline. Plus-money dog with a fair-win-rate edge at +100.",
-        "result": "pending"
-      },
-      {
-        "matchup": "Detroit Tigers",
-        "selection": "New York Yankees ML",
-        "market": "moneyline",
-        "odds": "-124",
-        "stake": "1u",
-        "sportsbook": "FanDuel",
-        "reasoning": "New York Yankees moneyline. Favored side projects above the implied probability at -124.",
+        "sportsbook": "Caesars",
+        "reasoning": "Athletics moneyline. Plus-money dog with a fair-win-rate edge at +105.",
         "result": "pending"
       },
       {
         "matchup": "New York Mets",
         "selection": "Chicago Cubs ML",
         "market": "moneyline",
+        "odds": "+105",
+        "stake": "1u",
+        "sportsbook": "theScore Bet",
+        "reasoning": "Chicago Cubs moneyline. Plus-money dog with a fair-win-rate edge at +105.",
+        "result": "pending"
+      },
+      {
+        "matchup": "Toronto Blue Jays",
+        "selection": "Houston Astros ML",
+        "market": "moneyline",
+        "odds": "+120",
+        "stake": "1u",
+        "sportsbook": "BetRivers",
+        "reasoning": "Houston Astros moneyline. Plus-money dog with a fair-win-rate edge at +120.",
+        "result": "pending"
+      },
+      {
+        "matchup": "Detroit Tigers",
+        "selection": "New York Yankees ML",
+        "market": "moneyline",
         "odds": "-112",
         "stake": "1u",
         "sportsbook": "FanDuel",
-        "reasoning": "Chicago Cubs moneyline. Favored side projects above the implied probability at -112.",
+        "reasoning": "New York Yankees moneyline. Favored side projects above the implied probability at -112.",
         "result": "pending"
       }
     ]
   },
   "featured": {
     "pick": {
-      "matchup": "Washington Nationals",
-      "selection": "Philadelphia Phillies ML",
+      "matchup": "San Francisco Giants",
+      "selection": "Athletics ML",
       "market": "moneyline",
-      "odds": "+100",
+      "odds": "+105",
       "stake": "1u",
-      "sportsbook": "Fanatics",
-      "reasoning": "Philadelphia Phillies moneyline. Plus-money dog with a fair-win-rate edge at +100.",
+      "sportsbook": "Caesars",
+      "reasoning": "Athletics moneyline. Plus-money dog with a fair-win-rate edge at +105.",
       "result": "pending"
     },
     "sport": "MLB"
   },
   "ticker": [
+    {
+      "sport": "MLB",
+      "matchup": "New York Mets",
+      "result": "W",
+      "units": 0.89
+    },
+    {
+      "sport": "MLB",
+      "matchup": "Detroit Tigers",
+      "result": "W",
+      "units": 0.81
+    },
+    {
+      "sport": "MLB",
+      "matchup": "Washington Nat",
+      "result": "W",
+      "units": 1.0
+    },
     {
       "sport": "MLB",
       "matchup": "Detroit Tigers",
@@ -150,27 +178,36 @@
       "matchup": "BRE @ ATH",
       "result": "W",
       "units": 0.95
-    },
-    {
-      "sport": "NBA",
-      "matchup": "SPU @ KNI",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "BRE @ ATH",
-      "result": "W",
-      "units": 1.05
-    },
-    {
-      "sport": "NHL",
-      "matchup": "HUR @ KNI",
-      "result": "L",
-      "units": -0.5
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-23",
+      "sport": "MLB",
+      "matchup": "New York Mets",
+      "pick": "CUB ML",
+      "odds": "-112",
+      "result": "WIN",
+      "pl": 0.89
+    },
+    {
+      "date": "2026-06-23",
+      "sport": "MLB",
+      "matchup": "Detroit Tigers",
+      "pick": "YAN ML",
+      "odds": "-124",
+      "result": "WIN",
+      "pl": 0.81
+    },
+    {
+      "date": "2026-06-23",
+      "sport": "MLB",
+      "matchup": "Washington Nat",
+      "pick": "PHI ML",
+      "odds": "+100",
+      "result": "WIN",
+      "pl": 1.0
+    },
     {
       "date": "2026-06-22",
       "sport": "MLB",
@@ -231,33 +268,6 @@
       "matchup": "ROC @ ATH",
       "pick": "U 13.5",
       "odds": "+100",
-      "result": "LOSS",
-      "pl": -1.0
-    },
-    {
-      "date": "2026-06-14",
-      "sport": "MLB",
-      "matchup": "San Francisco ",
-      "pick": "CUB ML",
-      "odds": "+120",
-      "result": "LOSS",
-      "pl": -1.0
-    },
-    {
-      "date": "2026-06-14",
-      "sport": "MLB",
-      "matchup": "Minnesota Twin",
-      "pick": "CAR ML",
-      "odds": "+100",
-      "result": "LOSS",
-      "pl": -1.0
-    },
-    {
-      "date": "2026-06-14",
-      "sport": "MLB",
-      "matchup": "ROC @ ATH",
-      "pick": "U 14.0",
-      "odds": "-105",
       "result": "LOSS",
       "pl": -1.0
     }
@@ -470,6 +480,10 @@
     {
       "date": "2026-06-22",
       "units": 27.98
+    },
+    {
+      "date": "2026-06-23",
+      "units": 30.68
     }
   ],
   "models": [
@@ -482,13 +496,13 @@
       "tier": "t1",
       "status": "live",
       "wins": 81,
-      "losses": 64,
+      "losses": 65,
       "pushes": 10,
-      "pending": 19,
-      "settled": 155,
-      "win_rate": 55.9,
-      "roi": 11.6,
-      "profit": 16.81
+      "pending": 22,
+      "settled": 156,
+      "win_rate": 55.5,
+      "roi": 10.8,
+      "profit": 15.81
     },
     {
       "key": "nba_total",
@@ -620,7 +634,7 @@
       "wins": 0,
       "losses": 0,
       "pushes": 0,
-      "pending": 2,
+      "pending": 4,
       "settled": 0,
       "win_rate": null,
       "roi": null,
@@ -685,14 +699,14 @@
       "market": "moneyline",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 251,
-      "losses": 273,
+      "wins": 265,
+      "losses": 283,
       "pushes": 0,
-      "pending": 92,
-      "settled": 524,
-      "win_rate": 47.9,
-      "roi": -0.5,
-      "profit": -2.74
+      "pending": 74,
+      "settled": 548,
+      "win_rate": 48.4,
+      "roi": 0.0,
+      "profit": 0.1
     },
     {
       "key": "mlb_f5_total",
@@ -703,13 +717,13 @@
       "tier": "shadow",
       "status": "shadow",
       "wins": 159,
-      "losses": 157,
+      "losses": 158,
       "pushes": 14,
       "pending": 38,
-      "settled": 330,
-      "win_rate": 50.3,
-      "roi": -8.9,
-      "profit": -28.18
+      "settled": 331,
+      "win_rate": 50.2,
+      "roi": -9.2,
+      "profit": -29.18
     },
     {
       "key": "mlb_pitcher_strikeouts",
@@ -722,7 +736,7 @@
       "wins": 262,
       "losses": 245,
       "pushes": 0,
-      "pending": 403,
+      "pending": 435,
       "settled": 507,
       "win_rate": 51.7,
       "roi": -10.4,
@@ -991,14 +1005,14 @@
       "market": "moneyline",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 23,
-      "losses": 42,
+      "wins": 26,
+      "losses": 46,
       "pushes": 0,
-      "pending": 59,
-      "settled": 65,
-      "win_rate": 35.4,
-      "roi": -9.1,
-      "profit": -3.59
+      "pending": 58,
+      "settled": 72,
+      "win_rate": 36.1,
+      "roi": -11.3,
+      "profit": -5.09
     },
     {
       "key": "tennis_total",
@@ -1011,7 +1025,7 @@
       "wins": 0,
       "losses": 0,
       "pushes": 0,
-      "pending": 1,
+      "pending": 2,
       "settled": 0,
       "win_rate": null,
       "roi": null,
@@ -1028,7 +1042,7 @@
       "wins": 10,
       "losses": 43,
       "pushes": 0,
-      "pending": 40,
+      "pending": 42,
       "settled": 53,
       "win_rate": 18.9,
       "roi": -47.4,
@@ -1130,7 +1144,7 @@
       "wins": 3,
       "losses": 2,
       "pushes": 0,
-      "pending": 34,
+      "pending": 37,
       "settled": 5,
       "win_rate": 60.0,
       "roi": 168.3,
@@ -1147,7 +1161,7 @@
       "wins": 4,
       "losses": 5,
       "pushes": 0,
-      "pending": 14,
+      "pending": 19,
       "settled": 9,
       "win_rate": 44.4,
       "roi": -5.0,
@@ -1222,23 +1236,6 @@
       "profit": 0
     },
     {
-      "key": "mlb_spread",
-      "sport": "MLB",
-      "sport_key": "mlb",
-      "label": "MLB Run Line",
-      "market": "spread",
-      "tier": "paused",
-      "status": "paused",
-      "wins": 89,
-      "losses": 71,
-      "pushes": 0,
-      "pending": 4,
-      "settled": 160,
-      "win_rate": 55.6,
-      "roi": -0.5,
-      "profit": -0.74
-    },
-    {
       "key": "mlb_prop",
       "sport": "MLB",
       "sport_key": "mlb",
@@ -1256,6 +1253,23 @@
       "profit": -2.05
     },
     {
+      "key": "mlb_spread",
+      "sport": "MLB",
+      "sport_key": "mlb",
+      "label": "MLB Run Line",
+      "market": "spread",
+      "tier": "paused",
+      "status": "paused",
+      "wins": 89,
+      "losses": 73,
+      "pushes": 0,
+      "pending": 2,
+      "settled": 162,
+      "win_rate": 54.9,
+      "roi": -1.7,
+      "profit": -2.74
+    },
+    {
       "key": "mlb_nrfi",
       "sport": "MLB",
       "sport_key": "mlb",
@@ -1263,14 +1277,14 @@
       "market": "nrfi",
       "tier": "paused",
       "status": "paused",
-      "wins": 131,
-      "losses": 158,
+      "wins": 133,
+      "losses": 161,
       "pushes": 0,
       "pending": 25,
-      "settled": 289,
-      "win_rate": 45.3,
-      "roi": -11.6,
-      "profit": -33.47
+      "settled": 294,
+      "win_rate": 45.2,
+      "roi": -11.2,
+      "profit": -32.82
     },
     {
       "key": "nba_moneyline",
@@ -1334,7 +1348,7 @@
       "wins": 0,
       "losses": 8,
       "pushes": 0,
-      "pending": 14,
+      "pending": 17,
       "settled": 8,
       "win_rate": 0.0,
       "roi": -100.0,
