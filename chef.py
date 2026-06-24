@@ -1653,6 +1653,23 @@ def cmd_slate(args: argparse.Namespace) -> int:
         except (ValueError, TypeError): return str(o)
         return f"{o:+d}"
 
+    def matchup(p):
+        # Moneyline picks store a truncated matchup (just the OPPONENT, e.g. an
+        # AWAY pick on "NY Yankees" stores matchup="Detroit Tigers"). Reconstruct
+        # the canonical "Away @ Home" from team + direction so every market for a
+        # game shows the same full matchup string.
+        mu = str(p.get("matchup") or "").strip()
+        if "@" in mu:
+            return mu
+        team = str(p.get("team") or "").strip()
+        d = str(p.get("direction") or "").upper()
+        if mu and team:
+            if d == "AWAY":
+                return f"{team} @ {mu}"   # team is away, stored matchup is the home side
+            if d == "HOME":
+                return f"{mu} @ {team}"   # team is home, stored matchup is the away side
+        return mu or team or ""
+
     n_card = sum(1 for p in day if p.get("card_pick"))
     print(f"\n  ─ SLATE {target} ─ {len(day)} picks ({n_card} card ★, {len(day)-n_card} shadow) ─")
     if card_only: print("  [card picks only]")
@@ -1665,10 +1682,10 @@ def cmd_slate(args: argparse.Namespace) -> int:
                 star = "★" if p.get("card_pick") else " "
                 e = p.get("edge_pct")
                 e_s = f"{e:+.1f}%" if e is not None else "—"
-                mu = str(p.get("matchup") or "")
+                mu = matchup(p)
                 book = str(p.get("sportsbook") or "—")
                 print(f"    {star}{desc(p)[:29]:30}{book[:17]:18}{odds_str(p.get('odds')):>7}"
-                      f"{e_s:>9}  {mu[:34]}")
+                      f"{e_s:>9}  {mu[:38]}")
     print(f"\n  ★ = card pick (posted, counts toward record) · others are shadow (tracked only)")
     return 0
 
