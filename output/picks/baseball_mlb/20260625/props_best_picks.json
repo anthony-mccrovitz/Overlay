@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Kevin Gausman",
+      "team": "Kevin Gausman UNDER 5.5",
+      "matchup": "Texas Rangers @ Toronto Blue Jays",
+      "line": 5.5,
+      "odds": 117,
+      "model_prob": 0.6763,
+      "implied_prob": 0.4351,
+      "edge_pct": 24.12,
+      "model_mu": 4.83,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Luke Raley",
+      "team": "Luke Raley OVER 0.5",
+      "matchup": "Seattle Mariners @ Pittsburgh Pirates",
+      "line": 0.5,
+      "odds": -120,
+      "model_prob": 0.7326,
+      "implied_prob": 0.5,
+      "edge_pct": 23.26,
+      "model_mu": 2.74,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Kameron Misner",
+      "team": "Kameron Misner OVER 0.5",
+      "matchup": "Kansas City Royals @ Tampa Bay Rays",
+      "line": 0.5,
+      "odds": 125,
+      "model_prob": 0.6083,
+      "implied_prob": 0.4064,
+      "edge_pct": 20.19,
+      "model_mu": 1.55,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}

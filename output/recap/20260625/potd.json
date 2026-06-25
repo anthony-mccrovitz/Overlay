@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260625_seattle-mariners_moneyline_away",
+  "date": "2026-06-25",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "Seattle Mariners",
+  "matchup": "Pittsburgh Pirates",
+  "odds": 100,
+  "line": null,
+  "sportsbook": "Fanatics",
+  "model_prob": 0.6612955082807013,
+  "edge_pct": 18.09,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-24T05:34:55.183913+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 134,
+      "season_rs_per_g": 4.97,
+      "season_ra_per_g": 4.81,
+      "form_7d": {
+        "games": 6,
+        "lookback_days": 7,
+        "rs_per_game": 5.33,
+        "ra_per_game": 4.0,
+        "wins": 3,
+        "losses": 3,
+        "wl": "3-3"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 4.62,
+        "ra_per_game": 5.92,
+        "wins": 5,
+        "losses": 8,
+        "wl": "5-8"
+      }
+    },
+    "away": {
+      "team_id": 136,
+      "season_rs_per_g": 4.11,
+      "season_ra_per_g": 3.89,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 2.57,
+        "ra_per_game": 2.86,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 3.64,
+        "ra_per_game": 4.43,
+        "wins": 7,
+        "losses": 7,
+        "wl": "7-7"
+      }
+    },
+    "snapshot_date": "2026-06-25"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "one_cold",
+    "recommendation": "keep",
+    "reason": "one_cold matchup passes neutral-skip filter"
+  }
+}
