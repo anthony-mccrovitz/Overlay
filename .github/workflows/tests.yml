@@ -1,0 +1,41 @@
+name: Tests
+
+# Runs the FULL test suite — every guard (model registry, CLV scoring, props,
+# kelly, schema, grading). Standalone: no secrets, no data, no commits. Just a
+# clean green/red signal so a regression or registry drift can never sit unseen.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  schedule:
+    - cron: "30 12 * * *"   # 8:30 AM ET (EDT) daily — catch overnight drift
+  workflow_dispatch: {}
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip --quiet
+          pip install --quiet -r requirements.txt
+
+      - name: Run full test suite
+        run: python -m pytest tests/ -q

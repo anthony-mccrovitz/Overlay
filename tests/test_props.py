@@ -259,9 +259,10 @@ class TestModelRegistry:
         from src.config.models import is_live
         assert is_live("nba", "total") is True
 
-    def test_mlb_spread_is_live(self):
+    def test_mlb_spread_is_incubating(self):
+        # mlb·spread has not cleared the CLV gate (negative ROI) — stays shadow.
         from src.config.models import is_live
-        assert is_live("mlb", "spread") is True
+        assert is_live("mlb", "spread") is False
 
     def test_nrfi_is_incubating(self):
         from src.config.models import is_live, model_status
@@ -276,10 +277,12 @@ class TestModelRegistry:
         from src.config.models import is_live
         assert is_live("mlb", "batter_home_runs") is False
 
-    def test_nhl_incubating(self):
+    def test_nhl_is_live(self):
+        # NHL core markets cleared the gate (the one +CLV sport) — promoted live.
         from src.config.models import is_live
-        assert is_live("nhl", "moneyline") is False
-        assert is_live("nhl", "puck_line") is False
+        assert is_live("nhl", "moneyline") is True
+        assert is_live("nhl", "puck_line") is True
+        assert is_live("nhl", "total") is True
 
     def test_unknown_model_defaults_incubating(self):
         from src.config.models import model_status
@@ -288,9 +291,13 @@ class TestModelRegistry:
     def test_live_models_list(self):
         from src.config.models import live_models
         live = live_models()
+        # Lock the currently-promoted set (update deliberately when you
+        # promote/demote via chef.py — that's the guardrail working).
         assert ("nba", "total") in live
-        assert ("mlb", "spread") in live
-        # No incubating models should be in live
+        assert ("mlb", "total") in live
+        assert ("nhl", "moneyline") in live
+        # Incubating markets must NEVER appear as live (real-money guard).
+        assert ("mlb", "spread") not in live
         from src.config.models import MODELS
         for k in live:
             assert MODELS[k]["status"] == "live"
