@@ -175,11 +175,15 @@ class SoccerModelV2:
     RHO = -0.10  # Fixed DC correction (same as v1 default)
     AD_DECAY = 0.12   # EWMA weight for rolling attack/defense (recent form)
     HOST_BONUS = 60.0  # Elo-equivalent home edge for 2026 co-hosts at home venues
-    # Calibration temperature (>1 softens favorite overconfidence). Value is the
-    # cross-validated optimum from scripts/validate_soccer.py across ~800
-    # walk-forward tournament matches — NOT fit per-model (a random recent slice
-    # of friendlies/qualifiers does not reflect tournament overconfidence).
-    CALIBRATION_T = 1.25
+    # Calibration temperature (<1 sharpens, >1 softens) on the 1X2 probs. The
+    # walk-forward favorite-calibration on 852 tournament matches showed the
+    # model UNDER-confident on the favorite (actual hit-rate > predicted in
+    # every bin) — so it needs SHARPENING, not softening. T=0.85 is the optimum
+    # from scripts/calibrate_soccer_1x2.py (min pooled 1X2 log loss): it cut
+    # Brier 0.3039 → 0.3011 vs the old 1.25. The remaining gap to a sharp book
+    # (~0.28) is RESOLUTION, not calibration — it needs new signal (xG, lineups,
+    # rest), which temperature scaling cannot manufacture.
+    CALIBRATION_T = 0.85
     # Tempo shrinkage (0..1) on the rolling attack/defense terms (β, δ). The
     # MLE fits β, δ to in-sample recent-form signal, but they over-swing the
     # expected total out-of-sample (exp_total ranged 1.76–3.39 across one WC

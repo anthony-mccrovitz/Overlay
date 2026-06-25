@@ -1,0 +1,207 @@
+{
+  "generated": "2026-06-24",
+  "n_tournaments": 20,
+  "n_matches": 852,
+  "min_year": 2006,
+  "aggregate": {
+    "brier_1x2": 0.3039,
+    "brier_naive": 0.3333,
+    "log_loss": 1.0136,
+    "log_loss_naive": 1.0986,
+    "modal_acc": 0.5223,
+    "brier_ou": 0.2514,
+    "brier_ou_naive": 0.25,
+    "over_rate": 0.466
+  },
+  "calibration_favorite": [
+    {
+      "pred": 0.375,
+      "actual": 0.459,
+      "n": 257
+    },
+    {
+      "pred": 0.445,
+      "actual": 0.495,
+      "n": 384
+    },
+    {
+      "pred": 0.541,
+      "actual": 0.634,
+      "n": 161
+    },
+    {
+      "pred": 0.639,
+      "actual": 0.689,
+      "n": 45
+    },
+    {
+      "pred": 0.743,
+      "actual": 0.8,
+      "n": 5
+    }
+  ],
+  "calibration_over25": [
+    {
+      "pred": 0.385,
+      "actual": 0.0,
+      "n": 1
+    },
+    {
+      "pred": 0.477,
+      "actual": 0.472,
+      "n": 472
+    },
+    {
+      "pred": 0.526,
+      "actual": 0.452,
+      "n": 363
+    },
+    {
+      "pred": 0.621,
+      "actual": 0.625,
+      "n": 16
+    }
+  ],
+  "per_tournament": [
+    {
+      "label": "UEFA Euro 2008",
+      "n": 28,
+      "brier_1x2": 0.325,
+      "log_loss": 1.077,
+      "acc": 0.3929
+    },
+    {
+      "label": "FIFA World Cup 2010",
+      "n": 64,
+      "brier_1x2": 0.319,
+      "log_loss": 1.058,
+      "acc": 0.4688
+    },
+    {
+      "label": "AFC Asian Cup 2011",
+      "n": 32,
+      "brier_1x2": 0.281,
+      "log_loss": 0.951,
+      "acc": 0.6562
+    },
+    {
+      "label": "Copa Am\u00e9rica 2011",
+      "n": 26,
+      "brier_1x2": 0.355,
+      "log_loss": 1.155,
+      "acc": 0.3077
+    },
+    {
+      "label": "UEFA Euro 2012",
+      "n": 31,
+      "brier_1x2": 0.301,
+      "log_loss": 1.003,
+      "acc": 0.5806
+    },
+    {
+      "label": "FIFA World Cup 2014",
+      "n": 64,
+      "brier_1x2": 0.321,
+      "log_loss": 1.061,
+      "acc": 0.4531
+    },
+    {
+      "label": "AFC Asian Cup 2015",
+      "n": 32,
+      "brier_1x2": 0.285,
+      "log_loss": 0.961,
+      "acc": 0.6562
+    },
+    {
+      "label": "Copa Am\u00e9rica 2015",
+      "n": 26,
+      "brier_1x2": 0.317,
+      "log_loss": 1.042,
+      "acc": 0.4231
+    },
+    {
+      "label": "Copa Am\u00e9rica 2016",
+      "n": 32,
+      "brier_1x2": 0.295,
+      "log_loss": 0.99,
+      "acc": 0.5625
+    },
+    {
+      "label": "UEFA Euro 2016",
+      "n": 51,
+      "brier_1x2": 0.321,
+      "log_loss": 1.064,
+      "acc": 0.4314
+    },
+    {
+      "label": "FIFA World Cup 2018",
+      "n": 64,
+      "brier_1x2": 0.319,
+      "log_loss": 1.056,
+      "acc": 0.4531
+    },
+    {
+      "label": "AFC Asian Cup 2019",
+      "n": 51,
+      "brier_1x2": 0.285,
+      "log_loss": 0.961,
+      "acc": 0.6275
+    },
+    {
+      "label": "Copa Am\u00e9rica 2019",
+      "n": 26,
+      "brier_1x2": 0.295,
+      "log_loss": 0.977,
+      "acc": 0.6154
+    },
+    {
+      "label": "UEFA Euro 2021",
+      "n": 51,
+      "brier_1x2": 0.279,
+      "log_loss": 0.942,
+      "acc": 0.6275
+    },
+    {
+      "label": "Copa Am\u00e9rica 2021",
+      "n": 28,
+      "brier_1x2": 0.271,
+      "log_loss": 0.923,
+      "acc": 0.5714
+    },
+    {
+      "label": "FIFA World Cup 2022",
+      "n": 64,
+      "brier_1x2": 0.318,
+      "log_loss": 1.055,
+      "acc": 0.5156
+    },
+    {
+      "label": "AFC Asian Cup 2024",
+      "n": 51,
+      "brier_1x2": 0.276,
+      "log_loss": 0.934,
+      "acc": 0.5686
+    },
+    {
+      "label": "UEFA Euro 2024",
+      "n": 51,
+      "brier_1x2": 0.306,
+      "log_loss": 1.019,
+      "acc": 0.549
+    },
+    {
+      "label": "Copa Am\u00e9rica 2024",
+      "n": 32,
+      "brier_1x2": 0.288,
+      "log_loss": 0.973,
+      "acc": 0.4688
+    },
+    {
+      "label": "FIFA World Cup 2026",
+      "n": 48,
+      "brier_1x2": 0.302,
+      "log_loss": 1.006,
+      "acc": 0.5417
+    }
+  ]
+}
