@@ -1,230 +1,212 @@
 {
-  "generated": "2026-06-07",
-  "n_tournaments": 19,
-  "n_matches": 804,
+  "generated": "2026-06-25",
+  "n_tournaments": 20,
+  "n_matches": 852,
   "min_year": 2006,
   "aggregate": {
-    "brier_1x2": 0.3065,
+    "brier_1x2": 0.3011,
     "brier_naive": 0.3333,
-    "log_loss": 1.022,
+    "log_loss": 1.0048,
     "log_loss_naive": 1.0986,
-    "modal_acc": 0.5062,
-    "brier_ou": 0.2616,
+    "modal_acc": 0.5223,
+    "brier_ou": 0.2514,
     "brier_ou_naive": 0.25,
-    "over_rate": 0.4627
+    "over_rate": 0.466
   },
   "calibration_favorite": [
     {
-      "pred": 0.371,
-      "actual": 0.414,
-      "n": 227
+      "pred": 0.378,
+      "actual": 0.458,
+      "n": 144
     },
     {
-      "pred": 0.446,
-      "actual": 0.48,
-      "n": 281
+      "pred": 0.45,
+      "actual": 0.448,
+      "n": 324
     },
     {
-      "pred": 0.543,
-      "actual": 0.558,
-      "n": 163
+      "pred": 0.546,
+      "actual": 0.576,
+      "n": 205
     },
     {
-      "pred": 0.644,
-      "actual": 0.624,
-      "n": 93
+      "pred": 0.642,
+      "actual": 0.647,
+      "n": 119
     },
     {
-      "pred": 0.742,
-      "actual": 0.75,
-      "n": 28
+      "pred": 0.746,
+      "actual": 0.615,
+      "n": 52
     },
     {
-      "pred": 0.837,
-      "actual": 0.636,
-      "n": 11
-    },
-    {
-      "pred": 0.905,
-      "actual": 1.0,
-      "n": 1
+      "pred": 0.841,
+      "actual": 0.875,
+      "n": 8
     }
   ],
   "calibration_over25": [
     {
-      "pred": 0.185,
-      "actual": 0.667,
-      "n": 3
+      "pred": 0.385,
+      "actual": 0.0,
+      "n": 1
     },
     {
-      "pred": 0.266,
-      "actual": 0.448,
-      "n": 67
+      "pred": 0.477,
+      "actual": 0.472,
+      "n": 472
     },
     {
-      "pred": 0.354,
-      "actual": 0.479,
-      "n": 211
+      "pred": 0.526,
+      "actual": 0.452,
+      "n": 363
     },
     {
-      "pred": 0.447,
-      "actual": 0.46,
-      "n": 287
-    },
-    {
-      "pred": 0.542,
-      "actual": 0.435,
-      "n": 177
-    },
-    {
-      "pred": 0.64,
-      "actual": 0.521,
-      "n": 48
-    },
-    {
-      "pred": 0.726,
-      "actual": 0.444,
-      "n": 9
-    },
-    {
-      "pred": 0.82,
-      "actual": 0.5,
-      "n": 2
+      "pred": 0.621,
+      "actual": 0.625,
+      "n": 16
     }
   ],
   "per_tournament": [
     {
       "label": "UEFA Euro 2008",
       "n": 28,
-      "brier_1x2": 0.333,
-      "log_loss": 1.108,
-      "acc": 0.3571
+      "brier_1x2": 0.326,
+      "log_loss": 1.078,
+      "acc": 0.3929
     },
     {
       "label": "FIFA World Cup 2010",
       "n": 64,
-      "brier_1x2": 0.329,
-      "log_loss": 1.088,
-      "acc": 0.4219
+      "brier_1x2": 0.32,
+      "log_loss": 1.063,
+      "acc": 0.4688
     },
     {
       "label": "AFC Asian Cup 2011",
       "n": 32,
-      "brier_1x2": 0.269,
-      "log_loss": 0.916,
-      "acc": 0.7188
+      "brier_1x2": 0.263,
+      "log_loss": 0.901,
+      "acc": 0.6562
     },
     {
       "label": "Copa Am\u00e9rica 2011",
       "n": 26,
-      "brier_1x2": 0.373,
-      "log_loss": 1.216,
-      "acc": 0.2692
+      "brier_1x2": 0.379,
+      "log_loss": 1.22,
+      "acc": 0.3077
     },
     {
       "label": "UEFA Euro 2012",
       "n": 31,
-      "brier_1x2": 0.304,
-      "log_loss": 1.008,
-      "acc": 0.5161
+      "brier_1x2": 0.295,
+      "log_loss": 0.984,
+      "acc": 0.5806
     },
     {
       "label": "FIFA World Cup 2014",
       "n": 64,
-      "brier_1x2": 0.327,
-      "log_loss": 1.082,
-      "acc": 0.4219
+      "brier_1x2": 0.321,
+      "log_loss": 1.063,
+      "acc": 0.4531
     },
     {
       "label": "AFC Asian Cup 2015",
       "n": 32,
-      "brier_1x2": 0.291,
-      "log_loss": 0.982,
+      "brier_1x2": 0.267,
+      "log_loss": 0.911,
       "acc": 0.6562
     },
     {
       "label": "Copa Am\u00e9rica 2015",
       "n": 26,
-      "brier_1x2": 0.326,
-      "log_loss": 1.063,
-      "acc": 0.4615
+      "brier_1x2": 0.33,
+      "log_loss": 1.069,
+      "acc": 0.4231
     },
     {
       "label": "Copa Am\u00e9rica 2016",
       "n": 32,
-      "brier_1x2": 0.304,
-      "log_loss": 1.017,
-      "acc": 0.5938
+      "brier_1x2": 0.293,
+      "log_loss": 0.984,
+      "acc": 0.5625
     },
     {
       "label": "UEFA Euro 2016",
       "n": 51,
-      "brier_1x2": 0.334,
-      "log_loss": 1.111,
-      "acc": 0.4118
+      "brier_1x2": 0.327,
+      "log_loss": 1.082,
+      "acc": 0.4314
     },
     {
       "label": "FIFA World Cup 2018",
       "n": 64,
       "brier_1x2": 0.317,
       "log_loss": 1.052,
-      "acc": 0.4375
+      "acc": 0.4531
     },
     {
       "label": "AFC Asian Cup 2019",
       "n": 51,
-      "brier_1x2": 0.29,
-      "log_loss": 0.978,
-      "acc": 0.6078
+      "brier_1x2": 0.271,
+      "log_loss": 0.921,
+      "acc": 0.6275
     },
     {
       "label": "Copa Am\u00e9rica 2019",
       "n": 26,
-      "brier_1x2": 0.3,
-      "log_loss": 0.976,
-      "acc": 0.5385
+      "brier_1x2": 0.294,
+      "log_loss": 0.967,
+      "acc": 0.6154
     },
     {
       "label": "UEFA Euro 2021",
       "n": 51,
-      "brier_1x2": 0.262,
-      "log_loss": 0.89,
+      "brier_1x2": 0.267,
+      "log_loss": 0.906,
       "acc": 0.6275
     },
     {
       "label": "Copa Am\u00e9rica 2021",
       "n": 28,
-      "brier_1x2": 0.265,
-      "log_loss": 0.906,
+      "brier_1x2": 0.263,
+      "log_loss": 0.9,
       "acc": 0.5714
     },
     {
       "label": "FIFA World Cup 2022",
       "n": 64,
-      "brier_1x2": 0.325,
-      "log_loss": 1.079,
-      "acc": 0.4688
+      "brier_1x2": 0.316,
+      "log_loss": 1.053,
+      "acc": 0.5156
     },
     {
       "label": "AFC Asian Cup 2024",
       "n": 51,
-      "brier_1x2": 0.272,
-      "log_loss": 0.916,
-      "acc": 0.5882
+      "brier_1x2": 0.268,
+      "log_loss": 0.905,
+      "acc": 0.5686
     },
     {
       "label": "UEFA Euro 2024",
       "n": 51,
-      "brier_1x2": 0.304,
-      "log_loss": 1.018,
-      "acc": 0.5294
+      "brier_1x2": 0.307,
+      "log_loss": 1.026,
+      "acc": 0.549
     },
     {
       "label": "Copa Am\u00e9rica 2024",
       "n": 32,
-      "brier_1x2": 0.28,
-      "log_loss": 0.945,
-      "acc": 0.5
+      "brier_1x2": 0.288,
+      "log_loss": 0.968,
+      "acc": 0.4688
+    },
+    {
+      "label": "FIFA World Cup 2026",
+      "n": 48,
+      "brier_1x2": 0.295,
+      "log_loss": 0.988,
+      "acc": 0.5417
     }
   ]
 }
