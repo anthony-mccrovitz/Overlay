@@ -603,12 +603,12 @@ def grade_picks(
                 cl = closing_odds[tn]
                 try:
                     clv_tracker.record_closing_line(game_id, team, cl["odds"])
-                except Exception:
-                    pass
+                except Exception as e:
+                    print(f"  ⚠ CLV record_closing_line failed for {team} ({game_id}): {e}")
             try:
                 clv_tracker.record_result(game_id, team, won)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"  ⚠ CLV record_result failed for {team} ({game_id}): {e}")
 
         # -- Update P&L: direct entry update first, PnLTracker fallback --
         if not _update_pnl_pick_result(d, team, market, won, _profit_units(int(odds), 1.0, won)):

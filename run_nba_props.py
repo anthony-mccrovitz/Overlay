@@ -122,7 +122,8 @@ def _auto_log_picks(edges: list[dict], game_date: date) -> int:
     pnl_data: dict = {}
     if PNL_FILE.exists():
         try:
-            pnl_data = json.loads(PNL_FILE.read_text())
+            raw = json.loads(PNL_FILE.read_text())
+            pnl_data = {"picks": raw} if isinstance(raw, list) else raw
         except (json.JSONDecodeError, OSError):
             pnl_data = {}
 

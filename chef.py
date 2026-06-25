@@ -1300,7 +1300,7 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
     # ── Post-normalize fixups ─────────────────────────────────────────────────
     data = json.loads(_PNL_FILE.read_text())
-    picks = data.get("picks", [])
+    picks = data if isinstance(data, list) else data.get("picks", [])
     fixups = 0
 
     for p in picks:
@@ -1340,7 +1340,8 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
     # Validate all picks
     from src.tracking.schema import validate_pick
-    picks = json.loads(_PNL_FILE.read_text()).get("picks", [])
+    _raw = json.loads(_PNL_FILE.read_text())
+    picks = _raw if isinstance(_raw, list) else _raw.get("picks", [])
     errors = [(p.get("pick_id"), validate_pick(p)) for p in picks if validate_pick(p)]
     if errors:
         print(f"\n  ⚠  {len(errors)} validation issues after migration:")
