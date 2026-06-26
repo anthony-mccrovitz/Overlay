@@ -116,6 +116,17 @@ _MIN_EV_PCT = 2.0
 # Pinnacle is the sharp no-vig *reference*, never a bet destination — pricing
 # +EV against the book we devigged from would just measure its own vig.
 _NON_DESTINATION_BOOKS = {"Pinnacle"}
+# devig_ev assumes a TWO-outcome moneyline. Soccer is three-way (home/draw/away)
+# and the feed carries no draw price, so devigging home-vs-away alone drops the
+# draw mass and inflates BOTH fair probs → phantom edge on every side. Skip
+# draw-market sports until a real 3-way devig exists.
+_DRAW_MARKET_TOKENS = ("soccer",)
+# Secondary guard (belt-and-suspenders behind the soccer skip): a clean two-way
+# reference book sums to ~1.02-1.10. A 3-way slice missing the draw sits far
+# lower (~0.70-0.85). Floor at 0.95 — below any real 2-way median yet well above
+# any draw market — so it nets future 3-way sports without false-killing sparse
+# 2-way slates where one off book drags the median just under 1.0.
+_OVERROUND_MIN, _OVERROUND_MAX = 0.95, 1.25
 
 
 def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
@@ -133,6 +144,9 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
     proven there. Totals/spread are the next step (fair_map already carries them).
     """
     if odds_df is None or odds_df.empty:
+        return []
+    # Three-way (draw) markets can't be devigged two-way — would print phantom EV.
+    if any(tok in sport.lower() for tok in _DRAW_MARKET_TOKENS):
         return []
     home_ml = "HomeMoneyline" if "HomeMoneyline" in odds_df.columns else "HomeOdds"
     away_ml = "AwayMoneyline" if "AwayMoneyline" in odds_df.columns else "AwayOdds"
@@ -165,6 +179,29 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
 
         bettable = g[~g["Sportsbook"].isin(_NON_DESTINATION_BOOKS)]
         if bettable.empty:
+            continue
+
+        # Sanity-check this is a real two-way market. Vig is a PER-BOOK property,
+        # so judge it by a single SHARP book's two-sided implied sum — Pinnacle if
+        # present, else the median per-book overround (robust to one off book).
+        # Don't use min(): an off soft book legitimately sums <1.0, and that's the
+        # +EV signal, not a malformed market. A clean 2-way reference sits
+        # ~1.02-1.10; a 3-way slice missing the draw (soccer) has EVERY book <1.0.
+        sided = g.dropna(subset=[home_ml, away_ml])
+        per_book = [
+            _implied_from_american(r[home_ml]) + _implied_from_american(r[away_ml])
+            for _, r in sided.iterrows()
+        ]
+        per_book = [o for o in per_book if not pd.isna(o)]
+        if not per_book:
+            continue
+        pin = sided[sided["Sportsbook"] == "Pinnacle"]
+        if not pin.empty:
+            ref_overround = (_implied_from_american(pin.iloc[0][home_ml])
+                             + _implied_from_american(pin.iloc[0][away_ml]))
+        else:
+            ref_overround = float(pd.Series(per_book).median())
+        if not (_OVERROUND_MIN <= ref_overround <= _OVERROUND_MAX):
             continue
 
         for side, direction, odds_col in (("home", "HOME", home_ml),
