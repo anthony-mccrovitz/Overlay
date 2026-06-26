@@ -1736,7 +1736,12 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
                 _bet_ok = False  # building sample (5-14 picks)
             else:
                 _bet_ok = _rec.wr >= 0.53
-            card_pick = cal_edge >= 8.0 and _bet_ok
+            # Gate through is_card_pick so moneyline respects BOTH the registry
+            # (incubating → shadow, never posted) AND _CARD_EDGE_MIN (12%), then
+            # the team-WR gate. Previously this bypassed the registry and posted
+            # at a hardcoded 8% regardless of incubating status — flooding the
+            # card with favorite-longshot dogs that lose to the closing line.
+            card_pick = is_card_pick("mlb", market, cal_edge) and _bet_ok
             edge_pct  = round(cal_edge, 2)
         elif market in ("spread", "run_line") and _model_prob_cal and _implied_raw:
             # Spread model calibration_factor ~1.05 — edges are real, gate by WR only
@@ -1748,7 +1753,9 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
                 _bet_ok_rl = False
             else:
                 _bet_ok_rl = _rec_rl.wr >= 0.53
-            card_pick = cal_edge >= 8.0 and _bet_ok_rl
+            # Same fix as moneyline: respect the registry + _CARD_EDGE_MIN (12%)
+            # instead of the old hardcoded-8% bypass.
+            card_pick = is_card_pick("mlb", market, cal_edge) and _bet_ok_rl
             edge_pct  = round(cal_edge, 2)
         else:
             card_pick = is_card_pick("mlb", market, edge_pct)
