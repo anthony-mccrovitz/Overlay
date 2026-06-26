@@ -175,11 +175,26 @@ class SoccerModelV2:
     RHO = -0.10  # Fixed DC correction (same as v1 default)
     AD_DECAY = 0.12   # EWMA weight for rolling attack/defense (recent form)
     HOST_BONUS = 60.0  # Elo-equivalent home edge for 2026 co-hosts at home venues
-    # Calibration temperature (>1 softens favorite overconfidence). Value is the
-    # cross-validated optimum from scripts/validate_soccer.py across ~800
-    # walk-forward tournament matches — NOT fit per-model (a random recent slice
-    # of friendlies/qualifiers does not reflect tournament overconfidence).
-    CALIBRATION_T = 1.25
+    # Calibration temperature (<1 sharpens, >1 softens) on the 1X2 probs. The
+    # walk-forward favorite-calibration on 852 tournament matches showed the
+    # model UNDER-confident on the favorite (actual hit-rate > predicted in
+    # every bin) — so it needs SHARPENING, not softening. T=0.85 is the optimum
+    # from scripts/calibrate_soccer_1x2.py (min pooled 1X2 log loss): it cut
+    # Brier 0.3039 → 0.3011 vs the old 1.25. The remaining gap to a sharp book
+    # (~0.28) is RESOLUTION, not calibration — it needs new signal (xG, lineups,
+    # rest), which temperature scaling cannot manufacture.
+    CALIBRATION_T = 0.85
+    # Tempo shrinkage (0..1) on the rolling attack/defense terms (β, δ). The
+    # MLE fits β, δ to in-sample recent-form signal, but they over-swing the
+    # expected total out-of-sample (exp_total ranged 1.76–3.39 across one WC
+    # slate, manufacturing phantom ±30% totals edges). Shrinking them toward 0
+    # pulls exp_total back to the μ+α baseline the market agrees with. Value is
+    # the walk-forward optimum from scripts/calibrate_soccer_totals.py (min
+    # pooled O/U-2.5 Brier across all tournament instances since 2006): s=0.2
+    # cut O/U Brier 0.2613→0.2514 and the exp_total swing (σ) by 66%, more than
+    # halving over-2.5 ECE (0.091→0.035). Raw β,δ (s=1.0) scored WORSE than the
+    # 0.25 naive base rate — i.e. the un-shrunk totals model subtracted value.
+    TEMPO_SHRINK = 0.20
 
     def __init__(self) -> None:
         self.elo_ratings: dict[str, float] = {}
@@ -194,6 +209,7 @@ class SoccerModelV2:
         self.delta: float = 0.0   # opponent-leak coefficient (goals/tempo)
         self.rho: float = self.RHO
         self.temperature: float = 1.0   # calibration: >1 softens overconfidence
+        self.tempo_shrink: float = self.TEMPO_SHRINK  # shrink β,δ toward 0
         self.fitted_on: date | None = None
 
     # ── Elo helpers ───────────────────────────────────────────────────────────
@@ -402,6 +418,7 @@ class SoccerModelV2:
                 "delta":       self.delta,
                 "rho":         self.rho,
                 "temperature": self.temperature,
+                "tempo_shrink": self.tempo_shrink,
                 "fitted_on":   self.fitted_on.isoformat(),
             }, f)
         print(f"  [soccer_v2] Model saved → {MODEL_PATH_V2}")
@@ -424,6 +441,9 @@ class SoccerModelV2:
         self.delta       = data.get("delta", 0.0)
         self.rho         = data.get("rho", self.RHO)
         self.temperature = data.get("temperature", 1.0)
+        # Older pickles predate tempo_shrink — fall back to the class default so
+        # the calibrated shrinkage still applies after a plain load().
+        self.tempo_shrink = data.get("tempo_shrink", self.TEMPO_SHRINK)
         self.fitted_on   = date.fromisoformat(data["fitted_on"])
         return self
 
@@ -497,12 +517,17 @@ class SoccerModelV2:
         atk_a = self.atk_ratings.get(away_team, avg)
         dfn_a = self.dfn_ratings.get(away_team, avg)
 
+        # Shrink the rolling attack/defense tempo terms toward 0 (see
+        # TEMPO_SHRINK): the raw MLE β, δ over-swing exp_total out-of-sample.
+        s = self.tempo_shrink
+        b, dl = self.beta * s, self.delta * s
+
         lam_h = math.exp(self.mu + self.alpha * d_h
-                         + self.beta * math.log(max(atk_h, 0.05) / avg)
-                         + self.delta * math.log(max(dfn_a, 0.05) / avg))
+                         + b * math.log(max(atk_h, 0.05) / avg)
+                         + dl * math.log(max(dfn_a, 0.05) / avg))
         lam_a = math.exp(self.mu - self.alpha * d_h
-                         + self.beta * math.log(max(atk_a, 0.05) / avg)
-                         + self.delta * math.log(max(dfn_h, 0.05) / avg))
+                         + b * math.log(max(atk_a, 0.05) / avg)
+                         + dl * math.log(max(dfn_h, 0.05) / avg))
         return lam_h, lam_a
 
     def score_grid(
@@ -730,27 +755,51 @@ class SoccerModelV2:
                                 })
 
                     elif mkey == "totals":
-                        over_o  = next((o for o in outcomes if o.get("name") == "Over"), None)
-                        under_o = next((o for o in outcomes if o.get("name") == "Under"), None)
-                        if not over_o or not under_o:
-                            continue
-                        line        = float(over_o.get("point", 2.5))
-                        over_price  = float(over_o.get("price", -110))
-                        under_price = float(under_o.get("price", -110))
-                        total_imp   = (_american_to_imp(over_price) +
-                                       _american_to_imp(under_price))
-                        if total_imp <= 0:
-                            continue
-                        imp_over  = _american_to_imp(over_price)  / total_imp
-                        imp_under = _american_to_imp(under_price) / total_imp
+                        # Books often return several ALTERNATE total lines in one
+                        # market (points 1.25, 1.5, 2.5, 3.5…). Pair Over/Under by
+                        # MATCHING point — pairing an Over@1.5 with an Under@2.5
+                        # de-vigs to garbage and manufactured the fake +30% edges.
+                        by_point: dict[float, dict[str, dict]] = {}
+                        for o in outcomes:
+                            pt = o.get("point")
+                            if pt is None:
+                                continue
+                            by_point.setdefault(float(pt), {})[o.get("name", "")] = o
 
-                        key_str = f"over_{str(line).replace('.', '_')}"
-                        model_over = m.get(key_str)
-                        if model_over is None:
-                            from scipy.stats import poisson as _pois
-                            threshold  = int(math.ceil(line + 0.5))
-                            model_over = float(1.0 - _pois.cdf(threshold - 1, m["exp_total"]))
+                        # Build the set of valid same-point pairs the model can
+                        # price (standard half-lines on the score grid: over_0_5 …
+                        # over_4_5). Exotic Asian quarter-lines (1.25, 2.75) settle
+                        # on split stakes the model can't price — skip them.
+                        priceable: list[tuple] = []
+                        for line, pair in by_point.items():
+                            over_o, under_o = pair.get("Over"), pair.get("Under")
+                            if not over_o or not under_o:
+                                continue  # need both sides AT THE SAME line
+                            key_str = f"over_{str(line).replace('.', '_')}"
+                            model_over = m.get(key_str)
+                            if model_over is None:
+                                continue
+                            over_price  = float(over_o.get("price", -110))
+                            under_price = float(under_o.get("price", -110))
+                            total_imp   = (_american_to_imp(over_price) +
+                                           _american_to_imp(under_price))
+                            if total_imp <= 0:
+                                continue
+                            imp_over = _american_to_imp(over_price) / total_imp
+                            priceable.append((line, model_over, imp_over,
+                                              over_price, under_price))
+
+                        if not priceable:
+                            continue
+
+                        # Bet ONLY the MAIN line — the one the book prices closest
+                        # to 50/50 (its genuine expected total). Alternate lines
+                        # are where a 2-parameter Poisson model's tail error
+                        # manufactures phantom edges (the old +30% "OVER 1.5").
+                        line, model_over, imp_over, over_price, under_price = min(
+                            priceable, key=lambda t: abs(t[2] - 0.5))
                         model_under = 1.0 - model_over
+                        imp_under   = 1.0 - imp_over
 
                         for direction, model_p, imp_p, price in [
                             ("OVER",  model_over,  imp_over,  over_price),

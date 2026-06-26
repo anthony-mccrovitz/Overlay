@@ -1300,7 +1300,7 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
     # ── Post-normalize fixups ─────────────────────────────────────────────────
     data = json.loads(_PNL_FILE.read_text())
-    picks = data.get("picks", [])
+    picks = data if isinstance(data, list) else data.get("picks", [])
     fixups = 0
 
     for p in picks:
@@ -1340,7 +1340,8 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 
     # Validate all picks
     from src.tracking.schema import validate_pick
-    picks = json.loads(_PNL_FILE.read_text()).get("picks", [])
+    _raw = json.loads(_PNL_FILE.read_text())
+    picks = _raw if isinstance(_raw, list) else _raw.get("picks", [])
     errors = [(p.get("pick_id"), validate_pick(p)) for p in picks if validate_pick(p)]
     if errors:
         print(f"\n  ⚠  {len(errors)} validation issues after migration:")
@@ -1355,7 +1356,11 @@ def cmd_migrate(args: argparse.Namespace) -> int:
 # ─────────────────────────── test ────────────────────────────────────────────
 
 def cmd_test(args: argparse.Namespace) -> int:
-    return _run([sys.executable, "-m", "pytest", "tests/test_grading.py", "-v"])
+    # Run the FULL suite, not just grading — a daily green/red signal across
+    # every guard (model registry, CLV scoring, props, kelly, schema, …).
+    # Pass `--grading` to run only the fast grading subset.
+    target = "tests/test_grading.py" if getattr(args, "grading", False) else "tests/"
+    return _run([sys.executable, "-m", "pytest", target, "-q"])
 
 
 # ─────────────────────────── shop ────────────────────────────────────────────
@@ -3162,7 +3167,9 @@ def main() -> int:
     sub.add_parser("migrate", help="Normalize picks.json to canonical schema")
 
     # test
-    sub.add_parser("test", help="Run grading unit tests")
+    p_test = sub.add_parser("test", help="Run the full test suite (--grading for just grading)")
+    p_test.add_argument("--grading", action="store_true",
+                        help="Run only the fast grading tests")
 
     # stats
     sub.add_parser("stats", help="Refresh public_stats.json")

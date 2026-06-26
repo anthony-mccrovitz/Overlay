@@ -1,0 +1,98 @@
+{
+  "generated": "2026-06-24",
+  "min_year": 2006,
+  "n_tournaments": 20,
+  "n_matches": 852,
+  "actual_over_rate": 0.466,
+  "best_shrink": 0.2,
+  "grid": [
+    {
+      "shrink": 0.0,
+      "brier": 0.2521,
+      "log_loss": 0.6973,
+      "ece": 0.0539,
+      "exp_total_std": 0.0961,
+      "exp_total_mean": 2.7497
+    },
+    {
+      "shrink": 0.1,
+      "brier": 0.2515,
+      "log_loss": 0.6962,
+      "ece": 0.0432,
+      "exp_total_std": 0.117,
+      "exp_total_mean": 2.7128
+    },
+    {
+      "shrink": 0.2,
+      "brier": 0.2514,
+      "log_loss": 0.6959,
+      "ece": 0.0345,
+      "exp_total_std": 0.1471,
+      "exp_total_mean": 2.6779
+    },
+    {
+      "shrink": 0.3,
+      "brier": 0.2516,
+      "log_loss": 0.6964,
+      "ece": 0.0281,
+      "exp_total_std": 0.1812,
+      "exp_total_mean": 2.6447
+    },
+    {
+      "shrink": 0.4,
+      "brier": 0.2522,
+      "log_loss": 0.6976,
+      "ece": 0.0364,
+      "exp_total_std": 0.217,
+      "exp_total_mean": 2.6133
+    },
+    {
+      "shrink": 0.5,
+      "brier": 0.2531,
+      "log_loss": 0.6995,
+      "ece": 0.0432,
+      "exp_total_std": 0.2532,
+      "exp_total_mean": 2.5836
+    },
+    {
+      "shrink": 0.6,
+      "brier": 0.2543,
+      "log_loss": 0.702,
+      "ece": 0.0545,
+      "exp_total_std": 0.2896,
+      "exp_total_mean": 2.5556
+    },
+    {
+      "shrink": 0.7,
+      "brier": 0.2557,
+      "log_loss": 0.7052,
+      "ece": 0.0632,
+      "exp_total_std": 0.3258,
+      "exp_total_mean": 2.5292
+    },
+    {
+      "shrink": 0.8,
+      "brier": 0.2574,
+      "log_loss": 0.709,
+      "ece": 0.0747,
+      "exp_total_std": 0.3618,
+      "exp_total_mean": 2.5042
+    },
+    {
+      "shrink": 0.9,
+      "brier": 0.2592,
+      "log_loss": 0.7134,
+      "ece": 0.0835,
+      "exp_total_std": 0.3974,
+      "exp_total_mean": 2.4807
+    },
+    {
+      "shrink": 1.0,
+      "brier": 0.2613,
+      "log_loss": 0.7183,
+      "ece": 0.0912,
+      "exp_total_std": 0.4329,
+      "exp_total_mean": 2.4587
+    }
+  ]
+}

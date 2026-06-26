@@ -280,6 +280,13 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         if not team:
             continue
         market = str(pick.get("market") or "moneyline")
+        # A generic "prop" market loses the stat type the closing-line join needs
+        # ("Davis Martin UNDER 6.5" → 6.5 WHAT?). The source pick carries the
+        # specific Odds API key in `prop_market` (pitcher_strikeouts, player_threes
+        # …); promote it so compute_clv fetches the matching closing market. Picks
+        # that never recorded prop_market stay "prop" and remain unscoreable.
+        if market == "prop" and pick.get("prop_market"):
+            market = str(pick.get("prop_market"))
         strategy = pick.get("strategy")
         key = (effective_date, team.lower().strip(), market, strategy)
         if key in snap_keys:
@@ -409,6 +416,53 @@ def upgrade_snapshots() -> int:
     if upgraded:
         _save_snapshots(snapshots)
         print(f"  [CLV] upgraded {upgraded} legacy prop snapshot(s)")
+    return upgraded
+
+
+def relabel_prop_snapshots() -> int:
+    """Relabel generic ``market="prop"`` snapshots to their specific prop type.
+
+    Historical snapshots logged before the snapshot_from_pnl fix stored the
+    generic "prop" market, which the closing-line join can't match (closings are
+    keyed by pitcher_strikeouts / player_threes / …). The source pick in
+    picks.json carries the real key in ``prop_market``; copy it onto the snapshot
+    so compute_clv can finally score it. Idempotent; dedup-safe (skips a relabel
+    that would collide with an existing specific-market snapshot). Returns count.
+    """
+    from src.tracking.schema import load_picks_safe
+
+    picks = load_picks_safe(Path("data/pnl/picks.json")).get("picks", [])
+    # (date, team_lower) → specific prop_market, for picks that recorded one.
+    pm: dict[tuple, str] = {}
+    for p in picks:
+        if str(p.get("market") or "") == "prop" and p.get("prop_market"):
+            k = (str(p.get("date") or ""), str(p.get("team") or "").lower().strip())
+            pm[k] = str(p.get("prop_market"))
+
+    snapshots = _load_snapshots()
+    existing = {
+        (s.get("date", ""), s.get("team", "").lower().strip(),
+         s.get("market", ""), s.get("strategy"))
+        for s in snapshots
+    }
+    relabeled = 0
+    for s in snapshots:
+        if str(s.get("market") or "") != "prop":
+            continue
+        k = (str(s.get("date") or ""), str(s.get("team") or "").lower().strip())
+        specific = pm.get(k)
+        if not specific:
+            continue  # pick never recorded the stat type — unrescuable
+        new_key = (k[0], k[1], specific, s.get("strategy"))
+        if new_key in existing:
+            continue  # a specific-market snapshot already exists — don't dup
+        s["market"] = specific
+        existing.add(new_key)
+        relabeled += 1
+    if relabeled:
+        _save_snapshots(snapshots)
+        print(f"  [CLV] relabeled {relabeled} prop snapshot(s) to specific markets")
+    return relabeled
     return upgraded
 
 
