@@ -972,6 +972,13 @@ def _run_mlb_daily(args, sport: str):
             )
             if not m_obj:
                 continue
+            # Real IP/start (season IP ÷ starts, clamped 2–8) so the K
+            # projection doesn't use a flat 5.5 for everyone — that under-
+            # projected deep-going aces and auto-faded them UNDER.
+            def _ip_per_start(p):
+                if p and getattr(p, "games_started", 0) and p.innings_pitched > 0:
+                    return min(max(p.innings_pitched / p.games_started, 2.0), 8.0)
+                return 5.5
             prop_matchup_inputs.append({
                 "event_id": None,  # looked up by team name in find_prop_edges
                 "home_team": ep.home_team,
@@ -979,9 +986,11 @@ def _run_mlb_daily(args, sport: str):
                 "home_sp_name": m_obj.home_pitcher.name if m_obj.home_pitcher else "",
                 "home_sp_k9": m_obj.home_pitcher.k_per_9 if m_obj.home_pitcher else 7.5,
                 "home_sp_k9_l10": m_obj.home_pitcher.k_per_9 if m_obj.home_pitcher else 7.5,
+                "home_sp_ip": _ip_per_start(m_obj.home_pitcher),
                 "away_sp_name": m_obj.away_pitcher.name if m_obj.away_pitcher else "",
                 "away_sp_k9": m_obj.away_pitcher.k_per_9 if m_obj.away_pitcher else 7.5,
                 "away_sp_k9_l10": m_obj.away_pitcher.k_per_9 if m_obj.away_pitcher else 7.5,
+                "away_sp_ip": _ip_per_start(m_obj.away_pitcher),
                 "home_lineup_ops": 0.720,
                 "away_lineup_ops": 0.720,
             })
