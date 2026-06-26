@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260626_texas-rangers_moneyline_away",
+  "date": "2026-06-26",
+  "sport": "mlb",
+  "market": "moneyline",
+  "direction": "AWAY",
+  "team": "Texas Rangers",
+  "matchup": "Toronto Blue Jays",
+  "odds": 132,
+  "line": null,
+  "sportsbook": "Pinnacle",
+  "model_prob": 0.5425779941304152,
+  "edge_pct": 12.25,
+  "model_agreement": true,
+  "model_tier": "tier2",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-06-25T05:39:01.606212+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 141,
+      "season_rs_per_g": 4.1,
+      "season_ra_per_g": 4.44,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 4.14,
+        "ra_per_game": 5.57,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 4.15,
+        "ra_per_game": 5.0,
+        "wins": 7,
+        "losses": 6,
+        "wl": "7-6"
+      }
+    },
+    "away": {
+      "team_id": 140,
+      "season_rs_per_g": 3.99,
+      "season_ra_per_g": 4.16,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 4.29,
+        "ra_per_game": 5.43,
+        "wins": 3,
+        "losses": 4,
+        "wl": "3-4"
+      },
+      "form_15d": {
+        "games": 15,
+        "lookback_days": 15,
+        "rs_per_game": 3.8,
+        "ra_per_game": 5.67,
+        "wins": 6,
+        "losses": 9,
+        "wl": "6-9"
+      }
+    },
+    "snapshot_date": "2026-06-26"
+  },
+  "shadow_filter": {
+    "name": "mlb_ml_neutral_skip",
+    "matchup_class": "neutral",
+    "recommendation": "skip",
+    "reason": "neutral matchup: -15.8% ROI on n=30 in backtest"
+  }
+}
