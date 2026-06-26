@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Paul Skenes",
+      "team": "Paul Skenes UNDER 7.5",
+      "matchup": "Cincinnati Reds @ Pittsburgh Pirates",
+      "line": 7.5,
+      "odds": 110,
+      "model_prob": 0.7095,
+      "implied_prob": 0.4255,
+      "edge_pct": 28.39,
+      "model_mu": 5.99,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Ian Happ",
+      "team": "Ian Happ OVER 0.5",
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "line": 0.5,
+      "odds": -120,
+      "model_prob": 0.7385,
+      "implied_prob": 0.487,
+      "edge_pct": 25.14,
+      "model_mu": 2.82,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Carson Kelly",
+      "team": "Carson Kelly OVER 0.5",
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "line": 0.5,
+      "odds": 101,
+      "model_prob": 0.596,
+      "implied_prob": 0.4649,
+      "edge_pct": 13.11,
+      "model_mu": 1.48,
+      "sportsbook": "DraftKings"
+    }
+  ]
+}
