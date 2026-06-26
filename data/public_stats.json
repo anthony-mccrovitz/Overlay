@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-26T14:45:01.244766+00:00",
+  "updated_at": "2026-06-26T15:31:18.599714+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,50 +224,50 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.303,
-      "positive_pct": 31.7,
-      "n": 777,
+      "avg_clv_pct": -0.279,
+      "positive_pct": 31.8,
+      "n": 798,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 197,
-        "avg_line_clv": 0.11,
-        "beat_close_pct": 53.8,
-        "avg_price_clv_pct": 0.501,
-        "matched_price_n": 78
+        "count": 203,
+        "avg_line_clv": 0.026,
+        "beat_close_pct": 52.7,
+        "avg_price_clv_pct": 0.555,
+        "matched_price_n": 77
       },
       "spread": {
-        "count": 149,
-        "avg_line_clv": 0.413,
-        "beat_close_pct": 45.0,
+        "count": 152,
+        "avg_line_clv": 0.339,
+        "beat_close_pct": 44.7,
         "avg_price_clv_pct": 1.598,
         "matched_price_n": 88
       },
       "f5_total": {
-        "count": 171,
-        "avg_line_clv": 0.006,
-        "beat_close_pct": 30.4,
+        "count": 170,
+        "avg_line_clv": 0.003,
+        "beat_close_pct": 30.0,
         "avg_price_clv_pct": -3.963,
         "matched_price_n": 88
       },
       "pitcher_strikeouts": {
-        "count": 152,
-        "avg_line_clv": 0.039,
-        "beat_close_pct": 58.6,
-        "avg_price_clv_pct": 1.091,
-        "matched_price_n": 89
+        "count": 174,
+        "avg_line_clv": 0.057,
+        "beat_close_pct": 59.2,
+        "avg_price_clv_pct": 1.079,
+        "matched_price_n": 106
       }
     },
     "totals_coverage": {
-      "scored": 197,
-      "scoreable": 399,
-      "pct": 49.4
+      "scored": 203,
+      "scoreable": 400,
+      "pct": 50.7
     },
     "spread_coverage": {
-      "scored": 149,
+      "scored": 152,
       "scoreable": 299,
-      "pct": 49.8
+      "pct": 50.8
     }
   },
   "summary": {
