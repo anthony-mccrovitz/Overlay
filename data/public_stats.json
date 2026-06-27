@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-27T09:39:37.278105+00:00",
+  "updated_at": "2026-06-27T09:52:56.665720+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -272,14 +272,14 @@
   },
   "summary": {
     "total_picks": 296,
-    "settled": 268,
-    "pending": 23,
-    "wins": 148,
-    "losses": 114,
+    "settled": 272,
+    "pending": 19,
+    "wins": 150,
+    "losses": 116,
     "pushes": 6,
-    "win_rate": 0.5649,
-    "units_profit": 30.82,
-    "roi": 0.1197,
+    "win_rate": 0.5639,
+    "units_profit": 31.36,
+    "roi": 0.1199,
     "streak": -2
   },
   "nrfi": {
@@ -294,14 +294,14 @@
   "by_market": {
     "moneyline": {
       "total": 112,
-      "settled": 100,
-      "pending": 12,
-      "wins": 52,
-      "losses": 48,
+      "settled": 104,
+      "pending": 8,
+      "wins": 54,
+      "losses": 50,
       "pushes": 0,
-      "win_rate": 0.52,
-      "units_profit": 5.77,
-      "roi": 0.058,
+      "win_rate": 0.5192,
+      "units_profit": 6.31,
+      "roi": 0.061,
       "streak": -2
     },
     "puck_line": {
@@ -344,13 +344,13 @@
   "by_sport": {
     "mlb": {
       "total": 187,
-      "settled": 174,
-      "pending": 13,
-      "wins": 89,
-      "losses": 80,
-      "win_rate": 0.5266,
-      "units_profit": 10.9,
-      "roi": 0.0645
+      "settled": 178,
+      "pending": 9,
+      "wins": 91,
+      "losses": 82,
+      "win_rate": 0.526,
+      "units_profit": 11.44,
+      "roi": 0.0661
     },
     "nba": {
       "total": 97,
@@ -390,6 +390,50 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-26",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Chicago Cubs",
+      "matchup": "New York Mets",
+      "odds": -101,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 9.65
+    },
+    {
+      "date": "2026-06-26",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Houston Astros",
+      "matchup": "Detroit Tigers",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 9.65
+    },
+    {
+      "date": "2026-06-26",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Athletics",
+      "matchup": "San Francisco Giants",
+      "odds": 122,
+      "result": "win",
+      "profit": 1.22,
+      "edge_pct": 12.1
+    },
+    {
+      "date": "2026-06-26",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Texas Rangers",
+      "matchup": "Toronto Blue Jays",
+      "odds": 132,
+      "result": "win",
+      "profit": 1.32,
+      "edge_pct": 12.25
+    },
     {
       "date": "2026-06-25",
       "sport": "mlb",
@@ -455,50 +499,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 19.28
-    },
-    {
-      "date": "2026-06-23",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Chicago Cubs",
-      "matchup": "New York Mets",
-      "odds": -112,
-      "result": "win",
-      "profit": 0.89,
-      "edge_pct": 9.35
-    },
-    {
-      "date": "2026-06-23",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "New York Yankees",
-      "matchup": "Detroit Tigers",
-      "odds": -124,
-      "result": "win",
-      "profit": 0.81,
-      "edge_pct": 8.81
-    },
-    {
-      "date": "2026-06-23",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Philadelphia Phillies",
-      "matchup": "Washington Nationals",
-      "odds": 100,
-      "result": "win",
-      "profit": 1.0,
-      "edge_pct": 13.01
-    },
-    {
-      "date": "2026-06-22",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "New York Yankees",
-      "matchup": "Detroit Tigers",
-      "odds": -124,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 11.91
     }
   ]
 }
