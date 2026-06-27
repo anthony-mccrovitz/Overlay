@@ -2300,5 +2300,81 @@
         "Line": null
       }
     ]
+  },
+  {
+    "event_id": "c689d001aa0022349b0a7b5a28490ed4",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Cobey Fehr",
+    "away_team": "Daniel Bzdigian",
+    "commence_time": "2026-06-27T23:00:00Z",
+    "captured_at": "2026-06-27T21:32:41.669717+00:00",
+    "mins_to_commence": 87.3,
+    "closing_final": false,
+    "BestHomeML": -1200,
+    "BestAwayML": 750,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "c689d001aa0022349b0a7b5a28490ed4",
+        "HomeTeam": "Cobey Fehr",
+        "AwayTeam": "Daniel Bzdigian",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Cobey Fehr",
+        "Selection": "Cobey Fehr",
+        "Odds": -1200,
+        "Line": null
+      },
+      {
+        "EventID": "c689d001aa0022349b0a7b5a28490ed4",
+        "HomeTeam": "Cobey Fehr",
+        "AwayTeam": "Daniel Bzdigian",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Daniel Bzdigian",
+        "Selection": "Daniel Bzdigian",
+        "Odds": 750,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "fe6bf375c40c4fc5084b4889eb946b53",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Shannon Clark",
+    "away_team": "Ilara Joanne",
+    "commence_time": "2026-06-27T23:00:00Z",
+    "captured_at": "2026-06-27T21:32:41.953561+00:00",
+    "mins_to_commence": 87.3,
+    "closing_final": false,
+    "BestHomeML": -300,
+    "BestAwayML": 245,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "fe6bf375c40c4fc5084b4889eb946b53",
+        "HomeTeam": "Shannon Clark",
+        "AwayTeam": "Ilara Joanne",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Ilara Joanne",
+        "Selection": "Ilara Joanne",
+        "Odds": 245,
+        "Line": null
+      },
+      {
+        "EventID": "fe6bf375c40c4fc5084b4889eb946b53",
+        "HomeTeam": "Shannon Clark",
+        "AwayTeam": "Ilara Joanne",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Shannon Clark",
+        "Selection": "Shannon Clark",
+        "Odds": -300,
+        "Line": null
+      }
+    ]
   }
 ]
