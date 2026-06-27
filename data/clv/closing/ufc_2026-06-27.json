@@ -2307,9 +2307,9 @@
     "home_team": "Cobey Fehr",
     "away_team": "Daniel Bzdigian",
     "commence_time": "2026-06-27T23:00:00Z",
-    "captured_at": "2026-06-27T21:32:41.669717+00:00",
-    "mins_to_commence": 87.3,
-    "closing_final": false,
+    "captured_at": "2026-06-27T22:40:03.766952+00:00",
+    "mins_to_commence": 19.9,
+    "closing_final": true,
     "BestHomeML": -1200,
     "BestAwayML": 750,
     "HomeBook": "FanDuel",
@@ -2345,11 +2345,11 @@
     "home_team": "Shannon Clark",
     "away_team": "Ilara Joanne",
     "commence_time": "2026-06-27T23:00:00Z",
-    "captured_at": "2026-06-27T21:32:41.953561+00:00",
-    "mins_to_commence": 87.3,
-    "closing_final": false,
-    "BestHomeML": -300,
-    "BestAwayML": 245,
+    "captured_at": "2026-06-27T22:40:04.102736+00:00",
+    "mins_to_commence": 19.9,
+    "closing_final": true,
+    "BestHomeML": -320,
+    "BestAwayML": 260,
     "HomeBook": "FanDuel",
     "AwayBook": "FanDuel",
     "all_odds": [
@@ -2361,7 +2361,7 @@
         "Market": "h2h",
         "Name": "Ilara Joanne",
         "Selection": "Ilara Joanne",
-        "Odds": 245,
+        "Odds": 260,
         "Line": null
       },
       {
@@ -2372,7 +2372,83 @@
         "Market": "h2h",
         "Name": "Shannon Clark",
         "Selection": "Shannon Clark",
-        "Odds": -300,
+        "Odds": -320,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "dc08ab65e356e5ee943ace7ee53c1bcf",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Ariane Lipski",
+    "away_team": "Jena Bishop",
+    "commence_time": "2026-06-28T00:00:00Z",
+    "captured_at": "2026-06-27T22:40:04.475304+00:00",
+    "mins_to_commence": 79.9,
+    "closing_final": false,
+    "BestHomeML": -132,
+    "BestAwayML": 112,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "dc08ab65e356e5ee943ace7ee53c1bcf",
+        "HomeTeam": "Ariane Lipski",
+        "AwayTeam": "Jena Bishop",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Ariane Lipski",
+        "Selection": "Ariane Lipski",
+        "Odds": -132,
+        "Line": null
+      },
+      {
+        "EventID": "dc08ab65e356e5ee943ace7ee53c1bcf",
+        "HomeTeam": "Ariane Lipski",
+        "AwayTeam": "Jena Bishop",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Jena Bishop",
+        "Selection": "Jena Bishop",
+        "Odds": 112,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "b0504c38ef47cbf72fb55486c65132b9",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Justin Wetzell",
+    "away_team": "Sarvarjon Hamidov",
+    "commence_time": "2026-06-28T00:00:00Z",
+    "captured_at": "2026-06-27T22:40:04.946248+00:00",
+    "mins_to_commence": 79.9,
+    "closing_final": false,
+    "BestHomeML": 370,
+    "BestAwayML": -480,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "b0504c38ef47cbf72fb55486c65132b9",
+        "HomeTeam": "Justin Wetzell",
+        "AwayTeam": "Sarvarjon Hamidov",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Justin Wetzell",
+        "Selection": "Justin Wetzell",
+        "Odds": 370,
+        "Line": null
+      },
+      {
+        "EventID": "b0504c38ef47cbf72fb55486c65132b9",
+        "HomeTeam": "Justin Wetzell",
+        "AwayTeam": "Sarvarjon Hamidov",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Sarvarjon Hamidov",
+        "Selection": "Sarvarjon Hamidov",
+        "Odds": -480,
         "Line": null
       }
     ]
