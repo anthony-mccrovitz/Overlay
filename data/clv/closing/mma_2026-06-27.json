@@ -1601,13 +1601,13 @@
     "home_team": "Nazim Sadykhov",
     "away_team": "Matheus Camilo",
     "commence_time": "2026-06-27T17:45:00Z",
-    "captured_at": "2026-06-27T16:42:17.048364+00:00",
-    "mins_to_commence": 62.7,
-    "closing_final": false,
-    "BestHomeML": -176,
-    "BestAwayML": 156,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "Pinnacle",
+    "captured_at": "2026-06-27T17:48:35.082715+00:00",
+    "mins_to_commence": -3.6,
+    "closing_final": true,
+    "BestHomeML": -186,
+    "BestAwayML": 170,
+    "HomeBook": "FanDuel",
+    "AwayBook": "BetMGM",
     "all_odds": [
       {
         "EventID": "e8b196784d641b4e39933950f27fdb4b",
@@ -1617,118 +1617,52 @@
         "Market": "h2h",
         "Name": "Matheus Camilo",
         "Selection": "Matheus Camilo",
-        "Odds": 156,
-        "Line": NaN
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Nazim Sadykhov",
-        "Selection": "Nazim Sadykhov",
-        "Odds": -176,
-        "Line": NaN
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": 100,
-        "Line": 2.5
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 2.5
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Matheus Camilo",
-        "Selection": "Matheus Camilo",
-        "Odds": 150,
-        "Line": NaN
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Nazim Sadykhov",
-        "Selection": "Nazim Sadykhov",
-        "Odds": -180,
-        "Line": NaN
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Matheus Camilo",
-        "Selection": "Matheus Camilo",
-        "Odds": 105,
-        "Line": 3.5
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Nazim Sadykhov",
-        "Selection": "Nazim Sadykhov",
-        "Odds": -140,
-        "Line": -3.5
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "DraftKings",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 2.5
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "DraftKings",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -125,
-        "Line": 2.5
-      },
-      {
-        "EventID": "e8b196784d641b4e39933950f27fdb4b",
-        "HomeTeam": "Nazim Sadykhov",
-        "AwayTeam": "Matheus Camilo",
-        "Sportsbook": "Caesars",
-        "Market": "h2h",
-        "Name": "Matheus Camilo",
-        "Selection": "Matheus Camilo",
         "Odds": 155,
-        "Line": NaN
+        "Line": null
+      },
+      {
+        "EventID": "e8b196784d641b4e39933950f27fdb4b",
+        "HomeTeam": "Nazim Sadykhov",
+        "AwayTeam": "Matheus Camilo",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Nazim Sadykhov",
+        "Selection": "Nazim Sadykhov",
+        "Odds": -193,
+        "Line": null
+      },
+      {
+        "EventID": "e8b196784d641b4e39933950f27fdb4b",
+        "HomeTeam": "Nazim Sadykhov",
+        "AwayTeam": "Matheus Camilo",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Matheus Camilo",
+        "Selection": "Matheus Camilo",
+        "Odds": 154,
+        "Line": null
+      },
+      {
+        "EventID": "e8b196784d641b4e39933950f27fdb4b",
+        "HomeTeam": "Nazim Sadykhov",
+        "AwayTeam": "Matheus Camilo",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Nazim Sadykhov",
+        "Selection": "Nazim Sadykhov",
+        "Odds": -200,
+        "Line": null
+      },
+      {
+        "EventID": "e8b196784d641b4e39933950f27fdb4b",
+        "HomeTeam": "Nazim Sadykhov",
+        "AwayTeam": "Matheus Camilo",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Matheus Camilo",
+        "Selection": "Matheus Camilo",
+        "Odds": 145,
+        "Line": null
       },
       {
         "EventID": "e8b196784d641b4e39933950f27fdb4b",
@@ -1738,8 +1672,8 @@
         "Market": "h2h",
         "Name": "Nazim Sadykhov",
         "Selection": "Nazim Sadykhov",
-        "Odds": -185,
-        "Line": NaN
+        "Odds": -190,
+        "Line": null
       },
       {
         "EventID": "e8b196784d641b4e39933950f27fdb4b",
@@ -1750,7 +1684,7 @@
         "Name": "Matheus Camilo",
         "Selection": "Matheus Camilo",
         "Odds": 154,
-        "Line": NaN
+        "Line": null
       },
       {
         "EventID": "e8b196784d641b4e39933950f27fdb4b",
@@ -1761,7 +1695,7 @@
         "Name": "Nazim Sadykhov",
         "Selection": "Nazim Sadykhov",
         "Odds": -186,
-        "Line": NaN
+        "Line": null
       },
       {
         "EventID": "e8b196784d641b4e39933950f27fdb4b",
@@ -1771,8 +1705,8 @@
         "Market": "h2h",
         "Name": "Matheus Camilo",
         "Selection": "Matheus Camilo",
-        "Odds": 155,
-        "Line": NaN
+        "Odds": 170,
+        "Line": null
       },
       {
         "EventID": "e8b196784d641b4e39933950f27fdb4b",
@@ -1782,8 +1716,506 @@
         "Market": "h2h",
         "Name": "Nazim Sadykhov",
         "Selection": "Nazim Sadykhov",
-        "Odds": -190,
+        "Odds": -220,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "9ab3b245bae611547a5795a2e34ddf53",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Shara Magomedov",
+    "away_team": "Michel Pereira",
+    "commence_time": "2026-06-27T18:15:00Z",
+    "captured_at": "2026-06-27T17:48:35.327209+00:00",
+    "mins_to_commence": 26.4,
+    "closing_final": false,
+    "BestHomeML": -392,
+    "BestAwayML": 340,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "BetMGM",
+    "all_odds": [
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Michel Pereira",
+        "Selection": "Michel Pereira",
+        "Odds": 331,
         "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Shara Magomedov",
+        "Selection": "Shara Magomedov",
+        "Odds": -392,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -266,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 220,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Michel Pereira",
+        "Selection": "Michel Pereira",
+        "Odds": 320,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Shara Magomedov",
+        "Selection": "Shara Magomedov",
+        "Odds": -410,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Michel Pereira",
+        "Selection": "Michel Pereira",
+        "Odds": 130,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Shara Magomedov",
+        "Selection": "Shara Magomedov",
+        "Odds": -175,
+        "Line": -3.5
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -270,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 200,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Michel Pereira",
+        "Selection": "Michel Pereira",
+        "Odds": 320,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Shara Magomedov",
+        "Selection": "Shara Magomedov",
+        "Odds": -420,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Michel Pereira",
+        "Selection": "Michel Pereira",
+        "Odds": 315,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Shara Magomedov",
+        "Selection": "Shara Magomedov",
+        "Odds": -400,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Michel Pereira",
+        "Selection": "Michel Pereira",
+        "Odds": 340,
+        "Line": NaN
+      },
+      {
+        "EventID": "9ab3b245bae611547a5795a2e34ddf53",
+        "HomeTeam": "Shara Magomedov",
+        "AwayTeam": "Michel Pereira",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Shara Magomedov",
+        "Selection": "Shara Magomedov",
+        "Odds": -450,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "1c9ce23e06a8057978521722eb4514da",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Jordan Vucenic",
+    "away_team": "Nonato Junior",
+    "commence_time": "2026-06-27T18:30:00Z",
+    "captured_at": "2026-06-27T17:48:35.487770+00:00",
+    "mins_to_commence": 41.4,
+    "closing_final": false,
+    "BestHomeML": -3335,
+    "BestAwayML": 1200,
+    "HomeBook": "BetRivers",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "1c9ce23e06a8057978521722eb4514da",
+        "HomeTeam": "Jordan Vucenic",
+        "AwayTeam": "Nonato Junior",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Jordan Vucenic",
+        "Selection": "Jordan Vucenic",
+        "Odds": -3335,
+        "Line": null
+      },
+      {
+        "EventID": "1c9ce23e06a8057978521722eb4514da",
+        "HomeTeam": "Jordan Vucenic",
+        "AwayTeam": "Nonato Junior",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Nonato Junior",
+        "Selection": "Nonato Junior",
+        "Odds": 1200,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "718544d58ff508bbb7cf91ec56055e22",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Tariq Pell",
+    "away_team": "Luan Duarte",
+    "commence_time": "2026-06-27T18:40:00Z",
+    "captured_at": "2026-06-27T17:48:35.686072+00:00",
+    "mins_to_commence": 51.4,
+    "closing_final": false,
+    "BestHomeML": -770,
+    "BestAwayML": 460,
+    "HomeBook": "BetRivers",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "718544d58ff508bbb7cf91ec56055e22",
+        "HomeTeam": "Tariq Pell",
+        "AwayTeam": "Luan Duarte",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Luan Duarte",
+        "Selection": "Luan Duarte",
+        "Odds": 460,
+        "Line": null
+      },
+      {
+        "EventID": "718544d58ff508bbb7cf91ec56055e22",
+        "HomeTeam": "Tariq Pell",
+        "AwayTeam": "Luan Duarte",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Tariq Pell",
+        "Selection": "Tariq Pell",
+        "Odds": -770,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "fb12ebc37744ffd04921122c076e6281",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Rafael Fiziev",
+    "away_team": "Manuel Torres",
+    "commence_time": "2026-06-27T18:45:00Z",
+    "captured_at": "2026-06-27T17:48:35.933928+00:00",
+    "mins_to_commence": 56.4,
+    "closing_final": false,
+    "BestHomeML": -102,
+    "BestAwayML": -108,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Manuel Torres",
+        "Selection": "Manuel Torres",
+        "Odds": -115,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Rafael Fiziev",
+        "Selection": "Rafael Fiziev",
+        "Odds": -105,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Manuel Torres",
+        "Selection": "Manuel Torres",
+        "Odds": -160,
+        "Line": 5.5
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Rafael Fiziev",
+        "Selection": "Rafael Fiziev",
+        "Odds": 120,
+        "Line": -5.5
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 1.5
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 1.5
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Manuel Torres",
+        "Selection": "Manuel Torres",
+        "Odds": -110,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Rafael Fiziev",
+        "Selection": "Rafael Fiziev",
+        "Odds": -102,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -112,
+        "Line": 1.5
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -104,
+        "Line": 1.5
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Manuel Torres",
+        "Selection": "Manuel Torres",
+        "Odds": -115,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Rafael Fiziev",
+        "Selection": "Rafael Fiziev",
+        "Odds": -105,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Manuel Torres",
+        "Selection": "Manuel Torres",
+        "Odds": -108,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Rafael Fiziev",
+        "Selection": "Rafael Fiziev",
+        "Odds": -108,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Manuel Torres",
+        "Selection": "Manuel Torres",
+        "Odds": -110,
+        "Line": NaN
+      },
+      {
+        "EventID": "fb12ebc37744ffd04921122c076e6281",
+        "HomeTeam": "Rafael Fiziev",
+        "AwayTeam": "Manuel Torres",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Rafael Fiziev",
+        "Selection": "Rafael Fiziev",
+        "Odds": -110,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "3f0ecfa347ad35dbda5919ed365c44e9",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Manuel Del Valle",
+    "away_team": "Michael Dubois",
+    "commence_time": "2026-06-27T19:05:00Z",
+    "captured_at": "2026-06-27T17:48:36.101635+00:00",
+    "mins_to_commence": 76.4,
+    "closing_final": false,
+    "BestHomeML": -435,
+    "BestAwayML": 285,
+    "HomeBook": "BetRivers",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "3f0ecfa347ad35dbda5919ed365c44e9",
+        "HomeTeam": "Manuel Del Valle",
+        "AwayTeam": "Michael Dubois",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Manuel Del Valle",
+        "Selection": "Manuel Del Valle",
+        "Odds": -435,
+        "Line": null
+      },
+      {
+        "EventID": "3f0ecfa347ad35dbda5919ed365c44e9",
+        "HomeTeam": "Manuel Del Valle",
+        "AwayTeam": "Michael Dubois",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Michael Dubois",
+        "Selection": "Michael Dubois",
+        "Odds": 285,
+        "Line": null
       }
     ]
   }
