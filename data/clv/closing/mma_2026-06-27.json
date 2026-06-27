@@ -2218,5 +2218,43 @@
         "Line": null
       }
     ]
+  },
+  {
+    "event_id": "1c7502fadce842205f4e410385840623",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Nik Bagley",
+    "away_team": "Aiden Lee",
+    "commence_time": "2026-06-27T20:20:00Z",
+    "captured_at": "2026-06-27T18:56:29.231697+00:00",
+    "mins_to_commence": 83.5,
+    "closing_final": false,
+    "BestHomeML": -278,
+    "BestAwayML": 200,
+    "HomeBook": "BetRivers",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "1c7502fadce842205f4e410385840623",
+        "HomeTeam": "Nik Bagley",
+        "AwayTeam": "Aiden Lee",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Aiden Lee",
+        "Selection": "Aiden Lee",
+        "Odds": 200,
+        "Line": null
+      },
+      {
+        "EventID": "1c7502fadce842205f4e410385840623",
+        "HomeTeam": "Nik Bagley",
+        "AwayTeam": "Aiden Lee",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Nik Bagley",
+        "Selection": "Nik Bagley",
+        "Odds": -278,
+        "Line": null
+      }
+    ]
   }
 ]
