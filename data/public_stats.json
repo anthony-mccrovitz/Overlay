@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-28T12:20:16.354901+00:00",
+  "updated_at": "2026-06-28T14:56:06.157205+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,50 +224,50 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.329,
+      "avg_clv_pct": -0.241,
       "positive_pct": 31.4,
-      "n": 828,
+      "n": 870,
       "verdict": "NEUTRAL \u2014 model roughly matches closing line efficiency"
     },
     "spread_total": {
       "total": {
-        "count": 210,
-        "avg_line_clv": 0.056,
-        "beat_close_pct": 53.8,
-        "avg_price_clv_pct": 0.485,
+        "count": 212,
+        "avg_line_clv": 0.015,
+        "beat_close_pct": 53.3,
+        "avg_price_clv_pct": 0.536,
         "matched_price_n": 78
       },
       "spread": {
-        "count": 156,
-        "avg_line_clv": 0.314,
-        "beat_close_pct": 44.9,
-        "avg_price_clv_pct": 1.613,
+        "count": 159,
+        "avg_line_clv": 0.321,
+        "beat_close_pct": 44.7,
+        "avg_price_clv_pct": 1.546,
         "matched_price_n": 89
       },
       "f5_total": {
         "count": 173,
-        "avg_line_clv": 0.003,
+        "avg_line_clv": -0.003,
         "beat_close_pct": 29.5,
-        "avg_price_clv_pct": -3.989,
-        "matched_price_n": 91
+        "avg_price_clv_pct": -3.983,
+        "matched_price_n": 89
       },
       "pitcher_strikeouts": {
-        "count": 203,
-        "avg_line_clv": 0.064,
-        "beat_close_pct": 59.6,
-        "avg_price_clv_pct": 1.034,
-        "matched_price_n": 128
+        "count": 233,
+        "avg_line_clv": 0.03,
+        "beat_close_pct": 58.4,
+        "avg_price_clv_pct": 1.012,
+        "matched_price_n": 148
       }
     },
     "totals_coverage": {
-      "scored": 210,
+      "scored": 212,
       "scoreable": 403,
-      "pct": 52.1
+      "pct": 52.6
     },
     "spread_coverage": {
-      "scored": 156,
+      "scored": 159,
       "scoreable": 301,
-      "pct": 51.8
+      "pct": 52.8
     }
   },
   "summary": {
