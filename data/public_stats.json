@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-28T09:29:59.305187+00:00",
+  "updated_at": "2026-06-28T10:17:04.812566+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -272,15 +272,15 @@
   },
   "summary": {
     "total_picks": 296,
-    "settled": 272,
-    "pending": 19,
-    "wins": 150,
-    "losses": 116,
+    "settled": 277,
+    "pending": 14,
+    "wins": 153,
+    "losses": 118,
     "pushes": 6,
-    "win_rate": 0.5639,
-    "units_profit": 31.36,
-    "roi": 0.1199,
-    "streak": -2
+    "win_rate": 0.5646,
+    "units_profit": 32.32,
+    "roi": 0.1213,
+    "streak": 1
   },
   "nrfi": {
     "total": 0,
@@ -294,15 +294,15 @@
   "by_market": {
     "moneyline": {
       "total": 112,
-      "settled": 104,
-      "pending": 8,
-      "wins": 54,
-      "losses": 50,
+      "settled": 109,
+      "pending": 3,
+      "wins": 57,
+      "losses": 52,
       "pushes": 0,
-      "win_rate": 0.5192,
-      "units_profit": 6.31,
-      "roi": 0.061,
-      "streak": -2
+      "win_rate": 0.5229,
+      "units_profit": 7.26,
+      "roi": 0.067,
+      "streak": 1
     },
     "puck_line": {
       "total": 2,
@@ -344,13 +344,13 @@
   "by_sport": {
     "mlb": {
       "total": 187,
-      "settled": 178,
-      "pending": 9,
-      "wins": 91,
-      "losses": 82,
-      "win_rate": 0.526,
-      "units_profit": 11.44,
-      "roi": 0.0661
+      "settled": 183,
+      "pending": 4,
+      "wins": 94,
+      "losses": 84,
+      "win_rate": 0.5281,
+      "units_profit": 12.4,
+      "roi": 0.0696
     },
     "nba": {
       "total": 97,
@@ -390,6 +390,61 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-06-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Los Angeles Dodgers",
+      "matchup": "San Diego Padres",
+      "odds": -148,
+      "result": "win",
+      "profit": 0.68,
+      "edge_pct": 11.7
+    },
+    {
+      "date": "2026-06-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "New York Yankees",
+      "matchup": "Boston Red Sox",
+      "odds": -110,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 9.14
+    },
+    {
+      "date": "2026-06-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Houston Astros",
+      "matchup": "Detroit Tigers",
+      "odds": 108,
+      "result": "win",
+      "profit": 1.08,
+      "edge_pct": 10.74
+    },
+    {
+      "date": "2026-06-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Seattle Mariners",
+      "matchup": "Cleveland Guardians",
+      "odds": -104,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 12.16
+    },
+    {
+      "date": "2026-06-27",
+      "sport": "mlb",
+      "market": "moneyline",
+      "team": "Washington Nationals",
+      "matchup": "Baltimore Orioles",
+      "odds": 120,
+      "result": "win",
+      "profit": 1.2,
+      "edge_pct": 18.43
+    },
     {
       "date": "2026-06-26",
       "sport": "mlb",
@@ -444,61 +499,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 12.06
-    },
-    {
-      "date": "2026-06-25",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Seattle Mariners",
-      "matchup": "Pittsburgh Pirates",
-      "odds": 100,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 18.09
-    },
-    {
-      "date": "2026-06-24",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "New York Yankees",
-      "matchup": "Detroit Tigers",
-      "odds": -112,
-      "result": "win",
-      "profit": 0.89,
-      "edge_pct": 8.31
-    },
-    {
-      "date": "2026-06-24",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Houston Astros",
-      "matchup": "Toronto Blue Jays",
-      "odds": 120,
-      "result": "win",
-      "profit": 1.2,
-      "edge_pct": 11.5
-    },
-    {
-      "date": "2026-06-24",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Chicago Cubs",
-      "matchup": "New York Mets",
-      "odds": 105,
-      "result": "win",
-      "profit": 1.05,
-      "edge_pct": 14.49
-    },
-    {
-      "date": "2026-06-24",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Athletics",
-      "matchup": "San Francisco Giants",
-      "odds": 105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 19.28
     }
   ]
 }
