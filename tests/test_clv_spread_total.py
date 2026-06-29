@@ -124,3 +124,32 @@ def test_resolve_first_three():
     assert _resolve_spread_team(
         "MIL +1.5 RL", "Milwaukee Brewers @ Detroit Tigers"
     ) == "Milwaukee Brewers"
+
+
+# ── get_clv_summary: headline counts line-CLV, not just price-CLV ────────────
+
+def test_clv_summary_counts_line_and_price_markets(monkeypatch):
+    """Regression: totals/spreads store `line_clv`, not `clv`. The headline must
+    count them in scored coverage and the unified beat-close rate — otherwise the
+    dashboard looks frozen at the moneyline-only count even as totals grow."""
+    import src.analytics.clv_tracker as ct
+
+    snaps = [
+        # 2 price-CLV moneyline picks, 1 beats the close
+        {"market": "moneyline", "clv": 0.02, "clv_pct": 2.0},
+        {"market": "moneyline", "clv": -0.01, "clv_pct": -1.0},
+        # 3 line-CLV totals, 2 beat the close
+        {"market": "total", "line_clv": 0.5, "beat_close": True},
+        {"market": "total", "line_clv": -0.5, "beat_close": False},
+        {"market": "spread", "line_clv": 1.0, "beat_close": True},
+        # an untracked snapshot (no closing) must not count
+        {"market": "total"},
+    ]
+    monkeypatch.setattr(ct, "_load_snapshots", lambda: snaps)
+
+    s = ct.get_clv_summary()
+    assert s["with_clv"] == 2          # price-CLV only (back-compat key)
+    assert s["with_line_clv"] == 3     # totals + spread
+    assert s["scored_all"] == 5        # union, excludes the unscored total
+    # unified beat-close: 1 price (clv_pct>0) + 2 line beats = 3 / 5 = 60%
+    assert s["beat_close_pct_all"] == 60.0
