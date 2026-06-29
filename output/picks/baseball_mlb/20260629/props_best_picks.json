@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Trey Yesavage",
+      "team": "Trey Yesavage UNDER 5.5",
+      "matchup": "New York Mets @ Toronto Blue Jays",
+      "line": 5.5,
+      "odds": 150,
+      "model_prob": 0.6769,
+      "implied_prob": 0.375,
+      "edge_pct": 30.19,
+      "model_mu": 4.83,
+      "sportsbook": "Bovada"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Esmerlyn Valdez",
+      "team": "Esmerlyn Valdez OVER 0.5",
+      "matchup": "Pittsburgh Pirates @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": -155,
+      "model_prob": 0.7947,
+      "implied_prob": 0.5607,
+      "edge_pct": 23.39,
+      "model_mu": 3.87,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Chase Meidroth",
+      "team": "Chase Meidroth OVER 1.5",
+      "matchup": "Chicago White Sox @ Baltimore Orioles",
+      "line": 1.5,
+      "odds": 350,
+      "model_prob": 0.3692,
+      "implied_prob": 0.209,
+      "edge_pct": 16.02,
+      "model_mu": 1.55,
+      "sportsbook": "betPARX"
+    }
+  ]
+}
