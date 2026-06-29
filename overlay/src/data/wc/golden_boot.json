@@ -31,12 +31,6 @@
       "share": 0.3264
     },
     {
-      "player": "Jonathan David",
-      "team": "Canada",
-      "exp_goals": 3.69,
-      "share": 0.2866
-    },
-    {
       "player": "Lautaro Mart\u00ednez",
       "team": "Argentina",
       "exp_goals": 3.63,
@@ -47,6 +41,12 @@
       "team": "Ecuador",
       "exp_goals": 3.62,
       "share": 0.384
+    },
+    {
+      "player": "Jonathan David",
+      "team": "Canada",
+      "exp_goals": 3.59,
+      "share": 0.271
     },
     {
       "player": "Mikel Oyarzabal",
@@ -63,7 +63,7 @@
     {
       "player": "Ra\u00fal Jim\u00e9nez",
       "team": "Mexico",
-      "exp_goals": 3.05,
+      "exp_goals": 3.08,
       "share": 0.2081
     },
     {
@@ -75,7 +75,7 @@
     {
       "player": "Breel Embolo",
       "team": "Switzerland",
-      "exp_goals": 2.91,
+      "exp_goals": 2.89,
       "share": 0.1847
     },
     {
@@ -99,8 +99,8 @@
     {
       "player": "Cyle Larin",
       "team": "Canada",
-      "exp_goals": 2.64,
-      "share": 0.2054
+      "exp_goals": 2.57,
+      "share": 0.1942
     },
     {
       "player": "Marko Arnautovi\u0107",
@@ -141,7 +141,7 @@
     {
       "player": "Edin D\u017eeko",
       "team": "Bosnia and Herzegovina",
-      "exp_goals": 2.06,
+      "exp_goals": 2.05,
       "share": 0.3365
     },
     {
@@ -151,11 +151,11 @@
       "share": 0.1712
     }
   ],
-  "generated": "2026-06-28T14:56:05.702506+00:00",
+  "generated": "2026-06-29T16:41:40.279521+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-06-23",
   "n_fixtures": 72,
-  "n_priced": 16,
+  "n_priced": 15,
   "kickoff": "2026-06-11"
 }
