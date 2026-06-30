@@ -310,9 +310,98 @@ def capture_sport(
     return captured_now
 
 
+# Golf is a futures (outright winner) market — one tournament, no per-game
+# commence time the game loop iterates. A tournament has ONE close: the board at
+# first-round tee-off. We capture the outright winner board per active tournament
+# and keep upgrading the day's archive until a capture lands inside the tee-off
+# window, then lock it. compute_clv reads it tournament-scoped (across entry dates).
+_GOLF_FINAL_WINDOW_MIN = 720.0  # within 12h of tee-off counts as the close
+
+
+def _active_golf_keys() -> list[str]:
+    """Active golf outright-winner Odds API keys (e.g. golf_the_open_championship_winner)."""
+    try:
+        from src.data.odds_api import list_sports
+        df = list_sports()
+        if df.empty or "key" not in df:
+            return []
+        active = df[df.get("active", False)] if "active" in df else df
+        return sorted(k for k in active["key"]
+                      if str(k).startswith("golf_") and str(k).endswith("_winner"))
+    except Exception:
+        return []
+
+
+def capture_golf_outrights(force: bool) -> int:
+    """Capture each active golf tournament's outright winner board as the close."""
+    import requests
+    from src.data.odds_api import _get_api_key, API_BASE, BOOKMAKERS
+    api_key = _get_api_key()
+    if not api_key or api_key == "your_key_here":
+        return 0
+
+    today_str = _now_utc().date().isoformat()
+    captured = 0
+    for sport in _active_golf_keys():
+        archive = _load_archive(sport, today_str)
+        if archive and archive[0].get("closing_final") and not force:
+            continue  # today's close already locked
+        try:
+            resp = requests.get(
+                f"{API_BASE}/sports/{sport}/odds",
+                params={"apiKey": api_key, "bookmakers": BOOKMAKERS,
+                        "markets": "outrights", "oddsFormat": "american"},
+                timeout=30)
+            if resp.status_code != 200:
+                continue
+            events = resp.json()
+        except Exception as e:
+            _log(f"  WARN golf outrights fetch failed {sport}: {e}")
+            continue
+
+        # Best (longest) price per player across books — mirrors get_best_golf_odds.
+        best: dict[str, float] = {}
+        commence = None
+        for ev in events:
+            commence = ev.get("commence_time") or commence
+            for bk in ev.get("bookmakers", []):
+                for mk in bk.get("markets", []):
+                    if mk.get("key") != "outrights":
+                        continue
+                    for oc in mk.get("outcomes", []):
+                        name = str(oc.get("name") or "").strip()
+                        price = oc.get("price")
+                        if not name or price is None:
+                            continue
+                        p = float(price)
+                        if name not in best or p > best[name]:
+                            best[name] = p
+        if not best:
+            continue
+
+        mins = _minutes_to_commence(commence) if commence else None
+        in_final = mins is not None and mins <= _GOLF_FINAL_WINDOW_MIN
+        record = {
+            "sport":            sport,
+            "commence_time":    commence,
+            "captured_at":      _now_utc().isoformat(),
+            "mins_to_commence": round(mins, 1) if mins is not None else None,
+            "closing_final":    bool(in_final),
+            # player_lower -> best american odds (the close-so-far board)
+            "outrights":        {k.lower(): v for k, v in best.items()},
+        }
+        _save_archive(sport, today_str, [record])
+        captured += 1
+        tag = "CLOSING" if in_final else "pre-tee"
+        _log(f"  ✓ GOLF {tag}: {sport} ({len(best)} players, "
+             f"{('%+.0f' % mins) if mins is not None else '?'}m to tee)")
+
+    return captured
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["tennis", "all"], default="all")
+    ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["tennis", "golf", "all"], default="all")
     ap.add_argument("--window", type=float, default=90.0,
                     help="Pre-game capture LEAD in minutes (default 90): capture any "
                          "game starting within this many minutes. A WIDE lead is what "
@@ -348,6 +437,10 @@ def main() -> None:
     for sk, odds_sport in pairs:
         n = capture_sport(sk, odds_sport, lo, hi, args.force)
         total += n
+
+    # Golf outrights — separate futures capture (no per-game commence loop).
+    if args.sport in ("all", "golf"):
+        total += capture_golf_outrights(args.force)
 
     if total == 0:
         # Quiet run when nothing in window — keeps logs clean

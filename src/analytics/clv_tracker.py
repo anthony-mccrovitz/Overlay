@@ -1195,6 +1195,44 @@ def _score_prop(snap: dict, closing: dict) -> dict | None:
             "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
 
 
+def fetch_closing_outrights(sport: str) -> dict[str, dict]:
+    """Closing outright (futures winner) prices keyed by player_lower, for a golf
+    tournament. A tournament has ONE close — the board at first-round tee-off —
+    but picks are entered across many days, so this is TOURNAMENT-scoped, not
+    date-scoped: scan every {sport}_*.json archive and use the capture locked as
+    closing_final (latest wins), else the most recent capture. Returns
+    {player_lower: {"odds": american_price}}.
+    """
+    chosen: dict | None = None
+    chosen_final = False
+    for f in sorted(Path("data/clv/closing").glob(f"{sport}_*.json")):
+        try:
+            recs = json.loads(f.read_text())
+        except (json.JSONDecodeError, ValueError, OSError):
+            continue
+        for rec in recs:
+            if not rec.get("outrights"):
+                continue
+            is_final = bool(rec.get("closing_final"))
+            # Prefer a locked close; among non-final, the latest file wins (sorted).
+            if is_final or not chosen_final:
+                chosen = rec
+                chosen_final = chosen_final or is_final
+    if not chosen:
+        return {}
+    return {str(p).lower().strip(): {"odds": float(o)}
+            for p, o in chosen["outrights"].items()}
+
+
+def _score_outright(snap: dict, closing: dict) -> dict | None:
+    """CLV for a futures outright (golf winner): pure price CLV (binary, no line)."""
+    close_imp = _odds_to_implied(closing["odds"])
+    clv = close_imp - snap["opening_implied_prob"]
+    return {"closing_odds": closing["odds"],
+            "closing_implied_prob": round(close_imp, 6),
+            "clv": round(clv, 6), "clv_pct": round(clv * 100, 3)}
+
+
 def _score_scorer_anytime(snap: dict, closing: dict) -> dict | None:
     """CLV for an anytime-scorer pick: pure price CLV (binary, no line)."""
     close_imp = _odds_to_implied(closing["odds"])
@@ -1344,6 +1382,7 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     prop_maps: dict[str, dict] = {}      # sport -> {(player_lower, market_key): {line, over, under}}
     scorer_maps: dict[str, dict] = {}    # sport -> {player_lower: {odds, book}}
     method_maps: dict[str, dict] = {}    # sport -> {(fighter, method): {odds, book}}
+    outright_maps: dict[str, dict] = {}  # golf sport -> {player_lower: {odds}} (lazy, tournament-scoped)
     # ── Pinnacle-only "sharp" twins of every map above. Same shapes, restricted
     #    to Pinnacle's close. These drive the *_sharp CLV fields — the honest test
     #    (beating the sharp market), vs the best-price maps that flatter us. ──
@@ -1532,6 +1571,30 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
                 snap.update(res); updated += 1
                 sharp_closing = _scorer_lookup(sharp_scorer_maps.get(snap_sport, {}))
                 _apply_sharp(snap, _score_scorer_anytime(snap, sharp_closing) if sharp_closing else None)
+            continue
+
+        # ── Golf outright winner (futures) ────────────────────────────────────
+        # Tournament-scoped close (board at tee-off), not date-scoped — a pick
+        # entered days before tees off against the SAME closing board. Price CLV
+        # only (binary, no line). Last-name fallback for "Scheffler" vs full name.
+        if market == "outright":
+            snap_sport = snap.get("sport", "")
+            player_lower = (snap.get("team") or snap.get("player") or "").lower().strip()
+            omap = outright_maps.get(snap_sport)
+            if omap is None:
+                omap = fetch_closing_outrights(snap_sport)
+                outright_maps[snap_sport] = omap
+            closing = omap.get(player_lower)
+            if not closing and player_lower:
+                ln = player_lower.split()[-1]
+                if len(ln) > 3:
+                    for k, v in omap.items():
+                        if k.split()[-1] == ln:
+                            closing = v
+                            break
+            res = _score_outright(snap, closing) if closing else None
+            if res:
+                snap.update(res); updated += 1
             continue
 
         # ── MMA method-of-victory ─────────────────────────────────────────────
