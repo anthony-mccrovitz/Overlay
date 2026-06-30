@@ -130,6 +130,11 @@ class NegBinPropModel:
         self._intercept: float = 0.0
         self._alpha: float = 0.5   # NB dispersion
         self._feature_means: dict[str, float] = {}
+        # Additive recentering applied to the predicted mean. A model whose mu is
+        # systematically offset from the sharp market line produces one-sided
+        # over/under leans; this shifts mu so its average matches the line level,
+        # leaving per-player deviations (the real edge) intact. 0 = no correction.
+        self._mu_bias: float = 0.0
 
     def fit(self, df: pd.DataFrame, verbose: bool = True) -> "NegBinPropModel":
         """
@@ -164,8 +169,18 @@ class NegBinPropModel:
             glm = sm.GLM(y, X, family=sm.families.NegativeBinomial(alpha=0.5)).fit(maxiter=200)
             self._coefs     = glm.params[1:]     # skip intercept
             self._intercept = float(glm.params[0])
-            # Extract alpha from the fitted model
-            self._alpha = float(getattr(glm, "scale", 0.5))
+            # NB2 dispersion via method-of-moments on the CONDITIONAL residuals.
+            # The old code stored glm.scale (~1.0, the GLM Pearson scale) as alpha,
+            # which made Var = mu + 1.0*mu^2 — e.g. sd 5.5 at mu=5 when real K sd is
+            # ~2.4. That massive overdispersion skewed the count distribution so far
+            # right that P(over) sat well below 0.5 for every pitcher → a permanent
+            # UNDER lean no matter the mean. Estimate the true dispersion instead:
+            #   alpha = mean( ((y-mu)^2 - mu) / mu^2 )
+            mu_hat = np.asarray(glm.predict(), dtype=float)
+            with np.errstate(divide="ignore", invalid="ignore"):
+                a_terms = ((y - mu_hat) ** 2 - mu_hat) / np.maximum(mu_hat ** 2, 1e-9)
+            a_hat = float(np.nanmean(a_terms))
+            self._alpha = min(max(a_hat, 1e-3), 1.0)
             self._fitted_params = {
                 f: round(float(self._coefs[i]), 5)
                 for i, f in enumerate(available_features)
@@ -199,7 +214,7 @@ class NegBinPropModel:
         coefs = np.atleast_1d(self._coefs)
         if len(coefs) == 0 or len(features) == 0:
             # Intercept-only model — return exp(intercept)
-            return float(np.exp(self._intercept))
+            return max(float(np.exp(self._intercept)) + self._mu_bias, 0.01)
         x = np.array([
             row.get(f, self._feature_means.get(f, 0.0))
             for f in features
@@ -207,7 +222,7 @@ class NegBinPropModel:
         # Trim coefs/x to matching length (handles Poisson fallback edge cases)
         n = min(len(coefs), len(x))
         log_mu = self._intercept + float(np.dot(coefs[:n], x[:n]))
-        return float(np.exp(log_mu))
+        return max(float(np.exp(log_mu)) + self._mu_bias, 0.01)
 
     def over_prob(self, row: dict[str, float], line: float) -> float:
         """P(actual > line) for the given player/game context."""
@@ -284,6 +299,7 @@ class NegBinPropModel:
                 "feature_means":      self._feature_means,
                 "available_features": getattr(self, "_available_features", self.features),
                 "fitted_params":      self._fitted_params,
+                "mu_bias":            self._mu_bias,
             }, f)
 
     def load(self) -> "NegBinPropModel":
@@ -295,6 +311,7 @@ class NegBinPropModel:
         self._feature_means      = d["feature_means"]
         self._available_features = d.get("available_features", self.features)
         self._fitted_params      = d.get("fitted_params", {})
+        self._mu_bias            = float(d.get("mu_bias", 0.0))
         return self
 
     def is_fitted(self) -> bool:
