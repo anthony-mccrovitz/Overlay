@@ -151,16 +151,27 @@ def log_shadow_strategies(date_str: str | None = None,
         # (e.g. the whole World Cup schedule), but a shadow pick must be a today's-
         # game opening — otherwise its close lands in a future-dated archive and the
         # CLV join (±1 day) never matches it, orphaning the pick.
-        if "CommenceTime" in odds_df.columns:
-            def _is_today(ct) -> bool:
-                try:
-                    dt = datetime.fromisoformat(str(ct).replace("Z", "+00:00"))
-                    return dt.astimezone(_ET).date().isoformat() == eff_date
-                except (ValueError, TypeError):
-                    return False
-            odds_df = odds_df[odds_df["CommenceTime"].map(_is_today)]
-            if odds_df.empty:
-                continue
+        #
+        # FAIL SAFE: the today-filter is the only thing standing between us and
+        # logging the entire future schedule stamped with a single date. If the
+        # feed comes back without CommenceTime we CANNOT confirm a game is today,
+        # so we skip the sport rather than dump the whole bracket (the 2026-06-16
+        # World Cup incident: 51 fixtures across the tournament logged under one
+        # date because this guard silently no-op'd on a missing column).
+        if "CommenceTime" not in odds_df.columns:
+            print(f"  [shadow] {sport}: odds feed missing CommenceTime — cannot "
+                  f"confirm today's slate; skipping to avoid logging the full "
+                  f"future schedule under one date")
+            continue
+        def _is_today(ct) -> bool:
+            try:
+                dt = datetime.fromisoformat(str(ct).replace("Z", "+00:00"))
+                return dt.astimezone(_ET).date().isoformat() == eff_date
+            except (ValueError, TypeError):
+                return False
+        odds_df = odds_df[odds_df["CommenceTime"].map(_is_today)]
+        if odds_df.empty:
+            continue
 
         for name in strat_names:
             fn = STRATEGIES.get(name)

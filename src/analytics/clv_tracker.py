@@ -28,6 +28,34 @@ PICKS_OUTPUT_DIR = Path("output/picks")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+def collapse_board(edges: list[dict]) -> list[dict]:
+    """Reduce a full model edge board to ONE row per (matchup, market, player).
+
+    A model run computed with a very low edge threshold returns the full board:
+    every market on every game, often one row per bookmaker AND both sides of a
+    two-way market (OVER and UNDER, home and away). Logging all of that as shadow
+    CLV picks would duplicate snapshots and record contradictory leans.
+
+    This keeps, per (matchup, market, player), only the single highest-edge row —
+    i.e. the side and book line the model actually leans toward. The result is one
+    clean shadow pick per market per game (e.g. one total, one spread, one ML),
+    suitable for opening-line snapshots + CLV tracking on every game even when no
+    side clears the bet threshold. Player props are keyed by player so each
+    player keeps their own row.
+    """
+    best: dict[tuple, dict] = {}
+    for e in edges:
+        key = (
+            str(e.get("matchup") or e.get("team") or ""),
+            str(e.get("market") or ""),
+            str(e.get("player") or ""),
+        )
+        cur = best.get(key)
+        if cur is None or (e.get("edge_pct") or -1e9) > (cur.get("edge_pct") or -1e9):
+            best[key] = e
+    return list(best.values())
+
+
 # Canonical sport key aliases — same table as schema.py so CLV join always matches.
 _SPORT_ALIASES: dict[str, str] = {
     "baseball_mlb":                 "mlb",
@@ -1892,19 +1920,32 @@ def get_clv_summary() -> dict:
     snapshots = _load_snapshots()
     with_clv  = [s for s in snapshots if s.get("clv") is not None]
 
-    if not with_clv:
+    # Line-CLV markets (spreads, totals, strikeouts) store points moved in
+    # `line_clv`, NOT the price `clv` field — so counting only `clv` excluded
+    # every total/spread from the headline and verdict, which made the dashboard
+    # look frozen even as line-CLV coverage grew daily. Count them here so
+    # "scored" coverage and the unified beat-close rate reflect ALL markets.
+    line_scored = [s for s in snapshots if s.get("line_clv") is not None]
+    n_line      = len(line_scored)
+    line_beats  = sum(1 for s in line_scored if s.get("beat_close"))
+
+    if not with_clv and not line_scored:
         return {
             "total_picks":    len(snapshots),
             "with_clv":       0,
+            "with_line_clv":  0,
+            "scored_all":     0,
             "avg_clv_pct":    0.0,
             "positive_clv_pct": 0.0,
+            "beat_close_pct_all": 0.0,
             "clv_by_tier":    {},
+            "clv_by_sport":   {},
             "verdict":        "No CLV data yet — run compute_clv() after games start.",
         }
 
     clv_vals = [s["clv_pct"] for s in with_clv]
-    avg_clv  = sum(clv_vals) / len(clv_vals)
-    pos_pct  = sum(1 for v in clv_vals if v > 0) / len(clv_vals) * 100
+    avg_clv  = sum(clv_vals) / len(clv_vals) if clv_vals else 0.0
+    pos_pct  = (sum(1 for v in clv_vals if v > 0) / len(clv_vals) * 100) if clv_vals else 0.0
 
     # Group by edge tier if available in snapshot (from picks.json source)
     # We infer tier from opening_implied_prob vs model pick data if present
@@ -1944,22 +1985,33 @@ def get_clv_summary() -> dict:
     }
 
     n = len(with_clv)
-    if n < 20:
-        verdict = f"EARLY DATA — {n} picks with CLV (need 50+ for significance)"
+    # Unified, unit-agnostic coverage + "beat the close" rate across BOTH price-CLV
+    # (moneyline/nrfi) and line-CLV (spread/total) markets. beat-close is a boolean
+    # in every market, so it mixes cleanly where avg %CLV (cents) and line-CLV
+    # (points) cannot — this is the honest aggregate of the whole tracked book.
+    scored_all   = n + n_line
+    price_beats  = sum(1 for v in clv_vals if v > 0)
+    beat_all_pct = round((price_beats + line_beats) / scored_all * 100, 1) if scored_all else 0.0
+
+    if scored_all < 20:
+        verdict = f"EARLY DATA — {scored_all} scored picks (need 50+ for significance)"
     elif avg_clv > 2.0:
         verdict = "STRONG EDGE — consistently beating the closing line"
     elif avg_clv > 0.5:
         verdict = "POSITIVE CLV — model shows real edge against the market"
     elif avg_clv > -0.5:
-        verdict = "NEUTRAL — model roughly matches closing line efficiency"
+        verdict = "NEUTRAL — moneyline roughly matches closing line efficiency"
     else:
-        verdict = "NEGATIVE CLV — getting worse lines than closing"
+        verdict = "NEGATIVE CLV — getting worse moneyline numbers than closing"
 
     return {
         "total_picks":      len(snapshots),
         "with_clv":         n,
+        "with_line_clv":    n_line,
+        "scored_all":       scored_all,
         "avg_clv_pct":      round(avg_clv, 3),
         "positive_clv_pct": round(pos_pct, 1),
+        "beat_close_pct_all": beat_all_pct,
         "clv_by_tier":      clv_by_tier,
         "clv_by_sport":     clv_by_sport,
         "verdict":          verdict,
@@ -2005,9 +2057,11 @@ def print_clv_report() -> None:
     print(f"  CLV REPORT — CLOSING LINE VALUE")
     print(f"{'═' * W}")
     print(f"  Total picks tracked : {summary['total_picks']}")
-    print(f"  Picks with CLV data : {summary['with_clv']}")
+    print(f"  Scored vs close     : {summary.get('scored_all', summary['with_clv'])}"
+          f"  (price-CLV {summary['with_clv']} · line-CLV {summary.get('with_line_clv', 0)})")
+    print(f"  Beat closing line   : {summary.get('beat_close_pct_all', 0.0):.1f}%  (all scored markets)")
 
-    if summary["with_clv"] == 0:
+    if summary.get("scored_all", summary["with_clv"]) == 0:
         print(f"\n  {summary['verdict']}")
         print(f"\n  Run after generating picks:")
         print(f"    from src.analytics.clv_tracker import snapshot_opening_lines, compute_clv")
@@ -2017,8 +2071,9 @@ def print_clv_report() -> None:
         return
 
     sign = "+" if summary["avg_clv_pct"] >= 0 else ""
-    print(f"  Avg CLV             : {sign}{summary['avg_clv_pct']:.2f}%")
-    print(f"  % bets positive CLV : {summary['positive_clv_pct']:.1f}%")
+    print(f"  Moneyline avg CLV   : {sign}{summary['avg_clv_pct']:.2f}%  "
+          f"(price markets only; totals/spreads below in points)")
+    print(f"  Moneyline positive  : {summary['positive_clv_pct']:.1f}%")
     print(f"\n  VERDICT: {summary['verdict']}")
 
     if summary["clv_by_tier"]:

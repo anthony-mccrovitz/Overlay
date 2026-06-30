@@ -35,6 +35,7 @@ from src.models.soccer_model_v2 import SoccerModelV2, load_or_fit_model_v2
 from src.data.odds_api import MY_BOOKS_PARAM
 from src.tracking.schema import normalize_pick
 from src.config.models import is_live, shadow_stake, is_card_pick
+from src.analytics.clv_tracker import collapse_board
 
 import requests
 
@@ -317,10 +318,17 @@ def _run_one_league(
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "picks.json").write_text(json.dumps(edges, indent=2, default=str))
 
-    # Auto-log to PnL
-    added = _auto_log_picks(edges, game_date, sport_key)
+    # Auto-log to PnL. For the World Cup, log the FULL per-game board (one best
+    # lean per market via collapse_board) — not just the ≥LOG_MIN bets — so
+    # totals, spreads and scorer markets get opening snapshots + CLV tracking on
+    # EVERY game, even on days nothing clears the bet threshold. WC markets are
+    # incubating (is_card_pick=False), so the extra leans stay shadow and never
+    # touch the official record. Other leagues log only the bettable edges.
+    log_board = collapse_board(all_edges) if is_wc else edges
+    added = _auto_log_picks(log_board, game_date, sport_key)
     if added:
-        print(f"  [{league_name}] Logged {added} pick(s) to PnL.")
+        print(f"  [{league_name}] Logged {added} pick(s) to PnL "
+              f"({'full board' if is_wc else 'bets'}).")
 
     return edges
 
