@@ -30,9 +30,10 @@ PROP_MARKETS = [
     "pitcher_strikeouts",
     "batter_hits",
     "batter_total_bases",
-    "batter_home_runs",
+    "batter_home_runs",     # NB model "batter_home_runs"
     "batter_runs_scored",   # NB model "batter_runs" (see _ODDS_KEY_TO_MARKET)
     "batter_rbis",          # NB model "batter_rbis"
+    "batter_walks",         # NB model "batter_walks"
 ]
 
 # The Odds API market key doesn't always equal the NB model's market name. Map

@@ -90,6 +90,20 @@ PROP_CONFIGS: dict[str, dict] = {
         ],
         "log_link": True,
     },
+    "batter_home_runs": {
+        "target":   "actual_hr",
+        "features": [
+            "hr_per_game", "iso_power", "batting_order_pos", "recent_hr_3g",
+        ],
+        "log_link": True,
+    },
+    "batter_walks": {
+        "target":   "actual_walks",
+        "features": [
+            "bb_per_game", "obp_season", "batting_order_pos", "recent_walks_3g",
+        ],
+        "log_link": True,
+    },
 }
 
 
@@ -759,6 +773,188 @@ def build_batter_rbis_data(
     return pd.DataFrame(all_rows) if all_rows else pd.DataFrame()
 
 
+def build_batter_home_runs_data(
+    seasons: list[int] | None = None,
+    verbose: bool = True,
+    cache_dir: Path | None = None,
+) -> pd.DataFrame:
+    """
+    Build per-game batter_home_runs training rows from MLB Stats API game logs.
+    Player-only features: hr_per_game, iso_power (slg-avg), batting_order_pos,
+    recent_hr_3g. HR is a low-rate count, well-suited to the NB the model fits.
+    """
+    import requests, time
+
+    if seasons is None:
+        seasons = list(range(2022, 2026))
+
+    cache_dir = cache_dir or Path("data/cache/batter_logs")
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    all_rows: list[dict] = []
+
+    for season in seasons:
+        cache_file = cache_dir / f"batter_home_runs_{season}.json"
+        if cache_file.exists():
+            try:
+                rows = json.loads(cache_file.read_text())
+                all_rows.extend(rows)
+                if verbose:
+                    print(f"  [batter_home_runs] {season}: loaded {len(rows)} rows from cache")
+                continue
+            except Exception:
+                pass
+
+        if verbose:
+            print(f"  [batter_home_runs] {season}: fetching qualified batters...")
+        batters = _get_qualified_batters(season, min_pa=150)
+
+        season_rows: list[dict] = []
+        for batter in batters:
+            pid  = batter["id"]
+            name = batter["fullName"]
+
+            try:
+                resp = requests.get(
+                    f"https://statsapi.mlb.com/api/v1/people/{pid}/stats",
+                    params={"stats": "season", "group": "hitting",
+                            "season": season, "sportId": 1},
+                    timeout=10,
+                )
+                sdata       = resp.json()
+                season_stat = {}
+                for grp in sdata.get("stats", []):
+                    splits = grp.get("splits", [])
+                    if splits:
+                        season_stat = splits[0].get("stat", {})
+                        break
+            except Exception:
+                season_stat = {}
+
+            slg = float(season_stat.get("slg", 0.400) or 0.400)
+            avg = float(season_stat.get("avg", 0.250) or 0.250)
+            g   = int(season_stat.get("gamesPlayed", 1) or 1)
+            hr  = int(season_stat.get("homeRuns", 0) or 0)
+
+            game_splits = _fetch_batter_game_logs(pid, season)
+            time.sleep(0.05)
+
+            for split in game_splits:
+                gs  = split.get("stat", {})
+                ab  = int(gs.get("atBats", 0) or 0)
+                actual_hr = int(gs.get("homeRuns", 0) or 0)
+                if ab < 1:
+                    continue
+
+                season_rows.append({
+                    "season":            season,
+                    "player_id":         pid,
+                    "player":            name,
+                    "actual_hr":         actual_hr,
+                    "hr_per_game":       hr / max(g, 1),
+                    "iso_power":         max(slg - avg, 0.0),
+                    "batting_order_pos": 5,
+                    "recent_hr_3g":      hr / max(g, 1),
+                })
+
+        cache_file.write_text(json.dumps(season_rows, indent=2))
+        all_rows.extend(season_rows)
+        if verbose:
+            print(f"  [batter_home_runs] {season}: {len(season_rows)} game rows cached")
+
+    return pd.DataFrame(all_rows) if all_rows else pd.DataFrame()
+
+
+def build_batter_walks_data(
+    seasons: list[int] | None = None,
+    verbose: bool = True,
+    cache_dir: Path | None = None,
+) -> pd.DataFrame:
+    """
+    Build per-game batter_walks training rows from MLB Stats API game logs.
+    Player-only features: bb_per_game, obp_season, batting_order_pos, recent_walks_3g.
+    """
+    import requests, time
+
+    if seasons is None:
+        seasons = list(range(2022, 2026))
+
+    cache_dir = cache_dir or Path("data/cache/batter_logs")
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    all_rows: list[dict] = []
+
+    for season in seasons:
+        cache_file = cache_dir / f"batter_walks_{season}.json"
+        if cache_file.exists():
+            try:
+                rows = json.loads(cache_file.read_text())
+                all_rows.extend(rows)
+                if verbose:
+                    print(f"  [batter_walks] {season}: loaded {len(rows)} rows from cache")
+                continue
+            except Exception:
+                pass
+
+        if verbose:
+            print(f"  [batter_walks] {season}: fetching qualified batters...")
+        batters = _get_qualified_batters(season, min_pa=150)
+
+        season_rows: list[dict] = []
+        for batter in batters:
+            pid  = batter["id"]
+            name = batter["fullName"]
+
+            try:
+                resp = requests.get(
+                    f"https://statsapi.mlb.com/api/v1/people/{pid}/stats",
+                    params={"stats": "season", "group": "hitting",
+                            "season": season, "sportId": 1},
+                    timeout=10,
+                )
+                sdata       = resp.json()
+                season_stat = {}
+                for grp in sdata.get("stats", []):
+                    splits = grp.get("splits", [])
+                    if splits:
+                        season_stat = splits[0].get("stat", {})
+                        break
+            except Exception:
+                season_stat = {}
+
+            obp = float(season_stat.get("obp", 0.320) or 0.320)
+            g   = int(season_stat.get("gamesPlayed", 1) or 1)
+            bb  = int(season_stat.get("baseOnBalls", 0) or 0)
+
+            game_splits = _fetch_batter_game_logs(pid, season)
+            time.sleep(0.05)
+
+            for split in game_splits:
+                gs  = split.get("stat", {})
+                pa  = int(gs.get("plateAppearances", 0) or 0)
+                actual_walks = int(gs.get("baseOnBalls", 0) or 0)
+                if pa < 1:
+                    continue
+
+                season_rows.append({
+                    "season":            season,
+                    "player_id":         pid,
+                    "player":            name,
+                    "actual_walks":      actual_walks,
+                    "bb_per_game":       bb / max(g, 1),
+                    "obp_season":        obp,
+                    "batting_order_pos": 5,
+                    "recent_walks_3g":   bb / max(g, 1),
+                })
+
+        cache_file.write_text(json.dumps(season_rows, indent=2))
+        all_rows.extend(season_rows)
+        if verbose:
+            print(f"  [batter_walks] {season}: {len(season_rows)} game rows cached")
+
+    return pd.DataFrame(all_rows) if all_rows else pd.DataFrame()
+
+
 def train_all_prop_models(seasons: list[int] | None = None, verbose: bool = True) -> dict:
     """
     Train NB models for all available prop types.
@@ -838,6 +1034,34 @@ def train_all_prop_models(seasons: list[int] | None = None, verbose: bool = True
         results["batter_rbis"] = f"error: {e}"
         if verbose:
             print(f"  [nb_props] batter_rbis failed: {e}")
+
+    # Batter home runs
+    try:
+        df_hr = build_batter_home_runs_data(seasons, verbose=verbose)
+        if not df_hr.empty and "actual_hr" in df_hr.columns:
+            model = NegBinPropModel("batter_home_runs")
+            model.fit(df_hr, verbose=verbose)
+            results["batter_home_runs"] = "trained"
+        else:
+            results["batter_home_runs"] = "no_data"
+    except Exception as e:
+        results["batter_home_runs"] = f"error: {e}"
+        if verbose:
+            print(f"  [nb_props] batter_home_runs failed: {e}")
+
+    # Batter walks
+    try:
+        df_bb = build_batter_walks_data(seasons, verbose=verbose)
+        if not df_bb.empty and "actual_walks" in df_bb.columns:
+            model = NegBinPropModel("batter_walks")
+            model.fit(df_bb, verbose=verbose)
+            results["batter_walks"] = "trained"
+        else:
+            results["batter_walks"] = "no_data"
+    except Exception as e:
+        results["batter_walks"] = f"error: {e}"
+        if verbose:
+            print(f"  [nb_props] batter_walks failed: {e}")
 
     return results
 
