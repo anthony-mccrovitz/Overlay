@@ -288,6 +288,21 @@ class TestModelRegistry:
         from src.config.models import model_status
         assert model_status("pga", "nonexistent") == "incubating"
 
+    def test_incubating_moneyline_never_card_pick(self):
+        # Regression: predict.py used to post mlb·moneyline at a hardcoded 8%
+        # edge, bypassing the incubating gate — flooding the card with
+        # negative-CLV favorite-longshot dogs. An incubating market must NEVER
+        # be a card pick, no matter how large the edge.
+        from src.config.models import is_card_pick
+        assert is_card_pick("mlb", "moneyline", 8.0) is False
+        assert is_card_pick("mlb", "moneyline", 50.0) is False
+
+    def test_live_total_respects_edge_floor(self):
+        # mlb·total is live but must clear the 3% floor (sub-3% is noise).
+        from src.config.models import is_card_pick
+        assert is_card_pick("mlb", "total", 2.5) is False
+        assert is_card_pick("mlb", "total", 3.5) is True
+
     def test_live_models_list(self):
         from src.config.models import live_models
         live = live_models()

@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Ryan Ward",
+      "team": "Ryan Ward OVER 0.5",
+      "matchup": "Los Angeles Dodgers @ San Diego Padres",
+      "line": 0.5,
+      "odds": 109,
+      "model_prob": 0.7275,
+      "implied_prob": 0.4499,
+      "edge_pct": 27.76,
+      "model_mu": 2.67,
+      "sportsbook": "BetOnline.ag"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Reid Detmers",
+      "team": "Reid Detmers UNDER 6.5",
+      "matchup": "Athletics @ Los Angeles Angels",
+      "line": 6.5,
+      "odds": 120,
+      "model_prob": 0.6974,
+      "implied_prob": 0.4248,
+      "edge_pct": 27.25,
+      "model_mu": 5.37,
+      "sportsbook": "Bovada"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Anthony Seigler",
+      "team": "Anthony Seigler OVER 0.5",
+      "matchup": "New York Yankees @ Boston Red Sox",
+      "line": 0.5,
+      "odds": -102,
+      "model_prob": 0.6151,
+      "implied_prob": 0.4718,
+      "edge_pct": 14.32,
+      "model_mu": 1.6,
+      "sportsbook": "DraftKings"
+    }
+  ]
+}

@@ -39,3 +39,6 @@ jobs:
 
       - name: Run full test suite
         run: python -m pytest tests/ -q
+
+      - name: Model calibration gate (fails only if a LIVE market is overconfident)
+        run: python chef.py validate --gate

@@ -1363,6 +1363,83 @@ def cmd_test(args: argparse.Namespace) -> int:
     return _run([sys.executable, "-m", "pytest", target, "-q"])
 
 
+def cmd_today(args: argparse.Namespace) -> int:
+    """The ONE daily driver — one screen: did it run, the record, what to bet.
+
+    Replaces eyeballing status + record + audit + slate. Fast (reads
+    picks.json only); deep checks (validate/audit/test) run in CI and alert
+    on red, so green here means you don't need them.
+    """
+    import json as _json
+    from datetime import date as _date, timedelta as _td
+
+    today = _date.today().isoformat()
+    yday = (_date.today() - _td(days=1)).isoformat()
+    try:
+        raw = _json.loads(_PNL_FILE.read_text())
+        picks = raw if isinstance(raw, list) else raw.get("picks", [])
+    except (OSError, ValueError):
+        picks = []
+
+    def _settled(ps):
+        w = sum(1 for p in ps if p.get("result") == "win")
+        l = sum(1 for p in ps if p.get("result") == "loss")
+        pu = sum(1 for p in ps if p.get("result") == "push")
+        pr = sum((p.get("profit") or 0) for p in ps if p.get("result") in ("win", "loss", "push"))
+        return w, l, pu, pr
+
+    card = [p for p in picks if p.get("card_pick")]
+    today_card = [p for p in card if p.get("date") == today]
+    today_all = [p for p in picks if p.get("date") == today]
+    yday_card = [p for p in card if p.get("date") == yday]
+    cw, cl, cpu, cpr = _settled([p for p in card if p.get("result") in ("win", "loss", "push")])
+    yw, yl, ypu, ypr = _settled(yday_card)
+
+    flags = []
+    if not today_all:
+        flags.append("pipeline hasn't logged any picks today — run `chef.py morning`")
+
+    line = "═" * 56
+    print(f"\n  {line}")
+    print(f"  OVERLAY — TODAY   {_date.today():%A, %B %-d}")
+    print(f"  {line}")
+    verdict = "🟢 ALL GOOD" if not flags else f"🔴 {len(flags)} thing(s) need you"
+    print(f"  STATUS   {verdict}")
+    print("  " + "─" * 54)
+    ran = "✓ ran" if today_all else "✗ NOT run yet"
+    print(f"  Pipeline   {ran}  ({len(today_all)} picks logged, {len(today_card)} on card)")
+    roi = (cpr / (cw + cl + cpu) * 100) if (cw + cl + cpu) else 0
+    print(f"  Record     {cw}-{cl}-{cpu}   {cpr:+.1f}u   ({roi:+.1f}% ROI)")
+    if yday_card:
+        print(f"  Yesterday  {yw}-{yl}-{ypu}   {ypr:+.1f}u")
+    print("  " + "─" * 54)
+
+    # What to actually bet today
+    print("  TODAY'S CARD  (what to bet)")
+    if today_card:
+        for p in sorted(today_card, key=lambda x: -(x.get("edge_pct") or 0)):
+            o = p.get("odds")
+            try:
+                o = f"{int(o):+d}"
+            except (TypeError, ValueError):
+                o = str(o)
+            t = (p.get("team") or p.get("direction") or "")[:22]
+            r = p.get("result") or "pending"
+            print(f"     {p.get('market', '?')[:9]:9} {t:22} {o:>6}  edge {(p.get('edge_pct') or 0):+.1f}%  [{r}]")
+    else:
+        print("     (empty — no market cleared its gate today; that's correct, not a bug)")
+    print("  " + "─" * 54)
+
+    if flags:
+        print("  ⚠ NEEDS YOU:")
+        for f in flags:
+            print(f"     • {f}")
+        print("  " + "─" * 54)
+    print("  Deeper:  chef.py status · record · validate · audit")
+    print(f"  {line}\n")
+    return 0 if not flags else 1
+
+
 # ─────────────────────────── shop ────────────────────────────────────────────
 
 def cmd_shop(args: argparse.Namespace) -> int:
@@ -2519,11 +2596,13 @@ def cmd_validate(args: argparse.Namespace) -> int:
             continue
         by[(p.get("sport", "?"), p.get("market", "?"))].append((mp, 1 if res == "win" else 0))
 
+    from src.config.models import is_live as _is_live
     min_n = getattr(args, "min_n", None) or 20
     print(f"\n  ─ Model Validation — outcome calibration (min n={min_n}) ─────────")
     print(f"  {'sport · market':26}{'n':>5}{'stated':>8}{'actual':>8}{'Brier':>8}  verdict")
     print(f"  {'─'*74}")
     flagged = 0
+    live_overconfident = []  # LIVE markets that are overconfident — the real alarm
     rows = sorted(by.items(), key=lambda kv: -len(kv[1]))
     for (sport, market), obs in rows:
         n = len(obs)
@@ -2536,8 +2615,11 @@ def cmd_validate(args: argparse.Namespace) -> int:
         # Standard error of a proportion → is the gap beyond noise?
         se = (actual * (1 - actual) / n) ** 0.5 if 0 < actual < 1 else 0.0
         if gap < -2 * se and abs(gap) > 0.03:
-            verdict = f"⚠ OVERCONFIDENT ({gap*100:+.0f}pt)"
+            live = _is_live(sport, market)
+            verdict = f"⚠ OVERCONFIDENT ({gap*100:+.0f}pt)" + ("  [LIVE!]" if live else "")
             flagged += 1
+            if live:
+                live_overconfident.append(f"{sport}·{market} ({gap*100:+.0f}pt)")
         elif gap > 2 * se and abs(gap) > 0.03:
             verdict = f"underconfident ({gap*100:+.0f}pt)"
         else:
@@ -2550,6 +2632,12 @@ def cmd_validate(args: argparse.Namespace) -> int:
         print(f"  ⚠ {flagged} market(s) OVERCONFIDENT — stated edge inflated, trust CLV not EV.")
     print(f"  {tested} market(s) had >= {min_n} graded picks. Markets below the floor are")
     print(f"  awaiting results (props/spreads just started — check back as they settle).")
+    # --gate: fail (exit red) only if a LIVE market is overconfident. Incubating
+    # markets being overconfident is expected (they're shadow) — not an alarm.
+    if getattr(args, "gate", False) and live_overconfident:
+        print(f"\n  🔴 GATE FAILED — LIVE market(s) overconfident: {', '.join(live_overconfident)}")
+        print("     A market you're BETTING is miscalibrated. Demote or fix it.")
+        return 1
     return 0
 
 
@@ -3096,6 +3184,9 @@ def main() -> int:
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
+    # The one daily driver — listed first because it's the only one you run daily.
+    sub.add_parser("today", help="★ THE daily driver: one screen — did it run, the record, what to bet")
+
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
     p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nba-props", "nba_props", "nhl", "nhl-props", "nhl_props", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "ufc", "mma"], help="Sport to generate picks for")
@@ -3223,6 +3314,7 @@ def main() -> int:
     p_cal.add_argument("--min-n", type=int, dest="min_n", help="Minimum settled picks to calibrate a market (default 30)")
     p_validate = sub.add_parser("validate", help="Model validation: outcome calibration (stated prob vs actual hit rate, Brier) per sport·market")
     p_validate.add_argument("--min-n", type=int, dest="min_n", help="Minimum graded picks to validate a market (default 20)")
+    p_validate.add_argument("--gate", action="store_true", help="Exit non-zero if a LIVE market is overconfident (for CI alerting)")
     p_edge = sub.add_parser("edge", help="Statistical promotion gate: which markets have a REAL CLV edge vs noise (t-test + sample floor + multiple-comparison correction)")
     p_edge.add_argument("--min-n", type=int, dest="min_n", help="Minimum scored picks to test a market (default 200)")
 
@@ -3369,6 +3461,7 @@ def main() -> int:
         "wc":       cmd_wc,
         "daily":    cmd_daily,
         "wc-post":  cmd_wc_post,
+        "today":    cmd_today,
     }
     return dispatch[args.command](args)
 

@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Esmerlyn Valdez",
+      "team": "Esmerlyn Valdez OVER 1.5",
+      "matchup": "Pittsburgh Pirates @ Philadelphia Phillies",
+      "line": 1.5,
+      "odds": 185,
+      "model_prob": 0.6625,
+      "implied_prob": 0.3236,
+      "edge_pct": 33.88,
+      "model_mu": 4.37,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Griffin Jax",
+      "team": "Griffin Jax UNDER 4.5",
+      "matchup": "Tampa Bay Rays @ Kansas City Royals",
+      "line": 4.5,
+      "odds": 130,
+      "model_prob": 0.7388,
+      "implied_prob": 0.4085,
+      "edge_pct": 33.04,
+      "model_mu": 3.25,
+      "sportsbook": "Bovada"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "James Outman",
+      "team": "James Outman OVER 0.5",
+      "matchup": "Detroit Tigers @ New York Yankees",
+      "line": 0.5,
+      "odds": 150,
+      "model_prob": 0.5347,
+      "implied_prob": 0.3678,
+      "edge_pct": 16.68,
+      "model_mu": 1.15,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}
