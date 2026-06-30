@@ -192,12 +192,22 @@ def run_mlb_props(args: argparse.Namespace) -> int:
             if not market_path.exists():
                 market_path.write_text("[]")
 
-    # 6. Auto-log (only pitcher Ks currently, others pending NB training)
-    card_markets = {"pitcher_strikeouts"}
-    log_edges = [e for e in all_edges if e.get("market") in card_markets]
+    # 6. Auto-log every prop market the model priced. Each market's tier decides
+    #    how it lands: is_live() → card_pick (real record), else shadow (card_pick
+    #    =False, excluded from the public record) — so logging batter props here is
+    #    safe, it just gives them the OPENING line that prop CLV needs. We capture
+    #    their closings every day already; without an opening snapshot they could
+    #    never be scored. collapse_board() reduces the full multi-book/both-sides
+    #    edge board to ONE lean per (matchup, market, player) so we log the model's
+    #    actual pick, not hundreds of duplicate book rows.
+    from src.analytics.clv_tracker import collapse_board
+    log_edges = collapse_board(all_edges)
     added = _auto_log_picks(log_edges, game_date)
     if added:
-        print(f"  Logged {added} pitcher K edge(s) to PnL.")
+        from collections import Counter
+        by_mkt = Counter(e.get("market") for e in log_edges)
+        summary = ", ".join(f"{n} {m}" for m, n in by_mkt.most_common())
+        print(f"  Logged {added} prop edge(s) to PnL (shadow unless live): {summary}")
 
     # 7. CLV snapshot
     try:
