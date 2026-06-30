@@ -1030,6 +1030,14 @@ def fetch_closing_f5_totals(date_str: str, sport: str = "mlb",
                                 book=book)
 
 
+# Some NB models use an internal market name that differs from the Odds API key
+# the closing archive stores. Map internal → API key so the closing join matches
+# (mirror of the fetcher's _ODDS_KEY_TO_MARKET). Only batter_runs differs today.
+_MARKET_TO_ODDS_KEY = {
+    "batter_runs": "batter_runs_scored",
+}
+
+
 def fetch_closing_props(date_str: str, sport: str = "mlb", market_key: str = "pitcher_strikeouts",
                         book: str | None = None) -> dict[tuple, dict]:
     """
@@ -1041,8 +1049,11 @@ def fetch_closing_props(date_str: str, sport: str = "mlb", market_key: str = "pi
     Pass book="Pinnacle" for the strict sharp benchmark (Pinnacle-priced props only).
     """
     out: dict[tuple, dict] = {}
+    # Archive rows carry the Odds API key; the result stays keyed by the internal
+    # market_key so it joins the snapshot's market.
+    _api_key = _MARKET_TO_ODDS_KEY.get(market_key, market_key)
     for _mkey, rec in _select_windowed_records(date_str, sport).items():
-        rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == market_key]
+        rows = [r for r in (rec.get("all_odds") or []) if r.get("Market") == _api_key]
         if book is not None:
             rows = [r for r in rows if str(r.get("Sportsbook", "")) == book]
         if not rows:

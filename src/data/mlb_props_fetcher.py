@@ -31,7 +31,16 @@ PROP_MARKETS = [
     "batter_hits",
     "batter_total_bases",
     "batter_home_runs",
+    "batter_runs_scored",   # NB model "batter_runs" (see _ODDS_KEY_TO_MARKET)
+    "batter_rbis",          # NB model "batter_rbis"
 ]
+
+# The Odds API market key doesn't always equal the NB model's market name. Map
+# the API key → internal market so the model join (market == config key) matches.
+# (Only batter_runs differs today; batter_rbis already aligns.)
+_ODDS_KEY_TO_MARKET = {
+    "batter_runs_scored": "batter_runs",
+}
 
 # MLB Stats API group IDs
 _HITTING_GROUP  = "hitting"
@@ -322,7 +331,7 @@ def fetch_all_mlb_props(
                    matchup, sportsbook, + feature columns (added by enrich step)
     """
     if markets is None:
-        markets = ["pitcher_strikeouts", "batter_hits", "batter_total_bases", "batter_home_runs"]
+        markets = list(PROP_MARKETS)
 
     key = os.environ.get("ODDS_API_KEY")
     if not key:
@@ -400,11 +409,12 @@ def fetch_all_mlb_props(
                     if not player or not line:
                         continue
 
-                    key_tuple = (player, mkey, line, book_name)
+                    market_name = _ODDS_KEY_TO_MARKET.get(mkey, mkey)
+                    key_tuple = (player, market_name, line, book_name)
                     if key_tuple not in by_player_market:
                         by_player_market[key_tuple] = {
                             "player":    player,
-                            "market":    mkey,
+                            "market":    market_name,
                             "line":      line,
                             "matchup":   matchup,
                             "sportsbook": book_name,
