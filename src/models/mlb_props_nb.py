@@ -149,8 +149,12 @@ class NegBinPropModel:
         X = sm.add_constant(df_clean[available_features].values, has_constant="add")
         y = df_clean[self.target].values.astype(float)
 
-        # Filter out zero or negative targets
-        mask = y > 0
+        # Keep zero-count games — they are real outcomes that define the true mean.
+        # The old `y > 0` filter dropped them, so low-rate props (HR, walks) trained
+        # on the conditional-on-positive distribution and predicted mu 3-7x too high
+        # → a permanent OVER bias. NB regression handles zeros natively; only drop
+        # impossible negatives.
+        mask = y >= 0
         X, y = X[mask], y[mask]
 
         if verbose:
