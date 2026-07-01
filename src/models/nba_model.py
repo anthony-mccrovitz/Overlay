@@ -60,6 +60,11 @@ def _prob_to_american(p: float) -> int:
     return int(round((1 - p) / p * 100))
 
 
+# Measured recentring for the totals projection (proj ran ~9.2 pts above the line,
+# forcing a 98% OVER lean). Applied in the totals edge logic below.
+NBA_TOTAL_RECENTER = -9.2
+
+
 def _normal_cdf(x: float) -> float:
     """Cumulative normal distribution."""
     return 0.5 * (1 + math.erf(x / math.sqrt(2)))
@@ -397,10 +402,15 @@ def find_nba_edges(
             market_line = float(ov.get("point") or 0)
 
             # Model probability of going over using normal distribution
-            # Std dev of NBA totals historically ~13 pts
+            # Std dev of NBA totals historically ~13 pts.
+            # The projected total ran ~9.2 pts ABOVE the market line on average
+            # (91-pick sample) → the model went OVER 98% of the time. Recentre onto
+            # the sharp line so per-game deviations drive the lean, not a constant
+            # over-projection.
             total_std = 13.0
+            proj_total_adj = proj["projected_total"] + NBA_TOTAL_RECENTER
             raw_over_prob = 1.0 - _normal_cdf(
-                (market_line - proj["projected_total"]) / total_std
+                (market_line - proj_total_adj) / total_std
             )
             model_over_prob  = apply_calibration(raw_over_prob, "nba", "total")
             model_under_prob = 1.0 - model_over_prob

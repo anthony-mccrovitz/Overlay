@@ -74,7 +74,10 @@ def _trained_features(home_stats: dict, away_stats: dict,
 MIN_EDGE_PCT = 5.0     # lowered from 8% — goalie bug fix makes model more trustworthy
 GOAL_SIGMA = 1.80      # std dev of goal differential (empirical NHL)
 PUCK_LINE = 1.5        # standard NHL puck line
-OVER_BIAS_CORRECTION = 0.04   # subtract from OVER prob: books shade totals high to attract squares
+OVER_BIAS_CORRECTION = 0.0    # disabled: double-tilted an already-under-biased totals
+                              # model (88% UNDER). Book shading is a CLV question.
+NHL_TOTAL_RECENTER = 0.60     # measured line-minus-proj median offset (proj ran low);
+                              # median-based so the lean balances, not just the mean
 MIN_IMPLIED_PROB = 0.30       # no picks at odds better than +233 — model unreliable at extreme odds
 
 # Canonical team name → 3-letter NHL Stats API abbreviation
@@ -470,7 +473,7 @@ def find_nhl_edges(
                 best_odds, book_prob = best
 
                 # Model probability: use normal CDF around projected total
-                mean = proj["total_exp_goals"]
+                mean = proj["total_exp_goals"] + NHL_TOTAL_RECENTER
                 sigma = GOAL_SIGMA * math.sqrt(2)   # sum of two Poisson variances
                 if side == "Over":
                     model_prob = max(0.01, (1 - _normal_cdf((pt - mean) / sigma)) - OVER_BIAS_CORRECTION)
@@ -491,7 +494,7 @@ def find_nhl_edges(
 
         # ── If no Pinnacle totals, use our projection standalone ─────────────
         if not pin_totals:
-            mean = proj["total_exp_goals"]
+            mean = proj["total_exp_goals"] + NHL_TOTAL_RECENTER
             sigma = GOAL_SIGMA * math.sqrt(2)
             for side in ("Over", "Under"):
                 # Find common lines offered by any book

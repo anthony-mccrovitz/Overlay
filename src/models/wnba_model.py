@@ -24,7 +24,10 @@ from src.data.wnba_stats import (
 )
 
 MIN_EDGE_PCT = 6.0     # Slightly lower threshold than NBA — WNBA books are softer
-OVER_BIAS_CORRECTION = 0.05   # books shade total lines high; OVERs historically underperform
+OVER_BIAS_CORRECTION = 0.0    # disabled: it double-tilted an already-under-biased
+                              # totals model. Book shading is a CLV question, not an
+                              # EV thumb on the scale.
+WNBA_TOTAL_RECENTER = 3.2     # measured proj-minus-line offset (proj ran 3.2 pts low)
 MIN_IMPLIED_PROB = 0.30       # skip picks at odds better than +233
 
 POSSESSIONS_PER_PACE = 100.0
@@ -177,12 +180,16 @@ def find_wnba_edges(
                     under_odds = float(under.get("price", -110))
                     imp_over, imp_under = _devig_two_way(over_odds, under_odds)
 
-                    # P(total > line) from Normal(proj_total, std=18)
+                    # P(total > line) from Normal(proj_total, std=18).
+                    # The projection ran ~3.2 pts BELOW the market line on average
+                    # (95-pick full board) — a systematic underprojection that made
+                    # the model lean UNDER ~84% of the time (phantom under "edges").
+                    # Recentre onto the sharp line; per-game deviations (the edge)
+                    # survive. OVER_BIAS_CORRECTION is disabled below (was double-
+                    # tilting an already-under-biased model).
                     total_std = 18.0
-                    model_over_p = 1.0 - _normal_cdf((line - proj_total) / total_std)
-                    model_under_p = 1.0 - model_over_p
-
-                    # Apply OVER bias correction before computing edge
+                    proj_total_adj = proj_total + WNBA_TOTAL_RECENTER
+                    model_over_p = 1.0 - _normal_cdf((line - proj_total_adj) / total_std)
                     model_over_p = max(0.01, model_over_p - OVER_BIAS_CORRECTION)
                     model_under_p = 1.0 - model_over_p
 
