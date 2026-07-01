@@ -1,0 +1,58 @@
+[
+  {
+    "sport": "tennis_wta_wimbledon",
+    "market": "moneyline",
+    "direction": "Xinyu Wang",
+    "team": "Xinyu Wang",
+    "matchup": "Xinyu Wang vs Belinda Bencic",
+    "odds": 310,
+    "model_prob": 0.5,
+    "implied_prob": 0.2323,
+    "edge_pct": 26.77,
+    "sportsbook": "DraftKings",
+    "surface": "grass",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_wimbledon",
+    "market": "moneyline",
+    "direction": "Barbora Krejcikova",
+    "team": "Barbora Krejcikova",
+    "matchup": "Mirra Andreeva vs Barbora Krejcikova",
+    "odds": 141,
+    "model_prob": 0.5,
+    "implied_prob": 0.3983,
+    "edge_pct": 10.17,
+    "sportsbook": "Pinnacle",
+    "surface": "grass",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_wimbledon",
+    "market": "total",
+    "direction": "UNDER",
+    "team": "UNDER 31.5",
+    "matchup": "Mirra Andreeva @ Barbora Krejcikova",
+    "odds": -105,
+    "best_odds": -105,
+    "line": 31.5,
+    "model_prob": 0.728,
+    "implied_prob": 0.4713,
+    "edge_pct": 25.67,
+    "sportsbook": "Caesars"
+  },
+  {
+    "sport": "tennis_wta_wimbledon",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 24.5",
+    "matchup": "Xinyu Wang @ Belinda Bencic",
+    "odds": -125,
+    "best_odds": -125,
+    "line": 24.5,
+    "model_prob": 0.5638,
+    "implied_prob": 0.5095,
+    "edge_pct": 5.43,
+    "sportsbook": "Caesars"
+  }
+]
