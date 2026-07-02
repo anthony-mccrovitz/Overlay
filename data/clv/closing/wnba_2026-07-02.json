@@ -3409,13 +3409,13 @@
     "home_team": "Connecticut Sun",
     "away_team": "Dallas Wings",
     "commence_time": "2026-07-03T00:00:00Z",
-    "captured_at": "2026-07-02T22:49:45.587552+00:00",
-    "mins_to_commence": 70.2,
-    "closing_final": false,
-    "BestHomeML": 240,
-    "BestAwayML": -270,
+    "captured_at": "2026-07-02T23:50:34.436076+00:00",
+    "mins_to_commence": 9.4,
+    "closing_final": true,
+    "BestHomeML": 250,
+    "BestAwayML": -280,
     "HomeBook": "DraftKings",
-    "AwayBook": "Fanatics",
+    "AwayBook": "FanDuel",
     "all_odds": [
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3425,7 +3425,7 @@
         "Market": "h2h",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": 225,
+        "Odds": 220,
         "Line": NaN
       },
       {
@@ -3436,7 +3436,7 @@
         "Market": "h2h",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -290,
+        "Odds": -280,
         "Line": NaN
       },
       {
@@ -3447,8 +3447,8 @@
         "Market": "spreads",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": -118,
-        "Line": 7.5
+        "Odds": -105,
+        "Line": 6.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3458,8 +3458,8 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -104,
-        "Line": -7.5
+        "Odds": -115,
+        "Line": -6.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3469,7 +3469,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -114,
         "Line": 171.5
       },
       {
@@ -3480,7 +3480,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -105,
+        "Odds": -106,
         "Line": 171.5
       },
       {
@@ -3491,7 +3491,7 @@
         "Market": "h2h",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": 225,
+        "Odds": 230,
         "Line": NaN
       },
       {
@@ -3502,7 +3502,7 @@
         "Market": "h2h",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -275,
+        "Odds": -280,
         "Line": NaN
       },
       {
@@ -3536,7 +3536,7 @@
         "Name": "Over",
         "Selection": "Over",
         "Odds": -115,
-        "Line": 172.5
+        "Line": 171.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3547,7 +3547,7 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -105,
-        "Line": 172.5
+        "Line": 171.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3557,7 +3557,7 @@
         "Market": "h2h",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": 240,
+        "Odds": 250,
         "Line": NaN
       },
       {
@@ -3568,7 +3568,7 @@
         "Market": "h2h",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -298,
+        "Odds": -310,
         "Line": NaN
       },
       {
@@ -3579,8 +3579,8 @@
         "Market": "spreads",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": -112,
-        "Line": 6.5
+        "Odds": -115,
+        "Line": 7.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3590,8 +3590,8 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -108,
-        "Line": -6.5
+        "Odds": -105,
+        "Line": -7.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3602,7 +3602,7 @@
         "Name": "Over",
         "Selection": "Over",
         "Odds": -115,
-        "Line": 172.5
+        "Line": 171.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3613,7 +3613,7 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -105,
-        "Line": 172.5
+        "Line": 171.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3645,7 +3645,7 @@
         "Market": "spreads",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": -102,
+        "Odds": -105,
         "Line": 6.5
       },
       {
@@ -3656,29 +3656,29 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
+        "Odds": -115,
+        "Line": -6.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "BetMGM",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 172.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "BetMGM",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
         "Odds": -118,
-        "Line": -6.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetMGM",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 172.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetMGM",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -105,
         "Line": 172.5
       },
       {
@@ -3689,7 +3689,7 @@
         "Market": "h2h",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": 240,
+        "Odds": 250,
         "Line": NaN
       },
       {
@@ -3700,7 +3700,7 @@
         "Market": "h2h",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -305,
+        "Odds": -320,
         "Line": NaN
       },
       {
@@ -3711,7 +3711,7 @@
         "Market": "spreads",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": -115,
+        "Odds": -110,
         "Line": 6.5
       },
       {
@@ -3722,7 +3722,7 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -105,
+        "Odds": -110,
         "Line": -6.5
       },
       {
@@ -3733,8 +3733,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -110,
-        "Line": 173.5
+        "Odds": -115,
+        "Line": 172.0
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3744,8 +3744,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -110,
-        "Line": 173.5
+        "Odds": -105,
+        "Line": 172.0
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3788,7 +3788,7 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -105,
+        "Odds": -106,
         "Line": -7.5
       },
       {
@@ -3799,7 +3799,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -115,
         "Line": 172.5
       },
       {
@@ -3810,7 +3810,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -109,
+        "Odds": -108,
         "Line": 172.5
       },
       {
@@ -3821,7 +3821,7 @@
         "Market": "h2h",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": 220,
+        "Odds": 230,
         "Line": NaN
       },
       {
@@ -3832,7 +3832,7 @@
         "Market": "h2h",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -270,
+        "Odds": -285,
         "Line": NaN
       },
       {
@@ -3843,7 +3843,7 @@
         "Market": "spreads",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": -110,
+        "Odds": -105,
         "Line": 6.5
       },
       {
@@ -3854,7 +3854,7 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -110,
+        "Odds": -115,
         "Line": -6.5
       },
       {
@@ -3866,7 +3866,7 @@
         "Name": "Over",
         "Selection": "Over",
         "Odds": -110,
-        "Line": 173.0
+        "Line": 172.0
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3877,7 +3877,7 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -110,
-        "Line": 173.0
+        "Line": 172.0
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3887,7 +3887,7 @@
         "Market": "h2h",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": 239,
+        "Odds": 244,
         "Line": NaN
       },
       {
@@ -3898,7 +3898,7 @@
         "Market": "h2h",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -290,
+        "Odds": -296,
         "Line": NaN
       },
       {
@@ -3909,7 +3909,7 @@
         "Market": "spreads",
         "Name": "Connecticut Sun",
         "Selection": "Connecticut Sun",
-        "Odds": -104,
+        "Odds": -103,
         "Line": 6.5
       },
       {
@@ -3920,7 +3920,7 @@
         "Market": "spreads",
         "Name": "Dallas Wings",
         "Selection": "Dallas Wings",
-        "Odds": -112,
+        "Odds": -113,
         "Line": -6.5
       },
       {
@@ -3931,8 +3931,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -104,
-        "Line": 173.0
+        "Odds": -113,
+        "Line": 171.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3942,8 +3942,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -112,
-        "Line": 173.0
+        "Odds": -103,
+        "Line": 171.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -3973,9 +3973,31 @@
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "FanDuel",
         "Market": "player_assists",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Over",
+        "Odds": -136,
+        "Line": 2.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_assists",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Under",
+        "Odds": 102,
+        "Line": 2.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_assists",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -160,
+        "Odds": -158,
         "Line": 5.5
       },
       {
@@ -3986,7 +4008,7 @@
         "Market": "player_assists",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": 120,
+        "Odds": 118,
         "Line": 5.5
       },
       {
@@ -4096,7 +4118,7 @@
         "Market": "player_points",
         "Name": "Diamond Miller",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -108,
         "Line": 7.5
       },
       {
@@ -4173,7 +4195,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -102,
+        "Odds": 100,
         "Line": 15.5
       },
       {
@@ -4184,7 +4206,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": -128,
+        "Odds": -130,
         "Line": 15.5
       },
       {
@@ -4261,7 +4283,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Brittney Griner",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -112,
         "Line": 18.5
       },
       {
@@ -4272,7 +4294,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Brittney Griner",
         "Selection": "Under",
-        "Odds": -114,
+        "Odds": -118,
         "Line": 18.5
       },
       {
@@ -4283,7 +4305,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -130,
         "Line": 19.5
       },
       {
@@ -4294,7 +4316,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -102,
         "Line": 19.5
       },
       {
@@ -4305,7 +4327,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": -112,
+        "Odds": -110,
         "Line": 30.5
       },
       {
@@ -4316,6 +4338,39 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jessica Shepard",
         "Selection": "Under",
+        "Odds": -120,
+        "Line": 30.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Over",
+        "Odds": -102,
+        "Line": 20.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Under",
+        "Odds": -130,
+        "Line": 20.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Paige Bueckers",
+        "Selection": "Over",
         "Odds": -118,
         "Line": 30.5
       },
@@ -4325,43 +4380,54 @@
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "FanDuel",
         "Market": "player_points_rebounds_assists",
-        "Name": "Arike Ogunbowale",
-        "Selection": "Over",
-        "Odds": -132,
-        "Line": 19.5
+        "Name": "Paige Bueckers",
+        "Selection": "Under",
+        "Odds": -112,
+        "Line": 30.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
         "HomeTeam": "Connecticut Sun",
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Arike Ogunbowale",
-        "Selection": "Under",
+        "Market": "player_rebounds",
+        "Name": "Aaliyah Edwards",
+        "Selection": "Over",
         "Odds": 100,
-        "Line": 19.5
+        "Line": 3.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
         "HomeTeam": "Connecticut Sun",
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Paige Bueckers",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 30.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Paige Bueckers",
+        "Market": "player_rebounds",
+        "Name": "Aaliyah Edwards",
         "Selection": "Under",
-        "Odds": -106,
-        "Line": 30.5
+        "Odds": -132,
+        "Line": 3.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Awak Kuier",
+        "Selection": "Over",
+        "Odds": 104,
+        "Line": 3.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Awak Kuier",
+        "Selection": "Under",
+        "Odds": -138,
+        "Line": 3.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -4457,6 +4523,28 @@
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "FanDuel",
         "Market": "player_rebounds",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Over",
+        "Odds": -172,
+        "Line": 2.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Under",
+        "Odds": 128,
+        "Line": 2.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
         "Name": "Paige Bueckers",
         "Selection": "Over",
         "Odds": -136,
@@ -4503,7 +4591,7 @@
         "Market": "player_threes",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -114,
         "Line": 1.5
       },
       {
@@ -4514,7 +4602,7 @@
         "Market": "player_threes",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": -112,
+        "Odds": -114,
         "Line": 1.5
       },
       {
@@ -4569,7 +4657,7 @@
         "Market": "player_assists",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": -150,
+        "Odds": -165,
         "Line": 4.5
       },
       {
@@ -4580,7 +4668,7 @@
         "Market": "player_assists",
         "Name": "Jessica Shepard",
         "Selection": "Under",
-        "Odds": 105,
+        "Odds": 120,
         "Line": 4.5
       },
       {
@@ -4635,7 +4723,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -125,
         "Line": 20.5
       },
       {
@@ -4646,7 +4734,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -115,
         "Line": 20.5
       },
       {
@@ -4701,7 +4789,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": 100,
         "Line": 14.5
       },
       {
@@ -4712,7 +4800,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -135,
         "Line": 14.5
       },
       {
@@ -4745,7 +4833,7 @@
         "Market": "player_points",
         "Name": "Le\u00efla Lacan",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -125,
         "Line": 11.5
       },
       {
@@ -4756,7 +4844,7 @@
         "Market": "player_points",
         "Name": "Le\u00efla Lacan",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -4965,7 +5053,7 @@
         "Market": "player_threes",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -125,
         "Line": 1.5
       },
       {
@@ -4976,7 +5064,7 @@
         "Market": "player_threes",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -115,
         "Line": 1.5
       },
       {
@@ -5009,7 +5097,7 @@
         "Market": "player_threes",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -125,
         "Line": 1.5
       },
       {
@@ -5020,7 +5108,7 @@
         "Market": "player_threes",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -115,
         "Line": 1.5
       },
       {
@@ -5031,7 +5119,7 @@
         "Market": "player_assists",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -137,
+        "Odds": -138,
         "Line": 5.5
       },
       {
@@ -5042,7 +5130,7 @@
         "Market": "player_assists",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": 102,
         "Line": 5.5
       },
       {
@@ -5053,7 +5141,7 @@
         "Market": "player_assists",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": 104,
+        "Odds": 112,
         "Line": 5.5
       },
       {
@@ -5064,7 +5152,7 @@
         "Market": "player_assists",
         "Name": "Jessica Shepard",
         "Selection": "Under",
-        "Odds": -141,
+        "Odds": -153,
         "Line": 5.5
       },
       {
@@ -5075,7 +5163,7 @@
         "Market": "player_assists",
         "Name": "Le\u00efla Lacan",
         "Selection": "Over",
-        "Odds": -101,
+        "Odds": -106,
         "Line": 4.5
       },
       {
@@ -5086,7 +5174,7 @@
         "Market": "player_assists",
         "Name": "Le\u00efla Lacan",
         "Selection": "Under",
-        "Odds": -135,
+        "Odds": -128,
         "Line": 4.5
       },
       {
@@ -5097,7 +5185,7 @@
         "Market": "player_assists",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 125,
         "Line": 3.5
       },
       {
@@ -5108,7 +5196,7 @@
         "Market": "player_assists",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Under",
-        "Odds": -164,
+        "Odds": -171,
         "Line": 3.5
       },
       {
@@ -5119,7 +5207,7 @@
         "Market": "player_assists",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -135,
+        "Odds": -132,
         "Line": 2.5
       },
       {
@@ -5130,7 +5218,7 @@
         "Market": "player_assists",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": -103,
         "Line": 2.5
       },
       {
@@ -5141,7 +5229,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -124,
         "Line": 20.5
       },
       {
@@ -5152,7 +5240,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": -115,
+        "Odds": -107,
         "Line": 20.5
       },
       {
@@ -5163,7 +5251,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -123,
         "Line": 14.5
       },
       {
@@ -5174,7 +5262,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": -104,
+        "Odds": -108,
         "Line": 14.5
       },
       {
@@ -5185,7 +5273,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -104,
+        "Odds": -103,
         "Line": 14.5
       },
       {
@@ -5196,7 +5284,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": -128,
+        "Odds": -129,
         "Line": 14.5
       },
       {
@@ -5207,7 +5295,7 @@
         "Market": "player_points",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": -130,
+        "Odds": -120,
         "Line": 12.5
       },
       {
@@ -5218,62 +5306,62 @@
         "Market": "player_points",
         "Name": "Jessica Shepard",
         "Selection": "Under",
-        "Odds": -102,
-        "Line": 12.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Le\u00efla Lacan",
-        "Selection": "Over",
-        "Odds": -107,
-        "Line": 12.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Le\u00efla Lacan",
-        "Selection": "Under",
-        "Odds": -124,
-        "Line": 12.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Brittney Griner",
-        "Selection": "Over",
-        "Odds": -124,
-        "Line": 11.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Brittney Griner",
-        "Selection": "Under",
-        "Odds": -107,
-        "Line": 11.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Olivia Nelson-Ododa",
-        "Selection": "Over",
         "Odds": -110,
+        "Line": 12.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Brittney Griner",
+        "Selection": "Over",
+        "Odds": -124,
+        "Line": 11.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Brittney Griner",
+        "Selection": "Under",
+        "Odds": -107,
+        "Line": 11.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Le\u00efla Lacan",
+        "Selection": "Over",
+        "Odds": -124,
+        "Line": 11.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Le\u00efla Lacan",
+        "Selection": "Under",
+        "Odds": -107,
+        "Line": 11.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Olivia Nelson-Ododa",
+        "Selection": "Over",
+        "Odds": -111,
         "Line": 10.5
       },
       {
@@ -5284,7 +5372,7 @@
         "Market": "player_points",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Under",
-        "Odds": -121,
+        "Odds": -119,
         "Line": 10.5
       },
       {
@@ -5295,8 +5383,8 @@
         "Market": "player_points",
         "Name": "Diamond Miller",
         "Selection": "Over",
-        "Odds": 103,
-        "Line": 8.5
+        "Odds": -123,
+        "Line": 7.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -5306,18 +5394,7 @@
         "Market": "player_points",
         "Name": "Diamond Miller",
         "Selection": "Under",
-        "Odds": -136,
-        "Line": 8.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Charlisse Leger-Walker",
-        "Selection": "Over",
-        "Odds": -111,
+        "Odds": -108,
         "Line": 7.5
       },
       {
@@ -5327,85 +5404,96 @@
         "Sportsbook": "DraftKings",
         "Market": "player_points",
         "Name": "Charlisse Leger-Walker",
-        "Selection": "Under",
-        "Odds": -119,
-        "Line": 7.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Kennedy Burke",
-        "Selection": "Over",
-        "Odds": -111,
-        "Line": 7.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Kennedy Burke",
-        "Selection": "Under",
-        "Odds": -119,
-        "Line": 7.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Paige Bueckers",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 30.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Paige Bueckers",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 30.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Jessica Shepard",
-        "Selection": "Over",
-        "Odds": -116,
-        "Line": 30.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Jessica Shepard",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 30.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Arike Ogunbowale",
         "Selection": "Over",
         "Odds": -109,
+        "Line": 7.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Charlisse Leger-Walker",
+        "Selection": "Under",
+        "Odds": -122,
+        "Line": 7.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Kennedy Burke",
+        "Selection": "Over",
+        "Odds": -107,
+        "Line": 7.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Kennedy Burke",
+        "Selection": "Under",
+        "Odds": -124,
+        "Line": 7.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Paige Bueckers",
+        "Selection": "Over",
+        "Odds": -108,
+        "Line": 31.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Paige Bueckers",
+        "Selection": "Under",
+        "Odds": -126,
+        "Line": 31.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Jessica Shepard",
+        "Selection": "Over",
+        "Odds": -108,
+        "Line": 30.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Jessica Shepard",
+        "Selection": "Under",
+        "Odds": -126,
+        "Line": 30.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Arike Ogunbowale",
+        "Selection": "Over",
+        "Odds": -110,
         "Line": 20.5
       },
       {
@@ -5416,7 +5504,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": -124,
+        "Odds": -123,
         "Line": 20.5
       },
       {
@@ -5427,7 +5515,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -109,
         "Line": 19.5
       },
       {
@@ -5438,7 +5526,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": -118,
+        "Odds": -124,
         "Line": 19.5
       },
       {
@@ -5449,6 +5537,39 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Brittney Griner",
         "Selection": "Over",
+        "Odds": -121,
+        "Line": 18.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Brittney Griner",
+        "Selection": "Under",
+        "Odds": -112,
+        "Line": 18.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Olivia Nelson-Ododa",
+        "Selection": "Over",
+        "Odds": -109,
+        "Line": 18.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Olivia Nelson-Ododa",
+        "Selection": "Under",
         "Odds": -125,
         "Line": 18.5
       },
@@ -5457,43 +5578,10 @@
         "HomeTeam": "Connecticut Sun",
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Brittney Griner",
-        "Selection": "Under",
-        "Odds": -108,
-        "Line": 18.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Olivia Nelson-Ododa",
-        "Selection": "Over",
-        "Odds": -113,
-        "Line": 18.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Olivia Nelson-Ododa",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 18.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "DraftKings",
         "Market": "player_rebounds",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": -122,
+        "Odds": -124,
         "Line": 11.5
       },
       {
@@ -5504,7 +5592,7 @@
         "Market": "player_rebounds",
         "Name": "Jessica Shepard",
         "Selection": "Under",
-        "Odds": -111,
+        "Odds": -110,
         "Line": 11.5
       },
       {
@@ -5515,8 +5603,8 @@
         "Market": "player_rebounds",
         "Name": "Aneesah Morrow",
         "Selection": "Over",
-        "Odds": -139,
-        "Line": 7.5
+        "Odds": 107,
+        "Line": 8.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -5526,8 +5614,8 @@
         "Market": "player_rebounds",
         "Name": "Aneesah Morrow",
         "Selection": "Under",
-        "Odds": 102,
-        "Line": 7.5
+        "Odds": -146,
+        "Line": 8.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -5559,7 +5647,7 @@
         "Market": "player_rebounds",
         "Name": "Brittney Griner",
         "Selection": "Over",
-        "Odds": -126,
+        "Odds": -122,
         "Line": 4.5
       },
       {
@@ -5570,7 +5658,7 @@
         "Market": "player_rebounds",
         "Name": "Brittney Griner",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -111,
         "Line": 4.5
       },
       {
@@ -5581,7 +5669,7 @@
         "Market": "player_rebounds",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -131,
+        "Odds": -137,
         "Line": 3.5
       },
       {
@@ -5592,7 +5680,7 @@
         "Market": "player_rebounds",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": -103,
+        "Odds": 101,
         "Line": 3.5
       },
       {
@@ -5603,7 +5691,7 @@
         "Market": "player_rebounds",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": 129,
+        "Odds": 124,
         "Line": 3.5
       },
       {
@@ -5614,7 +5702,7 @@
         "Market": "player_rebounds",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": -176,
+        "Odds": -170,
         "Line": 3.5
       },
       {
@@ -5625,7 +5713,7 @@
         "Market": "player_threes",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -171,
+        "Odds": -172,
         "Line": 1.5
       },
       {
@@ -5636,7 +5724,7 @@
         "Market": "player_threes",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": 125,
+        "Odds": 126,
         "Line": 1.5
       },
       {
@@ -5691,7 +5779,7 @@
         "Market": "player_threes",
         "Name": "Le\u00efla Lacan",
         "Selection": "Over",
-        "Odds": 160,
+        "Odds": 168,
         "Line": 1.5
       },
       {
@@ -5702,7 +5790,7 @@
         "Market": "player_threes",
         "Name": "Le\u00efla Lacan",
         "Selection": "Under",
-        "Odds": -221,
+        "Odds": -232,
         "Line": 1.5
       },
       {
@@ -5713,7 +5801,7 @@
         "Market": "player_threes",
         "Name": "Kennedy Burke",
         "Selection": "Over",
-        "Odds": -239,
+        "Odds": -219,
         "Line": 0.5
       },
       {
@@ -5724,7 +5812,7 @@
         "Market": "player_threes",
         "Name": "Kennedy Burke",
         "Selection": "Under",
-        "Odds": 173,
+        "Odds": 159,
         "Line": 0.5
       },
       {
@@ -5735,7 +5823,7 @@
         "Market": "player_threes",
         "Name": "Diamond Miller",
         "Selection": "Over",
-        "Odds": -220,
+        "Odds": -210,
         "Line": 0.5
       },
       {
@@ -5746,7 +5834,7 @@
         "Market": "player_threes",
         "Name": "Diamond Miller",
         "Selection": "Under",
-        "Odds": 159,
+        "Odds": 153,
         "Line": 0.5
       },
       {
@@ -5757,7 +5845,7 @@
         "Market": "player_assists",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Over",
-        "Odds": 125,
+        "Odds": 120,
         "Line": 3.5
       },
       {
@@ -5768,7 +5856,7 @@
         "Market": "player_assists",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Under",
-        "Odds": -180,
+        "Odds": -165,
         "Line": 3.5
       },
       {
@@ -5845,7 +5933,7 @@
         "Market": "player_points",
         "Name": "Brittney Griner",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -5856,7 +5944,7 @@
         "Market": "player_points",
         "Name": "Brittney Griner",
         "Selection": "Under",
-        "Odds": -113,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -5867,7 +5955,7 @@
         "Market": "player_points",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Over",
-        "Odds": -103,
+        "Odds": -105,
         "Line": 10.5
       },
       {
@@ -5878,7 +5966,7 @@
         "Market": "player_points",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -129,
         "Line": 10.5
       },
       {
@@ -5889,7 +5977,7 @@
         "Market": "player_points",
         "Name": "Kennedy Burke",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -115,
         "Line": 7.5
       },
       {
@@ -5900,7 +5988,7 @@
         "Market": "player_points",
         "Name": "Kennedy Burke",
         "Selection": "Under",
-        "Odds": -113,
+        "Odds": -118,
         "Line": 7.5
       },
       {
@@ -5933,7 +6021,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -127,
+        "Odds": -129,
         "Line": 14.5
       },
       {
@@ -5944,7 +6032,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -104,
         "Line": 14.5
       },
       {
@@ -5953,28 +6041,6 @@
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "Caesars",
         "Market": "player_points",
-        "Name": "Charlisse Leger-Walker",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 7.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Charlisse Leger-Walker",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 7.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
         "Odds": -115,
@@ -5999,8 +6065,8 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -138,
-        "Line": 13.5
+        "Odds": -110,
+        "Line": 14.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6010,8 +6076,8 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": 102,
-        "Line": 13.5
+        "Odds": -121,
+        "Line": 14.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6021,7 +6087,7 @@
         "Market": "player_points",
         "Name": "Le\u00efla Lacan",
         "Selection": "Over",
-        "Odds": -124,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -6032,7 +6098,7 @@
         "Market": "player_points",
         "Name": "Le\u00efla Lacan",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -6129,28 +6195,6 @@
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "Caesars",
         "Market": "player_rebounds",
-        "Name": "Arike Ogunbowale",
-        "Selection": "Over",
-        "Odds": 128,
-        "Line": 3.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Arike Ogunbowale",
-        "Selection": "Under",
-        "Odds": -180,
-        "Line": 3.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
         "Name": "Brittney Griner",
         "Selection": "Over",
         "Odds": -113,
@@ -6175,7 +6219,7 @@
         "Market": "player_rebounds",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Over",
-        "Odds": -137,
+        "Odds": -135,
         "Line": 5.5
       },
       {
@@ -6219,7 +6263,7 @@
         "Market": "player_threes",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -152,
+        "Odds": -157,
         "Line": 1.5
       },
       {
@@ -6230,7 +6274,7 @@
         "Market": "player_threes",
         "Name": "Azzi Fudd",
         "Selection": "Under",
-        "Odds": 114,
+        "Odds": 117,
         "Line": 1.5
       },
       {
@@ -6285,7 +6329,7 @@
         "Market": "player_assists",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Over",
-        "Odds": -141,
+        "Odds": -139,
         "Line": 1.5
       },
       {
@@ -6340,7 +6384,7 @@
         "Market": "player_assists",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 123,
         "Line": 3.5
       },
       {
@@ -6351,7 +6395,7 @@
         "Market": "player_assists",
         "Name": "Brittney Griner",
         "Selection": "Over",
-        "Odds": 140,
+        "Odds": 138,
         "Line": 2.5
       },
       {
@@ -6362,7 +6406,7 @@
         "Market": "player_assists",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -155,
+        "Odds": -165,
         "Line": 5.5
       },
       {
@@ -6373,30 +6417,8 @@
         "Market": "player_points",
         "Name": "Le\u00efla Lacan",
         "Selection": "Over",
-        "Odds": -139,
+        "Odds": -136,
         "Line": 11.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Aaliyah Edwards",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 8.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Aaliyah Edwards",
-        "Selection": "Over",
-        "Odds": 110,
-        "Line": 9.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6406,7 +6428,7 @@
         "Market": "player_points",
         "Name": "Le\u00efla Lacan",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": -105,
         "Line": 12.5
       },
       {
@@ -6417,7 +6439,7 @@
         "Market": "player_points",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Over",
-        "Odds": -132,
+        "Odds": -130,
         "Line": 7.5
       },
       {
@@ -6428,7 +6450,7 @@
         "Market": "player_points",
         "Name": "Brittney Griner",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -121,
         "Line": 12.5
       },
       {
@@ -6439,7 +6461,7 @@
         "Market": "player_points",
         "Name": "Charlisse Leger-Walker",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": 104,
         "Line": 8.5
       },
       {
@@ -6461,7 +6483,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -141,
         "Line": 19.5
       },
       {
@@ -6472,7 +6494,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -103,
+        "Odds": -114,
         "Line": 20.5
       },
       {
@@ -6483,30 +6505,8 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 108,
         "Line": 21.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Kennedy Burke",
-        "Selection": "Over",
-        "Odds": -121,
-        "Line": 8.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Kennedy Burke",
-        "Selection": "Over",
-        "Odds": 110,
-        "Line": 9.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6516,8 +6516,30 @@
         "Market": "player_points",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": -124,
+        "Odds": -118,
         "Line": 13.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Jessica Shepard",
+        "Selection": "Over",
+        "Odds": 110,
+        "Line": 14.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Diamond Miller",
+        "Selection": "Over",
+        "Odds": 123,
+        "Line": 9.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6527,7 +6549,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -118,
         "Line": 14.5
       },
       {
@@ -6538,7 +6560,7 @@
         "Market": "player_points",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": 105,
+        "Odds": 107,
         "Line": 15.5
       },
       {
@@ -6549,7 +6571,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": 107,
+        "Odds": 110,
         "Line": 14.5
       },
       {
@@ -6560,7 +6582,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -121,
+        "Odds": -117,
         "Line": 13.5
       },
       {
@@ -6571,7 +6593,7 @@
         "Market": "player_points",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Over",
-        "Odds": -143,
+        "Odds": -148,
         "Line": 9.5
       },
       {
@@ -6591,32 +6613,10 @@
         "AwayTeam": "Dallas Wings",
         "Sportsbook": "BetRivers",
         "Market": "player_points",
-        "Name": "Jessica Shepard",
-        "Selection": "Over",
-        "Odds": -152,
-        "Line": 12.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
         "Name": "Diamond Miller",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -109,
         "Line": 8.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Azzi Fudd",
-        "Selection": "Over",
-        "Odds": -150,
-        "Line": 13.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6626,7 +6626,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -106,
         "Line": 19.5
       },
       {
@@ -6637,19 +6637,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -121,
         "Line": 30.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Jessica Shepard",
-        "Selection": "Over",
-        "Odds": -148,
-        "Line": 29.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6659,7 +6648,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -105,
         "Line": 20.5
       },
       {
@@ -6670,7 +6659,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Brittney Griner",
         "Selection": "Over",
-        "Odds": -117,
+        "Odds": -120,
         "Line": 19.5
       },
       {
@@ -6681,8 +6670,19 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -121,
         "Line": 18.5
+      },
+      {
+        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
+        "HomeTeam": "Connecticut Sun",
+        "AwayTeam": "Dallas Wings",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Jessica Shepard",
+        "Selection": "Over",
+        "Odds": -121,
+        "Line": 30.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6692,7 +6692,7 @@
         "Market": "player_rebounds",
         "Name": "Olivia Nelson-Ododa",
         "Selection": "Over",
-        "Odds": -104,
+        "Odds": -103,
         "Line": 6.5
       },
       {
@@ -6703,7 +6703,7 @@
         "Market": "player_rebounds",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": 107,
+        "Odds": 110,
         "Line": 3.5
       },
       {
@@ -6714,7 +6714,7 @@
         "Market": "player_rebounds",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -136,
+        "Odds": -148,
         "Line": 3.5
       },
       {
@@ -6727,28 +6727,6 @@
         "Selection": "Over",
         "Odds": -109,
         "Line": 4.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_rebounds",
-        "Name": "Kennedy Burke",
-        "Selection": "Over",
-        "Odds": 125,
-        "Line": 3.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_rebounds",
-        "Name": "Aaliyah Edwards",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 3.5
       },
       {
         "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
@@ -6769,7 +6747,7 @@
         "Market": "player_rebounds",
         "Name": "Jessica Shepard",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -117,
         "Line": 11.5
       },
       {
@@ -6780,7 +6758,7 @@
         "Market": "player_threes",
         "Name": "Azzi Fudd",
         "Selection": "Over",
-        "Odds": -165,
+        "Odds": -167,
         "Line": 1.5
       },
       {
@@ -6791,7 +6769,7 @@
         "Market": "player_threes",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -115,
         "Line": 1.5
       },
       {
@@ -6802,7 +6780,7 @@
         "Market": "player_threes",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -134,
         "Line": 1.5
       },
       {
@@ -6825,83 +6803,6 @@
         "Name": "Diamond Miller",
         "Selection": "Over",
         "Odds": -200,
-        "Line": 0.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Kennedy Burke",
-        "Selection": "Over",
-        "Odds": -220,
-        "Line": 0.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Azzi Fudd",
-        "Selection": "Over",
-        "Odds": -165,
-        "Line": 1.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Arike Ogunbowale",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 1.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Paige Bueckers",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 1.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Le\u00efla Lacan",
-        "Selection": "Over",
-        "Odds": -245,
-        "Line": 0.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Diamond Miller",
-        "Selection": "Over",
-        "Odds": -200,
-        "Line": 0.5
-      },
-      {
-        "EventID": "352c810f6bdc04f8b6e8ad28a69160f6",
-        "HomeTeam": "Connecticut Sun",
-        "AwayTeam": "Dallas Wings",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Kennedy Burke",
-        "Selection": "Over",
-        "Odds": -220,
         "Line": 0.5
       },
       {
@@ -7000,7 +6901,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Over",
-        "Odds": -134,
+        "Odds": -141,
         "Line": 13.5
       },
       {
@@ -7011,7 +6912,7 @@
         "Market": "player_points",
         "Name": "Arike Ogunbowale",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": 104,
         "Line": 13.5
       },
       {
@@ -7154,7 +7055,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Over",
-        "Odds": -113,
+        "Odds": -109,
         "Line": 20.5
       },
       {
@@ -7165,7 +7066,7 @@
         "Market": "player_points",
         "Name": "Paige Bueckers",
         "Selection": "Under",
-        "Odds": -117,
+        "Odds": -122,
         "Line": 20.5
       },
       {
