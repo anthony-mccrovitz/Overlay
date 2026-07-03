@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Colt Emerson",
+      "team": "Colt Emerson OVER 0.5",
+      "matchup": "Toronto Blue Jays @ Seattle Mariners",
+      "line": 0.5,
+      "odds": 100,
+      "model_prob": 0.7288,
+      "implied_prob": 0.4483,
+      "edge_pct": 28.05,
+      "model_mu": 2.69,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Gerrit Cole",
+      "team": "Gerrit Cole UNDER 5.5",
+      "matchup": "Minnesota Twins @ New York Yankees",
+      "line": 5.5,
+      "odds": -130,
+      "model_prob": 0.7172,
+      "implied_prob": 0.5089,
+      "edge_pct": 20.83,
+      "model_mu": 4.27,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani OVER 1.5",
+      "matchup": "San Diego Padres @ Los Angeles Dodgers",
+      "line": 1.5,
+      "odds": 450,
+      "model_prob": 0.3718,
+      "implied_prob": 0.1681,
+      "edge_pct": 20.37,
+      "model_mu": 1.56,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}
