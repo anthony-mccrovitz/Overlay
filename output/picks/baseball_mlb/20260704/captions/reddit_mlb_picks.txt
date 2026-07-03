@@ -1,0 +1,35 @@
+**Overlay AI — MLB Picks · 7/4/26 (Saturday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 94-84 (52.8% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Boston Red Sox vs  | -102 | +15.7% | FanDuel |
+| Tampa Bay Rays vs  | -108 | +13.0% | FanDuel |
+| Chicago White Sox vs  | +123 | +16.8% | BetRivers |
+| Pittsburgh Pirates vs  | +120 | +16.0% | BetMGM |
+| St. Louis Cardinals vs  | +110 | +11.9% | FanDuel |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Toronto Blue Jays @ Seattle Mariners YRFI (Shane Bieber vs Logan Gilbert) | NRFI +104 | 41% | FanDuel |
+| Boston Red Sox @ Los Angeles Angels YRFI (Sonny Gray vs Sam Aldegheri) | NRFI -105 | 41% | Caesars |
+| San Diego Padres @ Los Angeles Dodgers YRFI (Griffin Canning vs Yoshinobu Yamamoto) | NRFI -111 | 42% | FanDuel |
+| Milwaukee Brewers @ Arizona Diamondbacks YRFI (Brandon Woodruff vs Merrill Kelly) | NRFI -120 | 41% | Caesars |
+| Tampa Bay Rays @ Houston Astros YRFI (Drew Rasmussen vs Hunter Brown) | NRFI -125 | 43% | FanDuel |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*
