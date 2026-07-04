@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Tommy Troy",
+      "team": "Tommy Troy OVER 0.5",
+      "matchup": "Milwaukee Brewers @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": 425,
+      "model_prob": 0.6863,
+      "implied_prob": 0.1755,
+      "edge_pct": 51.08,
+      "model_mu": 2.19,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Tommy Troy",
+      "team": "Tommy Troy OVER 0.5",
+      "matchup": "Milwaukee Brewers @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": 425,
+      "model_prob": 0.5744,
+      "implied_prob": 0.1755,
+      "edge_pct": 39.89,
+      "model_mu": 1.35,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Shane Bieber",
+      "team": "Shane Bieber UNDER 4.5",
+      "matchup": "Toronto Blue Jays @ Seattle Mariners",
+      "line": 4.5,
+      "odds": 110,
+      "model_prob": 0.7479,
+      "implied_prob": 0.4393,
+      "edge_pct": 30.87,
+      "model_mu": 3.15,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}
