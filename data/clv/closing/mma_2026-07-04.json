@@ -264,5 +264,43 @@
         "Line": null
       }
     ]
+  },
+  {
+    "event_id": "6cad6568cc3b5cfc9882c79bb2919e74",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "George Hardwick",
+    "away_team": "Nicolas Savio",
+    "commence_time": "2026-07-04T20:30:00Z",
+    "captured_at": "2026-07-04T20:00:09.022514+00:00",
+    "mins_to_commence": 29.9,
+    "closing_final": false,
+    "BestHomeML": -500,
+    "BestAwayML": 330,
+    "HomeBook": "BetRivers",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "6cad6568cc3b5cfc9882c79bb2919e74",
+        "HomeTeam": "George Hardwick",
+        "AwayTeam": "Nicolas Savio",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "George Hardwick",
+        "Selection": "George Hardwick",
+        "Odds": -500,
+        "Line": null
+      },
+      {
+        "EventID": "6cad6568cc3b5cfc9882c79bb2919e74",
+        "HomeTeam": "George Hardwick",
+        "AwayTeam": "Nicolas Savio",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Nicolas Savio",
+        "Selection": "Nicolas Savio",
+        "Odds": 330,
+        "Line": null
+      }
+    ]
   }
 ]
