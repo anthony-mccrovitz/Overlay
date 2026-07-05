@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "JJ Bleday",
+      "team": "JJ Bleday OVER 0.5",
+      "matchup": "Cincinnati Reds @ Milwaukee Brewers",
+      "line": 0.5,
+      "odds": -105,
+      "model_prob": 0.7456,
+      "implied_prob": 0.4713,
+      "edge_pct": 27.42,
+      "model_mu": 2.93,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Jared Jones",
+      "team": "Jared Jones UNDER 4.5",
+      "matchup": "Pittsburgh Pirates @ Philadelphia Phillies",
+      "line": 4.5,
+      "odds": 128,
+      "model_prob": 0.6555,
+      "implied_prob": 0.4138,
+      "edge_pct": 24.17,
+      "model_mu": 4.21,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Otto Lopez",
+      "team": "Otto Lopez UNDER 0.5",
+      "matchup": "Miami Marlins @ Colorado Rockies",
+      "line": 0.5,
+      "odds": 375,
+      "model_prob": 0.3678,
+      "implied_prob": 0.1939,
+      "edge_pct": 17.39,
+      "model_mu": 1.72,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}

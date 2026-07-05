@@ -1,0 +1,50 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Trey Yesavage",
+      "team": "Trey Yesavage UNDER 5.5",
+      "matchup": "Toronto Blue Jays @ Seattle Mariners",
+      "line": 5.5,
+      "odds": 110,
+      "model_prob": 0.7263,
+      "implied_prob": 0.4459,
+      "edge_pct": 28.05,
+      "model_mu": 4.15,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Sean Keys",
+      "team": "Sean Keys OVER 0.5",
+      "matchup": "Toronto Blue Jays @ Seattle Mariners",
+      "line": 0.5,
+      "odds": -125,
+      "model_prob": 0.7293,
+      "implied_prob": 0.4957,
+      "edge_pct": 23.36,
+      "model_mu": 2.69,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Samad Taylor",
+      "team": "Samad Taylor OVER 0.5",
+      "matchup": "San Diego Padres @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": -105,
+      "model_prob": 0.6294,
+      "implied_prob": 0.4797,
+      "edge_pct": 14.97,
+      "model_mu": 1.7,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ]
+}

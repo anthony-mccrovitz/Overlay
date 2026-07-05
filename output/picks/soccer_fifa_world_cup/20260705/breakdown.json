@@ -1,0 +1,94 @@
+{
+  "Norway @ Brazil": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Norway",
+        "team": "Norway",
+        "matchup": "Norway @ Brazil",
+        "odds": 370,
+        "best_odds": 370,
+        "model_prob": 0.2433,
+        "implied_prob": 0.2015,
+        "edge_pct": 4.18,
+        "sportsbook": "FanDuel",
+        "exp_total": 2.759
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Norway @ Brazil",
+        "odds": 275,
+        "best_odds": 275,
+        "model_prob": 0.258,
+        "implied_prob": 0.2509,
+        "edge_pct": 0.71,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.759
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Brazil",
+        "team": "Brazil",
+        "matchup": "Norway @ Brazil",
+        "odds": -125,
+        "best_odds": -125,
+        "model_prob": 0.4987,
+        "implied_prob": 0.5263,
+        "edge_pct": -2.76,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.759
+      }
+    ]
+  },
+  "England @ Mexico": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "England",
+        "team": "England",
+        "matchup": "England @ Mexico",
+        "odds": 140,
+        "best_odds": 140,
+        "model_prob": 0.4138,
+        "implied_prob": 0.3885,
+        "edge_pct": 2.53,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.425
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "England @ Mexico",
+        "odds": 225,
+        "best_odds": 225,
+        "model_prob": 0.2925,
+        "implied_prob": 0.2948,
+        "edge_pct": -0.23,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.425
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Mexico",
+        "team": "Mexico",
+        "matchup": "England @ Mexico",
+        "odds": 220,
+        "best_odds": 220,
+        "model_prob": 0.2937,
+        "implied_prob": 0.2971,
+        "edge_pct": -0.34,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.425
+      }
+    ]
+  }
+}

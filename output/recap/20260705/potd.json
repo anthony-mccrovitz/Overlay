@@ -1,0 +1,78 @@
+{
+  "pick_id": "mlb_20260705_under-11-0_total_under",
+  "date": "2026-07-05",
+  "sport": "mlb",
+  "market": "total",
+  "direction": "UNDER",
+  "team": "UNDER 11.0",
+  "matchup": "Miami Marlins @ Athletics",
+  "odds": 105,
+  "line": 11.0,
+  "sportsbook": "theScore Bet",
+  "model_prob": 0.457,
+  "edge_pct": 3.0,
+  "model_agreement": false,
+  "model_tier": "tier1",
+  "weather_context": "",
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-07-04T05:07:59.832020+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 133,
+      "season_rs_per_g": 4.61,
+      "season_ra_per_g": 5.36,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 4.43,
+        "ra_per_game": 6.14,
+        "wins": 2,
+        "losses": 5,
+        "wl": "2-5"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 4.71,
+        "ra_per_game": 5.79,
+        "wins": 5,
+        "losses": 9,
+        "wl": "5-9"
+      }
+    },
+    "away": {
+      "team_id": 146,
+      "season_rs_per_g": 4.52,
+      "season_ra_per_g": 4.31,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 5.86,
+        "ra_per_game": 4.71,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 5.57,
+        "ra_per_game": 3.93,
+        "wins": 10,
+        "losses": 4,
+        "wl": "10-4"
+      }
+    },
+    "snapshot_date": "2026-07-05"
+  },
+  "shadow_filter": {
+    "name": null,
+    "matchup_class": "one_hot",
+    "recommendation": "na",
+    "reason": "no shadow filter for market=total"
+  }
+}

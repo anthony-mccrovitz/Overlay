@@ -1,0 +1,50 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Esmerlyn Valdez",
+      "team": "Esmerlyn Valdez OVER 0.5",
+      "matchup": "Pittsburgh Pirates @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": -160,
+      "model_prob": 0.8037,
+      "implied_prob": 0.5458,
+      "edge_pct": 25.8,
+      "model_mu": 4.1,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Tatsuya Imai",
+      "team": "Tatsuya Imai UNDER 5.5",
+      "matchup": "Minnesota Twins @ Houston Astros",
+      "line": 5.5,
+      "odds": 120,
+      "model_prob": 0.7079,
+      "implied_prob": 0.4248,
+      "edge_pct": 28.3,
+      "model_mu": 4.39,
+      "sportsbook": "Bovada"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Yandy Diaz",
+      "team": "Yandy Diaz UNDER 0.5",
+      "matchup": "Tampa Bay Rays @ Kansas City Royals",
+      "line": 0.5,
+      "odds": 325,
+      "model_prob": 0.3713,
+      "implied_prob": 0.2176,
+      "edge_pct": 15.37,
+      "model_mu": 1.69,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ]
+}

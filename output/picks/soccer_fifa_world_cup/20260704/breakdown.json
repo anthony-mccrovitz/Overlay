@@ -1,0 +1,94 @@
+{
+  "Morocco @ Canada": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Canada",
+        "team": "Canada",
+        "matchup": "Morocco @ Canada",
+        "odds": 455,
+        "best_odds": 455,
+        "model_prob": 0.2741,
+        "implied_prob": 0.1758,
+        "edge_pct": 9.83,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.626
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Morocco @ Canada",
+        "odds": 245,
+        "best_odds": 245,
+        "model_prob": 0.2735,
+        "implied_prob": 0.2747,
+        "edge_pct": -0.12,
+        "sportsbook": "DraftKings",
+        "exp_total": 2.626
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Morocco",
+        "team": "Morocco",
+        "matchup": "Morocco @ Canada",
+        "odds": -125,
+        "best_odds": -125,
+        "model_prob": 0.4524,
+        "implied_prob": 0.5196,
+        "edge_pct": -6.72,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.626
+      }
+    ]
+  },
+  "France @ Paraguay": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "France @ Paraguay",
+        "odds": 650,
+        "best_odds": 650,
+        "model_prob": 0.1485,
+        "implied_prob": 0.1277,
+        "edge_pct": 2.08,
+        "sportsbook": "BetRivers",
+        "exp_total": 3.062
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Paraguay",
+        "team": "Paraguay",
+        "matchup": "France @ Paraguay",
+        "odds": 1850,
+        "best_odds": 1850,
+        "model_prob": 0.0621,
+        "implied_prob": 0.05,
+        "edge_pct": 1.21,
+        "sportsbook": "Pinnacle",
+        "exp_total": 3.062
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "France",
+        "team": "France",
+        "matchup": "France @ Paraguay",
+        "odds": -500,
+        "best_odds": -500,
+        "model_prob": 0.7894,
+        "implied_prob": 0.7895,
+        "edge_pct": -0.01,
+        "sportsbook": "BetMGM",
+        "exp_total": 3.062
+      }
+    ]
+  }
+}

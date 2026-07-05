@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-30T15:40:05.444141+00:00",
+  "updated_at": "2026-07-05T14:52:12.665499+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,56 +224,56 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.274,
-      "positive_pct": 31.0,
-      "n": 934,
-      "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
+      "avg_clv_pct": -0.532,
+      "positive_pct": 29.8,
+      "n": 1083,
+      "verdict": "NEGATIVE CLV \u2014 getting worse moneyline numbers than closing"
     },
     "spread_total": {
       "total": {
-        "count": 218,
-        "avg_line_clv": 0.022,
-        "beat_close_pct": 53.7,
-        "avg_price_clv_pct": 0.522,
-        "matched_price_n": 82
+        "count": 235,
+        "avg_line_clv": 0.069,
+        "beat_close_pct": 52.8,
+        "avg_price_clv_pct": 0.43,
+        "matched_price_n": 85
       },
       "spread": {
-        "count": 161,
-        "avg_line_clv": 0.314,
-        "beat_close_pct": 44.7,
-        "avg_price_clv_pct": 1.58,
-        "matched_price_n": 90
+        "count": 170,
+        "avg_line_clv": 0.276,
+        "beat_close_pct": 45.3,
+        "avg_price_clv_pct": 1.644,
+        "matched_price_n": 91
       },
       "f5_total": {
-        "count": 180,
-        "avg_line_clv": -0.008,
-        "beat_close_pct": 28.9,
-        "avg_price_clv_pct": -3.958,
-        "matched_price_n": 92
+        "count": 198,
+        "avg_line_clv": -0.003,
+        "beat_close_pct": 28.8,
+        "avg_price_clv_pct": -3.865,
+        "matched_price_n": 101
       },
       "pitcher_strikeouts": {
-        "count": 265,
-        "avg_line_clv": 0.023,
-        "beat_close_pct": 58.1,
-        "avg_price_clv_pct": 1.04,
-        "matched_price_n": 169
+        "count": 380,
+        "avg_line_clv": -0.008,
+        "beat_close_pct": 55.8,
+        "avg_price_clv_pct": 1.03,
+        "matched_price_n": 255
       }
     },
     "totals_coverage": {
-      "scored": 218,
-      "scoreable": 427,
-      "pct": 51.1
+      "scored": 235,
+      "scoreable": 504,
+      "pct": 46.6
     },
     "spread_coverage": {
-      "scored": 161,
-      "scoreable": 303,
-      "pct": 53.1
+      "scored": 170,
+      "scoreable": 314,
+      "pct": 54.1
     }
   },
   "summary": {
-    "total_picks": 296,
+    "total_picks": 297,
     "settled": 277,
-    "pending": 14,
+    "pending": 15,
     "wins": 153,
     "losses": 118,
     "pushes": 6,
@@ -329,9 +329,9 @@
       "streak": 1
     },
     "total": {
-      "total": 180,
+      "total": 181,
       "settled": 164,
-      "pending": 11,
+      "pending": 12,
       "wins": 93,
       "losses": 65,
       "pushes": 6,
@@ -343,9 +343,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 187,
+      "total": 188,
       "settled": 183,
-      "pending": 4,
+      "pending": 5,
       "wins": 94,
       "losses": 84,
       "win_rate": 0.5281,
