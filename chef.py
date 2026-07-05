@@ -340,7 +340,11 @@ def cmd_record(args: argparse.Namespace) -> int:
     if shadow_mode:
         return _cmd_record_shadow(picks, filter_market, filter_sport)
 
-    card_picks = list(picks)
+    # The official record is CARD picks only (card_pick=True — the bets actually
+    # posted). Without this filter the headline blended in thousands of shadow
+    # picks at full stake, reporting a net loss while the real bet record is
+    # positive. Shadow/model-only performance lives behind `record --shadow`.
+    card_picks = [p for p in picks if p.get("card_pick")]
     if filter_market != "all":
         card_picks = [p for p in card_picks if p.get("market") == filter_market]
     if filter_sport != "all":

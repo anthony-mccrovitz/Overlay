@@ -84,7 +84,16 @@ def project_f5_total(
     return round(total, 2)
 
 
-OVER_BIAS_CORRECTION = 0.04   # books shade totals high; OVERs underperform historically
+# Book-shading correction is now handled by the isotonic/Platt calibration
+# (apply_calibration below). The old extra 0.04 subtraction double-corrected on
+# top of it and, with a slightly low projection, tilted the model ~83% UNDER.
+# Left at 0 so the calibrated probability stands on its own.
+OVER_BIAS_CORRECTION = 0.0
+# Measured projection recentring: the projected F5 total ran ~0.11 runs below the
+# market line on average (373 picks), which alone biases the lean UNDER. Add it
+# back so the model is centred on the sharp line; per-game deviations (the edge)
+# are preserved.
+F5_PROJ_RECENTER = 0.11
 MIN_IMPLIED_PROB = 0.30        # skip picks at odds better than +233
 
 def _normal_cdf(x: float) -> float:
@@ -220,7 +229,7 @@ def find_f5_edges(
         # ──────────────────────────────────────────────────────────────────────
         # Estimate prob of going over using normal approx (std dev ~2.5 runs for 5-inning totals)
         F5_STD = 2.5
-        z = (proj - line) / F5_STD
+        z = ((proj + F5_PROJ_RECENTER) - line) / F5_STD
         model_p_over = _normal_cdf(z)
         # Calibrate against the trained mlb_f5_total isotonic/Platt fit so the
         # edge_pct we compute downstream reflects post-calibration probability.

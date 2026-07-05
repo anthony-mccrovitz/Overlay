@@ -41,22 +41,59 @@ SPORTS = {
     "nhl":     "icehockey_nhl",
     "wnba":    "basketball_wnba",
     "soccer":  "soccer_fifa_world_cup",
+    # League soccer — closings when these resume (EXTRA markets already configured
+    # below). Off-season keys return an empty events list (one cheap call), so
+    # leaving them in costs nothing until games appear. Keyed by their FULL Odds
+    # API key so the archive file (soccer_spain_la_liga_DATE.json) matches what
+    # compute_clv looks up per snapshot — the short "soccer_" prefix is reserved
+    # for the World Cup and would otherwise collide.
+    "soccer_spain_la_liga":      "soccer_spain_la_liga",
+    "soccer_italy_serie_a":      "soccer_italy_serie_a",
+    "soccer_germany_bundesliga": "soccer_germany_bundesliga",
+    "soccer_usa_mls":            "soccer_usa_mls",
     "ufc":     "mma_mixed_martial_arts",
     "mma":     "mma_mixed_martial_arts",
-    # NOTE: tennis & golf are intentionally NOT here. Tennis runs many concurrent
-    # tournaments (this capturer's one-key-per-sport model can't enumerate them)
-    # and golf is an outright market with no game lines. Both get CLV from their
-    # runners' daily snapshots (tennis.yml / pga.yml) instead of this capturer.
-    # (h2h/spreads/totals); golf is an outright market with no such lines, so a
-    # golf key only wastes calls. Golf outright CLV comes from run_pga.py's daily
-    # snapshots (pga.yml runs daily, auto-detecting the active major).
+    # NOTE: tennis is handled dynamically (see _active_tennis_keys) because it runs
+    # many concurrent tournament keys that a static dict can't enumerate — each
+    # match IS a normal event with a commence_time, so it captures like any game.
+    # Golf is an outright (futures) market with no game-line commence time, so it
+    # uses a separate tee-off outright capture (see capture_golf_outrights).
     "nascar":  "auto_racing_nascar_cup_series",
     "indycar": "auto_racing_indycar_series",
     "f1":      "auto_racing_formula_one",
 }
 
+
+def _active_tennis_keys() -> list[str]:
+    """Currently active tennis tournament Odds API keys (e.g. tennis_atp_wimbledon).
+
+    Tennis runs many concurrent tournaments, so we discover the live ones from the
+    Odds API sports catalog (cached 24h by list_sports) rather than hard-coding a
+    dict. Each returned key is captured like any other sport — one match per event,
+    h2h closing at match time. Returns [] when the catalog is unavailable so the
+    rest of the capture run proceeds unaffected.
+    """
+    try:
+        from src.data.odds_api import list_sports
+        df = list_sports()
+        if df.empty or "key" not in df:
+            return []
+        active = df[df.get("active", False)] if "active" in df else df
+        return sorted(k for k in active["key"] if str(k).startswith("tennis_"))
+    except Exception:
+        return []
+
 # Base full-game markets captured for every sport.
 _BASE_MARKETS = "h2h,spreads,totals"
+
+
+def _base_markets_for(odds_api_sport: str) -> str:
+    """Base markets to request per sport. Tennis only offers h2h reliably (and the
+    model is moneyline), so requesting spreads/totals there just risks a 422 that
+    could lose the h2h capture — keep it to h2h. Everything else gets the full set."""
+    if odds_api_sport.startswith("tennis_"):
+        return "h2h"
+    return _BASE_MARKETS
 
 # Sport-specific alternate markets (period/derivative + props). Per-event endpoint only.
 # MLB: F5 + NRFI for period totals; pitcher_strikeouts for props.
@@ -195,7 +232,7 @@ def capture_sport(
             base_df = fetch_event_odds(
                 event_id=ev_id,
                 sport=odds_api_sport,
-                markets=_BASE_MARKETS,
+                markets=_base_markets_for(odds_api_sport),
                 refresh=True,
             )
         except Exception as e:
@@ -273,9 +310,98 @@ def capture_sport(
     return captured_now
 
 
+# Golf is a futures (outright winner) market — one tournament, no per-game
+# commence time the game loop iterates. A tournament has ONE close: the board at
+# first-round tee-off. We capture the outright winner board per active tournament
+# and keep upgrading the day's archive until a capture lands inside the tee-off
+# window, then lock it. compute_clv reads it tournament-scoped (across entry dates).
+_GOLF_FINAL_WINDOW_MIN = 720.0  # within 12h of tee-off counts as the close
+
+
+def _active_golf_keys() -> list[str]:
+    """Active golf outright-winner Odds API keys (e.g. golf_the_open_championship_winner)."""
+    try:
+        from src.data.odds_api import list_sports
+        df = list_sports()
+        if df.empty or "key" not in df:
+            return []
+        active = df[df.get("active", False)] if "active" in df else df
+        return sorted(k for k in active["key"]
+                      if str(k).startswith("golf_") and str(k).endswith("_winner"))
+    except Exception:
+        return []
+
+
+def capture_golf_outrights(force: bool) -> int:
+    """Capture each active golf tournament's outright winner board as the close."""
+    import requests
+    from src.data.odds_api import _get_api_key, API_BASE, BOOKMAKERS
+    api_key = _get_api_key()
+    if not api_key or api_key == "your_key_here":
+        return 0
+
+    today_str = _now_utc().date().isoformat()
+    captured = 0
+    for sport in _active_golf_keys():
+        archive = _load_archive(sport, today_str)
+        if archive and archive[0].get("closing_final") and not force:
+            continue  # today's close already locked
+        try:
+            resp = requests.get(
+                f"{API_BASE}/sports/{sport}/odds",
+                params={"apiKey": api_key, "bookmakers": BOOKMAKERS,
+                        "markets": "outrights", "oddsFormat": "american"},
+                timeout=30)
+            if resp.status_code != 200:
+                continue
+            events = resp.json()
+        except Exception as e:
+            _log(f"  WARN golf outrights fetch failed {sport}: {e}")
+            continue
+
+        # Best (longest) price per player across books — mirrors get_best_golf_odds.
+        best: dict[str, float] = {}
+        commence = None
+        for ev in events:
+            commence = ev.get("commence_time") or commence
+            for bk in ev.get("bookmakers", []):
+                for mk in bk.get("markets", []):
+                    if mk.get("key") != "outrights":
+                        continue
+                    for oc in mk.get("outcomes", []):
+                        name = str(oc.get("name") or "").strip()
+                        price = oc.get("price")
+                        if not name or price is None:
+                            continue
+                        p = float(price)
+                        if name not in best or p > best[name]:
+                            best[name] = p
+        if not best:
+            continue
+
+        mins = _minutes_to_commence(commence) if commence else None
+        in_final = mins is not None and mins <= _GOLF_FINAL_WINDOW_MIN
+        record = {
+            "sport":            sport,
+            "commence_time":    commence,
+            "captured_at":      _now_utc().isoformat(),
+            "mins_to_commence": round(mins, 1) if mins is not None else None,
+            "closing_final":    bool(in_final),
+            # player_lower -> best american odds (the close-so-far board)
+            "outrights":        {k.lower(): v for k, v in best.items()},
+        }
+        _save_archive(sport, today_str, [record])
+        captured += 1
+        tag = "CLOSING" if in_final else "pre-tee"
+        _log(f"  ✓ GOLF {tag}: {sport} ({len(best)} players, "
+             f"{('%+.0f' % mins) if mins is not None else '?'}m to tee)")
+
+    return captured
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["all"], default="all")
+    ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["tennis", "golf", "all"], default="all")
     ap.add_argument("--window", type=float, default=90.0,
                     help="Pre-game capture LEAD in minutes (default 90): capture any "
                          "game starting within this many minutes. A WIDE lead is what "
@@ -294,12 +420,27 @@ def main() -> None:
     GRACE = 5.0
     lo, hi = -GRACE, float(args.window)
 
-    sports_to_run = list(SPORTS.keys()) if args.sport == "all" else [args.sport]
+    # Build (archive_key, odds_api_sport) pairs. Static sports come from SPORTS;
+    # tennis is discovered dynamically — each active tournament key is its own
+    # "sport" and its own archive file (tennis_atp_wimbledon_DATE.json), which is
+    # exactly what compute_clv looks up per snapshot's tennis key.
+    pairs: list[tuple[str, str]] = []
+    if args.sport in ("all", "tennis"):
+        for tk in _active_tennis_keys():
+            pairs.append((tk, tk))
+    if args.sport == "all":
+        pairs += [(sk, SPORTS[sk]) for sk in SPORTS]
+    elif args.sport != "tennis":
+        pairs.append((args.sport, SPORTS[args.sport]))
+
     total = 0
-    for sk in sports_to_run:
-        odds_sport = SPORTS[sk]
+    for sk, odds_sport in pairs:
         n = capture_sport(sk, odds_sport, lo, hi, args.force)
         total += n
+
+    # Golf outrights — separate futures capture (no per-game commence loop).
+    if args.sport in ("all", "golf"):
+        total += capture_golf_outrights(args.force)
 
     if total == 0:
         # Quiet run when nothing in window — keeps logs clean
