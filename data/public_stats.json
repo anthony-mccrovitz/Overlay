@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-05T14:04:45.988476+00:00",
+  "updated_at": "2026-07-05T14:52:12.665499+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,50 +224,50 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.454,
-      "positive_pct": 30.2,
-      "n": 1048,
-      "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
+      "avg_clv_pct": -0.532,
+      "positive_pct": 29.8,
+      "n": 1083,
+      "verdict": "NEGATIVE CLV \u2014 getting worse moneyline numbers than closing"
     },
     "spread_total": {
       "total": {
-        "count": 231,
-        "avg_line_clv": 0.038,
-        "beat_close_pct": 52.4,
-        "avg_price_clv_pct": 0.366,
+        "count": 235,
+        "avg_line_clv": 0.069,
+        "beat_close_pct": 52.8,
+        "avg_price_clv_pct": 0.43,
         "matched_price_n": 85
       },
       "spread": {
-        "count": 168,
-        "avg_line_clv": 0.25,
-        "beat_close_pct": 44.6,
-        "avg_price_clv_pct": 1.641,
-        "matched_price_n": 90
+        "count": 170,
+        "avg_line_clv": 0.276,
+        "beat_close_pct": 45.3,
+        "avg_price_clv_pct": 1.644,
+        "matched_price_n": 91
       },
       "f5_total": {
-        "count": 191,
-        "avg_line_clv": 0.0,
+        "count": 198,
+        "avg_line_clv": -0.003,
         "beat_close_pct": 28.8,
-        "avg_price_clv_pct": -3.881,
-        "matched_price_n": 98
+        "avg_price_clv_pct": -3.865,
+        "matched_price_n": 101
       },
       "pitcher_strikeouts": {
-        "count": 361,
-        "avg_line_clv": -0.011,
-        "beat_close_pct": 55.4,
-        "avg_price_clv_pct": 0.993,
-        "matched_price_n": 241
+        "count": 380,
+        "avg_line_clv": -0.008,
+        "beat_close_pct": 55.8,
+        "avg_price_clv_pct": 1.03,
+        "matched_price_n": 255
       }
     },
     "totals_coverage": {
-      "scored": 231,
-      "scoreable": 503,
-      "pct": 45.9
+      "scored": 235,
+      "scoreable": 504,
+      "pct": 46.6
     },
     "spread_coverage": {
-      "scored": 168,
+      "scored": 170,
       "scoreable": 314,
-      "pct": 53.5
+      "pct": 54.1
     }
   },
   "summary": {
