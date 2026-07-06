@@ -1,0 +1,98 @@
+{
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Juan Soto",
+      "team": "Juan Soto UNDER 0.5",
+      "matchup": "New York Mets @ Atlanta Braves",
+      "line": 0.5,
+      "odds": 135,
+      "model_prob": 0.7053,
+      "implied_prob": 0.3916,
+      "edge_pct": 31.37,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "James Jarvis",
+      "team": "James Jarvis UNDER 0.5",
+      "matchup": "New York Mets @ Atlanta Braves",
+      "line": 0.5,
+      "odds": -475,
+      "model_prob": 0.9901,
+      "implied_prob": 0.743,
+      "edge_pct": 24.71,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Griffin Jax",
+      "team": "Griffin Jax UNDER 5.5",
+      "matchup": "New York Yankees @ Tampa Bay Rays",
+      "line": 5.5,
+      "odds": -140,
+      "model_prob": 0.7558,
+      "implied_prob": 0.5446,
+      "edge_pct": 21.12,
+      "model_mu": 4.11,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Alec Bohm",
+      "team": "Alec Bohm UNDER 1.5",
+      "matchup": "Philadelphia Phillies @ Kansas City Royals",
+      "line": 1.5,
+      "odds": -250,
+      "model_prob": 0.7936,
+      "implied_prob": 0.641,
+      "edge_pct": 15.25,
+      "model_mu": 0.84,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Hunter Goodman",
+      "team": "Hunter Goodman UNDER 0.5",
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": -340,
+      "model_prob": 0.8648,
+      "implied_prob": 0.6951,
+      "edge_pct": 16.97,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Jake Cronenworth",
+      "team": "Jake Cronenworth UNDER 1.5",
+      "matchup": "Arizona Diamondbacks @ San Diego Padres",
+      "line": 1.5,
+      "odds": -215,
+      "model_prob": 0.7585,
+      "implied_prob": 0.6109,
+      "edge_pct": 14.76,
+      "model_mu": 0.95,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
