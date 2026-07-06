@@ -1,0 +1,94 @@
+{
+  "Belgium @ USA": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Belgium",
+        "team": "Belgium",
+        "matchup": "Belgium @ USA",
+        "odds": 192,
+        "best_odds": 192,
+        "model_prob": 0.4562,
+        "implied_prob": 0.3348,
+        "edge_pct": 12.14,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.753
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Belgium @ USA",
+        "odds": 255,
+        "best_odds": 255,
+        "model_prob": 0.2647,
+        "implied_prob": 0.2695,
+        "edge_pct": -0.48,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.753
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "USA",
+        "team": "USA",
+        "matchup": "Belgium @ USA",
+        "odds": 150,
+        "best_odds": 150,
+        "model_prob": 0.2791,
+        "implied_prob": 0.375,
+        "edge_pct": -9.59,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.753
+      }
+    ]
+  },
+  "Spain @ Portugal": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Spain",
+        "team": "Spain",
+        "matchup": "Spain @ Portugal",
+        "odds": -120,
+        "best_odds": -120,
+        "model_prob": 0.5702,
+        "implied_prob": 0.4843,
+        "edge_pct": 8.59,
+        "sportsbook": "DraftKings",
+        "exp_total": 2.773
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Spain @ Portugal",
+        "odds": 270,
+        "best_odds": 270,
+        "model_prob": 0.2417,
+        "implied_prob": 0.2591,
+        "edge_pct": -1.74,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.773
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Portugal",
+        "team": "Portugal",
+        "matchup": "Spain @ Portugal",
+        "odds": 320,
+        "best_odds": 320,
+        "model_prob": 0.1881,
+        "implied_prob": 0.2249,
+        "edge_pct": -3.68,
+        "sportsbook": "FanDuel",
+        "exp_total": 2.773
+      }
+    ]
+  }
+}
