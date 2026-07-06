@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-06T10:59:17.869518+00:00",
+  "updated_at": "2026-07-06T11:51:19.923769+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -272,15 +272,15 @@
   },
   "summary": {
     "total_picks": 297,
-    "settled": 277,
-    "pending": 15,
+    "settled": 278,
+    "pending": 14,
     "wins": 153,
-    "losses": 118,
+    "losses": 119,
     "pushes": 6,
-    "win_rate": 0.5646,
-    "units_profit": 32.32,
-    "roi": 0.1213,
-    "streak": 1
+    "win_rate": 0.5625,
+    "units_profit": 31.32,
+    "roi": 0.1171,
+    "streak": -1
   },
   "nrfi": {
     "total": 0,
@@ -330,27 +330,27 @@
     },
     "total": {
       "total": 181,
-      "settled": 164,
-      "pending": 12,
+      "settled": 165,
+      "pending": 11,
       "wins": 93,
-      "losses": 65,
+      "losses": 66,
       "pushes": 6,
-      "win_rate": 0.5886,
-      "units_profit": 24.58,
-      "roi": 0.1586,
-      "streak": -4
+      "win_rate": 0.5849,
+      "units_profit": 23.58,
+      "roi": 0.1511,
+      "streak": -5
     }
   },
   "by_sport": {
     "mlb": {
       "total": 188,
-      "settled": 183,
-      "pending": 5,
+      "settled": 184,
+      "pending": 4,
       "wins": 94,
-      "losses": 84,
-      "win_rate": 0.5281,
-      "units_profit": 12.4,
-      "roi": 0.0696
+      "losses": 85,
+      "win_rate": 0.5251,
+      "units_profit": 11.4,
+      "roi": 0.0637
     },
     "nba": {
       "total": 97,
@@ -390,6 +390,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-07-05",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 11.0",
+      "matchup": "Miami Marlins @ Athletics",
+      "odds": 105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 3.0
+    },
     {
       "date": "2026-06-27",
       "sport": "mlb",
@@ -488,17 +499,6 @@
       "result": "win",
       "profit": 1.32,
       "edge_pct": 12.25
-    },
-    {
-      "date": "2026-06-25",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "New York Yankees",
-      "matchup": "Detroit Tigers",
-      "odds": 126,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 12.06
     }
   ]
 }
