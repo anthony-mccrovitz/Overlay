@@ -27,14 +27,14 @@
     {
       "player": "Cristiano Ronaldo",
       "team": "Portugal",
-      "exp_goals": 4.26,
+      "exp_goals": 4.13,
       "share": 0.332
     },
     {
       "player": "Mikel Oyarzabal",
       "team": "Spain",
-      "exp_goals": 3.91,
-      "share": 0.2089
+      "exp_goals": 3.97,
+      "share": 0.2056
     },
     {
       "player": "Ra\u00fal Jim\u00e9nez",
@@ -69,8 +69,14 @@
     {
       "player": "Romelu Lukaku",
       "team": "Belgium",
-      "exp_goals": 2.94,
-      "share": 0.2538
+      "exp_goals": 3.21,
+      "share": 0.2536
+    },
+    {
+      "player": "Luis D\u00edaz",
+      "team": "Colombia",
+      "exp_goals": 2.92,
+      "share": 0.2265
     },
     {
       "player": "Vin\u00edcius J\u00fanior",
@@ -79,15 +85,9 @@
       "share": 0.2121
     },
     {
-      "player": "Luis D\u00edaz",
-      "team": "Colombia",
-      "exp_goals": 2.9,
-      "share": 0.2265
-    },
-    {
       "player": "Mohamed Salah",
       "team": "Egypt",
-      "exp_goals": 2.85,
+      "exp_goals": 2.79,
       "share": 0.3657
     },
     {
@@ -121,6 +121,12 @@
       "share": 0.16
     },
     {
+      "player": "Mikel Merino",
+      "team": "Spain",
+      "exp_goals": 2.38,
+      "share": 0.1232
+    },
+    {
       "player": "Edin D\u017eeko",
       "team": "Bosnia and Herzegovina",
       "exp_goals": 2.19,
@@ -139,23 +145,17 @@
       "share": 0.1163
     },
     {
-      "player": "Mikel Merino",
-      "team": "Spain",
-      "exp_goals": 2.04,
-      "share": 0.109
-    },
-    {
       "player": "Andrej Kramari\u0107",
       "team": "Croatia",
       "exp_goals": 1.99,
       "share": 0.1946
     }
   ],
-  "generated": "2026-07-06T16:28:56.441772+00:00",
+  "generated": "2026-07-07T15:50:02.227722+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-06-30",
   "n_fixtures": 72,
-  "n_priced": 6,
+  "n_priced": 5,
   "kickoff": "2026-06-11"
 }
