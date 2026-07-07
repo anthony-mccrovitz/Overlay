@@ -1,0 +1,94 @@
+{
+  "Egypt @ Argentina": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Argentina",
+        "team": "Argentina",
+        "matchup": "Egypt @ Argentina",
+        "odds": -300,
+        "best_odds": -300,
+        "model_prob": 0.8412,
+        "implied_prob": 0.7107,
+        "edge_pct": 13.05,
+        "sportsbook": "BetMGM",
+        "exp_total": 3.177
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Egypt",
+        "team": "Egypt",
+        "matchup": "Egypt @ Argentina",
+        "odds": 1050,
+        "best_odds": 1050,
+        "model_prob": 0.0401,
+        "implied_prob": 0.0852,
+        "edge_pct": -4.51,
+        "sportsbook": "Pinnacle",
+        "exp_total": 3.177
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Egypt @ Argentina",
+        "odds": 400,
+        "best_odds": 400,
+        "model_prob": 0.1187,
+        "implied_prob": 0.1895,
+        "edge_pct": -7.08,
+        "sportsbook": "BetMGM",
+        "exp_total": 3.177
+      }
+    ]
+  },
+  "Colombia @ Switzerland": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Colombia",
+        "team": "Colombia",
+        "matchup": "Colombia @ Switzerland",
+        "odds": 130,
+        "best_odds": 130,
+        "model_prob": 0.4509,
+        "implied_prob": 0.4152,
+        "edge_pct": 3.57,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.677
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Switzerland",
+        "team": "Switzerland",
+        "matchup": "Colombia @ Switzerland",
+        "odds": 260,
+        "best_odds": 260,
+        "model_prob": 0.2788,
+        "implied_prob": 0.2607,
+        "edge_pct": 1.81,
+        "sportsbook": "FanDuel",
+        "exp_total": 2.677
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Colombia @ Switzerland",
+        "odds": 210,
+        "best_odds": 210,
+        "model_prob": 0.2703,
+        "implied_prob": 0.3035,
+        "edge_pct": -3.32,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.677
+      }
+    ]
+  }
+}
