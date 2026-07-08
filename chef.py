@@ -1508,6 +1508,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
             print_clv_report, print_clv_by_market, print_clv_matrix, compute_clv,
             backfill_snapshots_from_pnl, upgrade_snapshots,
             backfill_snapshot_markets, backfill_snapshot_lines,
+            reconcile_stragglers,
         )
 
         refresh = getattr(args, "refresh", False)
@@ -1532,6 +1533,11 @@ def cmd_clv(args: argparse.Namespace) -> int:
                 print(f"  Recomputing CLV for {len(dates)} archive dates...")
                 for d in sorted(dates):
                     compute_clv(date_str=d)
+            # 4. Straggler reconciliation — recover settled picks whose closing was
+            #    captured a day off (postponement / picked-a-day-early) and so the
+            #    strict gameday join skipped. Closes the last coverage gap toward
+            #    the ~99% ceiling without any paid historical-odds calls.
+            reconcile_stragglers()
 
         print_clv_report()
         if getattr(args, "matrix", False):

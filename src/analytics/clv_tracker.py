@@ -942,6 +942,16 @@ def _rec_matchup_key(rec: dict) -> frozenset | None:
     return frozenset({away, home}) if home and away else None
 
 
+# Straggler-reconciliation switch. When ON, _select_windowed_records widens its
+# search and, for a matchup with no game inside the strict UTC gameday window,
+# accepts the NEAREST-commence captured game within a bounded drift — recovering
+# postponed / day-early picks (the game WAS captured, just filed a day off from
+# the pick date). Off by default so the daily strict join is never loosened; the
+# reconcile pass (reconcile_stragglers) flips it only for old, settled, still-
+# unscored picks where a wrong-day proxy is strictly better than no CLV at all.
+_RECONCILE = {"on": False, "max_drift_h": 36.0}
+
+
 def _select_windowed_records(date_str: str, sport: str,
                              day_window: int = 1) -> dict[frozenset, dict]:
     """Pick one closing record per game for the US gameday `date_str`, tolerant
@@ -982,6 +992,10 @@ def _select_windowed_records(date_str: str, sport: str,
         except (ValueError, TypeError):
             return None
 
+    reconcile = _RECONCILE["on"]
+    if reconcile:
+        day_window = max(day_window, 2)   # widen to catch a game filed a day off
+
     # matchup -> list of (distance, record)
     groups: dict[frozenset, list[tuple[int, dict]]] = {}
     for off in range(-day_window, day_window + 1):
@@ -1011,6 +1025,20 @@ def _select_windowed_records(date_str: str, sport: str,
             # Doubleheader (two games same gameday) → take the earlier one.
             chosen[key] = min(in_window, key=lambda r: _commence(r))
             continue
+        # Reconcile pass: this matchup's game never landed inside the pick's
+        # gameday window (postponed / picked a day early). Accept the captured
+        # game whose commence is NEAREST the window, but only within max_drift_h
+        # so we never grab an unrelated game days away. Best-effort proxy — a
+        # slightly-off-day close beats no CLV for a settled pick.
+        if reconcile:
+            mid = win_lo + (win_hi - win_lo) / 2
+            drift = _RECONCILE["max_drift_h"] * 3600
+            timed = [(rec, c) for _d, rec in items if (c := _commence(rec)) is not None]
+            near = [(rec, abs((c - mid).total_seconds())) for rec, c in timed]
+            near = [(rec, d) for rec, d in near if d <= drift + 43200]  # +12h half-window
+            if near:
+                chosen[key] = min(near, key=lambda rd: rd[1])[0]
+                continue
         # No commence_time to disambiguate a series → prefer the exact-date file.
         exact = [rec for dist, rec in items if dist == 0]
         if exact:
@@ -1782,6 +1810,50 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         _save_snapshots(snapshots)
 
     return day_snaps
+
+
+def reconcile_stragglers(min_age_days: int = 3, max_age_days: int = 21) -> int:
+    """Second-pass CLV recovery for settled picks the strict join couldn't score.
+
+    The daily join deliberately refuses to match a pick to a game outside its UTC
+    gameday window — correct, because it must not score the wrong game in a series.
+    But a postponed or picked-a-day-early game leaves a settled pick permanently
+    unscored even though its closing WAS captured, just filed a day off. This pass
+    re-runs compute_clv with reconcile ON (widened window + nearest-commence within
+    a bounded drift) for recent-but-settled dates that still have unscored
+    snapshots. It only FILLS gaps: reconcile activates solely when the strict
+    window found nothing, so an already-correct score is never altered.
+
+    Runs in the daily `chef.py clv --refresh`. Returns snapshots newly scored.
+    """
+    from datetime import date as _date, timedelta
+
+    def _scored(s: dict) -> bool:
+        return s.get("clv_pct") is not None or s.get("line_clv") is not None
+
+    snaps = _load_snapshots()
+    lo = (_date.today() - timedelta(days=max_age_days)).isoformat()
+    hi = (_date.today() - timedelta(days=min_age_days)).isoformat()
+    before = sum(1 for s in snaps if isinstance(s, dict) and _scored(s))
+    dates = sorted({str(s.get("date"))[:10] for s in snaps
+                    if isinstance(s, dict) and not _scored(s) and s.get("date")
+                    and lo <= str(s.get("date"))[:10] <= hi})
+    if not dates:
+        return 0
+
+    _RECONCILE["on"] = True
+    try:
+        for d in dates:
+            compute_clv(date_str=d)
+    finally:
+        _RECONCILE["on"] = False   # never leave the strict join loosened
+
+    after = sum(1 for s in _load_snapshots() if isinstance(s, dict) and _scored(s))
+    gained = after - before
+    if gained > 0:
+        print(f"  [CLV] reconciled {gained} straggler snapshot(s) "
+              f"across {len(dates)} settled date(s) — postponement/date-drift recovery")
+    return gained
 
 
 def get_clv_by_market(sport_filter: str | None = None) -> dict:
