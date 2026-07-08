@@ -3,50 +3,44 @@
     {
       "player": "Lionel Messi",
       "team": "Argentina",
-      "exp_goals": 7.2,
-      "share": 0.3966
+      "exp_goals": 7.35,
+      "share": 0.3908
     },
     {
       "player": "Harry Kane",
       "team": "England",
-      "exp_goals": 6.97,
+      "exp_goals": 7.02,
       "share": 0.4392
     },
     {
       "player": "Kylian Mbapp\u00e9",
       "team": "France",
-      "exp_goals": 6.23,
+      "exp_goals": 6.24,
       "share": 0.3744
     },
     {
       "player": "Erling Haaland",
       "team": "Norway",
-      "exp_goals": 6.0,
+      "exp_goals": 6.01,
       "share": 0.5087
+    },
+    {
+      "player": "Ra\u00fal Jim\u00e9nez",
+      "team": "Mexico",
+      "exp_goals": 4.15,
+      "share": 0.2755
     },
     {
       "player": "Cristiano Ronaldo",
       "team": "Portugal",
-      "exp_goals": 4.13,
+      "exp_goals": 4.12,
       "share": 0.332
     },
     {
       "player": "Mikel Oyarzabal",
       "team": "Spain",
-      "exp_goals": 3.97,
+      "exp_goals": 4.02,
       "share": 0.2056
-    },
-    {
-      "player": "Ra\u00fal Jim\u00e9nez",
-      "team": "Mexico",
-      "exp_goals": 3.83,
-      "share": 0.2552
-    },
-    {
-      "player": "Jonathan David",
-      "team": "Canada",
-      "exp_goals": 3.63,
-      "share": 0.3027
     },
     {
       "player": "Enner Valencia",
@@ -55,107 +49,113 @@
       "share": 0.384
     },
     {
+      "player": "Jonathan David",
+      "team": "Canada",
+      "exp_goals": 3.6,
+      "share": 0.3027
+    },
+    {
       "player": "Lautaro Mart\u00ednez",
       "team": "Argentina",
-      "exp_goals": 3.59,
-      "share": 0.1977
+      "exp_goals": 3.45,
+      "share": 0.1835
     },
     {
       "player": "Breel Embolo",
       "team": "Switzerland",
-      "exp_goals": 3.29,
+      "exp_goals": 3.33,
       "share": 0.2005
     },
     {
       "player": "Romelu Lukaku",
       "team": "Belgium",
-      "exp_goals": 3.21,
+      "exp_goals": 3.29,
       "share": 0.2536
-    },
-    {
-      "player": "Luis D\u00edaz",
-      "team": "Colombia",
-      "exp_goals": 2.92,
-      "share": 0.2265
     },
     {
       "player": "Vin\u00edcius J\u00fanior",
       "team": "Brazil",
-      "exp_goals": 2.91,
+      "exp_goals": 2.89,
       "share": 0.2121
     },
     {
-      "player": "Mohamed Salah",
-      "team": "Egypt",
-      "exp_goals": 2.79,
-      "share": 0.3657
+      "player": "Luis D\u00edaz",
+      "team": "Colombia",
+      "exp_goals": 2.89,
+      "share": 0.2265
     },
     {
       "player": "Memphis Depay",
       "team": "Netherlands",
-      "exp_goals": 2.63,
+      "exp_goals": 2.64,
       "share": 0.1958
     },
     {
       "player": "Cody Gakpo",
       "team": "Netherlands",
-      "exp_goals": 2.62,
+      "exp_goals": 2.63,
       "share": 0.1952
+    },
+    {
+      "player": "Juli\u00e1n Qui\u00f1ones",
+      "team": "Mexico",
+      "exp_goals": 2.6,
+      "share": 0.1728
+    },
+    {
+      "player": "Mohamed Salah",
+      "team": "Egypt",
+      "exp_goals": 2.6,
+      "share": 0.3425
     },
     {
       "player": "Cyle Larin",
       "team": "Canada",
-      "exp_goals": 2.6,
+      "exp_goals": 2.58,
       "share": 0.2169
     },
     {
       "player": "Marko Arnautovi\u0107",
       "team": "Austria",
-      "exp_goals": 2.56,
+      "exp_goals": 2.58,
       "share": 0.2828
-    },
-    {
-      "player": "Juli\u00e1n Qui\u00f1ones",
-      "team": "Mexico",
-      "exp_goals": 2.4,
-      "share": 0.16
     },
     {
       "player": "Mikel Merino",
       "team": "Spain",
-      "exp_goals": 2.38,
+      "exp_goals": 2.41,
       "share": 0.1232
-    },
-    {
-      "player": "Edin D\u017eeko",
-      "team": "Bosnia and Herzegovina",
-      "exp_goals": 2.19,
-      "share": 0.3365
     },
     {
       "player": "Viktor Gy\u00f6keres",
       "team": "Sweden",
-      "exp_goals": 2.18,
+      "exp_goals": 2.19,
       "share": 0.296
+    },
+    {
+      "player": "Edin D\u017eeko",
+      "team": "Bosnia and Herzegovina",
+      "exp_goals": 2.13,
+      "share": 0.3365
     },
     {
       "player": "Juli\u00e1n \u00c1lvarez",
       "team": "Argentina",
-      "exp_goals": 2.11,
-      "share": 0.1163
+      "exp_goals": 2.03,
+      "share": 0.1079
     },
     {
       "player": "Andrej Kramari\u0107",
       "team": "Croatia",
-      "exp_goals": 1.99,
+      "exp_goals": 2.01,
       "share": 0.1946
     }
   ],
-  "generated": "2026-07-07T15:50:02.227722+00:00",
+  "generated": "2026-07-08T15:32:51.843316+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
-  "model_fitted_on": "2026-06-30",
+  "model_fitted_on": "2026-07-07",
   "n_fixtures": 72,
-  "n_priced": 5,
+  "n_priced": 4,
   "kickoff": "2026-06-11"
 }
