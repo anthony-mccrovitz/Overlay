@@ -2115,6 +2115,53 @@ def cmd_monitor(args: argparse.Namespace) -> int:
         print(f"  ✗ CLV scoring       snapshots.json unreadable")
         issues += 1
 
+    # 6. Per-market CLV COVERAGE guard — the silent-regression catcher.
+    #    Steps 1–5 verify things are PRODUCING; this verifies the join is still
+    #    WORKING. A broken join (the UTC date-boundary that dropped every night
+    #    game, or the unsigned-spread-line that stopped run-line scoring) keeps
+    #    picks flowing and closings capturing while CLV coverage quietly craters —
+    #    exactly the failure that went unnoticed for weeks. Measure the scored
+    #    fraction over a settled window [today-9 .. today-3] (old enough to have
+    #    closed) and go RED if an in-season market falls below the floor.
+    COV_FLOOR, COV_MIN_N = 0.40, 10
+    win_lo = (today - timedelta(days=9)).isoformat()
+    win_hi = (today - timedelta(days=3)).isoformat()
+    cov: dict = defaultdict(lambda: [0, 0])
+    try:
+        _snaps = json.loads(Path("data/clv/snapshots.json").read_text().replace("NaN", "null"))
+        _snaps = _snaps.get("snapshots", _snaps) if isinstance(_snaps, dict) else _snaps
+    except (json.JSONDecodeError, ValueError, OSError):
+        _snaps = []
+    for s in _snaps:
+        if not isinstance(s, dict):
+            continue
+        d = str(s.get("date") or "")[:10]
+        if not (win_lo <= d <= win_hi):
+            continue
+        cell = cov[(str(s.get("sport", "")), str(s.get("market", "")))]
+        cell[0] += 1
+        if (s.get("clv_pct") is not None or s.get("line_clv") is not None
+                or s.get("clv") is not None):
+            cell[1] += 1
+    print("  CLV coverage (settled window, in-season markets):")
+    for label, active_test, sport_test, markets in specs:
+        if not active or not active_test(active):
+            continue
+        for mk in markets:
+            tot = scr = 0
+            for (sp, m), (t, sc) in cov.items():
+                if m == mk and sport_test(sp):
+                    tot += t; scr += sc
+            if tot < COV_MIN_N:
+                continue  # too few settled to judge — no alarm
+            frac = scr / tot
+            if frac < COV_FLOOR:
+                print(f"    ✗ {label:11} {mk:18} {scr}/{tot} scored "
+                      f"({frac*100:.0f}%)  ← CLV join REGRESSED (floor {COV_FLOOR*100:.0f}%)")
+                issues += 1
+            else:
+                print(f"    ✓ {label:11} {mk:18} {scr}/{tot} scored ({frac*100:.0f}%)")
+
     print(f"  {'─' * 58}")
     if issues:
         print(f"  ⚠ {issues} INTEGRITY GAP(S) — see ✗ above. Action exits RED on purpose.")

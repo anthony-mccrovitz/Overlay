@@ -244,12 +244,21 @@ def snapshot_opening_lines(
             continue
 
         odds = float(pick.get("BestOdds") or pick.get("odds") or pick.get("best_odds") or 0)
+        # opening_line + direction are what the spread/total/f5 scorer needs to
+        # compute line CLV (the points you got, not just the price). MLB spread
+        # picks store the line in a dedicated `line` field (team is just the team
+        # name, e.g. "Atlanta Braves"), NOT packed into the team string — so pull
+        # them straight from the pick. Null for moneyline. Without this every
+        # spread/total snapshot this builder created was unscoreable.
+        _line = pick.get("line")
         snap = {
             "date":                 date_str,
             "team":                 team,
             "opponent":             str(pick.get("Opponent") or pick.get("matchup") or "?").strip(),
             "sport":                _normalize_sport(sport),
             "market":               str(pick.get("market") or pick.get("Market") or "moneyline"),
+            "opening_line":         float(_line) if _line is not None else None,
+            "direction":            (str(pick.get("direction")).upper() if pick.get("direction") else None),
             "opening_odds":         odds,
             "opening_implied_prob": round(_odds_to_implied(odds), 6),
             "snapshot_time":        now_ts,
@@ -554,37 +563,84 @@ def backfill_snapshot_markets() -> int:
 def backfill_snapshot_lines() -> int:
     """Repair total/spread/f5 snapshots missing opening_line / direction.
 
-    The bet is encoded in the team string ('OVER 9.5', 'UNDER 174.5', 'Team -1.5')
-    but legacy snapshots left opening_line/direction null — and the totals/spread
-    scorer needs both to compute line CLV, so those picks NEVER score even when the
-    closing line was captured and the matchup matches. This re-derives both from the
-    team string, in place, and clears any stale CLV so the next compute_clv scores
-    them on the recovered line. Idempotent. Returns the number repaired.
+    The totals/spread scorer needs both to compute line CLV, so a snapshot missing
+    them NEVER scores even when the closing line was captured and the matchup
+    matched. Two recovery sources, in priority order:
+
+      1. The source pick in picks.json — authoritative. MLB spread/run-line picks
+         store a SIGNED line in a dedicated `line` field (team is just the team
+         name, e.g. "Atlanta Braves"), so the team-string parse below can't see
+         it — this was the whole reason spread CLV silently stopped scoring.
+      2. The team string ('OVER 9.5', 'Team -1.5') — fallback for older snapshots
+         whose pick record is gone.
+
+    Clears any stale CLV so the next compute_clv re-scores on the recovered line.
+    Idempotent. Returns the number repaired.
     """
     import re
     snapshots = _load_snapshots()
     line_markets = {"total", "totals", "f5_total", "f5_totals", "first_5_total",
                     "spread", "run_line", "runline", "puck_line", "puckline"}
+
+    # Build an authoritative (date, team_lower, market) -> (line, direction) map
+    # from picks.json so we can fill snapshots straight from the recorded bet.
+    pick_lines: dict[tuple, tuple] = {}
+    try:
+        _raw = json.loads(Path("data/pnl/picks.json").read_text())
+        _picks = _raw.get("picks", []) if isinstance(_raw, dict) else _raw
+        for p in _picks:
+            if not isinstance(p, dict):
+                continue
+            mk = str(p.get("market") or "").lower()
+            if mk not in line_markets:
+                continue
+            key = (str(p.get("date") or "")[:10],
+                   str(p.get("team") or "").lower().strip(), mk)
+            ln = p.get("line")
+            dr = p.get("direction")
+            if ln is not None or dr is not None:
+                pick_lines[key] = (ln, dr)
+    except (json.JSONDecodeError, OSError, AttributeError):
+        pass
+
     fixed = 0
     for s in snapshots:
         if not isinstance(s, dict):
             continue
-        if str(s.get("market") or "").lower() not in line_markets:
+        mk = str(s.get("market") or "").lower()
+        if mk not in line_markets:
             continue
         if s.get("opening_line") is not None and s.get("direction"):
             continue  # already complete
-        team = str(s.get("team") or "")
         changed = False
-        m = re.search(r"\b(OVER|UNDER)\b\s*([0-9]+(?:\.[0-9]+)?)", team, re.IGNORECASE)
-        if m:  # totals / f5 totals
-            if not s.get("direction"):
-                s["direction"] = m.group(1).upper(); changed = True
-            if s.get("opening_line") is None:
-                s["opening_line"] = float(m.group(2)); changed = True
-        else:  # spread / run line / puck line — trailing signed number
-            m2 = re.search(r"([+-][0-9]+(?:\.[0-9]+)?)\s*$", team.strip())
-            if m2 and s.get("opening_line") is None:
-                s["opening_line"] = float(m2.group(1)); changed = True
+
+        # 1) Authoritative fill from the source pick record.
+        pk = pick_lines.get((str(s.get("date") or "")[:10],
+                             str(s.get("team") or "").lower().strip(), mk))
+        if pk:
+            ln, dr = pk
+            if s.get("opening_line") is None and ln is not None:
+                try:
+                    s["opening_line"] = float(ln); changed = True
+                except (TypeError, ValueError):
+                    pass
+            if not s.get("direction") and dr and str(dr).upper() != "NAN":
+                s["direction"] = str(dr).upper(); changed = True
+
+        # 2) Fallback: parse the team string (totals pack the bet into it).
+        if s.get("opening_line") is None or not s.get("direction"):
+            team = str(s.get("team") or "")
+            m = re.search(r"\b(OVER|UNDER)\b\s*([0-9]+(?:\.[0-9]+)?)", team, re.IGNORECASE)
+            if m:  # totals / f5 totals
+                if not s.get("direction"):
+                    s["direction"] = m.group(1).upper(); changed = True
+                if s.get("opening_line") is None:
+                    s["opening_line"] = float(m.group(2)); changed = True
+            else:  # spread / run line / puck line — trailing signed number
+                m2 = re.search(r"([+-][0-9]+(?:\.[0-9]+)?)\s*$", team.strip())
+                if m2 and s.get("opening_line") is None:
+                    s["opening_line"] = float(m2.group(1)); changed = True
+
         if changed:
             for f in ("line_clv", "price_clv_pct", "beat_close", "closing_line"):
                 s.pop(f, None)  # stale → re-score on the recovered line
@@ -617,45 +673,38 @@ def fetch_closing_pairs(
         sport,
         sport.replace("baseball_", "").replace("basketball_", "")
              .replace("hockey_", "").replace("icehockey_", ""))
+    is_soccer = "soccer" in sport or "soccer" in short_sport
 
-    for prefix in [sport, short_sport]:
-        archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
-        if not archive_path.exists():
+    # UTC-boundary safe: US night games commence after 00:00 UTC and their
+    # closings land in the NEXT day's archive. _select_windowed_records stitches
+    # adjacent-day files (ambiguity-safe for MLB series) so those games join too.
+    pairs: dict[str, tuple] = {}
+    for row in _select_windowed_records(date_str, sport).values():
+        # Accept both archive casings (HomeTeam / home_team).
+        home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
+        away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
+        home_ml = row.get("BestHomeML")
+        away_ml = row.get("BestAwayML")
+        if not (home and away and home_ml is not None and away_ml is not None):
             continue
-        try:
-            records = json.loads(archive_path.read_text().replace("NaN", "null"))
-            pairs: dict[str, tuple] = {}
-            is_soccer = "soccer" in prefix
-            for row in records:
-                # Accept both archive casings (HomeTeam / home_team).
-                home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
-                away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
-                home_ml = row.get("BestHomeML")
-                away_ml = row.get("BestAwayML")
-                if not (home and away and home_ml is not None and away_ml is not None):
-                    continue
-                # Soccer is a 3-way market — pull the Draw price so de-vig divides
-                # by all three outcomes. Without it the overround < 1 and CLV blows up.
-                draw_ml = None
-                if is_soccer:
-                    for o in (row.get("all_odds") or []):
-                        if str(o.get("Market")) == "h2h" and \
-                           str(o.get("Selection") or o.get("Name")).lower() == "draw":
-                            d = o.get("Odds")
-                            if d is not None and (draw_ml is None or float(d) > draw_ml):
-                                draw_ml = float(d)  # best (highest) draw price, matching Best*ML
-                if draw_ml is not None:
-                    pairs[home]   = (float(home_ml), float(away_ml), draw_ml)
-                    pairs[away]   = (float(away_ml), float(home_ml), draw_ml)
-                    pairs["draw"] = (draw_ml, float(home_ml), float(away_ml))
-                else:
-                    pairs[home] = (float(home_ml), float(away_ml))
-                    pairs[away] = (float(away_ml), float(home_ml))
-            if pairs:
-                return pairs
-        except (json.JSONDecodeError, ValueError, KeyError):
-            pass
-    return {}
+        # Soccer is a 3-way market — pull the Draw price so de-vig divides
+        # by all three outcomes. Without it the overround < 1 and CLV blows up.
+        draw_ml = None
+        if is_soccer:
+            for o in (row.get("all_odds") or []):
+                if str(o.get("Market")) == "h2h" and \
+                   str(o.get("Selection") or o.get("Name")).lower() == "draw":
+                    d = o.get("Odds")
+                    if d is not None and (draw_ml is None or float(d) > draw_ml):
+                        draw_ml = float(d)  # best (highest) draw price, matching Best*ML
+        if draw_ml is not None:
+            pairs[home]   = (float(home_ml), float(away_ml), draw_ml)
+            pairs[away]   = (float(away_ml), float(home_ml), draw_ml)
+            pairs["draw"] = (draw_ml, float(home_ml), float(away_ml))
+        else:
+            pairs[home] = (float(home_ml), float(away_ml))
+            pairs[away] = (float(away_ml), float(home_ml))
+    return pairs
 
 
 def fetch_closing_pinnacle(
@@ -685,48 +734,40 @@ def fetch_closing_pinnacle(
         sport,
         sport.replace("baseball_", "").replace("basketball_", "")
              .replace("hockey_", "").replace("icehockey_", ""))
+    is_soccer = "soccer" in sport or "soccer" in short_sport
 
-    for prefix in [sport, short_sport]:
-        archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
-        if not archive_path.exists():
+    # UTC-boundary safe (see fetch_closing_pairs): stitch adjacent-day archives so
+    # US night games — whose closings land in the next UTC day's file — still join.
+    pairs: dict[str, tuple] = {}
+    for row in _select_windowed_records(date_str, sport).values():
+        home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
+        away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
+        if not (home and away):
             continue
-        try:
-            records = json.loads(archive_path.read_text().replace("NaN", "null"))
-            pairs: dict[str, tuple] = {}
-            is_soccer = "soccer" in prefix
-            for row in records:
-                home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
-                away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
-                if not (home and away):
-                    continue
-                # Collect Pinnacle's h2h price for each selection in this event.
-                pinn: dict[str, float] = {}
-                for o in (row.get("all_odds") or []):
-                    if str(o.get("Sportsbook")) != "Pinnacle":
-                        continue
-                    if str(o.get("Market")) != "h2h":
-                        continue
-                    sel = str(o.get("Selection") or o.get("Name") or "").lower().strip()
-                    odds = o.get("Odds")
-                    if sel and odds is not None:
-                        pinn[sel] = float(odds)
-                home_ml = pinn.get(home)
-                away_ml = pinn.get(away)
-                if home_ml is None or away_ml is None:
-                    continue
-                draw_ml = pinn.get("draw") if is_soccer else None
-                if draw_ml is not None:
-                    pairs[home]   = (home_ml, away_ml, draw_ml)
-                    pairs[away]   = (away_ml, home_ml, draw_ml)
-                    pairs["draw"] = (draw_ml, home_ml, away_ml)
-                else:
-                    pairs[home] = (home_ml, away_ml)
-                    pairs[away] = (away_ml, home_ml)
-            if pairs:
-                return pairs
-        except (json.JSONDecodeError, ValueError, KeyError):
-            pass
-    return {}
+        # Collect Pinnacle's h2h price for each selection in this event.
+        pinn: dict[str, float] = {}
+        for o in (row.get("all_odds") or []):
+            if str(o.get("Sportsbook")) != "Pinnacle":
+                continue
+            if str(o.get("Market")) != "h2h":
+                continue
+            sel = str(o.get("Selection") or o.get("Name") or "").lower().strip()
+            odds = o.get("Odds")
+            if sel and odds is not None:
+                pinn[sel] = float(odds)
+        home_ml = pinn.get(home)
+        away_ml = pinn.get(away)
+        if home_ml is None or away_ml is None:
+            continue
+        draw_ml = pinn.get("draw") if is_soccer else None
+        if draw_ml is not None:
+            pairs[home]   = (home_ml, away_ml, draw_ml)
+            pairs[away]   = (away_ml, home_ml, draw_ml)
+            pairs["draw"] = (draw_ml, home_ml, away_ml)
+        else:
+            pairs[home] = (home_ml, away_ml)
+            pairs[away] = (away_ml, home_ml)
+    return pairs
 
 
 def fetch_closing_lines(
@@ -747,39 +788,26 @@ def fetch_closing_lines(
     closing: dict[str, list[float]] = {}
 
     # Try date-specific closing archive (most accurate — captured at game time).
-    # Closing files may use either the full sport key (e.g. baseball_mlb_DATE.json)
-    # or the short key (e.g. mlb_DATE.json). Use the SHARED prefix map — a naive
-    # .replace() misses soccer/mma (archive is "soccer_DATE", not
-    # "soccer_fifa_world_cup_DATE"), so World Cup closings were never read from the
-    # archive and fell back to the live cache (absent in the cloud → 0 WC scored).
-    short_sport = _SHORT_PREFIX_MAP.get(
-        sport,
-        sport.replace("baseball_", "").replace("basketball_", "").replace("hockey_", ""))
-    for prefix in [sport, short_sport]:
-        archive_path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
-        if not archive_path.exists():
-            continue
-        try:
-            records = json.loads(archive_path.read_text())
-            for row in records:
-                # Archive schema drifted: older files use HomeTeam/AwayTeam
-                # (PascalCase), newer ones use home_team/away_team (snake_case).
-                # Accept either so every date's closings join.
-                home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
-                away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
-                home_ml = row.get("BestHomeML")
-                away_ml = row.get("BestAwayML")
-                if home and home_ml is not None:
-                    closing.setdefault(home, []).append(float(home_ml))
-                if away and away_ml is not None:
-                    closing.setdefault(away, []).append(float(away_ml))
-            if closing:
-                return {
-                    team: max(prices, key=lambda p: p if p > 0 else -10000 / abs(p))
-                    for team, prices in closing.items()
-                }
-        except (json.JSONDecodeError, ValueError, KeyError):
-            pass  # fall through to next prefix or live cache
+    # UTC-boundary safe: _select_windowed_records stitches adjacent-day archives
+    # (via _load_closing_records, which resolves both the full baseball_mlb_DATE
+    # and short mlb_DATE prefixes) so US night games — whose closings land in the
+    # NEXT UTC day's file — still join instead of falling through to the live cache.
+    for row in _select_windowed_records(date_str, sport).values():
+        # Archive schema drifted: older files use HomeTeam/AwayTeam (PascalCase),
+        # newer ones use home_team/away_team (snake_case). Accept either.
+        home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
+        away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
+        home_ml = row.get("BestHomeML")
+        away_ml = row.get("BestAwayML")
+        if home and home_ml is not None:
+            closing.setdefault(home, []).append(float(home_ml))
+        if away and away_ml is not None:
+            closing.setdefault(away, []).append(float(away_ml))
+    if closing:
+        return {
+            team: max(prices, key=lambda p: p if p > 0 else -10000 / abs(p))
+            for team, prices in closing.items()
+        }
 
     # Fall back to live odds cache (today's picks only — don't mix dates)
     cache_path = ODDS_CACHE_DIR / f"{sport}_latest.json"
@@ -889,7 +917,11 @@ def _resolve_spread_team(label: str, matchup: str) -> str | None:
 
 
 def _load_closing_records(date_str: str, sport: str) -> list[dict]:
-    """Load a closing archive trying both the full and short sport prefixes."""
+    """Load a closing archive trying both the full and short sport prefixes.
+
+    Archives occasionally contain bare NaN tokens (odds feeds emit them); strip
+    them to null so a single bad row never voids an entire day's closings.
+    """
     short = _SHORT_PREFIX_MAP.get(sport,
             sport.replace("baseball_", "").replace("basketball_", "")
                  .replace("hockey_", "").replace("icehockey_", ""))
@@ -897,7 +929,7 @@ def _load_closing_records(date_str: str, sport: str) -> list[dict]:
         path = Path("data/clv/closing") / f"{prefix}_{date_str}.json"
         if path.exists():
             try:
-                return json.loads(path.read_text())
+                return json.loads(path.read_text().replace("NaN", "null"))
             except (json.JSONDecodeError, ValueError):
                 continue
     return []
@@ -912,26 +944,43 @@ def _rec_matchup_key(rec: dict) -> frozenset | None:
 
 def _select_windowed_records(date_str: str, sport: str,
                              day_window: int = 1) -> dict[frozenset, dict]:
-    """Pick one closing record per game, tolerant of UTC date-boundary shifts.
+    """Pick one closing record per game for the US gameday `date_str`, tolerant
+    of the UTC date-boundary shift.
 
-    Night games (NBA/NHL) commence after midnight UTC, so their closing capture
-    lands in the *next* day's archive file and an exact-date join misses them.
-    This searches [date-window .. date+window] and, per matchup, applies a rule
-    that is safe against recurring same-matchup series (MLB plays a team 3 days
-    in a row — grabbing an adjacent day's file would score the wrong game):
+    A pick dated D (US calendar) covers games that commence between roughly
+    D-morning and D+1-early-morning US time. In UTC that spans two archive files:
+    D's day/evening games sit in the {D} file, while D's late night games roll
+    past 00:00 UTC into the {D+1} file. An exact-{D}-file join silently drops
+    every night game (~half an MLB slate) — the dominant cause of missing CLV.
 
-      • prefer the exact-date record (distance 0) — always correct;
-      • else accept an adjacent-date record ONLY if that matchup appears in
-        exactly one file across the window (unambiguous singleton);
-      • else skip (ambiguous — refuse to guess).
+    We disambiguate by **commence_time**, not filename distance, because MLB
+    plays the same matchup on consecutive days: keying on team names alone is
+    ambiguous, but each game in a series has a distinct commence timestamp. A US
+    gameday maps to the UTC window [D 10:00, D+1 10:00) — no US game starts in
+    the 06:00–15:00 UTC dead zone, so the 10:00 boundary cleanly separates
+    back-to-back series games into the right day.
+
+    Legacy archives without commence_time fall back to the old, conservative
+    filename-distance rule (prefer exact date; accept an adjacent singleton).
     """
-    from datetime import date as _date, timedelta
+    from datetime import date as _date, datetime, timedelta, timezone
 
     try:
         base = _date.fromisoformat(date_str)
     except (ValueError, TypeError):
-        return {rec_key: rec for rec in ()  # empty
-                for rec_key in ()}
+        return {}
+
+    win_lo = datetime(base.year, base.month, base.day, 10, tzinfo=timezone.utc)
+    win_hi = win_lo + timedelta(days=1)
+
+    def _commence(rec: dict) -> datetime | None:
+        raw = rec.get("commence_time") or rec.get("CommenceTime")
+        if not raw:
+            return None
+        try:
+            return datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            return None
 
     # matchup -> list of (distance, record)
     groups: dict[frozenset, list[tuple[int, dict]]] = {}
@@ -944,12 +993,28 @@ def _select_windowed_records(date_str: str, sport: str,
 
     chosen: dict[frozenset, dict] = {}
     for key, items in groups.items():
+        # Common case: this matchup appears exactly once across the window — no
+        # ambiguity, so accept it directly. This is what lets a night game whose
+        # closing rolled into the {D+1} file still join, and it preserves every
+        # line-market join that a strict window would wrongly drop.
+        if len(items) == 1:
+            chosen[key] = items[0][1]
+            continue
+        # Ambiguous: the same matchup has multiple records (an MLB series plays the
+        # same teams on back-to-back days, landing in adjacent files). Disambiguate
+        # by commence_time — pick the game that belongs to THIS US gameday, the UTC
+        # window [D 10:00, D+1 10:00) (no US game starts in the 06:00–15:00 UTC dead
+        # zone, so the boundary separates consecutive series games cleanly).
+        in_window = [rec for _dist, rec in items
+                     if (c := _commence(rec)) is not None and win_lo <= c < win_hi]
+        if in_window:
+            # Doubleheader (two games same gameday) → take the earlier one.
+            chosen[key] = min(in_window, key=lambda r: _commence(r))
+            continue
+        # No commence_time to disambiguate a series → prefer the exact-date file.
         exact = [rec for dist, rec in items if dist == 0]
         if exact:
             chosen[key] = exact[0]
-        elif len(items) == 1:
-            chosen[key] = items[0][1]
-        # else: appears only on adjacent days in >1 file → ambiguous → skip
     return chosen
 
 
@@ -1314,6 +1379,14 @@ def _score_spread(snap: dict, closing: dict) -> dict | None:
     if open_line is None:
         return None
     close_line = closing["line"]
+    # Guard against the unsigned-line artifact: some spread picks recorded the run
+    # line by MAGNITUDE only (1.5) and lost the favorite/underdog sign. A team can't
+    # actually swing from +1.5 to -1.5 (that's a phantom 3-run move) — standard run
+    # lines are ±1.5. When the magnitudes match but the recorded open sign opposes
+    # the close, there was no real line movement: reconcile the sign so line CLV is
+    # 0 (the truth) and the price CLV carries the signal — never emit a fake ±3.
+    if abs(abs(open_line) - abs(close_line)) < 1e-9 and open_line * close_line < 0:
+        open_line = close_line
     # Signed team handicap: positive line_clv = you got a better number.
     # Favorite -1.5 closing -2.5 → +1.0; underdog +1.5 closing +2.5 → -1.0.
     line_clv = round(open_line - close_line, 2)
