@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Max Muncy",
+      "team": "Max Muncy OVER 0.5",
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": 650,
+      "model_prob": 0.6684,
+      "implied_prob": 0.1245,
+      "edge_pct": 54.39,
+      "model_mu": 1.63,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "OVER",
+      "player": "Jonatan Clase",
+      "team": "Jonatan Clase OVER 0.5",
+      "matchup": "Toronto Blue Jays @ San Francisco Giants",
+      "line": 0.5,
+      "odds": 300,
+      "model_prob": 0.7639,
+      "implied_prob": 0.234,
+      "edge_pct": 52.99,
+      "model_mu": 3.24,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Max Muncy",
+      "team": "Max Muncy OVER 0.5",
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": 650,
+      "model_prob": 0.5863,
+      "implied_prob": 0.1245,
+      "edge_pct": 46.18,
+      "model_mu": 0.89,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani UNDER 1.5",
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "line": 1.5,
+      "odds": -310,
+      "model_prob": 0.9511,
+      "implied_prob": 0.7009,
+      "edge_pct": 25.02,
+      "model_mu": 0.35,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Jared Jones",
+      "team": "Jared Jones UNDER 5.5",
+      "matchup": "Atlanta Braves @ Pittsburgh Pirates",
+      "line": 5.5,
+      "odds": -142,
+      "model_prob": 0.7698,
+      "implied_prob": 0.5532,
+      "edge_pct": 21.66,
+      "model_mu": 4.01,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani UNDER 0.5",
+      "matchup": "Colorado Rockies @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": -335,
+      "model_prob": 0.8674,
+      "implied_prob": 0.6907,
+      "edge_pct": 17.66,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
