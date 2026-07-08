@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-08T14:37:01.385084+00:00",
+  "updated_at": "2026-07-08T15:32:52.369816+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,10 +224,10 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.488,
+      "avg_clv_pct": -0.5,
       "positive_pct": 33.2,
       "n": 1490,
-      "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
+      "verdict": "NEGATIVE CLV \u2014 getting worse moneyline numbers than closing"
     },
     "spread_total": {
       "spread": {
@@ -281,10 +281,10 @@
       },
       "batter_home_runs": {
         "count": 192,
-        "avg_line_clv": 0.005,
+        "avg_line_clv": 0.0,
         "beat_close_pct": 23.4,
-        "avg_price_clv_pct": -1.702,
-        "matched_price_n": 191
+        "avg_price_clv_pct": -1.573,
+        "matched_price_n": 192
       },
       "batter_total_bases": {
         "count": 401,
