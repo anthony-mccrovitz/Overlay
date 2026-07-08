@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  issues: write          # so a RED run can open/update an alert issue
 
 jobs:
   monitor:
@@ -26,14 +27,44 @@ jobs:
           python-version: "3.12"
       - run: pip install --quiet pandas numpy requests python-dotenv
       - name: Integrity check (non-zero exit = RED alarm)
+        id: check
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
-          # Two alarms, both surfaced: dark-market monitor + bet-tracking audit.
-          # audit goes RED if any settled card bet in the window lost its closing
-          # line/CLV — so a tracking leak is caught the day it happens.
+          # Three alarms, all surfaced and captured to a file so the alert step can
+          # quote them: dark-market monitor + per-market CLV coverage guard (both in
+          # `chef.py monitor`) + bet-tracking audit. audit goes RED if any settled
+          # card bet in the window lost its closing line/CLV — a tracking leak caught
+          # the day it happens.
           set +e
+          python chef.py monitor > /tmp/mon.out 2>&1; m=$?
+          python chef.py audit   > /tmp/aud.out 2>&1; a=$?
+          cat /tmp/mon.out /tmp/aud.out | tee /tmp/monitor.out
           fail=0
-          python chef.py monitor || fail=1
-          python chef.py audit   || fail=1
+          [ "$m" -ne 0 ] && fail=1
+          [ "$a" -ne 0 ] && fail=1
           exit $fail
+
+      - name: Alert on failure — open/update a GitHub issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # You don't check the dashboard daily — so a RED run must reach you.
+          # Open a durable, notifying GitHub issue (email + notifications), and
+          # DEDUPE: if an alarm issue is already open, comment on it instead of
+          # spamming a new one each day. Close the issue when you've fixed it.
+          title="🚨 Pipeline integrity alarm"
+          stamp="$(date -u +%Y-%m-%dT%H:%MZ)"
+          body="$(cat /tmp/monitor.out 2>/dev/null || echo 'monitor produced no output')"
+          num="$(gh issue list --state open --search \"$title in:title\" \
+                   --json number -q '.[0].number' 2>/dev/null)"
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body "$(printf 'Still RED at %s:\n\n```\n%s\n```' "$stamp" "$body")"
+          else
+            gh issue create --title "$title" \
+              --label "alert" \
+              --body "$(printf 'The daily integrity monitor went RED at %s. A market stopped producing, closings stopped, or CLV coverage regressed below floor. Details:\n\n```\n%s\n```\n\nFix the cause, then close this issue — a new alarm will reopen one if it recurs.' "$stamp" "$body")" \
+              || gh issue create --title "$title" \
+                   --body "$(printf 'Integrity monitor RED at %s:\n\n```\n%s\n```' "$stamp" "$body")"
+          fi
