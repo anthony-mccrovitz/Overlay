@@ -43,16 +43,16 @@
       "share": 0.2056
     },
     {
+      "player": "Jonathan David",
+      "team": "Canada",
+      "exp_goals": 3.65,
+      "share": 0.307
+    },
+    {
       "player": "Enner Valencia",
       "team": "Ecuador",
       "exp_goals": 3.62,
       "share": 0.384
-    },
-    {
-      "player": "Jonathan David",
-      "team": "Canada",
-      "exp_goals": 3.6,
-      "share": 0.3027
     },
     {
       "player": "Lautaro Mart\u00ednez",
@@ -97,6 +97,12 @@
       "share": 0.1952
     },
     {
+      "player": "Cyle Larin",
+      "team": "Canada",
+      "exp_goals": 2.62,
+      "share": 0.22
+    },
+    {
       "player": "Juli\u00e1n Qui\u00f1ones",
       "team": "Mexico",
       "exp_goals": 2.6,
@@ -107,12 +113,6 @@
       "team": "Egypt",
       "exp_goals": 2.6,
       "share": 0.3425
-    },
-    {
-      "player": "Cyle Larin",
-      "team": "Canada",
-      "exp_goals": 2.58,
-      "share": 0.2169
     },
     {
       "player": "Marko Arnautovi\u0107",
@@ -151,7 +151,7 @@
       "share": 0.1946
     }
   ],
-  "generated": "2026-07-08T15:32:51.843316+00:00",
+  "generated": "2026-07-09T16:09:18.004924+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-07",

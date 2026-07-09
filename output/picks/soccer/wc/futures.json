@@ -1,193 +1,91 @@
 {
   "teams": [
     {
-      "team": "France",
-      "model": 0.2242,
-      "market": 0.3227,
-      "blend": 0.2833,
-      "advance": 1.0,
-      "reach_final": 0.3965,
-      "edge_pp": -3.9,
-      "raw_edge_pp": -9.8
-    },
-    {
       "team": "Spain",
-      "model": 0.3186,
-      "market": 0.1922,
-      "blend": 0.2428,
+      "model": 0.3111,
+      "market": null,
+      "blend": 0.3111,
       "advance": 1.0,
-      "reach_final": 0.499,
-      "edge_pp": 5.1,
-      "raw_edge_pp": 12.6
+      "reach_final": 0.496,
+      "edge_pp": null,
+      "raw_edge_pp": null
     },
     {
       "team": "Argentina",
-      "model": 0.2562,
-      "market": 0.1807,
-      "blend": 0.2109,
+      "model": 0.2565,
+      "market": null,
+      "blend": 0.2565,
       "advance": 1.0,
-      "reach_final": 0.5102,
-      "edge_pp": 3.0,
-      "raw_edge_pp": 7.6
+      "reach_final": 0.5213,
+      "edge_pp": null,
+      "raw_edge_pp": null
+    },
+    {
+      "team": "France",
+      "model": 0.2342,
+      "market": null,
+      "blend": 0.2342,
+      "advance": 1.0,
+      "reach_final": 0.4029,
+      "edge_pp": null,
+      "raw_edge_pp": null
     },
     {
       "team": "England",
-      "model": 0.1295,
-      "market": 0.1585,
-      "blend": 0.1469,
+      "model": 0.1282,
+      "market": null,
+      "blend": 0.1282,
       "advance": 1.0,
-      "reach_final": 0.3147,
-      "edge_pp": -1.2,
-      "raw_edge_pp": -2.9
+      "reach_final": 0.3109,
+      "edge_pp": null,
+      "raw_edge_pp": null
     },
     {
       "team": "Norway",
-      "model": 0.0241,
-      "market": 0.0565,
-      "blend": 0.0435,
+      "model": 0.0226,
+      "market": null,
+      "blend": 0.0226,
       "advance": 1.0,
-      "reach_final": 0.1003,
-      "edge_pp": -1.3,
-      "raw_edge_pp": -3.2
+      "reach_final": 0.0927,
+      "edge_pp": null,
+      "raw_edge_pp": null
     },
     {
       "team": "Belgium",
-      "model": 0.0177,
-      "market": 0.0291,
-      "blend": 0.0246,
+      "model": 0.0181,
+      "market": null,
+      "blend": 0.0181,
       "advance": 1.0,
-      "reach_final": 0.0581,
-      "edge_pp": -0.5,
-      "raw_edge_pp": -1.1
-    },
-    {
-      "team": "Morocco",
-      "model": 0.0134,
-      "market": 0.0312,
-      "blend": 0.0241,
-      "advance": 1.0,
-      "reach_final": 0.0464,
-      "edge_pp": -0.7,
-      "raw_edge_pp": -1.8
+      "reach_final": 0.0571,
+      "edge_pp": null,
+      "raw_edge_pp": null
     },
     {
       "team": "Switzerland",
-      "model": 0.0162,
-      "market": 0.0291,
-      "blend": 0.024,
+      "model": 0.0176,
+      "market": null,
+      "blend": 0.0176,
       "advance": 1.0,
-      "reach_final": 0.0747,
-      "edge_pp": -0.5,
-      "raw_edge_pp": -1.3
+      "reach_final": 0.0751,
+      "edge_pp": null,
+      "raw_edge_pp": null
+    },
+    {
+      "team": "Morocco",
+      "model": 0.0118,
+      "market": null,
+      "blend": 0.0118,
+      "advance": 1.0,
+      "reach_final": 0.044,
+      "edge_pp": null,
+      "raw_edge_pp": null
     }
   ],
   "disagreements": {
-    "model_higher": [
-      {
-        "team": "Spain",
-        "model": 0.3186,
-        "market": 0.1922,
-        "blend": 0.2428,
-        "advance": 1.0,
-        "reach_final": 0.499,
-        "edge_pp": 5.1,
-        "raw_edge_pp": 12.6
-      },
-      {
-        "team": "Argentina",
-        "model": 0.2562,
-        "market": 0.1807,
-        "blend": 0.2109,
-        "advance": 1.0,
-        "reach_final": 0.5102,
-        "edge_pp": 3.0,
-        "raw_edge_pp": 7.6
-      },
-      {
-        "team": "Belgium",
-        "model": 0.0177,
-        "market": 0.0291,
-        "blend": 0.0246,
-        "advance": 1.0,
-        "reach_final": 0.0581,
-        "edge_pp": -0.5,
-        "raw_edge_pp": -1.1
-      },
-      {
-        "team": "Switzerland",
-        "model": 0.0162,
-        "market": 0.0291,
-        "blend": 0.024,
-        "advance": 1.0,
-        "reach_final": 0.0747,
-        "edge_pp": -0.5,
-        "raw_edge_pp": -1.3
-      },
-      {
-        "team": "Morocco",
-        "model": 0.0134,
-        "market": 0.0312,
-        "blend": 0.0241,
-        "advance": 1.0,
-        "reach_final": 0.0464,
-        "edge_pp": -0.7,
-        "raw_edge_pp": -1.8
-      }
-    ],
-    "model_lower": [
-      {
-        "team": "France",
-        "model": 0.2242,
-        "market": 0.3227,
-        "blend": 0.2833,
-        "advance": 1.0,
-        "reach_final": 0.3965,
-        "edge_pp": -3.9,
-        "raw_edge_pp": -9.8
-      },
-      {
-        "team": "Norway",
-        "model": 0.0241,
-        "market": 0.0565,
-        "blend": 0.0435,
-        "advance": 1.0,
-        "reach_final": 0.1003,
-        "edge_pp": -1.3,
-        "raw_edge_pp": -3.2
-      },
-      {
-        "team": "England",
-        "model": 0.1295,
-        "market": 0.1585,
-        "blend": 0.1469,
-        "advance": 1.0,
-        "reach_final": 0.3147,
-        "edge_pp": -1.2,
-        "raw_edge_pp": -2.9
-      },
-      {
-        "team": "Morocco",
-        "model": 0.0134,
-        "market": 0.0312,
-        "blend": 0.0241,
-        "advance": 1.0,
-        "reach_final": 0.0464,
-        "edge_pp": -0.7,
-        "raw_edge_pp": -1.8
-      },
-      {
-        "team": "Belgium",
-        "model": 0.0177,
-        "market": 0.0291,
-        "blend": 0.0246,
-        "advance": 1.0,
-        "reach_final": 0.0581,
-        "edge_pp": -0.5,
-        "raw_edge_pp": -1.1
-      }
-    ]
+    "model_higher": [],
+    "model_lower": []
   },
-  "generated": "2026-07-08T15:32:51.843316+00:00",
+  "generated": "2026-07-09T16:09:18.004924+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-07",
