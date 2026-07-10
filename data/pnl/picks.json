@@ -352013,5 +352013,37 @@
     },
     "strategy": null,
     "clv_status": "heuristic"
+  },
+  {
+    "pick_id": "soccer_fifa_world_cup_20260710_spain_moneyline_spain",
+    "date": "2026-07-10",
+    "sport": "soccer_fifa_world_cup",
+    "market": "moneyline",
+    "direction": "SPAIN",
+    "team": "Spain",
+    "matchup": "Belgium @ Spain",
+    "odds": -160,
+    "line": null,
+    "sportsbook": "BetMGM",
+    "model_prob": 0.6699,
+    "edge_pct": 9.06,
+    "stake": 0.5,
+    "card_pick": false,
+    "result": null,
+    "profit": null,
+    "recorded_at": "2026-07-10T09:52:06.243822+00:00",
+    "resulted_at": null,
+    "model_version": null,
+    "model_tier": "tier1",
+    "weather_context": null,
+    "team_form": null,
+    "shadow_filter": {
+      "name": null,
+      "matchup_class": "unknown",
+      "recommendation": "na",
+      "reason": "no MLB shadow filter for this sport"
+    },
+    "strategy": null,
+    "clv_status": "heuristic"
   }
 ]

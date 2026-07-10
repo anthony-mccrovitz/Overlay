@@ -1,0 +1,48 @@
+{
+  "Belgium @ Spain": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Spain",
+        "team": "Spain",
+        "matchup": "Belgium @ Spain",
+        "odds": -160,
+        "best_odds": -160,
+        "model_prob": 0.6699,
+        "implied_prob": 0.5793,
+        "edge_pct": 9.06,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.886
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Belgium @ Spain",
+        "odds": 295,
+        "best_odds": 295,
+        "model_prob": 0.2054,
+        "implied_prob": 0.241,
+        "edge_pct": -3.56,
+        "sportsbook": "DraftKings",
+        "exp_total": 2.886
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Belgium",
+        "team": "Belgium",
+        "matchup": "Belgium @ Spain",
+        "odds": 475,
+        "best_odds": 475,
+        "model_prob": 0.1247,
+        "implied_prob": 0.1663,
+        "edge_pct": -4.16,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.886
+      }
+    ]
+  }
+}
