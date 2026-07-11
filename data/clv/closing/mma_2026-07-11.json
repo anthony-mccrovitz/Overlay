@@ -795,12 +795,12 @@
     "home_team": "Tracy Cortez",
     "away_team": "Wang Cong",
     "commence_time": "2026-07-11T22:40:00Z",
-    "captured_at": "2026-07-11T21:27:45.231563+00:00",
-    "mins_to_commence": 72.2,
-    "closing_final": false,
-    "BestHomeML": 105,
-    "BestAwayML": -115,
-    "HomeBook": "BetMGM",
+    "captured_at": "2026-07-11T22:27:44.648675+00:00",
+    "mins_to_commence": 12.3,
+    "closing_final": true,
+    "BestHomeML": 106,
+    "BestAwayML": -119,
+    "HomeBook": "Pinnacle",
     "AwayBook": "Pinnacle",
     "all_odds": [
       {
@@ -811,7 +811,7 @@
         "Market": "h2h",
         "Name": "Tracy Cortez",
         "Selection": "Tracy Cortez",
-        "Odds": 102,
+        "Odds": 106,
         "Line": NaN
       },
       {
@@ -822,7 +822,7 @@
         "Market": "h2h",
         "Name": "Wang Cong",
         "Selection": "Wang Cong",
-        "Odds": -115,
+        "Odds": -119,
         "Line": NaN
       },
       {
@@ -833,7 +833,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -271,
+        "Odds": -283,
         "Line": 2.5
       },
       {
@@ -844,7 +844,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": 225,
+        "Odds": 234,
         "Line": 2.5
       },
       {
@@ -999,6 +999,434 @@
         "Name": "Wang Cong",
         "Selection": "Wang Cong",
         "Odds": -124,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "86739c3faa1ce5dc757ddcfe7460c43a",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Luke Riley",
+    "away_team": "Kai Kamaka",
+    "commence_time": "2026-07-11T23:15:00Z",
+    "captured_at": "2026-07-11T22:27:44.777763+00:00",
+    "mins_to_commence": 47.3,
+    "closing_final": false,
+    "BestHomeML": -235,
+    "BestAwayML": 210,
+    "HomeBook": "FanDuel",
+    "AwayBook": "Caesars",
+    "all_odds": [
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": 209,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -240,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -251,
+        "Line": 2.5
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 209,
+        "Line": 2.5
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": 200,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -245,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": -120,
+        "Line": 3.5
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -110,
+        "Line": -3.5
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -250,
+        "Line": 2.5
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 190,
+        "Line": 2.5
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": 194,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -235,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": 210,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -260,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": 200,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -250,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Kai Kamaka",
+        "Selection": "Kai Kamaka",
+        "Odds": 205,
+        "Line": NaN
+      },
+      {
+        "EventID": "86739c3faa1ce5dc757ddcfe7460c43a",
+        "HomeTeam": "Luke Riley",
+        "AwayTeam": "Kai Kamaka",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Luke Riley",
+        "Selection": "Luke Riley",
+        "Odds": -265,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "ea649ca9a506b7a1ea7013535ca12d99",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Cody Garbrandt",
+    "away_team": "Adrian Yanez",
+    "commence_time": "2026-07-11T23:40:00Z",
+    "captured_at": "2026-07-11T22:27:44.915837+00:00",
+    "mins_to_commence": 72.3,
+    "closing_final": false,
+    "BestHomeML": 340,
+    "BestAwayML": -377,
+    "HomeBook": "FanDuel",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -377,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 319,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -227,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 191,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -395,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 310,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -205,
+        "Line": -3.5
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 150,
+        "Line": 3.5
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -238,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 180,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -430,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 340,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -410,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 320,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -450,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 340,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Adrian Yanez",
+        "Selection": "Adrian Yanez",
+        "Odds": -420,
+        "Line": NaN
+      },
+      {
+        "EventID": "ea649ca9a506b7a1ea7013535ca12d99",
+        "HomeTeam": "Cody Garbrandt",
+        "AwayTeam": "Adrian Yanez",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Cody Garbrandt",
+        "Selection": "Cody Garbrandt",
+        "Odds": 310,
         "Line": NaN
       }
     ]
