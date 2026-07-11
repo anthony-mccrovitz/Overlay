@@ -1223,12 +1223,12 @@
     "home_team": "Cody Garbrandt",
     "away_team": "Adrian Yanez",
     "commence_time": "2026-07-11T23:40:00Z",
-    "captured_at": "2026-07-11T22:27:44.401169+00:00",
-    "mins_to_commence": 72.3,
-    "closing_final": false,
+    "captured_at": "2026-07-11T23:33:14.644986+00:00",
+    "mins_to_commence": 6.8,
+    "closing_final": true,
     "BestHomeML": 340,
-    "BestAwayML": -377,
-    "HomeBook": "FanDuel",
+    "BestAwayML": -364,
+    "HomeBook": "BetMGM",
     "AwayBook": "Pinnacle",
     "all_odds": [
       {
@@ -1239,7 +1239,7 @@
         "Market": "h2h",
         "Name": "Adrian Yanez",
         "Selection": "Adrian Yanez",
-        "Odds": -377,
+        "Odds": -364,
         "Line": NaN
       },
       {
@@ -1250,7 +1250,7 @@
         "Market": "h2h",
         "Name": "Cody Garbrandt",
         "Selection": "Cody Garbrandt",
-        "Odds": 319,
+        "Odds": 309,
         "Line": NaN
       },
       {
@@ -1261,7 +1261,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -227,
+        "Odds": -224,
         "Line": 1.5
       },
       {
@@ -1272,7 +1272,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": 191,
+        "Odds": 188,
         "Line": 1.5
       },
       {
@@ -1283,7 +1283,7 @@
         "Market": "h2h",
         "Name": "Adrian Yanez",
         "Selection": "Adrian Yanez",
-        "Odds": -395,
+        "Odds": -380,
         "Line": NaN
       },
       {
@@ -1294,7 +1294,7 @@
         "Market": "h2h",
         "Name": "Cody Garbrandt",
         "Selection": "Cody Garbrandt",
-        "Odds": 310,
+        "Odds": 300,
         "Line": NaN
       },
       {
@@ -1349,7 +1349,7 @@
         "Market": "h2h",
         "Name": "Adrian Yanez",
         "Selection": "Adrian Yanez",
-        "Odds": -430,
+        "Odds": -405,
         "Line": NaN
       },
       {
@@ -1360,7 +1360,7 @@
         "Market": "h2h",
         "Name": "Cody Garbrandt",
         "Selection": "Cody Garbrandt",
-        "Odds": 340,
+        "Odds": 320,
         "Line": NaN
       },
       {
@@ -1427,6 +1427,434 @@
         "Name": "Cody Garbrandt",
         "Selection": "Cody Garbrandt",
         "Odds": 310,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "b1ae0b4452457fa13a37445b78f46930",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Gable Steveson",
+    "away_team": "Elisha Ellison",
+    "commence_time": "2026-07-12T00:15:00Z",
+    "captured_at": "2026-07-11T23:33:14.947276+00:00",
+    "mins_to_commence": 41.8,
+    "closing_final": false,
+    "BestHomeML": -1050,
+    "BestAwayML": 950,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 750,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1400,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 700,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1100,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 550,
+        "Line": 3.5
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1100,
+        "Line": -3.5
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 260,
+        "Line": 1.5
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -360,
+        "Line": 1.5
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 750,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1200,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 728,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1050,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 270,
+        "Line": 1.5
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -332,
+        "Line": 1.5
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 850,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1600,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Elisha Ellison",
+        "Selection": "Elisha Ellison",
+        "Odds": 950,
+        "Line": NaN
+      },
+      {
+        "EventID": "b1ae0b4452457fa13a37445b78f46930",
+        "HomeTeam": "Gable Steveson",
+        "AwayTeam": "Elisha Ellison",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Gable Steveson",
+        "Selection": "Gable Steveson",
+        "Odds": -1667,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "bb61cc179f4149e633a8c29b8333ede9",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Robert Whittaker",
+    "away_team": "Nikita Krylov",
+    "commence_time": "2026-07-12T00:35:00Z",
+    "captured_at": "2026-07-11T23:33:15.245977+00:00",
+    "mins_to_commence": 61.8,
+    "closing_final": false,
+    "BestHomeML": -119,
+    "BestAwayML": 116,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "BetRivers",
+    "all_odds": [
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": 106,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": -119,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -215,
+        "Line": 1.5
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 181,
+        "Line": 1.5
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": 102,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": -122,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": -160,
+        "Line": 3.5
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": 120,
+        "Line": -3.5
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -230,
+        "Line": 1.5
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 175,
+        "Line": 1.5
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": 102,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": -120,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": 110,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": -130,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": 110,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": -135,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Nikita Krylov",
+        "Selection": "Nikita Krylov",
+        "Odds": 116,
+        "Line": NaN
+      },
+      {
+        "EventID": "bb61cc179f4149e633a8c29b8333ede9",
+        "HomeTeam": "Robert Whittaker",
+        "AwayTeam": "Nikita Krylov",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Robert Whittaker",
+        "Selection": "Robert Whittaker",
+        "Odds": -143,
         "Line": NaN
       }
     ]
