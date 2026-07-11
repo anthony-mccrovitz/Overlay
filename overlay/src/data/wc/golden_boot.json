@@ -43,16 +43,16 @@
       "share": 0.307
     },
     {
-      "player": "Mikel Oyarzabal",
-      "team": "Spain",
-      "exp_goals": 2.75,
-      "share": 0.2056
-    },
-    {
       "player": "Enner Valencia",
       "team": "Ecuador",
       "exp_goals": 2.74,
       "share": 0.384
+    },
+    {
+      "player": "Mikel Oyarzabal",
+      "team": "Spain",
+      "exp_goals": 2.67,
+      "share": 0.1992
     },
     {
       "player": "Mohamed Salah",
@@ -63,8 +63,8 @@
     {
       "player": "Romelu Lukaku",
       "team": "Belgium",
-      "exp_goals": 2.42,
-      "share": 0.2536
+      "exp_goals": 2.38,
+      "share": 0.2493
     },
     {
       "player": "Lautaro Mart\u00ednez",
@@ -127,6 +127,12 @@
       "share": 0.2265
     },
     {
+      "player": "Mikel Merino",
+      "team": "Spain",
+      "exp_goals": 1.8,
+      "share": 0.1348
+    },
+    {
       "player": "Viktor Gy\u00f6keres",
       "team": "Sweden",
       "exp_goals": 1.78,
@@ -143,15 +149,9 @@
       "team": "Japan",
       "exp_goals": 1.75,
       "share": 0.1672
-    },
-    {
-      "player": "Ayoub El Kaabi",
-      "team": "Morocco",
-      "exp_goals": 1.68,
-      "share": 0.1549
     }
   ],
-  "generated": "2026-07-10T15:39:40.667959+00:00",
+  "generated": "2026-07-11T14:32:37.491587+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-07",
