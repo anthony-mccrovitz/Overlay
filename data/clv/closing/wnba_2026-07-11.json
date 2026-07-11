@@ -4806,13 +4806,13 @@
     "home_team": "Atlanta Dream",
     "away_team": "Portland Fire",
     "commence_time": "2026-07-11T20:00:00Z",
-    "captured_at": "2026-07-11T18:31:26.833748+00:00",
-    "mins_to_commence": 88.6,
-    "closing_final": false,
-    "BestHomeML": -847,
-    "BestAwayML": 625,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "DraftKings",
+    "captured_at": "2026-07-11T19:46:58.519895+00:00",
+    "mins_to_commence": 13.0,
+    "closing_final": true,
+    "BestHomeML": -700,
+    "BestAwayML": 621,
+    "HomeBook": "FanDuel",
+    "AwayBook": "Pinnacle",
     "all_odds": [
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -4822,7 +4822,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -900,
+        "Odds": -700,
         "Line": NaN
       },
       {
@@ -4833,7 +4833,7 @@
         "Market": "h2h",
         "Name": "Portland Fire",
         "Selection": "Portland Fire",
-        "Odds": 570,
+        "Odds": 490,
         "Line": NaN
       },
       {
@@ -4845,7 +4845,7 @@
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
         "Odds": -110,
-        "Line": -13.5
+        "Line": -12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -4856,271 +4856,271 @@
         "Name": "Portland Fire",
         "Selection": "Portland Fire",
         "Odds": -110,
-        "Line": 13.5
+        "Line": 12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
         "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 174.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 174.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Fanatics",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -750,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Fanatics",
+        "Market": "h2h",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": 525,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Fanatics",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -115,
+        "Line": -12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Fanatics",
+        "Market": "spreads",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": -105,
+        "Line": 12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Fanatics",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 173.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Fanatics",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 173.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -800,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": 500,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -115,
+        "Line": -12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "spreads",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": -105,
+        "Line": 12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 173.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 173.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -910,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": 540,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -114,
+        "Line": -12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "spreads",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": -109,
+        "Line": 12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
         "Odds": -112,
-        "Line": 173.5
+        "Line": 174.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
+        "Sportsbook": "BetRivers",
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
+        "Odds": -112,
+        "Line": 174.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -750,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
+        "Odds": 525,
+        "Line": NaN
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -112,
+        "Line": -12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Portland Fire",
+        "Selection": "Portland Fire",
         "Odds": -108,
-        "Line": 173.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Fanatics",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -900,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Fanatics",
-        "Market": "h2h",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": 600,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Fanatics",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -115,
-        "Line": -13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Fanatics",
-        "Market": "spreads",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": -105,
-        "Line": 13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Fanatics",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 173.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Fanatics",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 173.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -1000,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": 600,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -110,
-        "Line": -13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "spreads",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": -110,
-        "Line": 13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 173.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 173.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -1000,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "h2h",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": 575,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -113,
-        "Line": -13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "spreads",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": -110,
-        "Line": 13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 172.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -108,
-        "Line": 172.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -950,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": 625,
-        "Line": NaN
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -110,
-        "Line": -13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Portland Fire",
-        "Selection": "Portland Fire",
-        "Odds": -110,
-        "Line": 13.5
+        "Line": 12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5152,7 +5152,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -900,
+        "Odds": -700,
         "Line": NaN
       },
       {
@@ -5163,7 +5163,7 @@
         "Market": "h2h",
         "Name": "Portland Fire",
         "Selection": "Portland Fire",
-        "Odds": 600,
+        "Odds": 500,
         "Line": NaN
       },
       {
@@ -5175,7 +5175,7 @@
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
         "Odds": -115,
-        "Line": -13.5
+        "Line": -12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5186,7 +5186,7 @@
         "Name": "Portland Fire",
         "Selection": "Portland Fire",
         "Odds": -105,
-        "Line": 13.5
+        "Line": 12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5218,7 +5218,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -900,
+        "Odds": -750,
         "Line": NaN
       },
       {
@@ -5229,7 +5229,7 @@
         "Market": "h2h",
         "Name": "Portland Fire",
         "Selection": "Portland Fire",
-        "Odds": 600,
+        "Odds": 525,
         "Line": NaN
       },
       {
@@ -5241,7 +5241,7 @@
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
         "Odds": -110,
-        "Line": -13.5
+        "Line": -12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5252,7 +5252,7 @@
         "Name": "Portland Fire",
         "Selection": "Portland Fire",
         "Odds": -110,
-        "Line": 13.5
+        "Line": 12.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5284,7 +5284,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -847,
+        "Odds": -848,
         "Line": NaN
       },
       {
@@ -5328,7 +5328,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -111,
+        "Odds": -112,
         "Line": 173.5
       },
       {
@@ -5339,7 +5339,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -109,
+        "Odds": -108,
         "Line": 173.5
       },
       {
@@ -5350,7 +5350,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -125,
         "Line": 7.5
       },
       {
@@ -5361,7 +5361,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -114,
+        "Odds": -106,
         "Line": 7.5
       },
       {
@@ -5372,40 +5372,40 @@
         "Market": "player_assists",
         "Name": "Carla Leite",
         "Selection": "Over",
+        "Odds": 106,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_assists",
+        "Name": "Carla Leite",
+        "Selection": "Under",
+        "Odds": -140,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -130,
+        "Line": 18.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Rhyne Howard",
+        "Selection": "Under",
         "Odds": 100,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_assists",
-        "Name": "Carla Leite",
-        "Selection": "Under",
-        "Odds": -132,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -114,
-        "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": -114,
         "Line": 18.5
       },
       {
@@ -5416,7 +5416,7 @@
         "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -130,
         "Line": 10.5
       },
       {
@@ -5427,7 +5427,7 @@
         "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -102,
+        "Odds": 100,
         "Line": 10.5
       },
       {
@@ -5449,7 +5449,7 @@
         "Market": "player_points",
         "Name": "Carla Leite",
         "Selection": "Under",
-        "Odds": -104,
+        "Odds": -106,
         "Line": 14.5
       },
       {
@@ -5482,7 +5482,7 @@
         "Market": "player_points",
         "Name": "Megan Gustafson",
         "Selection": "Over",
-        "Odds": -104,
+        "Odds": -106,
         "Line": 12.5
       },
       {
@@ -5493,7 +5493,7 @@
         "Market": "player_points",
         "Name": "Megan Gustafson",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -122,
         "Line": 12.5
       },
       {
@@ -5504,8 +5504,8 @@
         "Market": "player_points",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -102,
-        "Line": 9.5
+        "Odds": -108,
+        "Line": 10.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5514,31 +5514,9 @@
         "Sportsbook": "FanDuel",
         "Market": "player_points",
         "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -128,
-        "Line": 9.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Angel Reese",
         "Selection": "Under",
         "Odds": -120,
-        "Line": 15.5
+        "Line": 10.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5548,8 +5526,8 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -114,
-        "Line": 18.5
+        "Odds": 100,
+        "Line": 19.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5559,8 +5537,8 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -114,
-        "Line": 18.5
+        "Odds": -130,
+        "Line": 19.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5592,8 +5570,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -130,
-        "Line": 25.5
+        "Odds": -125,
+        "Line": 26.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5603,8 +5581,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -102,
-        "Line": 25.5
+        "Odds": -106,
+        "Line": 26.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5614,8 +5592,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -118,
-        "Line": 15.5
+        "Odds": -114,
+        "Line": 17.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5625,8 +5603,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -112,
-        "Line": 15.5
+        "Odds": -114,
+        "Line": 17.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5635,31 +5613,9 @@
         "Sportsbook": "FanDuel",
         "Market": "player_points_rebounds_assists",
         "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -112,
-        "Line": 22.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -118,
-        "Line": 22.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
         "Selection": "Over",
         "Odds": -130,
-        "Line": 29.5
+        "Line": 22.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5667,20 +5623,9 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "FanDuel",
         "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
+        "Name": "Jordin Canada",
         "Selection": "Under",
         "Odds": -102,
-        "Line": 29.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": -125,
         "Line": 22.5
       },
       {
@@ -5690,19 +5635,30 @@
         "Sportsbook": "FanDuel",
         "Market": "player_points_rebounds_assists",
         "Name": "Carla Leite",
-        "Selection": "Under",
-        "Odds": -106,
-        "Line": 22.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Bridget Carleton",
         "Selection": "Over",
         "Odds": -128,
+        "Line": 22.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Carla Leite",
+        "Selection": "Under",
+        "Odds": -104,
+        "Line": 22.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": -122,
         "Line": 19.5
       },
       {
@@ -5713,7 +5669,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Bridget Carleton",
         "Selection": "Under",
-        "Odds": -104,
+        "Odds": -108,
         "Line": 19.5
       },
       {
@@ -5724,8 +5680,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -114,
-        "Line": 24.5
+        "Odds": -108,
+        "Line": 25.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5735,8 +5691,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -114,
-        "Line": 24.5
+        "Odds": -122,
+        "Line": 25.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -5744,119 +5700,97 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "FanDuel",
         "Market": "player_points_rebounds_assists",
-        "Name": "Emily Engstler",
-        "Selection": "Over",
-        "Odds": -106,
-        "Line": 16.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Emily Engstler",
-        "Selection": "Under",
-        "Odds": -125,
-        "Line": 16.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -146,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": 110,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": 104,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": -138,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -132,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": 100,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -112,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -118,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
         "Name": "Emily Engstler",
         "Selection": "Over",
         "Odds": -110,
+        "Line": 16.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Emily Engstler",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 16.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 112,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Rhyne Howard",
+        "Selection": "Under",
+        "Odds": -148,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -148,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": 112,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Emily Engstler",
+        "Selection": "Over",
+        "Odds": -118,
         "Line": 5.5
       },
       {
@@ -5867,7 +5801,7 @@
         "Market": "player_rebounds",
         "Name": "Emily Engstler",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -112,
         "Line": 5.5
       },
       {
@@ -5900,7 +5834,7 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 118,
+        "Odds": -130,
         "Line": 5.5
       },
       {
@@ -5911,7 +5845,7 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -158,
+        "Odds": -102,
         "Line": 5.5
       },
       {
@@ -5922,7 +5856,7 @@
         "Market": "player_rebounds",
         "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": -154,
+        "Odds": -152,
         "Line": 3.5
       },
       {
@@ -5933,7 +5867,7 @@
         "Market": "player_rebounds",
         "Name": "Bridget Carleton",
         "Selection": "Under",
-        "Odds": 116,
+        "Odds": 114,
         "Line": 3.5
       },
       {
@@ -5944,7 +5878,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 162,
+        "Odds": 126,
         "Line": 1.5
       },
       {
@@ -5955,7 +5889,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -220,
+        "Odds": -168,
         "Line": 1.5
       },
       {
@@ -5966,7 +5900,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -138,
+        "Odds": -158,
         "Line": 1.5
       },
       {
@@ -5977,17 +5911,6 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": 104,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "FanDuel",
-        "Market": "player_threes",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
         "Odds": 118,
         "Line": 1.5
       },
@@ -5998,8 +5921,19 @@
         "Sportsbook": "FanDuel",
         "Market": "player_threes",
         "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": 102,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "FanDuel",
+        "Market": "player_threes",
+        "Name": "Megan Gustafson",
         "Selection": "Under",
-        "Odds": -158,
+        "Odds": -136,
         "Line": 1.5
       },
       {
@@ -6052,31 +5986,9 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "theScore Bet",
         "Market": "player_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -120,
-        "Line": 7.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 7.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_assists",
         "Name": "Carla Leite",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": -110,
         "Line": 5.5
       },
       {
@@ -6087,7 +5999,7 @@
         "Market": "player_assists",
         "Name": "Carla Leite",
         "Selection": "Under",
-        "Odds": -140,
+        "Odds": -125,
         "Line": 5.5
       },
       {
@@ -6098,8 +6010,8 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -120,
-        "Line": 18.5
+        "Odds": -110,
+        "Line": 19.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6109,8 +6021,8 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -120,
-        "Line": 18.5
+        "Odds": -125,
+        "Line": 19.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6120,7 +6032,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -115,
         "Line": 18.5
       },
       {
@@ -6133,28 +6045,6 @@
         "Selection": "Under",
         "Odds": -115,
         "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 15.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6175,7 +6065,7 @@
         "Market": "player_points",
         "Name": "Carla Leite",
         "Selection": "Under",
-        "Odds": -115,
+        "Odds": -110,
         "Line": 14.5
       },
       {
@@ -6186,7 +6076,7 @@
         "Market": "player_points",
         "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -125,
         "Line": 13.5
       },
       {
@@ -6197,7 +6087,7 @@
         "Market": "player_points",
         "Name": "Bridget Carleton",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -110,
         "Line": 13.5
       },
       {
@@ -6208,7 +6098,7 @@
         "Market": "player_points",
         "Name": "Megan Gustafson",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -115,
         "Line": 12.5
       },
       {
@@ -6219,7 +6109,7 @@
         "Market": "player_points",
         "Name": "Megan Gustafson",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -120,
         "Line": 12.5
       },
       {
@@ -6252,7 +6142,7 @@
         "Market": "player_points",
         "Name": "Emily Engstler",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -130,
         "Line": 8.5
       },
       {
@@ -6263,40 +6153,18 @@
         "Market": "player_points",
         "Name": "Emily Engstler",
         "Selection": "Under",
-        "Odds": -115,
-        "Line": 8.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -140,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": 100,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Emily Engstler",
-        "Selection": "Over",
         "Odds": -105,
+        "Line": 8.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Emily Engstler",
+        "Selection": "Over",
+        "Odds": -120,
         "Line": 5.5
       },
       {
@@ -6307,6 +6175,17 @@
         "Market": "player_rebounds",
         "Name": "Emily Engstler",
         "Selection": "Under",
+        "Odds": -115,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
         "Odds": -135,
         "Line": 5.5
       },
@@ -6317,8 +6196,8 @@
         "Sportsbook": "theScore Bet",
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": 110,
+        "Selection": "Under",
+        "Odds": 100,
         "Line": 5.5
       },
       {
@@ -6327,64 +6206,75 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "theScore Bet",
         "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": -160,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Bridget Carleton",
         "Selection": "Under",
+        "Odds": 115,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 115,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Rhyne Howard",
+        "Selection": "Under",
+        "Odds": -160,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": 105,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Megan Gustafson",
+        "Selection": "Under",
+        "Odds": -150,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
         "Odds": -155,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": -165,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Bridget Carleton",
-        "Selection": "Under",
-        "Odds": 115,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 4.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Megan Gustafson",
-        "Selection": "Under",
-        "Odds": -150,
-        "Line": 4.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -130,
         "Line": 3.5
       },
       {
@@ -6395,29 +6285,7 @@
         "Market": "player_rebounds",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -110,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -165,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": 115,
+        "Odds": 110,
         "Line": 3.5
       },
       {
@@ -6428,7 +6296,7 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -115,
         "Line": 3.5
       },
       {
@@ -6439,7 +6307,7 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -115,
         "Line": 3.5
       },
       {
@@ -6450,7 +6318,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -105,
+        "Odds": 100,
         "Line": 3.5
       },
       {
@@ -6483,7 +6351,7 @@
         "Market": "player_threes",
         "Name": "Bridget Carleton",
         "Selection": "Under",
-        "Odds": -150,
+        "Odds": -140,
         "Line": 2.5
       },
       {
@@ -6494,7 +6362,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 145,
+        "Odds": 125,
         "Line": 1.5
       },
       {
@@ -6505,7 +6373,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -215,
+        "Odds": -175,
         "Line": 1.5
       },
       {
@@ -6516,7 +6384,7 @@
         "Market": "player_threes",
         "Name": "Megan Gustafson",
         "Selection": "Over",
-        "Odds": 115,
+        "Odds": -105,
         "Line": 1.5
       },
       {
@@ -6527,6 +6395,17 @@
         "Market": "player_threes",
         "Name": "Megan Gustafson",
         "Selection": "Under",
+        "Odds": -130,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
         "Odds": -165,
         "Line": 1.5
       },
@@ -6537,42 +6416,9 @@
         "Sportsbook": "theScore Bet",
         "Market": "player_threes",
         "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -140,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": 120,
         "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_assists",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": 130,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_assists",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -104,
-        "Line": 2.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6582,7 +6428,7 @@
         "Market": "player_assists",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": 105,
+        "Odds": 100,
         "Line": 2.5
       },
       {
@@ -6593,8 +6439,19 @@
         "Market": "player_assists",
         "Name": "Carla Leite",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": -118,
         "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_assists",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -177,
+        "Line": 2.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6604,7 +6461,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -136,
         "Line": 7.5
       },
       {
@@ -6615,8 +6472,19 @@
         "Market": "player_assists",
         "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": 108,
+        "Odds": 105,
         "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": -112,
+        "Line": 13.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6626,7 +6494,7 @@
         "Market": "player_points",
         "Name": "Emily Engstler",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 112,
         "Line": 9.5
       },
       {
@@ -6637,7 +6505,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": -103,
         "Line": 19.5
       },
       {
@@ -6646,7 +6514,172 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "BetRivers",
         "Market": "player_points",
-        "Name": "Angel Reese",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": -132,
+        "Line": 13.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Carla Leite",
+        "Selection": "Over",
+        "Odds": -136,
+        "Line": 14.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": -137,
+        "Line": 12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Emily Engstler",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 8.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -125,
+        "Line": 18.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": -104,
+        "Line": 14.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": 114,
+        "Line": 14.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": 120,
+        "Line": 15.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -127,
+        "Line": 19.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Carla Leite",
+        "Selection": "Over",
+        "Odds": -109,
+        "Line": 15.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -141,
+        "Line": 8.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -125,
+        "Line": 12.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": 118,
+        "Line": 21.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -104,
+        "Line": 20.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 9.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Carla Leite",
         "Selection": "Over",
         "Odds": 112,
         "Line": 16.5
@@ -6657,9 +6690,9 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "BetRivers",
         "Market": "player_points",
-        "Name": "Bridget Carleton",
+        "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -124,
+        "Odds": 102,
         "Line": 13.5
       },
       {
@@ -6667,175 +6700,10 @@
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
         "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": -121,
-        "Line": 14.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": -103,
-        "Line": 12.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Emily Engstler",
-        "Selection": "Over",
-        "Odds": -109,
-        "Line": 8.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -122,
-        "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": 102,
-        "Line": 14.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -148,
-        "Line": 14.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 19.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": 104,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -124,
-        "Line": 8.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": 110,
-        "Line": 12.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -106,
-        "Line": 30.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
         "Market": "player_points_rebounds_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -104,
+        "Odds": -118,
         "Line": 26.5
       },
       {
@@ -6844,21 +6712,10 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "BetRivers",
         "Market": "player_points_rebounds_assists",
-        "Name": "Jordin Canada",
+        "Name": "Allisha Gray",
         "Selection": "Over",
         "Odds": -106,
-        "Line": 23.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": -120,
-        "Line": 20.5
+        "Line": 26.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6868,8 +6725,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Carla Leite",
         "Selection": "Over",
-        "Odds": -108,
-        "Line": 23.5
+        "Odds": -104,
+        "Line": 24.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6877,10 +6734,21 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "BetRivers",
         "Market": "player_points_rebounds_assists",
-        "Name": "Allisha Gray",
+        "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": -115,
-        "Line": 24.5
+        "Odds": -106,
+        "Line": 21.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -103,
+        "Line": 25.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6890,8 +6758,8 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -148,
-        "Line": 4.5
+        "Odds": -139,
+        "Line": 5.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6901,7 +6769,7 @@
         "Market": "player_rebounds",
         "Name": "Emily Engstler",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": -112,
         "Line": 5.5
       },
       {
@@ -6912,7 +6780,7 @@
         "Market": "player_rebounds",
         "Name": "Carla Leite",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -125,
         "Line": 2.5
       },
       {
@@ -6923,19 +6791,8 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": 112,
+        "Odds": 100,
         "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 11.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -6945,18 +6802,7 @@
         "Market": "player_rebounds",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -107,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_rebounds",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": -137,
+        "Odds": -143,
         "Line": 3.5
       },
       {
@@ -6967,7 +6813,7 @@
         "Market": "player_rebounds",
         "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": 108,
+        "Odds": 100,
         "Line": 4.5
       },
       {
@@ -6978,172 +6824,128 @@
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -137,
-        "Line": 3.5
+        "Odds": -108,
+        "Line": 4.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
         "Sportsbook": "BetRivers",
-        "Market": "player_threes",
+        "Market": "player_rebounds",
         "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": 140,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": 145,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -148,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": 104,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": 140,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": 145,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -148,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": 104,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -112,
-        "Line": 7.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -122,
-        "Line": 7.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": -106,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Carla Leite",
-        "Selection": "Under",
-        "Odds": -128,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Rhyne Howard",
         "Selection": "Over",
         "Odds": 108,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_threes",
+        "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": 116,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_threes",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": 138,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -162,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_threes",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 110,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "BetRivers",
+        "Market": "player_threes",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": 102,
+        "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -119,
+        "Line": 7.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": -114,
+        "Line": 7.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Carla Leite",
+        "Selection": "Over",
+        "Odds": -117,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Carla Leite",
+        "Selection": "Under",
+        "Odds": -116,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 104,
         "Line": 3.5
       },
       {
@@ -7154,7 +6956,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -147,
+        "Odds": -142,
         "Line": 3.5
       },
       {
@@ -7184,32 +6986,10 @@
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
         "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": 119,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -163,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -105,
+        "Odds": -109,
         "Line": 19.5
       },
       {
@@ -7220,7 +7000,7 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -126,
+        "Odds": -122,
         "Line": 19.5
       },
       {
@@ -7231,7 +7011,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -113,
         "Line": 18.5
       },
       {
@@ -7242,30 +7022,8 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -117,
         "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -107,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -124,
-        "Line": 15.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7298,7 +7056,7 @@
         "Name": "Bridget Carleton",
         "Selection": "Over",
         "Odds": -103,
-        "Line": 13.5
+        "Line": 14.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7309,7 +7067,7 @@
         "Name": "Bridget Carleton",
         "Selection": "Under",
         "Odds": -129,
-        "Line": 13.5
+        "Line": 14.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7339,32 +7097,10 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": 101,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -134,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -105,
-        "Line": 9.5
+        "Odds": -126,
+        "Line": 10.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7374,8 +7110,30 @@
         "Market": "player_points",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -127,
-        "Line": 9.5
+        "Odds": -106,
+        "Line": 10.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -124,
+        "Line": 10.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": -107,
+        "Line": 10.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7385,6 +7143,17 @@
         "Market": "player_points",
         "Name": "Emily Engstler",
         "Selection": "Over",
+        "Odds": -117,
+        "Line": 8.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Emily Engstler",
+        "Selection": "Under",
         "Odds": -114,
         "Line": 8.5
       },
@@ -7393,54 +7162,21 @@
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
         "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Emily Engstler",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -117,
+        "Line": 26.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Rhyne Howard",
         "Selection": "Under",
         "Odds": -116,
-        "Line": 8.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 29.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -109,
-        "Line": 29.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -123,
-        "Line": 26.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": -110,
         "Line": 26.5
       },
       {
@@ -7451,7 +7187,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -113,
+        "Odds": -121,
         "Line": 25.5
       },
       {
@@ -7462,7 +7198,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -112,
         "Line": 25.5
       },
       {
@@ -7473,7 +7209,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Carla Leite",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -112,
         "Line": 23.5
       },
       {
@@ -7484,7 +7220,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Carla Leite",
         "Selection": "Under",
-        "Odds": -124,
+        "Odds": -121,
         "Line": 23.5
       },
       {
@@ -7495,7 +7231,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -123,
+        "Odds": -129,
         "Line": 22.5
       },
       {
@@ -7506,7 +7242,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -110,
+        "Odds": -105,
         "Line": 22.5
       },
       {
@@ -7517,8 +7253,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": -115,
-        "Line": 19.5
+        "Odds": -122,
+        "Line": 20.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7528,52 +7264,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Bridget Carleton",
         "Selection": "Under",
-        "Odds": -118,
-        "Line": 19.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -131,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -104,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Emily Engstler",
-        "Selection": "Over",
-        "Odds": -113,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Emily Engstler",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 5.5
+        "Odds": -112,
+        "Line": 20.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7583,6 +7275,17 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Over",
+        "Odds": -139,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
         "Odds": 103,
         "Line": 5.5
       },
@@ -7592,9 +7295,20 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "DraftKings",
         "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
+        "Name": "Emily Engstler",
+        "Selection": "Over",
+        "Odds": -127,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Emily Engstler",
         "Selection": "Under",
-        "Odds": -139,
+        "Odds": -107,
         "Line": 5.5
       },
       {
@@ -7605,7 +7319,7 @@
         "Market": "player_rebounds",
         "Name": "Megan Gustafson",
         "Selection": "Over",
-        "Odds": 111,
+        "Odds": -101,
         "Line": 4.5
       },
       {
@@ -7616,7 +7330,7 @@
         "Market": "player_rebounds",
         "Name": "Megan Gustafson",
         "Selection": "Under",
-        "Odds": -151,
+        "Odds": -134,
         "Line": 4.5
       },
       {
@@ -7627,8 +7341,8 @@
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -157,
-        "Line": 3.5
+        "Odds": 108,
+        "Line": 4.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7638,8 +7352,8 @@
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": 115,
-        "Line": 3.5
+        "Odds": -147,
+        "Line": 4.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7649,7 +7363,7 @@
         "Market": "player_rebounds",
         "Name": "Bridget Carleton",
         "Selection": "Over",
-        "Odds": -143,
+        "Odds": -159,
         "Line": 3.5
       },
       {
@@ -7660,215 +7374,6 @@
         "Market": "player_rebounds",
         "Name": "Bridget Carleton",
         "Selection": "Under",
-        "Odds": 105,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -104,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -114,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": -119,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": -114,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Carla Leite",
-        "Selection": "Under",
-        "Odds": -119,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": 113,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": -154,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": 122,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Bridget Carleton",
-        "Selection": "Under",
-        "Odds": -166,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -139,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": 102,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Megan Gustafson",
-        "Selection": "Over",
-        "Odds": 123,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Megan Gustafson",
-        "Selection": "Under",
-        "Odds": -168,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": 161,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -222,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_assists",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": 100,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_assists",
-        "Name": "Carla Leite",
-        "Selection": "Under",
-        "Odds": -132,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_assists",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
         "Odds": 117,
         "Line": 3.5
       },
@@ -7876,12 +7381,177 @@
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_assists",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -146,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": 107,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -133,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": -102,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Carla Leite",
+        "Selection": "Over",
+        "Odds": -122,
+        "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Carla Leite",
+        "Selection": "Under",
+        "Odds": -111,
+        "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 123,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -157,
+        "Odds": -167,
         "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": 118,
+        "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Bridget Carleton",
+        "Selection": "Under",
+        "Odds": -160,
+        "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -160,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": 117,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Megan Gustafson",
+        "Selection": "Over",
+        "Odds": 124,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Megan Gustafson",
+        "Selection": "Under",
+        "Odds": -169,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": 138,
+        "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
+        "Odds": -189,
+        "Line": 1.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7904,6 +7574,94 @@
         "Selection": "Under",
         "Odds": -113,
         "Line": 7.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_assists",
+        "Name": "Carla Leite",
+        "Selection": "Over",
+        "Odds": -106,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_assists",
+        "Name": "Carla Leite",
+        "Selection": "Under",
+        "Odds": -127,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -113,
+        "Line": 10.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 10.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -112,
+        "Line": 19.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": -121,
+        "Line": 19.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -128,
+        "Line": 10.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": -105,
+        "Line": 10.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -7933,28 +7691,6 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "Caesars",
         "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -114,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 15.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
         "Name": "Emily Engstler",
         "Selection": "Over",
         "Odds": -114,
@@ -7979,7 +7715,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -118,
         "Line": 18.5
       },
       {
@@ -7989,228 +7725,74 @@
         "Sportsbook": "Caesars",
         "Market": "player_points",
         "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": -112,
-        "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": 102,
-        "Line": 13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Bridget Carleton",
-        "Selection": "Under",
-        "Odds": -137,
-        "Line": 13.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 9.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -118,
-        "Line": 9.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 18.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": 102,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -137,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Carla Leite",
-        "Selection": "Over",
-        "Odds": -124,
-        "Line": 14.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Carla Leite",
-        "Selection": "Under",
-        "Odds": -108,
-        "Line": 14.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 11.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Emily Engstler",
-        "Selection": "Over",
-        "Odds": -112,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Emily Engstler",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": 111,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -148,
-        "Line": 5.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": -148,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Bridget Carleton",
-        "Selection": "Under",
-        "Odds": 111,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -120,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Jordin Canada",
         "Selection": "Under",
         "Odds": -113,
+        "Line": 18.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 13.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Bridget Carleton",
+        "Selection": "Under",
+        "Odds": -128,
+        "Line": 13.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Carla Leite",
+        "Selection": "Over",
+        "Odds": -127,
+        "Line": 14.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Carla Leite",
+        "Selection": "Under",
+        "Odds": -106,
+        "Line": 14.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -143,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": 108,
         "Line": 3.5
       },
       {
@@ -8241,43 +7823,131 @@
         "AwayTeam": "Portland Fire",
         "Sportsbook": "Caesars",
         "Market": "player_rebounds",
+        "Name": "Emily Engstler",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Emily Engstler",
+        "Selection": "Under",
+        "Odds": -113,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
         "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 115,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Rhyne Howard",
+        "Selection": "Under",
+        "Odds": -154,
+        "Line": 4.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -134,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
+        "Odds": 101,
+        "Line": 5.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": -154,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Bridget Carleton",
+        "Selection": "Under",
+        "Odds": 116,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -124,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": -107,
+        "Line": 3.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
         "Selection": "Over",
         "Odds": -152,
-        "Line": 3.5
+        "Line": 1.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Portland Fire",
         "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Rhyne Howard",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
         "Selection": "Under",
         "Odds": 114,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": 101,
-        "Line": 3.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": -134,
-        "Line": 3.5
+        "Line": 1.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -8287,7 +7957,7 @@
         "Market": "player_threes",
         "Name": "Megan Gustafson",
         "Selection": "Over",
-        "Odds": 122,
+        "Odds": 110,
         "Line": 1.5
       },
       {
@@ -8298,8 +7968,30 @@
         "Market": "player_threes",
         "Name": "Megan Gustafson",
         "Selection": "Under",
-        "Odds": -170,
+        "Odds": -155,
         "Line": 1.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_threes",
+        "Name": "Bridget Carleton",
+        "Selection": "Over",
+        "Odds": 115,
+        "Line": 2.5
+      },
+      {
+        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Portland Fire",
+        "Sportsbook": "Caesars",
+        "Market": "player_threes",
+        "Name": "Bridget Carleton",
+        "Selection": "Under",
+        "Odds": -154,
+        "Line": 2.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -8320,7 +8012,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -141,
+        "Odds": -143,
         "Line": 3.5
       },
       {
@@ -8331,7 +8023,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 162,
+        "Odds": 135,
         "Line": 1.5
       },
       {
@@ -8342,52 +8034,8 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -225,
+        "Odds": -182,
         "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -137,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": 104,
-        "Line": 1.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_threes",
-        "Name": "Bridget Carleton",
-        "Selection": "Over",
-        "Odds": 119,
-        "Line": 2.5
-      },
-      {
-        "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Portland Fire",
-        "Sportsbook": "Caesars",
-        "Market": "player_threes",
-        "Name": "Bridget Carleton",
-        "Selection": "Under",
-        "Odds": -159,
-        "Line": 2.5
       },
       {
         "EventID": "9f2c4d943190edd1073d4cd6760fcf8c",
@@ -8430,7 +8078,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -119,
         "Line": 7.5
       },
       {
@@ -8463,7 +8111,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -101,
         "Line": 15.5
       },
       {
@@ -8474,7 +8122,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -121,
+        "Odds": -134,
         "Line": 15.5
       },
       {
@@ -8595,7 +8243,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -110,
         "Line": 11.5
       },
       {
@@ -8606,7 +8254,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -104,
+        "Odds": -110,
         "Line": 11.5
       },
       {
