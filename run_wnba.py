@@ -205,8 +205,13 @@ def run_wnba(args: argparse.Namespace) -> int:
     # so the full board never touches the official record.
     full_board = collapse_board(find_wnba_edges(today_events, min_edge_pct=-1000.0))
 
-    # 2b. Player props (points/rebounds/assists) — per-event fetch + model
+    # 2b. Player props (points/rebounds/assists) — per-event fetch + model.
+    # prop_edges (≥8%) drives display; prop_board is EVERY priced prop lean,
+    # logged shadow so props get opening snapshots + CLV like the game board —
+    # closings are already captured daily, but without an opening nothing can
+    # ever score (this was why WNBA props showed 0 CLV coverage).
     prop_edges: list[dict] = []
+    prop_board: list[dict] = []
     try:
         from src.models.wnba_props import find_wnba_prop_edges
         from src.data.wnba_stats import fetch_player_stats
@@ -219,8 +224,9 @@ def run_wnba(args: argparse.Namespace) -> int:
             ev_props = fetch_wnba_player_props(eid, refresh=refresh)
             if not ev_props:
                 continue
-            pe = find_wnba_prop_edges(ev_props, players_by_name, min_edge_pct=8.0)
-            prop_edges.extend(pe)
+            board = find_wnba_prop_edges(ev_props, players_by_name, min_edge_pct=-1000.0)
+            prop_board.extend(board)
+            prop_edges.extend(e for e in board if float(e.get("edge_pct", 0) or 0) >= 8.0)
         if prop_edges:
             print(f"  +{len(prop_edges)} WNBA prop edge(s)")
         edges.extend(prop_edges)
@@ -272,7 +278,7 @@ def run_wnba(args: argparse.Namespace) -> int:
     # fn) so WNBA gets opening snapshots + CLV tracking like every other market.
     # Picks stay out of the official record until is_live("wnba",...) flips on.
     try:
-        n_logged = _auto_log_wnba_picks(full_board + prop_edges, game_date)
+        n_logged = _auto_log_wnba_picks(full_board + collapse_board(prop_board), game_date)
         print(f"  [pnl] Logged {n_logged} WNBA pick(s) for CLV tracking (full board)")
     except Exception as _log_err:
         print(f"  [pnl] WNBA log failed: {_log_err}")

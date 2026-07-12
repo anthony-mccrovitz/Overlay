@@ -1,0 +1,68 @@
+name: Line movement snapshots
+
+# Intraday odds snapshots every 2 hours for in-season sports. Builds the
+# data/odds_history/<sport>/<date>.jsonl line-movement curves (when did the
+# sharp move happen? what did the board look like at every point of the day?)
+# (The script also refreshes data/cache/odds/<sport>_latest.json — the
+# entry-fair devig board — but that cache is gitignored and per-machine; the
+# morning pipeline fetches its own fresh board before snapshotting picks.)
+#
+# Cost: named bookmakers (≤10) × 3 markets = 3 Odds API credits per sport per
+# run → 2 sports × 12 runs/day = 72 credits/day (~2.2k/mo). An off-season
+# sport returns an empty board for 3 credits; prune the matrix when a season
+# ends.
+
+on:
+  schedule:
+    # Every 2h at :43 — offset from capture-closing (:07/:22/:37/:52) and
+    # GitHub's worst cron-lag marks.
+    - cron: "43 */2 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: line-movement
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install --quiet pandas numpy requests python-dotenv
+
+      - name: Snapshot odds (in-season sports)
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          python scripts/odds_snapshot.py --sport baseball_mlb
+          python scripts/odds_snapshot.py --sport basketball_wnba
+
+      - name: Commit snapshots
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/odds_history/
+          if git diff --cached --quiet; then
+            echo "No games on the board this run."
+            exit 0
+          fi
+          git commit -m "capture: line-movement snapshot $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
+            git push origin "HEAD:${GITHUB_REF_NAME}" && break
+            echo "push attempt $i failed, retrying…"; sleep 5
+          done

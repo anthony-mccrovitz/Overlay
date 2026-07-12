@@ -248,6 +248,12 @@ def capture_sport(
         # costs that event's props, not the base capture. API bills per
         # market×region regardless of how calls are grouped, so cost is unchanged.
         extra = _EXTRA_MARKETS.get(odds_api_sport)
+        if extra is None and odds_api_sport.startswith("tennis_"):
+            # Tennis totals (games) — the totals model bets these, but the BASE
+            # tennis capture is h2h-only (see _base_markets_for). Requesting
+            # totals as an EXTRA keeps the 422 risk isolated: a tournament that
+            # doesn't price totals loses only this call, never the h2h close.
+            extra = "totals"
         if extra:
             try:
                 extra_df = fetch_event_odds(

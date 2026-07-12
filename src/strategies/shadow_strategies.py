@@ -140,8 +140,7 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
     This never consults the ML model, so unlike a model edge it can't be
     over-confident — the edge is a pure market disagreement (sharp fair line vs a
     soft book that's slow or off). Logged as a shadow strategy and CLV-graded
-    before a dollar is risked. Moneyline only for now; the CLV close-capture is
-    proven there. Totals/spread are the next step (fair_map already carries them).
+    before a dollar is risked. Moneyline here; totals live in devig_ev_totals.
     """
     if odds_df is None or odds_df.empty:
         return []
@@ -238,11 +237,99 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
     return picks
 
 
+def devig_ev_totals(odds_df: pd.DataFrame, sport: str) -> list[dict]:
+    """Positive-EV totals — devig_ev applied to the totals market.
+
+    Fair over/under probs come from build_fair_prob_map (Pinnacle devig at
+    PINNACLE'S line, median fallback). A total at a different number is a
+    different bet, so only books quoting the SAME line as the fair source are
+    candidates — otherwise a half-run of line difference masquerades as price EV.
+    Totals are inherently two-way (no draw), so the soccer skip doesn't apply.
+    """
+    if odds_df is None or odds_df.empty:
+        return []
+    needed = {"GameID", "HomeTeam", "AwayTeam", "OverOdds", "UnderOdds",
+              "Total", "Sportsbook"}
+    if not needed.issubset(odds_df.columns):
+        return []
+
+    fair_map = build_fair_prob_map(odds_df)
+    if not fair_map:
+        return []
+
+    now = datetime.now(tz=timezone.utc)
+    picks: list[dict] = []
+    for gid, g in odds_df.groupby("GameID"):
+        tot = fair_map.get(str(gid), {}).get("totals")
+        if not tot or tot.get("line") is None:
+            continue
+        fair_line = float(tot["line"])
+        home = str(g["HomeTeam"].iloc[0])
+        away = str(g["AwayTeam"].iloc[0])
+        if not home or not away:
+            continue
+        # Only log a true *opening* — skip games already started.
+        if "CommenceTime" in g.columns:
+            ct = str(g["CommenceTime"].iloc[0] or "")
+            try:
+                if ct and datetime.fromisoformat(ct.replace("Z", "+00:00")) <= now:
+                    continue
+            except ValueError:
+                pass
+
+        bettable = g[~g["Sportsbook"].isin(_NON_DESTINATION_BOOKS)]
+        same_line = bettable[
+            pd.to_numeric(bettable["Total"], errors="coerce") == fair_line
+        ]
+        if same_line.empty:
+            continue
+
+        for side, direction, odds_col in (("over", "OVER", "OverOdds"),
+                                          ("under", "UNDER", "UnderOdds")):
+            fair_p = tot.get(side)
+            if not fair_p or fair_p <= 0:
+                continue
+            prices = pd.to_numeric(same_line[odds_col], errors="coerce").dropna()
+            if prices.empty:
+                continue
+            best_idx = prices.idxmax()
+            best_odds = int(prices.loc[best_idx])
+            book = str(same_line.loc[best_idx, "Sportsbook"])
+            implied = _implied_from_american(best_odds)
+            if pd.isna(implied) or implied <= 0:
+                continue
+            ev_pct = (fair_p / implied - 1.0) * 100.0
+            if ev_pct < _MIN_EV_PCT:
+                continue
+            picks.append({
+                "sport":      sport,
+                "market":     "total",
+                "direction":  direction,
+                "team":       f"{direction} {fair_line}",
+                "matchup":    f"{away} @ {home}",
+                "odds":       best_odds,
+                "line":       fair_line,
+                "sportsbook": book,
+                "model_prob": round(float(fair_p), 4),
+                "edge_pct":   round(float(ev_pct), 2),
+            })
+    return picks
+
+
 # name -> strategy function. Add new strategies here (see plan doc Phase 2).
 STRATEGIES = {
-    "fav_longshot": fav_longshot,
-    "devig_ev":     devig_ev,
+    "fav_longshot":    fav_longshot,
+    "devig_ev":        devig_ev,
+    "devig_ev_totals": devig_ev_totals,
 }
+
+# Strategies with a RETIRE verdict from the 300-bet no-vig CLV rule. Kept in
+# STRATEGIES so history stays queryable and an explicit
+# log_shadow_strategies(strategies=[...]) can still resurrect one for a re-test,
+# but the default daily run stops logging them — a settled negative verdict
+# doesn't need more sample.
+# fav_longshot: RETIRED 2026-07-12 — avg CLV -2.48% at n=344 (chef.py clv).
+RETIRED_STRATEGIES = {"fav_longshot"}
 
 
 # ── Logger ──────────────────────────────────────────────────────────────────
@@ -268,7 +355,8 @@ def log_shadow_strategies(date_str: str | None = None,
     """
     eff_date = date_str or _date.today().isoformat()
     sports = sports or DEFAULT_SPORTS
-    strat_names = strategies or list(STRATEGIES)
+    strat_names = strategies or [n for n in STRATEGIES
+                                 if n not in RETIRED_STRATEGIES]
     now_ts = datetime.now(tz=timezone.utc).isoformat()
 
     blob = _load_picks()

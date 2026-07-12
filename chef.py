@@ -1508,7 +1508,9 @@ def cmd_clv(args: argparse.Namespace) -> int:
             print_clv_report, print_clv_by_market, print_clv_matrix, compute_clv,
             backfill_snapshots_from_pnl, upgrade_snapshots,
             backfill_snapshot_markets, backfill_snapshot_lines,
-            reconcile_stragglers,
+            reconcile_stragglers, print_clv_by_strategy,
+            print_clv_by_entry_hour, print_clv_by_entry_edge,
+            print_clv_by_catalyst,
         )
 
         refresh = getattr(args, "refresh", False)
@@ -1544,6 +1546,10 @@ def cmd_clv(args: argparse.Namespace) -> int:
             print_clv_matrix()      # every sport × market broken out (with gap reasons)
         else:
             print_clv_by_market()   # per-market pooled: which market beats the close
+        print_clv_by_strategy()     # PROMOTE/SHADOW/RETIRE verdicts (300-bet rule)
+        print_clv_by_entry_hour()   # time-of-bet attribution: when does CLV accrue?
+        print_clv_by_entry_edge()   # stale-opener validation: entry EV → realized CLV
+        print_clv_by_catalyst()     # catalyst vs bare-disagreement split
         return 0
     except Exception as e:
         print(f"  CLV error: {e}")
@@ -2263,9 +2269,14 @@ def _clv_gate(min_n: int = 200):
         return None
 
     def clv_val(s):
-        # natural per-market metric: prob markets in %, line markets in points
-        if s.get("clv_pct") is not None:
-            return float(s["clv_pct"]), "%"
+        # natural per-market metric: prob markets in %, line markets in points.
+        # Prob markets prefer the vig-CONSISTENT variants: novig (fair close vs
+        # fair entry) → raw (raw close vs raw entry, vig cancels) → legacy
+        # clv_pct (fair close vs VIGGED entry — biased ~-2%, kept as last
+        # resort for snapshots that predate the fix).
+        for k in ("clv_novig_pct", "clv_raw_pct", "clv_pct"):
+            if s.get(k) is not None:
+                return float(s[k]), "%"
         if s.get("line_clv") is not None:
             return float(s["line_clv"]), "pt"
         return None, None
@@ -2303,8 +2314,12 @@ def _clv_gate(min_n: int = 200):
         # None when Pinnacle didn't price the game or the snapshot predates sharp
         # capture. Unit-matched to the best-price metric: prob markets use the
         # prob-CLV (%), line markets (spread/total/prop) use the line-CLV (pts).
-        sharp = s.get("clv_sharp_pct") if s.get("clv_pct") is not None \
-            else s.get("line_clv_sharp")
+        # Same vig-consistency ladder as clv_val: novig → raw → legacy.
+        if unit == "%":
+            sharp = next((s[k] for k in ("clv_novig_sharp_pct", "clv_raw_sharp_pct",
+                                         "clv_sharp_pct") if s.get(k) is not None), None)
+        else:
+            sharp = s.get("line_clv_sharp")
         by_mkt[key].append((v, unit, s.get("date", ""), sharp))
 
     testable = [k for k, vals in by_mkt.items() if len(vals) >= min_n]

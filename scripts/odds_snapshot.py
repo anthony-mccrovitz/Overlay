@@ -47,11 +47,18 @@ def _fetch_raw_odds(sport: str) -> list[dict]:
         print("  [snapshot] ODDS_API_KEY not set — skipping.")
         return []
 
+    from src.data.odds_api import MY_BOOKS_PARAM
+
     url = f"https://api.the-odds-api.com/v4/sports/{sport}/odds"
     params = {
         "apiKey":    api_key,
-        "regions":   "us",
-        "markets":   "h2h",
+        # Same book universe as every other fetch (bettable US books + Pinnacle
+        # as the sharp anchor). Named bookmakers ≤10 cost markets×1 credits, so
+        # a full h2h+spreads+totals snapshot is 3 credits per sport per run —
+        # and refreshing {sport}_latest.json here keeps the entry-fair devig
+        # board (src/analytics/entry_fair.py) fresh between morning runs.
+        "bookmakers": MY_BOOKS_PARAM,
+        "markets":   "h2h,spreads,totals",
         "oddsFormat": "american",
     }
     try:

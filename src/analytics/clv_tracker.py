@@ -234,6 +234,12 @@ def snapshot_opening_lines(
     date_str = effective_date.isoformat()
     added    = 0
 
+    try:
+        from src.analytics.entry_fair import EntryBoards, attach_entry_fair
+        _boards = EntryBoards()
+    except Exception:
+        _boards = None
+
     for pick in picks:
         # Support both old format (Team/BestOdds) and canonical schema (team/odds)
         team = str(pick.get("Team") or pick.get("team") or "").strip()
@@ -267,6 +273,11 @@ def snapshot_opening_lines(
             "clv":                  None,
             "clv_pct":              None,
         }
+        if _boards is not None:
+            try:
+                attach_entry_fair(snap, _boards)
+            except Exception:
+                pass
         snapshots.append(snap)
         snap_keys.add(key)
         added += 1
@@ -311,6 +322,14 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
 
     now_ts = datetime.now(tz=timezone.utc).isoformat()
     added = 0
+
+    # Entry-side no-vig boards (lazy, one cache read per sport, zero API cost).
+    # Devigging the ENTRY is what makes clv_novig honest — see entry_fair.py.
+    try:
+        from src.analytics.entry_fair import EntryBoards, attach_entry_fair
+        _boards = EntryBoards()
+    except Exception:
+        _boards = None
 
     for pick in day_picks:
         team = str(pick.get("team") or "").strip()
@@ -370,6 +389,17 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
             "clv":                  None,
             "clv_pct":              None,
         }
+        # Catalyst tag (item 2 of the CLV plan): why should the line move toward
+        # us? Recorded at entry so CLV can later be split catalyst vs no-catalyst.
+        catalyst = _derive_catalyst(pick)
+        if catalyst:
+            snap["catalyst"] = catalyst
+        # Entry-side no-vig fair (item: devig BOTH sides of the CLV comparison).
+        if _boards is not None:
+            try:
+                attach_entry_fair(snap, _boards)
+            except Exception:
+                pass  # never lose the snapshot to an entry-fair failure
         snapshots.append(snap)
         snap_keys.add(key)
         added += 1
@@ -378,6 +408,28 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         _save_snapshots(snapshots)
 
     return added
+
+
+def _derive_catalyst(pick: dict) -> str | None:
+    """Identify the catalyst behind a pick — the concrete reason the closing
+    line should migrate toward us (weather we priced, model consensus, a stale
+    soft-book number). Comma-joined tags, or None when the pick is a bare
+    model-vs-market disagreement with no identifiable mover ("coin-flip CLV").
+    """
+    tags: list[str] = []
+    if pick.get("weather_context"):
+        tags.append("weather")
+    if pick.get("model_agreement") is True:
+        tags.append("model_agreement")
+    strategy = str(pick.get("strategy") or "")
+    if strategy.startswith("devig_ev"):
+        tags.append("stale_opener")  # entry price already beats the sharp fair
+    why = str(pick.get("why") or pick.get("Why") or "")
+    if "park" in why.lower():
+        tags.append("park")
+    if "lineup" in why.lower() or "pitcher" in why.lower():
+        tags.append("lineup")
+    return ",".join(tags) if tags else None
 
 
 def backfill_snapshots_from_pnl() -> int:
@@ -874,11 +926,14 @@ def _pick_book_row(rows: list[dict], book: str | None = None) -> dict | None:
 _SHARP_KEY_MAP = {
     "clv":                  "clv_sharp",
     "clv_pct":              "clv_sharp_pct",
+    "clv_raw_pct":          "clv_raw_sharp_pct",
     "closing_implied_prob": "closing_imp_sharp",
     "closing_odds":         "closing_odds_sharp",
     "closing_line":         "closing_line_sharp",
     "line_clv":             "line_clv_sharp",
     "price_clv_pct":        "price_clv_sharp_pct",
+    "price_clv_raw_pct":    "price_clv_raw_sharp_pct",
+    "price_clv_novig_pct":  "price_clv_novig_sharp_pct",
     "beat_close":           "beat_close_sharp",
 }
 _SHARP_KEYS = set(_SHARP_KEY_MAP.values())
@@ -1291,12 +1346,17 @@ def _score_prop(snap: dict, closing: dict) -> dict | None:
                      else (open_line - close_line), 2)
     price_clv_pct = None
     if abs(close_line - open_line) < 1e-9:
+        # Props price CLV is raw-close vs raw-entry — already vig-consistent
+        # (unlike totals, which devig the close; see _score_total).
         close_imp = _odds_to_implied(closing["over"] if direction == "OVER" else closing["under"])
         price_clv_pct = round((close_imp - snap["opening_implied_prob"]) * 100, 3)
     close_odds = closing["over"] if direction == "OVER" else closing["under"]
     beat = line_clv > 0 or (abs(line_clv) < 1e-9 and (price_clv_pct or 0) > 0)
-    return {"closing_line": close_line, "closing_odds": close_odds,
-            "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
+    out = {"closing_line": close_line, "closing_odds": close_odds,
+           "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
+    if price_clv_pct is not None:
+        out["price_clv_raw_pct"] = price_clv_pct  # alias: already raw-vs-raw
+    return out
 
 
 def fetch_closing_outrights(sport: str) -> dict[str, dict]:
@@ -1395,9 +1455,13 @@ def _score_nrfi(snap: dict, closing: dict) -> dict | None:
     else:
         close_imp = _devig_prob(closing["nrfi"], closing["yrfi"])
     clv = close_imp - snap["opening_implied_prob"]
-    return {"closing_odds": closing["yrfi"] if picked_yrfi else closing["nrfi"],
+    close_odds = closing["yrfi"] if picked_yrfi else closing["nrfi"]
+    return {"closing_odds": close_odds,
             "closing_implied_prob": round(close_imp, 6),
-            "clv": round(clv, 6), "clv_pct": round(clv * 100, 3)}
+            "clv": round(clv, 6), "clv_pct": round(clv * 100, 3),
+            # raw-vs-raw: consistent (both vigged), unlike clv_pct's fair-vs-vigged
+            "clv_raw_pct": round(
+                (_odds_to_implied(close_odds) - snap["opening_implied_prob"]) * 100, 3)}
 
 
 def _score_spread(snap: dict, closing: dict) -> dict | None:
@@ -1419,15 +1483,22 @@ def _score_spread(snap: dict, closing: dict) -> dict | None:
     # Favorite -1.5 closing -2.5 → +1.0; underdog +1.5 closing +2.5 → -1.0.
     line_clv = round(open_line - close_line, 2)
     price_clv_pct = None
+    price_clv_raw = None
     if abs(open_line - close_line) < 1e-9:
         if closing.get("opp_odds") is not None:
             close_imp = _devig_prob(closing["odds"], closing["opp_odds"])
         else:
             close_imp = _odds_to_implied(closing["odds"])
         price_clv_pct = round((close_imp - snap["opening_implied_prob"]) * 100, 3)
+        # Consistent raw-vs-raw variant (vig cancels; see compute_clv ML block).
+        price_clv_raw = round(
+            (_odds_to_implied(closing["odds"]) - snap["opening_implied_prob"]) * 100, 3)
     beat = line_clv > 0 or (abs(line_clv) < 1e-9 and (price_clv_pct or 0) > 0)
-    return {"closing_line": close_line, "closing_odds": closing["odds"],
-            "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
+    out = {"closing_line": close_line, "closing_odds": closing["odds"],
+           "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
+    if price_clv_raw is not None:
+        out["price_clv_raw_pct"] = price_clv_raw
+    return out
 
 
 def _score_total(snap: dict, closing: dict) -> dict | None:
@@ -1442,16 +1513,29 @@ def _score_total(snap: dict, closing: dict) -> dict | None:
     line_clv = round((close_line - open_line) if direction == "OVER"
                      else (open_line - close_line), 2)
     price_clv_pct = None
+    price_clv_raw = None
+    price_clv_novig = None
+    close_odds = closing["over"] if direction == "OVER" else closing["under"]
     if abs(close_line - open_line) < 1e-9:
         if direction == "OVER":
             close_imp = _devig_prob(closing["over"], closing["under"])
         else:
             close_imp = _devig_prob(closing["under"], closing["over"])
         price_clv_pct = round((close_imp - snap["opening_implied_prob"]) * 100, 3)
-    close_odds = closing["over"] if direction == "OVER" else closing["under"]
+        # Consistent variants (see compute_clv moneyline block): raw-vs-raw always;
+        # fair-vs-fair when the entry board was captured at bet time.
+        price_clv_raw = round(
+            (_odds_to_implied(close_odds) - snap["opening_implied_prob"]) * 100, 3)
+        if snap.get("opening_fair_prob") is not None:
+            price_clv_novig = round((close_imp - snap["opening_fair_prob"]) * 100, 3)
     beat = line_clv > 0 or (abs(line_clv) < 1e-9 and (price_clv_pct or 0) > 0)
-    return {"closing_line": close_line, "closing_odds": close_odds,
-            "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
+    out = {"closing_line": close_line, "closing_odds": close_odds,
+           "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
+    if price_clv_raw is not None:
+        out["price_clv_raw_pct"] = price_clv_raw
+    if price_clv_novig is not None:
+        out["price_clv_novig_pct"] = price_clv_novig
+    return out
 
 
 def compute_clv(date_str: str | None = None) -> list[dict]:
@@ -1783,6 +1867,23 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         snap["clv_pct"]              = round(clv * 100, 3)
         snap["clv_devigged"]         = pair is not None  # flag for reporting
 
+        # ── Consistent CLV variants ───────────────────────────────────────────
+        # clv_pct above mixes a DEVIGGED close with a VIGGED entry — biased
+        # pessimistic by the entry vig share (~1.5-2.5%). Two honest metrics:
+        #   clv_raw_pct   raw close vs raw entry (both vigged, best price both
+        #                 times → the vig approximately cancels). Computable for
+        #                 every historical snapshot.
+        #   clv_novig_pct fair close vs fair entry (both devigged, best-price
+        #                 pair both times). The gold standard; needs the entry
+        #                 board captured at bet time (entry_fair.py).
+        snap["clv_raw_pct"] = round(
+            (_odds_to_implied(closing_odds) - snap["opening_implied_prob"]) * 100, 3)
+        entry_fair = snap.get("opening_fair_prob")
+        if entry_fair is not None and pair:
+            snap["clv_novig_pct"] = round((closing_imp - entry_fair) * 100, 3)
+        else:
+            snap.pop("clv_novig_pct", None)
+
         # ── Sharp CLV: same pick measured against PINNACLE's de-vigged close ──
         # clv_pct above uses the BEST price across all books, which flatters us
         # (we score against the loosest number any book offered). Pinnacle is the
@@ -1802,8 +1903,16 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
                 "clv_pct": round(clv_sharp * 100, 3),
                 "beat_close": bool(clv_sharp > 0),
             })
+            # Honest sharp CLV: Pinnacle fair close vs FAIR entry (both no-vig).
+            # This is the number that predicts profit — beat it and you were
+            # ahead of the sharpest estimate available at close.
+            if entry_fair is not None:
+                snap["clv_novig_sharp_pct"] = round((sharp_imp - entry_fair) * 100, 3)
+            else:
+                snap.pop("clv_novig_sharp_pct", None)
         else:
             _apply_sharp(snap, None)  # clear stale sharp fields if Pinnacle absent
+            snap.pop("clv_novig_sharp_pct", None)
         updated += 1
 
     if updated > 0 or cleared > 0:
@@ -1879,8 +1988,11 @@ def get_clv_by_market(sport_filter: str | None = None) -> dict:
         elif mk in ("run_line", "runline", "puck_line", "puckline"):
             mk = "spread"
         b = buckets.setdefault(mk, {"picks": 0, "prob": [], "line": [], "beats": 0,
-                                    "scored": 0, "sharp": [], "sharp_beats": 0})
+                                    "scored": 0, "sharp": [], "sharp_beats": 0,
+                                    "unscoreable": 0})
         b["picks"] += 1
+        if s.get("unscoreable"):
+            b["unscoreable"] += 1
         if s.get("clv_pct") is not None:           # moneyline-style prob-CLV
             b["scored"] += 1
             b["prob"].append(s["clv_pct"])
@@ -1911,6 +2023,8 @@ def get_clv_by_market(sport_filter: str | None = None) -> dict:
             entry["avg_line_clv"] = round(sum(b["line"]) / len(b["line"]), 3)
         else:
             entry["metric"] = "none"   # picks logged but no closing line joined yet
+        if b["unscoreable"]:
+            entry["unscoreable"] = b["unscoreable"]
         if b["scored"]:
             entry["beat_close_pct"] = round(b["beats"] / b["scored"] * 100, 1)
         # Sharp (vs Pinnacle close) — the honest read, when Pinnacle priced it.
@@ -1937,6 +2051,12 @@ def print_clv_by_market(sport_filter: str | None = None) -> None:
         elif e["metric"] == "line_clv_points":
             sign = "+" if e["avg_line_clv"] >= 0 else ""
             metric = f"avg line-CLV {sign}{e['avg_line_clv']} pts"
+        elif e.get("unscoreable", 0) >= e["picks"]:
+            # Permanently orphaned: no closing source exists or ever will
+            # (generic "prop" labels, pre-capture NHL props, h2h-only tennis
+            # archives). Distinct from "not joined YET" so the report doesn't
+            # imply these are pending.
+            metric = "unscoreable — no closing source (historical orphans)"
         else:
             metric = "no closing line joined yet"
         beat = f", beat close {e['beat_close_pct']}%" if "beat_close_pct" in e else ""
@@ -2067,43 +2187,96 @@ def print_clv_matrix(min_picks: int = 3) -> None:
     print(f"  scored = closing line joined · Pinn = same pick vs Pinnacle's close (sharp truth)")
 
 
+# Promotion rule (item 3 of the CLV plan): a strategy graduates from paper to
+# real money only when its vig-consistent CLV is positive over PROMOTE_MIN_N+
+# scored picks — and gets retired when it's clearly negative at the same n.
+PROMOTE_MIN_N = 300
+
+
+def _best_prob_clv(s: dict) -> float | None:
+    """Most truthful prob-CLV available for a snapshot, in preference order:
+    fair-vs-fair (novig) → raw-vs-raw → legacy fair-vs-vigged (biased ~-2%)."""
+    for k in ("clv_novig_pct", "clv_raw_pct", "clv_pct"):
+        if s.get(k) is not None:
+            return float(s[k])
+    return None
+
+
+def _strategy_verdict(scored: int, avg: float | None, beat_pct: float | None) -> str:
+    """PROMOTE / SHADOW / RETIRE under the explicit 300-bet no-vig rule."""
+    if scored < PROMOTE_MIN_N or avg is None:
+        return f"SHADOW (need {PROMOTE_MIN_N}+ scored, have {scored})"
+    if avg > 0 and (beat_pct or 0) >= 50.0:
+        return "PROMOTE — positive vig-consistent CLV at n≥300"
+    if avg > 0:
+        return "SHADOW — positive mean but beat-rate <50% (outlier-driven)"
+    if avg < -0.5:
+        return "RETIRE — negative CLV at n≥300; stop modeling this"
+    return "SHADOW — flat CLV; no promotable edge yet"
+
+
 def get_clv_by_strategy() -> dict:
     """Per-strategy CLV — the view that answers "which shadow strategy beats the
     close?" Same buckets as get_clv_by_market but keyed on the `strategy` tag;
     untagged picks (normal model/card picks) bucket under "model".
 
-    Returns: {strategy: {picks, scored, metric, avg_*, beat_close_pct}}
+    Prob markets use the most vig-consistent CLV available per snapshot
+    (novig → raw → legacy); line markets use line-CLV points. Each strategy
+    carries an explicit PROMOTE/SHADOW/RETIRE verdict (the 300-bet rule).
+
+    Returns: {strategy: {picks, scored, metric, avg_*, beat_close_pct, verdict, ...}}
     """
     snaps = _load_snapshots()
     buckets: dict[str, dict] = {}
     for s in snaps:
         strat = s.get("strategy") or "model"
-        b = buckets.setdefault(strat, {"picks": 0, "prob": [], "line": [], "beats": 0, "scored": 0})
+        b = buckets.setdefault(strat, {"picks": 0, "prob": [], "line": [],
+                                       "novig": [], "sharp": [],
+                                       "beats": 0, "scored": 0})
         b["picks"] += 1
-        if s.get("clv_pct") is not None:            # moneyline-style prob-CLV
+        pclv = _best_prob_clv(s)
+        if pclv is not None:                        # moneyline-style prob-CLV
             b["scored"] += 1
-            b["prob"].append(s["clv_pct"])
-            if s["clv_pct"] > 0:
+            b["prob"].append(pclv)
+            if pclv > 0:
                 b["beats"] += 1
+            if s.get("clv_novig_pct") is not None:
+                b["novig"].append(s["clv_novig_pct"])
+            sharp = s.get("clv_novig_sharp_pct", s.get("clv_sharp_pct"))
+            if sharp is not None:
+                b["sharp"].append(sharp)
         elif s.get("line_clv") is not None:         # spread/total line-CLV
             b["scored"] += 1
             b["line"].append(s["line_clv"])
             if s.get("beat_close"):
                 b["beats"] += 1
+            if s.get("line_clv_sharp") is not None:
+                b["sharp"].append(s["line_clv_sharp"])
 
     out: dict[str, dict] = {}
     for strat, b in buckets.items():
         entry = {"picks": b["picks"], "scored": b["scored"]}
+        avg = None
         if b["prob"]:
             entry["metric"] = "prob_clv_pct"
-            entry["avg_clv_pct"] = round(sum(b["prob"]) / len(b["prob"]), 3)
+            avg = round(sum(b["prob"]) / len(b["prob"]), 3)
+            entry["avg_clv_pct"] = avg
+            if b["novig"]:
+                entry["avg_clv_novig_pct"] = round(sum(b["novig"]) / len(b["novig"]), 3)
+                entry["novig_n"] = len(b["novig"])
         elif b["line"]:
             entry["metric"] = "line_clv_points"
-            entry["avg_line_clv"] = round(sum(b["line"]) / len(b["line"]), 3)
+            avg = round(sum(b["line"]) / len(b["line"]), 3)
+            entry["avg_line_clv"] = avg
         else:
             entry["metric"] = "none"
+        if b["sharp"]:
+            entry["avg_sharp"] = round(sum(b["sharp"]) / len(b["sharp"]), 3)
+            entry["sharp_n"] = len(b["sharp"])
         if b["scored"]:
             entry["beat_close_pct"] = round(b["beats"] / b["scored"] * 100, 1)
+        entry["verdict"] = _strategy_verdict(b["scored"], avg,
+                                             entry.get("beat_close_pct"))
         out[strat] = entry
     return out
 
@@ -2111,7 +2284,7 @@ def get_clv_by_strategy() -> dict:
 def print_clv_by_strategy() -> None:
     """Pretty-print the per-strategy CLV breakdown (see get_clv_by_strategy)."""
     data = get_clv_by_strategy()
-    print(f"\n  CLV BY STRATEGY")
+    print(f"\n  CLV BY STRATEGY  (vig-consistent: novig → raw → legacy)")
     if not data:
         print("    (no snapshots yet)")
         return
@@ -2119,13 +2292,212 @@ def print_clv_by_strategy() -> None:
         if e["metric"] == "prob_clv_pct":
             sign = "+" if e["avg_clv_pct"] >= 0 else ""
             metric = f"avg CLV {sign}{e['avg_clv_pct']}%"
+            if "avg_clv_novig_pct" in e:
+                s2 = "+" if e["avg_clv_novig_pct"] >= 0 else ""
+                metric += f" (novig {s2}{e['avg_clv_novig_pct']}%, n={e['novig_n']})"
         elif e["metric"] == "line_clv_points":
             sign = "+" if e["avg_line_clv"] >= 0 else ""
             metric = f"avg line-CLV {sign}{e['avg_line_clv']} pts"
         else:
             metric = "no closing line joined yet"
         beat = f", beat close {e['beat_close_pct']}%" if "beat_close_pct" in e else ""
-        print(f"    {strat:<16} {e['scored']}/{e['picks']} scored — {metric}{beat}")
+        sharp = ""
+        if "avg_sharp" in e:
+            s3 = "+" if e["avg_sharp"] >= 0 else ""
+            sharp = f" │ sharp {s3}{e['avg_sharp']} (n={e['sharp_n']})"
+        print(f"    {strat:<16} {e['scored']}/{e['picks']} scored — {metric}{beat}{sharp}")
+        print(f"    {'':<16} └─ {e['verdict']}")
+
+
+# ── Time-of-bet CLV attribution (item 4 of the CLV plan) ─────────────────────
+# If betting at 08:00 UTC earns +0.5% and betting at 15:00 earns -0.3%, the
+# edge is TIMING — bet earlier and harder. Buckets are 3h UTC windows.
+
+_HOUR_BUCKETS = [(0, 3), (3, 6), (6, 9), (9, 12), (12, 15), (15, 18), (18, 21), (21, 24)]
+
+
+def get_clv_by_entry_hour(sport: str | None = None) -> dict:
+    """CLV bucketed by snapshot (bet-entry) hour UTC.
+
+    Returns {"HH-HH": {n, avg_clv, unit, beat_pct}} using the vig-consistent
+    prob-CLV for price markets and line-CLV points for line markets (reported
+    separately per bucket so units never mix).
+    """
+    snaps = _load_snapshots()
+    if sport:
+        snaps = [s for s in snaps if s.get("sport") == sport]
+    buckets: dict[str, dict] = {}
+    for s in snaps:
+        ts = s.get("snapshot_time")
+        if not ts:
+            continue
+        try:
+            hour = datetime.fromisoformat(str(ts).replace("Z", "+00:00")) \
+                .astimezone(timezone.utc).hour
+        except (ValueError, TypeError):
+            continue
+        label = next((f"{lo:02d}-{hi:02d}" for lo, hi in _HOUR_BUCKETS
+                      if lo <= hour < hi), None)
+        if label is None:
+            continue
+        b = buckets.setdefault(label, {"prob": [], "line": [], "beats": 0, "scored": 0})
+        pclv = _best_prob_clv(s)
+        if pclv is not None:
+            b["prob"].append(pclv)
+            b["scored"] += 1
+            if pclv > 0:
+                b["beats"] += 1
+        elif s.get("line_clv") is not None:
+            b["line"].append(s["line_clv"])
+            b["scored"] += 1
+            if s.get("beat_close"):
+                b["beats"] += 1
+
+    out: dict[str, dict] = {}
+    for label in sorted(buckets):
+        b = buckets[label]
+        if not b["scored"]:
+            continue
+        e: dict = {"n": b["scored"],
+                   "beat_pct": round(b["beats"] / b["scored"] * 100, 1)}
+        if b["prob"]:
+            e["avg_prob_clv_pct"] = round(sum(b["prob"]) / len(b["prob"]), 3)
+            e["prob_n"] = len(b["prob"])
+        if b["line"]:
+            e["avg_line_clv"] = round(sum(b["line"]) / len(b["line"]), 3)
+            e["line_n"] = len(b["line"])
+        out[label] = e
+    return out
+
+
+def print_clv_by_entry_hour(sport: str | None = None) -> None:
+    """Pretty-print time-of-bet CLV attribution (see get_clv_by_entry_hour)."""
+    data = get_clv_by_entry_hour(sport)
+    tag = f" — {sport}" if sport else ""
+    print(f"\n  CLV BY ENTRY HOUR (UTC){tag}  — when does betting earn CLV?")
+    if not data:
+        print("    (no scored snapshots with entry timestamps)")
+        return
+    print(f"    {'window':>8}{'n':>7}{'price-CLV':>12}{'line-CLV':>11}{'beat%':>8}")
+    for label, e in data.items():
+        p = (f"{e['avg_prob_clv_pct']:+.2f}% ({e['prob_n']})"
+             if "avg_prob_clv_pct" in e else "—")
+        l = (f"{e['avg_line_clv']:+.2f}pt ({e['line_n']})"
+             if "avg_line_clv" in e else "—")
+        print(f"    {label:>8}{e['n']:>7}{p:>12}{l:>11}{e['beat_pct']:>7.0f}%")
+    best = max(data.items(),
+               key=lambda kv: kv[1].get("avg_prob_clv_pct", kv[1].get("avg_line_clv", -99)))
+    print(f"    → best window: {best[0]} UTC — bet earlier/harder there if it holds at n≥100")
+
+
+# ── Stale-opener validation (item 1 of the CLV plan) ─────────────────────────
+# entry_ev_vs_fair_pct is stamped at bet time: your entry price vs Pinnacle's
+# no-vig fair. If picks with positive entry-EV also show positive realized CLV,
+# then "we know we got a good price" is verified AT ENTRY, before any close.
+
+_ENTRY_EV_BANDS = [(-99.0, 0.0, "≤0% (paid fair or worse)"),
+                   (0.0, 2.0, "0-2% (mild steal)"),
+                   (2.0, 5.0, "2-5% (stale opener)"),
+                   (5.0, 99.0, ">5% (very stale)")]
+
+
+def get_clv_by_entry_edge() -> dict:
+    """Realized CLV bucketed by the entry-time EV vs sharp fair (stale-opener
+    signal). Answers: does the price we KNEW was good at entry actually beat
+    the close? Returns {band_label: {n, avg_clv, beat_pct}}."""
+    snaps = _load_snapshots()
+    out: dict[str, dict] = {}
+    for lo, hi, label in _ENTRY_EV_BANDS:
+        vals = []
+        beats = 0
+        for s in snaps:
+            ev = s.get("entry_ev_vs_fair_pct")
+            if ev is None or not (lo < float(ev) <= hi):
+                continue
+            pclv = _best_prob_clv(s)
+            if pclv is None:
+                continue
+            vals.append(pclv)
+            if pclv > 0:
+                beats += 1
+        if vals:
+            out[label] = {"n": len(vals),
+                          "avg_clv": round(sum(vals) / len(vals), 3),
+                          "beat_pct": round(beats / len(vals) * 100, 1)}
+    return out
+
+
+def print_clv_by_entry_edge() -> None:
+    """Pretty-print the stale-opener validation table."""
+    data = get_clv_by_entry_edge()
+    print(f"\n  STALE-OPENER VALIDATION — entry EV vs sharp fair → realized CLV")
+    if not data:
+        print("    (no snapshot has BOTH an entry-EV stamp and a scored close yet"
+              " — fills in as games with entry_ev_vs_fair_pct close)")
+        return
+    for label, e in data.items():
+        sign = "+" if e["avg_clv"] >= 0 else ""
+        print(f"    {label:<26} n={e['n']:<5} realized CLV {sign}{e['avg_clv']}%"
+              f", beat close {e['beat_pct']}%")
+    print(f"    → if higher entry-EV bands show higher realized CLV, the entry"
+          f" signal is real: bet those spots harder.")
+
+
+def get_clv_by_catalyst() -> dict:
+    """CLV split by catalyst presence (item 2): picks with an identifiable
+    reason for the line to move toward us vs bare model-vs-market disagreement."""
+    snaps = _load_snapshots()
+    out: dict[str, dict] = {}
+    for key, pred in (("catalyst", lambda s: bool(s.get("catalyst"))),
+                      ("no_catalyst", lambda s: not s.get("catalyst"))):
+        vals, beats, line_vals, line_beats = [], 0, [], 0
+        for s in snaps:
+            if not pred(s):
+                continue
+            pclv = _best_prob_clv(s)
+            if pclv is not None:
+                vals.append(pclv)
+                if pclv > 0:
+                    beats += 1
+            elif s.get("line_clv") is not None:
+                line_vals.append(s["line_clv"])
+                if s.get("beat_close"):
+                    line_beats += 1
+        e: dict = {}
+        if vals:
+            e["n_price"] = len(vals)
+            e["avg_clv"] = round(sum(vals) / len(vals), 3)
+            e["beat_pct"] = round(beats / len(vals) * 100, 1)
+        if line_vals:
+            e["n_line"] = len(line_vals)
+            e["avg_line_clv"] = round(sum(line_vals) / len(line_vals), 3)
+            e["line_beat_pct"] = round(line_beats / len(line_vals) * 100, 1)
+        if e:
+            out[key] = e
+    return out
+
+
+def print_clv_by_catalyst() -> None:
+    """Pretty-print the catalyst split (see get_clv_by_catalyst)."""
+    data = get_clv_by_catalyst()
+    print(f"\n  CLV BY CATALYST — picks with a reason for the line to move vs bare disagreement")
+    if not data:
+        print("    (no scored snapshots)")
+        return
+    for key in ("catalyst", "no_catalyst"):
+        e = data.get(key)
+        if not e:
+            continue
+        parts = []
+        if "avg_clv" in e:
+            sign = "+" if e["avg_clv"] >= 0 else ""
+            parts.append(f"price {sign}{e['avg_clv']}% (n={e['n_price']}, beat {e['beat_pct']}%)")
+        if "avg_line_clv" in e:
+            sign = "+" if e["avg_line_clv"] >= 0 else ""
+            parts.append(f"line {sign}{e['avg_line_clv']}pt (n={e['n_line']}, beat {e['line_beat_pct']}%)")
+        print(f"    {key:<14} {' · '.join(parts)}")
+    print(f"    → catalyst tags accrue from 2026-07-10 snapshots forward; a persistent"
+          f" catalyst>no_catalyst gap means only bet spots with an identifiable mover.")
 
 
 def get_clv_summary() -> dict:

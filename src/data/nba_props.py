@@ -334,8 +334,13 @@ def find_nba_prop_edges(
                 if imp < MIN_IMPLIED_PROB:
                     continue
                 edge = model_prob - imp
-                # OVERs need higher bar: historically -12.2u vs UNDERs +3.0u
-                threshold = MIN_EDGE_OVER if direction == "OVER" else min_edge
+                # OVERs need higher bar: historically -12.2u vs UNDERs +3.0u.
+                # A negative min_edge means board mode (full-board CLV logging):
+                # every priced lean passes, gates applied by the caller.
+                if min_edge < 0:
+                    threshold = min_edge
+                else:
+                    threshold = MIN_EDGE_OVER if direction == "OVER" else min_edge
                 if edge < threshold:
                     continue
                 edges.append({
