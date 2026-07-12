@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Eduardo Valencia",
+      "team": "Eduardo Valencia OVER 0.5",
+      "matchup": "Philadelphia Phillies @ Detroit Tigers",
+      "line": 0.5,
+      "odds": -145,
+      "model_prob": 0.8961,
+      "implied_prob": 0.5421,
+      "edge_pct": 35.41,
+      "model_mu": 5.28,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Eduardo Valencia",
+      "team": "Eduardo Valencia OVER 0.5",
+      "matchup": "Philadelphia Phillies @ Detroit Tigers",
+      "line": 0.5,
+      "odds": -145,
+      "model_prob": 0.8667,
+      "implied_prob": 0.5421,
+      "edge_pct": 32.46,
+      "model_mu": 2.04,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Josh Kuroda-Grauer",
+      "team": "Josh Kuroda-Grauer UNDER 0.5",
+      "matchup": "Athletics @ Chicago White Sox",
+      "line": 0.5,
+      "odds": -290,
+      "model_prob": 0.9901,
+      "implied_prob": 0.6675,
+      "edge_pct": 32.26,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Paul Skenes",
+      "team": "Paul Skenes UNDER 6.5",
+      "matchup": "Milwaukee Brewers @ Pittsburgh Pirates",
+      "line": 6.5,
+      "odds": 110,
+      "model_prob": 0.7176,
+      "implied_prob": 0.4494,
+      "edge_pct": 26.82,
+      "model_mu": 5.22,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "James Wood",
+      "team": "James Wood UNDER 0.5",
+      "matchup": "New York Yankees @ Washington Nationals",
+      "line": 0.5,
+      "odds": -105,
+      "model_prob": 0.7053,
+      "implied_prob": 0.4573,
+      "edge_pct": 24.8,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani UNDER 0.5",
+      "matchup": "Arizona Diamondbacks @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": -360,
+      "model_prob": 0.8673,
+      "implied_prob": 0.7013,
+      "edge_pct": 16.6,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
