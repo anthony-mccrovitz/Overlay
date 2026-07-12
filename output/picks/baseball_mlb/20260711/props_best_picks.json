@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Cole Carrigg",
+      "team": "Cole Carrigg OVER 0.5",
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "line": 0.5,
+      "odds": 650,
+      "model_prob": 0.6895,
+      "implied_prob": 0.1245,
+      "edge_pct": 56.5,
+      "model_mu": 1.77,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Andy Pages",
+      "team": "Andy Pages UNDER 3.5",
+      "matchup": "Arizona Diamondbacks @ Los Angeles Dodgers",
+      "line": 3.5,
+      "odds": -300,
+      "model_prob": 0.9784,
+      "implied_prob": 0.6887,
+      "edge_pct": 28.97,
+      "model_mu": 1.03,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Erick Fedde",
+      "team": "Erick Fedde OVER 3.5",
+      "matchup": "Athletics @ Chicago White Sox",
+      "line": 3.5,
+      "odds": -115,
+      "model_prob": 0.8181,
+      "implied_prob": 0.4747,
+      "edge_pct": 34.33,
+      "model_mu": 6.07,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Josh Kuroda-Grauer",
+      "team": "Josh Kuroda-Grauer UNDER 0.5",
+      "matchup": "Athletics @ Chicago White Sox",
+      "line": 0.5,
+      "odds": -275,
+      "model_prob": 0.9901,
+      "implied_prob": 0.6839,
+      "edge_pct": 30.62,
+      "model_mu": 0.01,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "TJ Rumfield",
+      "team": "TJ Rumfield UNDER 2.5",
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "line": 2.5,
+      "odds": -2000,
+      "model_prob": 0.9943,
+      "implied_prob": 0.8696,
+      "edge_pct": 12.47,
+      "model_mu": 0.35,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani UNDER 1.5",
+      "matchup": "Arizona Diamondbacks @ Los Angeles Dodgers",
+      "line": 1.5,
+      "odds": -30000,
+      "model_prob": 0.9907,
+      "implied_prob": 0.9443,
+      "edge_pct": 4.64,
+      "model_mu": 0.14,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}

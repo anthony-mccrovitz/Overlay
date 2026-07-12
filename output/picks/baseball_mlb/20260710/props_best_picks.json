@@ -1,0 +1,98 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Jacob Lopez",
+      "team": "Jacob Lopez OVER 1.5",
+      "matchup": "Athletics @ Chicago White Sox",
+      "line": 1.5,
+      "odds": 115,
+      "model_prob": 0.909,
+      "implied_prob": 0.4174,
+      "edge_pct": 49.15,
+      "model_mu": 4.32,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Josh Kuroda-Grauer",
+      "team": "Josh Kuroda-Grauer UNDER 0.5",
+      "matchup": "Athletics @ Chicago White Sox",
+      "line": 0.5,
+      "odds": -290,
+      "model_prob": 0.9901,
+      "implied_prob": 0.6675,
+      "edge_pct": 32.26,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Juan Soto",
+      "team": "Juan Soto UNDER 0.5",
+      "matchup": "Boston Red Sox @ New York Mets",
+      "line": 0.5,
+      "odds": 105,
+      "model_prob": 0.7056,
+      "implied_prob": 0.4592,
+      "edge_pct": 24.64,
+      "model_mu": 0.35,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Jasson Dom\u00ednguez",
+      "team": "Jasson Dom\u00ednguez UNDER 1.5",
+      "matchup": "New York Yankees @ Washington Nationals",
+      "line": 1.5,
+      "odds": -265,
+      "model_prob": 0.7882,
+      "implied_prob": 0.6493,
+      "edge_pct": 13.89,
+      "model_mu": 0.86,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Kyle Schwarber",
+      "team": "Kyle Schwarber UNDER 0.5",
+      "matchup": "Philadelphia Phillies @ Detroit Tigers",
+      "line": 0.5,
+      "odds": -345,
+      "model_prob": 0.8638,
+      "implied_prob": 0.6958,
+      "edge_pct": 16.8,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "James Jarvis",
+      "team": "James Jarvis OVER 0.5",
+      "matchup": "Atlanta Braves @ St. Louis Cardinals",
+      "line": 0.5,
+      "odds": -135,
+      "model_prob": 0.6712,
+      "implied_prob": 0.513,
+      "edge_pct": 15.82,
+      "model_mu": 1.65,
+      "sportsbook": "Fliff"
+    }
+  ]
+}

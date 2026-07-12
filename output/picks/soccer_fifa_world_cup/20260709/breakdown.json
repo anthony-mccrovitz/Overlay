@@ -1,0 +1,48 @@
+{
+  "Morocco @ France": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "France",
+        "team": "France",
+        "matchup": "Morocco @ France",
+        "odds": -170,
+        "best_odds": -170,
+        "model_prob": 0.6533,
+        "implied_prob": 0.5943,
+        "edge_pct": 5.9,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.799
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Morocco",
+        "team": "Morocco",
+        "matchup": "Morocco @ France",
+        "odds": 575,
+        "best_odds": 575,
+        "model_prob": 0.1316,
+        "implied_prob": 0.1453,
+        "edge_pct": -1.37,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.799
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Morocco @ France",
+        "odds": 290,
+        "best_odds": 290,
+        "model_prob": 0.2151,
+        "implied_prob": 0.2404,
+        "edge_pct": -2.53,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.799
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-08T11:25:33.232648+00:00",
+  "updated_at": "2026-07-12T14:37:21.494801+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,85 +224,85 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.484,
-      "positive_pct": 29.6,
-      "n": 1167,
-      "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
+      "avg_clv_pct": -0.705,
+      "positive_pct": 32.4,
+      "n": 1636,
+      "verdict": "NEGATIVE CLV \u2014 getting worse moneyline numbers than closing"
     },
     "spread_total": {
-      "total": {
-        "count": 241,
-        "avg_line_clv": 0.067,
-        "beat_close_pct": 52.3,
-        "avg_price_clv_pct": 0.366,
-        "matched_price_n": 85
-      },
       "spread": {
-        "count": 173,
-        "avg_line_clv": 0.254,
-        "beat_close_pct": 45.1,
-        "avg_price_clv_pct": 1.603,
-        "matched_price_n": 92
+        "count": 261,
+        "avg_line_clv": -0.161,
+        "beat_close_pct": 35.6,
+        "avg_price_clv_pct": -2.197,
+        "matched_price_n": 183
+      },
+      "total": {
+        "count": 264,
+        "avg_line_clv": 0.06,
+        "beat_close_pct": 50.8,
+        "avg_price_clv_pct": 0.29,
+        "matched_price_n": 91
       },
       "f5_total": {
-        "count": 200,
-        "avg_line_clv": 0.007,
-        "beat_close_pct": 29.5,
-        "avg_price_clv_pct": -3.902,
-        "matched_price_n": 102
+        "count": 212,
+        "avg_line_clv": 0.017,
+        "beat_close_pct": 32.1,
+        "avg_price_clv_pct": -3.848,
+        "matched_price_n": 104
       },
       "pitcher_strikeouts": {
-        "count": 416,
-        "avg_line_clv": -0.012,
-        "beat_close_pct": 55.3,
-        "avg_price_clv_pct": 1.007,
-        "matched_price_n": 279
+        "count": 570,
+        "avg_line_clv": -0.005,
+        "beat_close_pct": 57.0,
+        "avg_price_clv_pct": 1.257,
+        "matched_price_n": 397
       },
       "batter_walks": {
-        "count": 197,
-        "avg_line_clv": -0.01,
-        "beat_close_pct": 60.4,
-        "avg_price_clv_pct": 2.311,
-        "matched_price_n": 195
+        "count": 1007,
+        "avg_line_clv": 0.009,
+        "beat_close_pct": 60.8,
+        "avg_price_clv_pct": 1.773,
+        "matched_price_n": 997
       },
       "batter_rbis": {
-        "count": 161,
-        "avg_line_clv": 0.0,
-        "beat_close_pct": 48.4,
-        "avg_price_clv_pct": 0.617,
-        "matched_price_n": 159
+        "count": 802,
+        "avg_line_clv": 0.002,
+        "beat_close_pct": 43.0,
+        "avg_price_clv_pct": 0.562,
+        "matched_price_n": 795
       },
       "batter_hits": {
-        "count": 165,
-        "avg_line_clv": -0.012,
-        "beat_close_pct": 58.8,
-        "avg_price_clv_pct": 1.102,
-        "matched_price_n": 147
+        "count": 956,
+        "avg_line_clv": 0.031,
+        "beat_close_pct": 57.7,
+        "avg_price_clv_pct": 1.641,
+        "matched_price_n": 861
       },
       "batter_home_runs": {
-        "count": 92,
+        "count": 490,
         "avg_line_clv": 0.0,
-        "beat_close_pct": 26.1,
-        "avg_price_clv_pct": -2.336,
-        "matched_price_n": 92
+        "beat_close_pct": 25.3,
+        "avg_price_clv_pct": -1.329,
+        "matched_price_n": 490
       },
       "batter_total_bases": {
-        "count": 186,
-        "avg_line_clv": 0.204,
-        "beat_close_pct": 67.7,
-        "avg_price_clv_pct": 0.898,
-        "matched_price_n": 142
+        "count": 966,
+        "avg_line_clv": 0.262,
+        "beat_close_pct": 67.5,
+        "avg_price_clv_pct": 1.157,
+        "matched_price_n": 694
       }
     },
     "totals_coverage": {
-      "scored": 241,
-      "scoreable": 525,
-      "pct": 45.9
+      "scored": 264,
+      "scoreable": 536,
+      "pct": 49.3
     },
     "spread_coverage": {
-      "scored": 173,
-      "scoreable": 322,
-      "pct": 53.7
+      "scored": 261,
+      "scoreable": 464,
+      "pct": 56.2
     }
   },
   "summary": {

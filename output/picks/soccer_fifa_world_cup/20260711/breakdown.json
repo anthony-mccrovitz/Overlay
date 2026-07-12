@@ -1,0 +1,94 @@
+{
+  "Switzerland @ Argentina": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Argentina",
+        "team": "Argentina",
+        "matchup": "Switzerland @ Argentina",
+        "odds": -145,
+        "best_odds": -145,
+        "model_prob": 0.6421,
+        "implied_prob": 0.5587,
+        "edge_pct": 8.34,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.817
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Switzerland",
+        "team": "Switzerland",
+        "matchup": "Switzerland @ Argentina",
+        "odds": 510,
+        "best_odds": 510,
+        "model_prob": 0.1398,
+        "implied_prob": 0.16,
+        "edge_pct": -2.02,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.817
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Switzerland @ Argentina",
+        "odds": 260,
+        "best_odds": 260,
+        "model_prob": 0.2182,
+        "implied_prob": 0.2641,
+        "edge_pct": -4.59,
+        "sportsbook": "DraftKings",
+        "exp_total": 2.817
+      }
+    ]
+  },
+  "England @ Norway": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "England",
+        "team": "England",
+        "matchup": "England @ Norway",
+        "odds": -105,
+        "best_odds": -105,
+        "model_prob": 0.5275,
+        "implied_prob": 0.4797,
+        "edge_pct": 4.78,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.798
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "England @ Norway",
+        "odds": 280,
+        "best_odds": 280,
+        "model_prob": 0.2502,
+        "implied_prob": 0.2472,
+        "edge_pct": 0.3,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.798
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Norway",
+        "team": "Norway",
+        "matchup": "England @ Norway",
+        "odds": 290,
+        "best_odds": 290,
+        "model_prob": 0.2222,
+        "implied_prob": 0.2424,
+        "edge_pct": -2.02,
+        "sportsbook": "FanDuel",
+        "exp_total": 2.798
+      }
+    ]
+  }
+}
