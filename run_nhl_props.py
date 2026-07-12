@@ -443,6 +443,7 @@ def run_nhl_props(args: argparse.Namespace) -> int:
 
     # Find edges per market
     all_edges: list[dict] = []
+    full_board: list[dict] = []   # every priced lean, for shadow CLV logging
     out_dir = Path(f"output/picks/icehockey_nhl/{date_str}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -450,12 +451,17 @@ def run_nhl_props(args: argparse.Namespace) -> int:
 
     for market in markets:
         print(f"\n  ▸ {market}...")
-        edges = _find_edges_for_market(
+        # Fetch the FULL board (min_edge=-1 passes every lean), then apply the
+        # display threshold — closings are captured for every priced prop, so
+        # logging the whole board is what makes NHL props CLV-scoreable.
+        board = _find_edges_for_market(
             events, market, player_rates,
-            min_edge=min_edge_frac,
+            min_edge=-1.0,
             target_date=date_str,
             refresh=refresh,
         )
+        full_board.extend(board)
+        edges = [e for e in board if float(e.get("edge_pct", 0) or 0) >= min_edge]
         if edges:
             print(f"    Found {len(edges)} edge(s):")
             for e in sorted(edges, key=lambda x: x["edge_pct"], reverse=True)[:8]:
@@ -475,8 +481,10 @@ def run_nhl_props(args: argparse.Namespace) -> int:
     out_path.write_text(json.dumps(all_edges, indent=2))
     print(f"\n  ✓  {len(all_edges)} total edge(s) → {out_path}")
 
-    # Log to PnL
-    n_logged = _auto_log_picks(all_edges, game_date)
+    # Log to PnL — the full board (best lean per player×market), not just the
+    # threshold edges, so every priced prop gets an opening snapshot for CLV.
+    from src.analytics.clv_tracker import collapse_board
+    n_logged = _auto_log_picks(collapse_board(full_board), game_date)
     if n_logged:
         print(f"  ✓  Logged {n_logged} pick(s) to data/pnl/picks.json (shadow)")
 

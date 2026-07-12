@@ -247,6 +247,9 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     print("\n  Fetching NBA player props...")
     raw_props = find_nba_prop_edges(upcoming[:4])
     print(f"  ✓  {len(raw_props)} prop edges found")
+    # Full prop board (min_edge<0 = board mode): every priced lean, for shadow
+    # CLV logging. The odds fetches are cached, so this second pass is free.
+    prop_board = find_nba_prop_edges(upcoming[:4], min_edge=-1.0)
 
     # Dedupe: one prop per player (best edge), then sort by edge desc.
     # Confidence gate: 0.53 <= model_prob <= 0.78
@@ -296,11 +299,16 @@ def main(refresh: bool = False, target_date: str | None = None) -> None:
     _auto_log_nba_picks(edges, today)
 
     # ── Log props to pnl for tracking (card_pick=False) ───────────────────
-    if props:
+    if prop_board:
         try:
             from predict import _auto_log_props
+            from src.analytics.clv_tracker import collapse_board
             _prop_date = date(int(today[:4]), int(today[4:6]), int(today[6:]))
-            n_props = _auto_log_props(props, sport="nba", game_date=_prop_date)
+            # Log the FULL prop board (best lean per player×market), not just the
+            # displayed top-10 — closings are captured for every priced prop, so
+            # an opening snapshot on each lean is what makes them CLV-scoreable.
+            n_props = _auto_log_props(collapse_board(prop_board), sport="nba",
+                                      game_date=_prop_date)
             if n_props > 0:
                 print(f"  Auto-logged {n_props} NBA prop(s) to pnl for tracking")
         except Exception as _nba_prop_err:

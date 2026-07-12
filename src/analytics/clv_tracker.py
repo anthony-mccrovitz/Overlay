@@ -2421,8 +2421,8 @@ def print_clv_by_entry_edge() -> None:
     data = get_clv_by_entry_edge()
     print(f"\n  STALE-OPENER VALIDATION — entry EV vs sharp fair → realized CLV")
     if not data:
-        print("    (no snapshots carry entry_ev_vs_fair_pct yet — accrues from"
-              " today's picks forward)")
+        print("    (no snapshot has BOTH an entry-EV stamp and a scored close yet"
+              " — fills in as games with entry_ev_vs_fair_pct close)")
         return
     for label, e in data.items():
         sign = "+" if e["avg_clv"] >= 0 else ""

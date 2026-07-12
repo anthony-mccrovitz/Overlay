@@ -235,6 +235,9 @@ def run_nba_props(args: argparse.Namespace) -> int:
     print(f"\n  Running NBA prop model (markets: {', '.join(markets_to_run)})...")
     all_raw_edges = find_nba_prop_edges(events[:4])  # cap at 4 games like run_nba.py
     print(f"  Raw edges found: {len(all_raw_edges)}")
+    # Full prop board (min_edge<0 = board mode) for shadow CLV logging — the
+    # odds fetches are cached, so the second pass costs no API credits.
+    prop_board = find_nba_prop_edges(events[:4], min_edge=-1.0)
 
     # Filter to requested markets
     if market_filter:
@@ -291,7 +294,10 @@ def run_nba_props(args: argparse.Namespace) -> int:
                 market_path.write_text("[]")
 
     # ── Log to PnL ─────────────────────────────────────────────────────────────
-    added = _auto_log_picks(confident_edges, game_date)
+    # Log the FULL board (best lean per player×market) so every priced prop gets
+    # an opening snapshot and can score CLV; confident_edges stays display-only.
+    from src.analytics.clv_tracker import collapse_board
+    added = _auto_log_picks(collapse_board(prop_board or confident_edges), game_date)
     if added:
         print(f"\n  Logged {added} NBA prop edge(s) to PnL (market-specific).")
     else:
