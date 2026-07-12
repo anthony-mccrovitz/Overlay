@@ -1,0 +1,44 @@
+[
+  {
+    "sport": "tennis_atp_wimbledon",
+    "market": "moneyline",
+    "direction": "Jannik Sinner",
+    "team": "Jannik Sinner",
+    "matchup": "Alexander Zverev vs Jannik Sinner",
+    "odds": -160,
+    "model_prob": 0.7268,
+    "implied_prob": 0.5752,
+    "edge_pct": 15.17,
+    "sportsbook": "BetMGM",
+    "surface": "grass",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_atp_wimbledon",
+    "market": "moneyline",
+    "direction": "Alexander Zverev",
+    "team": "Alexander Zverev",
+    "matchup": "Alexander Zverev vs Jannik Sinner",
+    "odds": 353,
+    "model_prob": 0.2732,
+    "implied_prob": 0.2117,
+    "edge_pct": 6.15,
+    "sportsbook": "Pinnacle",
+    "surface": "grass",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_atp_wimbledon",
+    "market": "total",
+    "direction": "UNDER",
+    "team": "UNDER 44.5",
+    "matchup": "Alexander Zverev @ Jannik Sinner",
+    "odds": -125,
+    "best_odds": -125,
+    "line": 44.5,
+    "model_prob": 1.0,
+    "implied_prob": 0.5095,
+    "edge_pct": 49.05,
+    "sportsbook": "Caesars"
+  }
+]
