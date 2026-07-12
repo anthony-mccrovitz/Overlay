@@ -1988,8 +1988,11 @@ def get_clv_by_market(sport_filter: str | None = None) -> dict:
         elif mk in ("run_line", "runline", "puck_line", "puckline"):
             mk = "spread"
         b = buckets.setdefault(mk, {"picks": 0, "prob": [], "line": [], "beats": 0,
-                                    "scored": 0, "sharp": [], "sharp_beats": 0})
+                                    "scored": 0, "sharp": [], "sharp_beats": 0,
+                                    "unscoreable": 0})
         b["picks"] += 1
+        if s.get("unscoreable"):
+            b["unscoreable"] += 1
         if s.get("clv_pct") is not None:           # moneyline-style prob-CLV
             b["scored"] += 1
             b["prob"].append(s["clv_pct"])
@@ -2020,6 +2023,8 @@ def get_clv_by_market(sport_filter: str | None = None) -> dict:
             entry["avg_line_clv"] = round(sum(b["line"]) / len(b["line"]), 3)
         else:
             entry["metric"] = "none"   # picks logged but no closing line joined yet
+        if b["unscoreable"]:
+            entry["unscoreable"] = b["unscoreable"]
         if b["scored"]:
             entry["beat_close_pct"] = round(b["beats"] / b["scored"] * 100, 1)
         # Sharp (vs Pinnacle close) — the honest read, when Pinnacle priced it.
@@ -2046,6 +2051,12 @@ def print_clv_by_market(sport_filter: str | None = None) -> None:
         elif e["metric"] == "line_clv_points":
             sign = "+" if e["avg_line_clv"] >= 0 else ""
             metric = f"avg line-CLV {sign}{e['avg_line_clv']} pts"
+        elif e.get("unscoreable", 0) >= e["picks"]:
+            # Permanently orphaned: no closing source exists or ever will
+            # (generic "prop" labels, pre-capture NHL props, h2h-only tennis
+            # archives). Distinct from "not joined YET" so the report doesn't
+            # imply these are pending.
+            metric = "unscoreable — no closing source (historical orphans)"
         else:
             metric = "no closing line joined yet"
         beat = f", beat close {e['beat_close_pct']}%" if "beat_close_pct" in e else ""

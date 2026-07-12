@@ -323,6 +323,14 @@ STRATEGIES = {
     "devig_ev_totals": devig_ev_totals,
 }
 
+# Strategies with a RETIRE verdict from the 300-bet no-vig CLV rule. Kept in
+# STRATEGIES so history stays queryable and an explicit
+# log_shadow_strategies(strategies=[...]) can still resurrect one for a re-test,
+# but the default daily run stops logging them — a settled negative verdict
+# doesn't need more sample.
+# fav_longshot: RETIRED 2026-07-12 — avg CLV -2.48% at n=344 (chef.py clv).
+RETIRED_STRATEGIES = {"fav_longshot"}
+
 
 # ── Logger ──────────────────────────────────────────────────────────────────
 
@@ -347,7 +355,8 @@ def log_shadow_strategies(date_str: str | None = None,
     """
     eff_date = date_str or _date.today().isoformat()
     sports = sports or DEFAULT_SPORTS
-    strat_names = strategies or list(STRATEGIES)
+    strat_names = strategies or [n for n in STRATEGIES
+                                 if n not in RETIRED_STRATEGIES]
     now_ts = datetime.now(tz=timezone.utc).isoformat()
 
     blob = _load_picks()
