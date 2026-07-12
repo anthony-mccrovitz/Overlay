@@ -47,8 +47,26 @@ WEEKLY_SPORTS = ["pga", "ufc", "nascar"]
 
 
 def tomorrow_str() -> str:
-    """Return tomorrow's date as YYYYMMDD string."""
-    return (date.today() + timedelta(days=1)).strftime("%Y%m%d")
+    """Next-slate date as YYYYMMDD: the day after the current ET *evening*.
+
+    Two traps this must survive:
+    - GitHub runners are UTC, where 9:30 PM ET is already "tomorrow", so
+      date.today()+1 skips a day (the 2026-07-11 night run asked for the
+      07-12 slate and priced it against 07-11 odds — phantom 20-35% edges).
+    - Actions cron regularly fires hours late; a 9:30 PM ET job landing at
+      00:42 ET must still target the same slate it would have on time.
+    Shifting the day boundary to noon ET handles both: any run between
+    noon and next-day noon ET belongs to the same betting evening.
+    """
+    return slate_date_for(datetime.now(timezone.utc))
+
+
+def slate_date_for(now: datetime) -> str:
+    """Pure core of tomorrow_str for a given tz-aware instant (tested)."""
+    from zoneinfo import ZoneInfo
+
+    evening_anchor = now.astimezone(ZoneInfo("America/New_York")) - timedelta(hours=12)
+    return (evening_anchor.date() + timedelta(days=1)).strftime("%Y%m%d")
 
 
 def run_sport_picks(sport: str, date_str: str) -> int:
