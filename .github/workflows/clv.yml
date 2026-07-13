@@ -5,6 +5,12 @@ name: CLV backfill + refresh
 on:
   schedule:
     - cron: "23 12 * * *"
+    # Second pass at 06:23 UTC — after the last US games close. With only the
+    # noon run, the freshest slate always showed ~0 scored until the NEXT day
+    # ("is CLV even working?"): picks made at 15:00 UTC close at 00-05 UTC,
+    # so noon-only meant up to a 30h scoring lag. Compute is archive-joins
+    # only — no Odds API cost.
+    - cron: "23 6 * * *"
   workflow_dispatch: {}
 
 permissions:

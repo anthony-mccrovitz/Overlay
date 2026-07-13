@@ -331,6 +331,26 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
     except Exception:
         _boards = None
 
+    # ── Repair pass ─────────────────────────────────────────────────────────
+    # Cloud runners start with an EMPTY odds cache (data/cache/odds is
+    # gitignored), so a snapshot created by the WNBA job for an MLB pick has no
+    # MLB board and gets no entry-fair fields — and the dedup above would skip
+    # it forever. Each sport's own runner fetches its own board right before
+    # calling this, so retrying the attach on same-day snapshots that are still
+    # bare lets every sport eventually repair its own rows. Idempotent: only
+    # touches snapshots missing opening_fair_prob, only writes when the board
+    # covers them.
+    repaired = 0
+    if _boards is not None:
+        for s in snapshots:
+            if s.get("date") != effective_date or s.get("opening_fair_prob") is not None:
+                continue
+            try:
+                if attach_entry_fair(s, _boards):
+                    repaired += 1
+            except Exception:
+                pass
+
     for pick in day_picks:
         team = str(pick.get("team") or "").strip()
         if not team:
@@ -404,8 +424,10 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         snap_keys.add(key)
         added += 1
 
-    if added > 0:
+    if added > 0 or repaired > 0:
         _save_snapshots(snapshots)
+    if repaired:
+        print(f"  [CLV] repaired entry-fair on {repaired} existing snapshot(s)")
 
     return added
 
