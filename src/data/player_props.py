@@ -339,6 +339,9 @@ def find_prop_edges(
                     "k9": m.get("home_sp_k9", 7.5),
                     "k9_l10": m.get("home_sp_k9_l10", 7.5),
                     "lineup_ops": m.get("away_lineup_ops", 0.720),
+                    # Real IP/start so aces (6.5 IP) aren't projected at 5.5 and
+                    # auto-faded UNDER. Falls back to 5.5 if upstream omits it.
+                    "ip": m.get("home_sp_ip", 5.5),
                     "team": m["home_team"],
                     "opp": m["away_team"],
                 }
@@ -347,6 +350,7 @@ def find_prop_edges(
                     "k9": m.get("away_sp_k9", 7.5),
                     "k9_l10": m.get("away_sp_k9_l10", 7.5),
                     "lineup_ops": m.get("home_lineup_ops", 0.720),
+                    "ip": m.get("away_sp_ip", 5.5),
                     "team": m["away_team"],
                     "opp": m["home_team"],
                 }
@@ -354,7 +358,8 @@ def find_prop_edges(
                 continue
 
             projected = _project_strikeouts(
-                sp_stats["k9"], sp_stats["k9_l10"], sp_stats["lineup_ops"]
+                sp_stats["k9"], sp_stats["k9_l10"], sp_stats["lineup_ops"],
+                innings=sp_stats["ip"],
             )
             p_over = _poisson_over(projected, line)
             _append_edge("pitcher_strikeouts", player,
