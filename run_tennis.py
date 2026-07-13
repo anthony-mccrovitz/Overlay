@@ -94,6 +94,26 @@ MAIN_DRAW_STARTS: dict[str, date] = {
 # longshot where Elo ratings are unreliable due to sparse match data.
 MAX_PICK_ODDS = 500
 
+# ATP Grand Slams are best-of-5; everything else (all WTA, ATP tour events) is
+# best-of-3. Pricing a BO5 slam as BO3 was how the totals model manufactured
+# "+50% edges" — a BO3 sim tops out near 39 games against UNDER 44.5 lines.
+BO5_SPORTS = {
+    "tennis_atp_french_open",
+    "tennis_atp_wimbledon",
+    "tennis_atp_us_open",
+    "tennis_atp_australian_open",
+}
+
+
+def _bo_for(sport: str, override: int | None) -> int:
+    if override in (3, 5):
+        return override
+    return 5 if sport in BO5_SPORTS else 3
+
+
+def _tour_for(sport: str) -> str:
+    return "wta" if "_wta_" in sport else "atp"
+
 # Active tournament — Roland-Garros starts May 25, 2026
 DEFAULT_SPORT = "tennis_atp_french_open"
 
@@ -217,10 +237,12 @@ def _auto_log_picks(edges: list[dict], game_date: date, sport: str) -> int:
     return added
 
 
-def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
+def _run_one_tennis_sport(sport: str, surface: str, best_of_arg: int | None, refresh: bool,
                            game_date: "date", today_str: str) -> list[dict]:
     """Run the tennis model for a single sport key. Returns list of edges found."""
     tournament = sport.replace("tennis_atp_", "").replace("tennis_wta_", "").replace("_", " ").title()
+    best_of = _bo_for(sport, best_of_arg)
+    tour = _tour_for(sport)
 
     # Gate: skip qualifying rounds for Grand Slams only
     main_draw_start = MAIN_DRAW_STARTS.get(sport)
@@ -250,19 +272,28 @@ def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
     if not today_events:
         return []
 
-    print(f"\n  [{tournament}] {len(today_events)} match(es) on slate")
-    model = TennisModel(surface=surface)
+    print(f"\n  [{tournament}] {len(today_events)} match(es) on slate  (BO{best_of}, {tour.upper()})")
+    model = TennisModel(surface=surface, tour=tour)
     edges = model.find_edges(today_events, surface=surface, best_of=best_of)
     edges = [e for e in edges if abs(e.get("odds", 0)) <= MAX_PICK_ODDS]
 
     # ── Games-total edges (over/under total games) ────────────────────────────
+    # Same market-anchor discipline as moneyline: the model's simulated over
+    # prob is blended toward the book's devigged over prob by the confidence
+    # weight. Sparse players ⇒ w=0 ⇒ no total can show an edge.
+    from src.models.tennis_model import MAX_EDGE_PCT
     def _imp(o): o=float(o); return (100/(o+100)) if o>0 else (abs(o)/(abs(o)+100))
     for ev in today_events:
         a = ev.get("home_team", ""); b = ev.get("away_team", "")
         if not a or not b:
             continue
+        w_conf = model.confidence(a, b)
+        if w_conf <= 0.0:
+            continue
         for bm in ev.get("bookmakers", []):
             book = bm.get("title", "")
+            if book == "Pinnacle":
+                continue   # reference, never a destination
             for mk in bm.get("markets", []):
                 if mk.get("key") != "totals":
                     continue
@@ -283,12 +314,15 @@ def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
                 tot = op + up
                 if tot <= 0:
                     continue
+                # Anchor to this book's devigged over prob
+                fair_over = op / tot
+                over_final = w_conf * gt["over"] + (1.0 - w_conf) * fair_over
                 for direction, mp, price, imp in [
-                    ("OVER", gt["over"], float(over_o["price"]), op / tot),
-                    ("UNDER", gt["under"], float(under_o["price"]), up / tot),
+                    ("OVER", over_final, float(over_o["price"]), op / tot),
+                    ("UNDER", 1.0 - over_final, float(under_o["price"]), up / tot),
                 ]:
                     edge = (mp - imp) * 100.0
-                    if edge >= 4.0 and abs(price) <= MAX_PICK_ODDS:
+                    if 4.0 <= edge <= MAX_EDGE_PCT and abs(price) <= MAX_PICK_ODDS:
                         edges.append({
                             "sport": sport, "market": "total", "direction": direction,
                             "team": f"{direction} {line}", "matchup": f"{b} @ {a}",
@@ -317,7 +351,7 @@ def _run_one_tennis_sport(sport: str, surface: str, best_of: int, refresh: bool,
 def run_tennis(args: argparse.Namespace) -> int:
     sport_arg = getattr(args, "sport", None)
     surface_arg = getattr(args, "surface", None)
-    best_of = getattr(args, "best_of", 3)
+    best_of = getattr(args, "best_of", None)   # None → auto (BO5 for ATP slams)
     refresh = getattr(args, "refresh", False)
     date_str = getattr(args, "date", None) or datetime.now().strftime("%Y%m%d")
     game_date = date(int(date_str[:4]), int(date_str[4:6]), int(date_str[6:]))
@@ -345,17 +379,19 @@ def run_tennis(args: argparse.Namespace) -> int:
 
     print(f"\n{'='*60}")
     print(f"  Tennis Picks — {tournament} ({surface.capitalize()})")
-    print(f"  {game_date.strftime('%B %d, %Y')}  |  Best of {best_of}")
+    print(f"  {game_date.strftime('%B %d, %Y')}  |  Best of {_bo_for(sport, best_of)}")
     print(f"{'='*60}")
 
-    # 0. Refresh live ATP Elo (from JeffSackmann data, cached 12h)
+    # 0. Warm dual-tour Elo (tennis-data.co.uk, cached 12h). A failed build
+    # leaves 0-match players everywhere → confidence w=0 → the model defers
+    # entirely to the market and emits no edges (fail-safe, not fail-crazy).
     try:
-        from src.data.tennis_data import load_cached_elo, refresh_player_db
+        from src.data.tennis_data import load_cached_elo
         if not load_cached_elo(verbose=True):
-            print("  [Elo] Refreshing ATP Elo from 2023-2026 match history...")
-            refresh_player_db(verbose=True)
+            print("  [Elo] WARNING: ratings unavailable — no edges will clear "
+                  "the confidence gate today")
     except Exception as _elo_err:
-        print(f"  [Elo refresh] {_elo_err} — using static ratings")
+        print(f"  [Elo refresh] {_elo_err}")
 
     # 1. Run all active tournaments
     all_edges: list[dict] = []
@@ -453,8 +489,8 @@ if __name__ == "__main__":
                              "tournaments via fetch_active_tennis_sports().")
     parser.add_argument("--surface", type=str, choices=["clay", "hard", "grass"],
                         help="Court surface (auto-detected from sport key if omitted)")
-    parser.add_argument("--best-of", type=int, default=3, choices=[3, 5],
-                        help="Match format: 3 or 5 sets (default 3)")
+    parser.add_argument("--best-of", type=int, default=None, choices=[3, 5],
+                        help="Match format override (default: auto — 5 for ATP slams, else 3)")
     parser.add_argument("--date",    type=str, help="Slate date YYYYMMDD (default: today)")
     parser.add_argument("--refresh", action="store_true", help="Force-refresh odds cache")
     args = parser.parse_args()

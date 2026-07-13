@@ -41,7 +41,7 @@ MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 1 (proven) — these go on the card ────────────────────────────────
     ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
     ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
-    ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo (4-25 -8u, shadow — keep tracking)"},
+    ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u — stay shadow until v2 proves out)"},
     ("soccer", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"},
 
     # ── World Cup 2026 — own unit, all incubating until the CLV gate confirms ──

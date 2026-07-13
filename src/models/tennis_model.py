@@ -24,10 +24,17 @@ import math
 from typing import TYPE_CHECKING
 
 from src.data.tennis_data import (
-    get_player_rating,
+    MIN_MATCHES_KNOWN,
     elo_win_prob,
+    get_rating_info,
     SERVE_WIN_BY_SURFACE,
 )
+
+# Sanity ceiling on any claimed edge. The tennis market (Pinnacle close) is
+# essentially efficient — Elo's Brier is only ever beaten BY the market — so a
+# double-digit "edge" is model error, not opportunity. Anything above this is
+# dropped, not bet.
+MAX_EDGE_PCT = 12.0
 
 
 # ─────────────────────────── Markov chain math ───────────────────────────────
@@ -172,9 +179,23 @@ class TennisModel:
     Surface-specific Elo tennis model with Markov chain match simulator.
     """
 
-    def __init__(self, surface: str = "clay") -> None:
+    def __init__(self, surface: str = "clay", tour: str = "atp") -> None:
         self.surface = surface.lower()
+        self.tour = tour.lower()
         self.base_serve_win = SERVE_WIN_BY_SURFACE.get(self.surface, 0.64)
+
+    def confidence(self, player_a: str, player_b: str) -> float:
+        """Model weight w ∈ [0, 0.5] against the market anchor, driven by the
+        SPARSER player's match count (Kovalchik: every model degrades sharply
+        on low-data players). Below MIN_MATCHES_KNOWN the model gets no say —
+        the market is the only credible estimate. Even at full sample the
+        model never outweighs the market (Elo's Brier loses to the close)."""
+        _, m_a = get_rating_info(player_a, self.surface, self.tour)
+        _, m_b = get_rating_info(player_b, self.surface, self.tour)
+        m = min(m_a, m_b)
+        if m < MIN_MATCHES_KNOWN:
+            return 0.0
+        return min(0.5, m / (m + 40.0))
 
     def _serve_win_probs(self, player_a: str, player_b: str) -> tuple[float, float]:
         """
@@ -184,8 +205,8 @@ class TennisModel:
         Approach: binary search on the serve-win delta so that
         p_win_match(p_serve, p_return, best_of=3) ≈ p_elo.
         """
-        elo_a = get_player_rating(player_a, self.surface)
-        elo_b = get_player_rating(player_b, self.surface)
+        elo_a, _ = get_rating_info(player_a, self.surface, self.tour)
+        elo_b, _ = get_rating_info(player_b, self.surface, self.tour)
         p_elo = elo_win_prob(elo_a, elo_b)
 
         base = self.base_serve_win
@@ -298,8 +319,6 @@ class TennisModel:
         Find edges for a list of tennis events (Odds API h2h format).
         Returns list of edge dicts compatible with pnl schema.
         """
-        from src.data.tennis_data import elo_win_prob as _ewp
-
         surf = (surface or self.surface).lower()
         edges: list[dict] = []
 
@@ -309,12 +328,50 @@ class TennisModel:
             if not home or not away:
                 continue
 
-            # Model probabilities
-            p_home = self.match_win_prob(home, away, best_of=best_of)
+            # Model weight vs the market anchor. w=0 (sparse player) means the
+            # final prob IS the market fair — no edge can ever be claimed, by
+            # construction. This is what killed the old phantom-edge board:
+            # unknown qualifiers used to default to a 50/50 rating.
+            w = self.confidence(home, away)
+
+            # Raw model probabilities
+            p_home_model = self.match_win_prob(home, away, best_of=best_of)
+
+            # Market fair anchor: Pinnacle's devig when quoted, else the median
+            # of per-book devigs (robust to one off book).
+            pin_fair: float | None = None
+            book_fairs: list[float] = []
+            for bookmaker in event.get("bookmakers", []):
+                prices: dict[str, float] = {}
+                for market in bookmaker.get("markets", []):
+                    if market.get("key") != "h2h":
+                        continue
+                    for o in market.get("outcomes", []):
+                        if o.get("price"):
+                            prices[o.get("name", "")] = float(o["price"])
+                if home in prices and away in prices:
+                    ih = _american_to_imp(prices[home])
+                    ia = _american_to_imp(prices[away])
+                    if ih + ia > 0:
+                        fair = ih / (ih + ia)
+                        book_fairs.append(fair)
+                        if bookmaker.get("title") == "Pinnacle":
+                            pin_fair = fair
+            if pin_fair is not None:
+                anchor = pin_fair
+            elif book_fairs:
+                book_fairs.sort()
+                anchor = book_fairs[len(book_fairs) // 2]
+            else:
+                continue
+
+            p_home = w * p_home_model + (1.0 - w) * anchor
             p_away = 1.0 - p_home
 
             for bookmaker in event.get("bookmakers", []):
                 book = bookmaker.get("title", "")
+                if book == "Pinnacle":
+                    continue   # reference book, never a bet destination
                 for market in bookmaker.get("markets", []):
                     if market.get("key") != "h2h":
                         continue
@@ -343,7 +400,10 @@ class TennisModel:
                         imp = _american_to_imp(price) / total_imp
                         edge = (model_p - imp) * 100
 
-                        if edge >= min_edge_pct:
+                        # A tennis "edge" past the cap is model error, not
+                        # value — the sharp market doesn't misprice by that
+                        # much (see MAX_EDGE_PCT).
+                        if min_edge_pct <= edge <= MAX_EDGE_PCT:
                             edges.append({
                                 "sport":        "tennis",
                                 "market":       "moneyline",
@@ -352,6 +412,12 @@ class TennisModel:
                                 "matchup":      f"{away} vs {home}",
                                 "odds":         int(price),
                                 "model_prob":   round(model_p, 4),
+                                "model_prob_raw": round(
+                                    p_home_model if name == home
+                                    else 1.0 - p_home_model, 4),
+                                "market_fair":  round(
+                                    anchor if name == home else 1 - anchor, 4),
+                                "model_weight": round(w, 3),
                                 "implied_prob": round(imp, 4),
                                 "edge_pct":     round(edge, 2),
                                 "sportsbook":   book,
