@@ -1,159 +1,66 @@
 """
-Tennis player data — surface-specific Elo ratings.
+Tennis player data — dual-tour (ATP + WTA) surface Elo from tennis-data.co.uk.
 
-Primary: tenisElo.com formula via Jeff Sackmann's tennis_atp GitHub dataset
-  https://github.com/JeffSackmann/tennis_atp
+Rebuilt 2026-07-13. The previous engine fetched JeffSackmann/tennis_atp (repo
+now 404s — the "live Elo" cache had been silently EMPTY), covered no WTA at
+all, and defaulted every unknown player to 1750 Elo. Result: most matches were
+rated 1750-vs-1750 → 50/50 → phantom "edges" on every non-even price. This
+version is built on the published playbook:
 
-Fallback: manually curated ATP ratings for top-100 players based on
-  recent results (2024-2025 seasons). Stored in PLAYER_DB below.
+  - Elo win prob = 1/(1+10^(-d/400))              (standard)
+  - K = 250 / (matches + 5)^0.4                   (FiveThirtyEight tennis Elo)
+  - Rating = ½·overall + ½·surface Elo            (Tennis Abstract: uniform
+                                                   blend tested optimal)
+  - Ranking-based prior for sparse players        (Kovalchik 2016: ranking
+                                                   regressions beat everything
+                                                   for low-data players; all
+                                                   models degrade 10-20pts on
+                                                   lower-ranked players)
+  - New players start at 1500, NOT 1750.
 
-Elo conventions:
-  - Starting Elo: 1500 for all players
-  - K-factor: 32 for regular, 40 for majors
-  - Surface split: clay / hard / grass / carpet
+Data source: tennis-data.co.uk yearly workbooks (both tours). One source
+provides match results (Elo training + grading), set scores (totals grading),
+world rankings (sparse-player prior), and Pinnacle closing odds (calibration
+backtests). Cached under data/cache/tennis/.
 
-Usage:
-    from src.data.tennis_data import get_player_rating, SURFACE_ELOS
+References:
+  Kovalchik (2016) "Searching for the GOAT of tennis win prediction", JQAS.
+  FiveThirtyEight (2016) "How We're Forecasting The U.S. Open".
+  Tennis Abstract (2019) "An Introduction to Tennis Elo".
 """
 from __future__ import annotations
 
 import json
+import math
+import re
 import time
+import unicodedata
 from pathlib import Path
 
 CACHE_DIR = Path("data/cache/tennis")
 
-# Surface-specific Elo ratings for top ATP players.
-# Format: {"clay": elo, "hard": elo, "grass": elo}
-# Based on approximate 2025 season-end ratings from tenisElo.com
-# Updated for 2026 pre-Roland-Garros form
-PLAYER_DB: dict[str, dict] = {
-    # ── Elite ──────────────────────────────────────────────────────────────
-    "Jannik Sinner": {
-        "clay": 2145, "hard": 2220, "grass": 2050,
-        "age": 24, "hand": "R",
-    },
-    "Carlos Alcaraz": {
-        "clay": 2210, "hard": 2130, "grass": 2180,
-        "age": 22, "hand": "R",
-    },
-    "Alexander Zverev": {
-        "clay": 2050, "hard": 2000, "grass": 1880,
-        "age": 28, "hand": "L",
-    },
-    "Novak Djokovic": {
-        "clay": 2090, "hard": 2060, "grass": 2100,
-        "age": 38, "hand": "R",
-    },
-    "Taylor Fritz": {
-        "clay": 1870, "hard": 1970, "grass": 1920,
-        "age": 27, "hand": "R",
-    },
-    "Daniil Medvedev": {
-        "clay": 1920, "hard": 2080, "grass": 1870,
-        "age": 29, "hand": "R",
-    },
-    "Casper Ruud": {
-        "clay": 2020, "hard": 1870, "grass": 1740,
-        "age": 26, "hand": "R",
-    },
-    "Stefanos Tsitsipas": {
-        "clay": 1980, "hard": 1900, "grass": 1820,
-        "age": 26, "hand": "R",
-    },
-    "Hubert Hurkacz": {
-        "clay": 1830, "hard": 1950, "grass": 2020,
-        "age": 27, "hand": "R",
-    },
-    "Andrey Rublev": {
-        "clay": 1920, "hard": 1940, "grass": 1790,
-        "age": 27, "hand": "R",
-    },
-    "Frances Tiafoe": {
-        "clay": 1800, "hard": 1900, "grass": 1860,
-        "age": 26, "hand": "R",
-    },
-    "Ben Shelton": {
-        "clay": 1810, "hard": 1930, "grass": 1880,
-        "age": 22, "hand": "L",
-    },
-    "Tommy Paul": {
-        "clay": 1830, "hard": 1900, "grass": 1820,
-        "age": 27, "hand": "R",
-    },
-    "Grigor Dimitrov": {
-        "clay": 1870, "hard": 1930, "grass": 1920,
-        "age": 33, "hand": "R",
-    },
-    "Sebastian Korda": {
-        "clay": 1800, "hard": 1860, "grass": 1790,
-        "age": 24, "hand": "R",
-    },
-    "Lorenzo Musetti": {
-        "clay": 1920, "hard": 1780, "grass": 1800,
-        "age": 23, "hand": "L",
-    },
-    "Holger Rune": {
-        "clay": 1880, "hard": 1870, "grass": 1830,
-        "age": 21, "hand": "R",
-    },
-    "Felix Auger-Aliassime": {
-        "clay": 1810, "hard": 1880, "grass": 1900,
-        "age": 24, "hand": "R",
-    },
-    "Alejandro Davidovich Fokina": {
-        "clay": 1850, "hard": 1750, "grass": 1720,
-        "age": 25, "hand": "R",
-    },
-    "Ugo Humbert": {
-        "clay": 1800, "hard": 1850, "grass": 1870,
-        "age": 26, "hand": "L",
-    },
-    "Francisco Cerundolo": {
-        "clay": 1870, "hard": 1780, "grass": 1720,
-        "age": 25, "hand": "R",
-    },
-    "Nicolas Jarry": {
-        "clay": 1860, "hard": 1810, "grass": 1750,
-        "age": 28, "hand": "R",
-    },
-    "Karen Khachanov": {
-        "clay": 1820, "hard": 1870, "grass": 1810,
-        "age": 28, "hand": "R",
-    },
-    "Tallon Griekspoor": {
-        "clay": 1790, "hard": 1830, "grass": 1820,
-        "age": 28, "hand": "R",
-    },
-    "Matteo Berrettini": {
-        "clay": 1840, "hard": 1840, "grass": 1960,
-        "age": 30, "hand": "R",
-    },
-}
+_TD_BASE = "http://www.tennis-data.co.uk"
+# Years of history to train on. Elo converges after a season; four years keeps
+# ratings current without dragging in retired-player noise.
+DEFAULT_YEARS = [2023, 2024, 2025, 2026]
 
+# 538 K-factor: K = 250/(m+5)^0.4 (m = player's matches seen so far).
+_K_NUM, _K_OFF, _K_SHAPE = 250.0, 5.0, 0.4
 
-def get_player_rating(name: str, surface: str = "clay") -> float:
-    """
-    Return surface-specific Elo for a player.
-    Falls back to average rating (1750) for unknown players.
-    Handles common name variations.
-    """
-    surface = surface.lower()
-    if surface not in ("clay", "hard", "grass"):
-        surface = "hard"
+# Surface blend: rating = _BLEND·overall + (1-_BLEND)·surface.
+# Tennis Abstract found uniform 50/50 optimal across surfaces
+# (FiveThirtyEight used 0.71/0.29 for hard courts — close enough that the
+# simpler constant wins).
+_BLEND = 0.5
 
-    # Direct match
-    if name in PLAYER_DB:
-        return float(PLAYER_DB[name].get(surface, PLAYER_DB[name].get("hard", 1750)))
+# Sparse-player handling (Kovalchik: rankings carry the signal when match
+# history doesn't). Observed Elo is shrunk toward a rank-implied prior with
+# weight m/(m+_PRIOR_M): at 0 matches you're purely your ranking, at 30 matches
+# ranking is a third of the estimate, at 100+ it barely matters.
+_PRIOR_M = 15.0
 
-    # Fuzzy: last name match
-    name_lower = name.lower()
-    for player, data in PLAYER_DB.items():
-        parts = player.lower().split()
-        if any(part in name_lower or name_lower in part for part in parts if len(part) > 3):
-            return float(data.get(surface, data.get("hard", 1750)))
-
-    return 1750.0
+MIN_MATCHES_KNOWN = 10   # below this a player is "sparse" — callers should
+                         # anchor hard to the market (see tennis_model)
 
 
 def elo_win_prob(elo_a: float, elo_b: float) -> float:
@@ -161,162 +68,287 @@ def elo_win_prob(elo_a: float, elo_b: float) -> float:
     return 1.0 / (1.0 + 10 ** ((elo_b - elo_a) / 400.0))
 
 
-# Typical serve win % by surface (ATP, 2024 season averages)
-# These translate Elo difference into per-point serve/return probabilities
-SERVE_WIN_BY_SURFACE: dict[str, float] = {
-    "clay":  0.620,   # slower surface, more breaks
-    "hard":  0.640,   # medium pace
-    "grass": 0.680,   # fast, serve dominates
-}
+def elo_from_rank(rank: float | None) -> float:
+    """Rank-implied Elo prior (log-linear, anchored to observed Elo ladders:
+    #1 ≈ 2250, #10 ≈ 1990, #100 ≈ 1730, #300 ≈ 1600, unranked ≈ 1450)."""
+    if rank is None or rank <= 0:
+        return 1450.0
+    return max(1450.0, 2250.0 - 260.0 * math.log10(float(rank)))
 
-# Standard deviation of per-match serve win % (player variation)
+
+# ─────────────────────────── name normalization ─────────────────────────────
+# tennis-data.co.uk stores "Sinner J." / "Auger-Aliassime F." / "De Minaur A.".
+# The Odds API sends "Jannik Sinner" / "Felix Auger-Aliassime" / "Alex De
+# Minaur". Both are normalized to the key "<lastname> <first-initial>".
+
+def _strip_accents(s: str) -> str:
+    return "".join(c for c in unicodedata.normalize("NFD", s)
+                   if unicodedata.category(c) != "Mn")
+
+
+def norm_td_name(name: str) -> str:
+    """'Auger-Aliassime F.' → 'auger-aliassime f'"""
+    s = _strip_accents(str(name)).lower().strip().rstrip(".")
+    return re.sub(r"\s+", " ", s)
+
+
+def norm_odds_name(name: str) -> str:
+    """'Felix Auger-Aliassime' → 'auger-aliassime f'.
+
+    Rule: everything after the first token is the surname (handles De Minaur,
+    Van Assche, Auger-Aliassime); the first token contributes the initial.
+    """
+    s = _strip_accents(str(name)).strip()
+    parts = s.split()
+    if len(parts) < 2:
+        return s.lower()
+    first, last = parts[0], " ".join(parts[1:])
+    return f"{last.lower()} {first[0].lower()}"
+
+
+def last_name_of(key: str) -> str:
+    """Surname portion of a normalized key ('auger-aliassime f' → 'auger-aliassime')."""
+    return key.rsplit(" ", 1)[0] if " " in key else key
+
+
+# ─────────────────────────── match data loading ─────────────────────────────
+
+def _td_url(tour: str, year: int) -> str:
+    """tennis-data.co.uk workbook URL. ATP lives at /YYYY/, WTA at /YYYYw/."""
+    suffix = "w" if tour == "wta" else ""
+    return f"{_TD_BASE}/{year}{suffix}/{year}.xlsx"
+
+
+def _td_cache_path(tour: str, year: int) -> Path:
+    return CACHE_DIR / f"td_{tour}_{year}.xlsx"
+
+
+def load_matches(tour: str, years: list[int] | None = None,
+                 refresh_current: bool = True, verbose: bool = False):
+    """Load tennis-data.co.uk matches for one tour as a DataFrame sorted by
+    date. Past years cache forever; the current year re-downloads when the
+    cache is older than 12h (the site updates daily during tournaments).
+    Returns an empty DataFrame when nothing could be loaded.
+    """
+    import pandas as pd
+    import requests
+
+    years = years or DEFAULT_YEARS
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    frames = []
+    from datetime import date as _date
+    cur_year = _date.today().year
+
+    for year in years:
+        path = _td_cache_path(tour, year)
+        stale = (year >= cur_year and refresh_current and path.exists()
+                 and time.time() - path.stat().st_mtime > 12 * 3600)
+        if not path.exists() or stale:
+            try:
+                resp = requests.get(_td_url(tour, year), timeout=30)
+                resp.raise_for_status()
+                path.write_bytes(resp.content)
+                if verbose:
+                    print(f"  [tennis-data] downloaded {tour} {year} "
+                          f"({len(resp.content)//1024} KB)")
+            except Exception as e:
+                if verbose:
+                    print(f"  [tennis-data] {tour} {year} fetch failed: {e}")
+                if not path.exists():
+                    continue
+        try:
+            df = pd.read_excel(path)
+            # NB: no leading underscore — itertuples() renames those positionally
+            df["SrcYear"] = year
+            frames.append(df)
+        except Exception as e:
+            if verbose:
+                print(f"  [tennis-data] {tour} {year} parse failed: {e}")
+
+    if not frames:
+        return pd.DataFrame()
+    out = pd.concat(frames, ignore_index=True)
+    out["Date"] = pd.to_datetime(out["Date"], errors="coerce")
+    return out.sort_values("Date").reset_index(drop=True)
+
+
+# ─────────────────────────── Elo engine ─────────────────────────────────────
+
+def _surface_key(surface: str) -> str:
+    s = str(surface or "").lower()
+    if "clay" in s:
+        return "clay"
+    if "grass" in s:
+        return "grass"
+    return "hard"   # hard + carpet + indoor
+
+
+def build_ratings(matches, verbose: bool = False) -> dict:
+    """Chronological Elo over a tennis-data match frame.
+
+    Returns {player_key: {"overall": elo, "clay": elo, "hard": elo,
+                          "grass": elo, "matches": n, "rank": latest_rank}}.
+    Surface Elos start from 1500 independently; K decays with the player's
+    total match count (538 formula) so early results move ratings fast and a
+    veteran's rating is stable.
+    """
+    import pandas as pd
+
+    players: dict[str, dict] = {}
+
+    def _get(name_key: str) -> dict:
+        return players.setdefault(name_key, {
+            "overall": 1500.0, "clay": 1500.0, "hard": 1500.0,
+            "grass": 1500.0, "matches": 0, "rank": None,
+        })
+
+    def _k(m: int) -> float:
+        return _K_NUM / ((m + _K_OFF) ** _K_SHAPE)
+
+    n_used = 0
+    for row in matches.itertuples(index=False):
+        w_raw, l_raw = getattr(row, "Winner", None), getattr(row, "Loser", None)
+        if not isinstance(w_raw, str) or not isinstance(l_raw, str):
+            continue
+        # Retirements/walkovers carry little skill signal but tennis-data
+        # includes them; "Completed" and "Retired" both count a real result —
+        # only walkovers are excluded.
+        comment = str(getattr(row, "Comment", "") or "").lower()
+        if "walkover" in comment:
+            continue
+        wk, lk = norm_td_name(w_raw), norm_td_name(l_raw)
+        surf = _surface_key(getattr(row, "Surface", ""))
+        w, l = _get(wk), _get(lk)
+
+        for field in ("overall", surf):
+            exp_w = elo_win_prob(w[field], l[field])
+            kw, kl = _k(w["matches"]), _k(l["matches"])
+            w[field] = w[field] + kw * (1.0 - exp_w)
+            l[field] = l[field] - kl * (1.0 - exp_w)
+
+        w["matches"] += 1
+        l["matches"] += 1
+        wr, lr = getattr(row, "WRank", None), getattr(row, "LRank", None)
+        if pd.notna(wr):
+            w["rank"] = float(wr)
+        if pd.notna(lr):
+            l["rank"] = float(lr)
+        n_used += 1
+
+    if verbose:
+        print(f"  [tennis-elo] rated {len(players)} players from {n_used} matches")
+    return players
+
+
+# ─────────────────────────── rating store ───────────────────────────────────
+
+_RATINGS_CACHE = CACHE_DIR / "ratings_v2.json"
+_RATINGS_TTL_S = 12 * 3600
+_ratings_mem: dict[str, dict] | None = None
+
+
+def refresh_ratings(years: list[int] | None = None, verbose: bool = False) -> dict:
+    """(Re)build both tours' ratings from tennis-data and cache to disk."""
+    out: dict[str, dict] = {}
+    for tour in ("atp", "wta"):
+        matches = load_matches(tour, years=years, verbose=verbose)
+        if len(matches) == 0:
+            if verbose:
+                print(f"  [tennis-elo] no {tour} matches loaded")
+            out[tour] = {}
+            continue
+        out[tour] = build_ratings(matches, verbose=verbose)
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    _RATINGS_CACHE.write_text(json.dumps(out))
+    global _ratings_mem
+    _ratings_mem = out
+    return out
+
+
+def get_ratings(verbose: bool = False) -> dict:
+    """Load ratings from memory → disk cache (12h TTL) → full rebuild."""
+    global _ratings_mem
+    if _ratings_mem is not None:
+        return _ratings_mem
+    if _RATINGS_CACHE.exists():
+        age = time.time() - _RATINGS_CACHE.stat().st_mtime
+        if age < _RATINGS_TTL_S:
+            try:
+                _ratings_mem = json.loads(_RATINGS_CACHE.read_text())
+                # An empty cache is a failed build, not a valid one — the old
+                # engine served {} for months and nobody noticed.
+                if any(_ratings_mem.get(t) for t in ("atp", "wta")):
+                    return _ratings_mem
+            except (json.JSONDecodeError, OSError):
+                pass
+    return refresh_ratings(verbose=verbose)
+
+
+def _lookup(ratings_tour: dict[str, dict], odds_name: str) -> dict | None:
+    """Find a player record from an Odds API display name. Exact normalized
+    key first, then unique surname+initial, then unique surname."""
+    key = norm_odds_name(odds_name)
+    rec = ratings_tour.get(key)
+    if rec is not None:
+        return rec
+    # surname + initial (handles middle names: "Juan Manuel Cerundolo")
+    last, initial = last_name_of(key), key[-1]
+    cands = [r for k, r in ratings_tour.items()
+             if last_name_of(k).split()[-1] == last.split()[-1] and k[-1] == initial]
+    if len(cands) == 1:
+        return cands[0]
+    # unique bare surname
+    cands = [r for k, r in ratings_tour.items()
+             if last_name_of(k).split()[-1] == last.split()[-1]]
+    if len(cands) == 1:
+        return cands[0]
+    return None
+
+
+def get_rating_info(odds_name: str, surface: str = "hard",
+                    tour: str = "atp") -> tuple[float, int]:
+    """(blended Elo, matches seen) for an Odds API player name.
+
+    Blend = ½ overall + ½ surface (Tennis Abstract), then shrink toward the
+    rank-implied prior by m/(m+15) (Kovalchik: rankings carry the signal for
+    sparse players). Unknown players: (1500, 0) — the caller must treat a
+    0-match player as pure market.
+    """
+    ratings = get_ratings()
+    rec = _lookup(ratings.get(tour, {}), odds_name)
+    if rec is None:
+        return 1500.0, 0
+    surf = _surface_key(surface)
+    observed = _BLEND * rec["overall"] + (1.0 - _BLEND) * rec.get(surf, 1500.0)
+    m = int(rec.get("matches", 0))
+    w = m / (m + _PRIOR_M)
+    prior = elo_from_rank(rec.get("rank"))
+    return w * observed + (1.0 - w) * prior, m
+
+
+# ─────────────────────────── legacy compatibility ────────────────────────────
+# Old callers import these names. get_player_rating now routes through the new
+# engine (ATP by default) and returns 1500 — not 1750 — for unknowns.
+
+SERVE_WIN_BY_SURFACE: dict[str, float] = {
+    "clay":  0.620,
+    "hard":  0.640,
+    "grass": 0.680,
+}
 SERVE_WIN_STD = 0.035
 
 
-# ── Live Elo refresh from JeffSackmann tennis_atp ────────────────────────────
-
-_SACKMANN_BASE = "https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master"
-_ELO_CACHE     = Path("data/cache/tennis/live_elo.json")
-_K_MAJOR  = 40
-_K_NORMAL = 32
-_MAJOR_NAMES = {"australian open", "roland garros", "wimbledon", "us open"}
-
-
-def _surface_key(surface: str) -> str:
-    s = (surface or "").lower()
-    if s in ("clay", "hard", "grass"):
-        return s
-    if "carpet" in s or "indoor" in s:
-        return "hard"
-    return "hard"
-
-
-def compute_live_elo(years: list[int] | None = None, verbose: bool = False) -> dict[str, dict[str, float]]:
-    """
-    Download ATP match CSVs from JeffSackmann's repo and compute surface-specific
-    Elo ratings sequentially. Returns {player_name: {clay, hard, grass}}.
-    """
-    import requests
-    import io
-    import csv
-
-    if years is None:
-        years = [2023, 2024, 2025, 2026]
-
-    # ratings[player][surface] = elo
-    ratings: dict[str, dict[str, float]] = {}
-
-    def _elo(player: str, surface: str) -> float:
-        return ratings.setdefault(player, {}).get(surface, 1500.0)
-
-    def _update(w: str, l: str, surface: str, k: int) -> None:
-        ew = _elo(w, surface)
-        el = _elo(l, surface)
-        exp_w = 1.0 / (1.0 + 10.0 ** ((el - ew) / 400.0))
-        ratings.setdefault(w, {})[surface] = ew + k * (1.0 - exp_w)
-        ratings.setdefault(l, {})[surface] = el + k * (0.0 - (1.0 - exp_w))
-
-    total_matches = 0
-    for year in years:
-        url = f"{_SACKMANN_BASE}/atp_matches_{year}.csv"
-        try:
-            resp = requests.get(url, timeout=20)
-            resp.raise_for_status()
-            reader = csv.DictReader(io.StringIO(resp.text))
-            rows = list(reader)
-        except Exception as e:
-            if verbose:
-                print(f"  [tennis_elo] {year} fetch failed: {e}")
-            continue
-
-        for row in rows:
-            winner = row.get("winner_name", "").strip()
-            loser  = row.get("loser_name",  "").strip()
-            if not winner or not loser:
-                continue
-            surface  = _surface_key(row.get("surface", ""))
-            is_major = row.get("tourney_name", "").lower().strip() in _MAJOR_NAMES
-            k = _K_MAJOR if is_major else _K_NORMAL
-            _update(winner, loser, surface, k)
-            total_matches += 1
-
-    if verbose:
-        print(f"  [tennis_elo] Processed {total_matches} matches across {len(years)} years.")
-        top = sorted(
-            [(p, r.get("clay", 1500)) for p, r in ratings.items()],
-            key=lambda x: x[1], reverse=True
-        )[:10]
-        print("  [tennis_elo] Top clay Elo:")
-        for p, e in top:
-            print(f"             {p:30s}  clay={e:.0f}")
-
-    return ratings
-
-
-def refresh_player_db(years: list[int] | None = None, verbose: bool = True) -> None:
-    """
-    Recompute Elo from JeffSackmann data and update the in-memory PLAYER_DB.
-    Also caches to data/cache/tennis/live_elo.json.
-    """
-    import json
-
-    live = compute_live_elo(years=years, verbose=verbose)
-
-    _ELO_CACHE.parent.mkdir(parents=True, exist_ok=True)
-    _ELO_CACHE.write_text(json.dumps(live, indent=2))
-
-    # Update PLAYER_DB with computed values for all players we track
-    for player in list(PLAYER_DB.keys()):
-        if player in live:
-            for surface in ("clay", "hard", "grass"):
-                if surface in live[player]:
-                    PLAYER_DB[player][surface] = round(live[player][surface])
-        # Also try last-name partial match
-        else:
-            last = player.split()[-1].lower()
-            for lp, lr in live.items():
-                if last in lp.lower():
-                    for surface in ("clay", "hard", "grass"):
-                        if surface in lr:
-                            PLAYER_DB[player][surface] = round(lr[surface])
-                    break
-
-    # Add any top-ranked players from live data not already in PLAYER_DB
-    top_clay = sorted(
-        [(p, r.get("clay", 1500)) for p, r in live.items()],
-        key=lambda x: x[1], reverse=True
-    )[:50]
-    for player, clay_elo in top_clay:
-        if player not in PLAYER_DB and clay_elo > 1700:
-            PLAYER_DB[player] = {
-                "clay":  round(live[player].get("clay", 1500)),
-                "hard":  round(live[player].get("hard", 1500)),
-                "grass": round(live[player].get("grass", 1500)),
-            }
-
-    if verbose:
-        print(f"  [tennis_elo] PLAYER_DB updated ({len(PLAYER_DB)} players).")
+def get_player_rating(name: str, surface: str = "clay") -> float:
+    elo, _m = get_rating_info(name, surface=surface, tour="atp")
+    return elo
 
 
 def load_cached_elo(verbose: bool = False) -> bool:
-    """
-    Load live Elo from cache if it exists and is fresh (< 12 hours).
-    Updates PLAYER_DB in-place. Returns True if loaded.
-    """
-    import json, time as _time
+    """Legacy shim: warm the new ratings cache. True if ratings available."""
+    r = get_ratings(verbose=verbose)
+    return any(r.get(t) for t in ("atp", "wta"))
 
-    if not _ELO_CACHE.exists():
-        return False
-    age = _time.time() - _ELO_CACHE.stat().st_mtime
-    if age > 43200:  # 12 hours
-        return False
 
-    live = json.loads(_ELO_CACHE.read_text())
-    for player in list(PLAYER_DB.keys()):
-        if player in live:
-            for surface in ("clay", "hard", "grass"):
-                if surface in live[player]:
-                    PLAYER_DB[player][surface] = round(live[player][surface])
-    if verbose:
-        print(f"  [tennis_elo] Loaded cached Elo ({len(live)} players, age {age/3600:.1f}h).")
-    return True
+def refresh_player_db(years: list[int] | None = None, verbose: bool = True) -> None:
+    """Legacy shim: full rebuild of the new ratings cache."""
+    refresh_ratings(years=years, verbose=verbose)

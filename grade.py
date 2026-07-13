@@ -1377,6 +1377,94 @@ def _grade_sport_generic(
     print(f"  Graded {graded}/{len(pending)} {sport_name} picks.")
 
 
+def _grade_tennis_backlog() -> None:
+    """Grade every pending tennis pick (any date) from tennis-data.co.uk.
+
+    Moneyline: winner match. Totals: sum of per-set games vs the line; a
+    retirement voids the total (push) but still settles the moneyline.
+    Picks whose match hasn't appeared in the data yet stay pending — the
+    source updates ~daily during tournaments, so re-runs converge.
+    """
+    from datetime import date as _dt_date
+    from src.data.tennis_results import build_results_index, find_result
+    from src.data.tennis_data import norm_odds_name
+
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if str(p.get("sport", "")).startswith("tennis_")
+        and p.get("result") in (None, "pending")
+        and p.get("odds") is not None
+    ]
+    if not pending:
+        print("  No pending tennis picks.")
+        return
+
+    indexes = {
+        "atp": build_results_index("atp"),
+        "wta": build_results_index("wta"),
+    }
+    graded = voided = 0
+
+    for pick in pending:
+        tour = "wta" if "_wta_" in str(pick.get("sport", "")) else "atp"
+        matchup = str(pick.get("matchup", ""))
+        for sep in (" vs ", " @ "):
+            if sep in matchup:
+                a, b = [t.strip() for t in matchup.split(sep, 1)]
+                break
+        else:
+            continue
+        try:
+            pick_date = _dt_date.fromisoformat(str(pick.get("date")))
+        except (ValueError, TypeError):
+            continue
+
+        rec = find_result(indexes[tour], a, b, pick_date)
+        if rec is None:
+            continue
+
+        market = str(pick.get("market", "moneyline"))
+        odds = float(pick["odds"])
+        stake = float(pick.get("stake") or 0) or 1.0   # shadow analysis at 1u flat
+        now_iso = datetime.now(timezone.utc).isoformat()
+
+        if market == "moneyline":
+            team_key = norm_odds_name(str(pick.get("team", "")))
+            won = (team_key == rec["winner_key"]
+                   or team_key.rsplit(" ", 1)[0] == rec["winner_key"].rsplit(" ", 1)[0])
+            pick["result"] = "win" if won else "loss"
+            pick["profit"] = round(_profit(stake, odds, won), 4)
+        elif market == "total":
+            if not rec.get("completed") or rec.get("games") is None:
+                pick["result"] = "push"    # retirement → total voided
+                pick["profit"] = 0.0
+                voided += 1
+            else:
+                line = float(pick.get("line") or
+                             str(pick.get("team", "")).split()[-1])
+                games = float(rec["games"])
+                direction = str(pick.get("direction") or
+                                str(pick.get("team", "")).split()[0]).upper()
+                if games == line:
+                    pick["result"] = "push"
+                    pick["profit"] = 0.0
+                else:
+                    won = (games > line) if direction == "OVER" else (games < line)
+                    pick["result"] = "win" if won else "loss"
+                    pick["profit"] = round(_profit(stake, odds, won), 4)
+        else:
+            continue
+
+        pick["resulted_at"] = now_iso
+        graded += 1
+
+    _save(data)
+    still = len(pending) - graded
+    print(f"  Graded {graded} tennis pick(s) ({voided} voided on retirement); "
+          f"{still} still pending (match not in source yet).")
+
+
 def _grade_outright(sport_field: str, sport_name: str, date_str: str, winner: str) -> None:
     """
     Grade outright winner picks (PGA, NASCAR, IndyCar, F1) by providing the winner's name.
@@ -1808,24 +1896,13 @@ def main():
                 print(f"\n  ── Grading SOCCER picks for {grade_date} ──")
                 print(f"  No pending SOCCER picks for {grade_date}")
 
-        # ── Tennis — grade each tour/tournament with pending picks ────────
+        # ── Tennis — bulk-grade ALL pending picks from tennis-data.co.uk ──
+        # (winner + set scores per match, both tours, ~daily updates). This
+        # replaced the ESPN winners-only path, which covered only Grand Slam
+        # moneylines and left every total pending forever.
         if sport in ("all", "tennis"):
-            date_compact = _norm_date(grade_date)
-            data_tmp = _load()
-            tennis_keys = sorted({
-                p.get("sport", "")
-                for p in data_tmp["picks"]
-                if _norm_date(p.get("date", "")) == date_compact
-                and (p.get("sport", "").startswith("tennis_"))
-                and p.get("result") in (None, "pending")
-            })
-            if tennis_keys:
-                print(f"\n  ── Grading TENNIS picks for {grade_date} ──")
-                for tk in tennis_keys:
-                    label = tk.replace("tennis_", "").replace("_", " ").upper()
-                    _grade_sport_generic(tk, f"TENNIS/{label}", grade_date, sport_field=tk)
-            else:
-                print(f"\n  No TENNIS completed games found for {grade_date}")
+            print(f"\n  ── Grading TENNIS picks (full backlog) ──")
+            _grade_tennis_backlog()
 
         # ── Outright winner markets (PGA only) ────────────────────────────
         for short, field in _OUTRIGHT_SPORT_MAP.items():
