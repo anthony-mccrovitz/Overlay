@@ -666,6 +666,12 @@ def _run_mlb_daily(args, sport: str):
     print("\nStep 3: Fetching LIVE sportsbook odds...")
     # Daily mode always refreshes — stale odds break +EV and CLV tracking.
     raw_odds = odds_api.fetch_odds(refresh=True, sport=sport)
+    # The board carries multiple days of events, and mid-series the same team
+    # pair appears on consecutive days; the team-name join in value_bets would
+    # price this slate's predictions with the other day's line. Keep only rows
+    # commencing on the slate date (ET).
+    from src.data.slate import filter_df_to_slate
+    raw_odds = filter_df_to_slate(raw_odds, game_date)
     if raw_odds.empty:
         print("  No odds data. Set ODDS_API_KEY for edge detection.")
         print("  Model predictions above are still useful for social content.")

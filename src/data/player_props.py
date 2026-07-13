@@ -99,14 +99,25 @@ def fetch_mlb_event_ids(game_date: date | None = None) -> list[dict]:
     """
     Return list of {event_id, home_team, away_team, commence_time}
     for today's (or given date's) MLB games.
+
+    The day window is US/Eastern, converted to UTC for the API. A naive
+    UTC window (00:00Z-23:59Z) leaks the previous evening's West Coast
+    games (which commence after 00:00Z) into the slate — NRFI/F5/props
+    all key off these event ids, so the window must match the ET slate.
     """
-    d = game_date or date.today()
+    from datetime import datetime, timedelta, timezone
+    from zoneinfo import ZoneInfo
+
+    et = ZoneInfo("America/New_York")
+    d = game_date or datetime.now(et).date()
+    day_start = datetime(d.year, d.month, d.day, tzinfo=et).astimezone(timezone.utc)
+    day_end = day_start + timedelta(days=1)
     data = _cached_get(
         f"mlb_events_{d.isoformat()}",
         f"{API_BASE}/sports/baseball_mlb/events",
         {
-            "commenceTimeFrom": f"{d.isoformat()}T00:00:00Z",
-            "commenceTimeTo": f"{d.isoformat()}T23:59:59Z",
+            "commenceTimeFrom": day_start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "commenceTimeTo": day_end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "regions": "us",
         },
         max_age_s=3600,
