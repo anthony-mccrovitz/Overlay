@@ -91,9 +91,12 @@ def _pick_matches_game(pick: dict, info: dict) -> bool:
 
 
 def _hits_on(pick: dict, games: dict) -> list[dict]:
+    # Dedup includes the scoreline so a doubleheader (same pairing twice in
+    # one day) yields TWO hits -> ambiguous -> stays pending. Identical-score
+    # twins would collapse, but they settle identically so it's harmless.
     seen, out = set(), []
     for info in games.values():
-        gid = (info["away"], info["home"])
+        gid = (info["away"], info["home"], info["away_score"], info["home_score"])
         if gid in seen:
             continue
         seen.add(gid)
@@ -138,8 +141,6 @@ def _settle(pick: dict, info: dict) -> str | None:
     """Settle any market this sweep supports. Returns result or None."""
     market = pick.get("market")
     if market in ("moneyline", "spread", "total", "puck_line", "run_line", "runline"):
-        if market == "runline":
-            pick = pick  # _settle_game_pick handles run_line; runline shares logic via spread branch
         return grade._settle_game_pick(pick, info)
 
     now = datetime.now(grade.timezone.utc).isoformat()

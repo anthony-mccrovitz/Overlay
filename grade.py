@@ -1361,7 +1361,7 @@ def _settle_game_pick(pick: dict, game_info: dict) -> str | None:
         winner = game_info["winner"]
         won = (winner.lower() == team.lower()) or (team.lower() in winner.lower())
 
-    elif market in ("spread", "puck_line", "run_line"):
+    elif market in ("spread", "puck_line", "run_line", "runline"):
         line = float(pick.get("line") or 1.5)
         team_score = game_info["away_score"] if team == game_info["away"] else game_info["home_score"]
         opp_score  = game_info["home_score"] if team == game_info["away"] else game_info["away_score"]
