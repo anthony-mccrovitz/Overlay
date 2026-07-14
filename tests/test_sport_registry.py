@@ -107,18 +107,25 @@ class TestStalePendingWatchdog:
     MAX_STALE = 25
     STALE_AFTER_DAYS = 5
 
+    # Markets with no automated grading path. Futures settle at event end, so
+    # they're legitimately pending. Shrink this set, don't grow it: every entry
+    # here is invisible to the rot alarm.
+    UNGRADEABLE_MARKETS = {"outright"}
+
     def test_no_stale_pending_buildup(self):
         import datetime as _dt
 
         raw = json.loads(PICKS_FILE.read_text())
         picks = raw.get("picks", raw) if isinstance(raw, dict) else raw
-        cutoff = (_dt.date.today() - _dt.timedelta(days=self.STALE_AFTER_DAYS)).isoformat()
+        # Compare in compact form — picks have carried both '2026-07-08' and
+        # '20260708' over time, and '2026…' vs '2026-…' string compare lies.
+        cutoff = (_dt.date.today() - _dt.timedelta(days=self.STALE_AFTER_DAYS)).strftime("%Y%m%d")
         stale = [
             p for p in picks
             if p.get("result") in (None, "pending")
             and p.get("odds") is not None
-            and (p.get("date") or "9999") < cutoff
-            and p.get("market") != "outright"          # futures settle at event end
+            and (str(p.get("date") or "9999")).replace("-", "") < cutoff
+            and p.get("market") not in self.UNGRADEABLE_MARKETS
             and str(p.get("sport")) not in KNOWN_MANUAL_ONLY
         ]
         summary = {}

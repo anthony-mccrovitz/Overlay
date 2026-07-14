@@ -97,6 +97,19 @@ class TestSettleGamePick:
         assert grade._settle_game_pick(p, _game()) is None
         assert "result" not in p
 
+    def test_spread_exact_cover_is_push(self):
+        # Wings win by 13; -13 is a push, not a loss
+        p = {"team": "Dallas Wings", "market": "spread", "odds": -110,
+             "line": -13.0, "stake": 1.0}
+        assert grade._settle_game_pick(p, _game()) == "push"
+        assert p["profit"] == 0.0
+
+    def test_spread_missing_line_stays_pending(self):
+        # No line -> can't settle; must NOT guess a default
+        p = {"team": "Dallas Wings", "market": "spread", "odds": -110, "stake": 1.0}
+        assert grade._settle_game_pick(p, _game()) is None
+        assert "result" not in p
+
 
 # ─────────────────────────── _fetch_scores_espn ─────────────────────────────
 
@@ -157,6 +170,36 @@ class TestFetchScoresEspn:
 
     def test_unknown_sport_key_returns_empty(self):
         assert grade._fetch_scores_espn("cricket_ipl", "20260618") == {}
+
+    def test_failed_fetch_returns_none_not_empty(self):
+        # None (unknown) vs {} (no games) is load-bearing: the backlog sweep's
+        # adjacent-day fallback must not treat an outage as "no games that day"
+        resp = MagicMock(status_code=500)
+        with patch("requests.get", return_value=resp):
+            assert grade._fetch_scores_espn("basketball_wnba", "20260618") is None
+        with patch("requests.get", side_effect=OSError("timeout")):
+            assert grade._fetch_scores_espn("basketball_wnba", "20260618") is None
+
+    def test_soccer_extra_time_games_excluded(self):
+        # Books settle soccer on the 90' result; ESPN finals include ET/pens.
+        ev = _espn_event(("France", "France", "France", "FRA", "France"),
+                         ("Brazil", "Brazil", "Brazil", "BRA", "Brazil"), 2, 1)
+        ev["competitions"][0]["status"]["type"]["detail"] = "FT-AET"
+        resp = MagicMock(status_code=200)
+        resp.json.return_value = {"events": [ev]}
+        with patch("requests.get", return_value=resp):
+            games = grade._fetch_scores_espn("soccer_fifa_world_cup", "20260710")
+        assert games == {}
+
+    def test_non_soccer_overtime_still_included(self):
+        ev = _espn_event(("Vegas Golden Knights", "Vegas", "Golden Knights", "VGK", "Vegas"),
+                         ("Carolina Hurricanes", "Carolina", "Hurricanes", "CAR", "Carolina"), 5, 4)
+        ev["competitions"][0]["status"]["type"]["detail"] = "Final/OT"
+        resp = MagicMock(status_code=200)
+        resp.json.return_value = {"events": [ev]}
+        with patch("requests.get", return_value=resp):
+            games = grade._fetch_scores_espn("icehockey_nhl", "20260602")
+        assert "VGK" in games
 
 
 # ─────────────────────────── _grade_mlb_props ───────────────────────────────
@@ -248,6 +291,106 @@ class TestGradeMlbProps:
             assert m in grade._MLB_PROP_MARKETS
         assert "pitcher_strikeouts" in grade._MLB_PROP_MARKETS
         assert "prop" in grade._MLB_PROP_MARKETS
+
+    def test_fetch_failure_leaves_picks_pending_not_void(self):
+        # An MLB Stats API outage produces zero boxscore data; grading against
+        # that would VOID the whole date's props. Must leave them pending.
+        import copy
+        data = {"picks": copy.deepcopy(self.PICKS)}
+        with patch("requests.get", side_effect=OSError("api down")), \
+             patch.object(grade, "_load", return_value=data), \
+             patch.object(grade, "_save"), \
+             patch("src.analytics.public_stats.write_public_stats"):
+            grade._grade_mlb_props("20260708")
+        assert all(p["result"] is None for p in data["picks"])
+
+
+# ─────────────────────────── doubleheaders ──────────────────────────────────
+
+class TestDoubleheaderGuard:
+    """Boards are keyed by team name, so a DH's game 2 would overwrite game 1
+    and a pick could settle against the wrong game. Ambiguous pairings must be
+    dropped from the board entirely — those picks stay pending."""
+
+    def test_doubleheader_pair_dropped(self):
+        g1 = _game("New York Yankees", "Boston Red Sox", 5, 3)
+        g2 = _game("New York Yankees", "Boston Red Sox", 2, 7)
+        solo = _game("Chicago Cubs", "St. Louis Cardinals", 4, 1)
+        kept = grade._drop_doubleheader_pairs([g1, g2, solo])
+        assert kept == [solo]
+
+    def test_single_games_pass_through(self):
+        g = _game("Dallas Wings", "Toronto Tempo")
+        assert grade._drop_doubleheader_pairs([g]) == [g]
+
+    def test_espn_board_omits_doubleheader(self):
+        ev = _espn_event(("New York Yankees", "Yankees", "Yankees", "NYY", "New York"),
+                         ("Boston Red Sox", "Red Sox", "Red Sox", "BOS", "Boston"), 5, 3)
+        ev2 = _espn_event(("New York Yankees", "Yankees", "Yankees", "NYY", "New York"),
+                          ("Boston Red Sox", "Red Sox", "Red Sox", "BOS", "Boston"), 2, 7)
+        resp = MagicMock(status_code=200)
+        resp.json.return_value = {"events": [ev, ev2]}
+        with patch("requests.get", return_value=resp):
+            games = grade._fetch_scores_espn("basketball_nba", "20260710")
+        assert games == {}
+
+
+# ─────────────────────── soccer anytime-scorer ──────────────────────────────
+
+class TestFetchSoccerScorers:
+    """Anytime-scorer settles on 90'+stoppage — ET goals and own goals don't count."""
+
+    def _payload(self):
+        def goal(period, ptype, text):
+            return {"scoringPlay": True, "type": {"type": ptype},
+                    "period": {"number": period}, "text": text}
+        return {
+            "scoreboard": {"events": [{
+                "id": "760512",
+                "competitions": [{
+                    "status": {"type": {"completed": True}},
+                    "competitors": [
+                        {"homeAway": "home", "team": {"displayName": "Norway"}},
+                        {"homeAway": "away", "team": {"displayName": "England"}},
+                    ],
+                }],
+            }]},
+            "summary": {"keyEvents": [
+                {"scoringPlay": False, "type": {"type": "kickoff"}, "period": {"number": 1}},
+                goal(1, "goal", "Goal! Norway 1, England 0. Andreas Schjelderup (Norway) left footed shot."),
+                goal(2, "goal", "Goal! Norway 1, England 1. Jude Bellingham (England) left footed shot."),
+                # Extra time — must NOT count for anytime scorer
+                goal(3, "goal", "Goal! Norway 1, England 2. Bukayo Saka (England) right footed shot."),
+                # Own goal — must NOT credit the scorer
+                goal(2, "own-goal", "Own Goal! Norway 2, England 2. Harry Kane (England)."),
+            ]},
+        }
+
+    def _fetch(self):
+        pay = self._payload()
+
+        def fake_get(url, **kw):
+            resp = MagicMock(status_code=200)
+            resp.json.return_value = pay["summary"] if "summary" in url else pay["scoreboard"]
+            return resp
+
+        with patch("requests.get", side_effect=fake_get):
+            return grade._fetch_soccer_scorers("soccer_fifa_world_cup", "20260711")
+
+    def test_regulation_scorers_only(self):
+        scorers = self._fetch()[("England", "Norway")]
+        assert "andreas schjelderup" in scorers
+        assert "jude bellingham" in scorers
+
+    def test_extra_time_goal_excluded(self):
+        assert "bukayo saka" not in self._fetch()[("England", "Norway")]
+
+    def test_own_goal_excluded(self):
+        assert "harry kane" not in self._fetch()[("England", "Norway")]
+
+    def test_failed_fetch_returns_none(self):
+        with patch("requests.get", return_value=MagicMock(status_code=503)):
+            assert grade._fetch_soccer_scorers("soccer_fifa_world_cup", "20260711") is None
 
 
 # ─────────────────────────── tennis find_result ─────────────────────────────

@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import sys
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -105,20 +105,29 @@ def _hits_on(pick: dict, games: dict) -> list[dict]:
     return out
 
 
-def _find_game(pick: dict, boards: list[tuple[str, dict]]):
+def _find_game(pick: dict, boards: list[tuple[str, dict | None]]):
     """Locate the pick's game across (date, games_dict) boards.
 
     Prefer the pick's own date; fall back to adjacent days only when the
     matchup identifies exactly one game there — teams play daily in MLB, so
     a multi-day match must be unique to be trusted.
+
+    A board of None means the fetch FAILED (unknown), not "no games". If the
+    pick's own date is unknown, no fallback is allowed: an outage on the exact
+    date must not let a same-matchup game from an adjacent day settle the pick.
     """
     pick_date = pick["date"].replace("-", "")
-    exact = [g for day, games in boards if day == pick_date for g in _hits_on(pick, games)]
+    exact_board = next((games for day, games in boards if day == pick_date), None)
+    if exact_board is None:
+        return None
+    exact = _hits_on(pick, exact_board)
     if len(exact) == 1:
         return exact[0]
     if len(exact) > 1:  # doubleheader — same matchup twice on the day, ambiguous
         return None
-    adjacent = [g for day, games in boards if day != pick_date for g in _hits_on(pick, games)]
+    adjacent = [g for day, games in boards
+                if day != pick_date and games is not None
+                for g in _hits_on(pick, games)]
     if len(adjacent) == 1:
         return adjacent[0]
     return None
@@ -133,17 +142,18 @@ def _find_game_wide(pick: dict, boards: list[tuple[str, dict]]):
     away, home = _matchup_teams(pick)
     if not (away and home):
         return None  # single-team match is never safe over a wide window
-    hits = [g for _day, games in boards for g in _hits_on(pick, games)]
+    hits = [g for _day, games in boards if games is not None
+            for g in _hits_on(pick, games)]
     return hits[0] if len(hits) == 1 else None
 
 
 def _settle(pick: dict, info: dict) -> str | None:
     """Settle any market this sweep supports. Returns result or None."""
     market = pick.get("market")
-    if market in ("moneyline", "spread", "total", "puck_line", "run_line", "runline"):
+    if market in _GAME_LINE_MARKETS:
         return grade._settle_game_pick(pick, info)
 
-    now = datetime.now(grade.timezone.utc).isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     if market == "nrfi":
         h1, a1 = info.get("first_inning_home_runs"), info.get("first_inning_away_runs")
         if h1 is None or a1 is None:
@@ -218,24 +228,39 @@ def main() -> None:
     board_cache: dict[tuple[str, str], dict] = {}
     mma_cache: dict[str, dict[str, str]] = {}
     mlb_prop_dates: set[str] = set()
+    scorer_dates: set[str] = set()
 
-    def _board(source: str, day: str) -> dict:
+    def _board(source: str, day: str) -> dict | None:
+        """Games for one source+day. None = fetch failed (unknown), {} = no games."""
         key = (source, day)
         if key not in board_cache:
             if source == "mlb":
-                _w, games = grade._fetch_scores(day)
-                board_cache[key] = games or {}
+                # MLB Stats API covers any historical date and carries the
+                # inning data NRFI/F5 need. (grade._fetch_scores also hits the
+                # paid, date-independent Odds API scores endpoint — pure waste
+                # for backlog dates, so call the free per-date API directly.)
+                day_dashed = f"{day[:4]}-{day[4:6]}-{day[6:]}"
+                games = grade._fetch_scores_mlb_api(day_dashed)
+                # Can't distinguish outage from off-day here; MLB plays daily
+                # in-season, so treat an empty board as unknown (conservative).
+                board_cache[key] = games or None
             else:
-                board_cache[key] = grade._fetch_scores_espn(source, day) or {}
+                board_cache[key] = grade._fetch_scores_espn(source, day)
         return board_cache[key]
 
+    today_compact = datetime.now().strftime("%Y%m%d")
     for p in sorted(stale, key=lambda x: x.get("date") or ""):
         sport = _norm(p.get("sport"))
         market = p.get("market")
-        d = datetime.strptime(p["date"].replace("-", ""), "%Y%m%d")
-        days = [(d + timedelta(days=off)).strftime("%Y%m%d") for off in (-1, 0, 1)]
-        days = [x for x in days if x < cutoff or x <= datetime.now().strftime("%Y%m%d")]
         tag = f"{sport}/{market}"
+        try:
+            d = datetime.strptime((p.get("date") or "").replace("-", ""), "%Y%m%d")
+        except ValueError:
+            print(f"  ⚠️ unparseable date on {p.get('pick_id') or p.get('team')} — skipping")
+            unresolved[tag] += 1
+            continue
+        days = [(d + timedelta(days=off)).strftime("%Y%m%d") for off in (-1, 0, 1)]
+        days = [x for x in days if x <= today_compact]
 
         if sport in ("mlb", "baseball_mlb"):
             if market in grade._MLB_PROP_MARKETS:
@@ -246,6 +271,10 @@ def main() -> None:
             espn_key = _SPORT_TO_ESPN[sport]
             boards = [(day, _board(espn_key, day)) for day in days]
         elif sport.startswith("soccer_") and sport in grade._ESPN_SCOREBOARD_PATHS:
+            if market == "anytime_scorer":
+                # Needs per-goal minutes from match summaries, not the board.
+                scorer_dates.add(p["date"].replace("-", ""))
+                continue
             boards = [(day, _board(sport, day)) for day in days]
         elif sport in ("mma_mixed_martial_arts", "ufc", "mma"):
             if market != "moneyline":
@@ -281,18 +310,32 @@ def main() -> None:
             unresolved[tag] += 1
             continue
 
-        info = _find_game(p, boards)
-        if info is None and sport not in ("mlb", "baseball_mlb"):
-            # Scanner-logged picks (WC, playoff series) can be dated weeks off.
-            # Widen to a 4-week window; only a globally unique matchup counts.
-            source = _SPORT_TO_ESPN.get(sport, sport)
-            wide_days = [
-                (d + timedelta(days=off)).strftime("%Y%m%d")
-                for off in range(-2, 26)
-            ]
-            wide_days = [x for x in wide_days if x < cutoff]
-            wide = [(day, _board(source, day)) for day in wide_days]
-            info = _find_game_wide(p, wide)
+        try:
+            info = _find_game(p, boards)
+            if (info is None
+                    and sport not in ("mlb", "baseball_mlb")
+                    and _matchup_teams(p) != ("", "")     # wide needs a full away@home
+                    and p.get("backlog_attempts", 0) < 3):
+                # Scanner-logged picks (WC, playoff series) can be dated weeks
+                # off. Widen to a 4-week window; only a globally unique matchup
+                # counts. Capped at 3 sweeps per pick — a pick still unmatched
+                # after that is a phantom/ambiguous pairing, and refetching 28
+                # scoreboards for it every night forever is pure waste.
+                source = _SPORT_TO_ESPN.get(sport, sport)
+                wide_days = [
+                    (d + timedelta(days=off)).strftime("%Y%m%d")
+                    for off in range(-2, 26)
+                ]
+                wide_days = [x for x in wide_days if x < cutoff]
+                wide = [(day, _board(source, day)) for day in wide_days]
+                info = _find_game_wide(p, wide)
+                if info is None:
+                    p["backlog_attempts"] = p.get("backlog_attempts", 0) + 1
+        except Exception as e:
+            # One malformed pick must not kill the whole nightly sweep.
+            print(f"  ⚠️ sweep error on {p.get('pick_id') or p.get('team')}: {e}")
+            unresolved[tag] += 1
+            continue
         if info is None:
             unresolved[tag] += 1
             continue
@@ -309,6 +352,8 @@ def main() -> None:
         print(f"  {tag:44} {n}")
     if mlb_prop_dates:
         print(f"── MLB prop dates to grade: {sorted(mlb_prop_dates)}")
+    if scorer_dates:
+        print(f"── Soccer scorer dates to grade: {sorted(scorer_dates)}")
 
     if dry_run:
         print("Dry run — nothing saved.")
@@ -317,6 +362,8 @@ def main() -> None:
     grade._save(data)
     for day in sorted(mlb_prop_dates):
         grade._grade_mlb_props(day)
+    for day in sorted(scorer_dates):
+        grade._grade_soccer_scorers(day)
     try:
         from src.analytics.public_stats import write_public_stats
         write_public_stats()

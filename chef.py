@@ -239,15 +239,14 @@ _MARKET_LABEL = {
     "prop":      "Props    ",
 }
 
-_SPORT_LABEL = {"mlb": "MLB", "nba": "NBA", "nhl": "NHL"}
+_SPORT_LABEL = {"mlb": "MLB", "nba": "NBA", "nhl": "NHL", "wnba": "WNBA"}
 
 
 def _sport_matches(pick_sport: str, filter_sport: str) -> bool:
     """Alias-aware sport comparison — picks have been stamped with both short
     names ('wnba') and Odds API keys ('basketball_wnba') over time."""
-    from src.tracking.schema import _SPORT_ALIASES
-    s = str(pick_sport or "").lower()
-    return s == filter_sport or _SPORT_ALIASES.get(s) == filter_sport
+    from src.tracking.schema import canonical_sport
+    return canonical_sport(pick_sport) == filter_sport
 
 
 def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str) -> int:
@@ -299,7 +298,7 @@ def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str)
         print(f"\n  {'SPORT':<12} {'W-L':>8}  {'WR':>7}  {'PROFIT':>8}  {'ROI':>7}")
         print(f"  {'─'*56}")
         for sport_key, slabel in _SPORT_LABEL.items():
-            sp  = [p for p in shadow if p.get("sport") == sport_key]
+            sp  = [p for p in shadow if _sport_matches(p.get("sport"), sport_key)]
             snp = [p for p in sp if p.get("result") in ("win", "loss")]
             sw  = sum(1 for p in snp if p.get("result") == "win")
             sl  = len(snp) - sw
@@ -421,7 +420,7 @@ def cmd_record(args: argparse.Namespace) -> int:
         print(f"\n  {'SPORT':<12} {'W-L':>8}  {'WR':>7}  {'PROFIT':>8}  {'ROI':>7}")
         print(f"  {'─'*56}")
         for sport_key, slabel in _SPORT_LABEL.items():
-            sp = [p for p in card_picks if p.get("sport") == sport_key]
+            sp = [p for p in card_picks if _sport_matches(p.get("sport"), sport_key)]
             ss = [p for p in sp if p.get("result") in ("win", "loss", "push")]
             snp = [p for p in ss if p.get("result") != "push"]
             sw = sum(1 for p in snp if p.get("result") == "win")

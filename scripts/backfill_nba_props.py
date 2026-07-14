@@ -6,11 +6,14 @@ the 2026 playoffs (May 27 – Jun 1) never had a grader that could reach back
 past Odds API's 3-day score window.
 
 Game lookup: pick matchup across pick date ±1 on ESPN's scoreboard (slate
-dates from that era can be a day off — pre-PR-#62 UTC drift). Player must
-appear in the boxscore or the pick is left pending (NOT voided — a missing
-game is our failure, not a scratch).
+dates from that era can be a day off — pre-PR-#62 UTC drift). If the game is
+found but the player has no stats row, the pick is VOIDED (scratch/DNP). If
+the game itself can't be found, the pick stays pending — unless
+--void-phantoms is passed AND all three scoreboard fetches succeeded, in
+which case the matchup provably never happened and the pick is voided with a
+void_reason.
 
-Usage: python3 scripts/backfill_nba_props.py [--dry-run]
+Usage: python3 scripts/backfill_nba_props.py [--dry-run] [--void-phantoms]
 """
 from __future__ import annotations
 
@@ -38,12 +41,15 @@ _UA = {"User-Agent": "Mozilla/5.0"}
 _BASE = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
 
 
-def _scoreboard(day: str) -> list[dict]:
+def _scoreboard(day: str) -> list[dict] | None:
+    """None = fetch FAILED. [] = fetched fine, no games. The distinction is
+    load-bearing: --void-phantoms must never mistake an ESPN outage for
+    'this game never existed' and void real picks."""
     try:
         r = requests.get(f"{_BASE}/scoreboard", params={"dates": day}, headers=_UA, timeout=12)
-        return r.json().get("events", []) if r.status_code == 200 else []
+        return r.json().get("events", []) if r.status_code == 200 else None
     except Exception:
-        return []
+        return None
 
 
 def _player_stats(event_id: str) -> dict[str, dict[str, int]]:
@@ -105,7 +111,7 @@ def main() -> None:
             day = (d + timedelta(days=off)).strftime("%Y%m%d")
             if day not in events_by_day:
                 events_by_day[day] = _scoreboard(day)
-            for ev in events_by_day[day]:
+            for ev in events_by_day[day] or []:
                 comp = (ev.get("competitions") or [{}])[0]
                 if not comp.get("status", {}).get("type", {}).get("completed"):
                     continue
@@ -125,7 +131,8 @@ def main() -> None:
             # are slate-date-bug era cross-joins (e.g. "Knicks @ Spurs" in
             # May) — the game never happened, so the pick can never settle.
             window_days = [(d + timedelta(days=off)).strftime("%Y%m%d") for off in (-1, 0, 1)]
-            boards_fetched = all(day in events_by_day for day in window_days)
+            # None = fetch failed. A failed board means "unknown", never "phantom".
+            boards_fetched = all(events_by_day.get(day) is not None for day in window_days)
             if void_phantoms and boards_fetched and player:
                 p["result"], p["profit"] = "void", 0.0
                 p["resulted_at"] = datetime.now(timezone.utc).isoformat()
