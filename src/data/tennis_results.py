@@ -82,20 +82,50 @@ def find_result(index: dict, player_a: str, player_b: str,
     """
     ka, kb = norm_odds_name(player_a), norm_odds_name(player_b)
     recs = index.get(frozenset({ka, kb}))
+
+    def _tokens(key: str) -> set[str]:
+        """Surname tokens of a normalized key ('camila osorio serrano m' →
+        {'camila','osorio','serrano'}). Handles Odds API names whose extra
+        given names leak into our surname slot."""
+        return set(key.rsplit(" ", 1)[0].split()) if " " in key else {key}
+
+    def _player_match(pick_key: str, idx_key: str, check_initial: bool) -> bool:
+        # tennis-data surnames are single tokens ('vallejo d', 'wang xin');
+        # match if that token appears anywhere in the pick's surname tokens,
+        # and the initials are prefix-compatible ('x' vs 'xin' for the two
+        # Wangs; equal initials otherwise).
+        idx_last, idx_init = idx_key.rsplit(" ", 1) if " " in idx_key else (idx_key, "")
+        pick_init = pick_key.rsplit(" ", 1)[1] if " " in pick_key else ""
+        if idx_last not in _tokens(pick_key):
+            return False
+        if not check_initial:
+            # Players who go by a middle name break initials entirely
+            # ("Adolfo Daniel Vallejo" is 'vallejo d'). The surname *pair*
+            # plus the date window below still identifies the match.
+            return True
+        return (not idx_init or not pick_init
+                or idx_init.startswith(pick_init) or pick_init.startswith(idx_init))
+
     if not recs:
-        # Fallback: bare-surname pair (initial mismatches on transliterations)
-        la, lb = ka.rsplit(" ", 1)[0], kb.rsplit(" ", 1)[0]
-        for pair, rr in index.items():
-            names = sorted(pair)
-            lasts = {n.rsplit(" ", 1)[0] for n in names}
-            if lasts == {la, lb}:
-                recs = rr
+        # Fallback: token/initial-tolerant pair match. Collect ALL candidate
+        # pairs — the date filter below disambiguates (e.g. both Wang sisters).
+        # Strict initials first; if nothing at all, retry on surnames alone.
+        for check_initial in (True, False):
+            recs = []
+            for pair, rr in index.items():
+                names = sorted(pair)
+                if len(names) != 2:
+                    continue
+                if ((_player_match(ka, names[0], check_initial) and _player_match(kb, names[1], check_initial))
+                        or (_player_match(ka, names[1], check_initial) and _player_match(kb, names[0], check_initial))):
+                    recs.extend(rr)
+            if recs:
                 break
     if not recs:
         return None
-    for rec in recs:
-        if rec["date"] is None:
-            continue
-        if abs((rec["date"] - pick_date).days) <= window_days:
-            return rec
-    return None
+    hits = [
+        rec for rec in recs
+        if rec["date"] is not None
+        and abs((rec["date"] - pick_date).days) <= window_days
+    ]
+    return hits[0] if len(hits) == 1 else None
