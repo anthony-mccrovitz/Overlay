@@ -237979,5 +237979,30 @@
     "opening_draw_odds": 215.0,
     "entry_overround": 1.0194,
     "entry_board_age_min": 0.1
+  },
+  {
+    "date": "2026-07-14",
+    "team": "Connecticut Sun",
+    "player": null,
+    "opponent": "Portland Fire @ Connecticut Sun",
+    "sport": "wnba",
+    "market": "moneyline",
+    "strategy": "devig_ev",
+    "opening_line": null,
+    "direction": "HOME",
+    "opening_odds": -120.0,
+    "opening_implied_prob": 0.545455,
+    "snapshot_time": "2026-07-14T15:01:31.152521+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "catalyst": "stale_opener",
+    "opening_fair_prob": 0.548811,
+    "opening_fair_sharp": 0.568233,
+    "entry_ev_vs_fair_pct": 4.176,
+    "opening_opp_odds": 123.0,
+    "entry_overround": 0.9939,
+    "entry_board_age_min": 0.0
   }
 ]
