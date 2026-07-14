@@ -1,0 +1,48 @@
+{
+  "Spain @ France": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Spain",
+        "team": "Spain",
+        "matchup": "Spain @ France",
+        "odds": 225,
+        "best_odds": 225,
+        "model_prob": 0.4022,
+        "implied_prob": 0.2928,
+        "edge_pct": 10.94,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.6
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Spain @ France",
+        "odds": 210,
+        "best_odds": 210,
+        "model_prob": 0.2802,
+        "implied_prob": 0.3013,
+        "edge_pct": -2.11,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.6
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "France",
+        "team": "France",
+        "matchup": "Spain @ France",
+        "odds": 149,
+        "best_odds": 149,
+        "model_prob": 0.3176,
+        "implied_prob": 0.392,
+        "edge_pct": -7.44,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.6
+      }
+    ]
+  }
+}
