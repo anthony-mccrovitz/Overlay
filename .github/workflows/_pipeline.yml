@@ -21,17 +21,18 @@ on:
         type: string
         default: light
 
-# Serialize every pipeline that commits to the repo so two runs never race to
-# push to the same branch (which conflicts on shared files like picks.json).
-# Queue rather than cancel — each scheduled job's work must still happen.
-concurrency:
-  group: repo-commit-${{ github.ref_name }}
-  cancel-in-progress: false
-
 jobs:
   run:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Serialize every pipeline that commits to the repo so two runs never race
+    # to push to the same branch (which conflicts on shared files like
+    # picks.json). Queue rather than cancel — each job's work must happen.
+    # Declared at JOB level: workflow-level concurrency inside a reusable
+    # workflow is not reliably honored for callers; job-level is.
+    concurrency:
+      group: repo-commit-${{ github.ref_name }}
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
@@ -102,7 +103,7 @@ jobs:
             exit 0
           fi
           git commit -m "pipeline: automated update $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-          for i in 1 2 3 4 5; do
+          for i in 1 2 3; do
             if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
                && git push origin "HEAD:${GITHUB_REF_NAME}"; then
               exit 0
@@ -113,4 +114,14 @@ jobs:
             git rebase --abort 2>/dev/null || true
             echo "push attempt $i failed, retrying…"; sleep $((i * 4))
           done
-          echo "::error::failed to push after 5 attempts"; exit 1
+          # A genuine content conflict is deterministic — identical retries can
+          # never resolve it, and dying here loses this run's entire commit
+          # (ephemeral runner). Prefer OUR hunks on conflicted files (-X theirs
+          # in rebase = the replayed commit's side); the nightly backlog sweep
+          # re-grades anything the other job's conflicting hunks lose.
+          echo "retries exhausted — resolving conflicts in favor of this run's changes"
+          if git pull --rebase --autostash -X theirs origin "${GITHUB_REF_NAME}" \
+             && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+            exit 0
+          fi
+          echo "::error::failed to push after conflict-resolution attempt"; exit 1

@@ -131,6 +131,21 @@ def _fetch_scores(date_str: str) -> tuple[dict[str, str], dict[str, dict]]:
     return winners, games
 
 
+def _drop_doubleheader_pairs(infos: list[dict]) -> list[dict]:
+    """Remove ALL games of any pairing that appears more than once in one
+    day's slate. Boards are keyed by team name, so a doubleheader's game 2
+    would silently overwrite game 1 and a pick could settle against the wrong
+    game. Ambiguous pairings stay off the board — their picks stay pending
+    for manual grading, which is the only provably-correct outcome."""
+    from collections import Counter
+    pair_counts = Counter((g["away"], g["home"]) for g in infos)
+    dropped = [g for g in infos if pair_counts[(g["away"], g["home"])] > 1]
+    if dropped:
+        pairs = {f"{g['away']} @ {g['home']}" for g in dropped}
+        print(f"  ⚠️  doubleheader(s) left ungraded (ambiguous): {', '.join(sorted(pairs))}")
+    return [g for g in infos if pair_counts[(g["away"], g["home"])] == 1]
+
+
 def _fetch_scores_mlb_api(date_dashed: str) -> dict[str, dict]:
     """Fetch scores from MLB Stats API (covers any historical date).
 
@@ -147,7 +162,7 @@ def _fetch_scores_mlb_api(date_dashed: str) -> dict[str, dict]:
         )
         if resp.status_code != 200:
             return {}
-        games = {}
+        infos = []
         for date_entry in resp.json().get("dates", []):
             for g in date_entry.get("games", []):
                 state = g.get("status", {}).get("abstractGameState", "")
@@ -182,8 +197,11 @@ def _fetch_scores_mlb_api(date_dashed: str) -> dict[str, dict]:
                     "f5_home_runs": f5_home,
                     "f5_away_runs": f5_away,
                 }
-                games[home_team] = info
-                games[away_team] = info
+                infos.append(info)
+        games = {}
+        for info in _drop_doubleheader_pairs(infos):
+            games[info["home"]] = info
+            games[info["away"]] = info
         return games
     except Exception:
         return {}
@@ -328,6 +346,20 @@ def _fetch_pitcher_ks(team_field: str, date_compact: str) -> int | None:
     return None
 
 
+# MLB player-prop market → MLB Stats API boxscore batting key.
+_MLB_BATTER_STATS = {
+    "batter_hits":        "hits",
+    "batter_walks":       "baseOnBalls",
+    "batter_total_bases": "totalBases",
+    "batter_rbis":        "rbi",
+    "batter_home_runs":   "homeRuns",
+}
+
+# Every MLB market graded by _grade_mlb_props (and excluded from auto_grade).
+# "prop" is the legacy market name for pitcher strikeouts.
+_MLB_PROP_MARKETS = ("prop", "pitcher_strikeouts", *_MLB_BATTER_STATS)
+
+
 def auto_grade(date_str: str):
     """Auto-grade all pending card picks for date_str using Odds API scores."""
     date_compact = _norm_date(date_str)   # e.g. 20260414
@@ -340,9 +372,7 @@ def auto_grade(date_str: str):
         if _norm_date(p.get("date", "")) == date_compact
         and p["result"] is None
         and p.get("sport", "mlb") in ("mlb", "baseball_mlb", "")
-        and p.get("market") not in ("pitcher_strikeouts", "prop",
-                                    "batter_home_runs", "batter_hits",
-                                    "batter_total_bases", "batter_rbis")
+        and p.get("market") not in _MLB_PROP_MARKETS
     ]
 
     if not picks:
@@ -913,7 +943,7 @@ def _grade_nba_props(date_str: str) -> None:
 
 
 def _grade_mlb_props(date_str: str) -> None:
-    """Grade MLB pitcher strikeout props using MLB Stats API boxscores."""
+    """Grade MLB player props (pitcher Ks + batter markets) from MLB Stats API boxscores."""
     import re
     try:
         import requests
@@ -929,7 +959,7 @@ def _grade_mlb_props(date_str: str) -> None:
         p for p in data["picks"]
         if _norm_date(p.get("date", "")) == date_compact
         and p.get("sport") in ("baseball_mlb", "mlb")
-        and p.get("market") in ("prop", "pitcher_strikeouts")
+        and p.get("market") in _MLB_PROP_MARKETS
         and p.get("result") in (None, "pending")
     ]
     if not pending:
@@ -947,8 +977,8 @@ def _grade_mlb_props(date_str: str) -> None:
         print(f"  [mlb props] schedule fetch error: {e}")
         sched_data = {}
 
-    # Build pitcher_name -> strikeout count from all boxscores
-    pitcher_ks: dict[str, int] = {}  # normalized_name -> Ks
+    # Build player_name -> {market: stat_value} from all boxscores
+    player_stats: dict[str, dict[str, int]] = {}
     for date_entry in sched_data.get("dates", []):
         for game in date_entry.get("games", []):
             # Only grade final games
@@ -975,10 +1005,30 @@ def _grade_mlb_props(date_str: str) -> None:
                     full_name = pdata.get("person", {}).get("fullName", "")
                     if not full_name:
                         continue
-                    pitching = pdata.get("stats", {}).get("pitching", {})
-                    ks = pitching.get("strikeOuts")
-                    if ks is not None:
-                        pitcher_ks[full_name] = int(ks)
+                    stats = pdata.get("stats", {})
+                    pitching = stats.get("pitching", {})
+                    batting  = stats.get("batting", {})
+                    entry = player_stats.setdefault(full_name, {})
+                    if pitching.get("strikeOuts") is not None:
+                        ks = int(pitching["strikeOuts"])
+                        entry["pitcher_strikeouts"] = ks
+                        entry["prop"] = ks  # legacy market name for pitcher Ks
+                    # Batters who appeared always have a batting dict; only
+                    # record stats when they actually batted (doubleheader
+                    # collisions keep the later game — props are per-game and
+                    # ambiguous either way, matching prior pitcher behaviour).
+                    if batting:
+                        for market, key in _MLB_BATTER_STATS.items():
+                            val = batting.get(key)
+                            if val is not None:
+                                entry[market] = int(val)
+
+    # A fetch failure (or a date with no Final games) leaves player_stats
+    # empty. Grading against it would VOID every pending prop for the date —
+    # an API outage must leave picks pending, not erase them from the record.
+    if not player_stats:
+        print(f"  [mlb props] no boxscore data for {date_str} — leaving {len(pending)} pick(s) pending")
+        return
 
     # Payout helper: returns multiplier on stake (not profit, just the payout)
     def _payout(odds: float) -> float:
@@ -1013,25 +1063,27 @@ def _grade_mlb_props(date_str: str) -> None:
         if not pick_name:
             continue
 
-        # Fuzzy match against boxscore pitcher names
-        actual_ks: int | None = None
-        matched_name = ""
-        for full_name, ks in pitcher_ks.items():
+        market = pick.get("market", "prop")
+
+        # Fuzzy match against boxscore player names
+        actual: int | None = None
+        for full_name, stats in player_stats.items():
+            if market not in stats:
+                continue
             if (
                 pick_name.lower() == full_name.lower()
                 or pick_name.lower() in full_name.lower()
                 or full_name.lower() in pick_name.lower()
             ):
-                actual_ks = ks
-                matched_name = full_name
+                actual = stats[market]
                 break
 
-        if actual_ks is None:
-            # Pitcher did not appear in any completed game — void
+        if actual is None:
+            # Player did not appear in any completed game — void
             pick["result"] = "void"
             pick["profit"] = 0.0
             pick["resulted_at"] = now_str
-            print(f"  ⚫ VOID  {pick_name} (not found in boxscore)")
+            print(f"  ⚫ VOID  {pick_name} ({market} not found in boxscore)")
             graded += 1
             continue
 
@@ -1040,11 +1092,11 @@ def _grade_mlb_props(date_str: str) -> None:
         odds = float(pick.get("odds") or 0)
         stake = float(pick.get("stake") or 1.0)
 
-        if actual_ks == line:
+        if actual == line:
             pick["result"] = "push"
             pick["profit"] = 0.0
         else:
-            won = (actual_ks > line) if direction == "OVER" else (actual_ks < line)
+            won = (actual > line) if direction == "OVER" else (actual < line)
             pick["result"] = "win" if won else "loss"
             pick["profit"] = round(_payout(odds) * stake if won else -stake, 4)
             if won:
@@ -1060,7 +1112,7 @@ def _grade_mlb_props(date_str: str) -> None:
         prof = f"{pick['profit']:+.2f}u"
         print(
             f"  {icon}  {pick_name:<25} {direction} {line:<5}  ({sign}{int(odds)})  →  {prof}"
-            f"  (Ks: {actual_ks})"
+            f"  ({market}: {actual})"
         )
 
     _save(data)
@@ -1104,6 +1156,7 @@ def _fetch_scores_generic(sport_key: str, date_str: str) -> dict[str, dict]:
         return {}
 
     games: dict[str, dict] = {}
+    infos: list[dict] = []
     for game in resp.json():
         if not game.get("completed") or not game.get("scores"):
             continue
@@ -1139,15 +1192,119 @@ def _fetch_scores_generic(sport_key: str, date_str: str) -> dict[str, dict]:
             winner = home_team
         else:
             winner = "Draw"
-        info = {
+        infos.append({
             "home": home_team, "away": away_team,
             "home_score": home_score, "away_score": away_score,
             "total": home_score + away_score,
             "winner": winner,
             "margin": abs(home_score - away_score),
-        }
-        games[home_team] = info
-        games[away_team] = info
+        })
+
+    for info in _drop_doubleheader_pairs(infos):
+        games[info["home"]] = info
+        games[info["away"]] = info
+
+    return games
+
+
+# Sports whose historical scores are available on ESPN's scoreboard API.
+# Odds API only keeps 3 days of scores; ESPN goes back all season.
+_ESPN_SCOREBOARD_PATHS = {
+    "basketball_wnba":                  "basketball/wnba",
+    "basketball_nba":                   "basketball/nba",
+    "icehockey_nhl":                    "hockey/nhl",
+    "soccer_fifa_world_cup":            "soccer/fifa.world",
+    "soccer_france_ligue_one":          "soccer/fra.1",
+    "soccer_usa_mls":                   "soccer/usa.1",
+    "soccer_spain_la_liga":             "soccer/esp.1",
+    "soccer_italy_serie_a":             "soccer/ita.1",
+    "soccer_germany_bundesliga":        "soccer/ger.1",
+    "soccer_conmebol_copa_libertadores": "soccer/conmebol.libertadores",
+}
+
+
+def _fetch_scores_espn(sport_key: str, date_str: str) -> dict[str, dict] | None:
+    """
+    Fetch completed game scores from ESPN's scoreboard API for a single date.
+    Returns the same {team_name: game_info} structure as _fetch_scores_generic.
+    Used as a fallback when the date is outside Odds API's 3-day score window.
+
+    Returns None on a FAILED fetch and {} on a successful fetch with no games —
+    callers that fall back to adjacent days must treat "unknown" differently
+    from "no games that day" or a transient outage settles picks wrongly.
+    """
+    path = _ESPN_SCOREBOARD_PATHS.get(sport_key)
+    if not path:
+        return {}
+
+    import requests
+    try:
+        resp = requests.get(
+            f"https://site.api.espn.com/apis/site/v2/sports/{path}/scoreboard",
+            params={"dates": date_str},
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=12,
+        )
+        if resp.status_code != 200:
+            return None
+        events = resp.json().get("events", [])
+    except Exception as e:
+        print(f"  [grade/{sport_key}] ESPN scores fetch error: {e}")
+        return None
+
+    games: dict[str, dict] = {}
+    infos: list[dict] = []
+    for event in events:
+        for comp in event.get("competitions", []):
+            status_type = comp.get("status", {}).get("type", {})
+            if not status_type.get("completed"):
+                continue
+            # Soccer: books settle on the 90-minute result, but ESPN's final
+            # score includes extra time / shootouts. Leave such games out so
+            # the picks stay pending for manual settling on the 90' score.
+            if sport_key.startswith("soccer_"):
+                status_txt = " ".join(str(status_type.get(k, "")) for k in
+                                      ("name", "detail", "shortDetail")).lower()
+                if any(s in status_txt for s in ("extra time", "aet", "penalt", "shootout")):
+                    continue
+            home = away = None
+            for c in comp.get("competitors", []):
+                t = c.get("team", {})
+                # All the names ESPN knows the team by — picks store anything
+                # from "USA" to "Montréal Canadiens", so match against each.
+                names = [t.get(k) for k in ("displayName", "shortDisplayName",
+                                            "name", "abbreviation", "location")]
+                names = list(dict.fromkeys(n for n in names if n))
+                entry = (t.get("displayName", ""), c.get("score"), names)
+                if c.get("homeAway") == "home":
+                    home = entry
+                elif c.get("homeAway") == "away":
+                    away = entry
+            if not home or not away or home[1] is None or away[1] is None:
+                continue
+            try:
+                home_score, away_score = float(home[1]), float(away[1])
+            except (ValueError, TypeError):
+                continue
+            home_team, away_team = home[0], away[0]
+            if home_score > away_score:
+                winner = home_team
+            elif away_score > home_score:
+                winner = away_team
+            else:
+                winner = "Draw"
+            infos.append({
+                "home": home_team, "away": away_team,
+                "home_score": home_score, "away_score": away_score,
+                "total": home_score + away_score,
+                "winner": winner,
+                "margin": abs(home_score - away_score),
+                "home_names": home[2], "away_names": away[2],
+            })
+
+    for info in _drop_doubleheader_pairs(infos):
+        for name in info["home_names"] + info["away_names"]:
+            games.setdefault(name, info)
 
     return games
 
@@ -1233,11 +1390,193 @@ def _fetch_tennis_results_espn(tour: str, date_str: str) -> dict[str, str]:
     return results
 
 
+def _strip_accents(s: str) -> str:
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s or ""))
+    return "".join(c for c in s if not unicodedata.combining(c)).lower().strip()
+
+
+def _fetch_soccer_scorers(sport_key: str, date_str: str) -> dict[tuple[str, str], set[str]] | None:
+    """{(away, home): {scorer_name_lower, ...}} for one date's completed games.
+
+    Only REGULATION goals count — books settle anytime-scorer on 90'+stoppage,
+    so extra-time goals (ESPN period >= 3) and shootouts are excluded. Own
+    goals don't count for the scorer either.
+
+    Returns None if the fetch failed (vs {} for "no games that day").
+    """
+    path = _ESPN_SCOREBOARD_PATHS.get(sport_key)
+    if not path:
+        return {}
+
+    import re
+    import requests
+    ua = {"User-Agent": "Mozilla/5.0"}
+    base = f"https://site.api.espn.com/apis/site/v2/sports/{path}"
+    try:
+        r = requests.get(f"{base}/scoreboard", params={"dates": date_str},
+                         headers=ua, timeout=12)
+        if r.status_code != 200:
+            return None
+        events = r.json().get("events", [])
+    except Exception as e:
+        print(f"  [grade/{sport_key}] ESPN scorer fetch error: {e}")
+        return None
+
+    out: dict[tuple[str, str], set[str]] = {}
+    for ev in events:
+        comp = (ev.get("competitions") or [{}])[0]
+        if not comp.get("status", {}).get("type", {}).get("completed"):
+            continue
+        sides = {c.get("homeAway"): c.get("team", {}).get("displayName", "")
+                 for c in comp.get("competitors", [])}
+        away, home = sides.get("away", ""), sides.get("home", "")
+        if not (away and home):
+            continue
+        try:
+            s = requests.get(f"{base}/summary", params={"event": ev.get("id")},
+                             headers=ua, timeout=15)
+            if s.status_code != 200:
+                return None
+            key_events = s.json().get("keyEvents", [])
+        except Exception as e:
+            print(f"  [grade/{sport_key}] ESPN summary fetch error: {e}")
+            return None
+
+        scorers: set[str] = set()
+        for pl in key_events:
+            if not pl.get("scoringPlay"):
+                continue
+            ptype = str((pl.get("type") or {}).get("type", ""))
+            if "own" in ptype:            # own goal doesn't credit the scorer
+                continue
+            period = (pl.get("period") or {}).get("number") or 0
+            if period > 2:                # extra time / shootout — not 90'
+                continue
+            # "Goal! Norway 1, England 0. Andreas Schjelderup (Norway) left footed…"
+            m = re.search(r"\.\s*([^.(]+?)\s*\(", pl.get("text") or "")
+            if m:
+                scorers.add(_strip_accents(m.group(1)))
+        out[(away, home)] = scorers
+    return out
+
+
+def _grade_soccer_scorers(date_str: str) -> None:
+    """Grade pending anytime-scorer picks (soccer) from ESPN match summaries."""
+    date_compact = _norm_date(date_str)
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and str(p.get("sport", "")).startswith("soccer_")
+        and p.get("market") == "anytime_scorer"
+        and p.get("result") in (None, "pending")
+        and p.get("odds") is not None
+    ]
+    if not pending:
+        return
+
+    sport_keys = {p["sport"] for p in pending}
+    boards: dict[tuple[str, str], set[str]] = {}
+    for sk in sport_keys:
+        # Scanner-logged picks can be dated a day off — check the ±1 window.
+        for off in (-1, 0, 1):
+            d = (datetime.strptime(date_compact, "%Y%m%d") + timedelta(days=off)).strftime("%Y%m%d")
+            got = _fetch_soccer_scorers(sk, d)
+            if got:
+                boards.update(got)
+
+    print(f"\n  ── Soccer anytime-scorer ({len(pending)} pending) ──")
+    graded = 0
+    for pick in pending:
+        away, home = "", ""
+        mu = pick.get("matchup") or ""
+        if "@" in mu:
+            away, home = (x.strip() for x in mu.split("@", 1))
+        match = None
+        for (g_away, g_home), scorers in boards.items():
+            if (_strip_accents(away) in _strip_accents(g_away)
+                    or _strip_accents(g_away) in _strip_accents(away)) and \
+               (_strip_accents(home) in _strip_accents(g_home)
+                    or _strip_accents(g_home) in _strip_accents(home)):
+                match = scorers
+                break
+        if match is None:
+            print(f"  ⚫ UNGRADED  {pick.get('team')} — no completed match for {mu}")
+            continue
+
+        player = _strip_accents(pick.get("team", ""))   # scorer name lives in team
+        scored = any(player == s or player in s or s in player for s in match)
+        if not scored:  # surname fallback, only when unambiguous
+            last = player.split()[-1] if player.split() else ""
+            hits = [s for s in match if last and len(last) > 3 and s.split()[-1] == last]
+            scored = len(hits) == 1
+
+        odds = float(pick["odds"])
+        direction = (pick.get("direction") or "YES").upper()
+        won = scored if direction == "YES" else not scored
+        pick["result"] = "win" if won else "loss"
+        pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+        graded += 1
+        icon = "🟢 WIN " if won else "🔴 LOSS"
+        print(f"  {icon}  {pick.get('team'):<24} ({int(odds):+d})  →  {pick['profit']:+.2f}u")
+
+    _save(data)
+    print(f"  Graded {graded}/{len(pending)} anytime-scorer picks.")
+
+
+def _settle_game_pick(pick: dict, game_info: dict) -> str | None:
+    """
+    Settle one moneyline/spread/total pick against a final score and stamp
+    result/profit/resulted_at on the pick. Returns the result
+    ("win"/"loss"/"push") or None if the market is unknown.
+    """
+    team   = pick.get("team", "")
+    market = pick.get("market", "moneyline")
+    odds   = float(pick["odds"])
+
+    if market == "moneyline":
+        # MMA: winner is stored as fighter name
+        winner = game_info["winner"]
+        won = (winner.lower() == team.lower()) or (team.lower() in winner.lower())
+
+    elif market in ("spread", "puck_line", "run_line", "runline"):
+        if pick.get("line") is None:
+            return None  # can't settle a spread without its line
+        line = float(pick["line"])
+        team_score = game_info["away_score"] if team == game_info["away"] else game_info["home_score"]
+        opp_score  = game_info["home_score"] if team == game_info["away"] else game_info["away_score"]
+        if team_score + line == opp_score:
+            pick["result"] = "push"; pick["profit"] = 0.0
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+            return "push"
+        won = (team_score + line) > opp_score
+
+    elif market == "total":
+        line = float(pick.get("line") or 0)
+        direction = (pick.get("direction") or team.split()[0]).upper()
+        actual = game_info["total"]
+        if actual == line:
+            pick["result"] = "push"; pick["profit"] = 0.0
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+            return "push"
+        won = (actual > line) if direction == "OVER" else (actual < line)
+
+    else:
+        return None
+
+    pick["result"] = "win" if won else "loss"
+    pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+    pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+    return pick["result"]
+
+
 def _grade_sport_generic(
     sport_key: str,
     sport_name: str,
     date_str: str,
-    sport_field: str | None = None,
+    sport_field: str | tuple[str, ...] | None = None,
 ) -> None:
     """
     Generic grader for any sport that uses moneyline/spread/total markets.
@@ -1245,17 +1584,20 @@ def _grade_sport_generic(
 
     sport_key   — Odds API key, e.g. "basketball_wnba"
     sport_name  — Display name, e.g. "WNBA"
-    sport_field — Value of pick["sport"] to match (defaults to sport_key)
+    sport_field — Value(s) of pick["sport"] to match (defaults to sport_key).
+                  A tuple matches any of its values — pick writers have used
+                  both short names ("wnba") and Odds API keys ("basketball_wnba").
     """
     if sport_field is None:
         sport_field = sport_key
+    sport_fields = (sport_field,) if isinstance(sport_field, str) else tuple(sport_field)
 
     date_compact = _norm_date(date_str)
     data = _load()
     pending = [
         p for p in data["picks"]
         if _norm_date(p.get("date", "")) == date_compact
-        and p.get("sport") == sport_field
+        and p.get("sport") in sport_fields
         and p.get("result") in (None, "pending")
         and p.get("odds") is not None
     ]
@@ -1266,6 +1608,12 @@ def _grade_sport_generic(
 
     print(f"  Fetching {sport_name} scores from Odds API...")
     games = _fetch_scores_generic(sport_key, date_compact)
+
+    # ESPN fallback: Odds API scores only go back 3 days — ESPN's scoreboard
+    # covers the whole season for sports registered in _ESPN_SCOREBOARD_PATHS.
+    if not games and sport_key in _ESPN_SCOREBOARD_PATHS:
+        print(f"  Odds API has no scores for {date_str} — falling back to ESPN scoreboard...")
+        games = _fetch_scores_espn(sport_key, date_compact)
 
     # Tennis fallback: Odds API has no tennis scores — use ESPN Core API
     espn_winners: dict[str, str] = {}
@@ -1317,11 +1665,12 @@ def _grade_sport_generic(
             graded += 1
             continue
 
-        # Fuzzy game lookup
+        # Fuzzy game lookup — both sides need a length guard: ESPN boards are
+        # keyed by short aliases too ("GER" is a substring of "Algeria").
         game_info = games.get(team)
         if not game_info:
             for gt, gi in games.items():
-                if len(team) > 3 and (team.lower() in gt.lower() or gt.lower() in team.lower()):
+                if len(team) > 3 and len(gt) > 3 and (team.lower() in gt.lower() or gt.lower() in team.lower()):
                     game_info = gi
                     break
 
@@ -1337,38 +1686,16 @@ def _grade_sport_generic(
             print(f"  ⚠️  No score found for {team} ({sport_name}) — skipping")
             continue
 
-        if market == "moneyline":
-            # MMA: winner is stored as fighter name
-            winner = game_info["winner"]
-            won = (winner.lower() == team.lower()) or (team.lower() in winner.lower())
-
-        elif market in ("spread", "puck_line", "run_line"):
-            line = float(pick.get("line") or 1.5)
-            team_score = game_info["away_score"] if team == game_info["away"] else game_info["home_score"]
-            opp_score  = game_info["home_score"] if team == game_info["away"] else game_info["away_score"]
-            won = (team_score + line) > opp_score
-
-        elif market == "total":
-            line = float(pick.get("line") or 0)
-            direction = (pick.get("direction") or team.split()[0]).upper()
-            actual = game_info["total"]
-            if actual == line:
-                pick["result"] = "push"; pick["profit"] = 0.0
-                pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
-                _save(data); graded += 1
-                print(f"  ⬜ PUSH  {team:<28} ({int(odds):+d})")
-                continue
-            won = (actual > line) if direction == "OVER" else (actual < line)
-
-        else:
+        result = _settle_game_pick(pick, game_info)
+        if result is None:
             print(f"  ⚠️  Unknown market {market} for {team} — skipping")
             continue
 
-        pick["result"] = "win" if won else "loss"
-        pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
-        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
         graded += 1
-        icon = "🟢 WIN " if won else "🔴 LOSS"
+        if result == "push":
+            print(f"  ⬜ PUSH  {team:<28} ({int(odds):+d})")
+            continue
+        icon = "🟢 WIN " if result == "win" else "🔴 LOSS"
         prof = f"{pick['profit']:+.2f}u"
         final = f"{game_info['away']} {game_info['away_score']:.0f} @ {game_info['home']} {game_info['home_score']:.0f}"
         print(f"  {icon}  {team:<28} ({int(odds):+d})  {market:10}  →  {prof}  |  {final}")
@@ -1808,10 +2135,12 @@ _ALL_SPORTS = [
     "all", "mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc", "pga",
 ]
 
-# Maps short sport name → (odds_api_key, sport_field_in_picks)
+# Maps short sport name → (odds_api_key, sport_field_values_in_picks).
+# Pick writers have stamped both short names and Odds API keys over time,
+# so each entry matches every value that has appeared in picks.json.
 _GENERIC_SPORT_MAP = {
-    "wnba": ("basketball_wnba", "basketball_wnba"),
-    "ufc":  ("mma_mixed_martial_arts", "mma_mixed_martial_arts"),
+    "wnba": ("basketball_wnba", ("wnba", "basketball_wnba")),
+    "ufc":  ("mma_mixed_martial_arts", ("ufc", "mma_mixed_martial_arts")),
 }
 
 _OUTRIGHT_SPORT_MAP = {
@@ -1892,6 +2221,7 @@ def main():
                 for sk in soccer_keys:
                     label = sk.replace("soccer_", "").replace("_", " ").upper()
                     _grade_sport_generic(sk, f"SOCCER/{label}", grade_date, sport_field=sk)
+                _grade_soccer_scorers(grade_date)
             else:
                 print(f"\n  ── Grading SOCCER picks for {grade_date} ──")
                 print(f"  No pending SOCCER picks for {grade_date}")

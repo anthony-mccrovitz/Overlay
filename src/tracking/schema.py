@@ -167,6 +167,14 @@ _SPORT_ALIASES: dict[str, str] = {
     "icehockey_nhl":             "nhl",
 }
 
+def canonical_sport(sport: str) -> str:
+    """Normalize any sport value to its short canonical form
+    ('basketball_wnba' → 'wnba'). Public — use this instead of importing
+    _SPORT_ALIASES; the alias table is the single source of truth here."""
+    s = str(sport or "").lower().strip()
+    return _SPORT_ALIASES.get(s, s)
+
+
 _DIRECTION_ALIASES: dict[str, str] = {
     "ML":   "WIN",
     "H2H":  "WIN",

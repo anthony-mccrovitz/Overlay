@@ -239,7 +239,14 @@ _MARKET_LABEL = {
     "prop":      "Props    ",
 }
 
-_SPORT_LABEL = {"mlb": "MLB", "nba": "NBA", "nhl": "NHL"}
+_SPORT_LABEL = {"mlb": "MLB", "nba": "NBA", "nhl": "NHL", "wnba": "WNBA"}
+
+
+def _sport_matches(pick_sport: str, filter_sport: str) -> bool:
+    """Alias-aware sport comparison — picks have been stamped with both short
+    names ('wnba') and Odds API keys ('basketball_wnba') over time."""
+    from src.tracking.schema import canonical_sport
+    return canonical_sport(pick_sport) == filter_sport
 
 
 def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str) -> int:
@@ -248,7 +255,7 @@ def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str)
     if filter_market != "all":
         shadow = [p for p in shadow if p.get("market") == filter_market]
     if filter_sport != "all":
-        shadow = [p for p in shadow if p.get("sport") == filter_sport]
+        shadow = [p for p in shadow if _sport_matches(p.get("sport"), filter_sport)]
 
     settled  = [p for p in shadow if p.get("result") in ("win", "loss", "push")]
     non_push = [p for p in settled if p.get("result") != "push"]
@@ -291,7 +298,7 @@ def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str)
         print(f"\n  {'SPORT':<12} {'W-L':>8}  {'WR':>7}  {'PROFIT':>8}  {'ROI':>7}")
         print(f"  {'─'*56}")
         for sport_key, slabel in _SPORT_LABEL.items():
-            sp  = [p for p in shadow if p.get("sport") == sport_key]
+            sp  = [p for p in shadow if _sport_matches(p.get("sport"), sport_key)]
             snp = [p for p in sp if p.get("result") in ("win", "loss")]
             sw  = sum(1 for p in snp if p.get("result") == "win")
             sl  = len(snp) - sw
@@ -348,7 +355,7 @@ def cmd_record(args: argparse.Namespace) -> int:
     if filter_market != "all":
         card_picks = [p for p in card_picks if p.get("market") == filter_market]
     if filter_sport != "all":
-        card_picks = [p for p in card_picks if p.get("sport") == filter_sport]
+        card_picks = [p for p in card_picks if _sport_matches(p.get("sport"), filter_sport)]
 
     settled  = [p for p in card_picks if p.get("result") in ("win", "loss", "push")]
     non_push = [p for p in settled if p.get("result") != "push"]
@@ -413,7 +420,7 @@ def cmd_record(args: argparse.Namespace) -> int:
         print(f"\n  {'SPORT':<12} {'W-L':>8}  {'WR':>7}  {'PROFIT':>8}  {'ROI':>7}")
         print(f"  {'─'*56}")
         for sport_key, slabel in _SPORT_LABEL.items():
-            sp = [p for p in card_picks if p.get("sport") == sport_key]
+            sp = [p for p in card_picks if _sport_matches(p.get("sport"), sport_key)]
             ss = [p for p in sp if p.get("result") in ("win", "loss", "push")]
             snp = [p for p in ss if p.get("result") != "push"]
             sw = sum(1 for p in snp if p.get("result") == "win")
@@ -3280,7 +3287,7 @@ def main() -> int:
     p_record = sub.add_parser("record", help="Show P&L record and breakdown")
     p_record.add_argument("--market", default="all",
                           choices=["all", "moneyline", "spread", "total", "nrfi", "prop"])
-    p_record.add_argument("--sport",  default="all", choices=["all", "mlb", "nba", "nhl"])  # nhl kept for historical record
+    p_record.add_argument("--sport",  default="all", choices=["all", "mlb", "nba", "nhl", "wnba"])  # nhl kept for historical record
     p_record.add_argument("--shadow", action="store_true",
                           help="Show all model picks (not just card picks) — validation mode")
     p_record.add_argument("--exclude-version", dest="exclude_version", action="append",

@@ -25,6 +25,10 @@ jobs:
         set +e
         fail=0
         python chef.py grade                   || fail=1
+        # Sweep the whole pending backlog (all sports) — catches picks that
+        # missed their one-night grading window (pipeline failures, wrong
+        # slate dates). Without this they rot as pending forever.
+        python scripts/grade_backlog.py        || fail=1
         python scripts/nightly_recap.py --deploy || fail=1
         # After grading, rebuild the web data so the live site reflects last
         # night's results/record (the customer feed + slate carry graded picks).
