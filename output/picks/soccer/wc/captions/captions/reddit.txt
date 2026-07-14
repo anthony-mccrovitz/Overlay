@@ -5,13 +5,13 @@ Built a rolling-Elo + Dixon-Coles model (calibrated on 800+ tournament matches),
 | # | Team | Our blend | Model | Market | Reach final |
 |---|------|-----------|-------|--------|-------------|
 | 1 | France | 34% | 24% | 40% | 45% |
-| 2 | Spain | 26% | 33% | 22% | 55% |
+| 2 | Spain | 26% | 32% | 22% | 55% |
 | 3 | Argentina | 21% | 28% | 17% | 60% |
 | 4 | England | 19% | 15% | 21% | 40% |
 
 **Where the model disagrees with the market (the interesting part):**
 - 📈 **Argentina** — model 28% vs market 17% (+5pp)
-- 📈 **Spain** — model 33% vs market 22% (+4pp)
+- 📈 **Spain** — model 32% vs market 22% (+4pp)
 - 📉 **France** — model 24% vs market 40% (-6pp)
 - 📉 **England** — model 15% vs market 21% (-2pp)
 
