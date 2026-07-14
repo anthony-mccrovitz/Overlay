@@ -20,7 +20,7 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -41,7 +41,19 @@ def main() -> int:
     ap.add_argument("--date", help="YYYYMMDD (default: today)")
     args = ap.parse_args()
 
-    target = args.date or date.today().strftime("%Y%m%d")
+    # Anchor to Eastern Time, not the runner's clock. On GitHub Actions the
+    # cron window (8 PM–7 AM ET) is entirely on the NEXT UTC day, so
+    # date.today() targeted a slate whose picks didn't exist yet and every
+    # run was a silent no-op. Also grade the previous ET day: the evening
+    # window straddles midnight ET, and late games settle after it.
+    from zoneinfo import ZoneInfo
+    from datetime import timedelta
+    now_et = datetime.now(ZoneInfo("America/New_York"))
+    if args.date:
+        targets = [args.date]
+    else:
+        targets = [now_et.strftime("%Y%m%d"),
+                   (now_et - timedelta(days=1)).strftime("%Y%m%d")]
 
     # Sports with real-time auto-grading via grade.py subprocess.
     # Outrights (pga/nascar/f1/indycar) require --winner flag — handled by grade_outrights.py.
@@ -49,7 +61,20 @@ def main() -> int:
 
     rc_total = 0
     any_graded = False
-    for sport in SPORTS:
+    for target in targets:
+        rc, graded = _grade_date(target, SPORTS)
+        rc_total += rc
+        any_graded = any_graded or graded
+        if graded:
+            _gen_result_cards(target)
+
+    return rc_total
+
+
+def _grade_date(target: str, sports: tuple[str, ...]) -> tuple[int, bool]:
+    rc_total = 0
+    any_graded = False
+    for sport in sports:
         cmd = [sys.executable, str(ROOT / "grade.py"), "--date", target, "--sport", sport]
         try:
             result = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
@@ -64,18 +89,18 @@ def main() -> int:
         except subprocess.TimeoutExpired:
             _log(f"  {sport.upper()} grader TIMEOUT after 120s")
             rc_total += 1
+    return rc_total, any_graded
 
-    # Generate result cards immediately after grading — no waiting until 4 AM
-    if any_graded:
-        try:
-            card_date = f"{target[:4]}-{target[4:6]}-{target[6:]}"
-            result_card_cmd = [sys.executable, str(ROOT / "scripts" / "gen_result_cards.py"), "--date", card_date]
-            subprocess.run(result_card_cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
-            _log(f"  Result cards generated for {card_date}")
-        except Exception as e:
-            _log(f"  Result cards failed: {e}")
 
-    return rc_total
+def _gen_result_cards(target: str) -> None:
+    """Generate result cards immediately after grading — no waiting until 4 AM."""
+    try:
+        card_date = f"{target[:4]}-{target[4:6]}-{target[6:]}"
+        result_card_cmd = [sys.executable, str(ROOT / "scripts" / "gen_result_cards.py"), "--date", card_date]
+        subprocess.run(result_card_cmd, cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+        _log(f"  Result cards generated for {card_date}")
+    except Exception as e:
+        _log(f"  Result cards failed: {e}")
 
 
 if __name__ == "__main__":
