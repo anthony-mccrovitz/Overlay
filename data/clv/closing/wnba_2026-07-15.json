@@ -3816,13 +3816,13 @@
     "home_team": "Minnesota Lynx",
     "away_team": "Los Angeles Sparks",
     "commence_time": "2026-07-15T17:10:00Z",
-    "captured_at": "2026-07-15T15:43:42.544664+00:00",
-    "mins_to_commence": 86.3,
-    "closing_final": false,
-    "BestHomeML": -590,
-    "BestAwayML": 480,
-    "HomeBook": "FanDuel",
-    "AwayBook": "Pinnacle",
+    "captured_at": "2026-07-15T16:58:23.683847+00:00",
+    "mins_to_commence": 11.6,
+    "closing_final": true,
+    "BestHomeML": -591,
+    "BestAwayML": 475,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "theScore Bet",
     "all_odds": [
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -3832,7 +3832,7 @@
         "Market": "h2h",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": 455,
+        "Odds": 440,
         "Line": NaN
       },
       {
@@ -3843,7 +3843,7 @@
         "Market": "h2h",
         "Name": "Minnesota Lynx",
         "Selection": "Minnesota Lynx",
-        "Odds": -625,
+        "Odds": -600,
         "Line": NaN
       },
       {
@@ -3876,8 +3876,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -112,
-        "Line": 180.5
+        "Odds": -110,
+        "Line": 181.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -3887,8 +3887,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -108,
-        "Line": 180.5
+        "Odds": -110,
+        "Line": 181.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -3943,7 +3943,7 @@
         "Name": "Over",
         "Selection": "Over",
         "Odds": -110,
-        "Line": 181.0
+        "Line": 181.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -3954,7 +3954,7 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -110,
-        "Line": 181.0
+        "Line": 181.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4008,7 +4008,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -115,
         "Line": 181.5
       },
       {
@@ -4019,7 +4019,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -110,
+        "Odds": -105,
         "Line": 181.5
       },
       {
@@ -4030,7 +4030,7 @@
         "Market": "h2h",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": 460,
+        "Odds": 430,
         "Line": NaN
       },
       {
@@ -4038,6 +4038,72 @@
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Minnesota Lynx",
+        "Selection": "Minnesota Lynx",
+        "Odds": -600,
+        "Line": NaN
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "spreads",
+        "Name": "Los Angeles Sparks",
+        "Selection": "Los Angeles Sparks",
+        "Odds": -105,
+        "Line": 11.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "spreads",
+        "Name": "Minnesota Lynx",
+        "Selection": "Minnesota Lynx",
+        "Odds": -115,
+        "Line": -11.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 181.0
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 181.0
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Los Angeles Sparks",
+        "Selection": "Los Angeles Sparks",
+        "Odds": 440,
+        "Line": NaN
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
         "Market": "h2h",
         "Name": "Minnesota Lynx",
         "Selection": "Minnesota Lynx",
@@ -4048,72 +4114,6 @@
         "EventID": "4db11d33553fba68fc607aaf009071aa",
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "spreads",
-        "Name": "Los Angeles Sparks",
-        "Selection": "Los Angeles Sparks",
-        "Odds": -110,
-        "Line": 11.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "spreads",
-        "Name": "Minnesota Lynx",
-        "Selection": "Minnesota Lynx",
-        "Odds": -110,
-        "Line": -11.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 181.0
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 181.0
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Los Angeles Sparks",
-        "Selection": "Los Angeles Sparks",
-        "Odds": 410,
-        "Line": NaN
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Minnesota Lynx",
-        "Selection": "Minnesota Lynx",
-        "Odds": -590,
-        "Line": NaN
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "FanDuel",
         "Market": "spreads",
         "Name": "Los Angeles Sparks",
@@ -4162,7 +4162,7 @@
         "Market": "h2h",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": 475,
+        "Odds": 430,
         "Line": NaN
       },
       {
@@ -4173,7 +4173,7 @@
         "Market": "h2h",
         "Name": "Minnesota Lynx",
         "Selection": "Minnesota Lynx",
-        "Odds": -715,
+        "Odds": -625,
         "Line": NaN
       },
       {
@@ -4184,8 +4184,8 @@
         "Market": "spreads",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": -114,
-        "Line": 11.5
+        "Odds": -110,
+        "Line": 10.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4195,8 +4195,8 @@
         "Market": "spreads",
         "Name": "Minnesota Lynx",
         "Selection": "Minnesota Lynx",
-        "Odds": -109,
-        "Line": -11.5
+        "Odds": -113,
+        "Line": -10.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4206,8 +4206,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -114,
-        "Line": 180.5
+        "Odds": -113,
+        "Line": 182.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4217,8 +4217,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -109,
-        "Line": 180.5
+        "Odds": -110,
+        "Line": 182.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4250,7 +4250,7 @@
         "Market": "spreads",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": -110,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -4261,7 +4261,7 @@
         "Market": "spreads",
         "Name": "Minnesota Lynx",
         "Selection": "Minnesota Lynx",
-        "Odds": -110,
+        "Odds": -105,
         "Line": -11.5
       },
       {
@@ -4272,8 +4272,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -105,
-        "Line": 181.5
+        "Odds": -115,
+        "Line": 180.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4283,8 +4283,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -115,
-        "Line": 181.5
+        "Odds": -105,
+        "Line": 180.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4294,7 +4294,7 @@
         "Market": "h2h",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": 480,
+        "Odds": 455,
         "Line": NaN
       },
       {
@@ -4305,7 +4305,7 @@
         "Market": "h2h",
         "Name": "Minnesota Lynx",
         "Selection": "Minnesota Lynx",
-        "Odds": -629,
+        "Odds": -591,
         "Line": NaN
       },
       {
@@ -4316,371 +4316,349 @@
         "Market": "spreads",
         "Name": "Los Angeles Sparks",
         "Selection": "Los Angeles Sparks",
-        "Odds": -111,
-        "Line": 11.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Pinnacle",
-        "Market": "spreads",
-        "Name": "Minnesota Lynx",
-        "Selection": "Minnesota Lynx",
-        "Odds": -105,
-        "Line": -11.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -103,
-        "Line": 181.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 181.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -161,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Olivia Miles",
-        "Selection": "Under",
-        "Odds": 118,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Erica Wheeler",
-        "Selection": "Over",
-        "Odds": -119,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Erica Wheeler",
-        "Selection": "Under",
-        "Odds": -114,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": 124,
-        "Line": 4.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Courtney Williams",
-        "Selection": "Under",
-        "Odds": -169,
-        "Line": 4.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": 119,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -162,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Rae Burrell",
-        "Selection": "Over",
-        "Odds": -124,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Rae Burrell",
-        "Selection": "Under",
-        "Odds": -109,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Dearica Hamby",
-        "Selection": "Over",
-        "Odds": -121,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
-        "Odds": -112,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": -121,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
-        "Odds": -112,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": -119,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Natasha Howard",
-        "Selection": "Under",
-        "Odds": -114,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": -104,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_assists",
-        "Name": "Ariel Atkins",
-        "Selection": "Under",
-        "Odds": -131,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 20.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Olivia Miles",
-        "Selection": "Under",
-        "Odds": -116,
-        "Line": 20.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 18.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
-        "Odds": -126,
-        "Line": 18.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": -104,
-        "Line": 17.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -128,
-        "Line": 17.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": -106,
-        "Line": 16.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Natasha Howard",
-        "Selection": "Under",
-        "Odds": -125,
-        "Line": 16.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
         "Odds": -101,
-        "Line": 15.5
+        "Line": 10.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Pinnacle",
+        "Market": "spreads",
+        "Name": "Minnesota Lynx",
+        "Selection": "Minnesota Lynx",
+        "Odds": -116,
+        "Line": -10.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -112,
+        "Line": 181.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -108,
+        "Line": 181.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
-        "Market": "player_points",
+        "Market": "player_assists",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": 100,
+        "Line": 6.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Olivia Miles",
+        "Selection": "Under",
+        "Odds": -136,
+        "Line": 6.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Erica Wheeler",
+        "Selection": "Over",
+        "Odds": -119,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Erica Wheeler",
+        "Selection": "Under",
+        "Odds": -114,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": 111,
+        "Line": 4.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -132,
-        "Line": 15.5
+        "Odds": -151,
+        "Line": 4.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Dearica Hamby",
+        "Market": "player_assists",
+        "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -124,
-        "Line": 14.5
+        "Odds": 131,
+        "Line": 3.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Dearica Hamby",
+        "Market": "player_assists",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -179,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": -127,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Natasha Howard",
         "Selection": "Under",
         "Odds": -107,
-        "Line": 14.5
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": -125,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": -108,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Rae Burrell",
+        "Selection": "Over",
+        "Odds": -117,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Rae Burrell",
+        "Selection": "Under",
+        "Odds": -116,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": -116,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -117,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Ariel Atkins",
+        "Selection": "Over",
+        "Odds": 103,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_assists",
+        "Name": "Ariel Atkins",
+        "Selection": "Under",
+        "Odds": -140,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": -113,
+        "Line": 20.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Olivia Miles",
+        "Selection": "Under",
+        "Odds": -118,
+        "Line": 20.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 18.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 18.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Over",
+        "Odds": -123,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -108,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Natasha Howard",
+        "Selection": "Under",
+        "Odds": -121,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": -126,
+        "Line": 15.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Courtney Williams",
+        "Selection": "Under",
+        "Odds": -105,
+        "Line": 15.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4690,17 +4668,6 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -122,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Rae Burrell",
-        "Selection": "Under",
         "Odds": -108,
         "Line": 14.5
       },
@@ -4710,10 +4677,43 @@
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
+        "Name": "Rae Burrell",
+        "Selection": "Under",
+        "Odds": -123,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -126,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -102,
-        "Line": 10.5
+        "Odds": -133,
+        "Line": 9.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4723,8 +4723,8 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -130,
-        "Line": 10.5
+        "Odds": 101,
+        "Line": 9.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4734,7 +4734,7 @@
         "Market": "player_points",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": -105,
         "Line": 9.5
       },
       {
@@ -4745,7 +4745,7 @@
         "Market": "player_points",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -126,
+        "Odds": -127,
         "Line": 9.5
       },
       {
@@ -4756,8 +4756,8 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": -135,
-        "Line": 6.5
+        "Odds": -136,
+        "Line": 7.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4768,7 +4768,7 @@
         "Name": "Nia Coffey",
         "Selection": "Under",
         "Odds": 102,
-        "Line": 6.5
+        "Line": 7.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4778,7 +4778,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -123,
         "Line": 31.5
       },
       {
@@ -4789,7 +4789,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -119,
+        "Odds": -110,
         "Line": 31.5
       },
       {
@@ -4799,30 +4799,30 @@
         "Sportsbook": "DraftKings",
         "Market": "player_points_rebounds_assists",
         "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": -126,
-        "Line": 28.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -108,
-        "Line": 28.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Natasha Howard",
         "Selection": "Over",
         "Odds": -115,
+        "Line": 28.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -118,
+        "Line": 28.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": -117,
         "Line": 27.5
       },
       {
@@ -4833,7 +4833,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Natasha Howard",
         "Selection": "Under",
-        "Odds": -118,
+        "Odds": -116,
         "Line": 27.5
       },
       {
@@ -4842,19 +4842,8 @@
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
         "Market": "player_points_rebounds_assists",
-        "Name": "Dearica Hamby",
+        "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": -108,
-        "Line": 25.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
         "Odds": -125,
         "Line": 25.5
       },
@@ -4865,20 +4854,9 @@
         "Sportsbook": "DraftKings",
         "Market": "player_points_rebounds_assists",
         "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": -121,
-        "Line": 24.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -112,
-        "Line": 24.5
+        "Odds": -108,
+        "Line": 25.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4888,8 +4866,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -114,
-        "Line": 24.5
+        "Odds": -106,
+        "Line": 25.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4899,7 +4877,29 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": -119,
+        "Odds": -128,
+        "Line": 25.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": -113,
+        "Line": 24.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -120,
         "Line": 24.5
       },
       {
@@ -4910,8 +4910,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -107,
-        "Line": 20.5
+        "Odds": -118,
+        "Line": 19.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4921,8 +4921,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": -127,
-        "Line": 20.5
+        "Odds": -115,
+        "Line": 19.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4932,8 +4932,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -109,
-        "Line": 17.5
+        "Odds": -130,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4943,8 +4943,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -124,
-        "Line": 17.5
+        "Odds": -104,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -4954,7 +4954,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -132,
+        "Odds": -120,
         "Line": 15.5
       },
       {
@@ -4965,7 +4965,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -103,
+        "Odds": -113,
         "Line": 15.5
       },
       {
@@ -4974,218 +4974,196 @@
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
         "Market": "player_rebounds",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": -104,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Natasha Howard",
-        "Selection": "Under",
-        "Odds": -131,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -101,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -135,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Dearica Hamby",
-        "Selection": "Over",
-        "Odds": -104,
-        "Line": 7.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
-        "Odds": -131,
-        "Line": 7.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Nia Coffey",
-        "Selection": "Over",
-        "Odds": -109,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Nia Coffey",
-        "Selection": "Under",
-        "Odds": -124,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": 106,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Courtney Williams",
-        "Selection": "Under",
-        "Odds": -144,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -107,
-        "Line": 4.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Olivia Miles",
-        "Selection": "Under",
-        "Odds": -127,
-        "Line": 4.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": -101,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
-        "Odds": -134,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": 132,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Under",
-        "Odds": -181,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Rae Burrell",
-        "Selection": "Over",
-        "Odds": -101,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Rae Burrell",
-        "Selection": "Under",
-        "Odds": -134,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": -140,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
         "Odds": 103,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -139,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": 105,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Natasha Howard",
+        "Selection": "Under",
+        "Odds": -143,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": 103,
+        "Line": 7.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -139,
+        "Line": 7.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Nia Coffey",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Nia Coffey",
+        "Selection": "Under",
+        "Odds": -113,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Courtney Williams",
+        "Selection": "Under",
+        "Odds": -124,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": -119,
+        "Line": 4.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Olivia Miles",
+        "Selection": "Under",
+        "Odds": -114,
+        "Line": 4.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": 100,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": -136,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Ariel Atkins",
+        "Selection": "Over",
+        "Odds": -161,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Ariel Atkins",
+        "Selection": "Under",
+        "Odds": 118,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Rae Burrell",
+        "Selection": "Over",
+        "Odds": 102,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Rae Burrell",
+        "Selection": "Under",
+        "Odds": -139,
         "Line": 2.5
       },
       {
@@ -5194,9 +5172,53 @@
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "DraftKings",
         "Market": "player_threes",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": -148,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": 109,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Nia Coffey",
+        "Selection": "Over",
+        "Odds": 102,
+        "Line": 1.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Nia Coffey",
+        "Selection": "Under",
+        "Odds": -139,
+        "Line": 1.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -101,
+        "Odds": 103,
         "Line": 1.5
       },
       {
@@ -5207,7 +5229,7 @@
         "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": -134,
+        "Odds": -139,
         "Line": 1.5
       },
       {
@@ -5218,7 +5240,7 @@
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": 119,
+        "Odds": 109,
         "Line": 1.5
       },
       {
@@ -5229,7 +5251,29 @@
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -163,
+        "Odds": -149,
+        "Line": 1.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Over",
+        "Odds": 113,
+        "Line": 1.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -153,
         "Line": 1.5
       },
       {
@@ -5251,51 +5295,7 @@
         "Market": "player_threes",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -169,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Nia Coffey",
-        "Selection": "Over",
-        "Odds": 125,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Nia Coffey",
-        "Selection": "Under",
-        "Odds": -171,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": 125,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -171,
+        "Odds": -170,
         "Line": 1.5
       },
       {
@@ -5306,7 +5306,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": 126,
+        "Odds": 127,
         "Line": 1.5
       },
       {
@@ -5317,7 +5317,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -172,
+        "Odds": -174,
         "Line": 1.5
       },
       {
@@ -5328,7 +5328,7 @@
         "Market": "player_threes",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 163,
+        "Odds": 143,
         "Line": 1.5
       },
       {
@@ -5339,7 +5339,7 @@
         "Market": "player_threes",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -225,
+        "Odds": -196,
         "Line": 1.5
       },
       {
@@ -5394,7 +5394,7 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": -160,
+        "Odds": -165,
         "Line": 3.5
       },
       {
@@ -5405,369 +5405,6 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": 115,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_assists",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": 115,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_assists",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -160,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 20.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Olivia Miles",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 20.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 18.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
-        "Odds": -140,
-        "Line": 18.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": 100,
-        "Line": 17.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -135,
-        "Line": 17.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": -120,
-        "Line": 16.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Natasha Howard",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 16.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 15.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Courtney Williams",
-        "Selection": "Under",
-        "Odds": -125,
-        "Line": 15.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Dearica Hamby",
-        "Selection": "Over",
-        "Odds": -120,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Rae Burrell",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Rae Burrell",
-        "Selection": "Under",
-        "Odds": -125,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 10.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Ariel Atkins",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 10.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Erica Wheeler",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 9.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Erica Wheeler",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 9.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Natasha Howard",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": 100,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Under",
-        "Odds": -140,
-        "Line": 8.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Dearica Hamby",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 7.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
-        "Odds": -135,
-        "Line": 7.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Nia Coffey",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Nia Coffey",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Courtney Williams",
-        "Selection": "Under",
-        "Odds": -150,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 4.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Olivia Miles",
-        "Selection": "Under",
-        "Odds": -130,
-        "Line": 4.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
         "Odds": 120,
         "Line": 3.5
       },
@@ -5776,10 +5413,10 @@
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
-        "Odds": -170,
+        "Market": "player_assists",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Over",
+        "Odds": 125,
         "Line": 3.5
       },
       {
@@ -5787,10 +5424,373 @@
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
+        "Market": "player_assists",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
         "Odds": -175,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": -130,
+        "Line": 20.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Olivia Miles",
+        "Selection": "Under",
+        "Odds": -105,
+        "Line": 20.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 18.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": -130,
+        "Line": 18.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Natasha Howard",
+        "Selection": "Under",
+        "Odds": -125,
+        "Line": 16.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 15.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Courtney Williams",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 15.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Rae Burrell",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Rae Burrell",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Ariel Atkins",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Ariel Atkins",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Erica Wheeler",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Erica Wheeler",
+        "Selection": "Under",
+        "Odds": -130,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": 110,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Natasha Howard",
+        "Selection": "Under",
+        "Odds": -160,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Under",
+        "Odds": -135,
+        "Line": 8.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": 105,
+        "Line": 7.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -150,
+        "Line": 7.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Nia Coffey",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Nia Coffey",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": 105,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Courtney Williams",
+        "Selection": "Under",
+        "Odds": -150,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 4.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Olivia Miles",
+        "Selection": "Under",
+        "Odds": -130,
+        "Line": 4.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": 120,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": -170,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Ariel Atkins",
+        "Selection": "Over",
+        "Odds": -165,
         "Line": 2.5
       },
       {
@@ -5801,7 +5801,7 @@
         "Market": "player_rebounds",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": 125,
+        "Odds": 120,
         "Line": 2.5
       },
       {
@@ -5834,7 +5834,7 @@
         "Market": "player_threes",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 110,
         "Line": 1.5
       },
       {
@@ -5845,7 +5845,7 @@
         "Market": "player_threes",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -170,
+        "Odds": -160,
         "Line": 1.5
       },
       {
@@ -5856,7 +5856,7 @@
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 115,
         "Line": 1.5
       },
       {
@@ -5867,7 +5867,7 @@
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -170,
+        "Odds": -165,
         "Line": 1.5
       },
       {
@@ -5878,7 +5878,7 @@
         "Market": "player_threes",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 145,
+        "Odds": 140,
         "Line": 1.5
       },
       {
@@ -5900,7 +5900,7 @@
         "Market": "player_threes",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 105,
+        "Odds": 100,
         "Line": 1.5
       },
       {
@@ -5911,7 +5911,7 @@
         "Market": "player_threes",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -150,
+        "Odds": -140,
         "Line": 1.5
       },
       {
@@ -5922,7 +5922,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": 120,
+        "Odds": 125,
         "Line": 1.5
       },
       {
@@ -5944,7 +5944,7 @@
         "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": -105,
         "Line": 1.5
       },
       {
@@ -5955,7 +5955,7 @@
         "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": -140,
+        "Odds": -135,
         "Line": 1.5
       },
       {
@@ -5966,7 +5966,7 @@
         "Market": "player_threes",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": 130,
+        "Odds": 125,
         "Line": 1.5
       },
       {
@@ -5977,7 +5977,7 @@
         "Market": "player_threes",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -185,
+        "Odds": -180,
         "Line": 1.5
       },
       {
@@ -5988,7 +5988,7 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 127,
+        "Odds": 118,
         "Line": 4.5
       },
       {
@@ -5999,7 +5999,7 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -165,
+        "Odds": -155,
         "Line": 4.5
       },
       {
@@ -6010,7 +6010,7 @@
         "Market": "player_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 121,
+        "Odds": 128,
         "Line": 3.5
       },
       {
@@ -6021,7 +6021,7 @@
         "Market": "player_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -175,
+        "Odds": -185,
         "Line": 3.5
       },
       {
@@ -6054,7 +6054,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": 100,
         "Line": 5.5
       },
       {
@@ -6065,7 +6065,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -121,
+        "Odds": -130,
         "Line": 5.5
       },
       {
@@ -6076,7 +6076,7 @@
         "Market": "player_points",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -111,
         "Line": 14.5
       },
       {
@@ -6087,7 +6087,7 @@
         "Market": "player_points",
         "Name": "Dearica Hamby",
         "Selection": "Under",
-        "Odds": -107,
+        "Odds": -121,
         "Line": 14.5
       },
       {
@@ -6098,8 +6098,8 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -107,
-        "Line": 17.5
+        "Odds": -122,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6109,8 +6109,8 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -125,
-        "Line": 17.5
+        "Odds": -108,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6142,7 +6142,7 @@
         "Market": "player_points",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -132,
+        "Odds": -137,
         "Line": 17.5
       },
       {
@@ -6153,7 +6153,7 @@
         "Market": "player_points",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": 104,
         "Line": 17.5
       },
       {
@@ -6197,7 +6197,7 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": -111,
+        "Odds": -112,
         "Line": 14.5
       },
       {
@@ -6208,7 +6208,7 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": -135,
         "Line": 7.5
       },
       {
@@ -6219,7 +6219,7 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -134,
+        "Odds": 102,
         "Line": 7.5
       },
       {
@@ -6252,8 +6252,8 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -105,
-        "Line": 10.5
+        "Odds": -120,
+        "Line": 9.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6263,18 +6263,7 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -127,
-        "Line": 10.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Erica Wheeler",
-        "Selection": "Over",
-        "Odds": -108,
+        "Odds": -113,
         "Line": 9.5
       },
       {
@@ -6284,19 +6273,30 @@
         "Sportsbook": "Caesars",
         "Market": "player_points",
         "Name": "Erica Wheeler",
-        "Selection": "Under",
-        "Odds": -124,
-        "Line": 9.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Olivia Miles",
         "Selection": "Over",
         "Odds": -104,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Erica Wheeler",
+        "Selection": "Under",
+        "Odds": -129,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": -102,
         "Line": 4.5
       },
       {
@@ -6307,7 +6307,7 @@
         "Market": "player_rebounds",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -129,
+        "Odds": -135,
         "Line": 4.5
       },
       {
@@ -6318,7 +6318,7 @@
         "Market": "player_rebounds",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 105,
+        "Odds": 108,
         "Line": 8.5
       },
       {
@@ -6329,7 +6329,7 @@
         "Market": "player_rebounds",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -140,
+        "Odds": -155,
         "Line": 8.5
       },
       {
@@ -6340,7 +6340,7 @@
         "Market": "player_rebounds",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": 112,
+        "Odds": 105,
         "Line": 3.5
       },
       {
@@ -6351,7 +6351,7 @@
         "Market": "player_rebounds",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": -165,
+        "Odds": -140,
         "Line": 3.5
       },
       {
@@ -6361,30 +6361,30 @@
         "Sportsbook": "Caesars",
         "Market": "player_rebounds",
         "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": 106,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Courtney Williams",
+        "Selection": "Under",
+        "Odds": -141,
+        "Line": 5.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "Caesars",
+        "Market": "player_rebounds",
+        "Name": "Natasha Howard",
         "Selection": "Over",
         "Odds": 110,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Courtney Williams",
-        "Selection": "Under",
-        "Odds": -148,
-        "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": -102,
         "Line": 8.5
       },
       {
@@ -6395,7 +6395,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Howard",
         "Selection": "Under",
-        "Odds": -135,
+        "Odds": -160,
         "Line": 8.5
       },
       {
@@ -6406,7 +6406,7 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -112,
         "Line": 5.5
       },
       {
@@ -6417,30 +6417,8 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -120,
         "Line": 5.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": 125,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Under",
-        "Odds": -170,
-        "Line": 3.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6450,7 +6428,7 @@
         "Market": "player_rebounds",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": 106,
         "Line": 7.5
       },
       {
@@ -6461,7 +6439,7 @@
         "Market": "player_rebounds",
         "Name": "Dearica Hamby",
         "Selection": "Under",
-        "Odds": -132,
+        "Odds": -141,
         "Line": 7.5
       },
       {
@@ -6494,7 +6472,7 @@
         "Market": "player_threes",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 151,
+        "Odds": 149,
         "Line": 1.5
       },
       {
@@ -6505,7 +6483,7 @@
         "Market": "player_threes",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -205,
+        "Odds": -200,
         "Line": 1.5
       },
       {
@@ -6516,7 +6494,7 @@
         "Market": "player_threes",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -139,
+        "Odds": -150,
         "Line": 2.5
       },
       {
@@ -6527,7 +6505,7 @@
         "Market": "player_threes",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": 105,
+        "Odds": 108,
         "Line": 2.5
       },
       {
@@ -6560,7 +6538,7 @@
         "Market": "player_threes",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": 135,
+        "Odds": 137,
         "Line": 1.5
       },
       {
@@ -6571,7 +6549,7 @@
         "Market": "player_threes",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -182,
+        "Odds": -190,
         "Line": 1.5
       },
       {
@@ -6582,7 +6560,7 @@
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": 121,
+        "Odds": 119,
         "Line": 1.5
       },
       {
@@ -6593,7 +6571,7 @@
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -162,
+        "Odds": -159,
         "Line": 1.5
       },
       {
@@ -6604,7 +6582,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": 126,
+        "Odds": 127,
         "Line": 1.5
       },
       {
@@ -6615,7 +6593,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -170,
+        "Odds": -175,
         "Line": 1.5
       },
       {
@@ -6626,7 +6604,7 @@
         "Market": "player_threes",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 116,
+        "Odds": 111,
         "Line": 1.5
       },
       {
@@ -6637,7 +6615,7 @@
         "Market": "player_threes",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -154,
+        "Odds": -148,
         "Line": 1.5
       },
       {
@@ -6648,7 +6626,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": 102,
         "Line": 5.5
       },
       {
@@ -6659,7 +6637,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -136,
         "Line": 5.5
       },
       {
@@ -6670,7 +6648,7 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": -152,
+        "Odds": -166,
         "Line": 3.5
       },
       {
@@ -6681,18 +6659,18 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Under",
+        "Odds": 124,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_assists",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
         "Odds": 114,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_assists",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": 116,
         "Line": 6.5
       },
       {
@@ -6703,7 +6681,7 @@
         "Market": "player_assists",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -154,
+        "Odds": -152,
         "Line": 6.5
       },
       {
@@ -6714,7 +6692,7 @@
         "Market": "player_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 116,
+        "Odds": 128,
         "Line": 3.5
       },
       {
@@ -6725,7 +6703,7 @@
         "Market": "player_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -154,
+        "Odds": -172,
         "Line": 3.5
       },
       {
@@ -6758,7 +6736,7 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": -130,
         "Line": 7.5
       },
       {
@@ -6769,7 +6747,7 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": 100,
         "Line": 7.5
       },
       {
@@ -6802,7 +6780,7 @@
         "Market": "player_points",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": 102,
         "Line": 9.5
       },
       {
@@ -6813,7 +6791,7 @@
         "Market": "player_points",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -118,
+        "Odds": -132,
         "Line": 9.5
       },
       {
@@ -6824,7 +6802,7 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -130,
+        "Odds": -128,
         "Line": 14.5
       },
       {
@@ -6835,63 +6813,63 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": 100,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": -106,
-        "Line": 10.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Ariel Atkins",
-        "Selection": "Under",
-        "Odds": -122,
-        "Line": 10.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Dearica Hamby",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
-        "Odds": 100,
-        "Line": 14.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
         "Odds": -102,
-        "Line": 17.5
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Ariel Atkins",
+        "Selection": "Over",
+        "Odds": -125,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Ariel Atkins",
+        "Selection": "Under",
+        "Odds": -104,
+        "Line": 9.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": -108,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -120,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points",
+        "Name": "Nneka Ogwumike",
+        "Selection": "Over",
+        "Odds": -118,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6901,8 +6879,8 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -128,
-        "Line": 17.5
+        "Odds": -110,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6934,7 +6912,7 @@
         "Market": "player_points",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -106,
         "Line": 16.5
       },
       {
@@ -6945,7 +6923,7 @@
         "Market": "player_points",
         "Name": "Natasha Howard",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -122,
         "Line": 16.5
       },
       {
@@ -6957,7 +6935,7 @@
         "Name": "Dearica Hamby",
         "Selection": "Over",
         "Odds": -110,
-        "Line": 25.5
+        "Line": 24.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -6968,7 +6946,7 @@
         "Name": "Dearica Hamby",
         "Selection": "Under",
         "Odds": -120,
-        "Line": 25.5
+        "Line": 24.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7000,7 +6978,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -112,
+        "Odds": -104,
         "Line": 20.5
       },
       {
@@ -7011,7 +6989,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": -118,
+        "Odds": -128,
         "Line": 20.5
       },
       {
@@ -7022,7 +7000,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": -122,
+        "Odds": -130,
         "Line": 24.5
       },
       {
@@ -7033,7 +7011,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -102,
         "Line": 24.5
       },
       {
@@ -7044,7 +7022,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -122,
         "Line": 23.5
       },
       {
@@ -7055,7 +7033,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": -114,
+        "Odds": -110,
         "Line": 23.5
       },
       {
@@ -7066,7 +7044,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -130,
+        "Odds": -108,
         "Line": 15.5
       },
       {
@@ -7077,7 +7055,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -102,
+        "Odds": -122,
         "Line": 15.5
       },
       {
@@ -7088,7 +7066,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": -102,
+        "Odds": -104,
         "Line": 31.5
       },
       {
@@ -7099,7 +7077,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Olivia Miles",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -128,
         "Line": 31.5
       },
       {
@@ -7110,8 +7088,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -104,
-        "Line": 29.5
+        "Odds": -112,
+        "Line": 28.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7121,8 +7099,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -128,
-        "Line": 29.5
+        "Odds": -118,
+        "Line": 28.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7176,7 +7154,7 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": -102,
+        "Odds": -106,
         "Line": 5.5
       },
       {
@@ -7187,7 +7165,7 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -125,
         "Line": 5.5
       },
       {
@@ -7198,63 +7176,63 @@
         "Market": "player_rebounds",
         "Name": "Kayla McBride",
         "Selection": "Over",
+        "Odds": 104,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Kayla McBride",
+        "Selection": "Under",
+        "Odds": -138,
+        "Line": 3.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Dearica Hamby",
+        "Selection": "Over",
+        "Odds": 116,
+        "Line": 7.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Dearica Hamby",
+        "Selection": "Under",
+        "Odds": -154,
+        "Line": 7.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Ariel Atkins",
+        "Selection": "Over",
+        "Odds": -174,
+        "Line": 2.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "FanDuel",
+        "Market": "player_rebounds",
+        "Name": "Ariel Atkins",
+        "Selection": "Under",
         "Odds": 128,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Kayla McBride",
-        "Selection": "Under",
-        "Odds": -172,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Dearica Hamby",
-        "Selection": "Over",
-        "Odds": 102,
-        "Line": 7.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Dearica Hamby",
-        "Selection": "Under",
-        "Odds": -136,
-        "Line": 7.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": 142,
-        "Line": 3.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "FanDuel",
-        "Market": "player_rebounds",
-        "Name": "Ariel Atkins",
-        "Selection": "Under",
-        "Odds": -192,
-        "Line": 3.5
+        "Line": 2.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7264,7 +7242,7 @@
         "Market": "player_rebounds",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 118,
+        "Odds": 110,
         "Line": 5.5
       },
       {
@@ -7275,7 +7253,7 @@
         "Market": "player_rebounds",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -158,
+        "Odds": -146,
         "Line": 5.5
       },
       {
@@ -7286,7 +7264,7 @@
         "Market": "player_rebounds",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 104,
+        "Odds": 116,
         "Line": 8.5
       },
       {
@@ -7297,7 +7275,7 @@
         "Market": "player_rebounds",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -138,
+        "Odds": -154,
         "Line": 8.5
       },
       {
@@ -7308,7 +7286,7 @@
         "Market": "player_threes",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -140,
+        "Odds": -144,
         "Line": 2.5
       },
       {
@@ -7319,7 +7297,7 @@
         "Market": "player_threes",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": 106,
+        "Odds": 108,
         "Line": 2.5
       },
       {
@@ -7374,7 +7352,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": 126,
+        "Odds": 128,
         "Line": 1.5
       },
       {
@@ -7385,7 +7363,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -168,
+        "Odds": -172,
         "Line": 1.5
       },
       {
@@ -7418,7 +7396,7 @@
         "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": 102,
         "Line": 1.5
       },
       {
@@ -7429,7 +7407,7 @@
         "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Under",
-        "Odds": -132,
+        "Odds": -136,
         "Line": 1.5
       },
       {
@@ -7484,7 +7462,7 @@
         "Market": "player_assists",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 117,
+        "Odds": 112,
         "Line": 4.5
       },
       {
@@ -7495,7 +7473,7 @@
         "Market": "player_assists",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -130,
+        "Odds": -134,
         "Line": 2.5
       },
       {
@@ -7506,7 +7484,7 @@
         "Market": "player_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 107,
+        "Odds": 102,
         "Line": 3.5
       },
       {
@@ -7517,7 +7495,7 @@
         "Market": "player_assists",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -120,
         "Line": 2.5
       },
       {
@@ -7528,7 +7506,7 @@
         "Market": "player_assists",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -105,
+        "Odds": -108,
         "Line": 2.5
       },
       {
@@ -7539,7 +7517,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -113,
         "Line": 5.5
       },
       {
@@ -7550,7 +7528,7 @@
         "Market": "player_assists",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": -113,
+        "Odds": -118,
         "Line": 2.5
       },
       {
@@ -7561,7 +7539,7 @@
         "Market": "player_assists",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": -157,
+        "Odds": -162,
         "Line": 2.5
       },
       {
@@ -7572,7 +7550,7 @@
         "Market": "player_assists",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": 145,
+        "Odds": 143,
         "Line": 2.5
       },
       {
@@ -7583,8 +7561,19 @@
         "Market": "player_assists",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": 108,
         "Line": 6.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": 110,
+        "Line": 23.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7594,7 +7583,7 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 110,
+        "Odds": 105,
         "Line": 18.5
       },
       {
@@ -7605,18 +7594,7 @@
         "Market": "player_points",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 123,
-        "Line": 16.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": -105,
+        "Odds": 100,
         "Line": 15.5
       },
       {
@@ -7627,7 +7605,7 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": 110,
+        "Odds": 105,
         "Line": 10.5
       },
       {
@@ -7638,7 +7616,7 @@
         "Market": "player_points",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -117,
         "Line": 9.5
       },
       {
@@ -7649,7 +7627,7 @@
         "Market": "player_points",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": 118,
+        "Odds": 112,
         "Line": 10.5
       },
       {
@@ -7660,7 +7638,7 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -139,
+        "Odds": -148,
         "Line": 16.5
       },
       {
@@ -7682,7 +7660,7 @@
         "Market": "player_points",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": -103,
         "Line": 15.5
       },
       {
@@ -7693,7 +7671,7 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -115,
         "Line": 14.5
       },
       {
@@ -7704,7 +7682,7 @@
         "Market": "player_points",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": -122,
+        "Odds": -132,
         "Line": 21.5
       },
       {
@@ -7715,8 +7693,30 @@
         "Market": "player_points",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -129,
         "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": -127,
+        "Line": 14.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Natasha Howard",
+        "Selection": "Over",
+        "Odds": -139,
+        "Line": 15.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7726,7 +7726,7 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -137,
+        "Odds": -148,
         "Line": 13.5
       },
       {
@@ -7737,7 +7737,7 @@
         "Market": "player_points",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -110,
         "Line": 16.5
       },
       {
@@ -7748,19 +7748,8 @@
         "Market": "player_points",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": 112,
+        "Odds": 110,
         "Line": 15.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -177,
-        "Line": 19.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7770,7 +7759,7 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -127,
         "Line": 9.5
       },
       {
@@ -7781,7 +7770,7 @@
         "Market": "player_points",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": 115,
+        "Odds": 114,
         "Line": 17.5
       },
       {
@@ -7792,18 +7781,7 @@
         "Market": "player_points",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": 123,
-        "Line": 19.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": -103,
+        "Odds": 102,
         "Line": 18.5
       },
       {
@@ -7814,7 +7792,18 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -112,
+        "Odds": -118,
+        "Line": 17.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Kayla McBride",
+        "Selection": "Over",
+        "Odds": -122,
         "Line": 17.5
       },
       {
@@ -7825,8 +7814,19 @@
         "Market": "player_points",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": -148,
-        "Line": 20.5
+        "Odds": -109,
+        "Line": 22.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Olivia Miles",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 33.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7836,19 +7836,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -122,
         "Line": 19.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Natasha Howard",
-        "Selection": "Over",
-        "Odds": 105,
-        "Line": 28.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7869,8 +7858,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 106,
-        "Line": 25.5
+        "Odds": -110,
+        "Line": 24.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7880,19 +7869,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": 102,
-        "Line": 25.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": -152,
-        "Line": 31.5
+        "Odds": -112,
+        "Line": 24.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7902,7 +7880,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -113,
         "Line": 29.5
       },
       {
@@ -7913,7 +7891,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -113,
+        "Odds": -115,
         "Line": 15.5
       },
       {
@@ -7932,11 +7910,11 @@
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "BetRivers",
-        "Market": "player_rebounds",
+        "Market": "player_points_rebounds_assists",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": 100,
-        "Line": 8.5
+        "Odds": -114,
+        "Line": 27.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7944,10 +7922,10 @@
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "BetRivers",
         "Market": "player_rebounds",
-        "Name": "Courtney Williams",
+        "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": 125,
-        "Line": 5.5
+        "Odds": -104,
+        "Line": 8.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -7979,7 +7957,7 @@
         "Market": "player_rebounds",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": 102,
         "Line": 2.5
       },
       {
@@ -7990,7 +7968,7 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": -104,
+        "Odds": 100,
         "Line": 5.5
       },
       {
@@ -8012,7 +7990,7 @@
         "Market": "player_rebounds",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": -127,
+        "Odds": -109,
         "Line": 4.5
       },
       {
@@ -8023,7 +8001,7 @@
         "Market": "player_rebounds",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 108,
+        "Odds": 110,
         "Line": 8.5
       },
       {
@@ -8031,10 +8009,21 @@
         "HomeTeam": "Minnesota Lynx",
         "AwayTeam": "Los Angeles Sparks",
         "Sportsbook": "BetRivers",
+        "Market": "player_rebounds",
+        "Name": "Courtney Williams",
+        "Selection": "Over",
+        "Odds": -141,
+        "Line": 4.5
+      },
+      {
+        "EventID": "4db11d33553fba68fc607aaf009071aa",
+        "HomeTeam": "Minnesota Lynx",
+        "AwayTeam": "Los Angeles Sparks",
+        "Sportsbook": "BetRivers",
         "Market": "player_threes",
         "Name": "Olivia Miles",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": -105,
         "Line": 1.5
       },
       {
@@ -8045,7 +8034,7 @@
         "Market": "player_threes",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": 117,
+        "Odds": 112,
         "Line": 1.5
       },
       {
@@ -8056,7 +8045,7 @@
         "Market": "player_threes",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 160,
+        "Odds": 163,
         "Line": 1.5
       },
       {
@@ -8067,7 +8056,7 @@
         "Market": "player_threes",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": 130,
+        "Odds": 125,
         "Line": 1.5
       },
       {
@@ -8078,7 +8067,7 @@
         "Market": "player_threes",
         "Name": "Rae Burrell",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": -103,
         "Line": 1.5
       },
       {
@@ -8089,95 +8078,7 @@
         "Market": "player_threes",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": 135,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Kayla McBride",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 2.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Erica Wheeler",
-        "Selection": "Over",
-        "Odds": 143,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Olivia Miles",
-        "Selection": "Over",
-        "Odds": 100,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Ariel Atkins",
-        "Selection": "Over",
-        "Odds": 117,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Courtney Williams",
-        "Selection": "Over",
-        "Odds": 160,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Nneka Ogwumike",
-        "Selection": "Over",
-        "Odds": 130,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Rae Burrell",
-        "Selection": "Over",
-        "Odds": 102,
-        "Line": 1.5
-      },
-      {
-        "EventID": "4db11d33553fba68fc607aaf009071aa",
-        "HomeTeam": "Minnesota Lynx",
-        "AwayTeam": "Los Angeles Sparks",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Nia Coffey",
-        "Selection": "Over",
-        "Odds": 135,
+        "Odds": 138,
         "Line": 1.5
       },
       {
@@ -8210,7 +8111,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": 100,
         "Line": 5.5
       },
       {
@@ -8221,7 +8122,7 @@
         "Market": "player_assists",
         "Name": "Erica Wheeler",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -133,
         "Line": 5.5
       },
       {
@@ -8254,8 +8155,8 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Over",
-        "Odds": -101,
-        "Line": 10.5
+        "Odds": -129,
+        "Line": 9.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -8265,8 +8166,8 @@
         "Market": "player_points",
         "Name": "Ariel Atkins",
         "Selection": "Under",
-        "Odds": -131,
-        "Line": 10.5
+        "Odds": -103,
+        "Line": 9.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -8298,7 +8199,7 @@
         "Market": "player_points",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": -130,
+        "Odds": -107,
         "Line": 14.5
       },
       {
@@ -8309,7 +8210,7 @@
         "Market": "player_points",
         "Name": "Dearica Hamby",
         "Selection": "Under",
-        "Odds": -102,
+        "Odds": -124,
         "Line": 14.5
       },
       {
@@ -8342,7 +8243,7 @@
         "Market": "player_points",
         "Name": "Kayla McBride",
         "Selection": "Over",
-        "Odds": -103,
+        "Odds": 106,
         "Line": 18.5
       },
       {
@@ -8353,7 +8254,7 @@
         "Market": "player_points",
         "Name": "Kayla McBride",
         "Selection": "Under",
-        "Odds": -128,
+        "Odds": -140,
         "Line": 18.5
       },
       {
@@ -8364,7 +8265,7 @@
         "Market": "player_points",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -110,
         "Line": 16.5
       },
       {
@@ -8375,7 +8276,7 @@
         "Market": "player_points",
         "Name": "Natasha Howard",
         "Selection": "Under",
-        "Odds": -122,
+        "Odds": -121,
         "Line": 16.5
       },
       {
@@ -8386,7 +8287,7 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": -101,
+        "Odds": -117,
         "Line": 7.5
       },
       {
@@ -8397,7 +8298,7 @@
         "Market": "player_points",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -131,
+        "Odds": -113,
         "Line": 7.5
       },
       {
@@ -8408,8 +8309,8 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Over",
-        "Odds": -101,
-        "Line": 17.5
+        "Odds": -122,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -8419,8 +8320,8 @@
         "Market": "player_points",
         "Name": "Nneka Ogwumike",
         "Selection": "Under",
-        "Odds": -131,
-        "Line": 17.5
+        "Odds": -108,
+        "Line": 16.5
       },
       {
         "EventID": "4db11d33553fba68fc607aaf009071aa",
@@ -8474,7 +8375,7 @@
         "Market": "player_rebounds",
         "Name": "Courtney Williams",
         "Selection": "Over",
-        "Odds": 110,
+        "Odds": 103,
         "Line": 5.5
       },
       {
@@ -8485,7 +8386,7 @@
         "Market": "player_rebounds",
         "Name": "Courtney Williams",
         "Selection": "Under",
-        "Odds": -146,
+        "Odds": -136,
         "Line": 5.5
       },
       {
@@ -8496,7 +8397,7 @@
         "Market": "player_rebounds",
         "Name": "Dearica Hamby",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": 116,
         "Line": 7.5
       },
       {
@@ -8507,7 +8408,7 @@
         "Market": "player_rebounds",
         "Name": "Dearica Hamby",
         "Selection": "Under",
-        "Odds": -136,
+        "Odds": -143,
         "Line": 7.5
       },
       {
@@ -8518,7 +8419,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Howard",
         "Selection": "Over",
-        "Odds": 103,
+        "Odds": 111,
         "Line": 8.5
       },
       {
@@ -8529,7 +8430,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Howard",
         "Selection": "Under",
-        "Odds": -136,
+        "Odds": -148,
         "Line": 8.5
       },
       {
@@ -8540,7 +8441,7 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Over",
-        "Odds": -102,
+        "Odds": -109,
         "Line": 5.5
       },
       {
@@ -8551,7 +8452,7 @@
         "Market": "player_rebounds",
         "Name": "Nia Coffey",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -121,
         "Line": 5.5
       },
       {
