@@ -27,6 +27,7 @@ Usage:
 """
 from __future__ import annotations
 
+import json
 import math
 import pickle
 from datetime import date
@@ -39,6 +40,10 @@ from scipy.optimize import minimize
 from scipy.stats import poisson
 
 MODEL_PATH_V2 = Path("data/models/soccer_dixoncoles_v2.pkl")
+# Last-good eloratings.net snapshot — reused on fetch failure so same-day pick
+# runs are reproducible instead of diverging onto computed Elo (see
+# SoccerModelV2.seed_from_eloratings).
+ELO_SNAPSHOT_PATH = Path("data/models/eloratings_snapshot.json")
 
 # Score-grid size: 9×9 (goals 0–8). P(X > 8) is negligible for int'l soccer.
 MAX_GOALS = 8
@@ -452,22 +457,53 @@ class SoccerModelV2:
         from src.data.soccer_data import normalize_team_name
         return self.elo_ratings.get(normalize_team_name(team_name), self.DEFAULT_ELO)
 
-    def seed_from_eloratings(self) -> None:
+    def seed_from_eloratings(self, allow_network: bool = True) -> None:
         """
-        Fetch live Elo ratings from eloratings.net and overlay onto self.elo_ratings.
-        Only updates teams present in ELO_CODE_MAP.
-        Falls back silently if fetch fails.
+        Overlay live Elo ratings from eloratings.net onto self.elo_ratings.
+
+        DETERMINISM: this used to hit the network live on every pick run and, on
+        intermittent fetch failure, silently keep the divergent computed Elo baked
+        into the pickle. Two runs of the same slate then produced different
+        probabilities (the England-41.6% vs Argentina-45.7% phantom). Now the last
+        successful snapshot is cached to disk; a failed fetch reuses that snapshot
+        instead of falling back to a different rating basis. Same-day runs are
+        therefore reproducible, and ratings still evolve day-to-day as intended.
+
+        allow_network=False forces cache-only (used by the reproducibility test and
+        any run that must not touch the network).
         """
+        ratings = None
+        if allow_network:
+            ratings = self._fetch_eloratings()
+            if ratings:
+                self._write_elo_snapshot(ratings)
+        if not ratings:
+            ratings = self._read_elo_snapshot()
+            if ratings:
+                print(f"  [soccer_v2] eloratings.net unavailable — using cached "
+                      f"snapshot ({len(ratings)} teams).")
+        if not ratings:
+            print("  [soccer_v2] No live or cached eloratings — using computed Elo.")
+            return
+
+        updated = 0
+        for team, live_elo in ratings.items():
+            self.elo_ratings[team] = live_elo
+            updated += 1
+        print(f"  [soccer_v2] Seeded {updated} teams from eloratings.")
+
+    @staticmethod
+    def _fetch_eloratings() -> dict[str, float] | None:
+        """Fetch + parse eloratings.net into {team: elo}. None on any failure."""
         url = "https://www.eloratings.net/World.tsv"
         try:
             resp = requests.get(url, timeout=15)
             resp.raise_for_status()
             lines = resp.text.strip().splitlines()
         except Exception as e:
-            print(f"  [soccer_v2] eloratings.net fetch failed: {e}. Using computed Elo.")
-            return
-
-        updated = 0
+            print(f"  [soccer_v2] eloratings.net fetch failed: {e}.")
+            return None
+        out: dict[str, float] = {}
         for line in lines:
             parts = line.split("\t")
             if len(parts) < 4:
@@ -480,11 +516,29 @@ class SoccerModelV2:
             team = ELO_CODE_MAP.get(code)
             if team is None:
                 continue
-            # Always use live eloratings.net Elo when available
-            self.elo_ratings[team] = live_elo
-            updated += 1
+            out[team] = live_elo
+        return out or None
 
-        print(f"  [soccer_v2] Seeded {updated} teams from eloratings.net.")
+    @staticmethod
+    def _write_elo_snapshot(ratings: dict[str, float]) -> None:
+        """Persist the last-good eloratings snapshot for deterministic reuse."""
+        try:
+            ELO_SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
+            ELO_SNAPSHOT_PATH.write_text(json.dumps(
+                {"fetched_at": date.today().isoformat(), "ratings": ratings},
+                indent=2, sort_keys=True))
+        except Exception as e:
+            print(f"  [soccer_v2] could not cache eloratings snapshot: {e}")
+
+    @staticmethod
+    def _read_elo_snapshot() -> dict[str, float] | None:
+        """Read the cached eloratings snapshot, or None if absent/unreadable."""
+        try:
+            data = json.loads(ELO_SNAPSHOT_PATH.read_text())
+            ratings = data.get("ratings")
+            return {k: float(v) for k, v in ratings.items()} if ratings else None
+        except (OSError, ValueError, TypeError, AttributeError):
+            return None
 
     def _get_lambdas(
         self,
