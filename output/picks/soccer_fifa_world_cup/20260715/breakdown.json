@@ -1,0 +1,48 @@
+{
+  "Argentina @ England": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "England",
+        "team": "England",
+        "matchup": "Argentina @ England",
+        "odds": 175,
+        "best_odds": 175,
+        "model_prob": 0.4156,
+        "implied_prob": 0.3433,
+        "edge_pct": 7.23,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.663
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Argentina",
+        "team": "Argentina",
+        "matchup": "Argentina @ England",
+        "odds": 213,
+        "best_odds": 213,
+        "model_prob": 0.3096,
+        "implied_prob": 0.3108,
+        "edge_pct": -0.12,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.663
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "Argentina @ England",
+        "odds": 188,
+        "best_odds": 188,
+        "model_prob": 0.2748,
+        "implied_prob": 0.326,
+        "edge_pct": -5.12,
+        "sportsbook": "BetMGM",
+        "exp_total": 2.663
+      }
+    ]
+  }
+}

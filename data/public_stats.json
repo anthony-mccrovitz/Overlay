@@ -1,15 +1,15 @@
 {
-  "updated_at": "2026-07-15T12:03:58.479536+00:00",
+  "updated_at": "2026-07-15T14:07:12.935002+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
       "tier": "t1",
-      "label": "NBA Totals"
+      "label": "NBA Totals (k\u22480.60 realized; watch CLV, don't scale)"
     },
     "mlb_total": {
       "status": "live",
       "tier": "t1",
-      "label": "MLB Totals (Weather)"
+      "label": "MLB Totals (Weather) \u2014 outcome-verified, k=1.0, realized +6.7pp"
     },
     "tennis_moneyline": {
       "status": "incubating",
@@ -132,9 +132,9 @@
       "label": "NHL Puck Line"
     },
     "nhl_total": {
-      "status": "live",
-      "tier": "t2",
-      "label": "NHL Totals"
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "NHL Totals (36% win, CLV -2.2% \u2014 demoted, recalibrating)"
     },
     "nhl_player_points": {
       "status": "incubating",
