@@ -284,8 +284,17 @@ class TestNormalizePick:
         assert p["pick_id"].startswith("nba_")
 
     def test_old_edge_field_migrated(self):
-        # Old MLB picks store edge as percentage directly (2.52 = 2.52%)
+        # Old MLB picks store edge as percentage directly (2.52 = 2.52%). The
+        # legacy `edge` field now lands as the model's raw claim in raw_edge_pct;
+        # edge_pct is the calibration-gated value (X1), which for a pending pick
+        # is shrunk to what the segment has historically realized.
         p = normalize_pick(self._base(edge=2.52))
+        assert p["raw_edge_pct"] == pytest.approx(2.52)
+
+    def test_graded_pick_edge_not_recalibrated(self):
+        # A settled pick keeps its recorded edge — the gate must never rewrite
+        # the public record.
+        p = normalize_pick(self._base(edge=2.52, result="win", profit=1.4))
         assert p["edge_pct"] == pytest.approx(2.52)
 
     def test_pick_id_deterministic(self):
