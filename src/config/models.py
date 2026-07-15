@@ -24,6 +24,14 @@ they're not even logged to picks.json — keep the two in sync.
 Promotion: shadow → t1/t2 requires ≥ 30 settled picks AND positive ROI on the settled
 sample AND non-negative CLV. Demotion: ROI drops below 0% on a rolling 60-pick window.
 
+Calibration gate (2026-07-15, src/analytics/calibration_gate.py): the registry says
+WHETHER a market may card; the gate independently shrinks each pick's edge to what has
+historically materialized and centrally DE-cards any pending pick whose calibrated edge
+no longer clears the threshold — so even a 'live' model cannot post a phantom edge.
+CLV/outcome split found that day: MLB moneyline and NRFI have positive CLV but ~zero
+realized outcome edge (k≈0), so they are NOT proven winners; MLB totals is the single
+outcome-verified market (k=1.0).
+
 Research backing for the tiers:
   NBA Totals          — Voulgaris documented, pace/tempo mispricing
   Tennis Elo          — Kovalchik 2016, Angelini 2022 (peer-reviewed)
@@ -39,8 +47,12 @@ from __future__ import annotations
 
 MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 1 (proven) — these go on the card ────────────────────────────────
-    ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals"},
-    ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather)"},
+    # Calibration gate (2026-07-15): NBA totals realize ~60% of claimed edge
+    # (k≈0.60) — kept live but do NOT scale until CLV turns positive (currently
+    # -0.3%). MLB totals are the one outcome-VERIFIED edge: claimed +4.8pp,
+    # realized +6.7pp (k=1.0). This is the core of the product.
+    ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals (k≈0.60 realized; watch CLV, don't scale)"},
+    ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather) — outcome-verified, k=1.0, realized +6.7pp"},
     ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u — stay shadow until v2 proves out)"},
     ("soccer", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"},
 
@@ -72,7 +84,9 @@ MODELS: dict[tuple[str, str], dict] = {
     ("nba", "player_threes"):      {"status": "incubating", "tier": "shadow", "label": "NBA Player 3PM"},
     ("nhl", "moneyline"):           {"status": "live",       "tier": "t2",     "label": "NHL Moneyline"},
     ("nhl", "puck_line"):           {"status": "live",       "tier": "t2",     "label": "NHL Puck Line"},
-    ("nhl", "total"):               {"status": "live",       "tier": "t2",     "label": "NHL Totals"},
+    # Demoted 2026-07-15: 36% win, CLV -2.21% — overconfident AND losing to the
+    # close. Incubate until the model recalibrates and CLV turns non-negative.
+    ("nhl", "total"):               {"status": "incubating", "tier": "shadow", "label": "NHL Totals (36% win, CLV -2.2% — demoted, recalibrating)"},
     ("nhl", "player_points"):       {"status": "incubating", "tier": "shadow", "label": "NHL Player Points"},
     ("nhl", "player_goals"):        {"status": "incubating", "tier": "shadow", "label": "NHL Player Goals"},
     ("nhl", "player_assists"):      {"status": "incubating", "tier": "shadow", "label": "NHL Player Assists"},

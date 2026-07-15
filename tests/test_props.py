@@ -278,11 +278,13 @@ class TestModelRegistry:
         assert is_live("mlb", "batter_home_runs") is False
 
     def test_nhl_is_live(self):
-        # NHL core markets cleared the gate (the one +CLV sport) — promoted live.
+        # NHL moneyline + puck line stay live. NHL totals were DEMOTED 2026-07-15
+        # (36% win, CLV -2.2% — overconfident and losing to the close), so it must
+        # no longer post publicly.
         from src.config.models import is_live
         assert is_live("nhl", "moneyline") is True
         assert is_live("nhl", "puck_line") is True
-        assert is_live("nhl", "total") is True
+        assert is_live("nhl", "total") is False
 
     def test_unknown_model_defaults_incubating(self):
         from src.config.models import model_status
