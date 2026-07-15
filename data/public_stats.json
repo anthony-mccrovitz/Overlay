@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-15T14:07:12.935002+00:00",
+  "updated_at": "2026-07-15T15:00:45.936514+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -224,7 +224,7 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.672,
+      "avg_clv_pct": -0.681,
       "positive_pct": 32.6,
       "n": 1691,
       "verdict": "NEGATIVE CLV \u2014 getting worse moneyline numbers than closing"
@@ -253,44 +253,44 @@
       },
       "pitcher_strikeouts": {
         "count": 597,
-        "avg_line_clv": 0.027,
+        "avg_line_clv": 0.028,
         "beat_close_pct": 58.6,
         "avg_price_clv_pct": 1.259,
         "matched_price_n": 402
       },
       "batter_walks": {
         "count": 935,
-        "avg_line_clv": 0.009,
-        "beat_close_pct": 62.1,
-        "avg_price_clv_pct": 1.956,
-        "matched_price_n": 926
+        "avg_line_clv": 0.01,
+        "beat_close_pct": 62.4,
+        "avg_price_clv_pct": 2.039,
+        "matched_price_n": 925
       },
       "batter_rbis": {
         "count": 733,
-        "avg_line_clv": 0.0,
-        "beat_close_pct": 43.4,
-        "avg_price_clv_pct": 0.718,
+        "avg_line_clv": 0.003,
+        "beat_close_pct": 43.7,
+        "avg_price_clv_pct": 0.782,
         "matched_price_n": 726
       },
       "batter_hits": {
         "count": 886,
-        "avg_line_clv": 0.042,
-        "beat_close_pct": 57.3,
-        "avg_price_clv_pct": 1.554,
-        "matched_price_n": 790
+        "avg_line_clv": 0.043,
+        "beat_close_pct": 57.4,
+        "avg_price_clv_pct": 1.578,
+        "matched_price_n": 789
       },
       "batter_home_runs": {
         "count": 442,
         "avg_line_clv": 0.0,
         "beat_close_pct": 26.0,
-        "avg_price_clv_pct": -1.489,
+        "avg_price_clv_pct": -1.341,
         "matched_price_n": 442
       },
       "batter_total_bases": {
         "count": 897,
         "avg_line_clv": 0.265,
         "beat_close_pct": 65.2,
-        "avg_price_clv_pct": 1.296,
+        "avg_price_clv_pct": 1.268,
         "matched_price_n": 640
       }
     },
