@@ -430,6 +430,23 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
     if result not in (None, "win", "loss", "push"):
         result = None
 
+    # ── Calibration gate (X1) ─────────────────────────────────────────────────
+    # Shrink the model's *claimed* edge to what has historically materialized on
+    # this (sport, market), so an overconfident model can't manufacture phantom
+    # edges (tennis totals once claimed +43% while winning 38%). Applied to
+    # PENDING picks only — graded picks keep their recorded edge so the public
+    # record and CLV history are never rewritten. Idempotent: raw_edge_pct pins
+    # the original model claim, so re-normalizing never double-shrinks.
+    raw_edge_pct = raw.get("raw_edge_pct")
+    if raw_edge_pct is None:
+        raw_edge_pct = edge_pct          # first pass: current edge IS the claim
+    if result is None and raw_edge_pct is not None:
+        try:
+            from src.analytics.calibration_gate import calibrate_edge
+            edge_pct = calibrate_edge(sport, market, raw_edge_pct)
+        except Exception:
+            pass  # never block pick logging on the gate
+
     profit_raw = raw.get("profit")
     profit: float | None = None
     if profit_raw is not None:
@@ -441,6 +458,22 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
     # ── Timestamps ────────────────────────────────────────────────────────────
     recorded_at = str(raw.get("recorded_at") or "")
     resulted_at = raw.get("resulted_at") or None
+
+    # ── Card demotion on calibrated edge (X1/X2) ──────────────────────────────
+    # A pick can only reach the card if its CALIBRATED edge still clears the
+    # market's threshold. This can demote (never promote) — a phantom edge that
+    # looked postable on the raw number is dropped centrally, no matter what the
+    # runner decided. Pending picks only; graded card picks are frozen.
+    if card_pick and result is None:
+        try:
+            from src.config.models import is_card_pick as _is_card_pick
+            prop_arg = market if market not in (
+                "moneyline", "spread", "total", "nrfi", "f5_total") else None
+            if not _is_card_pick(sport, market, edge_pct, prop_arg):
+                card_pick = False
+                stake = 0.0
+        except Exception:
+            pass
 
     # ── Pick ID ───────────────────────────────────────────────────────────────
     pick_id = raw.get("pick_id") or make_pick_id(sport, date_, team, market, direction)
@@ -458,6 +491,9 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         "sportsbook":      sportsbook,
         "model_prob":      round(model_prob, 4) if model_prob is not None else None,
         "edge_pct":        round(edge_pct, 2) if edge_pct is not None else None,
+        # The model's original pre-calibration claim, pinned for idempotency and
+        # so we can audit how much the gate shrank each pick.
+        "raw_edge_pct":    round(float(raw_edge_pct), 2) if raw_edge_pct is not None else None,
         "stake":           stake,
         "card_pick":       card_pick,
         "result":          result,

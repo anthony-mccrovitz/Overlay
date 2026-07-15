@@ -345,6 +345,13 @@ def run_soccer(args: argparse.Namespace) -> int:
     print(f"  Soccer Picks — {game_date.strftime('%B %d, %Y')}")
     print(f"{'='*60}")
 
+    # Reproducibility: fixed seed so a re-run of the same slate yields the same
+    # picks. The Elo fetch is frozen separately (seed_from_eloratings caches its
+    # snapshot); together they close the non-determinism that produced phantom
+    # World Cup edges.
+    from src.util.determinism import seed_everything
+    seed_everything()
+
     # 1. Load or fit model (v2: rolling Elo + 2-param Poisson)
     if do_fit:
         model = SoccerModelV2()

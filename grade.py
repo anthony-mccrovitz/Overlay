@@ -2252,6 +2252,15 @@ def main():
         except Exception as e:
             print(f"  [stats] {e}")
 
+        # ── Refresh the calibration table (X1) ────────────────────────────
+        # Newly graded picks change each segment's realized edge; recompute so
+        # tomorrow's pending picks are shrunk against the latest evidence.
+        try:
+            from src.analytics.calibration_gate import compute_table
+            compute_table()
+        except Exception as e:
+            print(f"  [calibration] {e}")
+
 
 if __name__ == "__main__":
     main()
