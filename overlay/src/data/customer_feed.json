@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-15T09:34:29.406209Z",
+  "updated_at": "2026-07-15T15:00:45.501557Z",
   "date": "2026-07-15",
   "record": {
     "wins": 159,
@@ -460,7 +460,7 @@
       "key": "mlb_total",
       "sport": "MLB",
       "sport_key": "mlb",
-      "label": "MLB Totals (Weather)",
+      "label": "MLB Totals (Weather) \u2014 outcome-verified, k=1.0, realized +6.7pp",
       "market": "total",
       "tier": "t1",
       "status": "live",
@@ -477,7 +477,7 @@
       "key": "nba_total",
       "sport": "NBA",
       "sport_key": "nba",
-      "label": "NBA Totals",
+      "label": "NBA Totals (k\u22480.60 realized; watch CLV, don't scale)",
       "market": "total",
       "tier": "t1",
       "status": "live",
@@ -506,23 +506,6 @@
       "win_rate": 87.5,
       "roi": 46.4,
       "profit": 2.55
-    },
-    {
-      "key": "nhl_total",
-      "sport": "NHL",
-      "sport_key": "nhl",
-      "label": "NHL Totals",
-      "market": "total",
-      "tier": "t2",
-      "status": "live",
-      "wins": 5,
-      "losses": 7,
-      "pushes": 2,
-      "pending": 3,
-      "settled": 14,
-      "win_rate": 41.7,
-      "roi": -11.0,
-      "profit": -0.93
     },
     {
       "key": "nhl_moneyline",
@@ -916,6 +899,23 @@
       "profit": 0
     },
     {
+      "key": "nhl_total",
+      "sport": "NHL",
+      "sport_key": "nhl",
+      "label": "NHL Totals (36% win, CLV -2.2% \u2014 demoted, recalibrating)",
+      "market": "total",
+      "tier": "shadow",
+      "status": "shadow",
+      "wins": 5,
+      "losses": 7,
+      "pushes": 2,
+      "pending": 3,
+      "settled": 14,
+      "win_rate": 41.7,
+      "roi": -11.0,
+      "profit": -0.93
+    },
+    {
       "key": "nhl_player_goals",
       "sport": "NHL",
       "sport_key": "nhl",
@@ -1028,7 +1028,7 @@
       "wins": 117,
       "losses": 113,
       "pushes": 0,
-      "pending": 1,
+      "pending": 2,
       "settled": 230,
       "win_rate": 50.9,
       "roi": -5.2,
