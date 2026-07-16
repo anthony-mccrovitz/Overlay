@@ -240149,5 +240149,30 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null
+  },
+  {
+    "date": "2026-07-16",
+    "team": "Portland Fire",
+    "player": null,
+    "opponent": "Portland Fire @ Washington Mystics",
+    "sport": "wnba",
+    "market": "moneyline",
+    "strategy": "devig_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 240.0,
+    "opening_implied_prob": 0.294118,
+    "snapshot_time": "2026-07-16T15:11:51.472876+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "catalyst": "stale_opener",
+    "opening_fair_prob": 0.291667,
+    "opening_fair_sharp": 0.302888,
+    "entry_ev_vs_fair_pct": 2.982,
+    "opening_opp_odds": -250.0,
+    "entry_overround": 1.0084,
+    "entry_board_age_min": 0.0
   }
 ]
