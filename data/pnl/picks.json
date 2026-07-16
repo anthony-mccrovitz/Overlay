@@ -388928,6 +388928,39 @@
       },
       "strategy": null,
       "clv_status": "heuristic"
+    },
+    {
+      "pick_id": "devig_ev__wnba_20260716_portland-fire_moneyline_win",
+      "date": "2026-07-16",
+      "sport": "wnba",
+      "market": "moneyline",
+      "direction": "WIN",
+      "team": "Portland Fire",
+      "matchup": "Portland Fire @ Washington Mystics",
+      "odds": 240,
+      "line": null,
+      "sportsbook": "theScore Bet",
+      "model_prob": 0.3029,
+      "edge_pct": 2.03,
+      "raw_edge_pct": 2.98,
+      "stake": 0.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-07-16T15:11:50.447828+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "strategy": "devig_ev",
+      "clv_status": "heuristic"
     }
   ]
 }
