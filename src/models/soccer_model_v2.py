@@ -217,6 +217,15 @@ class SoccerModelV2:
         self.tempo_shrink: float = self.TEMPO_SHRINK  # shrink β,δ toward 0
         self.fitted_on: date | None = None
 
+    # ── Name normalization (overridable) ──────────────────────────────────────
+
+    def _normalize(self, name: str) -> str:
+        """Map an external team name onto the canonical form the model is keyed
+        on. Base = international national-team aliases. Club subclasses override
+        this with their own league roster aliases."""
+        from src.data.soccer_data import normalize_team_name
+        return normalize_team_name(name)
+
     # ── Elo helpers ───────────────────────────────────────────────────────────
 
     def _elo(self, team: str) -> float:
@@ -454,8 +463,21 @@ class SoccerModelV2:
 
     def get_elo(self, team_name: str) -> float:
         """Return current Elo for a team (default 1500 if unknown)."""
-        from src.data.soccer_data import normalize_team_name
-        return self.elo_ratings.get(normalize_team_name(team_name), self.DEFAULT_ELO)
+        return self.elo_ratings.get(self._normalize(team_name), self.DEFAULT_ELO)
+
+    def can_price(self, home_team: str, away_team: str) -> bool:
+        """True only if BOTH teams have a real rating in this model.
+
+        This is an international national-team model (Elo trained on martj42
+        internationals + eloratings.net). Club sides — MLS, Liga MX, EPL, etc. —
+        are absent from elo_ratings and silently fall back to DEFAULT_ELO (1500),
+        which makes the model emit an identical, team-blind price for every such
+        fixture and manufactures phantom edges against the book. Callers MUST gate
+        on this before pricing, so unpriceable fixtures are skipped rather than
+        turned into meaningless picks.
+        """
+        return (self._normalize(home_team) in self.elo_ratings
+                and self._normalize(away_team) in self.elo_ratings)
 
     def seed_from_eloratings(self, allow_network: bool = True) -> None:
         """
@@ -553,9 +575,8 @@ class SoccerModelV2:
           - rolling attack/defense (β, δ) → absolute scoring tempo
           - home_adv_elo → venue edge in Elo points (0 if neutral)
         """
-        from src.data.soccer_data import normalize_team_name
-        home_team = normalize_team_name(home_team)
-        away_team = normalize_team_name(away_team)
+        home_team = self._normalize(home_team)
+        away_team = self._normalize(away_team)
 
         elo_h = self._elo(home_team)
         elo_a = self._elo(away_team)
@@ -745,8 +766,7 @@ class SoccerModelV2:
             home at every match). Pass None for ordinary neutral fixtures.
         Returns list of edge dicts compatible with pnl schema.
         """
-        from src.data.soccer_data import normalize_team_name
-        hosts = {normalize_team_name(h) for h in (host_nations or set())}
+        hosts = {self._normalize(h) for h in (host_nations or set())}
         edges = []
         for event in events:
             home = event.get("home_team", "")
@@ -758,7 +778,7 @@ class SoccerModelV2:
             # Co-host home edge (only one side can be a host in a given match).
             host_adv = 0.0
             if hosts:
-                nh, na = normalize_team_name(home), normalize_team_name(away)
+                nh, na = self._normalize(home), self._normalize(away)
                 if nh in hosts and na not in hosts:
                     host_adv = self.HOST_BONUS
                 elif na in hosts and nh not in hosts:

@@ -243,6 +243,37 @@ def _run_one_league(
     if not today_events:
         return []
 
+    # Guard: this is an international national-team model. Skip any fixture whose
+    # teams it can't actually price (both must be in the Elo table) — otherwise
+    # club sides (MLS, Liga MX, EPL…) fall back to a 1500 default and the model
+    # emits an identical team-blind price for every game, manufacturing phantom
+    # edges (see SoccerModelV2.can_price). Club leagues need a dedicated club
+    # model before they can be priced.
+    priceable = [
+        ev for ev in today_events
+        if model.can_price(ev.get("home_team", ""), ev.get("away_team", ""))
+    ]
+    skipped = len(today_events) - len(priceable)
+    if skipped:
+        print(f"  [{league_name}] skipped {skipped} fixture(s) the model can't "
+              f"price (teams not in ratings) — no phantom edges emitted.")
+    if not priceable:
+        print(f"  [{league_name}] No priceable fixtures — model has no ratings "
+              f"for this league (club model needed).")
+        return []
+    today_events = priceable
+
+    # Club leagues (MLS, Liga MX) are priced by a dedicated SoccerClubModel whose
+    # home-field boost (γ) only fires for a real home side, so force neutral=False
+    # (Odds API events omit the flag and would otherwise default to neutral). Club
+    # skill is on match outcome, not totals/spreads (validation: O/U beats naive
+    # by ~0, moneyline by 0.02–0.05 Brier), so only moneyline is bet for now.
+    from src.data.soccer_club_data import ESPN_LEAGUE_CODE
+    is_club = sport_key in ESPN_LEAGUE_CODE
+    if is_club:
+        for ev in today_events:
+            ev["neutral"] = False
+
     print(f"\n  [{league_name}] {len(today_events)} game(s):")
     for ev in today_events:
         print(f"    {ev.get('away_team')} @ {ev.get('home_team')}")
@@ -260,6 +291,11 @@ def _run_one_league(
     except Exception as e:
         print(f"  [{league_name}] model error: {e}")
         return []
+
+    # Club models: bet moneyline only (totals/spreads have no demonstrated
+    # out-of-sample edge — see scripts/validate_soccer_club.py).
+    if is_club:
+        all_edges = [e for e in all_edges if e.get("market") == "moneyline"]
 
     # Anytime-scorer player props (World Cup): per-event fetch + scorer model.
     if is_wc:
@@ -368,12 +404,26 @@ def run_soccer(args: argparse.Namespace) -> int:
     else:
         leagues_to_run = SOCCER_LEAGUES
 
-    # 3. Run each league
+    # 3. Run each league. Club leagues (MLS, Liga MX) are priced by a dedicated
+    # SoccerClubModel (trained on real club results); everything else uses the
+    # international national-team model. Club models are lazy-loaded/fit once.
+    from src.data.soccer_club_data import ESPN_LEAGUE_CODE
+    from src.models.soccer_club_model import load_or_fit_club_model
+    club_models: dict[str, "SoccerModelV2"] = {}
+
+    def _model_for(sk: str) -> "SoccerModelV2":
+        if sk in ESPN_LEAGUE_CODE:
+            if sk not in club_models:
+                club_models[sk] = load_or_fit_club_model(sk, verbose=True)
+            return club_models[sk]
+        return model
+
     all_edges: list[dict] = []
     leagues_active = 0
     for sport_key, league_name in leagues_to_run:
         try:
-            edges = _run_one_league(sport_key, league_name, model, game_date, today_str, refresh)
+            lg_model = _model_for(sport_key)
+            edges = _run_one_league(sport_key, league_name, lg_model, game_date, today_str, refresh)
             all_edges.extend(edges)
             if edges:
                 leagues_active += 1
