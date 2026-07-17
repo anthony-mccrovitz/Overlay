@@ -1,0 +1,284 @@
+{
+  "soccer_usa_mls": {
+    "best": {
+      "k": 16,
+      "n_test": 687,
+      "brier": 0.6218,
+      "brier_naive": 0.6436,
+      "logloss": 1.0359,
+      "logloss_naive": 1.0655,
+      "acc": 0.4687,
+      "brier_ou": 0.2358,
+      "brier_ou_naive": 0.2395,
+      "T": 1.05,
+      "params": {
+        "mu": 0.22,
+        "alpha": 0.562,
+        "beta": 0.414,
+        "delta": 0.214,
+        "gamma": 0.306,
+        "c_alt": -0.081,
+        "c_travel": 0.02,
+        "c_rest": 0.053
+      }
+    },
+    "sweep": [
+      {
+        "k": 16,
+        "n_test": 687,
+        "brier": 0.6218,
+        "brier_naive": 0.6436,
+        "logloss": 1.0359,
+        "logloss_naive": 1.0655,
+        "acc": 0.4687,
+        "brier_ou": 0.2358,
+        "brier_ou_naive": 0.2395,
+        "T": 1.05,
+        "params": {
+          "mu": 0.22,
+          "alpha": 0.562,
+          "beta": 0.414,
+          "delta": 0.214,
+          "gamma": 0.306,
+          "c_alt": -0.081,
+          "c_travel": 0.02,
+          "c_rest": 0.053
+        }
+      },
+      {
+        "k": 20,
+        "n_test": 687,
+        "brier": 0.6221,
+        "brier_naive": 0.6436,
+        "logloss": 1.0362,
+        "logloss_naive": 1.0655,
+        "acc": 0.4658,
+        "brier_ou": 0.2358,
+        "brier_ou_naive": 0.2395,
+        "T": 1.05,
+        "params": {
+          "mu": 0.22,
+          "alpha": 0.483,
+          "beta": 0.415,
+          "delta": 0.214,
+          "gamma": 0.306,
+          "c_alt": -0.082,
+          "c_travel": 0.02,
+          "c_rest": 0.053
+        }
+      },
+      {
+        "k": 24,
+        "n_test": 687,
+        "brier": 0.6224,
+        "brier_naive": 0.6436,
+        "logloss": 1.0367,
+        "logloss_naive": 1.0655,
+        "acc": 0.4614,
+        "brier_ou": 0.2357,
+        "brier_ou_naive": 0.2395,
+        "T": 1.05,
+        "params": {
+          "mu": 0.22,
+          "alpha": 0.426,
+          "beta": 0.417,
+          "delta": 0.215,
+          "gamma": 0.307,
+          "c_alt": -0.083,
+          "c_travel": 0.019,
+          "c_rest": 0.053
+        }
+      },
+      {
+        "k": 28,
+        "n_test": 687,
+        "brier": 0.6229,
+        "brier_naive": 0.6436,
+        "logloss": 1.0372,
+        "logloss_naive": 1.0655,
+        "acc": 0.4629,
+        "brier_ou": 0.2357,
+        "brier_ou_naive": 0.2395,
+        "T": 1.05,
+        "params": {
+          "mu": 0.22,
+          "alpha": 0.382,
+          "beta": 0.42,
+          "delta": 0.217,
+          "gamma": 0.308,
+          "c_alt": -0.084,
+          "c_travel": 0.019,
+          "c_rest": 0.053
+        }
+      },
+      {
+        "k": 32,
+        "n_test": 687,
+        "brier": 0.6233,
+        "brier_naive": 0.6436,
+        "logloss": 1.0377,
+        "logloss_naive": 1.0655,
+        "acc": 0.4658,
+        "brier_ou": 0.2357,
+        "brier_ou_naive": 0.2395,
+        "T": 1.05,
+        "params": {
+          "mu": 0.22,
+          "alpha": 0.346,
+          "beta": 0.423,
+          "delta": 0.219,
+          "gamma": 0.308,
+          "c_alt": -0.085,
+          "c_travel": 0.019,
+          "c_rest": 0.054
+        }
+      }
+    ],
+    "v1": {
+      "brier": 0.6272,
+      "logloss": 1.0439,
+      "acc": 0.4687
+    }
+  },
+  "soccer_mexico_ligamx": {
+    "best": {
+      "k": 24,
+      "n_test": 459,
+      "brier": 0.5852,
+      "brier_naive": 0.6341,
+      "logloss": 0.9838,
+      "logloss_naive": 1.052,
+      "acc": 0.549,
+      "brier_ou": 0.245,
+      "brier_ou_naive": 0.2471,
+      "T": 0.9,
+      "params": {
+        "mu": 0.239,
+        "alpha": 0.808,
+        "beta": 0.116,
+        "delta": 0.052,
+        "gamma": 0.127,
+        "c_alt": 0.038,
+        "c_travel": 0.167,
+        "c_rest": -0.223
+      }
+    },
+    "sweep": [
+      {
+        "k": 16,
+        "n_test": 459,
+        "brier": 0.5858,
+        "brier_naive": 0.6341,
+        "logloss": 0.9846,
+        "logloss_naive": 1.052,
+        "acc": 0.5534,
+        "brier_ou": 0.2451,
+        "brier_ou_naive": 0.2471,
+        "T": 0.95,
+        "params": {
+          "mu": 0.24,
+          "alpha": 0.991,
+          "beta": 0.117,
+          "delta": 0.057,
+          "gamma": 0.126,
+          "c_alt": 0.039,
+          "c_travel": 0.17,
+          "c_rest": -0.222
+        }
+      },
+      {
+        "k": 20,
+        "n_test": 459,
+        "brier": 0.5856,
+        "brier_naive": 0.6341,
+        "logloss": 0.9842,
+        "logloss_naive": 1.052,
+        "acc": 0.5468,
+        "brier_ou": 0.245,
+        "brier_ou_naive": 0.2471,
+        "T": 0.95,
+        "params": {
+          "mu": 0.239,
+          "alpha": 0.883,
+          "beta": 0.116,
+          "delta": 0.054,
+          "gamma": 0.126,
+          "c_alt": 0.038,
+          "c_travel": 0.168,
+          "c_rest": -0.223
+        }
+      },
+      {
+        "k": 24,
+        "n_test": 459,
+        "brier": 0.5852,
+        "brier_naive": 0.6341,
+        "logloss": 0.9838,
+        "logloss_naive": 1.052,
+        "acc": 0.549,
+        "brier_ou": 0.245,
+        "brier_ou_naive": 0.2471,
+        "T": 0.9,
+        "params": {
+          "mu": 0.239,
+          "alpha": 0.808,
+          "beta": 0.116,
+          "delta": 0.052,
+          "gamma": 0.127,
+          "c_alt": 0.038,
+          "c_travel": 0.167,
+          "c_rest": -0.223
+        }
+      },
+      {
+        "k": 28,
+        "n_test": 459,
+        "brier": 0.5854,
+        "brier_naive": 0.6341,
+        "logloss": 0.984,
+        "logloss_naive": 1.052,
+        "acc": 0.5512,
+        "brier_ou": 0.245,
+        "brier_ou_naive": 0.2471,
+        "T": 0.9,
+        "params": {
+          "mu": 0.238,
+          "alpha": 0.75,
+          "beta": 0.117,
+          "delta": 0.049,
+          "gamma": 0.128,
+          "c_alt": 0.038,
+          "c_travel": 0.166,
+          "c_rest": -0.224
+        }
+      },
+      {
+        "k": 32,
+        "n_test": 459,
+        "brier": 0.5857,
+        "brier_naive": 0.6341,
+        "logloss": 0.9844,
+        "logloss_naive": 1.052,
+        "acc": 0.5534,
+        "brier_ou": 0.245,
+        "brier_ou_naive": 0.2471,
+        "T": 0.9,
+        "params": {
+          "mu": 0.238,
+          "alpha": 0.704,
+          "beta": 0.118,
+          "delta": 0.048,
+          "gamma": 0.128,
+          "c_alt": 0.038,
+          "c_travel": 0.166,
+          "c_rest": -0.224
+        }
+      }
+    ],
+    "v1": {
+      "brier": 0.5855,
+      "logloss": 0.984,
+      "acc": 0.5599
+    }
+  }
+}
