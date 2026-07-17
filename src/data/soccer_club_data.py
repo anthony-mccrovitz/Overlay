@@ -193,9 +193,17 @@ def _parse_event(ev: dict, league_name: str) -> dict | None:
         match_date = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
         return None
+    # Full kickoff datetime (UTC) — needed to target the true pre-game closing
+    # odds board in the CLV backtest (guessing the time captures in-play odds).
+    kickoff = None
+    try:
+        kickoff = datetime.fromisoformat(ev.get("date", "").replace("Z", "+00:00"))
+    except ValueError:
+        pass
 
     return {
         "date":       match_date,
+        "kickoff":    kickoff,
         "home_team":  home,
         "away_team":  away,
         "home_score": hs,

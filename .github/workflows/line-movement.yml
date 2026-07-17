@@ -50,6 +50,12 @@ jobs:
         run: |
           python scripts/odds_snapshot.py --sport baseball_mlb
           python scripts/odds_snapshot.py --sport basketball_wnba
+          # Club soccer (in-season): records the per-book ENTRY board so
+          # backtest_consensus.py can replay the Kaunitz consensus_ev CLV for
+          # MLS/Liga MX with no historical-API spend (the closing side already
+          # comes from capture-closing.yml). ~3 credits/sport/run.
+          python scripts/odds_snapshot.py --sport soccer_usa_mls
+          python scripts/odds_snapshot.py --sport soccer_mexico_ligamx
 
       - name: Commit snapshots
         run: |
