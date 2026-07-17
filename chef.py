@@ -1517,7 +1517,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
             backfill_snapshot_markets, backfill_snapshot_lines,
             reconcile_stragglers, print_clv_by_strategy,
             print_clv_by_entry_hour, print_clv_by_entry_edge,
-            print_clv_by_catalyst,
+            print_clv_by_catalyst, print_clv_by_timing,
         )
 
         refresh = getattr(args, "refresh", False)
@@ -1555,6 +1555,7 @@ def cmd_clv(args: argparse.Namespace) -> int:
             print_clv_by_market()   # per-market pooled: which market beats the close
         print_clv_by_strategy()     # PROMOTE/SHADOW/RETIRE verdicts (300-bet rule)
         print_clv_by_entry_hour()   # time-of-bet attribution: when does CLV accrue?
+        print_clv_by_timing()       # entry lead time: is earlier-vs-commence better?
         print_clv_by_entry_edge()   # stale-opener validation: entry EV → realized CLV
         print_clv_by_catalyst()     # catalyst vs bare-disagreement split
         return 0

@@ -51,6 +51,7 @@ SPORTS = {
     "soccer_italy_serie_a":      "soccer_italy_serie_a",
     "soccer_germany_bundesliga": "soccer_germany_bundesliga",
     "soccer_usa_mls":            "soccer_usa_mls",
+    "soccer_mexico_ligamx":      "soccer_mexico_ligamx",
     "ufc":     "mma_mixed_martial_arts",
     "mma":     "mma_mixed_martial_arts",
     # NOTE: tennis is handled dynamically (see _active_tennis_keys) because it runs
@@ -134,6 +135,7 @@ _EXTRA_MARKETS = {
     "soccer_italy_serie_a":        _SOCCER_EXTRA,
     "soccer_germany_bundesliga":   _SOCCER_EXTRA,
     "soccer_usa_mls":              _SOCCER_EXTRA,
+    "soccer_mexico_ligamx":        _SOCCER_EXTRA,
     "mma_mixed_martial_arts":      "fight_result_method,total_rounds",
 }
 

@@ -75,9 +75,13 @@ TIER1_BOOKS     = MY_BOOKS_TITLES
 # Books requested from the Odds API. Using the `bookmakers` param instead of
 # `regions` costs markets×1 for up to 10 books (vs markets×3 for us,us2,eu) —
 # proven 3× cheaper, and keeps every market. Edit this list to change coverage;
-# KEEP IT ≤10 books or the per-call cost doubles. 7 US books for best-price
+# KEEP IT ≤10 books or the per-call cost doubles. 9 US books for best-price
 # line-shopping + Pinnacle as the sharp no-vig fair-line anchor.
-BOOKMAKERS = "draftkings,fanduel,betmgm,williamhill_us,betrivers,espnbet,fanatics,pinnacle"
+# hardrockbet/ballybet added 2026-07-16 (free — still ≤10): both bettable
+# (already in MY_BOOKS_TITLES) and slow-moving, which widens the cross-book
+# consensus AND gives consensus_ev real destinations where stale prices live.
+BOOKMAKERS = ("draftkings,fanduel,betmgm,williamhill_us,betrivers,espnbet,"
+              "fanatics,hardrockbet,ballybet,pinnacle")
 
 # Single source of truth: every odds fetch (all sport runners) uses these books.
 # Override the older MY_BOOKS_PARAM so nothing line-shops across books we can't
@@ -93,7 +97,22 @@ SUPPORTED_SPORTS = {
     "americanfootball_nfl",
     "icehockey_nhl",
     "soccer_fifa_world_cup",
+    "mma_mixed_martial_arts",
+    # Club soccer (models built 2026-07-16). European leagues resume in August;
+    # off-season keys return an empty board for 3 credits, so gate-listing them
+    # is free — just don't put them in a daily fetch loop until they're live.
+    "soccer_usa_mls",
+    "soccer_mexico_ligamx",
+    "soccer_spain_la_liga",
+    "soccer_italy_serie_a",
+    "soccer_germany_bundesliga",
 }
+
+# Sport-key prefixes accepted in addition to the exact set above. Tennis keys
+# are tournament-scoped (tennis_atp_wimbledon, ...) and rotate through the
+# season, so they can't be enumerated — any tennis_* key parses identically
+# (2-way h2h with player names in home_team/away_team).
+SUPPORTED_SPORT_PREFIXES = ("tennis_",)
 
 
 def _get_api_key() -> str | None:
@@ -107,10 +126,12 @@ def _cache_path(event_id: str = "latest", sport: str = "basketball_ncaab") -> Pa
 
 
 def _validate_sport(sport: str) -> None:
-    if sport not in SUPPORTED_SPORTS:
-        raise ValueError(
-            f"Unsupported sport '{sport}'. Supported: {', '.join(sorted(SUPPORTED_SPORTS))}"
-        )
+    if sport in SUPPORTED_SPORTS or sport.startswith(SUPPORTED_SPORT_PREFIXES):
+        return
+    raise ValueError(
+        f"Unsupported sport '{sport}'. Supported: {', '.join(sorted(SUPPORTED_SPORTS))}"
+        f" (plus prefixes: {', '.join(SUPPORTED_SPORT_PREFIXES)})"
+    )
 
 
 def fetch_odds(
@@ -261,6 +282,11 @@ def _parse_odds_response(data: list[dict], normalize_names: bool = True) -> pd.D
                             row["HomeMoneyline"] = outcome["price"]
                         elif outcome["name"] == away:
                             row["AwayMoneyline"] = outcome["price"]
+                        elif str(outcome.get("name", "")).lower() == "draw":
+                            # 3-way markets (soccer): the draw carries 15-30% of
+                            # the probability mass — dropping it is what made
+                            # 2-way devigs print phantom EV on every side.
+                            row["DrawOdds"] = outcome["price"]
 
                 elif key == "spreads":
                     for outcome in outcomes:
