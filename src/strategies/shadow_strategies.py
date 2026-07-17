@@ -15,16 +15,24 @@ Register it in STRATEGIES. See docs/SHADOW_PICKS_PLAN.md.
 from __future__ import annotations
 
 import json
+import os
+from collections import Counter
 from datetime import date as _date, datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import pandas as pd
+import requests
 
 _ET = ZoneInfo("America/New_York")
 
 from src.data.odds_api import fetch_odds
 from src.data.pinnacle_fair import build_fair_prob_map
+from src.strategies.consensus import (
+    MIN_EV_PCT as CONSENSUS_MIN_EV_PCT,
+    loo_consensus,
+    per_book_fair,
+)
 from src.tracking.schema import normalize_pick, make_pick_id
 
 PICKS_FILE = Path("data/pnl/picks.json")
@@ -38,11 +46,43 @@ def _implied_from_american(odds: float) -> float:
 
 # Odds API sport keys to log shadow picks for. Defaults to the in-season set;
 # a sport with no games today returns empty (one cheap call) and is skipped.
+# Tennis keys rotate per tournament, so they're discovered at run time
+# (_active_tennis_sports) rather than listed here. When NBA/NHL/NFL seasons
+# start, add their keys here.
 DEFAULT_SPORTS = [
     "baseball_mlb",
     "basketball_wnba",
     "soccer_fifa_world_cup",
+    "mma_mixed_martial_arts",
+    # Club soccer (in-season). consensus_ev prices the full 3-way simplex
+    # (DrawOdds comes through the parser); devig_ev still self-skips soccer
+    # because its Pinnacle fair-map is 2-way. Totals/spreads consensus are
+    # two-way and run as-is. Add la_liga/serie_a/bundesliga here when the
+    # European seasons resume in August.
+    "soccer_usa_mls",
+    "soccer_mexico_ligamx",
 ]
+
+
+def _active_tennis_sports() -> list[str]:
+    """Currently active tennis sport keys from the free /sports endpoint.
+
+    Tennis keys are tournament-scoped (tennis_atp_wimbledon, ...) and rotate
+    through the season, so a hardcoded list goes stale within weeks. The
+    /sports listing costs zero API credits. Fail-soft: any error returns []
+    and the shadow run simply covers the static DEFAULT_SPORTS.
+    """
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        return []
+    try:
+        resp = requests.get("https://api.the-odds-api.com/v4/sports",
+                            params={"apiKey": key}, timeout=10)
+        resp.raise_for_status()
+        return [s["key"] for s in resp.json()
+                if s.get("active") and str(s.get("key", "")).startswith("tennis_")]
+    except Exception:
+        return []
 
 
 # ── Strategies ──────────────────────────────────────────────────────────────
@@ -316,11 +356,315 @@ def devig_ev_totals(odds_df: pd.DataFrame, sport: str) -> list[dict]:
     return picks
 
 
+def consensus_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
+    """Positive-EV moneyline picks vs the CROSS-BOOK consensus (Kaunitz 2017).
+
+    Where devig_ev anchors on Pinnacle's devig, this anchors on the MEDIAN of
+    every book's own self-devigged probability — Kaunitz et al.
+    (arXiv:1710.02824) showed the cross-book consensus is a ~R²=0.999
+    probability estimate and that betting single books priced above it was +EV
+    over 479k games (median, not mean, on our ~5-8 book boards — see
+    consensus.loo_consensus). The destination book is left OUT of its own
+    consensus (leave-one-out): a lagging book must not drag the reference
+    toward itself, because that lag is exactly the signal. Requires ≥MIN_BOOKS
+    books in the LOO set; same EV bar as devig_ev so the two anchors grade
+    head-to-head under the 300-bet verdict rule.
+
+    Handles BOTH market shapes:
+      - 2-way (MLB/WNBA/MMA/tennis): per-book devig over (picked, other).
+      - 3-way (soccer): the draw carries 15-30% of the mass, so each book is
+        devigged over its FULL (picked, other, draw) simplex — DrawOdds comes
+        through the parser now. Books quoting a 3-way game without a draw
+        price are excluded from the consensus outright (a partial simplex
+        can't be devigged honestly), though they remain valid destinations.
+        Home/Away sides only: a DRAW-side pick would join closings/entry-fair
+        by the ambiguous team key "draw" (collides across a multi-game slate),
+        so it stays off until those joins are matchup-scoped.
+    """
+    if odds_df is None or odds_df.empty:
+        return []
+    home_ml = "HomeMoneyline" if "HomeMoneyline" in odds_df.columns else "HomeOdds"
+    away_ml = "AwayMoneyline" if "AwayMoneyline" in odds_df.columns else "AwayOdds"
+    needed = {"GameID", "HomeTeam", "AwayTeam", home_ml, away_ml, "Sportsbook"}
+    if not needed.issubset(odds_df.columns):
+        return []
+    is_draw_sport = any(tok in sport.lower() for tok in _DRAW_MARKET_TOKENS)
+    has_draw_col = "DrawOdds" in odds_df.columns
+
+    now = datetime.now(tz=timezone.utc)
+    picks: list[dict] = []
+    for _gid, g in odds_df.groupby("GameID"):
+        home = str(g["HomeTeam"].iloc[0])
+        away = str(g["AwayTeam"].iloc[0])
+        if not home or not away:
+            continue
+        # Only log a true *opening* — skip games already started.
+        if "CommenceTime" in g.columns:
+            ct = str(g["CommenceTime"].iloc[0] or "")
+            try:
+                if ct and datetime.fromisoformat(ct.replace("Z", "+00:00")) <= now:
+                    continue
+            except ValueError:
+                pass
+
+        sided = g.dropna(subset=[home_ml, away_ml])
+        if is_draw_sport:
+            # 3-way market: a consensus book must quote the whole simplex.
+            # Don't rely on the overround floor to catch a missing draw — on
+            # extreme-favorite games the 2-way sum can sneak past 0.95.
+            if not has_draw_col:
+                continue
+            sided = sided.dropna(subset=["DrawOdds"])
+
+        def _side_tuples(first_col: str, second_col: str) -> dict[str, tuple]:
+            """Per-book price tuples with the picked side FIRST — per_book_fair
+            devigs element 0 against the whole tuple, so order IS the side."""
+            out: dict[str, tuple] = {}
+            for _, r in sided.iterrows():
+                book = str(r["Sportsbook"])
+                if not book:
+                    continue
+                t = [r[first_col], r[second_col]]
+                if is_draw_sport:
+                    t.append(r["DrawOdds"])
+                out[book] = tuple(t)
+            return out
+
+        side_tuples = {"home": _side_tuples(home_ml, away_ml),
+                       "away": _side_tuples(away_ml, home_ml)}
+
+        bettable = g[~g["Sportsbook"].isin(_NON_DESTINATION_BOOKS)]
+        if bettable.empty:
+            continue
+
+        for side, direction, odds_col in (("home", "HOME", home_ml),
+                                          ("away", "AWAY", away_ml)):
+            prices = pd.to_numeric(bettable[odds_col], errors="coerce").dropna()
+            if prices.empty:
+                continue
+            # Best price for the bettor = highest American odds.
+            best_idx = prices.idxmax()
+            best_odds = int(prices.loc[best_idx])
+            book = str(bettable.loc[best_idx, "Sportsbook"])
+            fair_by_book = per_book_fair(side_tuples[side])
+            cons = loo_consensus(fair_by_book, exclude=book)
+            if cons is None:
+                continue
+            cons_p, _n_books = cons
+            implied = _implied_from_american(best_odds)
+            if pd.isna(implied) or implied <= 0 or cons_p <= 0:
+                continue
+            ev_pct = (cons_p / implied - 1.0) * 100.0
+            if ev_pct < CONSENSUS_MIN_EV_PCT:
+                continue
+            picks.append({
+                "sport":      sport,
+                "market":     "moneyline",
+                "direction":  direction,
+                "team":       home if side == "home" else away,
+                "matchup":    f"{away} @ {home}",
+                "odds":       best_odds,
+                "sportsbook": book,
+                # model_prob carries the LOO consensus prob (not an ML pred) so
+                # the CLV-by-strategy view shows what we thought was true.
+                "model_prob": round(float(cons_p), 4),
+                "edge_pct":   round(float(ev_pct), 2),
+            })
+    return picks
+
+
+def _modal_line(values: pd.Series) -> float | None:
+    """Most common line across the board — the consensus market's OWN line
+    (devig_ev_totals anchors on Pinnacle's line instead; that's the point of
+    difference). Ties break toward the line closest to the overall median."""
+    nums = pd.to_numeric(values, errors="coerce").dropna()
+    if nums.empty:
+        return None
+    counts = Counter(float(v) for v in nums)
+    top = max(counts.values())
+    tied = [ln for ln, c in counts.items() if c == top]
+    med = float(nums.median())
+    return min(tied, key=lambda ln: (abs(ln - med), ln))
+
+
+def _consensus_two_way_line(g: pd.DataFrame, line_col: str, a_odds_col: str,
+                            b_odds_col: str) -> tuple | None:
+    """Shared body for consensus totals/spreads: restrict the board to the
+    modal line, devig each book against itself there, and return
+    (line, at_line_df, fair_a_by_book) — fair prob of the A side (over/home).
+    None when there's no modal line or the board at it is unusable."""
+    sided = g.dropna(subset=[line_col, a_odds_col, b_odds_col])
+    if sided.empty:
+        return None
+    line = _modal_line(sided[line_col])
+    if line is None:
+        return None
+    at_line = sided[pd.to_numeric(sided[line_col], errors="coerce") == line]
+    pairs: dict[str, tuple] = {}
+    for _, r in at_line.iterrows():
+        book = str(r["Sportsbook"])
+        if book:
+            pairs[book] = (r[a_odds_col], r[b_odds_col])
+    return line, at_line, per_book_fair(pairs)
+
+
+def consensus_ev_totals(odds_df: pd.DataFrame, sport: str) -> list[dict]:
+    """Positive-EV totals vs the cross-book consensus — consensus_ev applied to
+    the totals market. The reference line is the board's MODAL line (the number
+    most books agree the game lives at), and only books quoting exactly that
+    line join the consensus or qualify as destinations — a different total is a
+    different bet, so a half-run of line difference must never masquerade as
+    price EV (same guard as devig_ev_totals). Totals are inherently two-way,
+    so the soccer/3-way skip doesn't apply.
+    """
+    if odds_df is None or odds_df.empty:
+        return []
+    needed = {"GameID", "HomeTeam", "AwayTeam", "OverOdds", "UnderOdds",
+              "Total", "Sportsbook"}
+    if not needed.issubset(odds_df.columns):
+        return []
+
+    now = datetime.now(tz=timezone.utc)
+    picks: list[dict] = []
+    for _gid, g in odds_df.groupby("GameID"):
+        home = str(g["HomeTeam"].iloc[0])
+        away = str(g["AwayTeam"].iloc[0])
+        if not home or not away:
+            continue
+        # Only log a true *opening* — skip games already started.
+        if "CommenceTime" in g.columns:
+            ct = str(g["CommenceTime"].iloc[0] or "")
+            try:
+                if ct and datetime.fromisoformat(ct.replace("Z", "+00:00")) <= now:
+                    continue
+            except ValueError:
+                pass
+
+        res = _consensus_two_way_line(g, "Total", "OverOdds", "UnderOdds")
+        if res is None:
+            continue
+        line, at_line, fair_over_by_book = res
+        bettable = at_line[~at_line["Sportsbook"].isin(_NON_DESTINATION_BOOKS)]
+        if bettable.empty:
+            continue
+
+        for side, direction, odds_col in (("over", "OVER", "OverOdds"),
+                                          ("under", "UNDER", "UnderOdds")):
+            prices = pd.to_numeric(bettable[odds_col], errors="coerce").dropna()
+            if prices.empty:
+                continue
+            best_idx = prices.idxmax()
+            best_odds = int(prices.loc[best_idx])
+            book = str(bettable.loc[best_idx, "Sportsbook"])
+            cons = loo_consensus(fair_over_by_book, exclude=book)
+            if cons is None:
+                continue
+            cons_over, _n = cons
+            cons_p = cons_over if side == "over" else 1.0 - cons_over
+            implied = _implied_from_american(best_odds)
+            if pd.isna(implied) or implied <= 0 or cons_p <= 0:
+                continue
+            ev_pct = (cons_p / implied - 1.0) * 100.0
+            if ev_pct < CONSENSUS_MIN_EV_PCT:
+                continue
+            picks.append({
+                "sport":      sport,
+                "market":     "total",
+                "direction":  direction,
+                "team":       f"{direction} {line}",
+                "matchup":    f"{away} @ {home}",
+                "odds":       best_odds,
+                "line":       line,
+                "sportsbook": book,
+                "model_prob": round(float(cons_p), 4),
+                "edge_pct":   round(float(ev_pct), 2),
+            })
+    return picks
+
+
+def consensus_ev_spreads(odds_df: pd.DataFrame, sport: str) -> list[dict]:
+    """Positive-EV spreads/run lines vs the cross-book consensus.
+
+    Same shape as consensus_ev_totals: modal HOME line across the board, only
+    books at exactly that number join the consensus or qualify as destinations,
+    median LOO consensus of each book's own two-sided devig. A pick's `line` is
+    signed from the picked team's perspective (home = modal, away = -modal),
+    matching how model spread picks are recorded in picks.json.
+    """
+    if odds_df is None or odds_df.empty:
+        return []
+    needed = {"GameID", "HomeTeam", "AwayTeam", "HomeSpread",
+              "HomeSpreadOdds", "AwaySpreadOdds", "Sportsbook"}
+    if not needed.issubset(odds_df.columns):
+        return []
+
+    now = datetime.now(tz=timezone.utc)
+    picks: list[dict] = []
+    for _gid, g in odds_df.groupby("GameID"):
+        home = str(g["HomeTeam"].iloc[0])
+        away = str(g["AwayTeam"].iloc[0])
+        if not home or not away:
+            continue
+        # Only log a true *opening* — skip games already started.
+        if "CommenceTime" in g.columns:
+            ct = str(g["CommenceTime"].iloc[0] or "")
+            try:
+                if ct and datetime.fromisoformat(ct.replace("Z", "+00:00")) <= now:
+                    continue
+            except ValueError:
+                pass
+
+        res = _consensus_two_way_line(g, "HomeSpread",
+                                      "HomeSpreadOdds", "AwaySpreadOdds")
+        if res is None:
+            continue
+        line, at_line, fair_home_by_book = res
+        bettable = at_line[~at_line["Sportsbook"].isin(_NON_DESTINATION_BOOKS)]
+        if bettable.empty:
+            continue
+
+        for side, direction, odds_col in (("home", "HOME", "HomeSpreadOdds"),
+                                          ("away", "AWAY", "AwaySpreadOdds")):
+            prices = pd.to_numeric(bettable[odds_col], errors="coerce").dropna()
+            if prices.empty:
+                continue
+            best_idx = prices.idxmax()
+            best_odds = int(prices.loc[best_idx])
+            book = str(bettable.loc[best_idx, "Sportsbook"])
+            cons = loo_consensus(fair_home_by_book, exclude=book)
+            if cons is None:
+                continue
+            cons_home, _n = cons
+            cons_p = cons_home if side == "home" else 1.0 - cons_home
+            implied = _implied_from_american(best_odds)
+            if pd.isna(implied) or implied <= 0 or cons_p <= 0:
+                continue
+            ev_pct = (cons_p / implied - 1.0) * 100.0
+            if ev_pct < CONSENSUS_MIN_EV_PCT:
+                continue
+            picks.append({
+                "sport":      sport,
+                "market":     "spread",
+                "direction":  direction,
+                "team":       home if side == "home" else away,
+                "matchup":    f"{away} @ {home}",
+                "odds":       best_odds,
+                "line":       line if side == "home" else -line,
+                "sportsbook": book,
+                "model_prob": round(float(cons_p), 4),
+                "edge_pct":   round(float(ev_pct), 2),
+            })
+    return picks
+
+
 # name -> strategy function. Add new strategies here (see plan doc Phase 2).
 STRATEGIES = {
-    "fav_longshot":    fav_longshot,
-    "devig_ev":        devig_ev,
-    "devig_ev_totals": devig_ev_totals,
+    "fav_longshot":         fav_longshot,
+    "devig_ev":             devig_ev,
+    "devig_ev_totals":      devig_ev_totals,
+    "consensus_ev":         consensus_ev,
+    "consensus_ev_totals":  consensus_ev_totals,
+    "consensus_ev_spreads": consensus_ev_spreads,
 }
 
 # Strategies with a RETIRE verdict from the 300-bet no-vig CLV rule. Kept in
@@ -354,7 +698,10 @@ def log_shadow_strategies(date_str: str | None = None,
     Returns the number of new shadow picks logged.
     """
     eff_date = date_str or _date.today().isoformat()
-    sports = sports or DEFAULT_SPORTS
+    if sports is None:
+        # Static in-season set + whatever tennis tournaments are live right now
+        # (tennis keys rotate per tournament; discovery is a free /sports call).
+        sports = DEFAULT_SPORTS + _active_tennis_sports()
     strat_names = strategies or [n for n in STRATEGIES
                                  if n not in RETIRED_STRATEGIES]
     now_ts = datetime.now(tz=timezone.utc).isoformat()

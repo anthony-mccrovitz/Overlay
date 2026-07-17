@@ -781,6 +781,52 @@ def fetch_closing_pairs(
     return pairs
 
 
+def _commence_map(date_str: str, sport: str) -> dict:
+    """{frozenset({home,away}) | team_lower: commence_iso} from the closing
+    archive — the fallback commence source for snapshots entered before
+    entry_fair started stamping commence_time at bet time."""
+    out: dict = {}
+    for row in _select_windowed_records(date_str, sport).values():
+        home = str(row.get("HomeTeam") or row.get("home_team") or "").lower().strip()
+        away = str(row.get("AwayTeam") or row.get("away_team") or "").lower().strip()
+        ct = row.get("commence_time") or row.get("CommenceTime")
+        if not (home and away and ct):
+            continue
+        out[frozenset({home, away})] = str(ct)
+        out.setdefault(home, str(ct))
+        out.setdefault(away, str(ct))
+    return out
+
+
+def _stamp_entry_lead(snap: dict, cmap: dict) -> bool:
+    """Stamp entry_lead_min = minutes between bet entry (snapshot_time) and
+    first pitch. Positive = bet before the game; negative = in-play/late entry.
+    Prefers the snapshot's own commence_time (entry_fair stamps it at bet time),
+    falls back to the closing archive's. Deterministic and idempotent — returns
+    True only when the stored value actually changed."""
+    ct = snap.get("commence_time")
+    if not ct and cmap:
+        mu = str(snap.get("opponent") or snap.get("matchup") or "")
+        if "@" in mu:
+            a, h = [t.strip().lower() for t in mu.split("@", 1)]
+            ct = cmap.get(frozenset({a, h}))
+        if not ct:
+            ct = cmap.get(str(snap.get("team") or "").lower().strip())
+    ts = snap.get("snapshot_time")
+    if not ct or not ts:
+        return False
+    try:
+        c = datetime.fromisoformat(str(ct).replace("Z", "+00:00"))
+        t = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+    except (ValueError, TypeError):
+        return False
+    lead = round((c - t).total_seconds() / 60.0, 1)
+    if snap.get("entry_lead_min") == lead:
+        return False
+    snap["entry_lead_min"] = lead
+    return True
+
+
 def fetch_closing_pinnacle(
     date_str: str | None = None,
     sport: str = "baseball_mlb",
@@ -1611,10 +1657,12 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
     sharp_prop_maps: dict[str, dict] = {}
     sharp_scorer_maps: dict[str, dict] = {}
     sharp_method_maps: dict[str, dict] = {}
+    commence_maps: dict[str, dict] = {}  # entry_lead_min fallback source
     for sport in sports_today:
         closing_maps[sport]   = fetch_closing_lines(date_str=date_str, sport=sport)
         closing_pairs[sport]  = fetch_closing_pairs(date_str=date_str, sport=sport)
         pinnacle_pairs[sport] = fetch_closing_pinnacle(date_str=date_str, sport=sport)
+        commence_maps[sport]  = _commence_map(date_str, sport)
         spread_maps[sport]   = fetch_closing_spreads(date_str=date_str, sport=sport)
         total_maps[sport]    = fetch_closing_totals(date_str=date_str, sport=sport)
         f5_maps[sport]       = fetch_closing_f5_totals(date_str=date_str, sport=sport)
@@ -1659,8 +1707,15 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
 
     updated = 0
     cleared = 0
+    lead_stamped = 0
     for snap in day_snaps:
         market = str(snap.get("market") or "").lower()
+
+        # Entry timing: how early was this bet vs first pitch? Stamped for
+        # EVERY market before the per-market dispatch below (each branch
+        # `continue`s), so the CLV-by-timing report covers the whole book.
+        if _stamp_entry_lead(snap, commence_maps.get(snap.get("sport", "mlb"), {})):
+            lead_stamped += 1
 
         # ── Spreads / run lines / puck lines ──────────────────────────────────
         if market in ("spread", "run_line", "runline", "puck_line", "puckline"):
@@ -1937,7 +1992,7 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
             snap.pop("clv_novig_sharp_pct", None)
         updated += 1
 
-    if updated > 0 or cleared > 0:
+    if updated > 0 or cleared > 0 or lead_stamped > 0:
         _save_snapshots(snapshots)
 
     return day_snaps
@@ -2410,6 +2465,104 @@ def print_clv_by_entry_hour(sport: str | None = None) -> None:
     best = max(data.items(),
                key=lambda kv: kv[1].get("avg_prob_clv_pct", kv[1].get("avg_line_clv", -99)))
     print(f"    → best window: {best[0]} UTC — bet earlier/harder there if it holds at n≥100")
+
+
+# ── CLV by entry lead time (Kaunitz timing gradient) ────────────────────────
+# Kaunitz et al. (2017) earned +3.5% betting the close but +9.9% betting 1-5h
+# early: CLV is largely manufactured by BEING EARLY, before the market
+# sharpens. get_clv_by_entry_hour buckets by wall-clock hour; this buckets by
+# minutes-to-first-pitch (entry_lead_min, stamped in compute_clv), which is
+# the number the research actually speaks to.
+
+_LEAD_BUCKETS = [(720.0, float("inf"), ">12h"),
+                 (360.0, 720.0, "6-12h"),
+                 (180.0, 360.0, "3-6h"),
+                 (60.0, 180.0, "1-3h"),
+                 (0.0, 60.0, "<1h"),
+                 (float("-inf"), 0.0, "in-play/late")]
+
+
+def get_clv_by_timing(sport: str | None = None) -> dict:
+    """CLV bucketed by entry lead time (minutes before first pitch).
+
+    Returns {bucket_label: {n, beat_pct, avg_prob_clv_pct?, prob_n?, avg_sharp?,
+    sharp_n?, avg_line_clv?, line_n?}} using the vig-consistent prob-CLV ladder
+    for price markets and line-CLV points for line markets, plus the
+    Pinnacle-close sharp twin so a best-price mirage can't hide in a bucket.
+    """
+    snaps = _load_snapshots()
+    if sport:
+        snaps = [s for s in snaps if s.get("sport") == sport]
+    buckets: dict[str, dict] = {}
+    for s in snaps:
+        lead = s.get("entry_lead_min")
+        if lead is None:
+            continue
+        try:
+            lead = float(lead)
+        except (TypeError, ValueError):
+            continue
+        label = next((lb for lo, hi, lb in _LEAD_BUCKETS if lo <= lead < hi), None)
+        if label is None:
+            continue
+        b = buckets.setdefault(label, {"prob": [], "line": [], "sharp": [],
+                                       "beats": 0, "scored": 0})
+        pclv = _best_prob_clv(s)
+        if pclv is not None:
+            b["prob"].append(pclv)
+            b["scored"] += 1
+            if pclv > 0:
+                b["beats"] += 1
+            sharp = s.get("clv_novig_sharp_pct", s.get("clv_sharp_pct"))
+            if sharp is not None:
+                b["sharp"].append(sharp)
+        elif s.get("line_clv") is not None:
+            b["line"].append(s["line_clv"])
+            b["scored"] += 1
+            if s.get("beat_close"):
+                b["beats"] += 1
+            if s.get("line_clv_sharp") is not None:
+                b["sharp"].append(s["line_clv_sharp"])
+
+    out: dict[str, dict] = {}
+    for _lo, _hi, label in _LEAD_BUCKETS:   # earliest-entry bucket first
+        b = buckets.get(label)
+        if not b or not b["scored"]:
+            continue
+        e: dict = {"n": b["scored"],
+                   "beat_pct": round(b["beats"] / b["scored"] * 100, 1)}
+        if b["prob"]:
+            e["avg_prob_clv_pct"] = round(sum(b["prob"]) / len(b["prob"]), 3)
+            e["prob_n"] = len(b["prob"])
+        if b["line"]:
+            e["avg_line_clv"] = round(sum(b["line"]) / len(b["line"]), 3)
+            e["line_n"] = len(b["line"])
+        if b["sharp"]:
+            e["avg_sharp"] = round(sum(b["sharp"]) / len(b["sharp"]), 3)
+            e["sharp_n"] = len(b["sharp"])
+        out[label] = e
+    return out
+
+
+def print_clv_by_timing(sport: str | None = None) -> None:
+    """Pretty-print the entry-lead-time CLV gradient (see get_clv_by_timing)."""
+    data = get_clv_by_timing(sport)
+    tag = f" — {sport}" if sport else ""
+    print(f"\n  CLV BY ENTRY LEAD TIME{tag}  — does betting earlier earn CLV?")
+    if not data:
+        print("    (no scored snapshots with entry_lead_min — run compute_clv first)")
+        return
+    print(f"    {'lead':>12}{'n':>7}{'price-CLV':>17}{'sharp':>15}{'line-CLV':>16}{'beat%':>8}")
+    for label, e in data.items():
+        p = (f"{e['avg_prob_clv_pct']:+.2f}% ({e['prob_n']})"
+             if "avg_prob_clv_pct" in e else "—")
+        sh = (f"{e['avg_sharp']:+.2f} ({e['sharp_n']})"
+              if "avg_sharp" in e else "—")
+        l = (f"{e['avg_line_clv']:+.2f}pt ({e['line_n']})"
+             if "avg_line_clv" in e else "—")
+        print(f"    {label:>12}{e['n']:>7}{p:>17}{sh:>15}{l:>16}{e['beat_pct']:>7.0f}%")
+    print(f"    → Kaunitz gradient check: if the early buckets dominate, "
+          f"move pick generation earlier in the day")
 
 
 # ── Stale-opener validation (item 1 of the CLV plan) ─────────────────────────

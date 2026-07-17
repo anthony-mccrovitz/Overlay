@@ -26,12 +26,22 @@ the pick or is stale):
                          known at entry, before any close exists.
   entry_overround        sum of raw implied probs of the entry pair (vig sanity)
   entry_board_age_min    age of the odds board used (staleness disclosure)
+  commence_time          event start (ISO) from the entry board — lets CLV
+                         compute entry_lead_min (how early the bet was) without
+                         waiting for the closing archive
+  consensus_fair_prob    median of every book's OWN two-sided devig of the
+                         picked side (Kaunitz cross-book consensus, robust at
+                         small n) — analysis metadata alongside the
+                         Pinnacle-only opening_fair_sharp
+  consensus_n_books      how many books that consensus averaged (disclosure)
 """
 from __future__ import annotations
 
 import json
 import time
 from pathlib import Path
+
+from src.strategies.consensus import loo_consensus, per_book_fair
 
 CACHE_DIR = Path("data/cache/odds")
 
@@ -112,15 +122,20 @@ def build_indexes(events: list[dict]) -> dict:
     """
     ml_index: dict[str, dict] = {}
     totals_index: dict[frozenset, dict] = {}
+    commence_index: dict[frozenset, str] = {}
 
     for ev in events:
         home = str(ev.get("home_team") or "").lower().strip()
         away = str(ev.get("away_team") or "").lower().strip()
         if not home or not away:
             continue
+        commence = str(ev.get("commence_time") or "") or None
+        if commence:
+            commence_index[frozenset({away, home})] = commence
 
         best: dict[str, float] = {}
         pin: dict[str, float] = {}
+        books: dict[str, dict[str, float]] = {}  # per-book h2h quotes (consensus)
         tot: dict[float, dict] = {}
 
         for bk in ev.get("bookmakers", []):
@@ -139,6 +154,7 @@ def build_indexes(events: list[dict]) -> dict:
                             best[sel] = p
                         if is_pin:
                             pin[sel] = p
+                        books.setdefault(book, {})[sel] = p
                 elif mkey == "totals":
                     for oc in mk.get("outcomes", []):
                         side = str(oc.get("name") or "").lower().strip()
@@ -155,13 +171,14 @@ def build_indexes(events: list[dict]) -> dict:
                             entry[f"{side}_pin"] = p
 
         if best:
-            rec = {"best": best, "pin": pin, "sels": sorted(best)}
+            rec = {"best": best, "pin": pin, "sels": sorted(best),
+                   "books": books, "commence": commence}
             ml_index[home] = rec
             ml_index[away] = rec
         if tot:
             totals_index[frozenset({away, home})] = tot
 
-    return {"ml": ml_index, "totals": totals_index}
+    return {"ml": ml_index, "totals": totals_index, "commence": commence_index}
 
 
 class EntryBoards:
@@ -235,6 +252,8 @@ def attach_entry_fair(snap: dict, boards: EntryBoards) -> bool:
                     break
         if rec is None or team not in rec["best"]:
             return False
+        if rec.get("commence"):
+            snap["commence_time"] = rec["commence"]
         best = rec["best"]
         others = [best[s] for s in rec["sels"] if s != team]
         if not others:
@@ -246,6 +265,18 @@ def attach_entry_fair(snap: dict, boards: EntryBoards) -> bool:
         fair_sharp = None
         if team in pin and len(pin) == len(rec["sels"]):
             fair_sharp = _devig(pin[team], *[pin[s] for s in rec["sels"] if s != team])
+        # Cross-book consensus (Kaunitz): median of each book's OWN devig of
+        # the picked side, over books quoting the full market. Metadata
+        # alongside the Pinnacle-only sharp fair — 2+ books, n disclosed.
+        pairs = {
+            b: tuple([q[team]] + [q[s] for s in rec["sels"] if s != team])
+            for b, q in (rec.get("books") or {}).items()
+            if all(s in q for s in rec["sels"])
+        }
+        cons = loo_consensus(per_book_fair(pairs), exclude=None, min_books=2)
+        if cons is not None:
+            snap["consensus_fair_prob"] = round(cons[0], 6)
+            snap["consensus_n_books"] = cons[1]
         opp = next((best[s] for s in rec["sels"] if s not in (team, "draw")), None)
         draw = best.get("draw") if len(rec["sels"]) > 2 else None
         return _attach_common(snap, fair, fair_sharp, opp, draw, overround, age_min)
@@ -257,6 +288,9 @@ def attach_entry_fair(snap: dict, boards: EntryBoards) -> bool:
         if "@" not in mu or direction not in ("OVER", "UNDER") or line is None:
             return False
         a, h = [t.strip().lower() for t in mu.split("@", 1)]
+        commence = (idx.get("commence") or {}).get(frozenset({a, h}))
+        if commence:
+            snap["commence_time"] = commence
         lines = idx["totals"].get(frozenset({a, h}))
         if not lines:
             return False
