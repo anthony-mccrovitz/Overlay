@@ -24,7 +24,9 @@ from src.analytics import clv_tracker as ct
 from src.analytics.entry_fair import attach_entry_fair, build_indexes
 from src.strategies import shadow_strategies as ss
 from src.strategies.consensus import (
+    draw_team,
     implied,
+    is_draw_selection,
     loo_consensus,
     per_book_fair,
 )
@@ -247,6 +249,119 @@ def test_consensus_ev_needs_min_books():
     assert ss.consensus_ev(df, "baseball_mlb") == []
 
 
+# ── DRAW as a full third side ────────────────────────────────────────────────
+
+def test_draw_team_key_is_matchup_scoped_and_detected():
+    # The packed key must be unique per matchup (a bare "draw" collides) and
+    # must be recognised by is_draw_selection so the substring joins skip it.
+    key = draw_team("Toronto FC", "CF Montreal")
+    assert key == "Draw (Toronto FC @ CF Montreal)"
+    assert is_draw_selection(key)
+    assert is_draw_selection("draw (x @ y)")
+    assert not is_draw_selection("CF Montreal")
+    assert not is_draw_selection("Draymond Green")  # starts with "dra", not "draw"
+
+
+def test_consensus_ev_fires_draw_on_lagging_book():
+    # Every book agrees the draw is ~+240 (fair ≈ 0.28) except SoftBook, which
+    # still hangs +360. The consensus must price the draw and fire on SoftBook.
+    df = _board3([
+        {"book": "FanDuel", "home_ml": -105, "away_ml": 290, "draw": 240},
+        {"book": "DraftKings", "home_ml": -108, "away_ml": 285, "draw": 245},
+        {"book": "BetMGM", "home_ml": -104, "away_ml": 295, "draw": 238},
+        {"book": "Caesars", "home_ml": -106, "away_ml": 290, "draw": 242},
+        {"book": "SoftBook", "home_ml": -106, "away_ml": 290, "draw": 360},
+    ])
+    picks = ss.consensus_ev(df, "soccer_usa_mls")
+    draws = [p for p in picks if p["direction"] == "DRAW"]
+    assert draws, "expected a +EV pick on the stale draw price"
+    p = draws[0]
+    assert p["sportsbook"] == "SoftBook"
+    assert p["odds"] == 360
+    assert p["team"] == draw_team("Away", "Home")
+    assert is_draw_selection(p["team"])
+    # Consensus draw prob is the crowd ~0.28, not SoftBook's implied ~0.22.
+    assert 0.25 < p["model_prob"] < 0.31
+
+
+def test_consensus_ev_draw_silent_on_tight_board():
+    # No stale draw → no draw pick (and the packed team key never leaks out).
+    df = _board3([
+        {"book": "FanDuel", "home_ml": -105, "away_ml": 290, "draw": 250},
+        {"book": "DraftKings", "home_ml": -108, "away_ml": 285, "draw": 255},
+        {"book": "BetMGM", "home_ml": -104, "away_ml": 295, "draw": 245},
+        {"book": "Caesars", "home_ml": -106, "away_ml": 290, "draw": 250},
+    ])
+    picks = ss.consensus_ev(df, "soccer_usa_mls")
+    assert [p for p in picks if p["direction"] == "DRAW"] == []
+
+
+def test_consensus_ev_no_draw_side_for_two_way_sport():
+    # MLB has no draw column → sides stay home/away, never a DRAW pick.
+    df = _board([
+        {"book": "FanDuel", "home_ml": -140, "away_ml": 120},
+        {"book": "DraftKings", "home_ml": -138, "away_ml": 118},
+        {"book": "BetMGM", "home_ml": -142, "away_ml": 122},
+        {"book": "SoftBook", "home_ml": -150, "away_ml": 220},
+    ])
+    picks = ss.consensus_ev(df, "baseball_mlb")
+    assert all(p["direction"] in ("HOME", "AWAY") for p in picks)
+
+
+# ── Pinnacle-anchored 3-way (devig_ev twin of consensus_ev) ──────────────────
+
+def test_pinnacle_fair_map_builds_three_way_h2h():
+    from src.data.pinnacle_fair import build_fair_prob_map
+    df = _board3([
+        {"book": "Pinnacle", "home_ml": -105, "away_ml": 290, "draw": 240},
+        {"book": "FanDuel", "home_ml": -104, "away_ml": 295, "draw": 238},
+    ])
+    fair = build_fair_prob_map(df)["G1"]["h2h"]
+    assert fair["source"] == "pinnacle"
+    assert {"home", "away", "draw"} <= set(fair)
+    # Three devigged probs sum to 1.0 and the draw carries real mass.
+    assert fair["home"] + fair["away"] + fair["draw"] == pytest.approx(1.0)
+    assert 0.25 < fair["draw"] < 0.31
+
+
+def test_devig_ev_fires_draw_against_pinnacle_anchor():
+    # Pinnacle prices the draw fair (~0.28); SoftBook hangs a stale +330 draw.
+    df = _board3([
+        {"book": "Pinnacle", "home_ml": -105, "away_ml": 290, "draw": 240},
+        {"book": "FanDuel", "home_ml": -104, "away_ml": 295, "draw": 238},
+        {"book": "DraftKings", "home_ml": -106, "away_ml": 290, "draw": 242},
+        {"book": "SoftBook", "home_ml": -106, "away_ml": 290, "draw": 330},
+    ])
+    picks = ss.devig_ev(df, "soccer_usa_mls")
+    draws = [p for p in picks if p["direction"] == "DRAW"]
+    assert draws, "Pinnacle-anchored devig_ev should fire on the stale draw"
+    p = draws[0]
+    assert p["sportsbook"] == "SoftBook"
+    assert p["odds"] == 330
+    assert p["team"] == draw_team("Away", "Home")
+    assert 0.25 < p["model_prob"] < 0.31   # Pinnacle fair, not SoftBook implied
+
+
+def test_devig_ev_silent_on_tight_three_way_board():
+    # No stale side: full-simplex Pinnacle anchor must NOT print phantom EV.
+    df = _board3([
+        {"book": "Pinnacle", "home_ml": -105, "away_ml": 290, "draw": 240},
+        {"book": "FanDuel", "home_ml": -104, "away_ml": 292, "draw": 242},
+        {"book": "DraftKings", "home_ml": -106, "away_ml": 288, "draw": 238},
+    ])
+    assert ss.devig_ev(df, "soccer_usa_mls") == []
+
+
+def test_devig_ev_skips_three_way_game_without_draw():
+    # Draw price genuinely missing → devig_ev must not 2-way devig soccer.
+    df = _board([
+        {"book": "Pinnacle", "home_ml": -140, "away_ml": 190},
+        {"book": "FanDuel", "home_ml": -138, "away_ml": 188},
+        {"book": "SoftBook", "home_ml": -150, "away_ml": 260},
+    ])
+    assert ss.devig_ev(df, "soccer_usa_mls") == []
+
+
 def test_consensus_diverges_from_pinnacle_anchor():
     """When PINNACLE is the outlier, devig_ev (Pinnacle-anchored) reacts but
     consensus_ev (board-anchored, Pinnacle just one vote) should not chase it —
@@ -404,6 +519,50 @@ def test_attach_entry_fair_stamps_consensus_and_commence():
     assert 0.48 < snap["consensus_fair_prob"] < 0.55
 
 
+def _soccer_3way_event():
+    home, away = "CF Montreal", "Toronto FC"
+    def mk(book, hp, ap, dp):
+        return {"title": book, "markets": [
+            {"key": "h2h", "outcomes": [
+                {"name": home, "price": hp}, {"name": away, "price": ap},
+                {"name": "Draw", "price": dp}]}]}
+    return {
+        "home_team": home, "away_team": away,
+        "commence_time": "2099-06-01T23:05:00Z",
+        "bookmakers": [
+            mk("Pinnacle", -105, 290, 240),
+            mk("DraftKings", -108, 285, 245),
+            mk("FanDuel", -104, 295, 238),
+        ],
+    }
+
+
+def test_attach_entry_fair_resolves_draw_by_matchup():
+    # A DRAW snapshot packs the matchup into `team`; entry_fair must resolve the
+    # event by its OWN matchup string, devig the full 3-way, and NOT be fooled
+    # by the substring fallback (the packed key contains both team names).
+    boards = _FakeBoards([_soccer_3way_event()])
+    snap = {"sport": "soccer_usa_mls", "market": "moneyline",
+            "team": draw_team("Toronto FC", "CF Montreal"),
+            "matchup": "Toronto FC @ CF Montreal",
+            "opening_implied_prob": 0.28}
+    assert attach_entry_fair(snap, boards) is True
+    assert snap["commence_time"] == "2099-06-01T23:05:00Z"
+    # Fair draw prob from the 3-way devig sits near the ~0.28 crowd, well below
+    # the ~0.42 a broken 2-way (home-vs-away) devig would leave for the draw.
+    assert 0.25 < snap["opening_fair_prob"] < 0.32
+
+
+def test_attach_entry_fair_draw_absent_matchup_returns_false():
+    boards = _FakeBoards([_soccer_3way_event()])
+    snap = {"sport": "soccer_usa_mls", "market": "moneyline",
+            "team": draw_team("Nowhere FC", "Elsewhere FC"),
+            "matchup": "Nowhere FC @ Elsewhere FC",
+            "opening_implied_prob": 0.28}
+    assert attach_entry_fair(snap, boards) is False
+    assert "opening_fair_prob" not in snap
+
+
 # ── entry-lead-time CLV bucketing ────────────────────────────────────────────
 
 def test_stamp_entry_lead_prefers_snapshot_commence():
@@ -518,3 +677,57 @@ def test_backtest_first_crossing_and_join(tmp_path, monkeypatch):
     assert r["lead_min"] == pytest.approx(660.0, abs=1.0)
     assert r["clv_novig_pct"] is not None
     assert r["clv_sharp_pct"] is not None   # Pinnacle close present
+
+
+def test_backtest_three_way_scores_draw_side(tmp_path, monkeypatch):
+    import scripts.backtest_consensus as bt
+
+    def mk(book, hp, ap, dp):
+        return {"title": book, "markets": [{"key": "h2h", "outcomes": [
+            {"name": "Home", "price": hp}, {"name": "Away", "price": ap},
+            {"name": "Draw", "price": dp}]}]}
+
+    # Crowd draw ≈ +240 (fair ~0.28); SoftBook lags at +380 → +EV DRAW pick.
+    game = {
+        "id": "SOC1", "home_team": "Home", "away_team": "Away",
+        "commence_time": "2026-07-17T23:00:00Z",
+        "bookmakers": [
+            mk("FanDuel", -105, 290, 240),
+            mk("DraftKings", -108, 285, 245),
+            mk("BetMGM", -104, 295, 238),
+            mk("Caesars", -106, 290, 242),
+            mk("SoftBook", -106, 290, 380),
+        ],
+    }
+    hist = tmp_path / "odds_history" / "soccer_usa_mls"
+    hist.mkdir(parents=True)
+    import json
+    (hist / "2026-07-17.jsonl").write_text(
+        json.dumps({"ts": "2026-07-17T12:00:00Z", "games": [game]}))
+
+    closing = tmp_path / "closing"
+    closing.mkdir()
+    # Draw drifted in toward the pick (close fair ~0.30 > entry fair ~0.28).
+    (closing / "soccer_usa_mls_2026-07-17.json").write_text(json.dumps([{
+        "event_id": "SOC1", "home_team": "Home", "away_team": "Away",
+        "commence_time": "2026-07-17T23:00:00Z", "closing_final": True,
+        "mins_to_commence": 5.0,
+        "BestHomeML": -105, "BestAwayML": 290,
+        "all_odds": [
+            {"Sportsbook": "Pinnacle", "Market": "h2h", "Selection": "Home", "Odds": -110},
+            {"Sportsbook": "Pinnacle", "Market": "h2h", "Selection": "Away", "Odds": 285},
+            {"Sportsbook": "Pinnacle", "Market": "h2h", "Selection": "Draw", "Odds": 240},
+            {"Sportsbook": "FanDuel", "Market": "h2h", "Selection": "Draw", "Odds": 235},
+        ],
+    }]))
+
+    monkeypatch.setattr(bt, "ODDS_HISTORY", tmp_path / "odds_history")
+    monkeypatch.setattr(bt, "CLOSING_DIR", closing)
+
+    res = bt.run("soccer_usa_mls", [2.0], None, None, 3)
+    draw_rows = [r for r in res["results"][2.0] if r["side"] == "draw"]
+    assert len(draw_rows) == 1, "expected one +EV draw pick joined to the close"
+    r = draw_rows[0]
+    assert r["event_id"] == "SOC1"
+    assert r["clv_novig_pct"] is not None
+    assert r["clv_sharp_pct"] is not None

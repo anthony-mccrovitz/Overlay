@@ -18,6 +18,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from src.strategies.consensus import draw_team, is_draw_selection
+
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
@@ -774,7 +776,11 @@ def fetch_closing_pairs(
         if draw_ml is not None:
             pairs[home]   = (float(home_ml), float(away_ml), draw_ml)
             pairs[away]   = (float(away_ml), float(home_ml), draw_ml)
+            # Legacy bare key (last event wins — collides across a slate) plus
+            # the matchup-qualified key DRAW picks actually join on. Same
+            # draw_team() format as pick emission so the two can never drift.
             pairs["draw"] = (draw_ml, float(home_ml), float(away_ml))
+            pairs[draw_team(away, home).lower()] = pairs["draw"]
         else:
             pairs[home] = (float(home_ml), float(away_ml))
             pairs[away] = (float(away_ml), float(home_ml))
@@ -883,7 +889,10 @@ def fetch_closing_pinnacle(
         if draw_ml is not None:
             pairs[home]   = (home_ml, away_ml, draw_ml)
             pairs[away]   = (away_ml, home_ml, draw_ml)
+            # Bare legacy key + the matchup-qualified key DRAW picks join on
+            # (see fetch_closing_pairs).
             pairs["draw"] = (draw_ml, home_ml, away_ml)
+            pairs[draw_team(away, home).lower()] = pairs["draw"]
         else:
             pairs[home] = (home_ml, away_ml)
             pairs[away] = (away_ml, home_ml)
@@ -923,6 +932,15 @@ def fetch_closing_lines(
             closing.setdefault(home, []).append(float(home_ml))
         if away and away_ml is not None:
             closing.setdefault(away, []).append(float(away_ml))
+        # 3-way markets: give DRAW picks their matchup-qualified key too (the
+        # Best*ML columns only carry the two team sides). Draw rows only exist
+        # in soccer archives, so this is a no-op everywhere else.
+        if home and away:
+            for o in (row.get("all_odds") or []):
+                if str(o.get("Market")) == "h2h" and \
+                   str(o.get("Selection") or o.get("Name") or "").lower() == "draw" and \
+                   o.get("Odds") is not None:
+                    closing.setdefault(draw_team(away, home).lower(), []).append(float(o["Odds"]))
     if closing:
         return {
             team: max(prices, key=lambda p: p if p > 0 else -10000 / abs(p))
@@ -949,8 +967,16 @@ def fetch_closing_lines(
                 for outcome in market.get("outcomes", []):
                     team_lower = outcome.get("name", "").lower().strip()
                     price      = outcome.get("price")
-                    if team_lower and price is not None:
-                        closing.setdefault(team_lower, []).append(float(price))
+                    if not team_lower or price is None:
+                        continue
+                    if team_lower == "draw":
+                        # matchup-qualify (bare "draw" collides across the slate)
+                        h = str(game.get("home_team") or "").lower().strip()
+                        a = str(game.get("away_team") or "").lower().strip()
+                        if not (h and a):
+                            continue
+                        team_lower = draw_team(a, h).lower()
+                    closing.setdefault(team_lower, []).append(float(price))
 
     return {
         team: max(prices, key=lambda p: p if p > 0 else -10000 / abs(p))
@@ -1912,8 +1938,9 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         sport_pairs = closing_pairs.get(snap_sport, {})
         closing_odds = sport_map.get(team_lower) or merged_map.get(team_lower)
 
-        if closing_odds is None:
-            # Partial match
+        if closing_odds is None and not is_draw_selection(team_lower):
+            # Partial match — NEVER for draw picks: "Draw (X @ Y)" contains both
+            # team names, so a substring hit would score the draw as a team pick.
             for cm in (sport_map, merged_map):
                 for key, val in cm.items():
                     if team_lower in key or key in team_lower:

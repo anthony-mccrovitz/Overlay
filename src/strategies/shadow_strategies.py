@@ -30,6 +30,7 @@ from src.data.odds_api import fetch_odds
 from src.data.pinnacle_fair import build_fair_prob_map
 from src.strategies.consensus import (
     MIN_EV_PCT as CONSENSUS_MIN_EV_PCT,
+    draw_team,
     loo_consensus,
     per_book_fair,
 )
@@ -181,11 +182,14 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
     over-confident — the edge is a pure market disagreement (sharp fair line vs a
     soft book that's slow or off). Logged as a shadow strategy and CLV-graded
     before a dollar is risked. Moneyline here; totals live in devig_ev_totals.
+
+    Handles 2-way (MLB/WNBA/…) and 3-way (soccer) moneylines: when a real Draw
+    price is present, build_fair_prob_map devigs the full home/away/draw simplex
+    and this prices the DRAW as a full third side (draw_team()-keyed, like
+    consensus_ev). This is the Pinnacle-ANCHORED twin of consensus_ev's
+    board-median anchor — the two grade head-to-head under the 300-bet verdict.
     """
     if odds_df is None or odds_df.empty:
-        return []
-    # Three-way (draw) markets can't be devigged two-way — would print phantom EV.
-    if any(tok in sport.lower() for tok in _DRAW_MARKET_TOKENS):
         return []
     home_ml = "HomeMoneyline" if "HomeMoneyline" in odds_df.columns else "HomeOdds"
     away_ml = "AwayMoneyline" if "AwayMoneyline" in odds_df.columns else "AwayOdds"
@@ -193,6 +197,7 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
     if not needed.issubset(odds_df.columns):
         return []
 
+    is_draw_sport = any(tok in sport.lower() for tok in _DRAW_MARKET_TOKENS)
     fair_map = build_fair_prob_map(odds_df)
     if not fair_map:
         return []
@@ -207,6 +212,11 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
         away = str(g["AwayTeam"].iloc[0])
         if not home or not away:
             continue
+        # A 3-way market must carry a devigged draw or we don't price it — never
+        # fall back to a 2-way devig on soccer (that's the phantom-EV bug).
+        game_three_way = is_draw_sport and "draw" in fair
+        if is_draw_sport and not game_three_way:
+            continue
         # Only log a true *opening* — skip games already started.
         if "CommenceTime" in g.columns:
             ct = str(g["CommenceTime"].iloc[0] or "")
@@ -220,15 +230,16 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
         if bettable.empty:
             continue
 
-        # Sanity-check this is a real two-way market. Vig is a PER-BOOK property,
-        # so judge it by a single SHARP book's two-sided implied sum — Pinnacle if
-        # present, else the median per-book overround (robust to one off book).
-        # Don't use min(): an off soft book legitimately sums <1.0, and that's the
-        # +EV signal, not a malformed market. A clean 2-way reference sits
-        # ~1.02-1.10; a 3-way slice missing the draw (soccer) has EVERY book <1.0.
-        sided = g.dropna(subset=[home_ml, away_ml])
+        # Sanity-check the market overround. Vig is a PER-BOOK property, so judge
+        # it by a single SHARP book's implied sum — Pinnacle if present, else the
+        # median per-book overround (robust to one off book). Don't use min(): an
+        # off soft book legitimately sums <1.0, and that's the +EV signal. A clean
+        # reference sits ~1.02-1.10; sum the DRAW too on 3-way so a real soccer
+        # market clears the band instead of looking like a broken 2-way slice.
+        cols = [home_ml, away_ml] + (["DrawOdds"] if game_three_way else [])
+        sided = g.dropna(subset=cols)
         per_book = [
-            _implied_from_american(r[home_ml]) + _implied_from_american(r[away_ml])
+            sum(_implied_from_american(r[c]) for c in cols)
             for _, r in sided.iterrows()
         ]
         per_book = [o for o in per_book if not pd.isna(o)]
@@ -236,15 +247,17 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
             continue
         pin = sided[sided["Sportsbook"] == "Pinnacle"]
         if not pin.empty:
-            ref_overround = (_implied_from_american(pin.iloc[0][home_ml])
-                             + _implied_from_american(pin.iloc[0][away_ml]))
+            ref_overround = sum(_implied_from_american(pin.iloc[0][c]) for c in cols)
         else:
             ref_overround = float(pd.Series(per_book).median())
         if not (_OVERROUND_MIN <= ref_overround <= _OVERROUND_MAX):
             continue
 
-        for side, direction, odds_col in (("home", "HOME", home_ml),
-                                          ("away", "AWAY", away_ml)):
+        sides = [("home", "HOME", home_ml), ("away", "AWAY", away_ml)]
+        if game_three_way:
+            sides.append(("draw", "DRAW", "DrawOdds"))
+
+        for side, direction, odds_col in sides:
             fair_p = fair.get(side)
             if not fair_p or fair_p <= 0:
                 continue
@@ -261,11 +274,14 @@ def devig_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
             ev_pct = (fair_p / implied - 1.0) * 100.0
             if ev_pct < _MIN_EV_PCT:
                 continue
+            team = (home if side == "home"
+                    else away if side == "away"
+                    else draw_team(away, home))
             picks.append({
                 "sport":      sport,
                 "market":     "moneyline",
                 "direction":  direction,
-                "team":       home if side == "home" else away,
+                "team":       team,
                 "matchup":    f"{away} @ {home}",
                 "odds":       best_odds,
                 "sportsbook": book,
@@ -376,10 +392,14 @@ def consensus_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
         devigged over its FULL (picked, other, draw) simplex — DrawOdds comes
         through the parser now. Books quoting a 3-way game without a draw
         price are excluded from the consensus outright (a partial simplex
-        can't be devigged honestly), though they remain valid destinations.
-        Home/Away sides only: a DRAW-side pick would join closings/entry-fair
-        by the ambiguous team key "draw" (collides across a multi-game slate),
-        so it stays off until those joins are matchup-scoped.
+        can't be devigged honestly), though they remain valid destinations
+        for HOME/AWAY picks (never for DRAW — no draw quote, no draw bet).
+        DRAW is a full side: the public hates betting draws, so books shade
+        them softest — Kaunitz's +EV soccer sample leaned on exactly this
+        outcome. Its `team` is draw_team(away, home) = "Draw (Away @ Home)":
+        the matchup packed into the team string keeps every (date, team) join
+        key unique across the slate (a bare "draw" collides), and entry_fair/
+        closing joins resolve it matchup-scoped via the same helper.
     """
     if odds_df is None or odds_df.empty:
         return []
@@ -416,29 +436,31 @@ def consensus_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
                 continue
             sided = sided.dropna(subset=["DrawOdds"])
 
-        def _side_tuples(first_col: str, second_col: str) -> dict[str, tuple]:
+        def _side_tuples(*cols: str) -> dict[str, tuple]:
             """Per-book price tuples with the picked side FIRST — per_book_fair
             devigs element 0 against the whole tuple, so order IS the side."""
             out: dict[str, tuple] = {}
             for _, r in sided.iterrows():
                 book = str(r["Sportsbook"])
-                if not book:
-                    continue
-                t = [r[first_col], r[second_col]]
-                if is_draw_sport:
-                    t.append(r["DrawOdds"])
-                out[book] = tuple(t)
+                if book:
+                    out[book] = tuple(r[c] for c in cols)
             return out
 
-        side_tuples = {"home": _side_tuples(home_ml, away_ml),
-                       "away": _side_tuples(away_ml, home_ml)}
+        draw_cols = ["DrawOdds"] if is_draw_sport else []
+        side_tuples = {"home": _side_tuples(home_ml, away_ml, *draw_cols),
+                       "away": _side_tuples(away_ml, home_ml, *draw_cols)}
+        sides = [("home", "HOME", home_ml), ("away", "AWAY", away_ml)]
+        if is_draw_sport:
+            side_tuples["draw"] = _side_tuples("DrawOdds", home_ml, away_ml)
+            sides.append(("draw", "DRAW", "DrawOdds"))
 
         bettable = g[~g["Sportsbook"].isin(_NON_DESTINATION_BOOKS)]
         if bettable.empty:
             continue
 
-        for side, direction, odds_col in (("home", "HOME", home_ml),
-                                          ("away", "AWAY", away_ml)):
+        for side, direction, odds_col in sides:
+            if odds_col not in bettable.columns:
+                continue
             prices = pd.to_numeric(bettable[odds_col], errors="coerce").dropna()
             if prices.empty:
                 continue
@@ -457,11 +479,14 @@ def consensus_ev(odds_df: pd.DataFrame, sport: str) -> list[dict]:
             ev_pct = (cons_p / implied - 1.0) * 100.0
             if ev_pct < CONSENSUS_MIN_EV_PCT:
                 continue
+            team = (home if side == "home"
+                    else away if side == "away"
+                    else draw_team(away, home))
             picks.append({
                 "sport":      sport,
                 "market":     "moneyline",
                 "direction":  direction,
-                "team":       home if side == "home" else away,
+                "team":       team,
                 "matchup":    f"{away} @ {home}",
                 "odds":       best_odds,
                 "sportsbook": book,
