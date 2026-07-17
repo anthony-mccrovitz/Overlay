@@ -61,25 +61,32 @@ def _parse_ts(raw) -> datetime | None:
         return None
 
 
-def _devig_home(home_odds, away_odds) -> float | None:
-    """Best-price two-sided devig → fair prob of the HOME side. Matches
-    entry_fair.opening_fair_prob / fetch_closing_pairs methodology."""
-    ih, ia = implied(home_odds), implied(away_odds)
-    if ih is None or ia is None or (ih + ia) <= 0:
+def _is_draw_sport(sport: str) -> bool:
+    return "soccer" in sport.lower()
+
+
+def _fair_probs(odds_by_side: dict[str, float | None]) -> dict[str, float] | None:
+    """Best-price devig across the FULL outcome set (2-way or 3-way) →
+    {side: fair prob}. Matches entry_fair.opening_fair_prob /
+    fetch_closing_pairs methodology; a missing outcome voids the devig (a
+    partial simplex inflates every remaining side — the soccer phantom-EV bug)."""
+    imps = {s: implied(o) for s, o in odds_by_side.items()}
+    if len(imps) < 2 or any(v is None or v <= 0 for v in imps.values()):
         return None
-    return ih / (ih + ia)
-
-
-def _side_prob(home_prob: float, side: str) -> float:
-    return home_prob if side == "home" else 1.0 - home_prob
+    tot = sum(imps.values())  # type: ignore[arg-type]
+    if tot <= 0:
+        return None
+    return {s: v / tot for s, v in imps.items()}  # type: ignore[operator]
 
 
 def index_closings(sport: str) -> dict[str, dict]:
-    """event_id -> {fair_close_home, sharp_close_home, commence} from the
-    live-capture closing archives. On duplicate captures per event, prefer the
-    one flagged closing_final, else the smallest mins_to_commence (nearest the
-    close)."""
+    """event_id -> {fair_close: {side: p}, sharp_close: {side: p}|None,
+    commence} from the live-capture closing archives. On duplicate captures per
+    event, prefer the one flagged closing_final, else the smallest
+    mins_to_commence (nearest the close). 3-way sports (soccer) require a draw
+    price on both the best-price and Pinnacle boards — no draw, no devig."""
     prefix = _CLOSING_PREFIX.get(sport, sport)
+    draw_sport = _is_draw_sport(sport)
     out: dict[str, dict] = {}
     best_rank: dict[str, tuple] = {}
     for path in sorted(CLOSING_DIR.glob(f"{prefix}_*.json")):
@@ -93,24 +100,35 @@ def index_closings(sport: str) -> dict[str, dict]:
             eid = r.get("event_id")
             if not eid:
                 continue
-            fair_home = _devig_home(r.get("BestHomeML"), r.get("BestAwayML"))
-            if fair_home is None:
-                continue
-            # Pinnacle sharp close from the per-book rows.
             home_team = str(r.get("home_team") or "").strip()
             away_team = str(r.get("away_team") or "").strip()
+            best = {"home": r.get("BestHomeML"), "away": r.get("BestAwayML")}
             pin = {str(o.get("Selection") or o.get("Name")): o.get("Odds")
                    for o in (r.get("all_odds") or [])
                    if o.get("Market") == "h2h" and o.get("Sportsbook") == "Pinnacle"}
-            sharp_home = _devig_home(pin.get(home_team), pin.get(away_team))
+            pin_sides = {"home": pin.get(home_team), "away": pin.get(away_team)}
+            if draw_sport:
+                # Best (highest) draw price across the per-book rows, matching
+                # the Best*ML convention.
+                draws = [o.get("Odds") for o in (r.get("all_odds") or [])
+                         if o.get("Market") == "h2h"
+                         and str(o.get("Selection") or o.get("Name") or "").lower() == "draw"
+                         and o.get("Odds") is not None]
+                best["draw"] = max((float(d) for d in draws), default=None)
+                pin_sides["draw"] = next((v for k, v in pin.items()
+                                          if str(k).lower() == "draw"), None)
+            fair_close = _fair_probs(best)
+            if fair_close is None:
+                continue
+            sharp_close = _fair_probs(pin_sides)
             # Rank: closing_final wins; else nearest to commence (min mins).
             mins = r.get("mins_to_commence")
             rank = (1 if r.get("closing_final") else 0,
                     -abs(float(mins)) if mins is not None else -9e9)
             if eid not in best_rank or rank > best_rank[eid]:
                 best_rank[eid] = rank
-                out[eid] = {"fair_close_home": fair_home,
-                            "sharp_close_home": sharp_home,
+                out[eid] = {"fair_close": fair_close,
+                            "sharp_close": sharp_close,
                             "commence": _parse_ts(r.get("commence_time")),
                             "home_team": home_team, "away_team": away_team}
     return out
@@ -140,32 +158,44 @@ def _iter_history(sport: str, start: _date | None, end: _date | None):
                 yield ts, g
 
 
-def _game_pairs(game: dict) -> tuple[dict[str, tuple], float | None, float | None]:
-    """Per-book (home_odds, away_odds) + best home/away price across all books."""
+def _game_board(game: dict, draw_sport: bool) -> tuple[dict[str, dict], dict[str, tuple]]:
+    """Read one game's h2h board.
+
+    Returns (quotes, best) where quotes = {book: {side: odds}} over books
+    quoting the FULL outcome set (2 sides, or 3 for draw sports — a book
+    missing the draw can't join a consensus), and best = {side: (odds, book)}
+    best bettable price per side across ALL books (a draw-less book is still a
+    valid HOME/AWAY destination; only "draw" itself needs a draw quote).
+    """
     home_team = str(game.get("home_team") or "")
     away_team = str(game.get("away_team") or "")
-    pairs: dict[str, tuple] = {}
-    best_home = best_away = None
-    best_home_book = best_away_book = None
+    sides = ("home", "away", "draw") if draw_sport else ("home", "away")
+    quotes: dict[str, dict] = {}
+    best: dict[str, tuple] = {}
     for bk in game.get("bookmakers", []):
         book = str(bk.get("title") or bk.get("key") or "")
-        h = a = None
+        q: dict[str, float] = {}
         for mk in bk.get("markets", []):
             if mk.get("key") != "h2h":
                 continue
             for oc in mk.get("outcomes", []):
-                if oc.get("name") == home_team:
-                    h = oc.get("price")
-                elif oc.get("name") == away_team:
-                    a = oc.get("price")
-        if h is not None and a is not None:
-            pairs[book] = (h, a)
-            if book not in NON_DESTINATION:
-                if best_home is None or h > best_home:
-                    best_home, best_home_book = h, book
-                if best_away is None or a > best_away:
-                    best_away, best_away_book = a, book
-    return pairs, (best_home, best_home_book), (best_away, best_away_book)
+                name = str(oc.get("name") or "")
+                price = oc.get("price")
+                if price is None:
+                    continue
+                if name == home_team:
+                    q["home"] = price
+                elif name == away_team:
+                    q["away"] = price
+                elif name.lower() == "draw":
+                    q["draw"] = price
+        if all(s in q for s in sides):
+            quotes[book] = q
+        if book not in NON_DESTINATION:
+            for s in sides:
+                if s in q and (s not in best or q[s] > best[s][0]):
+                    best[s] = (q[s], book)
+    return quotes, best
 
 
 def run(sport: str, thresholds: list[float], start: _date | None,
@@ -175,32 +205,38 @@ def run(sport: str, thresholds: list[float], start: _date | None,
     picks: dict[float, dict] = {t: {} for t in thresholds}
     unjoined_events: set[str] = set()
 
+    draw_sport = _is_draw_sport(sport)
+    all_sides = ("home", "away", "draw") if draw_sport else ("home", "away")
+    # picked-side-first column order per side — per_book_fair devigs element 0
+    side_order = {s: (s, *[o for o in all_sides if o != s]) for s in all_sides}
+
     for ts, game in _iter_history(sport, start, end):
         eid = game.get("id")
         commence = _parse_ts(game.get("commence_time"))
         if commence is not None and commence <= ts:
             continue  # already started at this snapshot — not an opening
-        pairs, (bh, bh_book), (ba, ba_book) = _game_pairs(game)
-        fair_by_book = per_book_fair(pairs)
-        if len(fair_by_book) < min_books:
-            continue
-        # entry best-price fair (methodology-matched to the close)
-        entry_home = _devig_home(bh, ba)
-        if entry_home is None:
+        quotes, best = _game_board(game, draw_sport)
+        # entry best-price fair over the FULL outcome set (methodology-matched
+        # to the close; a draw sport without a best draw price can't be devigged)
+        entry_fair = _fair_probs({s: best[s][0] if s in best else None
+                                  for s in all_sides})
+        if entry_fair is None:
             continue
         lead_min = None
         if commence is not None:
             lead_min = (commence - ts).total_seconds() / 60.0
 
-        for side, best_odds, best_book in (("home", bh, bh_book),
-                                           ("away", ba, ba_book)):
-            if best_odds is None:
+        for side in all_sides:
+            if side not in best:
                 continue
+            best_odds, best_book = best[side]
+            side_tuples = {bk: tuple(q[s] for s in side_order[side])
+                           for bk, q in quotes.items()}
+            fair_by_book = per_book_fair(side_tuples)
             cons = loo_consensus(fair_by_book, exclude=best_book, min_books=min_books)
             if cons is None:
                 continue
-            cons_home, _n = cons
-            cons_p = _side_prob(cons_home, side)
+            cons_p, _n = cons
             imp = implied(best_odds)
             if imp is None or imp <= 0 or cons_p <= 0:
                 continue
@@ -213,7 +249,7 @@ def run(sport: str, thresholds: list[float], start: _date | None,
                     continue  # first crossing only
                 picks[t][key] = {
                     "event_id": eid, "side": side, "ev_pct": ev_pct,
-                    "entry_fair": _side_prob(entry_home, side),
+                    "entry_fair": entry_fair[side],
                     "lead_min": lead_min, "ts": ts,
                 }
 
@@ -222,15 +258,13 @@ def run(sport: str, thresholds: list[float], start: _date | None,
     for t in thresholds:
         for (eid, side), p in picks[t].items():
             close = closings.get(eid)
-            if close is None:
+            if close is None or side not in close["fair_close"]:
                 unjoined_events.add(eid)
                 continue
-            fair_close = _side_prob(close["fair_close_home"], side)
-            clv_novig = (fair_close - p["entry_fair"]) * 100.0
+            clv_novig = (close["fair_close"][side] - p["entry_fair"]) * 100.0
             sharp = None
-            if close.get("sharp_close_home") is not None:
-                sharp = (_side_prob(close["sharp_close_home"], side)
-                         - p["entry_fair"]) * 100.0
+            if close.get("sharp_close") and side in close["sharp_close"]:
+                sharp = (close["sharp_close"][side] - p["entry_fair"]) * 100.0
             results[t].append({**p, "clv_novig_pct": clv_novig, "clv_sharp_pct": sharp})
 
     return {"sport": sport, "results": results, "thresholds": thresholds,
@@ -299,7 +333,9 @@ def print_report(res: dict) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Backtest consensus_ev CLV over recorded boards")
     ap.add_argument("--sport", default="baseball_mlb",
-                    help="Odds API sport key with an odds_history feed (baseball_mlb, basketball_wnba)")
+                    help="Odds API sport key with an odds_history feed "
+                         "(baseball_mlb, basketball_wnba, soccer_usa_mls, "
+                         "soccer_mexico_ligamx — soccer replays 3-way incl. DRAW)")
     ap.add_argument("--days", type=int, default=None,
                     help="only replay the last N days of history")
     ap.add_argument("--start", default=None, help="YYYY-MM-DD inclusive")

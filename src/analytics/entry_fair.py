@@ -41,7 +41,7 @@ import json
 import time
 from pathlib import Path
 
-from src.strategies.consensus import loo_consensus, per_book_fair
+from src.strategies.consensus import is_draw_selection, loo_consensus, per_book_fair
 
 CACHE_DIR = Path("data/cache/odds")
 
@@ -243,13 +243,28 @@ def attach_entry_fair(snap: dict, boards: EntryBoards) -> bool:
 
     if market in ("moneyline", "h2h", "ml", ""):
         team = str(snap.get("team") or "").lower().strip()
-        rec = idx["ml"].get(team)
-        if rec is None:
-            # partial-name fallback, mirrors compute_clv's closing join
-            for k, v in idx["ml"].items():
-                if team and (team in k or k in team):
-                    rec, team = v, k
-                    break
+        if is_draw_selection(team):
+            # DRAW picks pack the matchup into `team` ("Draw (Away @ Home)") so
+            # (date, team) keys stay unique across the slate. Resolve the event
+            # by its OWN matchup — never the packed string, and never via the
+            # substring fallback below: "Draw (X @ Y)" contains both team names,
+            # so a partial match would silently score the draw as a team pick.
+            mu = str(snap.get("matchup") or snap.get("opponent") or "")
+            rec = None
+            if "@" in mu:
+                a, h = [t.strip().lower() for t in mu.split("@", 1)]
+                rec = idx["ml"].get(h) or idx["ml"].get(a)
+            if rec is None or "draw" not in rec["best"]:
+                return False
+            team = "draw"
+        else:
+            rec = idx["ml"].get(team)
+            if rec is None:
+                # partial-name fallback, mirrors compute_clv's closing join
+                for k, v in idx["ml"].items():
+                    if team and (team in k or k in team):
+                        rec, team = v, k
+                        break
         if rec is None or team not in rec["best"]:
             return False
         if rec.get("commence"):

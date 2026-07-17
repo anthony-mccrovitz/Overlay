@@ -41,6 +41,33 @@ def _devig_two_way(p1: float, p2: float) -> tuple[float, float]:
     return p1 / total, p2 / total
 
 
+def _devig_three_way(p1: float, p2: float, p3: float) -> tuple[float, float, float]:
+    """Normalize a three-sided market (home/away/draw) to sum to 1.0. Any NaN
+    outcome voids the whole simplex — a 2-way devig of a 3-way market inflates
+    every remaining side (the soccer phantom-EV bug)."""
+    if pd.isna(p1) or pd.isna(p2) or pd.isna(p3):
+        return float("nan"), float("nan"), float("nan")
+    total = p1 + p2 + p3
+    if total <= 0:
+        return float("nan"), float("nan"), float("nan")
+    return p1 / total, p2 / total, p3 / total
+
+
+def _median_devig_three_way(
+    game_df: pd.DataFrame, home_col: str, away_col: str, draw_col: str
+) -> tuple[float, float, float]:
+    """3-way fallback when Pinnacle is missing: devig the median soft prices."""
+    for c in (home_col, away_col, draw_col):
+        if c not in game_df.columns or game_df[c].notna().sum() == 0:
+            return float("nan"), float("nan"), float("nan")
+    h, a, d = (_safe_median(game_df[home_col]), _safe_median(game_df[away_col]),
+               _safe_median(game_df[draw_col]))
+    if pd.isna(h) or pd.isna(a) or pd.isna(d):
+        return float("nan"), float("nan"), float("nan")
+    return _devig_three_way(_american_to_prob(h), _american_to_prob(a),
+                            _american_to_prob(d))
+
+
 def _pick_pinnacle_row(game_df: pd.DataFrame) -> Optional[pd.Series]:
     if game_df.empty or "Sportsbook" not in game_df.columns:
         return None
@@ -50,14 +77,27 @@ def _pick_pinnacle_row(game_df: pd.DataFrame) -> Optional[pd.Series]:
     return pin.iloc[0]
 
 
+def _safe_median(series: pd.Series) -> float:
+    """Median that returns NaN for an all-NaN column WITHOUT numpy's noisy
+    'Mean of empty slice' RuntimeWarning (clutters the cron logs)."""
+    if series.notna().sum() == 0:
+        return float("nan")
+    return float(series.median())
+
+
 def _median_devig(
     game_df: pd.DataFrame, home_col: str, away_col: str
 ) -> tuple[float, float]:
     """Fallback when Pinnacle is missing: devig the median of soft prices."""
     if home_col not in game_df.columns or away_col not in game_df.columns:
         return float("nan"), float("nan")
-    h_med = game_df[home_col].median()
-    a_med = game_df[away_col].median()
+    # Skip the median when a column is entirely NaN (e.g. a soccer game has no
+    # spread/total rows) — .median() on an all-NaN slice is a NaN anyway but
+    # warns "Mean of empty slice" and clutters the cron logs.
+    if game_df[home_col].notna().sum() == 0 or game_df[away_col].notna().sum() == 0:
+        return float("nan"), float("nan")
+    h_med = _safe_median(game_df[home_col])
+    a_med = _safe_median(game_df[away_col])
     if pd.isna(h_med) or pd.isna(a_med):
         return float("nan"), float("nan")
     return _devig_two_way(_american_to_prob(h_med), _american_to_prob(a_med))
@@ -88,16 +128,38 @@ def build_fair_prob_map(odds_df: pd.DataFrame) -> dict[str, dict]:
         if "HomeMoneyline" in game.columns and "AwayMoneyline" in game.columns:
             pin = _pick_pinnacle_row(game)
             source = "pinnacle"
-            if pin is not None and not pd.isna(pin.get("HomeMoneyline")) and not pd.isna(pin.get("AwayMoneyline")):
-                ph, pa = _devig_two_way(
-                    _american_to_prob(pin["HomeMoneyline"]),
-                    _american_to_prob(pin["AwayMoneyline"]),
-                )
+            # 3-way (soccer) when a Draw price is genuinely present on this game.
+            has_draw = ("DrawOdds" in game.columns
+                        and game["DrawOdds"].notna().any())
+            if has_draw:
+                if (pin is not None and not pd.isna(pin.get("HomeMoneyline"))
+                        and not pd.isna(pin.get("AwayMoneyline"))
+                        and not pd.isna(pin.get("DrawOdds"))):
+                    ph, pa, pd_ = _devig_three_way(
+                        _american_to_prob(pin["HomeMoneyline"]),
+                        _american_to_prob(pin["AwayMoneyline"]),
+                        _american_to_prob(pin["DrawOdds"]),
+                    )
+                else:
+                    ph, pa, pd_ = _median_devig_three_way(
+                        game, "HomeMoneyline", "AwayMoneyline", "DrawOdds")
+                    source = "median"
+                if not pd.isna(ph) and not pd.isna(pa) and not pd.isna(pd_):
+                    entry["h2h"] = {"home": float(ph), "away": float(pa),
+                                    "draw": float(pd_), "source": source}
             else:
-                ph, pa = _median_devig(game, "HomeMoneyline", "AwayMoneyline")
-                source = "median"
-            if not pd.isna(ph) and not pd.isna(pa):
-                entry["h2h"] = {"home": float(ph), "away": float(pa), "source": source}
+                if (pin is not None and not pd.isna(pin.get("HomeMoneyline"))
+                        and not pd.isna(pin.get("AwayMoneyline"))):
+                    ph, pa = _devig_two_way(
+                        _american_to_prob(pin["HomeMoneyline"]),
+                        _american_to_prob(pin["AwayMoneyline"]),
+                    )
+                else:
+                    ph, pa = _median_devig(game, "HomeMoneyline", "AwayMoneyline")
+                    source = "median"
+                if not pd.isna(ph) and not pd.isna(pa):
+                    entry["h2h"] = {"home": float(ph), "away": float(pa),
+                                    "source": source}
 
         # ── Spread ─────────────────────────────────────────────────────────
         if "HomeSpreadOdds" in game.columns and "AwaySpreadOdds" in game.columns:
@@ -120,9 +182,9 @@ def build_fair_prob_map(odds_df: pd.DataFrame) -> dict[str, dict]:
                 ph, pa = _median_devig(game, "HomeSpreadOdds", "AwaySpreadOdds")
                 source = "median"
                 if "HomeSpread" in game.columns:
-                    home_line = game["HomeSpread"].median()
+                    home_line = _safe_median(game["HomeSpread"])
                 if "AwaySpread" in game.columns:
-                    away_line = game["AwaySpread"].median()
+                    away_line = _safe_median(game["AwaySpread"])
             if not pd.isna(ph) and not pd.isna(pa):
                 entry["spread"] = {
                     "home": {"line": float(home_line) if not pd.isna(home_line) else None, "fair": float(ph)},
@@ -150,7 +212,7 @@ def build_fair_prob_map(odds_df: pd.DataFrame) -> dict[str, dict]:
                 po, pu = _median_devig(game, "OverOdds", "UnderOdds")
                 source = "median"
                 if "Total" in game.columns:
-                    line = game["Total"].median()
+                    line = _safe_median(game["Total"])
             if not pd.isna(po) and not pd.isna(pu):
                 entry["totals"] = {
                     "line": float(line) if not pd.isna(line) else None,
