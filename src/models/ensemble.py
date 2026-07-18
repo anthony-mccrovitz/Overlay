@@ -140,12 +140,3 @@ class EnsembleModel:
 
         return result
 
-    def per_model_predictions(self, X: pd.DataFrame) -> dict[str, np.ndarray]:
-        """Return individual model predictions (for debugging/analysis)."""
-        preds = {}
-        for model in self._trained_models:
-            try:
-                preds[model.name] = model.predict_proba(X)
-            except Exception:
-                pass
-        return preds

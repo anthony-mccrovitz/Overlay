@@ -128,9 +128,6 @@ def _normal_cdf(x: float) -> float:
     return 0.5 * (1 + math.erf(x / math.sqrt(2)))
 
 
-def _poisson_prob(lam: float, k: int) -> float:
-    return math.exp(-lam) * (lam ** k) / math.factorial(k)
-
 
 def project_game(
     away_team: str,

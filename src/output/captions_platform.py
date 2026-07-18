@@ -297,11 +297,3 @@ def write_platform_captions(
 
 
 # Keep old name as alias so existing callers don't break
-def write_all_platform_captions(
-    picks: list[dict],
-    props: list[dict],
-    nrfi: list[dict],
-    sport: str,
-    card_date: date | None = None,
-) -> dict[str, Path]:
-    return write_platform_captions(picks, sport, card_date)

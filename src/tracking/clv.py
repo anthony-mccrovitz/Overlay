@@ -46,14 +46,6 @@ def _odds_to_implied(odds: int | float) -> float:
     return abs(odds) / (abs(odds) + 100)
 
 
-def _implied_to_odds(prob: float) -> int:
-    """Convert probability to American odds."""
-    if prob <= 0 or prob >= 1:
-        return 0
-    if prob >= 0.5:
-        return int(round(-prob / (1 - prob) * 100))
-    return int(round((1 - prob) / prob * 100))
-
 
 @dataclass
 class CLVTracker:

@@ -214,13 +214,6 @@ def normalize(name: str) -> str:
     )
 
 
-def add_alias(canonical: str, alias: str) -> None:
-    """Add a new alias at runtime (useful during data exploration)."""
-    if canonical not in _ALIASES:
-        raise ValueError(f"Unknown canonical team: '{canonical}'")
-    _ALIASES[canonical].append(alias)
-    _LOOKUP[alias.lower().strip()] = canonical
-
 
 def try_normalize(name: str) -> str | None:
     """Like normalize() but returns None instead of raising on unknown teams."""
@@ -230,6 +223,3 @@ def try_normalize(name: str) -> str | None:
         return None
 
 
-def all_canonical_names() -> list[str]:
-    """Return all known canonical team names."""
-    return sorted(_ALIASES.keys())

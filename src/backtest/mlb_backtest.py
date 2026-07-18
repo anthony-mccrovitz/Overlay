@@ -60,11 +60,6 @@ class BettingSimResult:
     def roi(self) -> float:
         return self.units_profit / max(self.units_wagered, 1)
 
-    @property
-    def breakeven_rate(self) -> float:
-        """Win rate needed to break even at -110 juice."""
-        return 110 / (110 + 100)   # 52.38%
-
 
 @dataclass
 class BacktestResult:

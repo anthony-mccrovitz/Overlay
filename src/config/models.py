@@ -219,16 +219,6 @@ def clv_status(sport: str, market: str) -> str:
     return "validated" if is_clv_validated(sport, market) else "heuristic"
 
 
-def clear_promotion(sport: str, market: str) -> bool:
-    """Remove a promotion override (revert to the static registry). True if removed."""
-    s, m = _key(sport, market)
-    proms = _load_promotions()
-    if f"{s}::{m}" in proms:
-        del proms[f"{s}::{m}"]
-        _PROMOTIONS_FILE.write_text(_json.dumps(proms, indent=2, sort_keys=True))
-        return True
-    return False
-
 
 # Minimum edge to post publicly (card_pick=True) per market.
 # Models with a different edge metric (totals use run differential, not %)
@@ -280,10 +270,6 @@ def is_paused(sport: str, market: str) -> bool:
     return model_tier(sport, market) == "paused"
 
 
-def is_retired(sport: str, market: str) -> bool:
-    """True if this model should not run at all."""
-    return model_status(sport, market) == "retired"
-
 
 def model_label(sport: str, market: str) -> str:
     """Human-readable label, e.g. 'NBA Totals'."""
@@ -295,14 +281,6 @@ def live_models() -> list[tuple[str, str]]:
     return [k for k, v in MODELS.items() if v["status"] == "live"]
 
 
-def incubating_models() -> list[tuple[str, str]]:
-    """List of (sport, market) tuples currently incubating (silent)."""
-    return [k for k, v in MODELS.items() if v["status"] == "incubating"]
-
-
-def models_by_tier(tier: str) -> list[tuple[str, str]]:
-    """List of (sport, market) tuples in the given tier."""
-    return [k for k, v in MODELS.items() if v.get("tier") == tier]
 
 
 # New-model shadow stake caps: 0.5u until N≥30 settled with positive CLV

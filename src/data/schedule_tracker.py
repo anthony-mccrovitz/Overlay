@@ -82,13 +82,6 @@ _REST_VALUE_NBA = {0: -2.5, 1: -1.0, 2: 0.0, 3: 0.5, 4: 0.5}   # pts relative to
 _REST_VALUE_NHL = {0: -0.4, 1: -0.15, 2: 0.0, 3: 0.1, 4: 0.1}  # goals relative to 2-day rest
 
 
-def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    R = 6371.0
-    dlat = math.radians(lat2 - lat1)
-    dlon = math.radians(lon2 - lon1)
-    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
-    return R * 2 * math.asin(math.sqrt(a))
-
 
 def _get_sport_schedule(team: str, sport: str) -> list[str]:
     """Load cached schedule for a team. Returns list of game date strings YYYYMMDD."""
@@ -124,45 +117,5 @@ def get_rest_days(team: str, game_date: date, sport: str) -> int:
     return min((game_date - last_date).days - 1, 4)  # cap at 4
 
 
-def is_back_to_back(team: str, game_date: date, sport: str) -> bool:
-    return get_rest_days(team, game_date, sport) == 0
 
 
-def get_rest_adjustment(team: str, game_date: date, sport: str) -> float:
-    """
-    Return points (NBA) or goals (NHL) adjustment for rest.
-    Positive = team is well-rested (advantage). Negative = fatigued.
-    """
-    rest = get_rest_days(team, game_date, sport)
-    if sport in ("nba", "basketball_nba"):
-        return _REST_VALUE_NBA.get(rest, 0.0)
-    elif sport in ("nhl", "icehockey_nhl"):
-        return _REST_VALUE_NHL.get(rest, 0.0)
-    return 0.0
-
-
-def get_travel_fatigue(away_team: str, game_date: date, sport: str) -> float:
-    """
-    Estimate travel fatigue penalty for the away team.
-    Returns points (NBA) or goals (NHL) to subtract from away team's projection.
-    Only applies if the team traveled > 2 time zones in < 36 hours.
-    """
-    schedule = _get_sport_schedule(away_team, sport)
-    if not schedule or away_team not in _ARENA_COORDS:
-        return 0.0
-
-    game_ds = game_date.strftime("%Y%m%d")
-    past_games = sorted(g for g in schedule if g < game_ds)
-    if not past_games:
-        return 0.0
-
-    # Check if last game was yesterday (travel day)
-    last_game = past_games[-1]
-    last_date = date(int(last_game[:4]), int(last_game[4:6]), int(last_game[6:]))
-    if (game_date - last_date).days > 1:
-        return 0.0  # had a rest day — travel fatigue dissipates
-
-    # Need to know where the last game was — requires home team of that game
-    # Simplified: use away team's home arena as proxy for last location
-    # A more complete version would track actual game locations
-    return 0.0  # placeholder until game-location tracking is added

@@ -264,41 +264,6 @@ def score_match(title_a: str, title_b: str) -> MatchResult:
     )
 
 
-def find_matches(
-    titles_a: list[str],
-    titles_b: list[str],
-    threshold: float = MATCH_THRESHOLD,
-) -> list[tuple[int, int, MatchResult]]:
-    """
-    Find all matching pairs between two lists of market titles.
-
-    Returns:
-        List of (idx_a, idx_b, MatchResult) sorted by score descending.
-        Each index appears at most once (best match wins).
-    """
-    scored: list[tuple[float, int, int, MatchResult]] = []
-
-    for i, ta in enumerate(titles_a):
-        for j, tb in enumerate(titles_b):
-            result = score_match(ta, tb)
-            if result.score >= threshold:
-                scored.append((result.score, i, j, result))
-
-    scored.sort(reverse=True)
-
-    # Greedy dedup: each index used at most once
-    used_a: set[int] = set()
-    used_b: set[int] = set()
-    matches: list[tuple[int, int, MatchResult]] = []
-
-    for _, i, j, result in scored:
-        if i not in used_a and j not in used_b:
-            matches.append((i, j, result))
-            used_a.add(i)
-            used_b.add(j)
-
-    return matches
-
 
 class EntityResolver:
     """

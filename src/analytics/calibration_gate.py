@@ -148,20 +148,8 @@ def _load_table() -> dict:
     return _table_cache
 
 
-def reload_table() -> None:
-    """Drop the in-process cache (call after compute_table in a long-lived proc)."""
-    global _table_cache
-    _table_cache = None
-
 
 # ── the gate ─────────────────────────────────────────────────────────────────
-def shrink_factor(sport: str, market: str) -> float:
-    """Fraction of this segment's claimed edge that has historically materialized."""
-    row = _load_table().get(_key(sport, market))
-    if not row or row.get("n", 0) < MIN_TRUST:
-        return 1.0            # not trusted enough to shrink by realization
-    return float(row.get("k", 1.0))
-
 
 def calibrate_edge(sport: str, market: str, raw_edge_pct: float | None) -> float | None:
     """Map a model's claimed edge (pp) to its calibration-honest value.

@@ -27,9 +27,3 @@ SPREAD_SIGMA = {
 CALIBRATION_MIN_PICKS = 30
 
 
-def get_min_edge(market: str, sport: str) -> float:
-    """Return the minimum edge threshold for a given market + sport."""
-    sport_key = sport.lower().replace("baseball_", "").replace("basketball_", "").replace("icehockey_", "")
-    market_thresholds = MIN_EDGE.get(market.lower(), {})
-    # Try full sport key first, then short form
-    return market_thresholds.get(sport.lower(), market_thresholds.get(sport_key, 0.04))
