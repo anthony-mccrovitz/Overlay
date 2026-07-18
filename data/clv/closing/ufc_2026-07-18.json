@@ -855,13 +855,13 @@
     "home_team": "Ezra Elliott",
     "away_team": "Damien Anderson",
     "commence_time": "2026-07-18T22:25:00Z",
-    "captured_at": "2026-07-18T21:29:12.991313+00:00",
-    "mins_to_commence": 55.8,
-    "closing_final": false,
-    "BestHomeML": 107,
-    "BestAwayML": -120,
+    "captured_at": "2026-07-18T22:27:47.945962+00:00",
+    "mins_to_commence": -2.8,
+    "closing_final": true,
+    "BestHomeML": 100,
+    "BestAwayML": 340,
     "HomeBook": "Pinnacle",
-    "AwayBook": "Caesars",
+    "AwayBook": "DraftKings",
     "all_odds": [
       {
         "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
@@ -871,7 +871,7 @@
         "Market": "h2h",
         "Name": "Damien Anderson",
         "Selection": "Damien Anderson",
-        "Odds": -121,
+        "Odds": -112,
         "Line": NaN
       },
       {
@@ -882,7 +882,7 @@
         "Market": "h2h",
         "Name": "Ezra Elliott",
         "Selection": "Ezra Elliott",
-        "Odds": 107,
+        "Odds": 100,
         "Line": NaN
       },
       {
@@ -893,117 +893,73 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -138,
-        "Line": 1.5
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": 118,
-        "Line": 1.5
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Damien Anderson",
-        "Selection": "Damien Anderson",
-        "Odds": -124,
-        "Line": NaN
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Ezra Elliott",
-        "Selection": "Ezra Elliott",
-        "Odds": 106,
-        "Line": NaN
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Damien Anderson",
-        "Selection": "Damien Anderson",
         "Odds": -122,
-        "Line": NaN
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Ezra Elliott",
-        "Selection": "Ezra Elliott",
-        "Odds": 102,
-        "Line": NaN
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Damien Anderson",
-        "Selection": "Damien Anderson",
-        "Odds": 100,
-        "Line": -3.5
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Ezra Elliott",
-        "Selection": "Ezra Elliott",
-        "Odds": -135,
-        "Line": 3.5
-      },
-      {
-        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
-        "HomeTeam": "Ezra Elliott",
-        "AwayTeam": "Damien Anderson",
-        "Sportsbook": "DraftKings",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -145,
         "Line": 1.5
       },
       {
         "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
         "HomeTeam": "Ezra Elliott",
         "AwayTeam": "Damien Anderson",
-        "Sportsbook": "DraftKings",
+        "Sportsbook": "Pinnacle",
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": 114,
+        "Odds": 104,
         "Line": 1.5
       },
       {
         "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
         "HomeTeam": "Ezra Elliott",
         "AwayTeam": "Damien Anderson",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -110,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": -106,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": 340,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": -500,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
         "Sportsbook": "Bally Bet",
         "Market": "h2h",
         "Name": "Damien Anderson",
         "Selection": "Damien Anderson",
-        "Odds": -124,
+        "Odds": -109,
         "Line": NaN
       },
       {
@@ -1014,7 +970,7 @@
         "Market": "h2h",
         "Name": "Ezra Elliott",
         "Selection": "Ezra Elliott",
-        "Odds": 100,
+        "Odds": -129,
         "Line": NaN
       },
       {
@@ -1025,7 +981,7 @@
         "Market": "h2h",
         "Name": "Damien Anderson",
         "Selection": "Damien Anderson",
-        "Odds": -124,
+        "Odds": 155,
         "Line": NaN
       },
       {
@@ -1036,7 +992,7 @@
         "Market": "h2h",
         "Name": "Ezra Elliott",
         "Selection": "Ezra Elliott",
-        "Odds": 100,
+        "Odds": -240,
         "Line": NaN
       },
       {
@@ -1047,7 +1003,7 @@
         "Market": "h2h",
         "Name": "Damien Anderson",
         "Selection": "Damien Anderson",
-        "Odds": -125,
+        "Odds": 110,
         "Line": NaN
       },
       {
@@ -1058,7 +1014,7 @@
         "Market": "h2h",
         "Name": "Ezra Elliott",
         "Selection": "Ezra Elliott",
-        "Odds": 100,
+        "Odds": -150,
         "Line": NaN
       },
       {
@@ -1069,7 +1025,7 @@
         "Market": "h2h",
         "Name": "Damien Anderson",
         "Selection": "Damien Anderson",
-        "Odds": -120,
+        "Odds": 140,
         "Line": NaN
       },
       {
@@ -1080,7 +1036,7 @@
         "Market": "h2h",
         "Name": "Ezra Elliott",
         "Selection": "Ezra Elliott",
-        "Odds": 100,
+        "Odds": -180,
         "Line": NaN
       },
       {
@@ -1091,7 +1047,7 @@
         "Market": "h2h",
         "Name": "Damien Anderson",
         "Selection": "Damien Anderson",
-        "Odds": -120,
+        "Odds": 300,
         "Line": NaN
       },
       {
@@ -1102,7 +1058,7 @@
         "Market": "h2h",
         "Name": "Ezra Elliott",
         "Selection": "Ezra Elliott",
-        "Odds": 100,
+        "Odds": -450,
         "Line": NaN
       }
     ]
@@ -1113,11 +1069,11 @@
     "home_team": "Mia Grawe",
     "away_team": "Ashley Thiner",
     "commence_time": "2026-07-18T22:40:00Z",
-    "captured_at": "2026-07-18T21:29:13.233982+00:00",
-    "mins_to_commence": 70.8,
-    "closing_final": false,
-    "BestHomeML": 250,
-    "BestAwayML": -310,
+    "captured_at": "2026-07-18T22:27:48.173803+00:00",
+    "mins_to_commence": 12.2,
+    "closing_final": true,
+    "BestHomeML": 240,
+    "BestAwayML": -350,
     "HomeBook": "FanDuel",
     "AwayBook": "FanDuel",
     "all_odds": [
@@ -1129,7 +1085,7 @@
         "Market": "h2h",
         "Name": "Ashley Thiner",
         "Selection": "Ashley Thiner",
-        "Odds": -310,
+        "Odds": -350,
         "Line": null
       },
       {
@@ -1140,29 +1096,7 @@
         "Market": "h2h",
         "Name": "Mia Grawe",
         "Selection": "Mia Grawe",
-        "Odds": 250,
-        "Line": null
-      },
-      {
-        "EventID": "da9f9b9c51c8e84f39bfba332bcfbb85",
-        "HomeTeam": "Mia Grawe",
-        "AwayTeam": "Ashley Thiner",
-        "Sportsbook": "Bally Bet",
-        "Market": "h2h",
-        "Name": "Ashley Thiner",
-        "Selection": "Ashley Thiner",
-        "Odds": -345,
-        "Line": null
-      },
-      {
-        "EventID": "da9f9b9c51c8e84f39bfba332bcfbb85",
-        "HomeTeam": "Mia Grawe",
-        "AwayTeam": "Ashley Thiner",
-        "Sportsbook": "Bally Bet",
-        "Market": "h2h",
-        "Name": "Mia Grawe",
-        "Selection": "Mia Grawe",
-        "Odds": 230,
+        "Odds": 240,
         "Line": null
       }
     ]
@@ -1173,9 +1107,9 @@
     "home_team": "Levi Rodrigues",
     "away_team": "Felipe Franco",
     "commence_time": "2026-07-18T22:50:00Z",
-    "captured_at": "2026-07-18T21:29:13.376367+00:00",
-    "mins_to_commence": 80.8,
-    "closing_final": false,
+    "captured_at": "2026-07-18T22:27:48.292917+00:00",
+    "mins_to_commence": 22.2,
+    "closing_final": true,
     "BestHomeML": -150,
     "BestAwayML": 137,
     "HomeBook": "Hard Rock Bet",
@@ -1255,7 +1189,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -105,
+        "Odds": 114,
         "Line": 1.5
       },
       {
@@ -1266,7 +1200,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -145,
         "Line": 1.5
       },
       {
@@ -1409,7 +1343,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": 117,
         "Line": 1.5
       },
       {
@@ -1420,8 +1354,600 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -119,
+        "Odds": -137,
         "Line": 1.5
+      }
+    ]
+  },
+  {
+    "event_id": "53234931b158505b8452586b94acd2b0",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Andrea Vazquez",
+    "away_team": "Aleksandra Savicheva",
+    "commence_time": "2026-07-18T23:10:00Z",
+    "captured_at": "2026-07-18T22:27:48.534886+00:00",
+    "mins_to_commence": 42.2,
+    "closing_final": false,
+    "BestHomeML": 540,
+    "BestAwayML": -770,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "53234931b158505b8452586b94acd2b0",
+        "HomeTeam": "Andrea Vazquez",
+        "AwayTeam": "Aleksandra Savicheva",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Aleksandra Savicheva",
+        "Selection": "Aleksandra Savicheva",
+        "Odds": -770,
+        "Line": null
+      },
+      {
+        "EventID": "53234931b158505b8452586b94acd2b0",
+        "HomeTeam": "Andrea Vazquez",
+        "AwayTeam": "Aleksandra Savicheva",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Andrea Vazquez",
+        "Selection": "Andrea Vazquez",
+        "Odds": 540,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "2e50a99c93a91e22927ee2f52b5c12d7",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Seok Hyun Ko",
+    "away_team": "Jean-Paul Lebosnoyani",
+    "commence_time": "2026-07-18T23:15:00Z",
+    "captured_at": "2026-07-18T22:27:48.855905+00:00",
+    "mins_to_commence": 47.2,
+    "closing_final": false,
+    "BestHomeML": -165,
+    "BestAwayML": 152,
+    "HomeBook": "BetMGM",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 152,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -180,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 143,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -170,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 150,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -186,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 150,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -186,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 150,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -185,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 145,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -175,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": -145,
+        "Line": 3.5
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": 110,
+        "Line": -3.5
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -154,
+        "Line": 2.5
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 120,
+        "Line": 2.5
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 149,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -169,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -146,
+        "Line": 2.5
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 124,
+        "Line": 2.5
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Jean-Paul Lebosnoyani",
+        "Selection": "Jean-Paul Lebosnoyani",
+        "Odds": 135,
+        "Line": NaN
+      },
+      {
+        "EventID": "2e50a99c93a91e22927ee2f52b5c12d7",
+        "HomeTeam": "Seok Hyun Ko",
+        "AwayTeam": "Jean-Paul Lebosnoyani",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Seok Hyun Ko",
+        "Selection": "Seok Hyun Ko",
+        "Odds": -165,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "1fd6deee26139584d329683c84e0971c",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Austin Bashi",
+    "away_team": "Jose Delgado",
+    "commence_time": "2026-07-18T23:40:00Z",
+    "captured_at": "2026-07-18T22:27:49.008624+00:00",
+    "mins_to_commence": 72.2,
+    "closing_final": false,
+    "BestHomeML": -130,
+    "BestAwayML": 125,
+    "HomeBook": "Bally Bet",
+    "AwayBook": "Caesars",
+    "all_odds": [
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -136,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 116,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -142,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 120,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -205,
+        "Line": 3.5
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 150,
+        "Line": -3.5
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -220,
+        "Line": 1.5
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 170,
+        "Line": 1.5
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -150,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 125,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -130,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 106,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -130,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 106,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -135,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 110,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -130,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 105,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Austin Bashi",
+        "Selection": "Austin Bashi",
+        "Odds": -136,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Jose Delgado",
+        "Selection": "Jose Delgado",
+        "Odds": 121,
+        "Line": NaN
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -207,
+        "Line": 1.5
+      },
+      {
+        "EventID": "1fd6deee26139584d329683c84e0971c",
+        "HomeTeam": "Austin Bashi",
+        "AwayTeam": "Jose Delgado",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 175,
+        "Line": 1.5
+      }
+    ]
+  },
+  {
+    "event_id": "6fb8b76a49ffd616c2f0a5e6aaef4e45",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Biaggio Ali Walsh",
+    "away_team": "Gamid Khizriev",
+    "commence_time": "2026-07-18T23:40:00Z",
+    "captured_at": "2026-07-18T22:27:49.171217+00:00",
+    "mins_to_commence": 72.2,
+    "closing_final": false,
+    "BestHomeML": 520,
+    "BestAwayML": -720,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "6fb8b76a49ffd616c2f0a5e6aaef4e45",
+        "HomeTeam": "Biaggio Ali Walsh",
+        "AwayTeam": "Gamid Khizriev",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Biaggio Ali Walsh",
+        "Selection": "Biaggio Ali Walsh",
+        "Odds": 520,
+        "Line": null
+      },
+      {
+        "EventID": "6fb8b76a49ffd616c2f0a5e6aaef4e45",
+        "HomeTeam": "Biaggio Ali Walsh",
+        "AwayTeam": "Gamid Khizriev",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Gamid Khizriev",
+        "Selection": "Gamid Khizriev",
+        "Odds": -720,
+        "Line": null
       }
     ]
   }
