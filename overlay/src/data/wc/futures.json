@@ -2,72 +2,72 @@
   "teams": [
     {
       "team": "Spain",
-      "model": 0.5721,
+      "model": 0.5703,
       "market": 0.5798,
-      "blend": 0.5767,
+      "blend": 0.576,
       "advance": 1.0,
       "reach_final": 1.0,
-      "edge_pp": -0.3,
-      "raw_edge_pp": -0.8
+      "edge_pp": -0.4,
+      "raw_edge_pp": -1.0
     },
     {
       "team": "Argentina",
-      "model": 0.4279,
+      "model": 0.4298,
       "market": 0.4202,
-      "blend": 0.4233,
+      "blend": 0.424,
       "advance": 1.0,
       "reach_final": 1.0,
-      "edge_pp": 0.3,
-      "raw_edge_pp": 0.8
+      "edge_pp": 0.4,
+      "raw_edge_pp": 1.0
     }
   ],
   "disagreements": {
     "model_higher": [
       {
         "team": "Argentina",
-        "model": 0.4279,
+        "model": 0.4298,
         "market": 0.4202,
-        "blend": 0.4233,
+        "blend": 0.424,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": 0.3,
-        "raw_edge_pp": 0.8
+        "edge_pp": 0.4,
+        "raw_edge_pp": 1.0
       },
       {
         "team": "Spain",
-        "model": 0.5721,
+        "model": 0.5703,
         "market": 0.5798,
-        "blend": 0.5767,
+        "blend": 0.576,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": -0.3,
-        "raw_edge_pp": -0.8
+        "edge_pp": -0.4,
+        "raw_edge_pp": -1.0
       }
     ],
     "model_lower": [
       {
         "team": "Spain",
-        "model": 0.5721,
+        "model": 0.5703,
         "market": 0.5798,
-        "blend": 0.5767,
+        "blend": 0.576,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": -0.3,
-        "raw_edge_pp": -0.8
+        "edge_pp": -0.4,
+        "raw_edge_pp": -1.0
       },
       {
         "team": "Argentina",
-        "model": 0.4279,
+        "model": 0.4298,
         "market": 0.4202,
-        "blend": 0.4233,
+        "blend": 0.424,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": 0.3,
-        "raw_edge_pp": 0.8
+        "edge_pp": 0.4,
+        "raw_edge_pp": 1.0
       }
     ]
   },
-  "generated": "2026-07-17T14:52:41.680073+00:00",
+  "generated": "2026-07-18T14:23:41.943614+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-14",
