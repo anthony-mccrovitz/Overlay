@@ -263,13 +263,13 @@
     "home_team": "RJ Harris",
     "away_team": "Alvin Hines",
     "commence_time": "2026-07-18T21:35:00Z",
-    "captured_at": "2026-07-18T20:25:35.010946+00:00",
-    "mins_to_commence": 69.4,
-    "closing_final": false,
+    "captured_at": "2026-07-18T21:29:13.518392+00:00",
+    "mins_to_commence": 5.8,
+    "closing_final": true,
     "BestHomeML": 100,
-    "BestAwayML": -109,
+    "BestAwayML": -105,
     "HomeBook": "FanDuel",
-    "AwayBook": "Pinnacle",
+    "AwayBook": "Caesars",
     "all_odds": [
       {
         "EventID": "cf0be84e7f20fd469823f4735616221c",
@@ -301,7 +301,7 @@
         "Market": "h2h",
         "Name": "Alvin Hines",
         "Selection": "Alvin Hines",
-        "Odds": -120,
+        "Odds": -110,
         "Line": NaN
       },
       {
@@ -312,7 +312,7 @@
         "Market": "h2h",
         "Name": "RJ Harris",
         "Selection": "RJ Harris",
-        "Odds": 100,
+        "Odds": -110,
         "Line": NaN
       },
       {
@@ -367,7 +367,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -166,
+        "Odds": -154,
         "Line": 1.5
       },
       {
@@ -378,7 +378,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": 130,
+        "Odds": 120,
         "Line": 1.5
       },
       {
@@ -433,7 +433,7 @@
         "Market": "h2h",
         "Name": "Alvin Hines",
         "Selection": "Alvin Hines",
-        "Odds": -109,
+        "Odds": -111,
         "Line": NaN
       },
       {
@@ -444,7 +444,7 @@
         "Market": "h2h",
         "Name": "RJ Harris",
         "Selection": "RJ Harris",
-        "Odds": -103,
+        "Odds": -102,
         "Line": NaN
       },
       {
@@ -455,7 +455,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -158,
+        "Odds": -142,
         "Line": 1.5
       },
       {
@@ -466,7 +466,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": 135,
+        "Odds": 121,
         "Line": 1.5
       },
       {
@@ -499,7 +499,7 @@
         "Market": "h2h",
         "Name": "Alvin Hines",
         "Selection": "Alvin Hines",
-        "Odds": -115,
+        "Odds": -105,
         "Line": NaN
       },
       {
@@ -510,7 +510,7 @@
         "Market": "h2h",
         "Name": "RJ Harris",
         "Selection": "RJ Harris",
-        "Odds": -105,
+        "Odds": -115,
         "Line": NaN
       }
     ]
@@ -521,9 +521,9 @@
     "home_team": "Victoria Alba",
     "away_team": "Borena Tsertsvadze",
     "commence_time": "2026-07-18T21:40:00Z",
-    "captured_at": "2026-07-18T20:25:35.184403+00:00",
-    "mins_to_commence": 74.4,
-    "closing_final": false,
+    "captured_at": "2026-07-18T21:29:13.653058+00:00",
+    "mins_to_commence": 10.8,
+    "closing_final": true,
     "BestHomeML": 190,
     "BestAwayML": -230,
     "HomeBook": "FanDuel",
@@ -550,28 +550,878 @@
         "Selection": "Victoria Alba",
         "Odds": 190,
         "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "6d08b5bd7b93bf62088d93785331ba4f",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Alden Coria",
+    "away_team": "Stewart Nicoll",
+    "commence_time": "2026-07-18T22:00:00Z",
+    "captured_at": "2026-07-18T21:29:13.792356+00:00",
+    "mins_to_commence": 30.8,
+    "closing_final": false,
+    "BestHomeML": -960,
+    "BestAwayML": 750,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "BetMGM",
+    "all_odds": [
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1150,
+        "Line": NaN
       },
       {
-        "EventID": "f39b3d725de306f82d674663394d6f7d",
-        "HomeTeam": "Victoria Alba",
-        "AwayTeam": "Borena Tsertsvadze",
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 730,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1050,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 675,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -225,
+        "Line": -7.5
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 165,
+        "Line": 7.5
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -175,
+        "Line": 1.5
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 135,
+        "Line": 1.5
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1100,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 700,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1000,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 700,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
         "Sportsbook": "Bally Bet",
         "Market": "h2h",
-        "Name": "Borena Tsertsvadze",
-        "Selection": "Borena Tsertsvadze",
-        "Odds": -265,
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1000,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 700,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1200,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 750,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -1000,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 700,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Alden Coria",
+        "Selection": "Alden Coria",
+        "Odds": -960,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Stewart Nicoll",
+        "Selection": "Stewart Nicoll",
+        "Odds": 710,
+        "Line": NaN
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -164,
+        "Line": 1.5
+      },
+      {
+        "EventID": "6d08b5bd7b93bf62088d93785331ba4f",
+        "HomeTeam": "Alden Coria",
+        "AwayTeam": "Stewart Nicoll",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 140,
+        "Line": 1.5
+      }
+    ]
+  },
+  {
+    "event_id": "1add159e946906f3d9269c0b449aedab",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Jackson Glass",
+    "away_team": "Zak Flessas",
+    "commence_time": "2026-07-18T22:10:00Z",
+    "captured_at": "2026-07-18T21:29:13.919873+00:00",
+    "mins_to_commence": 40.8,
+    "closing_final": false,
+    "BestHomeML": -2200,
+    "BestAwayML": 1100,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "1add159e946906f3d9269c0b449aedab",
+        "HomeTeam": "Jackson Glass",
+        "AwayTeam": "Zak Flessas",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Jackson Glass",
+        "Selection": "Jackson Glass",
+        "Odds": -2200,
         "Line": null
       },
       {
-        "EventID": "f39b3d725de306f82d674663394d6f7d",
-        "HomeTeam": "Victoria Alba",
-        "AwayTeam": "Borena Tsertsvadze",
+        "EventID": "1add159e946906f3d9269c0b449aedab",
+        "HomeTeam": "Jackson Glass",
+        "AwayTeam": "Zak Flessas",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Zak Flessas",
+        "Selection": "Zak Flessas",
+        "Odds": 1100,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "ff5365e99b346ac6a0eff45d2f04bb48",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Ezra Elliott",
+    "away_team": "Damien Anderson",
+    "commence_time": "2026-07-18T22:25:00Z",
+    "captured_at": "2026-07-18T21:29:14.044741+00:00",
+    "mins_to_commence": 55.8,
+    "closing_final": false,
+    "BestHomeML": 107,
+    "BestAwayML": -120,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Caesars",
+    "all_odds": [
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -121,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 107,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -138,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 118,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -124,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 106,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -122,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 102,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": 100,
+        "Line": -3.5
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": -135,
+        "Line": 3.5
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -145,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 114,
+        "Line": 1.5
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
         "Sportsbook": "Bally Bet",
         "Market": "h2h",
-        "Name": "Victoria Alba",
-        "Selection": "Victoria Alba",
-        "Odds": 180,
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -124,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 100,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -124,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 100,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -125,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 100,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -120,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 100,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Damien Anderson",
+        "Selection": "Damien Anderson",
+        "Odds": -120,
+        "Line": NaN
+      },
+      {
+        "EventID": "ff5365e99b346ac6a0eff45d2f04bb48",
+        "HomeTeam": "Ezra Elliott",
+        "AwayTeam": "Damien Anderson",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Ezra Elliott",
+        "Selection": "Ezra Elliott",
+        "Odds": 100,
+        "Line": NaN
+      }
+    ]
+  },
+  {
+    "event_id": "da9f9b9c51c8e84f39bfba332bcfbb85",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Mia Grawe",
+    "away_team": "Ashley Thiner",
+    "commence_time": "2026-07-18T22:40:00Z",
+    "captured_at": "2026-07-18T21:29:14.181729+00:00",
+    "mins_to_commence": 70.8,
+    "closing_final": false,
+    "BestHomeML": 250,
+    "BestAwayML": -310,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "da9f9b9c51c8e84f39bfba332bcfbb85",
+        "HomeTeam": "Mia Grawe",
+        "AwayTeam": "Ashley Thiner",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Ashley Thiner",
+        "Selection": "Ashley Thiner",
+        "Odds": -310,
         "Line": null
+      },
+      {
+        "EventID": "da9f9b9c51c8e84f39bfba332bcfbb85",
+        "HomeTeam": "Mia Grawe",
+        "AwayTeam": "Ashley Thiner",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Mia Grawe",
+        "Selection": "Mia Grawe",
+        "Odds": 250,
+        "Line": null
+      },
+      {
+        "EventID": "da9f9b9c51c8e84f39bfba332bcfbb85",
+        "HomeTeam": "Mia Grawe",
+        "AwayTeam": "Ashley Thiner",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Ashley Thiner",
+        "Selection": "Ashley Thiner",
+        "Odds": -345,
+        "Line": null
+      },
+      {
+        "EventID": "da9f9b9c51c8e84f39bfba332bcfbb85",
+        "HomeTeam": "Mia Grawe",
+        "AwayTeam": "Ashley Thiner",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Mia Grawe",
+        "Selection": "Mia Grawe",
+        "Odds": 230,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "5eac4481984182e1ebea4c6a547fe660",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Levi Rodrigues",
+    "away_team": "Felipe Franco",
+    "commence_time": "2026-07-18T22:50:00Z",
+    "captured_at": "2026-07-18T21:29:14.312914+00:00",
+    "mins_to_commence": 80.8,
+    "closing_final": false,
+    "BestHomeML": -150,
+    "BestAwayML": 137,
+    "HomeBook": "Hard Rock Bet",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 134,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -158,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 136,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -162,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 110,
+        "Line": 3.5
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -145,
+        "Line": -3.5
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 1.5
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -125,
+        "Line": 1.5
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 130,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -155,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 123,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -152,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 123,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -152,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 135,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -160,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 125,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -150,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Felipe Franco",
+        "Selection": "Felipe Franco",
+        "Odds": 137,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Levi Rodrigues",
+        "Selection": "Levi Rodrigues",
+        "Odds": -154,
+        "Line": NaN
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 102,
+        "Line": 1.5
+      },
+      {
+        "EventID": "5eac4481984182e1ebea4c6a547fe660",
+        "HomeTeam": "Levi Rodrigues",
+        "AwayTeam": "Felipe Franco",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -119,
+        "Line": 1.5
       }
     ]
   }
