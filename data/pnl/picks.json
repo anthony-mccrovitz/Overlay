@@ -446916,5 +446916,38 @@
     },
     "strategy": null,
     "clv_status": "heuristic"
+  },
+  {
+    "pick_id": "soccer_fifa_world_cup_20260718_england_moneyline_home",
+    "date": "2026-07-18",
+    "sport": "soccer_fifa_world_cup",
+    "market": "moneyline",
+    "direction": "HOME",
+    "team": "England",
+    "matchup": "England @ France",
+    "odds": 290,
+    "line": null,
+    "sportsbook": "FanDuel",
+    "model_prob": 0.3088,
+    "edge_pct": 3.7,
+    "raw_edge_pct": 6.5,
+    "stake": 0.5,
+    "card_pick": false,
+    "result": null,
+    "profit": null,
+    "recorded_at": "2026-07-18T13:44:26.651227+00:00",
+    "resulted_at": null,
+    "model_version": null,
+    "model_tier": "tier1",
+    "weather_context": null,
+    "team_form": null,
+    "shadow_filter": {
+      "name": null,
+      "matchup_class": "unknown",
+      "recommendation": "na",
+      "reason": "no MLB shadow filter for this sport"
+    },
+    "strategy": null,
+    "clv_status": "heuristic"
   }
 ]

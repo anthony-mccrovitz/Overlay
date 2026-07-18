@@ -1,0 +1,48 @@
+{
+  "England @ France": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "England",
+        "team": "England",
+        "matchup": "England @ France",
+        "odds": 290,
+        "best_odds": 290,
+        "model_prob": 0.3088,
+        "implied_prob": 0.2438,
+        "edge_pct": 6.5,
+        "sportsbook": "FanDuel",
+        "exp_total": 2.636
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "Draw",
+        "team": "Draw",
+        "matchup": "England @ France",
+        "odds": 300,
+        "best_odds": 300,
+        "model_prob": 0.2768,
+        "implied_prob": 0.2362,
+        "edge_pct": 4.06,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.636
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "France",
+        "team": "France",
+        "matchup": "England @ France",
+        "odds": -108,
+        "best_odds": -108,
+        "model_prob": 0.4144,
+        "implied_prob": 0.5064,
+        "edge_pct": -9.2,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.636
+      }
+    ]
+  }
+}
