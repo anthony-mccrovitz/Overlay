@@ -577,6 +577,8 @@ def migrate_picks_file(path_in: str, path_out: str | None = None) -> dict:
 
     with open(src, encoding="utf-8") as f:
         data = json.load(f)
+    if isinstance(data, list):        # legacy bare-list picks file
+        data = {"picks": data}
 
     raw_picks = data.get("picks", [])
     total_in  = len(raw_picks)
