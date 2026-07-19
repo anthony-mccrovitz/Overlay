@@ -4575,13 +4575,13 @@
     "home_team": "Atlanta Dream",
     "away_team": "Chicago Sky",
     "commence_time": "2026-07-19T20:00:00Z",
-    "captured_at": "2026-07-19T18:34:04.847643+00:00",
-    "mins_to_commence": 85.9,
-    "closing_final": false,
-    "BestHomeML": -540,
-    "BestAwayML": 425,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "theScore Bet",
+    "captured_at": "2026-07-19T19:48:10.760435+00:00",
+    "mins_to_commence": 11.8,
+    "closing_final": true,
+    "BestHomeML": -600,
+    "BestAwayML": 464,
+    "HomeBook": "Fanatics",
+    "AwayBook": "Pinnacle",
     "all_odds": [
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4591,7 +4591,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -550,
+        "Odds": -620,
         "Line": NaN
       },
       {
@@ -4602,7 +4602,7 @@
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 390,
+        "Odds": 430,
         "Line": NaN
       },
       {
@@ -4613,8 +4613,8 @@
         "Market": "spreads",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -118,
-        "Line": -10.5
+        "Odds": -108,
+        "Line": -12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4624,8 +4624,8 @@
         "Market": "spreads",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": -104,
-        "Line": 10.5
+        "Odds": -112,
+        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4635,17 +4635,6 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -105,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "FanDuel",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
         "Odds": -115,
         "Line": 179.5
       },
@@ -4653,11 +4642,22 @@
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Chicago Sky",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -105,
+        "Line": 179.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
         "Sportsbook": "Fanatics",
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -575,
+        "Odds": -600,
         "Line": NaN
       },
       {
@@ -4668,7 +4668,7 @@
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 420,
+        "Odds": 430,
         "Line": NaN
       },
       {
@@ -4680,7 +4680,7 @@
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
         "Odds": -110,
-        "Line": -11.0
+        "Line": -12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4691,7 +4691,7 @@
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
         "Odds": -110,
-        "Line": 11.0
+        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4702,7 +4702,7 @@
         "Name": "Over",
         "Selection": "Over",
         "Odds": -110,
-        "Line": 179.5
+        "Line": 180.0
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4713,6 +4713,61 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -110,
+        "Line": 180.0
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -700,
+        "Line": NaN
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Chicago Sky",
+        "Selection": "Chicago Sky",
+        "Odds": 450,
+        "Line": NaN
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -105,
+        "Line": -12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "spreads",
+        "Name": "Chicago Sky",
+        "Selection": "Chicago Sky",
+        "Odds": -115,
+        "Line": 12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -115,
         "Line": 179.5
       },
       {
@@ -4720,6 +4775,149 @@
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -105,
+        "Line": 179.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -625,
+        "Line": NaN
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Chicago Sky",
+        "Selection": "Chicago Sky",
+        "Odds": 455,
+        "Line": NaN
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -108,
+        "Line": -12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "spreads",
+        "Name": "Chicago Sky",
+        "Selection": "Chicago Sky",
+        "Odds": -112,
+        "Line": 12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 179.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -105,
+        "Line": 179.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -600,
+        "Line": NaN
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "h2h",
+        "Name": "Chicago Sky",
+        "Selection": "Chicago Sky",
+        "Odds": 430,
+        "Line": NaN
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "spreads",
+        "Name": "Atlanta Dream",
+        "Selection": "Atlanta Dream",
+        "Odds": -110,
+        "Line": -12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "spreads",
+        "Name": "Chicago Sky",
+        "Selection": "Chicago Sky",
+        "Odds": -110,
+        "Line": 12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 180.0
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -110,
+        "Line": 180.0
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Hard Rock Bet",
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
@@ -4730,209 +4928,11 @@
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
         "HomeTeam": "Atlanta Dream",
         "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Chicago Sky",
-        "Selection": "Chicago Sky",
-        "Odds": 425,
-        "Line": NaN
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -105,
-        "Line": -11.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "spreads",
-        "Name": "Chicago Sky",
-        "Selection": "Chicago Sky",
-        "Odds": -115,
-        "Line": 11.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -575,
-        "Line": NaN
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "h2h",
-        "Name": "Chicago Sky",
-        "Selection": "Chicago Sky",
-        "Odds": 425,
-        "Line": NaN
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -102,
-        "Line": -11.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "spreads",
-        "Name": "Chicago Sky",
-        "Selection": "Chicago Sky",
-        "Odds": -118,
-        "Line": 11.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -550,
-        "Line": NaN
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "h2h",
-        "Name": "Chicago Sky",
-        "Selection": "Chicago Sky",
-        "Odds": 400,
-        "Line": NaN
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "spreads",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -110,
-        "Line": -11.0
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "spreads",
-        "Name": "Chicago Sky",
-        "Selection": "Chicago Sky",
-        "Odds": -110,
-        "Line": 11.0
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 179.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Hard Rock Bet",
-        "Market": "h2h",
-        "Name": "Atlanta Dream",
-        "Selection": "Atlanta Dream",
-        "Odds": -550,
-        "Line": NaN
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
         "Sportsbook": "Hard Rock Bet",
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 400,
+        "Odds": 450,
         "Line": NaN
       },
       {
@@ -4943,8 +4943,8 @@
         "Market": "spreads",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -105,
-        "Line": -11.5
+        "Odds": -110,
+        "Line": -12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4954,8 +4954,8 @@
         "Market": "spreads",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": -115,
-        "Line": 11.5
+        "Odds": -110,
+        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -4998,7 +4998,7 @@
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 425,
+        "Odds": 430,
         "Line": NaN
       },
       {
@@ -5009,7 +5009,7 @@
         "Market": "spreads",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -109,
+        "Odds": -112,
         "Line": -11.5
       },
       {
@@ -5020,7 +5020,7 @@
         "Market": "spreads",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": -114,
+        "Odds": -112,
         "Line": 11.5
       },
       {
@@ -5031,8 +5031,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -110,
-        "Line": 180.5
+        "Odds": -109,
+        "Line": 181.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5042,8 +5042,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -112,
-        "Line": 180.5
+        "Odds": -114,
+        "Line": 181.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5053,7 +5053,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -590,
+        "Odds": -625,
         "Line": NaN
       },
       {
@@ -5064,7 +5064,7 @@
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 425,
+        "Odds": 430,
         "Line": NaN
       },
       {
@@ -5075,7 +5075,7 @@
         "Market": "spreads",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": 105,
+        "Odds": 102,
         "Line": -12.5
       },
       {
@@ -5086,7 +5086,7 @@
         "Market": "spreads",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": -127,
+        "Odds": -125,
         "Line": 12.5
       },
       {
@@ -5097,8 +5097,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -110,
-        "Line": 180.5
+        "Odds": -132,
+        "Line": 179.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5108,8 +5108,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -112,
-        "Line": 180.5
+        "Odds": 108,
+        "Line": 179.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5119,7 +5119,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -550,
+        "Odds": -625,
         "Line": NaN
       },
       {
@@ -5130,7 +5130,7 @@
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 400,
+        "Odds": 450,
         "Line": NaN
       },
       {
@@ -5141,8 +5141,8 @@
         "Market": "spreads",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -105,
-        "Line": -11.5
+        "Odds": -110,
+        "Line": -12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5152,8 +5152,8 @@
         "Market": "spreads",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": -115,
-        "Line": 11.5
+        "Odds": -110,
+        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5163,7 +5163,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -115,
         "Line": 179.5
       },
       {
@@ -5174,7 +5174,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -110,
+        "Odds": -105,
         "Line": 179.5
       },
       {
@@ -5185,7 +5185,7 @@
         "Market": "h2h",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -540,
+        "Odds": -605,
         "Line": NaN
       },
       {
@@ -5196,7 +5196,7 @@
         "Market": "h2h",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": 420,
+        "Odds": 464,
         "Line": NaN
       },
       {
@@ -5207,8 +5207,8 @@
         "Market": "spreads",
         "Name": "Atlanta Dream",
         "Selection": "Atlanta Dream",
-        "Odds": -105,
-        "Line": -11.5
+        "Odds": 100,
+        "Line": -13.0
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5218,8 +5218,8 @@
         "Market": "spreads",
         "Name": "Chicago Sky",
         "Selection": "Chicago Sky",
-        "Odds": -111,
-        "Line": 11.5
+        "Odds": -116,
+        "Line": 13.0
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5229,7 +5229,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -112,
+        "Odds": -115,
         "Line": 180.0
       },
       {
@@ -5240,7 +5240,7 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -106,
         "Line": 180.0
       },
       {
@@ -5273,7 +5273,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -122,
         "Line": 5.5
       },
       {
@@ -5284,7 +5284,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -104,
+        "Odds": -108,
         "Line": 5.5
       },
       {
@@ -5295,7 +5295,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -112,
         "Line": 3.5
       },
       {
@@ -5306,7 +5306,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -118,
         "Line": 3.5
       },
       {
@@ -5361,7 +5361,7 @@
         "Market": "player_points",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -110,
         "Line": 12.5
       },
       {
@@ -5372,7 +5372,7 @@
         "Market": "player_points",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -102,
+        "Odds": -118,
         "Line": 12.5
       },
       {
@@ -5427,7 +5427,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -122,
+        "Odds": -125,
         "Line": 16.5
       },
       {
@@ -5438,7 +5438,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -104,
         "Line": 16.5
       },
       {
@@ -5449,7 +5449,7 @@
         "Market": "player_points",
         "Name": "Gabriela Jaquez",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -114,
         "Line": 7.5
       },
       {
@@ -5460,7 +5460,7 @@
         "Market": "player_points",
         "Name": "Gabriela Jaquez",
         "Selection": "Under",
-        "Odds": -102,
+        "Odds": -114,
         "Line": 7.5
       },
       {
@@ -5471,7 +5471,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": -110,
         "Line": 18.5
       },
       {
@@ -5482,7 +5482,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -122,
+        "Odds": -118,
         "Line": 18.5
       },
       {
@@ -5515,7 +5515,7 @@
         "Market": "player_points",
         "Name": "Sydney Taylor",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -113,
         "Line": 15.5
       },
       {
@@ -5526,7 +5526,7 @@
         "Market": "player_points",
         "Name": "Sydney Taylor",
         "Selection": "Under",
-        "Odds": -114,
+        "Odds": -115,
         "Line": 15.5
       },
       {
@@ -5537,7 +5537,7 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -118,
         "Line": 11.5
       },
       {
@@ -5581,8 +5581,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": -122,
-        "Line": 23.5
+        "Odds": -110,
+        "Line": 22.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5592,8 +5592,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -108,
-        "Line": 23.5
+        "Odds": -120,
+        "Line": 22.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5603,7 +5603,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -112,
         "Line": 20.5
       },
       {
@@ -5614,7 +5614,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -114,
+        "Odds": -118,
         "Line": 20.5
       },
       {
@@ -5625,19 +5625,19 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -102,
-        "Line": 25.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "FanDuel",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
         "Odds": -130,
-        "Line": 25.5
+        "Line": 24.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "FanDuel",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": -102,
+        "Line": 24.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5647,7 +5647,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -102,
+        "Odds": -112,
         "Line": 32.5
       },
       {
@@ -5658,7 +5658,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -118,
         "Line": 32.5
       },
       {
@@ -5735,8 +5735,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -132,
-        "Line": 23.5
+        "Odds": 100,
+        "Line": 24.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5746,8 +5746,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": 100,
-        "Line": 23.5
+        "Odds": -132,
+        "Line": 24.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5757,8 +5757,8 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": 116,
-        "Line": 8.5
+        "Odds": -108,
+        "Line": 7.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5768,8 +5768,8 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -154,
-        "Line": 8.5
+        "Odds": -122,
+        "Line": 7.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -5779,7 +5779,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": 104,
+        "Odds": 116,
         "Line": 3.5
       },
       {
@@ -5790,7 +5790,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -138,
+        "Odds": -154,
         "Line": 3.5
       },
       {
@@ -5801,7 +5801,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -120,
         "Line": 12.5
       },
       {
@@ -5812,7 +5812,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -120,
+        "Odds": -110,
         "Line": 12.5
       },
       {
@@ -5845,7 +5845,7 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -146,
+        "Odds": -136,
         "Line": 4.5
       },
       {
@@ -5856,7 +5856,7 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": 110,
+        "Odds": 102,
         "Line": 4.5
       },
       {
@@ -5911,7 +5911,7 @@
         "Market": "player_rebounds",
         "Name": "Brionna Jones",
         "Selection": "Over",
-        "Odds": 102,
+        "Odds": 100,
         "Line": 4.5
       },
       {
@@ -5922,7 +5922,7 @@
         "Market": "player_rebounds",
         "Name": "Brionna Jones",
         "Selection": "Under",
-        "Odds": -136,
+        "Odds": -132,
         "Line": 4.5
       },
       {
@@ -5955,7 +5955,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -148,
+        "Odds": -152,
         "Line": 1.5
       },
       {
@@ -5966,7 +5966,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": 112,
+        "Odds": 114,
         "Line": 1.5
       },
       {
@@ -5999,7 +5999,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 162,
+        "Odds": 158,
         "Line": 1.5
       },
       {
@@ -6010,7 +6010,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -220,
+        "Odds": -215,
         "Line": 1.5
       },
       {
@@ -6043,7 +6043,7 @@
         "Market": "player_threes",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": 128,
+        "Odds": 130,
         "Line": 1.5
       },
       {
@@ -6054,7 +6054,7 @@
         "Market": "player_threes",
         "Name": "Azura Stevens",
         "Selection": "Under",
-        "Odds": -172,
+        "Odds": -174,
         "Line": 1.5
       },
       {
@@ -6109,7 +6109,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -125,
         "Line": 3.5
       },
       {
@@ -6120,7 +6120,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -115,
         "Line": 3.5
       },
       {
@@ -6131,7 +6131,7 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -110,
         "Line": 19.5
       },
       {
@@ -6142,7 +6142,7 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -115,
+        "Odds": -125,
         "Line": 19.5
       },
       {
@@ -6153,7 +6153,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -120,
         "Line": 18.5
       },
       {
@@ -6164,7 +6164,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -115,
+        "Odds": -120,
         "Line": 18.5
       },
       {
@@ -6217,21 +6217,10 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "theScore Bet",
         "Market": "player_points",
-        "Name": "Kamilla Cardoso",
+        "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -125,
-        "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Under",
-        "Odds": -110,
-        "Line": 12.5
+        "Odds": -135,
+        "Line": 10.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -6240,8 +6229,19 @@
         "Sportsbook": "theScore Bet",
         "Market": "player_points",
         "Name": "Natasha Cloud",
-        "Selection": "Over",
+        "Selection": "Under",
         "Odds": 100,
+        "Line": 10.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_points",
+        "Name": "Azura Stevens",
+        "Selection": "Over",
+        "Odds": -105,
         "Line": 11.5
       },
       {
@@ -6250,7 +6250,7 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "theScore Bet",
         "Market": "player_points",
-        "Name": "Natasha Cloud",
+        "Name": "Azura Stevens",
         "Selection": "Under",
         "Odds": -135,
         "Line": 11.5
@@ -6261,10 +6261,10 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "theScore Bet",
         "Market": "player_points",
-        "Name": "Azura Stevens",
+        "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -110,
-        "Line": 11.5
+        "Odds": -120,
+        "Line": 9.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -6272,42 +6272,20 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "theScore Bet",
         "Market": "player_points",
-        "Name": "Azura Stevens",
+        "Name": "Naz Hillmon",
         "Selection": "Under",
+        "Odds": -120,
+        "Line": 9.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Angel Reese",
+        "Selection": "Over",
         "Odds": -130,
-        "Line": 11.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -120,
-        "Line": 9.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 9.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -105,
         "Line": 12.5
       },
       {
@@ -6318,30 +6296,8 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -135,
+        "Odds": -110,
         "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": -155,
-        "Line": 7.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Under",
-        "Odds": 110,
-        "Line": 7.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -6351,7 +6307,7 @@
         "Market": "player_rebounds",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -135,
+        "Odds": -130,
         "Line": 6.5
       },
       {
@@ -6362,7 +6318,7 @@
         "Market": "player_rebounds",
         "Name": "Azura Stevens",
         "Selection": "Under",
-        "Odds": -105,
+        "Odds": -110,
         "Line": 6.5
       },
       {
@@ -6373,19 +6329,19 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Over",
+        "Odds": -160,
+        "Line": 4.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
         "Odds": 115,
-        "Line": 5.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -165,
-        "Line": 5.5
+        "Line": 4.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -6394,52 +6350,52 @@
         "Sportsbook": "theScore Bet",
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -165,
+        "Line": 3.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Rhyne Howard",
+        "Selection": "Under",
+        "Odds": 120,
+        "Line": 3.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Brionna Jones",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 4.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Brionna Jones",
+        "Selection": "Under",
+        "Odds": -135,
+        "Line": 4.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "theScore Bet",
+        "Market": "player_rebounds",
+        "Name": "Gabriela Jaquez",
         "Selection": "Over",
         "Odds": 120,
-        "Line": 4.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": -165,
-        "Line": 4.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Brionna Jones",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 4.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Brionna Jones",
-        "Selection": "Under",
-        "Odds": -135,
-        "Line": 4.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "theScore Bet",
-        "Market": "player_rebounds",
-        "Name": "Gabriela Jaquez",
-        "Selection": "Over",
-        "Odds": 110,
         "Line": 3.5
       },
       {
@@ -6450,7 +6406,7 @@
         "Market": "player_rebounds",
         "Name": "Gabriela Jaquez",
         "Selection": "Under",
-        "Odds": -160,
+        "Odds": -170,
         "Line": 3.5
       },
       {
@@ -6483,7 +6439,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -105,
+        "Odds": 110,
         "Line": 3.5
       },
       {
@@ -6494,7 +6450,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -135,
+        "Odds": -160,
         "Line": 3.5
       },
       {
@@ -6549,7 +6505,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -170,
+        "Odds": -160,
         "Line": 1.5
       },
       {
@@ -6560,7 +6516,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": 120,
+        "Odds": 110,
         "Line": 1.5
       },
       {
@@ -6571,7 +6527,7 @@
         "Market": "player_threes",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": 130,
+        "Odds": 135,
         "Line": 1.5
       },
       {
@@ -6582,7 +6538,7 @@
         "Market": "player_threes",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -185,
+        "Odds": -190,
         "Line": 1.5
       },
       {
@@ -6615,7 +6571,7 @@
         "Market": "player_threes",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": 130,
+        "Odds": 125,
         "Line": 1.5
       },
       {
@@ -6626,7 +6582,7 @@
         "Market": "player_threes",
         "Name": "Azura Stevens",
         "Selection": "Under",
-        "Odds": -185,
+        "Odds": -180,
         "Line": 1.5
       },
       {
@@ -6659,7 +6615,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -121,
         "Line": 5.5
       },
       {
@@ -6670,7 +6626,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -113,
         "Line": 5.5
       },
       {
@@ -6681,7 +6637,7 @@
         "Market": "player_assists",
         "Name": "Courtney Vandersloot",
         "Selection": "Over",
-        "Odds": -147,
+        "Odds": -152,
         "Line": 3.5
       },
       {
@@ -6692,7 +6648,7 @@
         "Market": "player_assists",
         "Name": "Courtney Vandersloot",
         "Selection": "Under",
-        "Odds": 108,
+        "Odds": 112,
         "Line": 3.5
       },
       {
@@ -6703,7 +6659,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -111,
+        "Odds": -114,
         "Line": 3.5
       },
       {
@@ -6714,7 +6670,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -122,
+        "Odds": -119,
         "Line": 3.5
       },
       {
@@ -6725,7 +6681,7 @@
         "Market": "player_assists",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -146,
+        "Odds": -141,
         "Line": 2.5
       },
       {
@@ -6736,7 +6692,7 @@
         "Market": "player_assists",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": 108,
+        "Odds": 104,
         "Line": 2.5
       },
       {
@@ -6791,7 +6747,7 @@
         "Market": "player_assists",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": 122,
+        "Odds": 128,
         "Line": 2.5
       },
       {
@@ -6802,7 +6758,7 @@
         "Market": "player_assists",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -167,
+        "Odds": -175,
         "Line": 2.5
       },
       {
@@ -6813,7 +6769,7 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -103,
         "Line": 19.5
       },
       {
@@ -6824,7 +6780,7 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -121,
+        "Odds": -129,
         "Line": 19.5
       },
       {
@@ -6835,7 +6791,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": -107,
         "Line": 18.5
       },
       {
@@ -6846,7 +6802,7 @@
         "Market": "player_points",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -126,
+        "Odds": -124,
         "Line": 18.5
       },
       {
@@ -6857,7 +6813,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -117,
         "Line": 16.5
       },
       {
@@ -6868,7 +6824,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -106,
+        "Odds": -113,
         "Line": 16.5
       },
       {
@@ -6901,8 +6857,8 @@
         "Market": "player_points",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": -104,
-        "Line": 13.5
+        "Odds": -116,
+        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -6912,8 +6868,8 @@
         "Market": "player_points",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -128,
-        "Line": 13.5
+        "Odds": -114,
+        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -6923,7 +6879,7 @@
         "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -117,
+        "Odds": -107,
         "Line": 12.5
       },
       {
@@ -6934,7 +6890,7 @@
         "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -113,
+        "Odds": -124,
         "Line": 12.5
       },
       {
@@ -6945,7 +6901,7 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -6956,7 +6912,7 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Under",
-        "Odds": -104,
+        "Odds": -115,
         "Line": 11.5
       },
       {
@@ -6978,7 +6934,7 @@
         "Market": "player_points",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -127,
+        "Odds": -126,
         "Line": 11.5
       },
       {
@@ -6989,7 +6945,7 @@
         "Market": "player_points",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": -123,
+        "Odds": -112,
         "Line": 9.5
       },
       {
@@ -7000,7 +6956,7 @@
         "Market": "player_points",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -118,
         "Line": 9.5
       },
       {
@@ -7009,7 +6965,7 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
-        "Name": "Gabriela Jaquez",
+        "Name": "Courtney Vandersloot",
         "Selection": "Over",
         "Odds": -134,
         "Line": 7.5
@@ -7020,7 +6976,7 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
-        "Name": "Gabriela Jaquez",
+        "Name": "Courtney Vandersloot",
         "Selection": "Under",
         "Odds": 101,
         "Line": 7.5
@@ -7031,9 +6987,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
-        "Name": "Courtney Vandersloot",
+        "Name": "Gabriela Jaquez",
         "Selection": "Over",
-        "Odds": -133,
+        "Odds": -122,
         "Line": 7.5
       },
       {
@@ -7042,9 +6998,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
-        "Name": "Courtney Vandersloot",
+        "Name": "Gabriela Jaquez",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": -109,
         "Line": 7.5
       },
       {
@@ -7053,317 +7009,317 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_points",
-        "Name": "Brionna Jones",
-        "Selection": "Over",
-        "Odds": -128,
-        "Line": 6.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points",
-        "Name": "Brionna Jones",
-        "Selection": "Under",
-        "Odds": -103,
-        "Line": 6.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 32.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 32.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -128,
-        "Line": 25.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Rhyne Howard",
-        "Selection": "Under",
-        "Odds": -106,
-        "Line": 25.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -113,
-        "Line": 25.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": -120,
-        "Line": 25.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -116,
-        "Line": 24.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Jordin Canada",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 24.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 23.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 23.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": -115,
-        "Line": 21.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Azura Stevens",
-        "Selection": "Under",
-        "Odds": -118,
-        "Line": 21.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Natasha Cloud",
-        "Selection": "Over",
-        "Odds": -116,
-        "Line": 20.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Natasha Cloud",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 20.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Sydney Taylor",
-        "Selection": "Over",
-        "Odds": -127,
-        "Line": 19.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Sydney Taylor",
-        "Selection": "Under",
-        "Odds": -107,
-        "Line": 19.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -117,
-        "Line": 16.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -116,
-        "Line": 16.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": -138,
-        "Line": 7.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Under",
-        "Odds": 102,
-        "Line": 7.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": -143,
-        "Line": 6.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Azura Stevens",
-        "Selection": "Under",
-        "Odds": 105,
-        "Line": 6.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -163,
-        "Line": 4.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": 119,
-        "Line": 4.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_rebounds",
         "Name": "Brionna Jones",
         "Selection": "Over",
         "Odds": -104,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points",
+        "Name": "Brionna Jones",
+        "Selection": "Under",
+        "Odds": -127,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Angel Reese",
+        "Selection": "Over",
+        "Odds": -112,
+        "Line": 32.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Angel Reese",
+        "Selection": "Under",
+        "Odds": -121,
+        "Line": 32.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -107,
+        "Line": 26.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Rhyne Howard",
+        "Selection": "Under",
+        "Odds": -127,
+        "Line": 26.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -107,
+        "Line": 25.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Allisha Gray",
+        "Selection": "Under",
+        "Odds": -127,
+        "Line": 25.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -107,
+        "Line": 24.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Jordin Canada",
+        "Selection": "Under",
+        "Odds": -127,
+        "Line": 24.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Over",
+        "Odds": -122,
+        "Line": 22.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Under",
+        "Odds": -111,
+        "Line": 22.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Azura Stevens",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 21.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Azura Stevens",
+        "Selection": "Under",
+        "Odds": -123,
+        "Line": 21.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Natasha Cloud",
+        "Selection": "Over",
+        "Odds": -119,
+        "Line": 20.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Natasha Cloud",
+        "Selection": "Under",
+        "Odds": -114,
+        "Line": 20.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Sydney Taylor",
+        "Selection": "Over",
+        "Odds": -126,
+        "Line": 19.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Sydney Taylor",
+        "Selection": "Under",
+        "Odds": -108,
+        "Line": 19.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -108,
+        "Line": 16.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
+        "Odds": -126,
+        "Line": 16.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Angel Reese",
+        "Selection": "Over",
+        "Odds": -118,
+        "Line": 12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Angel Reese",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Over",
+        "Odds": -118,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Azura Stevens",
+        "Selection": "Over",
+        "Odds": -146,
+        "Line": 6.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Azura Stevens",
+        "Selection": "Under",
+        "Odds": 107,
+        "Line": 6.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -155,
+        "Line": 4.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
+        "Odds": 114,
+        "Line": 4.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_rebounds",
+        "Name": "Brionna Jones",
+        "Selection": "Over",
+        "Odds": -102,
         "Line": 4.5
       },
       {
@@ -7374,7 +7330,7 @@
         "Market": "player_rebounds",
         "Name": "Brionna Jones",
         "Selection": "Under",
-        "Odds": -130,
+        "Odds": -133,
         "Line": 4.5
       },
       {
@@ -7385,7 +7341,7 @@
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -156,
+        "Odds": -153,
         "Line": 3.5
       },
       {
@@ -7396,7 +7352,7 @@
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": 115,
+        "Odds": 112,
         "Line": 3.5
       },
       {
@@ -7407,7 +7363,7 @@
         "Market": "player_rebounds",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -126,
+        "Odds": -117,
         "Line": 3.5
       },
       {
@@ -7418,7 +7374,7 @@
         "Market": "player_rebounds",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -116,
         "Line": 3.5
       },
       {
@@ -7429,7 +7385,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": 113,
+        "Odds": 107,
         "Line": 3.5
       },
       {
@@ -7440,7 +7396,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -155,
+        "Odds": -145,
         "Line": 3.5
       },
       {
@@ -7451,7 +7407,7 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": 116,
+        "Odds": 112,
         "Line": 3.5
       },
       {
@@ -7462,7 +7418,7 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -158,
+        "Odds": -153,
         "Line": 3.5
       },
       {
@@ -7473,7 +7429,7 @@
         "Market": "player_rebounds",
         "Name": "Gabriela Jaquez",
         "Selection": "Over",
-        "Odds": 126,
+        "Odds": 131,
         "Line": 3.5
       },
       {
@@ -7484,7 +7440,7 @@
         "Market": "player_rebounds",
         "Name": "Gabriela Jaquez",
         "Selection": "Under",
-        "Odds": -172,
+        "Odds": -179,
         "Line": 3.5
       },
       {
@@ -7495,7 +7451,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": 115,
+        "Odds": 119,
         "Line": 3.5
       },
       {
@@ -7506,7 +7462,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -156,
+        "Odds": -162,
         "Line": 3.5
       },
       {
@@ -7517,7 +7473,29 @@
         "Market": "player_threes",
         "Name": "Sydney Taylor",
         "Selection": "Over",
-        "Odds": -192,
+        "Odds": 134,
+        "Line": 2.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Sydney Taylor",
+        "Selection": "Under",
+        "Odds": -183,
+        "Line": 2.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -144,
         "Line": 1.5
       },
       {
@@ -7526,8 +7504,41 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_threes",
-        "Name": "Sydney Taylor",
+        "Name": "Allisha Gray",
         "Selection": "Under",
+        "Odds": 106,
+        "Line": 1.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Azura Stevens",
+        "Selection": "Over",
+        "Odds": 135,
+        "Line": 1.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Azura Stevens",
+        "Selection": "Under",
+        "Odds": -185,
+        "Line": 1.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "DraftKings",
+        "Market": "player_threes",
+        "Name": "Natasha Cloud",
+        "Selection": "Over",
         "Odds": 140,
         "Line": 1.5
       },
@@ -7537,64 +7548,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "DraftKings",
         "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -164,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Under",
-        "Odds": 120,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": 122,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Azura Stevens",
-        "Selection": "Under",
-        "Odds": -167,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
-        "Name": "Natasha Cloud",
-        "Selection": "Over",
-        "Odds": 126,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "DraftKings",
-        "Market": "player_threes",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -172,
+        "Odds": -193,
         "Line": 1.5
       },
       {
@@ -7605,7 +7561,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 139,
+        "Odds": 147,
         "Line": 1.5
       },
       {
@@ -7616,7 +7572,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -190,
+        "Odds": -201,
         "Line": 1.5
       },
       {
@@ -7649,7 +7605,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -150,
+        "Odds": -155,
         "Line": 7.5
       },
       {
@@ -7660,7 +7616,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": 110,
+        "Odds": 112,
         "Line": 7.5
       },
       {
@@ -7693,7 +7649,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -127,
+        "Odds": -120,
         "Line": 5.5
       },
       {
@@ -7704,7 +7660,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -111,
         "Line": 5.5
       },
       {
@@ -7737,7 +7693,7 @@
         "Market": "player_points",
         "Name": "Sydney Taylor",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -118,
         "Line": 15.5
       },
       {
@@ -7748,7 +7704,7 @@
         "Market": "player_points",
         "Name": "Sydney Taylor",
         "Selection": "Under",
-        "Odds": -117,
+        "Odds": -115,
         "Line": 15.5
       },
       {
@@ -7803,7 +7759,7 @@
         "Market": "player_points",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -112,
         "Line": 12.5
       },
       {
@@ -7814,7 +7770,7 @@
         "Market": "player_points",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -107,
+        "Odds": -120,
         "Line": 12.5
       },
       {
@@ -7824,30 +7780,30 @@
         "Sportsbook": "Caesars",
         "Market": "player_points",
         "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -113,
-        "Line": 9.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Under",
-        "Odds": -118,
-        "Line": 9.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
         "Selection": "Over",
         "Odds": -108,
+        "Line": 9.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Naz Hillmon",
+        "Selection": "Under",
+        "Odds": -125,
+        "Line": 9.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "Caesars",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -107,
         "Line": 19.5
       },
       {
@@ -7858,7 +7814,7 @@
         "Market": "player_points",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -124,
+        "Odds": -125,
         "Line": 19.5
       },
       {
@@ -7869,7 +7825,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -122,
         "Line": 16.5
       },
       {
@@ -7880,7 +7836,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -102,
+        "Odds": -108,
         "Line": 16.5
       },
       {
@@ -7891,7 +7847,7 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -118,
         "Line": 11.5
       },
       {
@@ -7902,7 +7858,7 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Under",
-        "Odds": -110,
+        "Odds": -113,
         "Line": 11.5
       },
       {
@@ -7913,7 +7869,7 @@
         "Market": "player_points",
         "Name": "Gabriela Jaquez",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -118,
         "Line": 7.5
       },
       {
@@ -7924,7 +7880,7 @@
         "Market": "player_points",
         "Name": "Gabriela Jaquez",
         "Selection": "Under",
-        "Odds": -110,
+        "Odds": -113,
         "Line": 7.5
       },
       {
@@ -7935,7 +7891,7 @@
         "Market": "player_points",
         "Name": "Brionna Jones",
         "Selection": "Over",
-        "Odds": -128,
+        "Odds": -137,
         "Line": 6.5
       },
       {
@@ -7946,7 +7902,7 @@
         "Market": "player_points",
         "Name": "Brionna Jones",
         "Selection": "Under",
-        "Odds": -105,
+        "Odds": 105,
         "Line": 6.5
       },
       {
@@ -7957,7 +7913,7 @@
         "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -110,
+        "Odds": -106,
         "Line": 12.5
       },
       {
@@ -7968,7 +7924,7 @@
         "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -121,
+        "Odds": -127,
         "Line": 12.5
       },
       {
@@ -8001,8 +7957,8 @@
         "Market": "player_rebounds",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -150,
-        "Line": 6.5
+        "Odds": 110,
+        "Line": 7.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8012,8 +7968,8 @@
         "Market": "player_rebounds",
         "Name": "Azura Stevens",
         "Selection": "Under",
-        "Odds": 107,
-        "Line": 6.5
+        "Odds": -145,
+        "Line": 7.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8023,7 +7979,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -112,
         "Line": 12.5
       },
       {
@@ -8034,7 +7990,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -125,
+        "Odds": -121,
         "Line": 12.5
       },
       {
@@ -8045,7 +8001,7 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": 114,
+        "Odds": 112,
         "Line": 3.5
       },
       {
@@ -8056,7 +8012,7 @@
         "Market": "player_rebounds",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": -152,
+        "Odds": -150,
         "Line": 3.5
       },
       {
@@ -8087,31 +8043,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "Caesars",
         "Market": "player_rebounds",
-        "Name": "Gabriela Jaquez",
-        "Selection": "Over",
-        "Odds": 118,
-        "Line": 3.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
-        "Name": "Gabriela Jaquez",
-        "Selection": "Under",
-        "Odds": -159,
-        "Line": 3.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "Caesars",
-        "Market": "player_rebounds",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -120,
+        "Odds": -114,
         "Line": 3.5
       },
       {
@@ -8122,7 +8056,7 @@
         "Market": "player_rebounds",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": -112,
+        "Odds": -117,
         "Line": 3.5
       },
       {
@@ -8155,7 +8089,7 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": -137,
+        "Odds": -115,
         "Line": 7.5
       },
       {
@@ -8166,7 +8100,7 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": -113,
         "Line": 7.5
       },
       {
@@ -8199,7 +8133,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": 128,
+        "Odds": 130,
         "Line": 3.5
       },
       {
@@ -8210,7 +8144,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Under",
-        "Odds": -173,
+        "Odds": -176,
         "Line": 3.5
       },
       {
@@ -8221,8 +8155,8 @@
         "Market": "player_threes",
         "Name": "Sydney Taylor",
         "Selection": "Over",
-        "Odds": -193,
-        "Line": 1.5
+        "Odds": 141,
+        "Line": 2.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8232,8 +8166,8 @@
         "Market": "player_threes",
         "Name": "Sydney Taylor",
         "Selection": "Under",
-        "Odds": 142,
-        "Line": 1.5
+        "Odds": -190,
+        "Line": 2.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8243,7 +8177,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 150,
+        "Odds": 160,
         "Line": 1.5
       },
       {
@@ -8254,7 +8188,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Under",
-        "Odds": -210,
+        "Odds": -215,
         "Line": 1.5
       },
       {
@@ -8265,7 +8199,7 @@
         "Market": "player_threes",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": 125,
+        "Odds": 127,
         "Line": 1.5
       },
       {
@@ -8287,7 +8221,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -157,
+        "Odds": -148,
         "Line": 1.5
       },
       {
@@ -8298,7 +8232,7 @@
         "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Under",
-        "Odds": 117,
+        "Odds": 111,
         "Line": 1.5
       },
       {
@@ -8309,7 +8243,7 @@
         "Market": "player_threes",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": 130,
+        "Odds": 145,
         "Line": 1.5
       },
       {
@@ -8320,7 +8254,7 @@
         "Market": "player_threes",
         "Name": "Natasha Cloud",
         "Selection": "Under",
-        "Odds": -180,
+        "Odds": -195,
         "Line": 1.5
       },
       {
@@ -8331,8 +8265,8 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": 108,
-        "Line": 8.5
+        "Odds": -175,
+        "Line": 7.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8342,7 +8276,7 @@
         "Market": "player_assists",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -150,
+        "Odds": -167,
         "Line": 2.5
       },
       {
@@ -8364,7 +8298,7 @@
         "Market": "player_assists",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": 116,
+        "Odds": 106,
         "Line": 2.5
       },
       {
@@ -8375,7 +8309,7 @@
         "Market": "player_assists",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -112,
         "Line": 2.5
       },
       {
@@ -8386,7 +8320,7 @@
         "Market": "player_assists",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -150,
+        "Odds": -159,
         "Line": 5.5
       },
       {
@@ -8397,7 +8331,7 @@
         "Market": "player_assists",
         "Name": "Courtney Vandersloot",
         "Selection": "Over",
-        "Odds": -141,
+        "Odds": -129,
         "Line": 3.5
       },
       {
@@ -8408,7 +8342,7 @@
         "Market": "player_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -114,
+        "Odds": -115,
         "Line": 3.5
       },
       {
@@ -8419,8 +8353,19 @@
         "Market": "player_assists",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": 118,
+        "Odds": 104,
         "Line": 2.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -157,
+        "Line": 17.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8430,7 +8375,7 @@
         "Market": "player_points",
         "Name": "Brionna Jones",
         "Selection": "Over",
-        "Odds": -132,
+        "Odds": -121,
         "Line": 6.5
       },
       {
@@ -8440,6 +8385,160 @@
         "Sportsbook": "BetRivers",
         "Market": "player_points",
         "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": 100,
+        "Line": 19.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Courtney Vandersloot",
+        "Selection": "Over",
+        "Odds": 120,
+        "Line": 8.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Courtney Vandersloot",
+        "Selection": "Over",
+        "Odds": -115,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Rhyne Howard",
+        "Selection": "Over",
+        "Odds": -125,
+        "Line": 18.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Brionna Jones",
+        "Selection": "Over",
+        "Odds": 110,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Naz Hillmon",
+        "Selection": "Over",
+        "Odds": -121,
+        "Line": 9.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -150,
+        "Line": 17.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Over",
+        "Odds": -125,
+        "Line": 13.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Natasha Cloud",
+        "Selection": "Over",
+        "Odds": -141,
+        "Line": 10.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Over",
+        "Odds": -155,
+        "Line": 12.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Gabriela Jaquez",
+        "Selection": "Over",
+        "Odds": -109,
+        "Line": 7.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Gabriela Jaquez",
+        "Selection": "Over",
+        "Odds": 128,
+        "Line": 8.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Jordin Canada",
+        "Selection": "Over",
+        "Odds": -141,
+        "Line": 11.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
+        "Selection": "Over",
+        "Odds": -118,
+        "Line": 18.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Allisha Gray",
         "Selection": "Over",
         "Odds": 104,
         "Line": 19.5
@@ -8450,163 +8549,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "BetRivers",
         "Market": "player_points",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": 123,
-        "Line": 14.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Courtney Vandersloot",
-        "Selection": "Over",
-        "Odds": 107,
-        "Line": 8.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Courtney Vandersloot",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 7.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 18.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": -125,
-        "Line": 9.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": -110,
-        "Line": 13.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": -136,
-        "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": 123,
-        "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Gabriela Jaquez",
-        "Selection": "Over",
-        "Odds": -122,
-        "Line": 7.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Gabriela Jaquez",
-        "Selection": "Over",
-        "Odds": 112,
-        "Line": 8.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": -139,
-        "Line": 11.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -114,
-        "Line": 18.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": 110,
-        "Line": 19.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": 123,
-        "Line": 13.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Natasha Cloud",
-        "Selection": "Over",
-        "Odds": -107,
+        "Odds": -109,
         "Line": 11.5
       },
       {
@@ -8617,7 +8562,7 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -118,
+        "Odds": -143,
         "Line": 11.5
       },
       {
@@ -8628,7 +8573,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": 117,
+        "Odds": -103,
         "Line": 18.5
       },
       {
@@ -8639,7 +8584,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -129,
         "Line": 17.5
       },
       {
@@ -8648,20 +8593,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "BetRivers",
         "Market": "player_points",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -136,
-        "Line": 16.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -110,
         "Line": 12.5
       },
       {
@@ -8672,7 +8606,7 @@
         "Market": "player_points",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 107,
+        "Odds": 112,
         "Line": 10.5
       },
       {
@@ -8683,19 +8617,8 @@
         "Market": "player_points",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": 108,
+        "Odds": -113,
         "Line": 12.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points",
-        "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": -150,
-        "Line": 10.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8705,7 +8628,7 @@
         "Market": "player_points",
         "Name": "Sydney Taylor",
         "Selection": "Over",
-        "Odds": -136,
+        "Odds": -139,
         "Line": 14.5
       },
       {
@@ -8716,8 +8639,30 @@
         "Market": "player_points",
         "Name": "Sydney Taylor",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -109,
         "Line": 15.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points",
+        "Name": "Sydney Taylor",
+        "Selection": "Over",
+        "Odds": 115,
+        "Line": 16.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Kamilla Cardoso",
+        "Selection": "Over",
+        "Odds": -175,
+        "Line": 22.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8727,7 +8672,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -113,
         "Line": 26.5
       },
       {
@@ -8738,30 +8683,8 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -109,
+        "Odds": -110,
         "Line": 21.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Kamilla Cardoso",
-        "Selection": "Over",
-        "Odds": -118,
-        "Line": 23.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_points_rebounds_assists",
-        "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": -129,
-        "Line": 20.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8771,7 +8694,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -108,
+        "Odds": -134,
         "Line": 33.5
       },
       {
@@ -8782,7 +8705,7 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -107,
+        "Odds": -112,
         "Line": 24.5
       },
       {
@@ -8793,8 +8716,19 @@
         "Market": "player_points_rebounds_assists",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -112,
+        "Odds": -117,
         "Line": 24.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_points_rebounds_assists",
+        "Name": "Azura Stevens",
+        "Selection": "Over",
+        "Odds": -136,
+        "Line": 21.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8804,7 +8738,7 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": -127,
+        "Odds": -148,
         "Line": 7.5
       },
       {
@@ -8815,7 +8749,7 @@
         "Market": "player_rebounds",
         "Name": "Natasha Cloud",
         "Selection": "Over",
-        "Odds": -117,
+        "Odds": -115,
         "Line": 3.5
       },
       {
@@ -8837,19 +8771,8 @@
         "Market": "player_rebounds",
         "Name": "Azura Stevens",
         "Selection": "Over",
-        "Odds": -134,
+        "Odds": -159,
         "Line": 6.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_rebounds",
-        "Name": "Angel Reese",
-        "Selection": "Over",
-        "Odds": -122,
-        "Line": 12.5
       },
       {
         "EventID": "816ff571af3364f94a70ee7d377cff0d",
@@ -8868,9 +8791,20 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "BetRivers",
         "Market": "player_rebounds",
+        "Name": "Angel Reese",
+        "Selection": "Over",
+        "Odds": 100,
+        "Line": 13.5
+      },
+      {
+        "EventID": "816ff571af3364f94a70ee7d377cff0d",
+        "HomeTeam": "Atlanta Dream",
+        "AwayTeam": "Chicago Sky",
+        "Sportsbook": "BetRivers",
+        "Market": "player_rebounds",
         "Name": "Brionna Jones",
         "Selection": "Over",
-        "Odds": -115,
+        "Odds": -106,
         "Line": 4.5
       },
       {
@@ -8881,7 +8815,7 @@
         "Market": "player_rebounds",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 100,
+        "Odds": 110,
         "Line": 5.5
       },
       {
@@ -8892,7 +8826,7 @@
         "Market": "player_rebounds",
         "Name": "Gabriela Jaquez",
         "Selection": "Over",
-        "Odds": 123,
+        "Odds": 138,
         "Line": 3.5
       },
       {
@@ -8903,7 +8837,7 @@
         "Market": "player_rebounds",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": -129,
+        "Odds": -132,
         "Line": 3.5
       },
       {
@@ -8936,7 +8870,7 @@
         "Market": "player_threes",
         "Name": "Naz Hillmon",
         "Selection": "Over",
-        "Odds": 123,
+        "Odds": 128,
         "Line": 1.5
       },
       {
@@ -8947,7 +8881,7 @@
         "Market": "player_threes",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": 160,
+        "Odds": 155,
         "Line": 1.5
       },
       {
@@ -8957,50 +8891,6 @@
         "Sportsbook": "BetRivers",
         "Market": "player_threes",
         "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": 123,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Allisha Gray",
-        "Selection": "Over",
-        "Odds": -180,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Rhyne Howard",
-        "Selection": "Over",
-        "Odds": 125,
-        "Line": 3.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Sydney Taylor",
-        "Selection": "Over",
-        "Odds": -200,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Natasha Cloud",
         "Selection": "Over",
         "Odds": 108,
         "Line": 1.5
@@ -9011,42 +8901,9 @@
         "AwayTeam": "Chicago Sky",
         "Sportsbook": "BetRivers",
         "Market": "player_threes",
-        "Name": "Naz Hillmon",
-        "Selection": "Over",
-        "Odds": 123,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Jordin Canada",
-        "Selection": "Over",
-        "Odds": 160,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
-        "Name": "Azura Stevens",
-        "Selection": "Over",
-        "Odds": 123,
-        "Line": 1.5
-      },
-      {
-        "EventID": "816ff571af3364f94a70ee7d377cff0d",
-        "HomeTeam": "Atlanta Dream",
-        "AwayTeam": "Chicago Sky",
-        "Sportsbook": "BetRivers",
-        "Market": "player_threes",
         "Name": "Allisha Gray",
         "Selection": "Over",
-        "Odds": -180,
+        "Odds": -190,
         "Line": 1.5
       },
       {
@@ -9057,7 +8914,7 @@
         "Market": "player_threes",
         "Name": "Rhyne Howard",
         "Selection": "Over",
-        "Odds": 125,
+        "Odds": 120,
         "Line": 3.5
       },
       {
@@ -9068,7 +8925,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Over",
-        "Odds": -133,
+        "Odds": -130,
         "Line": 7.5
       },
       {
@@ -9079,7 +8936,7 @@
         "Market": "player_assists",
         "Name": "Jordin Canada",
         "Selection": "Under",
-        "Odds": 100,
+        "Odds": -102,
         "Line": 7.5
       },
       {
@@ -9134,7 +8991,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Over",
-        "Odds": -125,
+        "Odds": -121,
         "Line": 16.5
       },
       {
@@ -9145,7 +9002,7 @@
         "Market": "player_points",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -107,
+        "Odds": -110,
         "Line": 16.5
       },
       {
@@ -9365,7 +9222,7 @@
         "Market": "player_rebounds",
         "Name": "Angel Reese",
         "Selection": "Under",
-        "Odds": -115,
+        "Odds": -114,
         "Line": 12.5
       },
       {
@@ -9398,7 +9255,7 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Over",
-        "Odds": 114,
+        "Odds": 125,
         "Line": 8.5
       },
       {
@@ -9409,7 +9266,7 @@
         "Market": "player_rebounds",
         "Name": "Kamilla Cardoso",
         "Selection": "Under",
-        "Odds": -140,
+        "Odds": -156,
         "Line": 8.5
       },
       {
