@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-19T09:31:48.010353+00:00",
+  "updated_at": "2026-07-19T10:57:00.202324+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -306,15 +306,15 @@
     }
   },
   "summary": {
-    "total_picks": 297,
-    "settled": 287,
-    "pending": 0,
-    "wins": 159,
-    "losses": 122,
+    "total_picks": 267,
+    "settled": 257,
+    "pending": 10,
+    "wins": 142,
+    "losses": 109,
     "pushes": 6,
-    "win_rate": 0.5658,
-    "units_profit": 33.84,
-    "roi": 0.1228,
+    "win_rate": 0.5657,
+    "units_profit": 29.2,
+    "roi": 0.1189,
     "streak": -3
   },
   "nrfi": {
@@ -328,45 +328,33 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 112,
-      "settled": 112,
+      "total": 82,
+      "settled": 82,
       "pending": 0,
-      "wins": 60,
-      "losses": 52,
+      "wins": 43,
+      "losses": 39,
       "pushes": 0,
-      "win_rate": 0.5357,
-      "units_profit": 9.38,
-      "roi": 0.0845,
-      "streak": 4
-    },
-    "puck_line": {
-      "total": 2,
-      "settled": 2,
-      "pending": 0,
-      "wins": 2,
-      "losses": 0,
-      "pushes": 0,
-      "win_rate": 1.0,
-      "units_profit": 0.53,
-      "roi": 0.5266,
-      "streak": 2
+      "win_rate": 0.5244,
+      "units_profit": 4.73,
+      "roi": 0.0584,
+      "streak": 1
     },
     "spread": {
-      "total": 2,
-      "settled": 2,
+      "total": 4,
+      "settled": 4,
       "pending": 0,
-      "wins": 1,
+      "wins": 3,
       "losses": 1,
       "pushes": 0,
-      "win_rate": 0.5,
-      "units_profit": -0.05,
-      "roi": -0.0238,
-      "streak": 1
+      "win_rate": 0.75,
+      "units_profit": 0.48,
+      "roi": 0.1597,
+      "streak": 3
     },
     "total": {
       "total": 181,
       "settled": 171,
-      "pending": 0,
+      "pending": 10,
       "wins": 96,
       "losses": 69,
       "pushes": 6,
@@ -378,14 +366,14 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 188,
-      "settled": 188,
+      "total": 158,
+      "settled": 158,
       "pending": 0,
-      "wins": 98,
-      "losses": 85,
-      "win_rate": 0.5355,
-      "units_profit": 15.16,
-      "roi": 0.0828
+      "wins": 81,
+      "losses": 72,
+      "win_rate": 0.5294,
+      "units_profit": 10.52,
+      "roi": 0.0687
     },
     "nba": {
       "total": 97,
@@ -483,17 +471,6 @@
     {
       "date": "2026-06-13",
       "sport": "mlb",
-      "market": "moneyline",
-      "team": "Chicago Cubs",
-      "matchup": "San Francisco Giants",
-      "odds": -125,
-      "result": "win",
-      "profit": 0.8,
-      "edge_pct": 16.39
-    },
-    {
-      "date": "2026-06-13",
-      "sport": "mlb",
       "market": "total",
       "team": "UNDER 14.0",
       "matchup": "Colorado Rockies @ Athletics",
@@ -501,17 +478,6 @@
       "result": "win",
       "profit": 1.05,
       "edge_pct": 7.4
-    },
-    {
-      "date": "2026-06-12",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Chicago Cubs",
-      "matchup": "San Francisco Giants",
-      "odds": -104,
-      "result": "win",
-      "profit": 0.96,
-      "edge_pct": 12.76
     },
     {
       "date": "2026-06-12",
@@ -534,6 +500,28 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 3.0
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 13.5",
+      "matchup": "Colorado Rockies @ Athletics",
+      "odds": 100,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 4.1
+    },
+    {
+      "date": "2026-06-14",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 14.0",
+      "matchup": "Colorado Rockies @ Athletics",
+      "odds": -105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 6.8
     }
   ]
 }
