@@ -1,0 +1,48 @@
+{
+  "Argentina @ Spain": {
+    "moneyline": [
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "WIN",
+        "team": "Argentina",
+        "matchup": "Argentina @ Spain",
+        "odds": 274,
+        "best_odds": 274,
+        "model_prob": 0.3002,
+        "implied_prob": 0.2607,
+        "edge_pct": 3.95,
+        "sportsbook": "Pinnacle",
+        "exp_total": 2.625
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "WIN",
+        "team": "Spain",
+        "matchup": "Argentina @ Spain",
+        "odds": 130,
+        "best_odds": 130,
+        "model_prob": 0.4229,
+        "implied_prob": 0.4126,
+        "edge_pct": 1.03,
+        "sportsbook": "Fanatics",
+        "exp_total": 2.625
+      },
+      {
+        "sport": "soccer",
+        "market": "moneyline",
+        "direction": "DRAW",
+        "team": "Draw",
+        "matchup": "Argentina @ Spain",
+        "odds": 210,
+        "best_odds": 210,
+        "model_prob": 0.2768,
+        "implied_prob": 0.3093,
+        "edge_pct": -3.25,
+        "sportsbook": "theScore Bet",
+        "exp_total": 2.625
+      }
+    ]
+  }
+}

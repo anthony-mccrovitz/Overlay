@@ -529240,5 +529240,40 @@
     "strategy": null,
     "tainted": null,
     "clv_status": "heuristic"
+  },
+  {
+    "pick_id": "soccer_fifa_world_cup_20260719_argentina_moneyline_win",
+    "date": "2026-07-19",
+    "sport": "soccer_fifa_world_cup",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Argentina",
+    "matchup": "Argentina @ Spain",
+    "odds": 274,
+    "line": null,
+    "sportsbook": "Pinnacle",
+    "model_prob": 0.3002,
+    "model_prob_raw": null,
+    "edge_pct": 2.56,
+    "raw_edge_pct": 3.95,
+    "stake": 0.5,
+    "card_pick": false,
+    "result": null,
+    "profit": null,
+    "recorded_at": "2026-07-19T13:47:50.320588+00:00",
+    "resulted_at": null,
+    "model_version": null,
+    "model_tier": "tier1",
+    "weather_context": null,
+    "team_form": null,
+    "shadow_filter": {
+      "name": null,
+      "matchup_class": "unknown",
+      "recommendation": "na",
+      "reason": "no MLB shadow filter for this sport"
+    },
+    "strategy": null,
+    "tainted": null,
+    "clv_status": "heuristic"
   }
 ]
