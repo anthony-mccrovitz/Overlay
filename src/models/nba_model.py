@@ -322,6 +322,7 @@ def find_nba_edges(
                         "best_odds": int(odds),
                         "sportsbook": book,
                         "model_prob": round(model_prob, 4),
+                        "model_prob_raw": round(raw_prob, 4),
                         "implied_prob": round(implied, 4),
                         "edge_pct": round(edge, 2),
                         "proj_spread": proj["projected_spread"],
@@ -376,6 +377,7 @@ def find_nba_edges(
                         "best_odds": int(odds),
                         "sportsbook": book,
                         "model_prob": round(model_covers_prob, 4),
+                        "model_prob_raw": round(raw_covers_prob, 4),
                         "implied_prob": round(implied, 4),
                         "edge_pct": round(edge, 2),
                         "proj_spread": proj["projected_spread"],
@@ -415,9 +417,9 @@ def find_nba_edges(
             model_over_prob  = apply_calibration(raw_over_prob, "nba", "total")
             model_under_prob = 1.0 - model_over_prob
 
-            for direction, model_prob, implied, odds, book in [
-                ("OVER",  model_over_prob,  ov_implied, ov["odds"], ov["book"]),
-                ("UNDER", model_under_prob, un_implied, un["odds"], un["book"]),
+            for direction, model_prob, model_prob_raw, implied, odds, book in [
+                ("OVER",  model_over_prob,  raw_over_prob,       ov_implied, ov["odds"], ov["book"]),
+                ("UNDER", model_under_prob, 1.0 - raw_over_prob, un_implied, un["odds"], un["book"]),
             ]:
                 edge = adjusted_edge(model_prob, implied)
                 # Pure positive-edge filter — no model_prob gate needed.
@@ -434,6 +436,7 @@ def find_nba_edges(
                         "best_odds": int(odds),
                         "sportsbook": book,
                         "model_prob": round(model_prob, 4),
+                        "model_prob_raw": round(model_prob_raw, 4),
                         "implied_prob": round(implied, 4),
                         "edge_pct": round(edge, 2),
                         "proj_spread": proj["projected_spread"],

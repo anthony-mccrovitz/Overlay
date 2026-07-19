@@ -813,10 +813,15 @@ class SoccerModelV2:
                             model_p  = probs[name]
                             edge     = (model_p - imp) * 100.0
                             if edge >= min_edge_pct:
+                                # direction is the OUTCOME (WIN/DRAW), never the
+                                # team name: a team-name direction fell through
+                                # normalize_pick's fallback and got stamped
+                                # "HOME" even for away sides (England @ France
+                                # → England "HOME").
                                 edges.append({
                                     "sport":        "soccer",
                                     "market":       "moneyline",
-                                    "direction":    name,
+                                    "direction":    "DRAW" if name == "Draw" else "WIN",
                                     "team":         name,
                                     "matchup":      f"{away} @ {home}",
                                     "odds":         int(price),

@@ -207,9 +207,13 @@ def find_nrfi_edges(
         p_nrfi = project_nrfi(home_sp_era, home_sp_k9, away_sp_era, away_sp_k9)
         # Apply trained NRFI calibrator (Platt/isotonic from settled history)
         # before edge math so picks.json prob matches the edge.
+        # SYMMETRIC: a one-sided calibrator here once pinned P(NRFI)≈0.44 below
+        # every market price and emitted YRFI on all 64 July games. Symmetric
+        # application keeps NRFI/YRFI complementary with no structural side.
+        p_nrfi_raw = p_nrfi   # pre-calibration, for refits
         try:
-            from src.analytics.calibration import apply_calibration
-            p_nrfi = apply_calibration(p_nrfi, "mlb", "nrfi")
+            from src.analytics.calibration import apply_calibration_symmetric
+            p_nrfi = apply_calibration_symmetric(p_nrfi, "mlb", "nrfi")
         except Exception:
             pass
         p_yrfi = 1.0 - p_nrfi
@@ -247,6 +251,8 @@ def find_nrfi_edges(
                         "home_sp": m.get("home_sp_name", "TBD"),
                         "away_sp": m.get("away_sp_name", "TBD"),
                         "projected_nrfi": p_nrfi,
+                "projected_nrfi_raw": p_nrfi_raw,
+                        "projected_nrfi_raw": p_nrfi_raw,
                         "implied_nrfi": implied_nrfi,
                         "edge_pct": round(nrfi_edge * 100, 1),
                         "odds": book_data["nrfi_odds"],
@@ -263,6 +269,7 @@ def find_nrfi_edges(
                         "home_sp": m.get("home_sp_name", "TBD"),
                         "away_sp": m.get("away_sp_name", "TBD"),
                         "projected_nrfi": p_nrfi,
+                        "projected_nrfi_raw": p_nrfi_raw,
                         "implied_nrfi": implied_nrfi,
                         "edge_pct": round(abs(yrfi_edge) * 100, 1),
                         "odds": book_data["yrfi_odds"],

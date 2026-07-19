@@ -386,6 +386,14 @@ def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: dat
             model_prob = float(projected_nrfi) if direction == "NRFI" else 1.0 - float(projected_nrfi)
         else:
             model_prob = None
+        # Pre-calibration probability, side-matched — calibrator refits train
+        # on THIS so they never re-learn their own previous output.
+        projected_nrfi_raw = np_.get("projected_nrfi_raw")
+        if projected_nrfi_raw is not None:
+            model_prob_raw = (float(projected_nrfi_raw) if direction == "NRFI"
+                              else 1.0 - float(projected_nrfi_raw))
+        else:
+            model_prob_raw = None
         implied = np_.get("implied_nrfi")
         edge_pct = np_.get("edge_pct")
         entry = {
@@ -403,6 +411,7 @@ def _update_pnl_nrfi(nrfi_picks: list[dict], results: list[dict], pick_date: dat
             "card_pick": False,
             "projected_nrfi": projected_nrfi,
             "model_prob": model_prob,
+            "model_prob_raw": model_prob_raw,
             "implied_prob": implied,
             "edge_pct": edge_pct,
             "result": None,

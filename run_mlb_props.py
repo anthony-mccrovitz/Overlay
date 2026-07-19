@@ -202,6 +202,28 @@ def run_mlb_props(args: argparse.Namespace) -> int:
     #    actual pick, not hundreds of duplicate book rows.
     from src.analytics.clv_tracker import collapse_board
     log_edges = collapse_board(all_edges)
+
+    # Data-driven market retirement: a BATTER prop market whose gate row says
+    # k=0 on a trusted sample has zero realized edge — its model echoes the
+    # book line (r≈0.98) and logging it floods picks.json with hundreds of
+    # market-derived rows a day. Stop logging those (cards/content above are
+    # unaffected). Pitcher Ks stay logged: shadow CLV tracking continues while
+    # the gate zeroes their edge. Auto-un-retires if a future table refresh
+    # ever shows realized edge.
+    try:
+        from src.analytics.calibration_gate import is_retired_market
+        _retired = {
+            m for m in {e.get("market") for e in log_edges}
+            if m and m.startswith("batter_") and is_retired_market("mlb", m)
+        }
+        if _retired:
+            n_before = len(log_edges)
+            log_edges = [e for e in log_edges if e.get("market") not in _retired]
+            print(f"  [retired] not logging {n_before - len(log_edges)} pick(s) in "
+                  f"k=0 markets: {', '.join(sorted(_retired))}")
+    except Exception:
+        pass
+
     added = _auto_log_picks(log_edges, game_date)
     if added:
         from collections import Counter

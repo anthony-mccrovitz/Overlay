@@ -58,6 +58,28 @@ def _normal_cdf(x: float) -> float:
     return 0.5 * (1 + math.erf(x / math.sqrt(2)))
 
 
+def _is_unrated(ratings: dict) -> bool:
+    """True when a ratings dict is the league-average default — the signature
+    of a team the data source doesn't know (failed fetch, missing expansion
+    team). Real teams never sit at EXACTLY net 0.0 / league-avg ORtg / .500."""
+    return (
+        float(ratings.get("NET_RATING") or 0.0) == 0.0
+        and float(ratings.get("OFF_RATING") or LG_AVG_ORTG) == LG_AVG_ORTG
+        and float(ratings.get("W_PCT") or 0.5) == 0.5
+    )
+
+
+def _calibrated_symmetric(p: float, market: str) -> float:
+    """WNBA probs through the trained calibrator (symmetric, so the two sides
+    of a market always sum to 1). Identity until a wnba_{market}.pkl exists —
+    but the edge GATE still shrinks these markets via normalize_pick."""
+    try:
+        from src.analytics.calibration import apply_calibration_symmetric
+        return apply_calibration_symmetric(p, "wnba", market)
+    except Exception:
+        return p
+
+
 def project_game(
     away_team: str,
     home_team: str,
@@ -150,11 +172,23 @@ def find_wnba_edges(
     """
     all_teams = fetch_team_ratings()
     edges = []
+    skipped_unrated = 0
 
     for event in events:
         home = event.get("home_team", "")
         away = event.get("away_team", "")
         if not home or not away:
+            continue
+
+        # Degenerate-slate guard: a team that resolved to the league-average
+        # default (NET 0 / W% .500 signature) is UNRATED — the model knows
+        # nothing about it. Pricing such a game emits the constant coin-flip
+        # pair (home 0.5879 / away 0.4121) regardless of opponent; that ran
+        # for a month in June-July 2026 before anyone noticed. No pick beats
+        # a team-blind pick.
+        if _is_unrated(get_team_ratings(home, all_teams)) or \
+           _is_unrated(get_team_ratings(away, all_teams)):
+            skipped_unrated += 1
             continue
 
         proj = project_game(away, home, all_teams)
@@ -191,11 +225,13 @@ def find_wnba_edges(
                     proj_total_adj = proj_total + WNBA_TOTAL_RECENTER
                     model_over_p = 1.0 - _normal_cdf((line - proj_total_adj) / total_std)
                     model_over_p = max(0.01, model_over_p - OVER_BIAS_CORRECTION)
+                    model_over_p_raw = model_over_p   # pre-calibration, for refits
+                    model_over_p = _calibrated_symmetric(model_over_p, "total")
                     model_under_p = 1.0 - model_over_p
 
-                    for direction, model_p, imp_p, odds in [
-                        ("OVER",  model_over_p,  imp_over,  over_odds),
-                        ("UNDER", model_under_p, imp_under, under_odds),
+                    for direction, model_p, model_p_raw, imp_p, odds in [
+                        ("OVER",  model_over_p,  model_over_p_raw,       imp_over,  over_odds),
+                        ("UNDER", model_under_p, 1.0 - model_over_p_raw, imp_under, under_odds),
                     ]:
                         if imp_p < MIN_IMPLIED_PROB:
                             continue
@@ -213,6 +249,7 @@ def find_wnba_edges(
                                 "best_odds":   int(odds),
                                 "line":        line,
                                 "model_prob":  round(model_p, 4),
+                                "model_prob_raw": round(model_p_raw, 4),
                                 "implied_prob": round(imp_p, 4),
                                 "edge_pct":    round(edge, 2),
                                 "sportsbook":  book,
@@ -236,11 +273,13 @@ def find_wnba_edges(
                     # home_margin ~ N(projected_spread_from_home_perspective, spread_std)
                     home_margin_proj = -proj_spread  # proj_spread is away perspective
                     model_home_p = 1.0 - _normal_cdf((home_line - home_margin_proj) / spread_std)
+                    model_home_p_raw = model_home_p   # pre-calibration, for refits
+                    model_home_p = _calibrated_symmetric(model_home_p, "spread")
                     model_away_p = 1.0 - model_home_p
 
-                    for team, model_p, imp_p, odds, line in [
-                        (home, model_home_p, imp_home, home_odds, home_line),
-                        (away, model_away_p, imp_away, away_odds, -home_line),
+                    for team, model_p, model_p_raw, imp_p, odds, line in [
+                        (home, model_home_p, model_home_p_raw,       imp_home, home_odds, home_line),
+                        (away, model_away_p, 1.0 - model_home_p_raw, imp_away, away_odds, -home_line),
                     ]:
                         edge = (model_p - imp_p) * 100
                         if edge >= min_edge_pct:
@@ -256,6 +295,7 @@ def find_wnba_edges(
                                 "best_odds":   int(odds),
                                 "line":        line,
                                 "model_prob":  round(model_p, 4),
+                                "model_prob_raw": round(model_p_raw, 4),
                                 "implied_prob": round(imp_p, 4),
                                 "edge_pct":    round(edge, 2),
                                 "sportsbook":  book,
@@ -273,9 +313,11 @@ def find_wnba_edges(
                     away_odds = float(away_ml.get("price", -110))
                     imp_home, imp_away = _devig_two_way(home_odds, away_odds)
 
-                    for team, model_p, imp_p, odds in [
-                        (home, home_win_p, imp_home, home_odds),
-                        (away, away_win_p, imp_away, away_odds),
+                    ml_home_p = _calibrated_symmetric(home_win_p, "moneyline")
+                    ml_away_p = 1.0 - ml_home_p
+                    for team, model_p, model_p_raw, imp_p, odds in [
+                        (home, ml_home_p, home_win_p,       imp_home, home_odds),
+                        (away, ml_away_p, 1.0 - home_win_p, imp_away, away_odds),
                     ]:
                         edge = (model_p - imp_p) * 100
                         if edge >= min_edge_pct:
@@ -291,11 +333,16 @@ def find_wnba_edges(
                                 "best_odds":   int(odds),
                                 "line":        None,
                                 "model_prob":  round(model_p, 4),
+                                "model_prob_raw": round(model_p_raw, 4),
                                 "implied_prob": round(imp_p, 4),
                                 "edge_pct":    round(edge, 2),
                                 "sportsbook":  book,
                                 "notes":       proj["notes"],
                             })
+
+    if skipped_unrated:
+        print(f"  [wnba_model] skipped {skipped_unrated} game(s) with unrated "
+              "team(s) — ratings source returned league-average defaults")
 
     # Sort by edge descending, dedup by (team, market, direction)
     edges.sort(key=lambda x: x["edge_pct"], reverse=True)

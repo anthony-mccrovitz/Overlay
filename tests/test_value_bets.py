@@ -11,7 +11,9 @@ from src.betting.markets import BetType
 
 # Calibration is trained on real data and is irrelevant to edge-detection logic.
 # These tests patch it to a no-op so they verify pure pick/skip reasoning.
-_NO_CAL = patch("src.betting.value_bets.apply_calibration", side_effect=lambda p, *a, **kw: p)
+# (Moneyline now uses the SYMMETRIC wrapper — patch that.)
+_NO_CAL = patch("src.betting.value_bets.apply_calibration_symmetric",
+                side_effect=lambda p, *a, **kw: p)
 
 
 def _odds_row(home="Team A", away="Team B", home_ml=None, away_ml=None):
