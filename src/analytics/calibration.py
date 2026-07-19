@@ -74,6 +74,10 @@ def _normalize_market(m: str) -> str:
 
 def _normalize_sport(s: str) -> str:
     s = (s or "").lower()
+    # wnba MUST precede nba: "nba" is a substring of "wnba", and the old order
+    # silently pooled WNBA picks into NBA calibrator fits (and would have
+    # applied NBA calibrators to WNBA probabilities).
+    if "wnba" in s: return "wnba"
     if "mlb" in s or s == "baseball": return "mlb"
     if "nba" in s or s == "basketball": return "nba"
     if "nhl" in s or s == "hockey": return "nhl"
@@ -185,6 +189,55 @@ def _use_platt(market: str, n: int) -> bool:
     return _normalize_market(market) in _PLATT_MARKETS or n < _PLATT_THRESHOLD
 
 
+# ── Fit-quality guardrails ────────────────────────────────────────────────────
+# A calibrator fit on a losing segment can collapse into a near-constant or
+# even INVERTED function (2026-07-18: mlb_nrfi Platt mapped 0.50→0.446 and
+# 0.99→0.404 — every slate came out all-YRFI; mlb_f5_total isotonic collapsed
+# to one plateau — every pick got the same 0.6094). A degenerate calibrator is
+# worse than none: the calibration GATE (k) already zeroes the edge on bad
+# segments, so the honest fallback is identity, not a constant that silently
+# flips every pick to one side.
+
+_PROBE_GRID = [round(0.05 + 0.05 * i, 2) for i in range(19)]  # 0.05 … 0.95
+_MIN_SPREAD     = 0.15  # f(0.8) − f(0.2) must retain at least this much signal
+# Mid-band check: model probs live almost entirely in [0.35, 0.65], so a curve
+# that is flat THERE destroys the slate even if its global spread looks fine
+# (the collapsed F5 isotonic had global spread 0.34 but mid-band 0.075 — every
+# realistic input landed on one plateau).
+_MIN_MID_SPREAD = 0.10  # f(0.65) − f(0.35)
+
+
+def _calibrator_curve(cal_type: str, cal) -> list[float]:
+    if cal_type == "platt":
+        return [_apply_platt(cal, p) for p in _PROBE_GRID]
+    return [float(v) for v in cal.predict(_PROBE_GRID)]
+
+
+def validate_calibrator(cal_type: str, cal) -> tuple[bool, str]:
+    """Probe a fitted calibrator on a fixed grid. Returns (ok, reason).
+
+    Rejects: inverted / non-monotone mappings (higher raw prob must never mean
+    lower calibrated prob) and range collapse (a flat curve destroys all
+    per-game signal and pins an entire slate to one constant).
+    """
+    try:
+        curve = _calibrator_curve(cal_type, cal)
+    except Exception as e:  # unpicklable/broken model object
+        return False, f"probe failed: {e}"
+    eps = 1e-9
+    if any(b < a - eps for a, b in zip(curve, curve[1:])):
+        return False, "non-monotone (inverted) mapping"
+    i20, i80 = _PROBE_GRID.index(0.2), _PROBE_GRID.index(0.8)
+    spread = curve[i80] - curve[i20]
+    if spread < _MIN_SPREAD:
+        return False, f"range collapse: f(0.8)-f(0.2)={spread:.3f} < {_MIN_SPREAD}"
+    i35, i65 = _PROBE_GRID.index(0.35), _PROBE_GRID.index(0.65)
+    mid = curve[i65] - curve[i35]
+    if mid < _MIN_MID_SPREAD:
+        return False, f"mid-band collapse: f(0.65)-f(0.35)={mid:.3f} < {_MIN_MID_SPREAD}"
+    return True, "ok"
+
+
 def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = True) -> dict:
     """
     Fit calibrators for each sport × market combo with enough data.
@@ -208,6 +261,11 @@ def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = Tru
     groups: dict[str, list[tuple[float, float]]] = {}
     for p in picks:
         if not _settled(p):
+            continue
+        # Tainted picks came from a known-broken mechanism (degenerate
+        # calibrator, team-blind ratings, …) — fitting on them would teach the
+        # next calibrator the previous calibrator's disease.
+        if p.get("tainted"):
             continue
         prob    = p.get("model_prob")
         outcome = _outcome(p)
@@ -245,6 +303,19 @@ def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = Tru
             cal_type = "isotonic"
 
         path = CALIBRATORS_DIR / f"{key}.pkl"
+
+        # Guardrail: never ship a degenerate calibrator. Also remove any
+        # previously-saved pkl for this key so a stale degenerate can't linger —
+        # apply_calibration then falls back to identity and the edge gate (k)
+        # handles the segment's honesty.
+        ok, reason = validate_calibrator(cal_type, cal)
+        if not ok:
+            if verbose:
+                print(f"  [calibration] {key} ({cal_type}): REJECTED — {reason}; "
+                      f"falling back to identity")
+            path.unlink(missing_ok=True)
+            continue
+
         with open(path, "wb") as f:
             pickle.dump({"type": cal_type, "model": cal}, f)
 
@@ -293,6 +364,32 @@ def apply_calibration(
             return float(raw.predict([model_prob])[0])
     except Exception:
         return model_prob
+
+
+def apply_calibration_symmetric(
+    model_prob: float,
+    sport: str,
+    market: str,
+) -> float:
+    """
+    Two-sided-market calibration: guarantees f(p) + f(1−p) = 1.
+
+    Applying a calibrator to only ONE side and mirroring (away = 1 − f(home))
+    turns any asymmetry in the fit into a structural side bias: the 2026-07-18
+    mlb_moneyline Platt had f(0.50)=0.4375, which deflated every HOME prob and
+    inflated every AWAY prob — 138/138 July moneyline picks came out AWAY.
+
+    This wrapper symmetrizes any calibrator:
+        p_cal = ½ · (f(p) + 1 − f(1−p))
+    so a true coin flip stays a coin flip and both sides always sum to 1.
+    Use for every market whose two sides are complements (moneyline home/away,
+    NRFI/YRFI, totals over/under). Falls back to identity when no calibrator
+    exists, same as apply_calibration.
+    """
+    f_p   = apply_calibration(model_prob, sport, market)
+    f_1mp = apply_calibration(1.0 - model_prob, sport, market)
+    p = 0.5 * (f_p + (1.0 - f_1mp))
+    return min(1.0, max(0.0, p))
 
 
 # ── Summary printer ───────────────────────────────────────────────────────────

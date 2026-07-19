@@ -428,9 +428,10 @@ def find_totals_edges(
                 model_prob = float(_norm.cdf((total_line - pred_total) / _STD))
             # Apply trained MLB total calibrator so picks.json reflects the
             # post-calibration probability that the edge was computed from.
+            # Symmetric so P(over)+P(under)=1 regardless of calibrator shape.
             try:
-                from src.analytics.calibration import apply_calibration
-                model_prob = apply_calibration(model_prob, "mlb", "total")
+                from src.analytics.calibration import apply_calibration_symmetric
+                model_prob = apply_calibration_symmetric(model_prob, "mlb", "total")
             except Exception:
                 pass
             implied_prob = 0.5  # default; overridden below with real vig-adjusted odds

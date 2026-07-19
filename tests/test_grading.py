@@ -245,7 +245,9 @@ class TestNormalizePick:
     def test_basic_normalization(self):
         p = normalize_pick(self._base())
         assert p["sport"] == "mlb"
-        assert p["direction"] == "HOME"
+        # Side-neutral default: an unparseable moneyline direction becomes WIN
+        # (the old HOME default mislabeled away-team picks)
+        assert p["direction"] == "WIN"
         assert p["market"] == "moneyline"
         assert p["odds"] == 140
         assert p["pick_id"].startswith("mlb_20260418_")
@@ -411,7 +413,8 @@ class TestValidatePick:
         }
         result = normalize_pick(raw)
         assert result is not None
-        assert result["direction"] == "HOME"
+        # Side-neutral default: WIN (HOME was a lie for away teams)
+        assert result["direction"] == "WIN"
 
     def test_card_pick_stake_unit_scale(self):
         p = self._canonical()

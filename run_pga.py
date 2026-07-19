@@ -56,11 +56,14 @@ _NEXT_MAJOR_SCHEDULE = [
 def detect_active_golf_sport() -> str | None:
     """Query Odds API and return the golf major to model, or None.
 
-    Multiple majors can have an active (futures) market at once — e.g. during
-    US Open week, The Open Championship futures are already open. The old code
-    returned the *first* active key, which grabbed the wrong tournament. Prefer
-    the major being PLAYED now (scheduled start on/before today, most recent),
-    falling back to the soonest upcoming one.
+    PREGAME ONLY: the simulator draws all 4 rounds from scratch for every
+    player — it has no leaderboard state. Pricing a tournament already in
+    progress treats a player 12 shots back after 54 holes as if he were even
+    par on Thursday morning (2026 Open, Saturday: it claimed +5-8% "edges" on
+    Rory at +36000 and Cameron Young at +170000 — live comeback prices). So a
+    major whose scheduled start is before today is never modeled; futures
+    boards for upcoming majors remain fair game. (Day-of Thursday pricing is
+    allowed — the residual round-1-underway window is minor vs. days 2-4.)
     """
     key = os.environ.get("ODDS_API_KEY")
     if not key:
@@ -76,23 +79,30 @@ def detect_active_golf_sport() -> str | None:
                   if s.get("active") and s["key"] in _KNOWN_GOLF_SPORTS]
         if not active:
             return None
-        if len(active) == 1:
-            return active[0]
 
         today = date.today()
         sched = {k: d for d, _name, k in _NEXT_MAJOR_SCHEDULE}
 
-        def _priority(k: str):
+        pregame = []
+        for k in active:
             d = sched.get(k)
-            if d is None:                  # unknown start date → lowest priority
-                return (2, 0)
-            if d <= today:                 # in progress: most recent start first
-                return (0, (today - d).days)
-            return (1, (d - today).days)   # upcoming: soonest first
+            if d is None:
+                # Unknown start date — can't prove it's pregame, so skip it
+                print(f"  [golf] {k}: no scheduled start date — skipping "
+                      "(cannot verify tournament hasn't started)")
+                continue
+            if d < today:
+                print(f"  [golf] {k}: started {d.isoformat()} — in progress, "
+                      "skipping (pregame model only)")
+                continue
+            pregame.append((d, k))
 
-        active.sort(key=_priority)
-        chosen = active[0]
-        print(f"  [golf] Active majors {active} → modeling {chosen} (in progress / soonest)")
+        if not pregame:
+            return None
+        pregame.sort()                     # soonest upcoming first
+        chosen = pregame[0][1]
+        if len(active) > 1:
+            print(f"  [golf] Active majors {active} → modeling {chosen} (soonest pregame)")
         return chosen
     except Exception as e:
         print(f"  [golf] Could not check active sports: {e}")

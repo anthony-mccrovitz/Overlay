@@ -233,9 +233,12 @@ def find_f5_edges(
         model_p_over = _normal_cdf(z)
         # Calibrate against the trained mlb_f5_total isotonic/Platt fit so the
         # edge_pct we compute downstream reflects post-calibration probability.
+        # SYMMETRIC: the 2026-07 isotonic collapsed to a plateau and pinned every
+        # game's UNDER prob to the same 0.6094; symmetric application (plus the
+        # fit-time guardrails) keeps over/under complementary per game.
         try:
-            from src.analytics.calibration import apply_calibration
-            model_p_over = apply_calibration(model_p_over, "mlb", "f5_total")
+            from src.analytics.calibration import apply_calibration_symmetric
+            model_p_over = apply_calibration_symmetric(model_p_over, "mlb", "f5_total")
         except Exception:
             pass
         # Correct for systematic OVER shading by books

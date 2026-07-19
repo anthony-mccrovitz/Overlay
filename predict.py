@@ -1856,6 +1856,12 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
             continue
 
         market    = str(prop.get("market") or prop.get("Market") or "prop").lower()
+        # Pitcher Ks are logged EXCLUSIVELY by run_mlb_props.py (NB model,
+        # calibration-gated). This legacy Normal(σ=1.8) path was double-logging
+        # them under a non-canonical sport key with wildly inflated edges
+        # (claimed 46-49% while the gate's realized number is negative).
+        if market in ("pitcher_strikeouts", "prop") and sport in ("mlb", "baseball_mlb"):
+            continue
         direction = str(prop.get("direction") or prop.get("Direction") or "OVER").upper()
         line      = prop.get("line") or prop.get("Line")
         odds_raw  = prop.get("odds") or prop.get("Odds") or 0

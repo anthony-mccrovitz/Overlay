@@ -68,6 +68,14 @@ def load_picks_safe(path: str | Path) -> dict:
 def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
     """Append new_picks to picks.json atomically under an exclusive lock.
 
+    Every incoming pick is passed through normalize_pick first — this is THE
+    normalization choke point. Emitters that hand-build dicts (predict.py's
+    _auto_log_picks/_auto_log_props et al.) get canonical sport keys, the
+    calibration-gate edge shrink, and card demotion applied here, so no write
+    path can bypass them. Extra emitter fields (player, prop_market,
+    model_agreement, …) are preserved by merging the normalized fields over
+    the original dict.
+
     Deduplicates on pick_id. Returns count of picks actually added.
     Uses write-to-temp + os.replace (atomic rename on POSIX).
     """
@@ -89,22 +97,17 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                 data = {"picks": []}
 
             existing_ids = {p.get("pick_id", "") for p in data["picks"] if isinstance(p, dict)}
-            # Lazy import to avoid circular: every write gets shadow_filter classified
-            try:
-                from src.analytics.shadow_filters import classify_form_filter as _classify
-            except Exception:
-                _classify = None
             added = 0
             for pick in new_picks:
-                pid = pick.get("pick_id", "")
+                norm = normalize_pick(pick)
+                if norm is None:
+                    continue  # fundamentally corrupted — never write it
+                # Merge: canonical fields win, emitter extras survive
+                merged = {**pick, **norm}
+                pid = merged.get("pick_id", "")
                 if pid and pid in existing_ids:
                     continue
-                if _classify and not pick.get("shadow_filter"):
-                    try:
-                        pick["shadow_filter"] = _classify(pick)
-                    except Exception:
-                        pass
-                data["picks"].append(pick)
+                data["picks"].append(merged)
                 existing_ids.add(pid)
                 added += 1
 
@@ -200,7 +203,10 @@ _MARKET_ALIASES: dict[str, str] = {
 }
 
 _DEFAULT_DIRECTION: dict[str, str] = {
-    "moneyline": "HOME",
+    # WIN, not HOME: a moneyline direction we can't parse (e.g. a soccer model
+    # emitting the team name) says nothing about which side of the venue the
+    # team is on. Stamping HOME was a lie for away teams — WIN is always true.
+    "moneyline": "WIN",
     "spread":    "COVER",
     "nrfi":      "NRFI",
     "prop":      "OVER",
@@ -476,7 +482,18 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
             pass
 
     # ── Pick ID ───────────────────────────────────────────────────────────────
-    pick_id = raw.get("pick_id") or make_pick_id(sport, date_, team, market, direction)
+    pick_id = raw.get("pick_id")
+    if pick_id:
+        # Repair ids minted with a non-canonical sport prefix ("baseball_mlb_…"):
+        # the same bet logged by two runners must collide in dedup, and it can't
+        # if one id says baseball_mlb and the other says mlb. Only the prefix is
+        # rewritten — the rest of the id is preserved so unaffected ids (and all
+        # snapshot/CLV joins on them) stay stable.
+        raw_sport = str(raw.get("sport") or "").lower().strip()
+        if raw_sport in _SPORT_ALIASES and pick_id.startswith(raw_sport + "_"):
+            pick_id = sport + pick_id[len(raw_sport):]
+    else:
+        pick_id = make_pick_id(sport, date_, team, market, direction)
 
     norm = {
         "pick_id":         pick_id,
@@ -508,6 +525,11 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         # Shadow-strategy tag: which research rule/model produced this pick.
         # null = a normal model/card pick. Used to slice CLV by strategy.
         "strategy":        raw.get("strategy") or None,
+        # Taint tag: set by scripts/taint_bad_picks.py on picks produced by a
+        # known-broken mechanism (degenerate calibrator, team-blind ratings, …).
+        # Tainted picks keep their graded results but are excluded from public
+        # stats, the record, and calibration/gate fitting.
+        "tainted":         raw.get("tainted") or None,
         # CLV honesty tag: 'validated' only if the market passed the CLV gate
         # (chef.py promote); otherwise 'heuristic'. Stamped on EVERY pick so a
         # card pick is never mistaken for a proven-edge bet. Auto-flips to
@@ -562,18 +584,30 @@ def migrate_picks_file(path_in: str, path_out: str | None = None) -> dict:
             continue
         normalized.append(pick)
 
-    # Deduplicate: sort by recorded_at ascending, keep first per pick_id
+    # Deduplicate per pick_id. Sport-key canonicalization above makes the
+    # double-logged twins collide here (an ungated "baseball_mlb" pitcher-K row
+    # and its gated "mlb" duplicate now share one id) — keep the BEST row, not
+    # the first-recorded one: graded beats pending, gated (raw_edge_pct
+    # stamped) beats ungated, then earliest recorded_at wins.
+    def _quality(p: dict) -> tuple:
+        return (
+            p.get("result") is not None,          # graded first
+            p.get("raw_edge_pct") is not None,    # gate ran on it
+        )  # ties: the earlier-recorded row wins (ascending scan keeps first)
+
     normalized.sort(key=lambda p: p.get("recorded_at") or "")
-    seen_ids: set[str] = set()
-    deduped:  list[dict] = []
+    best_by_id: dict[str, dict] = {}
     deduplicated = 0
     for p in normalized:
         pid = p["pick_id"]
-        if pid in seen_ids:
-            deduplicated += 1
+        cur = best_by_id.get(pid)
+        if cur is None:
+            best_by_id[pid] = p
             continue
-        seen_ids.add(pid)
-        deduped.append(p)
+        deduplicated += 1
+        if _quality(p) > _quality(cur):
+            best_by_id[pid] = p
+    deduped = list(best_by_id.values())
 
     # Restore chronological order
     deduped.sort(key=lambda p: p.get("recorded_at") or "")

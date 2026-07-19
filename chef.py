@@ -336,6 +336,13 @@ def cmd_record(args: argparse.Namespace) -> int:
         print("  No picks found. Run: python3 chef.py picks mlb")
         return 0
 
+    # Tainted picks (known-broken mechanism — scripts/taint_bad_picks.py) are
+    # kept in picks.json as an audit trail but excluded from every record view.
+    n_tainted = sum(1 for p in picks if p.get("tainted"))
+    if n_tainted:
+        picks = [p for p in picks if not p.get("tainted")]
+        print(f"  (excluding {n_tainted} tainted pick(s) from broken-model periods)")
+
     filter_market    = getattr(args, "market", "all")
     filter_sport     = getattr(args, "sport",  "all")
     shadow_mode      = getattr(args, "shadow", False)

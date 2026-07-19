@@ -11,7 +11,7 @@ import numpy as np
 
 from src.betting.markets import BetType
 from src.models.bias import adjusted_edge
-from src.analytics.calibration import apply_calibration
+from src.analytics.calibration import apply_calibration, apply_calibration_symmetric
 
 # Edges above this are almost always bad odds / wrong market in the feed, not real +EV.
 _MAX_SANE_MONEYLINE_EDGE = 0.20
@@ -130,7 +130,11 @@ def _find_moneyline_value(
         # Apply Platt/isotonic calibration trained from settled picks so the
         # model_prob written to picks.json is the post-calibration number that
         # the edge was actually computed against.
-        model_prob_home = apply_calibration(model_prob_home, sport, "moneyline")
+        # SYMMETRIC: calibrating only the home side and mirroring turned any
+        # calibrator asymmetry into a structural away bias (f(0.50)=0.4375 →
+        # 138/138 away picks in July 2026). The symmetric wrapper guarantees
+        # home + away = 1 with no side tilt.
+        model_prob_home = apply_calibration_symmetric(model_prob_home, sport, "moneyline")
         model_prob_away = 1.0 - model_prob_home
 
         best_home_ml = row.get("BestHomeML", 0)

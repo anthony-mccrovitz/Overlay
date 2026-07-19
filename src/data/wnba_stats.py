@@ -15,7 +15,11 @@ import json
 import time
 from pathlib import Path
 
-CACHE_DIR = Path("data/cache/wnba")
+# Anchored to the repo root, not the cwd — a run from any working directory
+# must find the same cache. (A relative path here once made the model miss a
+# perfectly good ratings file and fall back to team-blind league averages.)
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+CACHE_DIR = _REPO_ROOT / "data" / "cache" / "wnba"
 
 # League-average baselines — 2026 WNBA season
 # ORtg/DRtg are per-100-possessions, pace is per 40 min
@@ -66,15 +70,29 @@ def fetch_team_ratings(refresh: bool = False) -> list[dict]:
         )
         df = resp.get_data_frames()[0]
         teams = df.to_dict("records")
-        _save_cache(cache_key, teams)
-        return teams
+        # An empty/short response is a FAILED fetch, not a valid table — the
+        # league has 15 teams. Saving [] here once clobbered a good cache and
+        # sent every team to the NET-0 default for a month (all picks became
+        # the constant 0.5879/0.4121 coin-flip pair).
+        if len(teams) >= 10:
+            _save_cache(cache_key, teams)
+            return teams
+        print(f"  [wnba_stats] team ratings: got {len(teams)} teams — "
+              "treating as failed fetch, using last good cache")
     except Exception as e:
         print(f"  [wnba_stats] team ratings: {e}")
-        path = _cache_path(cache_key)
-        if path.exists():
+    # Fall back to the last good cache file regardless of TTL — stale real
+    # ratings beat fresh league-average defaults every time.
+    path = _cache_path(cache_key)
+    if path.exists():
+        try:
             with open(path) as f:
-                return json.load(f)
-        return _default_teams()
+                stale = json.load(f)
+            if len(stale) >= 10:
+                return stale
+        except (json.JSONDecodeError, OSError):
+            pass
+    return _default_teams()
 
 
 def _default_teams() -> list[dict]:
@@ -84,6 +102,9 @@ def _default_teams() -> list[dict]:
         "Indiana Fever", "Las Vegas Aces", "Los Angeles Sparks",
         "Minnesota Lynx", "New York Liberty", "Phoenix Mercury",
         "Seattle Storm", "Washington Mystics",
+        # 2026 expansion franchises — missing from this table, they silently
+        # defaulted to NET 0 even when the real ratings loaded.
+        "Golden State Valkyries", "Portland Fire", "Toronto Tempo",
     ]
     return [
         {
