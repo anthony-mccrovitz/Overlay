@@ -194,6 +194,64 @@ class TestChokePoint:
         p = normalize_pick(_raw_pick(tainted="degenerate_calibrator"))
         assert p["tainted"] == "degenerate_calibrator"
 
+    def test_model_prob_raw_survives_normalization(self):
+        p = normalize_pick(_raw_pick(model_prob_raw=0.7123))
+        assert p["model_prob_raw"] == pytest.approx(0.7123)
+        # absent → None, never invented
+        assert normalize_pick(_raw_pick())["model_prob_raw"] is None
+
+
+class TestCalibratorFeedbackLoop:
+    """Calibrators must train on the PRE-calibration probability
+    (model_prob_raw) — training on the stored post-calibration model_prob and
+    then applying the fit to raw model outputs compounds shrinkage each refit."""
+
+    def test_recalibrate_fits_on_raw_probs(self, tmp_path, monkeypatch):
+        import src.analytics.calibration as cal
+
+        picks = [
+            {"sport": "mlb", "market": "moneyline", "result": "win" if i % 2 else "loss",
+             "model_prob": 0.44,                    # calibrated (constant — no signal)
+             "model_prob_raw": 0.50 + i * 0.01}     # raw (varies — the real input)
+            for i in range(40)
+        ]
+        pf = tmp_path / "picks.json"
+        pf.write_text(json.dumps({"picks": picks}))
+        monkeypatch.setattr(cal, "PICKS_PATH", pf)
+        monkeypatch.setattr(cal, "CALIBRATORS_DIR", tmp_path / "cals")
+
+        seen_X: list = []
+        real_fit = cal._fit_platt
+
+        def spy_fit(X, y):
+            seen_X.append(list(X))
+            return real_fit(X, y)
+        monkeypatch.setattr(cal, "_fit_platt", spy_fit)
+
+        cal.recalibrate_all(min_picks=30, verbose=False)
+        assert seen_X, "no fit ran"
+        fitted_on = seen_X[0]
+        assert 0.44 not in fitted_on          # never the calibrated constant
+        assert 0.50 in fitted_on              # the raw values
+
+    def test_recalibrate_falls_back_to_model_prob_for_legacy(self, tmp_path, monkeypatch):
+        import src.analytics.calibration as cal
+        picks = [
+            {"sport": "mlb", "market": "moneyline", "result": "win" if i % 2 else "loss",
+             "model_prob": 0.50 + i * 0.01}   # legacy rows: no raw field
+            for i in range(40)
+        ]
+        pf = tmp_path / "picks.json"
+        pf.write_text(json.dumps({"picks": picks}))
+        monkeypatch.setattr(cal, "PICKS_PATH", pf)
+        monkeypatch.setattr(cal, "CALIBRATORS_DIR", tmp_path / "cals")
+        seen_X: list = []
+        real_fit = cal._fit_platt
+        monkeypatch.setattr(cal, "_fit_platt",
+                            lambda X, y: (seen_X.append(list(X)), real_fit(X, y))[1])
+        cal.recalibrate_all(min_picks=30, verbose=False)
+        assert seen_X and 0.50 in seen_X[0]
+
 
 # ── Direction labels ─────────────────────────────────────────────────────────
 

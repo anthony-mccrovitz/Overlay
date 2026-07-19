@@ -134,6 +134,7 @@ def _find_moneyline_value(
         # calibrator asymmetry into a structural away bias (f(0.50)=0.4375 →
         # 138/138 away picks in July 2026). The symmetric wrapper guarantees
         # home + away = 1 with no side tilt.
+        model_prob_home_raw = model_prob_home   # pre-calibration, for refits
         model_prob_home = apply_calibration_symmetric(model_prob_home, sport, "moneyline")
         model_prob_away = 1.0 - model_prob_home
 
@@ -182,6 +183,7 @@ def _find_moneyline_value(
             bets.append({
                 "Team": home, "Opponent": away,
                 "ModelProb": model_prob_home, "ImpliedProb": implied_home,
+                "ModelProbRaw": model_prob_home_raw,
                 "Edge": edge_home,
                 "BestOdds": best_home_ml,
                 "Sportsbook": row.get("BestHomeSportsbook", ""),
@@ -202,6 +204,7 @@ def _find_moneyline_value(
             bets.append({
                 "Team": away, "Opponent": home,
                 "ModelProb": model_prob_away, "ImpliedProb": implied_away,
+                "ModelProbRaw": 1.0 - model_prob_home_raw,
                 "Edge": edge_away,
                 "BestOdds": best_away_ml,
                 "Sportsbook": row.get("BestAwaySportsbook", ""),

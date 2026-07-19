@@ -142,6 +142,7 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
             "line":        e.get("line"),
             "sportsbook":  e.get("sportsbook", ""),
             "model_prob":  e.get("model_prob"),
+            "model_prob_raw": e.get("model_prob_raw"),  # pre-calibration, for refits
             "edge_pct":    e.get("edge_pct"),
             "stake":       shadow_stake("wnba", market),
             "card_pick":   is_live("wnba", market),

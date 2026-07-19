@@ -507,6 +507,12 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         "line":            line,
         "sportsbook":      sportsbook,
         "model_prob":      round(model_prob, 4) if model_prob is not None else None,
+        # PRE-calibration model probability, stamped by the emitter. Calibrator
+        # fitting trains on THIS (raw → outcome); training on the stored
+        # post-calibration model_prob was a feedback loop (train-on-calibrated,
+        # apply-on-raw) that compounded shrinkage on every refit.
+        "model_prob_raw":  (round(float(raw["model_prob_raw"]), 4)
+                            if raw.get("model_prob_raw") is not None else None),
         "edge_pct":        round(edge_pct, 2) if edge_pct is not None else None,
         # The model's original pre-calibration claim, pinned for idempotency and
         # so we can audit how much the gate shrank each pick.

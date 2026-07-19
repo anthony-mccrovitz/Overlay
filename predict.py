@@ -1180,6 +1180,7 @@ def _run_mlb_daily(args, sport: str):
                             "line":       fp["line"],
                             "sportsbook": fp["book"],
                             "model_prob": fp["model_prob"],
+                            "model_prob_raw": fp.get("model_prob_raw"),
                             "edge_pct":   fp["edge_pct"],
                             "stake":      1.0,
                             "card_pick":  is_live("mlb", "f5_total"),  # shadow until 30+ graded picks
@@ -1793,6 +1794,7 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             "line":             line,
             "sportsbook":       pick.get("Sportsbook"),
             "model_prob":       pick.get("ModelProb"),
+            "model_prob_raw":   pick.get("ModelProbRaw"),  # pre-calibration, for refits
             "edge_pct":         edge_pct,
             "model_agreement":  bool(agreement) if agreement is not None else None,
             "model_tier":       _get_model_tier("mlb", market),

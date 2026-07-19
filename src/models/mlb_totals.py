@@ -429,6 +429,7 @@ def find_totals_edges(
             # Apply trained MLB total calibrator so picks.json reflects the
             # post-calibration probability that the edge was computed from.
             # Symmetric so P(over)+P(under)=1 regardless of calibrator shape.
+            model_prob_raw = model_prob   # pre-calibration, for refits
             try:
                 from src.analytics.calibration import apply_calibration_symmetric
                 model_prob = apply_calibration_symmetric(model_prob, "mlb", "total")
@@ -470,6 +471,7 @@ def find_totals_edges(
                 "game_id": game_id,
                 "commence_time": game_rows["CommenceTime"].iloc[0] if "CommenceTime" in game_rows.columns else "",
                 "model_prob": round(model_prob, 4),
+                "model_prob_raw": round(model_prob_raw, 4),
                 "ump_name": _ump_name,
                 "ump_adj": round(_ump_adj, 2) if _ump_adj else 0.0,
                 "weather_context": _weather_ctx,

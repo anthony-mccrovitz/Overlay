@@ -225,12 +225,13 @@ def find_wnba_edges(
                     proj_total_adj = proj_total + WNBA_TOTAL_RECENTER
                     model_over_p = 1.0 - _normal_cdf((line - proj_total_adj) / total_std)
                     model_over_p = max(0.01, model_over_p - OVER_BIAS_CORRECTION)
+                    model_over_p_raw = model_over_p   # pre-calibration, for refits
                     model_over_p = _calibrated_symmetric(model_over_p, "total")
                     model_under_p = 1.0 - model_over_p
 
-                    for direction, model_p, imp_p, odds in [
-                        ("OVER",  model_over_p,  imp_over,  over_odds),
-                        ("UNDER", model_under_p, imp_under, under_odds),
+                    for direction, model_p, model_p_raw, imp_p, odds in [
+                        ("OVER",  model_over_p,  model_over_p_raw,       imp_over,  over_odds),
+                        ("UNDER", model_under_p, 1.0 - model_over_p_raw, imp_under, under_odds),
                     ]:
                         if imp_p < MIN_IMPLIED_PROB:
                             continue
@@ -248,6 +249,7 @@ def find_wnba_edges(
                                 "best_odds":   int(odds),
                                 "line":        line,
                                 "model_prob":  round(model_p, 4),
+                                "model_prob_raw": round(model_p_raw, 4),
                                 "implied_prob": round(imp_p, 4),
                                 "edge_pct":    round(edge, 2),
                                 "sportsbook":  book,
@@ -271,12 +273,13 @@ def find_wnba_edges(
                     # home_margin ~ N(projected_spread_from_home_perspective, spread_std)
                     home_margin_proj = -proj_spread  # proj_spread is away perspective
                     model_home_p = 1.0 - _normal_cdf((home_line - home_margin_proj) / spread_std)
+                    model_home_p_raw = model_home_p   # pre-calibration, for refits
                     model_home_p = _calibrated_symmetric(model_home_p, "spread")
                     model_away_p = 1.0 - model_home_p
 
-                    for team, model_p, imp_p, odds, line in [
-                        (home, model_home_p, imp_home, home_odds, home_line),
-                        (away, model_away_p, imp_away, away_odds, -home_line),
+                    for team, model_p, model_p_raw, imp_p, odds, line in [
+                        (home, model_home_p, model_home_p_raw,       imp_home, home_odds, home_line),
+                        (away, model_away_p, 1.0 - model_home_p_raw, imp_away, away_odds, -home_line),
                     ]:
                         edge = (model_p - imp_p) * 100
                         if edge >= min_edge_pct:
@@ -292,6 +295,7 @@ def find_wnba_edges(
                                 "best_odds":   int(odds),
                                 "line":        line,
                                 "model_prob":  round(model_p, 4),
+                                "model_prob_raw": round(model_p_raw, 4),
                                 "implied_prob": round(imp_p, 4),
                                 "edge_pct":    round(edge, 2),
                                 "sportsbook":  book,
@@ -311,9 +315,9 @@ def find_wnba_edges(
 
                     ml_home_p = _calibrated_symmetric(home_win_p, "moneyline")
                     ml_away_p = 1.0 - ml_home_p
-                    for team, model_p, imp_p, odds in [
-                        (home, ml_home_p, imp_home, home_odds),
-                        (away, ml_away_p, imp_away, away_odds),
+                    for team, model_p, model_p_raw, imp_p, odds in [
+                        (home, ml_home_p, home_win_p,       imp_home, home_odds),
+                        (away, ml_away_p, 1.0 - home_win_p, imp_away, away_odds),
                     ]:
                         edge = (model_p - imp_p) * 100
                         if edge >= min_edge_pct:
@@ -329,6 +333,7 @@ def find_wnba_edges(
                                 "best_odds":   int(odds),
                                 "line":        None,
                                 "model_prob":  round(model_p, 4),
+                                "model_prob_raw": round(model_p_raw, 4),
                                 "implied_prob": round(imp_p, 4),
                                 "edge_pct":    round(edge, 2),
                                 "sportsbook":  book,

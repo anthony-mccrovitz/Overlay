@@ -267,7 +267,15 @@ def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = Tru
         # next calibrator the previous calibrator's disease.
         if p.get("tainted"):
             continue
-        prob    = p.get("model_prob")
+        # Fit on the PRE-calibration probability when the emitter stamped it.
+        # The stored model_prob is post-calibration; training on it and then
+        # applying the fit to raw model outputs is a domain mismatch that
+        # compounds shrinkage every refit (observed: mlb_moneyline f(0.5)
+        # drifted 0.4375 → 0.4196 within one day). Falls back to model_prob
+        # for legacy picks recorded before raw stamping existed.
+        prob    = p.get("model_prob_raw")
+        if prob is None:
+            prob = p.get("model_prob")
         outcome = _outcome(p)
         if prob is None or outcome is None:
             continue

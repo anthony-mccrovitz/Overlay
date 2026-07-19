@@ -231,6 +231,7 @@ def find_f5_edges(
         F5_STD = 2.5
         z = ((proj + F5_PROJ_RECENTER) - line) / F5_STD
         model_p_over = _normal_cdf(z)
+        model_p_over_raw = model_p_over   # pre-calibration, for refits
         # Calibrate against the trained mlb_f5_total isotonic/Platt fit so the
         # edge_pct we compute downstream reflects post-calibration probability.
         # SYMMETRIC: the 2026-07 isotonic collapsed to a plateau and pinned every
@@ -277,6 +278,8 @@ def find_f5_edges(
                 "projected_total": proj,
                 "line":            line,
                 "model_prob":      round(model_prob, 4),
+                "model_prob_raw":  round(model_p_over_raw if direction == "OVER"
+                                         else 1 - model_p_over_raw, 4),
                 "implied_prob":    round(implied_over if direction == "OVER" else 1 - implied_over, 4),
                 "edge_pct":        round(edge * 100, 1),
                 "odds":            pick_odds,
