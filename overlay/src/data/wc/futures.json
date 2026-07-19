@@ -2,76 +2,76 @@
   "teams": [
     {
       "team": "Spain",
-      "model": 0.5703,
-      "market": 0.5798,
-      "blend": 0.576,
+      "model": 0.573,
+      "market": 0.5902,
+      "blend": 0.5833,
       "advance": 1.0,
       "reach_final": 1.0,
-      "edge_pp": -0.4,
-      "raw_edge_pp": -1.0
+      "edge_pp": -0.7,
+      "raw_edge_pp": -1.7
     },
     {
       "team": "Argentina",
-      "model": 0.4298,
-      "market": 0.4202,
-      "blend": 0.424,
+      "model": 0.4269,
+      "market": 0.4098,
+      "blend": 0.4167,
       "advance": 1.0,
       "reach_final": 1.0,
-      "edge_pp": 0.4,
-      "raw_edge_pp": 1.0
+      "edge_pp": 0.7,
+      "raw_edge_pp": 1.7
     }
   ],
   "disagreements": {
     "model_higher": [
       {
         "team": "Argentina",
-        "model": 0.4298,
-        "market": 0.4202,
-        "blend": 0.424,
+        "model": 0.4269,
+        "market": 0.4098,
+        "blend": 0.4167,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": 0.4,
-        "raw_edge_pp": 1.0
+        "edge_pp": 0.7,
+        "raw_edge_pp": 1.7
       },
       {
         "team": "Spain",
-        "model": 0.5703,
-        "market": 0.5798,
-        "blend": 0.576,
+        "model": 0.573,
+        "market": 0.5902,
+        "blend": 0.5833,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": -0.4,
-        "raw_edge_pp": -1.0
+        "edge_pp": -0.7,
+        "raw_edge_pp": -1.7
       }
     ],
     "model_lower": [
       {
         "team": "Spain",
-        "model": 0.5703,
-        "market": 0.5798,
-        "blend": 0.576,
+        "model": 0.573,
+        "market": 0.5902,
+        "blend": 0.5833,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": -0.4,
-        "raw_edge_pp": -1.0
+        "edge_pp": -0.7,
+        "raw_edge_pp": -1.7
       },
       {
         "team": "Argentina",
-        "model": 0.4298,
-        "market": 0.4202,
-        "blend": 0.424,
+        "model": 0.4269,
+        "market": 0.4098,
+        "blend": 0.4167,
         "advance": 1.0,
         "reach_final": 1.0,
-        "edge_pp": 0.4,
-        "raw_edge_pp": 1.0
+        "edge_pp": 0.7,
+        "raw_edge_pp": 1.7
       }
     ]
   },
-  "generated": "2026-07-18T14:23:41.943614+00:00",
+  "generated": "2026-07-19T14:34:38.226463+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-14",
   "n_fixtures": 72,
-  "n_priced": 2,
+  "n_priced": 1,
   "kickoff": "2026-06-11"
 }
