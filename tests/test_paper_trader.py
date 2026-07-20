@@ -112,3 +112,16 @@ class TestSignificance:
 
     def test_empty_is_safe(self):
         assert _significance([]) == {}
+
+
+class TestImpossibleCosts:
+    """A binary contract pays exactly $1, so a cost outside (0, 1) is corrupt
+    data rather than a bad trade. Before this guard, a cost of 1.5 booked
+    pnl=-1.49 on a WINNING pick — a loss reported on a win."""
+
+    @pytest.mark.parametrize("cost", [1.5, 1.0, 0.0, -0.1])
+    def test_impossible_costs_are_rejected(self, cost):
+        assert settle(_pick(result="win", cost=cost), 4.48) is None
+
+    def test_normal_cost_still_settles(self):
+        assert settle(_pick(result="win", cost=0.5), 4.48)["pnl"] == pytest.approx(4.48)
