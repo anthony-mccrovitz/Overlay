@@ -70,6 +70,13 @@ _TAG_SLUGS: dict[str, str] = {
     "soccer_mexico_ligamx":   "liga-mx",   # no coverage today; harmless if empty
     "soccer_fifa_world_cup":  "soccer",
     "icehockey_nhl":          "nhl",
+    # Summer leagues that run while Europe is dark. Each one below was checked
+    # to have BOTH Polymarket moneyline depth and Pinnacle on the Odds API
+    # board — without a Pinnacle fair there is nothing to price against, which
+    # is why e.g. UCL qualification (14 games, zero Pinnacle) is absent.
+    "soccer_korea_kleague1":  "k-league",
+    "soccer_brazil_campeonato": "brazil-serie-a",
+    "soccer_sweden_allsvenskan": "allsvenskan",
 }
 
 
@@ -171,10 +178,22 @@ _DERIVATIVE_Q = re.compile(
 )
 
 
+# Polymarket labels the 3-way DRAW contract sportsMarketType="moneyline" and
+# names both clubs in the question ("Will Jeju SK FC vs. Gangwon FC end in a
+# draw?"). Team matching then reads it as a win contract for whichever club it
+# matched, and prices the draw's cost against that club's WIN fair. On
+# 2026-07-21 that printed "Gangwon FC +35.5%" — draw ask 0.31 vs a 0.439 win
+# fair — the single largest fake edge the scanner has produced.
+_DRAW_Q = re.compile(r"(?i)\bend in a draw\b|\bdraw\b\s*\?$|: *draw\b")
+
+
 def _is_moneyline_market(pm: PolyMarket) -> bool:
     """Only full-game/fight moneyline markets may be priced against the
     Pinnacle h2h fair. Prefer Gamma's own sportsMarketType label; fall back to
     shape heuristics for markets that lack it."""
+    if _DRAW_Q.search(pm.question or ""):
+        # A draw has no two-way book twin to price against or to join for CLV.
+        return False
     smt = pm.raw.get("sportsMarketType")
     if smt is not None:
         return str(smt).lower() == "moneyline"
@@ -380,7 +399,10 @@ def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
     )
 
     eff_date = date_str or _date.today().isoformat()
-    sports = DEFAULT_SPORTS + _active_tennis_sports()
+    # The scanner is market-vs-market, not model-vs-market: it needs a Pinnacle
+    # board and a Polymarket tag, NOT a trained model for the league. So it
+    # scans every mapped sport, including summer leagues we do not model.
+    sports = sorted(set(DEFAULT_SPORTS) | set(_TAG_SLUGS)) + _active_tennis_sports()
 
     # Event fetch window: wide, because main game events carry endDate = game
     # + ~7 days (resolution buffer). Per-market gameStartTime does the precise
@@ -437,7 +459,11 @@ def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
               f"(pilot ${bankroll:.0f}, flat ${stake:.2f}/pick)")
         print("  " + "─" * 74)
         for p in sorted(all_picks, key=lambda x: -x["edge_pct"]):
-            print(f"  +{p['edge_pct']:>4.1f}%  {p['team']:<28.28} "
+            # Sign comes from the format spec, never a literal "+" — a hardcoded
+            # plus in front of a negative number renders "+-3.1%", which reads
+            # as a positive edge at a glance. That is the one typo in a betting
+            # tool that costs money.
+            print(f"  {p['edge_pct']:>+5.1f}%  {p['team']:<28.28} "
                   f"cost {p['poly_cost']:.3f} vs fair {p['model_prob']:.3f} "
                   f"[{p['fair_source'] or '?':<8}] ~${stake:.2f}")
         print("  " + "─" * 74)
