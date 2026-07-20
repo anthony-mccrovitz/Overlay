@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-20T10:48:49.598555+00:00",
+  "generated_at": "2026-07-20T12:28:22.558848+00:00",
   "summary": {
-    "n": 9,
-    "n_filled": 0,
-    "fill_rate_pct": 0.0,
-    "claimed_ev_filled": null,
-    "claimed_ev_unfilled": 2.45,
-    "mean_post_fill_drift": null,
-    "median_minutes_to_fill": null
+    "n": 15,
+    "n_filled": 1,
+    "fill_rate_pct": 6.7,
+    "claimed_ev_filled": 11.44,
+    "claimed_ev_unfilled": 3.4,
+    "mean_post_fill_drift": -0.005,
+    "median_minutes_to_fill": 22.6
   },
   "rows": [
     {
@@ -17,12 +17,12 @@
       "date": "2026-07-20",
       "limit": 0.47,
       "fair_at_entry": 0.4827,
-      "claimed_ev_pct": 0.0,
+      "claimed_ev_pct": 2.7,
       "filled": false,
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__mlb_20260720_tampa-bay-rays_moneyline_win",
@@ -31,12 +31,12 @@
       "date": "2026-07-20",
       "limit": 0.4,
       "fair_at_entry": 0.4166,
-      "claimed_ev_pct": 0.0,
+      "claimed_ev_pct": 4.16,
       "filled": false,
       "minutes_to_fill": null,
       "price_at_kickoff": 0.405,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__mlb_20260720_los-angeles-dodgers_moneyline_win",
@@ -45,12 +45,12 @@
       "date": "2026-07-20",
       "limit": 0.43,
       "fair_at_entry": 0.4491,
-      "claimed_ev_pct": 0.0,
+      "claimed_ev_pct": 4.45,
       "filled": false,
       "minutes_to_fill": null,
       "price_at_kickoff": 0.435,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__mlb_20260720_atlanta-braves_moneyline_win",
@@ -59,12 +59,12 @@
       "date": "2026-07-20",
       "limit": 0.56,
       "fair_at_entry": 0.5723,
-      "claimed_ev_pct": 0.0,
+      "claimed_ev_pct": 2.19,
       "filled": false,
       "minutes_to_fill": null,
       "price_at_kickoff": 0.565,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__mlb_20260720_san-francisco-giants_moneyline_win",
@@ -73,12 +73,12 @@
       "date": "2026-07-20",
       "limit": 0.47,
       "fair_at_entry": 0.4815,
-      "claimed_ev_pct": 0.0,
+      "claimed_ev_pct": 2.44,
       "filled": false,
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__wnba_20260720_toronto-tempo_moneyline_win",
@@ -92,7 +92,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.175,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__wnba_20260720_washington-mystics_moneyline_win",
@@ -106,7 +106,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.255,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__wnba_20260720_seattle-storm_moneyline_win",
@@ -115,12 +115,12 @@
       "date": "2026-07-20",
       "limit": 0.18,
       "fair_at_entry": 0.2006,
-      "claimed_ev_pct": 8.0,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.185,
-      "post_fill_drift": null,
-      "n_ticks": 2
+      "claimed_ev_pct": 11.44,
+      "filled": true,
+      "minutes_to_fill": 22.6,
+      "price_at_kickoff": 0.175,
+      "post_fill_drift": -0.005,
+      "n_ticks": 12
     },
     {
       "pick_id": "polymarket_ev__wnba_20260720_dallas-wings_moneyline_win",
@@ -134,7 +134,91 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.395,
       "post_fill_drift": null,
-      "n_ticks": 2
+      "n_ticks": 12
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260720_baltimore-orioles_moneyline_win",
+      "team": "Baltimore Orioles",
+      "sport": "mlb",
+      "date": "2026-07-20",
+      "limit": 0.42,
+      "fair_at_entry": 0.4285,
+      "claimed_ev_pct": 2.01,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.425,
+      "post_fill_drift": null,
+      "n_ticks": 11
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260720_milwaukee-brewers_moneyline_win",
+      "team": "Milwaukee Brewers",
+      "sport": "mlb",
+      "date": "2026-07-20",
+      "limit": 0.65,
+      "fair_at_entry": 0.6644,
+      "claimed_ev_pct": 2.21,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.655,
+      "post_fill_drift": null,
+      "n_ticks": 11
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260721_bahia_moneyline_win",
+      "team": "Bahia",
+      "sport": "soccer_brazil_campeonato",
+      "date": "2026-07-21",
+      "limit": 0.26,
+      "fair_at_entry": 0.2654,
+      "claimed_ev_pct": 2.07,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.265,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_gangwon-fc_moneyline_win",
+      "team": "Gangwon FC",
+      "sport": "soccer_korea_kleague1",
+      "date": "2026-07-21",
+      "limit": 0.43,
+      "fair_at_entry": 0.4394,
+      "claimed_ev_pct": 2.18,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.435,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_daejeon-citizen_moneyline_win",
+      "team": "Daejeon Citizen",
+      "sport": "soccer_korea_kleague1",
+      "date": "2026-07-21",
+      "limit": 0.23,
+      "fair_at_entry": 0.2435,
+      "claimed_ev_pct": 5.88,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.235,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_incheon-united_moneyline_win",
+      "team": "Incheon United",
+      "sport": "soccer_korea_kleague1",
+      "date": "2026-07-21",
+      "limit": 0.28,
+      "fair_at_entry": 0.289,
+      "claimed_ev_pct": 3.21,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.285,
+      "post_fill_drift": null,
+      "n_ticks": 1
     }
   ]
 }
