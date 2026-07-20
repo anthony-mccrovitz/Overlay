@@ -24,8 +24,6 @@ PICKS_FILE = Path(__file__).parent.parent / "data" / "pnl" / "picks.json"
 # --winner) — no automated grader covers them. Anything added here should
 # eventually get a real grading path; shrink this set, don't grow it.
 KNOWN_MANUAL_ONLY = {
-    "golf_us_open_winner",
-    "golf_the_open_championship_winner",
     "auto_racing_indycar_series",
     "auto_racing_formula_one",
     "auto_racing_nascar_cup_series",
@@ -57,7 +55,10 @@ def _is_covered(sport: str) -> bool:
         return True
     if sport.startswith("tennis_"):                 # tennis-data.co.uk backlog
         return True
-    if sport == "golf_pga_championship":            # _OUTRIGHT_SPORT_MAP (needs --winner)
+    # Outrights settle via `grade --sport <short> --winner` — read the map
+    # rather than restating it, so registering a new major in grade.py is all
+    # it takes to cover it here too.
+    if sport in grade._OUTRIGHT_SPORT_MAP.values():
         return True
     return False
 

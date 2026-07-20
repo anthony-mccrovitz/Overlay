@@ -1,0 +1,25 @@
+name: Polymarket scanner
+
+# Polymarket-vs-Pinnacle price scanner (shadow strategy polymarket_ev).
+# Every 6h: Polymarket reads are free/no-auth; the Odds API board is reused
+# from the ≤2h cache when fresh (~1 credit per sport otherwise). Picks are
+# shadow-only (card_pick=False, stake=0) — the 300-bet CLV verdict gates any
+# real-money use of the pilot account.
+on:
+  schedule:
+    - cron: "41 */6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: polymarket
+  cancel-in-progress: false
+
+jobs:
+  polymarket:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: full
+      command: python scripts/polymarket_scanner.py
