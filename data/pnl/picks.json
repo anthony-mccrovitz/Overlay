@@ -543382,6 +543382,41 @@
       "clv_status": "heuristic",
       "poly_filled": false,
       "poly_fill_checked_at": "2026-07-20T14:59:11.238359+00:00"
+    },
+    {
+      "pick_id": "golf_masters_tournament_winner_20260720_scottie-scheffler_outright_win",
+      "date": "2026-07-20",
+      "sport": "golf_masters_tournament_winner",
+      "market": "outright",
+      "direction": "WIN",
+      "team": "Scottie Scheffler",
+      "matchup": "The Masters",
+      "odds": 460,
+      "line": null,
+      "sportsbook": "fanduel",
+      "model_prob": 0.2821,
+      "model_prob_raw": null,
+      "edge_pct": 8.0,
+      "raw_edge_pct": 15.58,
+      "stake": 0.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-07-20T18:24:58.633518+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "strategy": null,
+      "tainted": null,
+      "clv_status": "heuristic"
     }
   ]
 }
