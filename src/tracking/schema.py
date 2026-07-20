@@ -159,6 +159,13 @@ CANONICAL_FIELDS = (
     "result", "profit", "recorded_at", "resulted_at",
 )
 
+# Strategies whose edge is an OBSERVED price difference between two venues,
+# not a probability our models estimated. The calibration gate corrects model
+# overconfidence; these have no model in them, so gating them shrinks real
+# arithmetic. Keep this set tiny and justified — anything derived from our own
+# probability estimates belongs under the gate.
+_PRICE_OBSERVED_STRATEGIES: frozenset[str] = frozenset({"polymarket_ev"})
+
 _SPORT_ALIASES: dict[str, str] = {
     "baseball_mlb":              "mlb",
     "basketball_nba":            "nba",
@@ -443,10 +450,20 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
     # PENDING picks only — graded picks keep their recorded edge so the public
     # record and CLV history are never rewritten. Idempotent: raw_edge_pct pins
     # the original model claim, so re-normalizing never double-shrinks.
+    #
+    # EXEMPT: strategies whose "edge" is an observed price difference rather
+    # than a model claim. polymarket_ev compares one venue's ask to another's
+    # devigged price — arithmetic on two quoted numbers, with no probability
+    # estimate of ours anywhere in it. There is no overconfidence to correct,
+    # so applying mlb::moneyline's k (~0.04, fitted on OUR model's realised
+    # edge) zeroed genuine 2-4% price gaps: on 2026-07-20 every MLB Polymarket
+    # pick recorded edge_pct 0.0 against raw_edge_pct 2.0-4.5. The gate was
+    # answering a question these picks never asked.
     raw_edge_pct = raw.get("raw_edge_pct")
     if raw_edge_pct is None:
         raw_edge_pct = edge_pct          # first pass: current edge IS the claim
-    if result is None and raw_edge_pct is not None:
+    if (result is None and raw_edge_pct is not None
+            and str(raw.get("strategy") or "") not in _PRICE_OBSERVED_STRATEGIES):
         try:
             from src.analytics.calibration_gate import calibrate_edge
             edge_pct = calibrate_edge(sport, market, raw_edge_pct)
