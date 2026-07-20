@@ -58,6 +58,8 @@ from src.data.polymarket import (          # noqa: E402
     walk_book,
 )
 
+from src.config import polymarket_protocol as PROTO   # noqa: E402
+
 _ET = ZoneInfo("America/New_York")
 PICKS_FILE = Path("data/pnl/picks.json")
 
@@ -412,6 +414,10 @@ def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                 # decide whether the order would have filled and what the
                 # spread was actually worth.
                 "poly_entry_mode": entry_mode,
+                # Which frozen ruleset produced this pick. The readiness
+                # report counts per-version and never pools across versions —
+                # changing the protocol resets the sample on purpose.
+                "poly_protocol": PROTO.PROTOCOL_VERSION,
                 "poly_limit":     dbg.get("poly_limit"),
                 "poly_taker_cost": (round(dbg["poly_taker_cost"], 4)
                                     if dbg.get("poly_taker_cost") is not None else None),
@@ -468,14 +474,40 @@ def log_polymarket_picks(raw_picks: list[dict], eff_date: str) -> int:
 
 def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
         min_liquidity: float = MIN_LIQUIDITY_USD, bankroll: float = 112.0,
-        dry_run: bool = False, as_json: bool = False) -> list[dict]:
+        dry_run: bool = False, as_json: bool = False,
+        days_ahead: int | None = None) -> list[dict]:
+    """Scan D+0 .. D+days_ahead and return every pick found.
+
+    Scanning forward is what makes the timing question answerable. Half of a
+    Polymarket price's movement happens between 48h and 24h before kickoff,
+    but a today-only scanner structurally cannot see those prices — it gates
+    every market on gameStartTime matching the scan date. Scanning forward
+    produces picks at ~12h, ~36h and ~60h leads in one pass; each records its
+    own lead, so CLV-by-lead settles which window is actually best instead of
+    us reasoning about it.
+    """
+    days = PROTO.DAYS_AHEAD if days_ahead is None else days_ahead
+    base = date_str or _date.today().isoformat()
+    if days > 0 and date_str is None:
+        found: list[dict] = []
+        for offset in range(days + 1):
+            d = (datetime.fromisoformat(base) + timedelta(days=offset)).date().isoformat()
+            found.extend(_run_one_slate(d, min_ev, min_liquidity, bankroll,
+                                        dry_run, as_json))
+        return found
+    return _run_one_slate(base, min_ev, min_liquidity, bankroll, dry_run, as_json)
+
+
+def _run_one_slate(date_str: str, min_ev: float = MIN_EV_PCT,
+                   min_liquidity: float = MIN_LIQUIDITY_USD, bankroll: float = 112.0,
+                   dry_run: bool = False, as_json: bool = False) -> list[dict]:
     from src.data.odds_api import fetch_odds
     from src.strategies.shadow_strategies import (
         DEFAULT_SPORTS,
         _active_tennis_sports,
     )
 
-    eff_date = date_str or _date.today().isoformat()
+    eff_date = date_str
     # The scanner is market-vs-market, not model-vs-market: it needs a Pinnacle
     # board and a Polymarket tag, NOT a trained model for the league. So it
     # scans every mapped sport, including summer leagues we do not model.
@@ -585,7 +617,9 @@ if __name__ == "__main__":
     ap.add_argument("--min-liquidity", type=float, default=MIN_LIQUIDITY_USD)
     ap.add_argument("--bankroll", type=float, default=112.0)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--days-ahead", type=int, default=None, dest="days_ahead",
+                    help=f"scan D+0..D+N (default: protocol {PROTO.DAYS_AHEAD})")
     ap.add_argument("--json", action="store_true", dest="as_json")
     a = ap.parse_args()
-    run(date_str=a.date, min_ev=a.min_ev, min_liquidity=a.min_liquidity,
+    run(date_str=a.date, days_ahead=a.days_ahead, min_ev=a.min_ev, min_liquidity=a.min_liquidity,
         bankroll=a.bankroll, dry_run=a.dry_run, as_json=a.as_json)

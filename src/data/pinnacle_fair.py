@@ -60,12 +60,11 @@ def _median_devig_three_way(
     for c in (home_col, away_col, draw_col):
         if c not in game_df.columns or game_df[c].notna().sum() == 0:
             return float("nan"), float("nan"), float("nan")
-    h, a, d = (_safe_median(game_df[home_col]), _safe_median(game_df[away_col]),
-               _safe_median(game_df[draw_col]))
+    h, a, d = (_median_prob(game_df[home_col]), _median_prob(game_df[away_col]),
+               _median_prob(game_df[draw_col]))
     if pd.isna(h) or pd.isna(a) or pd.isna(d):
         return float("nan"), float("nan"), float("nan")
-    return _devig_three_way(_american_to_prob(h), _american_to_prob(a),
-                            _american_to_prob(d))
+    return _devig_three_way(h, a, d)
 
 
 def _pick_pinnacle_row(game_df: pd.DataFrame) -> Optional[pd.Series]:
@@ -85,6 +84,28 @@ def _safe_median(series: pd.Series) -> float:
     return float(series.median())
 
 
+def _median_prob(series: pd.Series) -> float:
+    """Median of a column of American odds, taken IN PROBABILITY SPACE.
+
+    American odds are not a continuous scale: they jump from +100 straight to
+    -100 with nothing in between, so a numeric median of prices straddling
+    that gap lands in meaningless territory. A real WNBA board on 2026-07-22
+    quoted the away side [-108, -105, -102, +100, +100, +100] — six books all
+    saying "about even money". The numeric median is (-102 + 100) / 2 = -1.0,
+    which converts to a 1% probability, and devigging that against the home
+    side produced a fair of 0.982 for a coin-flip game and a phantom +81.9%
+    edge with $5,204 of apparent depth behind it.
+
+    Converting each price to a probability first and taking the median of
+    THOSE is the only correct operation. It also cannot be sensitive to the
+    sign convention, which is the point.
+    """
+    probs = series.dropna().map(_american_to_prob).dropna()
+    if probs.empty:
+        return float("nan")
+    return float(probs.median())
+
+
 def _median_devig(
     game_df: pd.DataFrame, home_col: str, away_col: str
 ) -> tuple[float, float]:
@@ -96,11 +117,11 @@ def _median_devig(
     # warns "Mean of empty slice" and clutters the cron logs.
     if game_df[home_col].notna().sum() == 0 or game_df[away_col].notna().sum() == 0:
         return float("nan"), float("nan")
-    h_med = _safe_median(game_df[home_col])
-    a_med = _safe_median(game_df[away_col])
-    if pd.isna(h_med) or pd.isna(a_med):
+    h_p = _median_prob(game_df[home_col])
+    a_p = _median_prob(game_df[away_col])
+    if pd.isna(h_p) or pd.isna(a_p):
         return float("nan"), float("nan")
-    return _devig_two_way(_american_to_prob(h_med), _american_to_prob(a_med))
+    return _devig_two_way(h_p, a_p)
 
 
 def build_fair_prob_map(odds_df: pd.DataFrame) -> dict[str, dict]:
