@@ -169,6 +169,17 @@ def run_ufc(args: argparse.Namespace) -> int:
     print(f"  {game_date.strftime('%B %d, %Y')}  |  n_sim={n_sim:,}")
     print(f"{'='*60}")
 
+    # 0. Refresh fighter ratings from the latest fight history (--refresh only;
+    #    otherwise the cached ratings load instantly). This is what lets the model
+    #    rate a full card instead of just the champions.
+    if refresh:
+        try:
+            from src.data.ufc_data import refresh as refresh_ufc_ratings
+            r = refresh_ufc_ratings()
+            print(f"  [UFC] fighter ratings refreshed: {len(r)} fighters from fight history")
+        except Exception as e:
+            print(f"  [UFC] rating refresh failed ({e}) — using cached ratings")
+
     # 1. Fetch odds
     events = fetch_ufc_odds(refresh=refresh)
     if not events:
