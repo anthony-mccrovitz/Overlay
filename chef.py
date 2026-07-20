@@ -2747,6 +2747,26 @@ def cmd_strategies(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_polydash(args: argparse.Namespace) -> int:
+    """One screen for the Polymarket pilot: today's board, open exposure,
+    fills, CLV, paper P&L, and entry timing."""
+    import importlib
+    dash = importlib.import_module("scripts.polymarket_dashboard")
+    dash.run(eff_date=getattr(args, "date", None),
+             as_json=getattr(args, "as_json", False))
+    return 0
+
+
+def cmd_polytiming(args: argparse.Namespace) -> int:
+    """When is Polymarket actually mispriced? Replays played games to show how
+    much price discovery is left at each lead time before kickoff."""
+    import importlib
+    t = importlib.import_module("scripts.polymarket_timing")
+    t.run(since=getattr(args, "since", None),
+          as_json=getattr(args, "as_json", False))
+    return 0
+
+
 def cmd_paper(args: argparse.Namespace) -> int:
     """Paper-trading ledger for the Polymarket pilot — the $112 without the $112.
 
@@ -3491,6 +3511,15 @@ def main() -> int:
                          help="Only simulate this execution style")
     p_paper.add_argument("--json", action="store_true", dest="as_json")
 
+    p_dash = sub.add_parser("polydash", help="Polymarket pilot dashboard (one screen)")
+    p_dash.add_argument("--date", help="Slate date YYYY-MM-DD (default: today)")
+    p_dash.add_argument("--json", action="store_true", dest="as_json")
+
+    p_ptime = sub.add_parser("polytiming",
+                             help="When is Polymarket mispriced? (price discovery by lead time)")
+    p_ptime.add_argument("--since", help="Games on/after this date (YYYY-MM-DD)")
+    p_ptime.add_argument("--json", action="store_true", dest="as_json")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -3602,6 +3631,8 @@ def main() -> int:
         "polymarket": cmd_polymarket,
         "polyfills": cmd_polyfills,
         "paper":     cmd_paper,
+        "polydash":  cmd_polydash,
+        "polytiming": cmd_polytiming,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,
