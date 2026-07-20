@@ -54,6 +54,8 @@ from src.data.polymarket import (          # noqa: E402
     fetch_game_events,
     fetch_order_book,
     maker_limit,
+    max_stake_at_ev,
+    walk_book,
 )
 
 _ET = ZoneInfo("America/New_York")
@@ -253,7 +255,8 @@ def _match_team_to_games(label: str, games: list[dict]) -> tuple[dict, str] | No
 
 
 def _entry_cost_for_outcome(pm: PolyMarket, idx: int,
-                            mode: str = ENTRY_MODE) -> tuple[float, dict]:
+                            mode: str = ENTRY_MODE,
+                            stake_usd: float = 0.0) -> tuple[float, dict]:
     """Entry cost for outcome idx in the requested execution mode, preferring
     that outcome's own CLOB book.
 
@@ -267,9 +270,17 @@ def _entry_cost_for_outcome(pm: PolyMarket, idx: int,
     if book and book.get("best_ask") is not None:
         bid, ask = book.get("best_bid"), book.get("best_ask")
         cost = pm.entry_cost("yes", book=book, mode=mode)
+        asks = book.get("asks") or []
+        # Taker cost at the SIZE we would actually trade, not at the top tick.
+        # A best ask with 27 shares behind it is a headline, not a fill.
+        walked = walk_book(asks, stake_usd, pm.fee_schedule) if asks else None
         return cost, {"token_id": token, "poly_bid": bid, "poly_ask": ask,
                       "poly_limit": maker_limit(bid, ask) if mode == "make" else ask,
                       "poly_taker_cost": pm.entry_cost("yes", book=book, mode="take"),
+                      "poly_taker_cost_at_size": (walked or {}).get("avg_cost"),
+                      "poly_top_depth_usd": (round(asks[0][0] * asks[0][1], 2)
+                                             if asks else None),
+                      "asks": asks,
                       "source": "clob"}
     # Fallback: Gamma snapshot. Outcome 0 = the market's YES side; outcome 1's
     # ask ≈ 1 − YES best bid, so its book is the mirror of the YES book.
@@ -283,13 +294,20 @@ def _entry_cost_for_outcome(pm: PolyMarket, idx: int,
     return cost, {"token_id": token, "poly_bid": bid, "poly_ask": ask,
                   "poly_limit": maker_limit(bid, ask) if mode == "make" else ask,
                   "poly_taker_cost": pm.entry_cost(side, mode="take"),
+                  # Gamma has no depth ladder, so size-aware cost is unknown.
+                  # Left None rather than defaulted — an unknown depth must not
+                  # look like a deep book.
+                  "poly_taker_cost_at_size": None,
+                  "poly_top_depth_usd": None,
+                  "asks": [],
                   "source": "gamma"}
 
 
 def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                eff_date: str, min_ev: float = MIN_EV_PCT,
                min_liquidity: float = MIN_LIQUIDITY_USD,
-               entry_mode: str = ENTRY_MODE) -> list[dict]:
+               entry_mode: str = ENTRY_MODE,
+               stake_usd: float = 0.0) -> list[dict]:
     """Scan one sport's board against the Polymarket list. Pure — no I/O
     besides order-book fetches. Returns raw pick dicts."""
     from src.data.pinnacle_fair import build_fair_prob_map
@@ -360,7 +378,8 @@ def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                 continue
             fair = float(fair)
 
-            cost, dbg = _entry_cost_for_outcome(pm, idx, mode=entry_mode)
+            cost, dbg = _entry_cost_for_outcome(pm, idx, mode=entry_mode,
+                                                stake_usd=stake_usd)
             if not (0.005 < cost < 0.995):
                 continue
             ev_pct = (fair / cost - 1.0) * 100.0
@@ -396,6 +415,14 @@ def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                 "poly_limit":     dbg.get("poly_limit"),
                 "poly_taker_cost": (round(dbg["poly_taker_cost"], 4)
                                     if dbg.get("poly_taker_cost") is not None else None),
+                # Depth, so a headline edge can't masquerade as a position.
+                "poly_taker_cost_at_size": (round(dbg["poly_taker_cost_at_size"], 4)
+                                            if dbg.get("poly_taker_cost_at_size") is not None
+                                            else None),
+                "poly_top_depth_usd": dbg.get("poly_top_depth_usd"),
+                "poly_max_stake_usd": (max_stake_at_ev(dbg["asks"], fair, min_ev,
+                                                       pm.fee_schedule)
+                                       if dbg.get("asks") else None),
                 "poly_price_source": dbg.get("source"),
                 "poly_liquidity_usd": pm.liquidity_usd,
                 "poly_game_start": pm.game_start_time,
@@ -461,6 +488,7 @@ def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
     end_max = (datetime.fromisoformat(eff_date)
                + timedelta(days=_EVENT_WINDOW_DAYS)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+    stake = round(bankroll * PILOT_STAKE_FRAC, 2)
     all_picks: list[dict] = []
     for sport in sports:
         slug = _tag_slug(sport)
@@ -497,18 +525,18 @@ def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
             continue
 
         picks = scan_sport(sport, board, poly, eff_date,
-                           min_ev=min_ev, min_liquidity=min_liquidity)
+                           min_ev=min_ev, min_liquidity=min_liquidity,
+                           stake_usd=stake)
         if picks:
             print(f"  [polymarket] {sport}: {len(picks)} edge(s)")
         all_picks.extend(picks)
 
     # ── Report ────────────────────────────────────────────────────────────
-    stake = round(bankroll * PILOT_STAKE_FRAC, 2)
     if all_picks:
         print(f"\n  POLYMARKET vs PINNACLE — {eff_date}   "
               f"(pilot ${bankroll:.0f}, flat ${stake:.2f}/pick)")
-        print(f"  {'':6} {'team':<24} {'rest@':>6} {'fair':>6} {'MAKE':>7} "
-              f"{'TAKE':>7}   spread cost")
+        print(f"  {'':6} {'team':<22} {'rest@':>6} {'fair':>6} {'MAKE':>7} "
+              f"{'TAKE':>7} {'tradeable':>10}")
         print("  " + "─" * 74)
         for p in sorted(all_picks, key=lambda x: -x["edge_pct"]):
             # Sign comes from the format spec, never a literal "+" — a hardcoded
@@ -519,10 +547,19 @@ def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
             take_ev = (100 * (p["model_prob"] / tc - 1)) if tc else None
             take_s = f"{take_ev:>+6.1f}%" if take_ev is not None else "     —"
             gap = f"{(p['edge_pct'] - take_ev):>+5.1f}pp" if take_ev is not None else "     —"
-            print(f"  {'':6} {p['team']:<24.24} {p['poly_cost']:>6.3f} "
-                  f"{p['model_prob']:>6.3f} {p['edge_pct']:>+6.1f}% {take_s}   {gap}")
+            # "tradeable" = notional deployable before the blended taker cost
+            # stops clearing min_ev. A big edge on a shallow book is a rounding
+            # error wearing a percentage sign.
+            ms = p.get("poly_max_stake_usd")
+            size_s = (f"${ms:>8,.0f}" if ms else ("     thin" if ms == 0 else "        ?"))
+            print(f"  {'':6} {p['team']:<22.22} {p['poly_cost']:>6.3f} "
+                  f"{p['model_prob']:>6.3f} {p['edge_pct']:>+6.1f}% {take_s} {size_s}")
         print("  " + "─" * 74)
         print(f"  MAKE = rest inside the bid, no fee, fills only if the market comes to you.")
+        print(f"  tradeable = $ that clears {min_ev:.0f}% EV after walking the ask ladder,")
+        print(f"              i.e. TAKER capacity right now. 'thin' means you cannot")
+        print(f"              deploy into it by crossing — it says nothing about maker")
+        print(f"              capacity, which is unknown until fills are measured.")
         print(f"  TAKE = cross the spread at the ask + sports_fees_v2 taker fee.")
         print(f"  Flat ${stake:.2f}/pick at {PILOT_STAKE_FRAC:.0%} of a ${bankroll:.0f} bankroll.")
         print("  Shadow only — the $112 stays parked until fills + CLV say otherwise.")
