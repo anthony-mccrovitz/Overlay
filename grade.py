@@ -2132,7 +2132,8 @@ def _grade_nhl_props(date_str: str) -> None:
 
 
 _ALL_SPORTS = [
-    "all", "mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc", "pga",
+    "all", "mlb", "nba", "nhl", "wnba", "soccer", "tennis", "ufc",
+    "pga", "masters", "usopen", "theopen",
 ]
 
 # Maps short sport name → (odds_api_key, sport_field_values_in_picks).
@@ -2143,8 +2144,16 @@ _GENERIC_SPORT_MAP = {
     "ufc":  ("mma_mixed_martial_arts", ("ufc", "mma_mixed_martial_arts")),
 }
 
+# Short name → pick["sport"] value for outright/futures markets. These settle
+# via `grade --sport <short> --winner "Player Name"` — there is no scores feed
+# for a tournament winner. Every golf major the futures scanner can emit must
+# appear here, or its picks land in picks.json with no grading path at all and
+# sit pending forever (the drift guard in tests/test_sport_registry.py).
 _OUTRIGHT_SPORT_MAP = {
-    "pga": "golf_pga_championship",
+    "pga":     "golf_pga_championship",
+    "masters": "golf_masters_tournament_winner",
+    "usopen":  "golf_us_open_winner",
+    "theopen": "golf_the_open_championship_winner",
 }
 
 
