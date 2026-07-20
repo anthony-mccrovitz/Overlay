@@ -3,7 +3,7 @@
     {
       "player": "Lionel Messi",
       "team": "Argentina",
-      "exp_goals": 7.12,
+      "exp_goals": 6.82,
       "share": 0.351
     },
     {
@@ -33,20 +33,20 @@
     {
       "player": "Mikel Oyarzabal",
       "team": "Spain",
-      "exp_goals": 4.43,
-      "share": 0.2083
-    },
-    {
-      "player": "Lautaro Mart\u00ednez",
-      "team": "Argentina",
-      "exp_goals": 4.17,
-      "share": 0.2056
+      "exp_goals": 4.55,
+      "share": 0.2052
     },
     {
       "player": "Cristiano Ronaldo",
       "team": "Portugal",
       "exp_goals": 4.12,
       "share": 0.332
+    },
+    {
+      "player": "Lautaro Mart\u00ednez",
+      "team": "Argentina",
+      "exp_goals": 3.99,
+      "share": 0.2056
     },
     {
       "player": "Jonathan David",
@@ -93,8 +93,8 @@
     {
       "player": "Mikel Merino",
       "team": "Spain",
-      "exp_goals": 2.78,
-      "share": 0.1308
+      "exp_goals": 2.85,
+      "share": 0.1288
     },
     {
       "player": "Cyle Larin",
@@ -123,7 +123,7 @@
     {
       "player": "Marko Arnautovi\u0107",
       "team": "Austria",
-      "exp_goals": 2.56,
+      "exp_goals": 2.57,
       "share": 0.2828
     },
     {
@@ -133,9 +133,15 @@
       "share": 0.1395
     },
     {
+      "player": "Ferran Torres",
+      "team": "Spain",
+      "exp_goals": 2.38,
+      "share": 0.1075
+    },
+    {
       "player": "Juli\u00e1n \u00c1lvarez",
       "team": "Argentina",
-      "exp_goals": 2.38,
+      "exp_goals": 2.28,
       "share": 0.1173
     },
     {
@@ -143,19 +149,13 @@
       "team": "Sweden",
       "exp_goals": 2.19,
       "share": 0.296
-    },
-    {
-      "player": "Edin D\u017eeko",
-      "team": "Bosnia and Herzegovina",
-      "exp_goals": 2.16,
-      "share": 0.3365
     }
   ],
-  "generated": "2026-07-19T14:34:38.226463+00:00",
+  "generated": "2026-07-20T15:20:18.787755+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-14",
   "n_fixtures": 72,
-  "n_priced": 1,
+  "n_priced": 0,
   "kickoff": "2026-06-11"
 }
