@@ -330,6 +330,12 @@ def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
             continue
         if not _is_moneyline_market(pm):
             continue
+        # Crossed book (bid above ask) means the two sides came from different
+        # snapshots or the feed is stale. Any price derived from it is fiction,
+        # so skip the market rather than record a number we cannot stand behind.
+        if (pm.best_bid is not None and pm.best_ask is not None
+                and pm.best_bid > pm.best_ask):
+            continue
 
         labels = _outcome_labels(pm)
         lower = [x.lower() for x in labels]

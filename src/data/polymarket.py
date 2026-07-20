@@ -144,6 +144,13 @@ def maker_limit(bid: float | None, ask: float | None, tick: float = TICK) -> flo
     """
     if bid is None:
         return None
+    if ask is not None and bid > ask:
+        # Crossed book (bid above ask). A real book cannot be crossed, so this
+        # is stale or mismatched data — most likely the two sides were read
+        # from different snapshots. Returning a "passive" limit here would put
+        # our resting order ABOVE the offer, i.e. a taker price wearing a maker
+        # label. Refuse to price it at all.
+        return None
     if ask is not None and bid + tick >= ask:
         return float(bid)
     return round(float(bid) + tick, 4)

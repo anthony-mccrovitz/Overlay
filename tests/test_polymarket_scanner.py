@@ -435,3 +435,26 @@ class TestBookDepth:
         p = picks[0]
         assert p["poly_top_depth_usd"] == pytest.approx(4.0)   # 0.40 * 10
         assert p["poly_max_stake_usd"] is not None
+
+
+class TestCorruptBookData:
+    """Prices derived from an impossible book are fiction, not bad trades.
+
+    Found by fuzzing: maker_limit(bid=0.60, ask=0.40) returned 0.60 — a
+    "passive" limit sitting ABOVE the offer, which is a taker price wearing a
+    maker label. A real book cannot be crossed, so a crossed one means the two
+    sides were read from different snapshots or the feed is stale.
+    """
+
+    def test_maker_limit_refuses_a_crossed_book(self):
+        assert maker_limit(0.60, 0.40) is None
+        assert maker_limit(0.43, 0.44) == pytest.approx(0.43)   # healthy, 1 tick
+
+    def test_scanner_skips_crossed_markets_entirely(self):
+        picks = scan_sport("baseball_mlb", _board(), [_pm(bid=0.60, ask=0.40)],
+                           "2026-07-19", min_ev=-100.0)
+        assert picks == []
+
+    def test_healthy_book_still_prices(self):
+        assert scan_sport("baseball_mlb", _board(), [_pm(bid=0.36, ask=0.40)],
+                          "2026-07-19", min_ev=-100.0)

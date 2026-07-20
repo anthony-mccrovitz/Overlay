@@ -92,7 +92,10 @@ def settle(pick: dict, stake: float) -> dict | None:
     if result not in ("win", "loss", "push", "void"):
         return None
     cost, conf = fill_price(pick)
-    if cost is None or cost <= 0:
+    # A binary contract pays exactly $1. Paying >=$1 for it is never rational,
+    # so a cost outside (0, 1) is corrupt data, not a bad trade — booking it
+    # would report a loss on a winning pick.
+    if cost is None or not (0.0 < float(cost) < 1.0):
         return None
 
     shares = stake / cost
