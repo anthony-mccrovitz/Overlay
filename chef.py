@@ -2747,6 +2747,21 @@ def cmd_strategies(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_paper(args: argparse.Namespace) -> int:
+    """Paper-trading ledger for the Polymarket pilot — the $112 without the $112.
+
+    Replays every logged polymarket_ev pick at its recorded fill price and
+    settles it against the real result. Taker rows simulate faithfully; maker
+    rows only count when polymarket_fills judged the resting order hit.
+    """
+    import importlib
+    paper = importlib.import_module("scripts.paper_trader")
+    paper.run(bankroll=getattr(args, "bankroll", 112.0),
+              mode=getattr(args, "mode", None),
+              as_json=getattr(args, "as_json", False))
+    return 0
+
+
 def cmd_polyfills(args: argparse.Namespace) -> int:
     """Maker fill + adverse-selection report for logged polymarket_ev picks.
 
@@ -3469,6 +3484,13 @@ def main() -> int:
     p_fills.add_argument("--since", help="Only picks on/after this date (YYYY-MM-DD)")
     p_fills.add_argument("--json", action="store_true", dest="as_json")
 
+    p_paper = sub.add_parser("paper",
+                             help="Paper-trade ledger for the Polymarket pilot (no money)")
+    p_paper.add_argument("--bankroll", type=float, default=112.0)
+    p_paper.add_argument("--mode", choices=["make", "take"],
+                         help="Only simulate this execution style")
+    p_paper.add_argument("--json", action="store_true", dest="as_json")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -3579,6 +3601,7 @@ def main() -> int:
         "strategies": cmd_strategies,
         "polymarket": cmd_polymarket,
         "polyfills": cmd_polyfills,
+        "paper":     cmd_paper,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,

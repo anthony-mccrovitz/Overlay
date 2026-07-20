@@ -30,4 +30,4 @@ jobs:
     secrets: inherit
     with:
       level: full
-      command: python scripts/polymarket_scanner.py && python scripts/polymarket_fills.py
+      command: python scripts/polymarket_scanner.py && python scripts/polymarket_fills.py && python scripts/paper_trader.py
