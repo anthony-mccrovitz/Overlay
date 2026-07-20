@@ -2747,6 +2747,25 @@ def cmd_strategies(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_polymarket(args: argparse.Namespace) -> int:
+    """Polymarket-vs-Pinnacle price scanner — shadow strategy polymarket_ev.
+    Finds Polymarket win contracts priced under Pinnacle's devigged fair
+    (after crossing the ask + ~2% fee) and logs them as shadow picks."""
+    import importlib
+    scanner = importlib.import_module("scripts.polymarket_scanner")
+    date_str = None
+    if getattr(args, "date", None):
+        d = args.date
+        date_str = f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else d
+    scanner.run(
+        date_str=date_str,
+        min_ev=getattr(args, "min_ev", 2.0),
+        bankroll=getattr(args, "bankroll", 112.0),
+        dry_run=getattr(args, "dry_run", False),
+    )
+    return 0
+
+
 def cmd_stats(args: argparse.Namespace) -> int:
     """Refresh public_stats.json from current picks.json."""
     try:
@@ -3422,6 +3441,12 @@ def main() -> int:
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
     p_strat.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
 
+    p_poly = sub.add_parser("polymarket", help="Polymarket-vs-Pinnacle scanner (shadow polymarket_ev picks)")
+    p_poly.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
+    p_poly.add_argument("--min-ev", type=float, default=2.0, dest="min_ev")
+    p_poly.add_argument("--bankroll", type=float, default=112.0, help="Pilot bankroll for stake guidance")
+    p_poly.add_argument("--dry-run", action="store_true", dest="dry_run")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -3530,6 +3555,7 @@ def main() -> int:
         "validate": cmd_validate,
         "calibrate": cmd_calibrate,
         "strategies": cmd_strategies,
+        "polymarket": cmd_polymarket,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,

@@ -59,7 +59,7 @@ class PolyMarket:
     market_id: str
     question: str
     category: str
-    yes_prob: float          # 0–1
+    yes_prob: float          # 0–1 (bid/ask mid)
     no_prob: float           # 0–1
     volume_usd: float
     liquidity_usd: float
@@ -67,6 +67,9 @@ class PolyMarket:
     active: bool
     url: str
     token_ids: list[str] = field(default_factory=list)
+    best_bid: float | None = None   # YES-side best bid (Gamma snapshot)
+    best_ask: float | None = None   # YES-side best ask (Gamma snapshot)
+    game_start_time: str | None = None   # sports markets: actual first pitch/tip
     raw: dict = field(default_factory=dict, repr=False)
 
     @property
@@ -78,6 +81,30 @@ class PolyMarket:
     def effective_no_cost(self) -> float:
         """NO cost after fee."""
         return self.no_prob + FEE_RATE * (1 - self.no_prob)
+
+    def entry_cost(self, side: str = "yes", book: dict | None = None) -> float:
+        """True cost to ENTER a position: you buy at the ASK, not the mid.
+
+        Any edge model that compares the midpoint against fair value
+        overstates EV by half the spread — on thin sports books that half-
+        spread is often bigger than the edge itself. Order of preference:
+        a live CLOB book (pass `book` from fetch_order_book), the Gamma
+        best-ask snapshot, then the mid as last resort. The ~2% LP fee is
+        folded in the same way as effective_*_cost.
+
+        side="yes" buys the YES token; side="no" buys NO, whose ask is
+        1 − YES best bid (selling pressure on YES is buying pressure on NO).
+        """
+        if side not in ("yes", "no"):
+            raise ValueError(f"side must be 'yes' or 'no', got {side!r}")
+        bid = (book or {}).get("best_bid", self.best_bid)
+        ask = (book or {}).get("best_ask", self.best_ask)
+        if side == "yes":
+            px = ask if ask is not None else self.yes_prob
+        else:
+            px = (1.0 - bid) if bid is not None else self.no_prob
+        px = min(max(float(px), 0.0), 1.0)
+        return px + FEE_RATE * (1 - px)
 
 
 def _cache_path(key: str) -> Path:
@@ -267,6 +294,12 @@ def _parse_market(m: dict) -> PolyMarket:
     event_slug = events[0].get("slug", "") if events else ""
     url = f"https://polymarket.com/event/{event_slug}" if event_slug else f"https://polymarket.com/event/{slug}"
 
+    def _f(v):
+        try:
+            return float(v) if v is not None else None
+        except (TypeError, ValueError):
+            return None
+
     return PolyMarket(
         market_id=mid,
         question=question,
@@ -279,6 +312,9 @@ def _parse_market(m: dict) -> PolyMarket:
         active=m.get("active", True),
         url=url,
         token_ids=token_ids,
+        best_bid=_f(bid),
+        best_ask=_f(ask),
+        game_start_time=m.get("gameStartTime"),
         raw=m,
     )
 
@@ -298,8 +334,101 @@ def fetch_live_price(token_id: str) -> float | None:
         return None
 
 
+def fetch_order_book(token_id: str, refresh: bool = False) -> dict | None:
+    """
+    Fetch the live CLOB order book for a token → {"best_bid", "best_ask"}
+    (floats, YES-side prices) or None. Cached 300s — books on sports markets
+    move, but the scanner doesn't need tick-level freshness.
+    """
+    cache = _cache_path(f"book_{token_id[:32]}")
+    if cache.exists() and not refresh:
+        if time.time() - cache.stat().st_mtime < 300:
+            try:
+                with open(cache) as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, OSError):
+                pass
+    try:
+        data = _get(f"{CLOB_BASE}/book", params={"token_id": token_id})
+        bids = data.get("bids") or []
+        asks = data.get("asks") or []
+        # CLOB returns price levels as {"price": "0.42", "size": "..."};
+        # best bid = highest bid, best ask = lowest ask.
+        best_bid = max((float(b["price"]) for b in bids), default=None)
+        best_ask = min((float(a["price"]) for a in asks), default=None)
+        book = {"best_bid": best_bid, "best_ask": best_ask}
+        with open(cache, "w") as f:
+            json.dump(book, f)
+        return book
+    except Exception:
+        return None
+
+
+def fetch_game_events(
+    tag_slug: str,
+    end_min: str,
+    end_max: str,
+    refresh: bool = False,
+) -> list[PolyMarket]:
+    """
+    Fetch GAME markets for a sport via /events?tag_slug=… with an end-date
+    window, flattening each event's markets.
+
+    Why not fetch_markets(tag=…): the Gamma /markets `tag` param is silently
+    IGNORED (verified 2026-07-19 — identical top-volume results for
+    tag=mlb/ufc/tennis, including weather and earnings markets), so
+    fetch_sports_markets never actually filtered. /events?tag_slug=… does
+    filter, and the end-date window keeps game markets while dropping both
+    season futures (end too far) and Polymarket's stale never-closed events
+    (end in the past).
+
+    end_min/end_max: ISO datetimes, e.g. "2026-07-19T00:00:00Z".
+    """
+    cache_key = f"events_{tag_slug}_{end_min[:10]}"
+    cache = _cache_path(cache_key)
+    if cache.exists() and not refresh:
+        if time.time() - cache.stat().st_mtime < 900:
+            try:
+                with open(cache) as f:
+                    return [_parse_market(m) for m in json.load(f)]
+            except (json.JSONDecodeError, OSError):
+                pass
+    try:
+        data = _get(f"{GAMMA_BASE}/events", params={
+            "tag_slug": tag_slug,
+            "active": "true",
+            "closed": "false",
+            "end_date_min": end_min,
+            "end_date_max": end_max,
+            "limit": 100,
+        })
+        events = data if isinstance(data, list) else []
+        raw_markets: list[dict] = []
+        for ev in events:
+            for m in ev.get("markets", []) or []:
+                m.setdefault("events", [{"slug": ev.get("slug", ""),
+                                         "ticker": ev.get("ticker", "")}])
+                raw_markets.append(m)
+        with open(cache, "w") as f:
+            json.dump(raw_markets, f)
+        return [_parse_market(m) for m in raw_markets]
+    except Exception as e:
+        print(f"  [polymarket] events fetch error ({tag_slug}): {e}")
+        if cache.exists():
+            try:
+                with open(cache) as f:
+                    return [_parse_market(m) for m in json.load(f)]
+            except (json.JSONDecodeError, OSError):
+                pass
+        return []
+
+
 def fetch_sports_markets(refresh: bool = False) -> list[PolyMarket]:
-    """Fetch sports prediction markets."""
+    """Fetch sports prediction markets.
+
+    WARNING: the Gamma `tag` param is ignored server-side — this returns the
+    top-volume markets of EVERY category. Kept for backward compatibility;
+    game scanning should use fetch_game_events(tag_slug=…) instead."""
     return fetch_markets(tag="sports", refresh=refresh)
 
 
