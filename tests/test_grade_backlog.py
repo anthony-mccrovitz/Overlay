@@ -23,7 +23,7 @@ import pytest
 
 from scripts.grade_backlog import (
     _norm, _toks, _matchup_teams, _side_match, _pick_matches_game,
-    _find_game, _find_game_wide, _settle,
+    _find_game, _find_game_wide, _settle, _void_reason, _terminal_void,
 )
 
 
@@ -200,3 +200,82 @@ class TestSettle:
     def test_unknown_market_returns_none(self):
         p = {"market": "player_points", "odds": -110, "stake": 1.0}
         assert _settle(p, _game("A", "B")) is None
+
+
+class TestTerminalVoid:
+    """The sweep must eventually stop calling an ungradeable pick "pending".
+
+    A pick that no source can ever settle is not an open position — leaving it
+    pending inflates the open count, trips the stale-pending watchdog nightly,
+    and refetches boards for a game that never happened. But voiding is a write
+    to the public record, so it only fires when the pick is PROVABLY dead:
+    never on a guess, never on a source that might still update.
+    """
+
+    def _old(self, **kw):
+        p = {"date": "2026-01-01", "odds": -110, "stake": 1.0, "result": None,
+             "sport": "nba", "market": "moneyline", "matchup": "A Team @ B Team"}
+        p.update(kw)
+        return p
+
+    def test_prop_without_stat_type_is_unrecoverable(self):
+        # "Ron Holland OVER 4.5" never says points vs rebounds — grading it
+        # would mean guessing which stat the bet was on.
+        p = self._old(market="prop", team="Ron Holland OVER 4.5", prop_market=None)
+        assert _void_reason(p) == "prop_market_missing"
+
+    def test_prop_with_stat_type_is_left_alone(self):
+        p = self._old(market="prop", prop_market="points", backlog_attempts=0)
+        assert _void_reason(p) is None
+
+    def test_tennis_outside_source_coverage(self):
+        # tennis-data.co.uk carries main draw only; qualifying never lands.
+        p = self._old(sport="tennis_atp_french_open", matchup="A Player vs B Player")
+        assert _void_reason(p) == "source_coverage_gap"
+
+    def test_exhausted_search_is_terminal(self):
+        assert _void_reason(self._old(backlog_attempts=3)) == "unresolvable_after_retries"
+
+    def test_search_not_yet_exhausted_stays_pending(self):
+        assert _void_reason(self._old(backlog_attempts=2)) is None
+
+    def test_matchup_without_pair_cannot_be_searched(self):
+        assert _void_reason(self._old(matchup="Kansas City Royals")) == "matchup_incomplete"
+
+    def test_mma_judged_on_retries_not_matchup_shape(self):
+        # MMA grades by fighter name off ESPN's UFC board, so a "vs" matchup
+        # with no "@" is normal — it must not be called matchup_incomplete.
+        p = self._old(sport="mma_mixed_martial_arts", matchup="A Fighter vs B Fighter")
+        assert _void_reason(p) is None
+        p["backlog_attempts"] = 3
+        assert _void_reason(p) == "source_coverage_gap"
+
+    def test_manual_only_sports_are_never_auto_voided(self):
+        # Outrights settle by hand via --winner; the sweep must not touch them.
+        for sport in ("golf_the_open_championship_winner", "auto_racing_indycar_series"):
+            assert _void_reason(self._old(sport=sport, backlog_attempts=9)) is None
+
+    def test_recent_picks_are_never_voided(self):
+        from datetime import datetime, timedelta
+        fresh = self._old(backlog_attempts=9,
+                          date=(datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d"))
+        assert _terminal_void([fresh], dry_run=False) == {}
+        assert fresh["result"] is None
+
+    def test_void_settles_at_zero_and_records_reason(self):
+        p = self._old(backlog_attempts=3)
+        out = _terminal_void([p], dry_run=False)
+        assert p["result"] == "void" and p["profit"] == 0.0
+        assert p["void_reason"] == "unresolvable_after_retries"
+        assert sum(out.values()) == 1
+
+    def test_dry_run_reports_without_writing(self):
+        p = self._old(backlog_attempts=3)
+        out = _terminal_void([p], dry_run=True)
+        assert sum(out.values()) == 1
+        assert p["result"] is None and "void_reason" not in p
+
+    def test_already_graded_picks_are_untouched(self):
+        p = self._old(backlog_attempts=9, result="win", profit=0.91)
+        assert _terminal_void([p], dry_run=False) == {}
+        assert p["result"] == "win" and p["profit"] == 0.91
