@@ -106,6 +106,14 @@ SUPPORTED_SPORTS = {
     "soccer_spain_la_liga",
     "soccer_italy_serie_a",
     "soccer_germany_bundesliga",
+    # Summer leagues, added 2026-07-20 for the Polymarket scanner. We have no
+    # model for these — the scanner is market-vs-market (Polymarket price vs
+    # Pinnacle fair), so a board with Pinnacle on it is the only requirement.
+    # Each was checked to carry BOTH Pinnacle prices and Polymarket moneyline
+    # depth; they run while Europe is dark.
+    "soccer_korea_kleague1",
+    "soccer_brazil_campeonato",
+    "soccer_sweden_allsvenskan",
 }
 
 # Sport-key prefixes accepted in addition to the exact set above. Tennis keys

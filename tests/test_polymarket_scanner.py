@@ -18,7 +18,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data.polymarket import FEE_RATE, PolyMarket   # noqa: E402
-from scripts.polymarket_scanner import (                # noqa: E402
+from scripts.polymarket_scanner import (
+    _is_moneyline_market,                # noqa: E402
     log_polymarket_picks,
     prob_to_american,
     scan_sport,
@@ -247,3 +248,41 @@ class TestLogging:
         assert stored["poly_market_id"] == "m1"                      # extras survive
         # second run: same pick dedups
         assert log_polymarket_picks([self._pick()], "2026-07-19") == 0
+
+
+class TestDrawContractsNeverPricedAsWins:
+    """Polymarket labels the 3-way DRAW contract sportsMarketType="moneyline"
+    and names BOTH clubs in the question. Team matching would otherwise read it
+    as a win contract for whichever club matched and price the draw's cheap ask
+    against that club's WIN fair — pure fabricated edge.
+
+    Live on 2026-07-21 this printed "Gangwon FC +35.5%": the draw asked 0.31
+    while Gangwon's win fair was 0.439. The real Gangwon win contract asked
+    0.44 and was correctly -2.8%. Numbers below are that market.
+    """
+
+    def test_draw_market_is_not_a_moneyline(self):
+        draw = _pm(question="Will Jeju SK FC vs. Gangwon FC end in a draw?",
+                   bid=0.30, ask=0.31,
+                   raw={"outcomes": json.dumps(["Yes", "No"]),
+                        "sportsMarketType": "moneyline"})
+        assert _is_moneyline_market(draw) is False
+
+    def test_real_win_market_still_prices(self):
+        win = _pm(question="Will Gangwon FC win on 2026-07-21?",
+                  bid=0.43, ask=0.44,
+                  raw={"outcomes": json.dumps(["Yes", "No"]),
+                       "sportsMarketType": "moneyline"})
+        assert _is_moneyline_market(win) is True
+
+    def test_draw_never_reaches_the_report(self):
+        board = _board(home="Jeju SK FC", away="Gangwon FC",
+                       pin_home=120, pin_away=128)
+        draw = _pm(question="Will Jeju SK FC vs. Gangwon FC end in a draw?",
+                   bid=0.30, ask=0.31, liquidity=13863.0,
+                   game_start_time="2026-07-21T10:30:00Z",
+                   raw={"outcomes": json.dumps(["Yes", "No"]),
+                        "sportsMarketType": "moneyline"})
+        picks = scan_sport("soccer_korea_kleague1", board, [draw],
+                           "2026-07-21", min_ev=-100.0)
+        assert picks == []
