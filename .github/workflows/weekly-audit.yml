@@ -25,4 +25,8 @@ jobs:
         # Refit all calibrators weekly so model probs track realized hit rates
         # (stale calibrators are what made props overconfident).
         python chef.py calibrate || fail=1
+        # Weekly CLV edge watch: append this week's point (velocity, ETA to the
+        # sample floor, crossing alerts). The committed history file is what makes
+        # week-over-week tracking possible.
+        python scripts/clv_watch.py || fail=1
         exit $fail

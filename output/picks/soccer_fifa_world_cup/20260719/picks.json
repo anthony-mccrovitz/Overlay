@@ -1,0 +1,46 @@
+[
+  {
+    "sport": "soccer",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 2.5",
+    "matchup": "Argentina @ Spain",
+    "odds": 140,
+    "best_odds": 140,
+    "line": 2.5,
+    "model_prob": 0.4879,
+    "implied_prob": 0.4098,
+    "edge_pct": 7.81,
+    "sportsbook": "BetMGM",
+    "exp_total": 2.625
+  },
+  {
+    "sport": "soccer",
+    "market": "spread",
+    "direction": "COVER",
+    "team": "Argentina +0.25",
+    "matchup": "Argentina @ Spain",
+    "odds": -104,
+    "best_odds": -104,
+    "line": 0.25,
+    "model_prob": 0.5771,
+    "implied_prob": 0.5,
+    "edge_pct": 7.71,
+    "sportsbook": "Pinnacle",
+    "exp_total": 2.625
+  },
+  {
+    "sport": "soccer",
+    "market": "moneyline",
+    "direction": "Argentina",
+    "team": "Argentina",
+    "matchup": "Argentina @ Spain",
+    "odds": 270,
+    "best_odds": 270,
+    "model_prob": 0.3002,
+    "implied_prob": 0.2565,
+    "edge_pct": 4.37,
+    "sportsbook": "FanDuel",
+    "exp_total": 2.625
+  }
+]

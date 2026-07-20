@@ -39,7 +39,8 @@ from scripts.backtest_club_consensus import (
     _closing_board_per_game, _three_way_pairs, NON_DESTINATION)
 
 LEAGUES = ["soccer_usa_mls", "soccer_mexico_ligamx"]
-LEAD_HOURS = 3.0  # entry board = kickoff - 3h (Kaunitz's soft-early sweet spot)
+LEAD_HOURS = 3.0  # default entry board = kickoff - 3h; override with --lead-hours
+                  # (use a large lead, e.g. 48, to test the OPENING line)
 
 
 def _devig_side(pairs, side):
@@ -59,17 +60,17 @@ def _devig_side(pairs, side):
     return (imps[side] / tot) if tot else None
 
 
-def run(sport_key, start, end, thresholds, key, dry_run, budget):
+def run(sport_key, start, end, thresholds, key, dry_run, budget, lead_hours=LEAD_HOURS):
     games = {(m["date"], m["home_team"], m["away_team"]): m.get("kickoff")
              for m in load_club_matches(sport_key)
              if start <= m["date"] <= end and m.get("kickoff")}
     closing = _closing_board_per_game(sport_key)  # cached closes
 
-    # entry timestamps = kickoff - LEAD_HOURS (rounded 30min)
+    # entry timestamps = kickoff - lead_hours (rounded 30min)
     entry_ts = {}
     slots = set()
     for gk, kick in games.items():
-        ct = _round_ts(kick - timedelta(hours=LEAD_HOURS), 30)
+        ct = _round_ts(kick - timedelta(hours=lead_hours), 30)
         iso = ct.strftime("%Y-%m-%dT%H:%M:%SZ")
         entry_ts[gk] = iso
         slots.add(iso)
@@ -161,6 +162,8 @@ def main():
     ap.add_argument("--start", required=True)
     ap.add_argument("--end", required=True)
     ap.add_argument("--thresholds", default="2,3,5")
+    ap.add_argument("--lead-hours", type=float, default=LEAD_HOURS,
+                    help="entry board = kickoff - this many hours (use ~48 to test the open)")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--max-credits", type=int, default=None)
     a = ap.parse_args()
@@ -174,7 +177,7 @@ def main():
     out = {}
     for lg in LEAGUES:
         print("=" * 66)
-        r = run(lg, start, end, thresholds, key, a.dry_run, budget)
+        r = run(lg, start, end, thresholds, key, a.dry_run, budget, a.lead_hours)
         out[lg] = r
         if a.dry_run:
             continue
@@ -190,10 +193,11 @@ def main():
             print(f"    EV≥{t}%: {ag['n']} picks | avg CLV {ag['avg_clv']:+.2f}% | "
                   f"beat-close {ag['beat_pct']}% | {verdict}")
     if not a.dry_run:
-        Path("data/models/soccer_club_consensus_clv.json").write_text(
-            json.dumps(out, indent=2, default=str))
+        tag = "" if a.lead_hours == LEAD_HOURS else f"_lead{int(a.lead_hours)}h"
+        outfile = f"data/models/soccer_club_consensus_clv{tag}.json"
+        Path(outfile).write_text(json.dumps(out, indent=2, default=str))
         print("=" * 66)
-        print("  wrote data/models/soccer_club_consensus_clv.json")
+        print(f"  wrote {outfile}")
     return 0
 
 

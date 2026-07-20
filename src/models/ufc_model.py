@@ -298,7 +298,37 @@ class UFCModel:
     def __init__(self) -> None:
         self.ratings: dict[str, GlickoRating] = {}
         self.styles:  dict[str, StyleProfile]  = {}
-        self._load_warm_start()
+        self._load_ratings()
+
+    def _load_ratings(self) -> None:
+        """Ratings for every fighter with a UFC record, computed from real fight
+        history (src.data.ufc_data). This covers ~2,700 fighters vs the 70
+        hand-typed champions, so full cards get rated instead of skipped.
+
+        The curated FIGHTER_RATINGS dict is the OFFLINE FALLBACK only — used when
+        the computed cache is missing. The two live on different Elo scales
+        (curated is inflated ~1700-2050; computed is a consistent ~1450-1800), so
+        they are never mixed: whichever source we use, we use it for everyone.
+        """
+        try:
+            from src.data.ufc_data import load_cached_ratings
+            computed = load_cached_ratings()
+        except Exception:
+            computed = {}
+
+        if computed:
+            for name, data in computed.items():
+                self.ratings[name] = GlickoRating(mu=data["mu"])
+                s = data.get("style", {})
+                self.styles[name] = StyleProfile(
+                    striking  = s.get("striking", 0.5),
+                    wrestling = s.get("wrestling", 0.5),
+                    grappling = s.get("grappling", 0.5),
+                )
+            self._source = "computed"
+        else:
+            self._load_warm_start()
+            self._source = "curated_fallback"
 
     def _load_warm_start(self) -> None:
         for name, data in FIGHTER_RATINGS.items():

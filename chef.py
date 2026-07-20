@@ -1565,6 +1565,26 @@ def cmd_clv(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_clv_watch(args: argparse.Namespace) -> int:
+    """Weekly CLV edge watcher — velocity, ETA to the sample floor, crossing alerts.
+
+    `chef.py edge` is the point-in-time verdict; this adds the time dimension so
+    you can see how fast each market is accruing bets and when it will cross into
+    (or out of) proven-edge status. Run weekly to build the history.
+    """
+    try:
+        from scripts.clv_watch import build, record, print_report
+        report = build(getattr(args, "min_n", None) or 200)
+        if not getattr(args, "no_record", False):
+            record(report)
+        print_report(report)
+        return 0
+    except Exception as e:
+        print(f"  CLV watch error: {e}")
+        import traceback; traceback.print_exc()
+        return 1
+
+
 def cmd_dashboard(args: argparse.Namespace) -> int:
     """One-screen model status check: every (sport, market) with its registry
     status, sample size, record, ROI, model EV, avg odds entered, and CLV
@@ -3317,6 +3337,12 @@ def main() -> int:
     p_clv.add_argument("--matrix", action="store_true",
                        help="Show the full per-SPORT × per-market grid (every sport broken out)")
 
+    p_clvw = sub.add_parser("clv-watch",
+                            help="Weekly CLV edge watcher: accrual velocity, ETA to sample floor, crossing alerts")
+    p_clvw.add_argument("--min-n", type=int, default=200, help="sample floor (default 200)")
+    p_clvw.add_argument("--no-record", action="store_true",
+                        help="print report but do NOT append to history")
+
     # dashboard — one-screen model status (record/ROI/EV/odds/CLV per sport×market)
     p_dash = sub.add_parser("dashboard", help="Model status check: ROI/EV/odds/CLV per sport×market")
     p_dash.add_argument("--sport", help="Filter to one sport (e.g. mlb, nba, wc)")
@@ -3506,6 +3532,7 @@ def main() -> int:
         "shop":     cmd_shop,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
+        "clv-watch": cmd_clv_watch,
         "dashboard": cmd_dashboard,
         "slate":    cmd_slate,
         "wc-breakdown": cmd_wc_breakdown,

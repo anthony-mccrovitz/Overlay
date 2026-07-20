@@ -29,8 +29,13 @@ DYNAMIC_SPORTS = [
                                           "tennis_atp_us_open", "tennis_wta_us_open",
                                           "tennis_atp_halle_open", "tennis_atp_queens_club_champ",
                                           "tennis_wta_german_open", "tennis_atp_french_open"]),
+    # These keys are only the event-detection trigger; run_soccer.py scans ALL of
+    # SOCCER_LEAGUES once fired. Liga MX is listed so a Liga-MX-only match day
+    # (no MLS/Euro game in the window) still triggers the scan — else its shadow
+    # CLV feed would have holes on non-overlapping match days.
     ("soccer",       "run_soccer.py",   ["soccer_spain_la_liga", "soccer_germany_bundesliga",
                                           "soccer_italy_serie_a", "soccer_usa_mls",
+                                          "soccer_mexico_ligamx",
                                           "soccer_fifa_world_cup", "soccer_france_ligue_one"]),
     ("wnba",         "run_wnba.py",     ["basketball_wnba"]),
     ("nhl",          "run_nhl.py",      ["icehockey_nhl"]),
