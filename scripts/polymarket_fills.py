@@ -46,11 +46,66 @@ PICKS_FILE = Path("data/pnl/picks.json")
 OUT_FILE = Path("data/clv/polymarket_fills.json")
 
 
+SNAPSHOTS_FILE = Path("data/clv/snapshots.json")
+
+
 def _load_picks() -> list[dict]:
     if not PICKS_FILE.exists():
         return []
     raw = json.loads(PICKS_FILE.read_text())
     return raw.get("picks", raw) if isinstance(raw, dict) else raw
+
+
+def write_back(rows: list[dict]) -> tuple[int, int]:
+    """Stamp poly_filled onto picks AND their CLV snapshots.
+
+    Without this the 300-bet PROMOTE verdict scores every maker pick as though
+    the resting order had traded — greenlighting real money on prices that
+    were never available. Snapshots carry no pick_id, so they are matched on
+    the same (date, team, market, strategy) key the CLV tracker builds them
+    with.
+    """
+    by_id = {r["pick_id"]: r for r in rows if r.get("pick_id")}
+    by_key = {(r.get("date"), r.get("team"), "moneyline", "polymarket_ev"): r
+              for r in rows}
+    now = datetime.now(timezone.utc).isoformat()
+
+    n_picks = 0
+    if PICKS_FILE.exists():
+        raw = json.loads(PICKS_FILE.read_text())
+        picks = raw.get("picks", raw) if isinstance(raw, dict) else raw
+        for p in picks:
+            r = by_id.get(p.get("pick_id"))
+            if r is None:
+                continue
+            p["poly_filled"] = bool(r["filled"])
+            p["poly_fill_checked_at"] = now
+            if r.get("post_fill_drift") is not None:
+                p["poly_post_fill_drift"] = r["post_fill_drift"]
+            n_picks += 1
+        if isinstance(raw, dict):
+            raw["picks"] = picks
+        PICKS_FILE.write_text(json.dumps(raw if isinstance(raw, dict) else picks,
+                                         indent=2))
+
+    n_snaps = 0
+    if SNAPSHOTS_FILE.exists():
+        raw = json.loads(SNAPSHOTS_FILE.read_text())
+        snaps = raw.get("snapshots", raw) if isinstance(raw, dict) else raw
+        for s in snaps:
+            if s.get("strategy") != "polymarket_ev":
+                continue
+            r = by_key.get((s.get("date"), s.get("team"),
+                            s.get("market"), "polymarket_ev"))
+            if r is None:
+                continue
+            s["poly_filled"] = bool(r["filled"])
+            n_snaps += 1
+        if isinstance(raw, dict):
+            raw["snapshots"] = snaps
+        SNAPSHOTS_FILE.write_text(json.dumps(raw if isinstance(raw, dict) else snaps,
+                                             indent=2))
+    return n_picks, n_snaps
 
 
 def _epoch(ts) -> int | None:
@@ -192,7 +247,11 @@ def run(since: str | None = None, as_json: bool = False) -> dict:
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     OUT_FILE.write_text(json.dumps(out, indent=2))
-    print(f"  wrote {OUT_FILE}")
+    n_picks, n_snaps = write_back(rows)
+    print(f"  wrote {OUT_FILE}; stamped poly_filled on {n_picks} pick(s), "
+          f"{n_snaps} snapshot(s)")
+    print("  Unfilled picks are excluded from the CLV verdict — an order that")
+    print("  never traded is not a bet, and must not vote on PROMOTE.")
     return out
 
 

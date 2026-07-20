@@ -73,6 +73,68 @@ def maker_fee(price: float, schedule: dict | None = None) -> float:
     return taker_fee(price, s)
 
 
+def walk_book(levels: list[tuple[float, float]], stake_usd: float,
+              schedule: dict | None = None) -> dict:
+    """Fill `stake_usd` against ascending ask levels; return the real blended cost.
+
+    Top-of-book is a headline, not a size. On 2026-07-20 a WNBA market Gamma
+    reported at $45,052 "liquidity" had 27 shares at its best ask — the quoted
+    +5.4% edge was $4.86 deep, and the next level was 0.0% EV. Pricing any
+    stake at the best ask silently assumes infinite depth there.
+
+    Returns avg_cost (all-in per share, fee included per level), shares,
+    spent (notional ex-fee) and filled (False when the book runs dry).
+    """
+    remaining = float(stake_usd)
+    shares = 0.0
+    total = 0.0          # all-in outlay, fee included
+    spent = 0.0          # notional only
+    for price, size in sorted(levels):
+        if remaining <= 1e-9:
+            break
+        price = float(price)
+        if price <= 0:
+            continue
+        want = remaining / price
+        take = min(want, float(size))
+        if take <= 0:
+            continue
+        shares += take
+        spent += take * price
+        total += take * (price + taker_fee(price, schedule))
+        remaining -= take * price
+    if shares <= 0:
+        return {"avg_cost": None, "shares": 0.0, "spent": 0.0, "filled": False}
+    return {"avg_cost": total / shares, "shares": shares, "spent": spent,
+            "filled": remaining <= 1e-6}
+
+
+def max_stake_at_ev(levels: list[tuple[float, float]], fair: float,
+                    min_ev_pct: float, schedule: dict | None = None) -> float:
+    """Largest notional deployable while blended EV stays at/above min_ev_pct.
+
+    Answers "how much is this edge actually worth?" — the number that decides
+    whether a signal is a position or a rounding error.
+    """
+    shares = 0.0
+    total = 0.0
+    spent = 0.0
+    best = 0.0
+    for price, size in sorted(levels):
+        price, size = float(price), float(size)
+        if price <= 0 or size <= 0:
+            continue
+        shares += size
+        spent += size * price
+        total += size * (price + taker_fee(price, schedule))
+        ev = (fair / (total / shares) - 1.0) * 100.0
+        if ev >= min_ev_pct:
+            best = spent          # whole level clears the bar
+        else:
+            break                 # levels only get worse
+    return round(best, 2)
+
+
 def maker_limit(bid: float | None, ask: float | None, tick: float = TICK) -> float | None:
     """Price a passive buy order should rest at.
 
@@ -432,9 +494,13 @@ def fetch_live_price(token_id: str) -> float | None:
 
 def fetch_order_book(token_id: str, refresh: bool = False) -> dict | None:
     """
-    Fetch the live CLOB order book for a token → {"best_bid", "best_ask"}
-    (floats, YES-side prices) or None. Cached 300s — books on sports markets
-    move, but the scanner doesn't need tick-level freshness.
+    Fetch the live CLOB order book for a token, or None.
+
+    Returns {"best_bid", "best_ask", "bids": [(price, size)], "asks": [...]}.
+    The LEVELS are the point: best_ask alone says nothing about how much size
+    sits there, and a headline edge that is 27 shares deep is not a position.
+    Cached 300s — sports books move, but the scanner does not need tick-level
+    freshness.
     """
     cache = _cache_path(f"book_{token_id[:32]}")
     if cache.exists() and not refresh:
@@ -450,9 +516,20 @@ def fetch_order_book(token_id: str, refresh: bool = False) -> dict | None:
         asks = data.get("asks") or []
         # CLOB returns price levels as {"price": "0.42", "size": "..."};
         # best bid = highest bid, best ask = lowest ask.
-        best_bid = max((float(b["price"]) for b in bids), default=None)
-        best_ask = min((float(a["price"]) for a in asks), default=None)
-        book = {"best_bid": best_bid, "best_ask": best_ask}
+        def _levels(rows):
+            out = []
+            for r in rows:
+                try:
+                    out.append((float(r["price"]), float(r.get("size") or 0)))
+                except (KeyError, TypeError, ValueError):
+                    continue
+            return out
+
+        bid_lv, ask_lv = _levels(bids), _levels(asks)
+        best_bid = max((p for p, _ in bid_lv), default=None)
+        best_ask = min((p for p, _ in ask_lv), default=None)
+        book = {"best_bid": best_bid, "best_ask": best_ask,
+                "bids": sorted(bid_lv, reverse=True), "asks": sorted(ask_lv)}
         with open(cache, "w") as f:
             json.dump(book, f)
         return book

@@ -18,7 +18,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data.polymarket import (   # noqa: E402
-    DEFAULT_FEE_SCHEDULE, PolyMarket, maker_fee, maker_limit, taker_fee,
+    DEFAULT_FEE_SCHEDULE, PolyMarket, maker_fee, maker_limit, max_stake_at_ev,
+    taker_fee, walk_book,
 )
 from scripts.polymarket_scanner import (
     _is_moneyline_market,                # noqa: E402
@@ -373,3 +374,64 @@ class TestDrawContractsNeverPricedAsWins:
         picks = scan_sport("soccer_korea_kleague1", board, [draw],
                            "2026-07-21", min_ev=-100.0)
         assert picks == []
+
+
+class TestBookDepth:
+    """Top-of-book is a headline, not a size.
+
+    Live on 2026-07-20 a WNBA market Gamma reported at $45,052 "liquidity" had
+    27 shares at its best ask. The quoted +5.4% edge was $4.86 deep and the
+    very next level priced at 0.0% EV. Gamma's liquidity is total depth across
+    ALL levels, so the MIN_LIQUIDITY_USD filter passed it happily. Pricing any
+    stake at the best ask assumes infinite depth there.
+    """
+
+    # (price, size) — the real Seattle Storm ask ladder from that market.
+    STORM = [(0.18, 27.0), (0.19, 3001.6), (0.20, 15454.63), (0.21, 13561.97)]
+
+    def test_small_stake_fills_at_the_top(self):
+        w = walk_book(self.STORM, 4.48)
+        assert w["filled"] is True
+        assert w["shares"] == pytest.approx(4.48 / 0.18, rel=1e-3)
+        assert w["avg_cost"] == pytest.approx(0.18 + taker_fee(0.18), rel=1e-3)
+
+    def test_bigger_stake_eats_worse_levels(self):
+        """$500 cannot trade at 0.18 — only $4.86 exists there."""
+        w = walk_book(self.STORM, 500.0)
+        assert w["filled"] is True
+        assert w["avg_cost"] > 0.18 + taker_fee(0.18)
+        # blended cost lands between the 0.19 and 0.20 rungs
+        assert 0.19 < w["avg_cost"] < 0.21
+
+    def test_edge_survives_only_at_tiny_size(self):
+        """The number that decides position vs rounding error."""
+        fair = 0.1993
+        assert max_stake_at_ev(self.STORM, fair, min_ev_pct=2.0) == pytest.approx(4.86, abs=0.01)
+        # At a 2% bar only the top rung clears; nothing deeper does.
+        assert max_stake_at_ev(self.STORM, fair, min_ev_pct=5.0) == pytest.approx(4.86, abs=0.01)
+        # Demanding 20% clears nothing at all.
+        assert max_stake_at_ev(self.STORM, fair, min_ev_pct=20.0) == 0.0
+
+    def test_running_out_of_book_is_reported(self):
+        w = walk_book([(0.18, 27.0)], 500.0)
+        assert w["filled"] is False
+        assert w["spent"] == pytest.approx(4.86, abs=0.01)
+
+    def test_empty_book_is_safe(self):
+        w = walk_book([], 100.0)
+        assert w["filled"] is False and w["avg_cost"] is None
+        assert max_stake_at_ev([], 0.5, 2.0) == 0.0
+
+    def test_scan_records_depth_so_size_is_never_assumed(self, monkeypatch):
+        import scripts.polymarket_scanner as sc
+        monkeypatch.setattr(sc, "fetch_order_book",
+                            lambda t, refresh=False: {
+                                "best_bid": 0.36, "best_ask": 0.40,
+                                "bids": [(0.36, 500.0)],
+                                "asks": [(0.40, 10.0), (0.45, 5000.0)]})
+        picks = scan_sport("baseball_mlb", _board(), [_pm(bid=0.36, ask=0.40)],
+                           "2026-07-19", min_ev=-100.0, stake_usd=4.48)
+        assert picks
+        p = picks[0]
+        assert p["poly_top_depth_usd"] == pytest.approx(4.0)   # 0.40 * 10
+        assert p["poly_max_stake_usd"] is not None

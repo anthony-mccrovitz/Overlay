@@ -2333,6 +2333,15 @@ def get_clv_by_strategy() -> dict:
     snaps = _load_snapshots()
     buckets: dict[str, dict] = {}
     for s in snaps:
+        # A maker order that never traded is not a bet. polymarket_ev prices a
+        # RESTING order inside the bid; scripts/polymarket_fills.py stamps
+        # poly_filled once the price history says whether it would have been
+        # hit. Scoring the misses would let the 300-bet PROMOTE verdict
+        # greenlight real money on prices that were never available — the
+        # strategy would look best exactly where it filled least.
+        # None (not yet checked) still counts, so fresh picks aren't dropped.
+        if s.get("poly_filled") is False:
+            continue
         strat = s.get("strategy") or "model"
         b = buckets.setdefault(strat, {"picks": 0, "prob": [], "line": [],
                                        "novig": [], "sharp": [],
