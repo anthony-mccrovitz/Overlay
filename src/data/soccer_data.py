@@ -374,25 +374,6 @@ def load_training_data(min_year: int = 2012) -> list[dict]:
     return matches
 
 
-def load_upcoming_wc2026() -> list[dict]:
-    """
-    Load 2026 World Cup schedule/fixtures.
-    Returns fixtures (may have no scores yet for future games).
-    """
-    url = WC_URLS.get(2026)
-    data = _fetch_json(url, "wc_2026", max_age_days=1)
-    if not data:
-        return []
-    return _parse_openfootball(data, "FIFA World Cup 2026", 2026)
-
-
-def get_team_universe(matches: list[dict]) -> list[str]:
-    """Return sorted list of all teams in the match list."""
-    teams: set[str] = set()
-    for m in matches:
-        teams.add(m["home_team"])
-        teams.add(m["away_team"])
-    return sorted(teams)
 
 
 # Odds API name → openfootball canonical name
@@ -426,41 +407,3 @@ def normalize_team_name(name: str) -> str:
     return TEAM_ALIASES.get(name, name)
 
 
-def get_confederation(team: str) -> str:
-    """Return confederation for a team (for hierarchical priors)."""
-    UEFA = {
-        "Germany", "France", "Spain", "England", "Italy", "Portugal", "Netherlands",
-        "Belgium", "Croatia", "Denmark", "Sweden", "Norway", "Switzerland", "Austria",
-        "Poland", "Czech Republic", "Hungary", "Romania", "Greece", "Turkey",
-        "Serbia", "Ukraine", "Slovakia", "Wales", "Scotland", "Ireland", "Albania",
-        "Slovenia", "Montenegro", "North Macedonia", "Kosovo", "Georgia", "Moldova",
-        "Bosnia and Herzegovina", "Iceland", "Finland", "Latvia", "Lithuania", "Estonia",
-        "Luxembourg", "Malta", "Cyprus", "Andorra", "Liechtenstein", "San Marino",
-        "Faroe Islands", "Gibraltar", "Azerbaijan", "Armenia", "Kazakhstan",
-    }
-    CONMEBOL = {
-        "Brazil", "Argentina", "Uruguay", "Colombia", "Chile", "Paraguay",
-        "Ecuador", "Bolivia", "Peru", "Venezuela",
-    }
-    CONCACAF = {
-        "United States", "Mexico", "Canada", "Costa Rica", "Panama", "Honduras",
-        "Jamaica", "El Salvador", "Haiti", "Guatemala", "Trinidad and Tobago",
-        "Nicaragua", "Belize", "Cuba",
-    }
-    CAF = {
-        "Morocco", "Senegal", "Nigeria", "Ghana", "Ivory Coast", "Cameroon",
-        "Egypt", "Tunisia", "Algeria", "Mali", "DR Congo", "South Africa",
-        "Zimbabwe", "Zambia", "Tanzania", "Kenya", "Uganda", "Ethiopia",
-        "Mozambique", "Cape Verde", "Benin", "Guinea", "Burkina Faso",
-    }
-    AFC = {
-        "Japan", "South Korea", "Australia", "Iran", "Saudi Arabia", "Qatar",
-        "UAE", "China", "Iraq", "Jordan", "Syria", "Uzbekistan", "Bahrain",
-        "Oman", "Kuwait", "Lebanon", "Indonesia", "Vietnam", "Thailand",
-    }
-    if team in UEFA:     return "UEFA"
-    if team in CONMEBOL: return "CONMEBOL"
-    if team in CONCACAF: return "CONCACAF"
-    if team in CAF:      return "CAF"
-    if team in AFC:      return "AFC"
-    return "OFC"

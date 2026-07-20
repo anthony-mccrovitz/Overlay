@@ -349,6 +349,3 @@ def load_cached_elo(verbose: bool = False) -> bool:
     return any(r.get(t) for t in ("atp", "wta"))
 
 
-def refresh_player_db(years: list[int] | None = None, verbose: bool = True) -> None:
-    """Legacy shim: full rebuild of the new ratings cache."""
-    refresh_ratings(years=years, verbose=verbose)

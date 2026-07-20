@@ -227,27 +227,3 @@ def build_fair_prob_map(odds_df: pd.DataFrame) -> dict[str, dict]:
     return out
 
 
-def fair_prob_for(
-    fair_map: dict[str, dict],
-    game_id: str,
-    market: str,
-    side: str,
-) -> Optional[float]:
-    """
-    Convenience getter. Returns None if market/side is missing.
-
-    market in {"h2h", "spread", "totals"}
-    side: for h2h/spread → "home"|"away"; for totals → "over"|"under"
-    """
-    g = fair_map.get(game_id)
-    if not g:
-        return None
-    m = g.get(market)
-    if not m:
-        return None
-    if market == "spread":
-        side_entry = m.get(side)
-        if isinstance(side_entry, dict):
-            return side_entry.get("fair")
-        return None
-    return m.get(side)

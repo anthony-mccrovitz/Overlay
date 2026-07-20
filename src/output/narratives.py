@@ -102,32 +102,3 @@ def _find_key_reasons(stats_a: dict, stats_b: dict, win_prob: float) -> list[str
     return reasons
 
 
-def generate_bracket_narratives(bracket, current_stats: pd.DataFrame) -> list[dict]:
-    """Generate narratives for all games in a bracket."""
-    narratives = []
-
-    for game in bracket.games:
-        stats_a = current_stats[current_stats["TeamID"] == game.team_a_id]
-        stats_b = current_stats[current_stats["TeamID"] == game.team_b_id]
-
-        a_dict = stats_a.iloc[0].to_dict() if not stats_a.empty else {}
-        b_dict = stats_b.iloc[0].to_dict() if not stats_b.empty else {}
-
-        narrative = generate_narrative(
-            game.team_a_name,
-            game.team_b_name,
-            game.team_a_seed,
-            game.team_b_seed,
-            game.win_prob_a,
-            a_dict,
-            b_dict,
-        )
-
-        narratives.append({
-            "round": game.round_num,
-            "region": game.region,
-            "matchup": f"({game.team_a_seed}) {game.team_a_name} vs ({game.team_b_seed}) {game.team_b_name}",
-            "narrative": narrative,
-        })
-
-    return narratives
