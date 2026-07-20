@@ -2757,6 +2757,20 @@ def cmd_polydash(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_polyready(args: argparse.Namespace) -> int:
+    """Is the Polymarket experiment finished, and what did it conclude?
+
+    Grades the run against gates fixed in advance (polymarket_protocol.py):
+    sample size, anchor calibration, fill count, CLV, drawdown. Returns
+    WAIT / RETIRE / PROMOTE. A RETIRE is a success — it closes the idea off
+    at zero cost.
+    """
+    import importlib
+    r = importlib.import_module("scripts.polymarket_readiness")
+    r.run(as_json=getattr(args, "as_json", False))
+    return 0
+
+
 def cmd_polytiming(args: argparse.Namespace) -> int:
     """When is Polymarket actually mispriced? Replays played games to show how
     much price discovery is left at each lead time before kickoff."""
@@ -3520,6 +3534,10 @@ def main() -> int:
     p_ptime.add_argument("--since", help="Games on/after this date (YYYY-MM-DD)")
     p_ptime.add_argument("--json", action="store_true", dest="as_json")
 
+    p_ready = sub.add_parser("polyready",
+                             help="Experiment verdict: WAIT / RETIRE / PROMOTE vs pre-set gates")
+    p_ready.add_argument("--json", action="store_true", dest="as_json")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -3633,6 +3651,7 @@ def main() -> int:
         "paper":     cmd_paper,
         "polydash":  cmd_polydash,
         "polytiming": cmd_polytiming,
+        "polyready": cmd_polyready,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,

@@ -52,8 +52,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 PICKS_FILE = Path("data/pnl/picks.json")
 OUT_FILE = Path("data/pnl/paper_polymarket.json")
 
-DEFAULT_BANKROLL = 112.0
-STAKE_FRAC = 0.04
+from src.config import polymarket_protocol as PROTO   # noqa: E402
+
+DEFAULT_BANKROLL = PROTO.BANKROLL_USD
+STAKE_FRAC = PROTO.STAKE_FRAC
+MAX_EXPOSURE_FRAC = PROTO.MAX_CONCURRENT_EXPOSURE_FRAC
 
 
 def _load_picks() -> list[dict]:
@@ -156,8 +159,21 @@ def run(bankroll: float = DEFAULT_BANKROLL, mode: str | None = None,
     equity = float(bankroll)
     peak, max_dd = equity, 0.0
     rows, skipped = [], {}
+    open_exposure = 0.0
+    prev_date = None
     for p in picks:
+        # Capital lock: a maker order ties up USDC from post until the game
+        # resolves, so same-slate picks are held SIMULTANEOUSLY. 11 picks at a
+        # flat 4% is already 44% of the bankroll; without a cap the ledger
+        # would happily "stake" money a live account would not have had.
+        if p.get("date") != prev_date:
+            open_exposure, prev_date = 0.0, p.get("date")
         stake = round(equity * STAKE_FRAC, 2)
+        if open_exposure + stake > equity * MAX_EXPOSURE_FRAC:
+            skipped["exposure cap reached for the slate"] = \
+                skipped.get("exposure cap reached for the slate", 0) + 1
+            continue
+        open_exposure += stake
         r = settle(p, stake)
         if r is None:
             why = (fill_price(p)[1] if p.get("result") else "not settled yet")
