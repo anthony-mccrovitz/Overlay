@@ -17,7 +17,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.data.polymarket import FEE_RATE, PolyMarket   # noqa: E402
+from src.data.polymarket import (   # noqa: E402
+    DEFAULT_FEE_SCHEDULE, PolyMarket, maker_fee, maker_limit, taker_fee,
+)
 from scripts.polymarket_scanner import (
     _is_moneyline_market,                # noqa: E402
     log_polymarket_picks,
@@ -74,22 +76,72 @@ class TestHelpers:
         assert prob_to_american(0.60) == -150
         assert prob_to_american(0.50) == -100
 
-    def test_entry_cost_uses_ask_plus_fee_not_mid(self):
+    def test_taker_fee_peaks_at_a_coin_flip(self):
+        # sports_fees_v2: rate * min(p, 1-p)^exponent. The old flat 2%*(1-p)
+        # got this backwards — it charged LEAST at p=0.5, where the real
+        # schedule charges most.
+        assert taker_fee(0.50) == pytest.approx(0.025)
+        assert taker_fee(0.10) == pytest.approx(0.005)
+        assert taker_fee(0.90) == pytest.approx(0.005)
+        assert taker_fee(0.50) > taker_fee(0.10)
+
+    def test_taker_fee_reads_the_market_schedule(self):
+        assert taker_fee(0.50, {"rate": 0.10, "exponent": 1}) == pytest.approx(0.05)
+
+    def test_maker_pays_nothing_while_taker_only(self):
+        assert maker_fee(0.44) == 0.0
+        assert maker_fee(0.44, {"rate": 0.05, "exponent": 1,
+                                "takerOnly": False}) == pytest.approx(taker_fee(0.44))
+
+    def test_maker_limit_improves_bid_only_when_there_is_room(self):
+        assert maker_limit(0.43, 0.47) == pytest.approx(0.44)   # room to improve
+        assert maker_limit(0.43, 0.44) == pytest.approx(0.43)   # 1-tick spread
+        assert maker_limit(None, 0.44) is None
+
+    def test_entry_cost_take_uses_ask_plus_real_fee_not_mid(self):
         pm = _pm(bid=0.36, ask=0.40)     # mid 0.38
-        cost = pm.entry_cost("yes")
-        assert cost == pytest.approx(0.40 + FEE_RATE * 0.60)   # 0.412
+        cost = pm.entry_cost("yes", mode="take")
+        assert cost == pytest.approx(0.40 + taker_fee(0.40))
         assert cost > pm.yes_prob        # strictly worse than the mid
 
     def test_entry_cost_no_side_uses_one_minus_bid(self):
         pm = _pm(bid=0.36, ask=0.40)
-        cost_no = pm.entry_cost("no")
+        cost_no = pm.entry_cost("no", mode="take")
         px = 1 - 0.36
-        assert cost_no == pytest.approx(px + FEE_RATE * (1 - px))
+        assert cost_no == pytest.approx(px + taker_fee(px))
 
     def test_entry_cost_prefers_live_book(self):
         pm = _pm(bid=0.36, ask=0.40)
-        cost = pm.entry_cost("yes", book={"best_bid": 0.30, "best_ask": 0.33})
-        assert cost == pytest.approx(0.33 + FEE_RATE * 0.67)
+        cost = pm.entry_cost("yes", book={"best_bid": 0.30, "best_ask": 0.33},
+                             mode="take")
+        assert cost == pytest.approx(0.33 + taker_fee(0.33))
+
+    def test_make_is_cheaper_than_take_by_spread_plus_fee(self):
+        pm = _pm(bid=0.36, ask=0.40)
+        make = pm.entry_cost("yes", mode="make")
+        take = pm.entry_cost("yes", mode="take")
+        assert make == pytest.approx(0.37)       # bid improved one tick, no fee
+        assert make < take
+        # The whole thesis: the gap is what crossing the spread costs you.
+        assert take - make == pytest.approx(0.40 + taker_fee(0.40) - 0.37)
+
+    def test_make_falls_back_to_take_without_a_book(self):
+        pm = _pm(best_bid=None, best_ask=None)   # no book at all
+        assert pm.entry_cost("yes", mode="make") == pytest.approx(
+            pm.entry_cost("yes", mode="take"))
+
+    def test_entry_cost_rejects_unknown_mode(self):
+        with pytest.raises(ValueError):
+            _pm().entry_cost("yes", mode="teleport")
+
+    def test_market_schedule_overrides_default(self):
+        pm = _pm(bid=0.36, ask=0.40,
+                 raw={"outcomes": json.dumps(["Yes", "No"]),
+                      "feeSchedule": {"rate": 0.20, "exponent": 1,
+                                      "takerOnly": True}})
+        assert pm.fee_schedule["rate"] == 0.20
+        assert pm.entry_cost("yes", mode="take") == pytest.approx(
+            0.40 + 0.20 * 0.40)
 
     def test_team_matches(self):
         assert team_matches("Yankees", "New York Yankees")
@@ -117,13 +169,48 @@ class TestScanSport:
         assert p["odds"] == prob_to_american(p["poly_cost"])
         assert isinstance(p["odds"], int)
 
-    def test_silent_when_cost_above_fair(self):
-        # Poly ask 0.62 → cost 0.628 > fair 0.593 → no YES edge; away side ask
-        # is 1-bid=0.40 → cost .412 vs fair away 0.407 → +EV? 0.407/0.412-1 =
-        # -1.2% < 2% → silent both sides.
+    def test_taker_silent_when_ask_above_fair(self):
+        # Crossing the spread: ask 0.62 + fee > fair 0.593 on the YES side, and
+        # the away side's 1-bid=0.40 ask clears no bar either. Silent.
         pm = _pm(bid=0.60, ask=0.62)
-        picks = scan_sport("baseball_mlb", _board(), [pm], "2026-07-19")
+        picks = scan_sport("baseball_mlb", _board(), [pm], "2026-07-19",
+                           entry_mode="take")
         assert picks == []
+
+    def test_maker_finds_edge_where_taker_finds_none(self):
+        """The central claim, pinned: the same board is silent to a taker and
+        live to a maker. Resting one tick inside the 0.60 bid costs 0.61 with
+        no fee, versus 0.62 + fee to cross — and that difference is the whole
+        edge. If this ever stops holding, the maker thesis is dead and the
+        scanner should go back to taker pricing."""
+        pm = _pm(bid=0.60, ask=0.62)
+        board, date = _board(), "2026-07-19"
+        assert scan_sport("baseball_mlb", board, [pm], date, entry_mode="take") == []
+        made = scan_sport("baseball_mlb", board, [pm], date, entry_mode="make")
+        assert made, "maker pricing should surface the edge a taker cannot reach"
+        p = made[0]
+        assert p["poly_entry_mode"] == "make"
+        assert p["poly_cost"] < p["poly_taker_cost"]
+        # The edge lands on the AWAY side, whose book is the mirror of YES:
+        # bid 1-0.62=0.38, ask 1-0.60=0.40, so a passive buy rests at 0.39
+        # against a 0.4202 fair. Crossing would have cost 0.42 — nearly the
+        # whole edge handed to whoever was already resting there.
+        assert p["team"] == "Boston Red Sox"
+        assert p["poly_bid"] == pytest.approx(0.38)
+        assert p["poly_ask"] == pytest.approx(0.40)
+        assert p["poly_limit"] == pytest.approx(0.39)
+        assert p["poly_taker_cost"] == pytest.approx(0.42)
+
+    def test_maker_picks_record_the_book_for_later_fill_checks(self):
+        """A maker experiment is unfalsifiable unless the bid it was posted
+        against is recorded at entry time — polymarket_fills.py replays these."""
+        pm = _pm(bid=0.60, ask=0.62)
+        made = scan_sport("baseball_mlb", _board(), [pm], "2026-07-19",
+                          entry_mode="make")
+        p = made[0]
+        for field in ("poly_bid", "poly_ask", "poly_limit", "poly_token_id",
+                      "poly_entry_mode", "poly_taker_cost"):
+            assert p.get(field) is not None, f"{field} missing — fills unmeasurable"
 
     def test_two_outcome_market_prices_each_side_off_own_token(self, monkeypatch):
         import scripts.polymarket_scanner as sc

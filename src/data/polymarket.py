@@ -28,8 +28,63 @@ GAMMA_BASE = "https://gamma-api.polymarket.com"
 CLOB_BASE = "https://clob.polymarket.com"
 CACHE_DIR = Path("data/cache/polymarket")
 
-# Polymarket LP fees (~2% of winnings effectively)
-FEE_RATE = 0.02
+# Polymarket "sports_fees_v2", read live off Gamma market dicts on 2026-07-20
+# and identical across every game moneyline checked:
+#     {"rate": 0.05, "exponent": 1, "takerOnly": true, "rebateRate": 0.15}
+#
+#     fee_per_share = rate * min(p, 1 - p) ** exponent
+#
+# Two properties matter more than the number itself:
+#   1. The fee peaks at p=0.50 and vanishes at the extremes, so it is NOT the
+#      flat 2% this module asserted before (uncited, and wrong in both
+#      directions — it understated the cost of a coin-flip market by ~2x and
+#      overstated it on heavy favourites).
+#   2. takerOnly: a RESTING order pays nothing. That single flag is why maker
+#      entries can be +EV on boards where every taker entry is negative.
+DEFAULT_FEE_SCHEDULE = {"rate": 0.05, "exponent": 1.0, "takerOnly": True}
+
+# Smallest price increment on the CLOB; a maker order must move by at least
+# this much to improve the book.
+TICK = 0.01
+
+
+def taker_fee(price: float, schedule: dict | None = None) -> float:
+    """Fee per share paid by a TAKER entering at `price`.
+
+    Pass the market's own `feeSchedule` when available — Polymarket varies it
+    by market type, and hardcoding one number is what caused the original bug.
+    """
+    s = schedule or DEFAULT_FEE_SCHEDULE
+    rate = float(s.get("rate", DEFAULT_FEE_SCHEDULE["rate"]))
+    exponent = float(s.get("exponent", DEFAULT_FEE_SCHEDULE["exponent"]))
+    p = min(max(float(price), 0.0), 1.0)
+    return rate * (min(p, 1.0 - p) ** exponent)
+
+
+def maker_fee(price: float, schedule: dict | None = None) -> float:
+    """Fee per share paid by a MAKER whose resting order gets filled.
+
+    Zero while the schedule is takerOnly. Kept as a function rather than a
+    literal 0 so a future schedule change is one edit, not an audit.
+    """
+    s = schedule or DEFAULT_FEE_SCHEDULE
+    if s.get("takerOnly", True):
+        return 0.0
+    return taker_fee(price, s)
+
+
+def maker_limit(bid: float | None, ask: float | None, tick: float = TICK) -> float | None:
+    """Price a passive buy order should rest at.
+
+    Improve the bid by one tick to take price priority, unless that would
+    cross or join the ask — in which case the spread is already one tick wide
+    and there is nothing to gain by posting, so sit on the bid.
+    """
+    if bid is None:
+        return None
+    if ask is not None and bid + tick >= ask:
+        return float(bid)
+    return round(float(bid) + tick, 4)
 
 # Tag normalization to our internal categories
 TAG_MAP = {
@@ -73,38 +128,79 @@ class PolyMarket:
     raw: dict = field(default_factory=dict, repr=False)
 
     @property
+    def fee_schedule(self) -> dict:
+        """This market's own fee schedule, falling back to the observed default."""
+        fs = self.raw.get("feeSchedule")
+        if isinstance(fs, str):
+            try:
+                fs = json.loads(fs)
+            except (ValueError, TypeError):
+                fs = None
+        if isinstance(fs, dict) and fs:
+            return fs
+        return DEFAULT_FEE_SCHEDULE
+
+    @property
     def effective_yes_cost(self) -> float:
-        """YES cost after fee (buy YES at this price to break even)."""
-        return self.yes_prob + FEE_RATE * (1 - self.yes_prob)
+        """YES cost at the mid, after taker fee. Diagnostic only — never price
+        an entry off the mid; see entry_cost."""
+        return self.yes_prob + taker_fee(self.yes_prob, self.fee_schedule)
 
     @property
     def effective_no_cost(self) -> float:
-        """NO cost after fee."""
-        return self.no_prob + FEE_RATE * (1 - self.no_prob)
+        """NO cost at the mid, after taker fee. Diagnostic only."""
+        return self.no_prob + taker_fee(self.no_prob, self.fee_schedule)
 
-    def entry_cost(self, side: str = "yes", book: dict | None = None) -> float:
-        """True cost to ENTER a position: you buy at the ASK, not the mid.
+    def _book_prices(self, book: dict | None) -> tuple[float | None, float | None]:
+        b = (book or {}).get("best_bid", self.best_bid)
+        a = (book or {}).get("best_ask", self.best_ask)
+        return b, a
 
-        Any edge model that compares the midpoint against fair value
-        overstates EV by half the spread — on thin sports books that half-
-        spread is often bigger than the edge itself. Order of preference:
-        a live CLOB book (pass `book` from fetch_order_book), the Gamma
-        best-ask snapshot, then the mid as last resort. The ~2% LP fee is
-        folded in the same way as effective_*_cost.
+    def entry_cost(self, side: str = "yes", book: dict | None = None,
+                   mode: str = "take") -> float:
+        """All-in cost per share to ENTER, by execution style.
+
+        mode="take" crosses the spread: you pay the ASK plus the taker fee.
+        Never the midpoint — an edge model priced off the mid overstates EV by
+        half the spread, which on thin sports books exceeds the edge itself.
+
+        mode="make" rests an order one tick inside the bid and pays NO fee
+        (the schedule is takerOnly). This is the cheaper entry by roughly a
+        full spread plus the fee, but it only fills when the market comes to
+        you, so the cost it reports is conditional on being filled at all.
+        Fill rate and adverse selection are measured separately by
+        scripts/polymarket_fills.py — do not read a maker cost as achievable
+        on its own.
 
         side="yes" buys the YES token; side="no" buys NO, whose ask is
         1 − YES best bid (selling pressure on YES is buying pressure on NO).
         """
         if side not in ("yes", "no"):
             raise ValueError(f"side must be 'yes' or 'no', got {side!r}")
-        bid = (book or {}).get("best_bid", self.best_bid)
-        ask = (book or {}).get("best_ask", self.best_ask)
+        if mode not in ("take", "make"):
+            raise ValueError(f"mode must be 'take' or 'make', got {mode!r}")
+        bid, ask = self._book_prices(book)
+        sched = self.fee_schedule
+
+        if mode == "make":
+            # Buying NO passively means resting on the NO book, whose bid is
+            # 1 − (YES ask). Mirror the whole book, then post inside it.
+            if side == "yes":
+                limit = maker_limit(bid, ask)
+            else:
+                limit = maker_limit(None if ask is None else 1.0 - ask,
+                                    None if bid is None else 1.0 - bid)
+            if limit is None:                     # no book — fall back to taking
+                return self.entry_cost(side, book, mode="take")
+            limit = min(max(float(limit), 0.0), 1.0)
+            return limit + maker_fee(limit, sched)
+
         if side == "yes":
             px = ask if ask is not None else self.yes_prob
         else:
             px = (1.0 - bid) if bid is not None else self.no_prob
         px = min(max(float(px), 0.0), 1.0)
-        return px + FEE_RATE * (1 - px)
+        return px + taker_fee(px, sched)
 
 
 def _cache_path(key: str) -> Path:
@@ -362,6 +458,43 @@ def fetch_order_book(token_id: str, refresh: bool = False) -> dict | None:
         return book
     except Exception:
         return None
+
+
+def fetch_price_history(token_id: str, interval: str = "1w",
+                        fidelity: int = 10, refresh: bool = False) -> list[dict]:
+    """Timestamped price series for a token → [{"t": epoch, "p": price}, ...].
+
+    Used to replay whether a resting order would have filled: if the series
+    traded down to a buy limit after it was posted, a passive order at that
+    price could have been hit.
+
+    This is the market's price track, NOT a record of your own queue position,
+    so "price touched the limit" is an OPTIMISTIC proxy for a fill — real
+    orders sit behind whatever size is already resting there. Treat the fill
+    rate it produces as an upper bound.
+
+    Cached 1h: history for a past game does not change.
+    """
+    cache = _cache_path(f"hist_{token_id[:32]}_{interval}")
+    if cache.exists() and not refresh:
+        if time.time() - cache.stat().st_mtime < 3600:
+            try:
+                with open(cache) as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, OSError):
+                pass
+    try:
+        data = _get(f"{CLOB_BASE}/prices-history",
+                    params={"market": token_id, "interval": interval,
+                            "fidelity": fidelity})
+        hist = [{"t": int(x["t"]), "p": float(x["p"])}
+                for x in (data.get("history") or [])
+                if x.get("t") is not None and x.get("p") is not None]
+        with open(cache, "w") as f:
+            json.dump(hist, f)
+        return hist
+    except Exception:
+        return []
 
 
 def fetch_game_events(

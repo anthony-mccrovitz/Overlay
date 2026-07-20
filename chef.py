@@ -2747,10 +2747,27 @@ def cmd_strategies(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_polyfills(args: argparse.Namespace) -> int:
+    """Maker fill + adverse-selection report for logged polymarket_ev picks.
+
+    The scanner's maker prices are only achievable if the resting orders fill,
+    and fills that arrive because the counterparty knew something are worse
+    than no fill at all. This replays the price history to measure both.
+    """
+    import importlib
+    fills = importlib.import_module("scripts.polymarket_fills")
+    fills.run(since=getattr(args, "since", None),
+              as_json=getattr(args, "as_json", False))
+    return 0
+
+
 def cmd_polymarket(args: argparse.Namespace) -> int:
     """Polymarket-vs-Pinnacle price scanner — shadow strategy polymarket_ev.
-    Finds Polymarket win contracts priced under Pinnacle's devigged fair
-    (after crossing the ask + ~2% fee) and logs them as shadow picks."""
+    Finds Polymarket win contracts priced under Pinnacle's devigged fair and
+    logs them as shadow picks. Prices a RESTING order inside the bid by
+    default (no fee — sports_fees_v2 is takerOnly); crossing the spread is
+    negative on nearly every board. See chef.py polyfills for whether those
+    resting orders would actually have filled."""
     import importlib
     scanner = importlib.import_module("scripts.polymarket_scanner")
     date_str = None
@@ -3447,6 +3464,11 @@ def main() -> int:
     p_poly.add_argument("--bankroll", type=float, default=112.0, help="Pilot bankroll for stake guidance")
     p_poly.add_argument("--dry-run", action="store_true", dest="dry_run")
 
+    p_fills = sub.add_parser("polyfills",
+                             help="Did the Polymarket maker orders fill? (adverse-selection report)")
+    p_fills.add_argument("--since", help="Only picks on/after this date (YYYY-MM-DD)")
+    p_fills.add_argument("--json", action="store_true", dest="as_json")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -3556,6 +3578,7 @@ def main() -> int:
         "calibrate": cmd_calibrate,
         "strategies": cmd_strategies,
         "polymarket": cmd_polymarket,
+        "polyfills": cmd_polyfills,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,

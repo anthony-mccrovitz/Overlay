@@ -5,6 +5,14 @@ name: Polymarket scanner
 # from the ≤2h cache when fresh (~1 credit per sport otherwise). Picks are
 # shadow-only (card_pick=False, stake=0) — the 300-bet CLV verdict gates any
 # real-money use of the pilot account.
+#
+# The scanner prices a RESTING order inside the bid, which only pays off if
+# such an order would actually fill. polymarket_fills.py replays the price
+# history of already-logged picks to measure the fill rate and whether fills
+# skew toward the cases where the counterparty knew more. It runs on the same
+# schedule but reads picks logged on EARLIER passes — a pick has no post-entry
+# price history until some time has passed, so the two steps are one cycle out
+# of phase by design.
 on:
   schedule:
     - cron: "41 */6 * * *"
@@ -22,4 +30,4 @@ jobs:
     secrets: inherit
     with:
       level: full
-      command: python scripts/polymarket_scanner.py
+      command: python scripts/polymarket_scanner.py && python scripts/polymarket_fills.py

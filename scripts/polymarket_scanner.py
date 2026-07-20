@@ -4,8 +4,20 @@ Polymarket-vs-Pinnacle price scanner — shadow strategy `polymarket_ev`.
 
 The thesis (same as devig_ev, different venue): Pinnacle's devigged price is
 the best public estimate of true probability. When Polymarket lets you buy a
-team's win contract CHEAPER than Pinnacle fair — after crossing the spread
-(you buy at the ASK, never the mid) and the ~2% fee — that's +EV.
+team's win contract CHEAPER than Pinnacle fair, that's +EV.
+
+HOW you enter decides whether any edge survives. Measured on 2026-07-20 across
+MLB, WNBA, MLS, K-League and Brazil: crossing the spread was negative on 28 of
+29 sides (median -4.6% once the real sports_fees_v2 taker fee is applied),
+while resting an order inside the bid — which pays NO fee, the schedule is
+takerOnly — was positive on 19 of 29. The spread plus fee is about the size of
+the edge being hunted, so the scanner defaults to maker pricing (ENTRY_MODE).
+
+The catch, and the reason this is still an experiment: a maker price is only
+achievable IF the order fills, and resting orders fill preferentially when the
+counterparty knows something you don't. scripts/polymarket_fills.py replays
+the price history to measure the real fill rate and that adverse selection.
+Until it reports, a maker EV here is a hypothesis, not a number to bet.
 
 Everything is shadow-first: finds are logged to picks.json with
 card_pick=False, stake=0, strategy="polymarket_ev", snapshot their opening
@@ -41,6 +53,7 @@ from src.data.polymarket import (          # noqa: E402
     PolyMarket,
     fetch_game_events,
     fetch_order_book,
+    maker_limit,
 )
 
 _ET = ZoneInfo("America/New_York")
@@ -49,6 +62,14 @@ PICKS_FILE = Path("data/pnl/picks.json")
 MIN_EV_PCT = 2.0          # same bar as devig_ev/consensus_ev — comparable verdicts
 MIN_LIQUIDITY_USD = 1000  # below this the "price" is a ghost; fills would move it
 PILOT_STAKE_FRAC = 0.04   # flat 4% of bankroll per pick (guidance only)
+# Default execution style. "make" rests an order inside the bid and pays no
+# fee (sports_fees_v2 is takerOnly); "take" crosses the spread at the ask.
+# Maker is the default because on 2026-07-20 every taker entry across MLB,
+# WNBA, MLS, K-League and Brazil was negative (median -4.6% under the real
+# fee) while the same board was positive on 19 of 29 sides as a maker. A
+# maker cost is CONDITIONAL on filling — scripts/polymarket_fills.py measures
+# the fill rate and adverse selection that decide whether it is real.
+ENTRY_MODE = "make"
 # Event fetch window: main game events carry endDate = game + ~7 days (a
 # resolution buffer — verified 2026-07-19 on mlb-tb-bos events), so the fetch
 # window must be wide. The PRECISE slate gate is per-market gameStartTime.
@@ -231,26 +252,44 @@ def _match_team_to_games(label: str, games: list[dict]) -> tuple[dict, str] | No
     return hits[0] if len(hits) == 1 else None
 
 
-def _entry_cost_for_outcome(pm: PolyMarket, idx: int) -> tuple[float, dict]:
-    """True entry cost (ask + fee) for outcome idx, preferring that outcome's
-    own CLOB book. Returns (cost, debug_info)."""
+def _entry_cost_for_outcome(pm: PolyMarket, idx: int,
+                            mode: str = ENTRY_MODE) -> tuple[float, dict]:
+    """Entry cost for outcome idx in the requested execution mode, preferring
+    that outcome's own CLOB book.
+
+    Records the full book state (bid/ask/limit) alongside the cost, because
+    that is what scripts/polymarket_fills.py needs later to decide whether a
+    resting order would actually have filled. Without the bid recorded at
+    entry time, a maker experiment is unfalsifiable after the fact.
+    """
     token = pm.token_ids[idx] if idx < len(pm.token_ids) else None
     book = fetch_order_book(token) if token else None
     if book and book.get("best_ask") is not None:
-        cost = pm.entry_cost("yes", book=book)
-        return cost, {"token_id": token, "poly_ask": book["best_ask"], "source": "clob"}
+        bid, ask = book.get("best_bid"), book.get("best_ask")
+        cost = pm.entry_cost("yes", book=book, mode=mode)
+        return cost, {"token_id": token, "poly_bid": bid, "poly_ask": ask,
+                      "poly_limit": maker_limit(bid, ask) if mode == "make" else ask,
+                      "poly_taker_cost": pm.entry_cost("yes", book=book, mode="take"),
+                      "source": "clob"}
     # Fallback: Gamma snapshot. Outcome 0 = the market's YES side; outcome 1's
-    # ask ≈ 1 − YES best bid.
+    # ask ≈ 1 − YES best bid, so its book is the mirror of the YES book.
     side = "yes" if idx == 0 else "no"
-    cost = pm.entry_cost(side)
-    return cost, {"token_id": token,
-                  "poly_ask": pm.best_ask if idx == 0 else None,
+    cost = pm.entry_cost(side, mode=mode)
+    if side == "yes":
+        bid, ask = pm.best_bid, pm.best_ask
+    else:
+        bid = None if pm.best_ask is None else 1.0 - pm.best_ask
+        ask = None if pm.best_bid is None else 1.0 - pm.best_bid
+    return cost, {"token_id": token, "poly_bid": bid, "poly_ask": ask,
+                  "poly_limit": maker_limit(bid, ask) if mode == "make" else ask,
+                  "poly_taker_cost": pm.entry_cost(side, mode="take"),
                   "source": "gamma"}
 
 
 def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                eff_date: str, min_ev: float = MIN_EV_PCT,
-               min_liquidity: float = MIN_LIQUIDITY_USD) -> list[dict]:
+               min_liquidity: float = MIN_LIQUIDITY_USD,
+               entry_mode: str = ENTRY_MODE) -> list[dict]:
     """Scan one sport's board against the Polymarket list. Pure — no I/O
     besides order-book fetches. Returns raw pick dicts."""
     from src.data.pinnacle_fair import build_fair_prob_map
@@ -321,7 +360,7 @@ def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                 continue
             fair = float(fair)
 
-            cost, dbg = _entry_cost_for_outcome(pm, idx)
+            cost, dbg = _entry_cost_for_outcome(pm, idx, mode=entry_mode)
             if not (0.005 < cost < 0.995):
                 continue
             ev_pct = (fair / cost - 1.0) * 100.0
@@ -345,10 +384,21 @@ def scan_sport(sport: str, odds_df, poly_markets: list[PolyMarket],
                 "poly_question":  pm.question,
                 "poly_token_id":  dbg.get("token_id"),
                 "poly_cost":      round(cost, 4),
+                "poly_bid":       dbg.get("poly_bid"),
                 "poly_ask":       dbg.get("poly_ask"),
                 "poly_mid":       pm.yes_prob if idx == 0 else pm.no_prob,
+                # The experiment's receipt: the price a resting order was
+                # posted at, the mode it assumed, and what crossing the spread
+                # would have cost instead. polymarket_fills.py reads these to
+                # decide whether the order would have filled and what the
+                # spread was actually worth.
+                "poly_entry_mode": entry_mode,
+                "poly_limit":     dbg.get("poly_limit"),
+                "poly_taker_cost": (round(dbg["poly_taker_cost"], 4)
+                                    if dbg.get("poly_taker_cost") is not None else None),
                 "poly_price_source": dbg.get("source"),
                 "poly_liquidity_usd": pm.liquidity_usd,
+                "poly_game_start": pm.game_start_time,
                 "poly_url":       pm.url,
             })
     return picks
@@ -457,17 +507,25 @@ def run(date_str: str | None = None, min_ev: float = MIN_EV_PCT,
     if all_picks:
         print(f"\n  POLYMARKET vs PINNACLE — {eff_date}   "
               f"(pilot ${bankroll:.0f}, flat ${stake:.2f}/pick)")
+        print(f"  {'':6} {'team':<24} {'rest@':>6} {'fair':>6} {'MAKE':>7} "
+              f"{'TAKE':>7}   spread cost")
         print("  " + "─" * 74)
         for p in sorted(all_picks, key=lambda x: -x["edge_pct"]):
             # Sign comes from the format spec, never a literal "+" — a hardcoded
             # plus in front of a negative number renders "+-3.1%", which reads
             # as a positive edge at a glance. That is the one typo in a betting
             # tool that costs money.
-            print(f"  {p['edge_pct']:>+5.1f}%  {p['team']:<28.28} "
-                  f"cost {p['poly_cost']:.3f} vs fair {p['model_prob']:.3f} "
-                  f"[{p['fair_source'] or '?':<8}] ~${stake:.2f}")
+            tc = p.get("poly_taker_cost")
+            take_ev = (100 * (p["model_prob"] / tc - 1)) if tc else None
+            take_s = f"{take_ev:>+6.1f}%" if take_ev is not None else "     —"
+            gap = f"{(p['edge_pct'] - take_ev):>+5.1f}pp" if take_ev is not None else "     —"
+            print(f"  {'':6} {p['team']:<24.24} {p['poly_cost']:>6.3f} "
+                  f"{p['model_prob']:>6.3f} {p['edge_pct']:>+6.1f}% {take_s}   {gap}")
         print("  " + "─" * 74)
-        print("  Shadow only — the $112 stays parked until the 300-bet CLV verdict.")
+        print(f"  MAKE = rest inside the bid, no fee, fills only if the market comes to you.")
+        print(f"  TAKE = cross the spread at the ask + sports_fees_v2 taker fee.")
+        print(f"  Flat ${stake:.2f}/pick at {PILOT_STAKE_FRAC:.0%} of a ${bankroll:.0f} bankroll.")
+        print("  Shadow only — the $112 stays parked until fills + CLV say otherwise.")
     else:
         print(f"\n  No Polymarket edges ≥ {min_ev}% today — "
               "tight boards are the normal state; the edge is patience.")
