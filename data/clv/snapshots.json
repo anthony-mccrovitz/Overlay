@@ -346538,7 +346538,11 @@
     "closing_odds_sharp": 104.0,
     "line_clv_sharp": 3.0,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "opening_fair_prob": 0.467532,
+    "opening_opp_odds": -125.0,
+    "entry_overround": 1.0434,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-21",
@@ -346633,7 +346637,13 @@
     "closing_odds_sharp": -103.0,
     "line_clv_sharp": 1.0,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "opening_fair_prob": 0.502357,
+    "opening_fair_sharp": 0.506872,
+    "entry_ev_vs_fair_pct": 3.909,
+    "opening_opp_odds": -103.0,
+    "entry_overround": 1.0196,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-21",
@@ -346662,7 +346672,13 @@
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 0.89,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 2.269
+    "price_clv_raw_sharp_pct": 2.269,
+    "opening_fair_prob": 0.510388,
+    "opening_fair_sharp": 0.512522,
+    "entry_ev_vs_fair_pct": 10.192,
+    "opening_opp_odds": -101.0,
+    "entry_overround": 1.0263,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-21",
@@ -351639,5 +351655,58 @@
     "opening_opp_odds": -145.0,
     "entry_overround": 1.0192,
     "entry_board_age_min": 0.1
+  },
+  {
+    "date": "2026-07-21",
+    "team": "Puebla",
+    "player": null,
+    "opponent": "Puebla @ Cruz Azul",
+    "sport": "soccer_mexico_ligamx",
+    "market": "moneyline",
+    "strategy": "devig_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 800.0,
+    "opening_implied_prob": 0.111111,
+    "snapshot_time": "2026-07-21T15:14:53.209480+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "catalyst": "stale_opener",
+    "commence_time": "2026-08-01T01:00:00Z",
+    "consensus_fair_prob": 0.258753,
+    "consensus_n_books": 2,
+    "opening_fair_prob": 0.260152,
+    "opening_opp_odds": -105.0,
+    "opening_draw_odds": 260.0,
+    "entry_overround": 1.0678,
+    "entry_board_age_min": 0.0
+  },
+  {
+    "date": "2026-07-21",
+    "team": "Puebla",
+    "player": null,
+    "opponent": "Puebla @ Cruz Azul",
+    "sport": "soccer_mexico_ligamx",
+    "market": "moneyline",
+    "strategy": "consensus_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 800.0,
+    "opening_implied_prob": 0.111111,
+    "snapshot_time": "2026-07-21T15:14:53.209480+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-01T01:00:00Z",
+    "consensus_fair_prob": 0.258753,
+    "consensus_n_books": 2,
+    "opening_fair_prob": 0.260152,
+    "opening_opp_odds": -105.0,
+    "opening_draw_odds": 260.0,
+    "entry_overround": 1.0678,
+    "entry_board_age_min": 0.0
   }
 ]
