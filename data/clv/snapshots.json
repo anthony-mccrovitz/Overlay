@@ -345470,7 +345470,7 @@
     "opening_draw_odds": 265.0,
     "entry_overround": 1.0715,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 13681.9
   },
   {
@@ -346113,7 +346113,7 @@
     "opening_draw_odds": 253.0,
     "entry_overround": 1.0366,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 1171.2
   },
   {
@@ -346303,7 +346303,7 @@
     "opening_draw_odds": 310.0,
     "entry_overround": 1.0394,
     "entry_board_age_min": 0.3,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-22",
@@ -346399,7 +346399,7 @@
     "clv_raw_pct": 4.066,
     "clv_novig_pct": 1.237,
     "clv_novig_sharp_pct": 1.237,
-    "poly_filled": false,
+    "poly_filled": true,
     "closing_odds_sharp": -138.0,
     "closing_imp_sharp": 0.568262,
     "clv_sharp": 0.029091,
@@ -351491,7 +351491,8 @@
     "clv_sharp": -0.020625,
     "clv_sharp_pct": -2.062,
     "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -2.841
+    "clv_novig_sharp_pct": -2.841,
+    "poly_filled": false
   },
   {
     "date": "2026-07-21",
@@ -351528,7 +351529,8 @@
     "clv_sharp": 0.05003,
     "clv_sharp_pct": 5.003,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 3.199
+    "clv_novig_sharp_pct": 3.199,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351554,7 +351556,8 @@
     "opening_opp_odds": 350.0,
     "opening_draw_odds": 260.0,
     "entry_overround": 1.0556,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": true
   },
   {
     "date": "2026-07-22",
@@ -351580,7 +351583,8 @@
     "opening_opp_odds": -134.0,
     "opening_draw_odds": 340.0,
     "entry_overround": 1.038,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351606,6 +351610,34 @@
     "opening_opp_odds": 265.0,
     "opening_draw_odds": 310.0,
     "entry_overround": 1.0057,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-21",
+    "team": "Pittsburgh Pirates",
+    "player": null,
+    "opponent": "Pittsburgh Pirates @ New York Yankees",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 144.0,
+    "opening_implied_prob": 0.409836,
+    "snapshot_time": "2026-07-21T14:49:12.662250+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-21T23:06:00Z",
+    "consensus_fair_prob": 0.418609,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.419305,
+    "opening_fair_sharp": 0.419305,
+    "entry_ev_vs_fair_pct": 2.31,
+    "opening_opp_odds": -145.0,
+    "entry_overround": 1.0192,
+    "entry_board_age_min": 0.1
   }
 ]

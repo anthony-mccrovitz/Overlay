@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-21T09:17:35.493956+00:00",
+  "generated_at": "2026-07-21T14:49:40.457597+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 116.48,
-  "n_settled": 7,
-  "n_pending": 45,
-  "wins": 3,
-  "losses": 4,
-  "staked": 32.18,
-  "pnl": 4.48,
-  "expected_pnl": 1.69,
-  "roi_pct": 13.92,
+  "end_bankroll": 123.32,
+  "n_settled": 9,
+  "n_pending": 44,
+  "wins": 4,
+  "losses": 5,
+  "staked": 41.98,
+  "pnl": 11.32,
+  "expected_pnl": 1.96,
+  "roi_pct": 26.97,
   "max_drawdown": 10.38,
   "skipped": {
-    "resting order never filled": 1,
-    "exposure cap reached for the slate": 27,
-    "not settled yet": 17
+    "resting order never filled": 3,
+    "exposure cap reached for the slate": 28,
+    "not settled yet": 13
   },
   "significance": {
-    "mean_edge_per_unit": 0.052,
-    "sd_per_unit": 1.5124,
-    "n_for_2sigma": 3385
+    "mean_edge_per_unit": 0.0467,
+    "sd_per_unit": 1.4767,
+    "n_for_2sigma": 4006
   },
   "rows": [
     {
@@ -133,6 +133,38 @@
       "pnl": -4.85,
       "expected_pnl": 0.555,
       "equity": 116.48
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_incheon-united_moneyline_win",
+      "date": "2026-07-21",
+      "team": "Incheon United",
+      "sport": "soccer_korea_kleague1",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.28,
+      "fair": 0.289,
+      "stake": 4.66,
+      "shares": 16.64,
+      "result": "win",
+      "pnl": 11.98,
+      "expected_pnl": 0.15,
+      "equity": 128.46
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_jeonbuk-hyundai-motors_moneyline_win",
+      "date": "2026-07-21",
+      "team": "Jeonbuk Hyundai Motors",
+      "sport": "soccer_korea_kleague1",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.46,
+      "fair": 0.471,
+      "stake": 5.14,
+      "shares": 11.17,
+      "result": "loss",
+      "pnl": -5.14,
+      "expected_pnl": 0.123,
+      "equity": 123.32
     }
   ]
 }
