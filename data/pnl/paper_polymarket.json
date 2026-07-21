@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-21T04:01:07.670564+00:00",
+  "generated_at": "2026-07-21T09:17:35.493956+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 108.34,
-  "n_settled": 5,
-  "n_pending": 42,
-  "wins": 2,
-  "losses": 3,
-  "staked": 23.0,
-  "pnl": -3.66,
-  "expected_pnl": 0.9,
-  "roi_pct": -15.91,
+  "end_bankroll": 116.48,
+  "n_settled": 7,
+  "n_pending": 45,
+  "wins": 3,
+  "losses": 4,
+  "staked": 32.18,
+  "pnl": 4.48,
+  "expected_pnl": 1.69,
+  "roi_pct": 13.92,
   "max_drawdown": 10.38,
   "skipped": {
     "resting order never filled": 1,
-    "not settled yet": 19,
-    "exposure cap reached for the slate": 22
+    "exposure cap reached for the slate": 27,
+    "not settled yet": 17
   },
   "significance": {
-    "mean_edge_per_unit": 0.0394,
-    "sd_per_unit": 1.3201,
-    "n_for_2sigma": 4487
+    "mean_edge_per_unit": 0.052,
+    "sd_per_unit": 1.5124,
+    "n_for_2sigma": 3385
   },
   "rows": [
     {
@@ -101,6 +101,38 @@
       "pnl": -4.51,
       "expected_pnl": 0.292,
       "equity": 108.34
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260720_washington-mystics_moneyline_win",
+      "date": "2026-07-20",
+      "team": "Washington Mystics",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.25,
+      "fair": 0.2631,
+      "stake": 4.33,
+      "shares": 17.32,
+      "result": "win",
+      "pnl": 12.99,
+      "expected_pnl": 0.227,
+      "equity": 121.33
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260720_seattle-storm_moneyline_win",
+      "date": "2026-07-20",
+      "team": "Seattle Storm",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.18,
+      "fair": 0.2006,
+      "stake": 4.85,
+      "shares": 26.94,
+      "result": "loss",
+      "pnl": -4.85,
+      "expected_pnl": 0.555,
+      "equity": 116.48
     }
   ]
 }
