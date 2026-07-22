@@ -344889,7 +344889,7 @@
     "opening_draw_odds": 250.0,
     "entry_overround": 1.0519,
     "entry_board_age_min": 0.3,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 2761.7
   },
   {
@@ -351314,7 +351314,7 @@
     "opening_opp_odds": -110.0,
     "entry_overround": 1.0288,
     "entry_board_age_min": 0.3,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 1323.8,
     "clv_devigged": true,
     "clv_raw_pct": -5.342,
@@ -351533,7 +351533,8 @@
     "clv_sharp": -0.00509,
     "clv_sharp_pct": -0.509,
     "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -2.052
+    "clv_novig_sharp_pct": -2.052,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351570,7 +351571,8 @@
     "clv_sharp": 0.045357,
     "clv_sharp_pct": 4.536,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 3.592
+    "clv_novig_sharp_pct": 3.592,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351607,7 +351609,8 @@
     "clv_sharp": -0.043916,
     "clv_sharp_pct": -4.392,
     "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -5.252
+    "clv_novig_sharp_pct": -5.252,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351642,7 +351645,8 @@
     "clv_sharp": 0.007447,
     "clv_sharp_pct": 0.745,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.442
+    "clv_novig_sharp_pct": 0.442,
+    "poly_filled": true
   },
   {
     "date": "2026-07-22",
@@ -351677,7 +351681,8 @@
     "clv_sharp": -0.038044,
     "clv_sharp_pct": -3.804,
     "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -5.491
+    "clv_novig_sharp_pct": -5.491,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351704,7 +351709,8 @@
     "opening_draw_odds": 270.0,
     "entry_overround": 1.0322,
     "entry_board_age_min": 0.1,
-    "entry_lead_min": 5487.8
+    "entry_lead_min": 5487.8,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351731,7 +351737,8 @@
     "opening_draw_odds": 290.0,
     "entry_overround": 1.0398,
     "entry_board_age_min": 0.1,
-    "entry_lead_min": 5427.8
+    "entry_lead_min": 5427.8,
+    "poly_filled": false
   },
   {
     "date": "2026-07-22",
@@ -351781,7 +351788,8 @@
     "closing_odds_sharp": -117.0,
     "line_clv_sharp": -0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": false
+    "beat_close_sharp": false,
+    "commence_time": "2026-07-22T19:41:00Z"
   },
   {
     "date": "2026-07-22",
@@ -351807,7 +351815,8 @@
     "closing_odds_sharp": 102.0,
     "line_clv_sharp": 0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "commence_time": "2026-07-22T22:41:00Z"
   },
   {
     "date": "2026-07-22",
@@ -351857,7 +351866,8 @@
     "closing_odds_sharp": 105.0,
     "line_clv_sharp": 1.25,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "commence_time": "2026-07-23T00:11:00Z"
   },
   {
     "date": "2026-07-22",
@@ -351873,7 +351883,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-07-22T23:05:00Z"
   },
   {
     "date": "2026-07-22",
@@ -358008,5 +358019,113 @@
     "price_clv_pct": -1.091,
     "beat_close": false,
     "price_clv_raw_pct": -1.091
+  },
+  {
+    "date": "2026-07-22",
+    "team": "Cincinnati Reds",
+    "player": null,
+    "opponent": "Cincinnati Reds @ Seattle Mariners",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 144.0,
+    "opening_implied_prob": 0.409836,
+    "snapshot_time": "2026-07-22T09:15:57.268781+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-22T19:41:00Z",
+    "consensus_fair_prob": 0.418604,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.416247,
+    "opening_fair_sharp": 0.418325,
+    "entry_ev_vs_fair_pct": 2.071,
+    "opening_opp_odds": -148.0,
+    "entry_overround": 1.0223,
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-22",
+    "team": "Atlanta Braves",
+    "player": null,
+    "opponent": "San Diego Padres @ Atlanta Braves",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": -104.0,
+    "opening_implied_prob": 0.509804,
+    "snapshot_time": "2026-07-22T09:15:57.268781+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-22T23:16:00Z",
+    "consensus_fair_prob": 0.519824,
+    "consensus_n_books": 9,
+    "opening_fair_prob": 0.519338,
+    "opening_opp_odds": 102.0,
+    "entry_overround": 1.0299,
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-22",
+    "team": "Bucheon FC 1995",
+    "player": null,
+    "opponent": "FC Anyang @ Bucheon FC 1995",
+    "sport": "soccer_korea_kleague1",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 233.0,
+    "opening_implied_prob": 0.3003,
+    "snapshot_time": "2026-07-22T09:15:57.268781+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-26T10:30:00Z",
+    "consensus_fair_prob": 0.193449,
+    "consensus_n_books": 2,
+    "opening_fair_prob": 0.196779,
+    "opening_opp_odds": -130.0,
+    "opening_draw_odds": 240.0,
+    "entry_overround": 1.0699,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-22",
+    "team": "Colorado Rapids",
+    "player": null,
+    "opponent": "San Diego FC @ Colorado Rapids",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 108.0,
+    "opening_implied_prob": 0.480769,
+    "snapshot_time": "2026-07-22T09:15:57.268781+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-26T00:30:00Z",
+    "consensus_fair_prob": 0.247141,
+    "consensus_n_books": 6,
+    "opening_fair_prob": 0.242882,
+    "opening_opp_odds": -117.0,
+    "opening_draw_odds": 300.0,
+    "entry_overround": 1.0423,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
   }
 ]
