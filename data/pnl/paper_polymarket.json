@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-21T20:08:15.977386+00:00",
+  "generated_at": "2026-07-22T04:02:42.467060+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 123.32,
-  "n_settled": 9,
-  "n_pending": 54,
-  "wins": 4,
-  "losses": 5,
-  "staked": 41.98,
-  "pnl": 11.32,
-  "expected_pnl": 1.96,
-  "roi_pct": 26.97,
+  "end_bankroll": 122.26,
+  "n_settled": 11,
+  "n_pending": 59,
+  "wins": 5,
+  "losses": 6,
+  "staked": 50.98,
+  "pnl": 10.26,
+  "expected_pnl": 2.23,
+  "roi_pct": 20.13,
   "max_drawdown": 10.38,
   "skipped": {
-    "resting order never filled": 3,
-    "exposure cap reached for the slate": 38,
-    "not settled yet": 13
+    "resting order never filled": 6,
+    "exposure cap reached for the slate": 44,
+    "not settled yet": 9
   },
   "significance": {
-    "mean_edge_per_unit": 0.0467,
-    "sd_per_unit": 1.4767,
-    "n_for_2sigma": 4006
+    "mean_edge_per_unit": 0.0437,
+    "sd_per_unit": 1.4444,
+    "n_for_2sigma": 4376
   },
   "rows": [
     {
@@ -135,6 +135,22 @@
       "equity": 116.48
     },
     {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260721_bahia_moneyline_win",
+      "date": "2026-07-21",
+      "team": "Bahia",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.26,
+      "fair": 0.2654,
+      "stake": 4.66,
+      "shares": 17.92,
+      "result": "loss",
+      "pnl": -4.66,
+      "expected_pnl": 0.097,
+      "equity": 111.82
+    },
+    {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_incheon-united_moneyline_win",
       "date": "2026-07-21",
       "team": "Incheon United",
@@ -143,12 +159,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.28,
       "fair": 0.289,
-      "stake": 4.66,
-      "shares": 16.64,
+      "stake": 4.47,
+      "shares": 15.96,
       "result": "win",
-      "pnl": 11.98,
-      "expected_pnl": 0.15,
-      "equity": 128.46
+      "pnl": 11.49,
+      "expected_pnl": 0.144,
+      "equity": 123.31
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260721_jeonbuk-hyundai-motors_moneyline_win",
@@ -159,12 +175,28 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.46,
       "fair": 0.471,
-      "stake": 5.14,
-      "shares": 11.17,
+      "stake": 4.93,
+      "shares": 10.72,
       "result": "loss",
-      "pnl": -5.14,
-      "expected_pnl": 0.123,
-      "equity": 123.32
+      "pnl": -4.93,
+      "expected_pnl": 0.118,
+      "equity": 118.38
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260721_new-york-yankees_moneyline_win",
+      "date": "2026-07-21",
+      "team": "New York Yankees",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.55,
+      "fair": 0.5718,
+      "stake": 4.74,
+      "shares": 8.62,
+      "result": "win",
+      "pnl": 3.88,
+      "expected_pnl": 0.188,
+      "equity": 122.26
     }
   ]
 }
