@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Nolan Arenado",
+      "team": "Nolan Arenado OVER 0.5",
+      "matchup": "Athletics @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": 275,
+      "model_prob": 0.6382,
+      "implied_prob": 0.244,
+      "edge_pct": 39.41,
+      "model_mu": 1.45,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Tommy White",
+      "team": "Tommy White OVER 0.5",
+      "matchup": "Athletics @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": -230,
+      "model_prob": 0.8735,
+      "implied_prob": 0.6259,
+      "edge_pct": 24.77,
+      "model_mu": 2.09,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Cameron Cauley",
+      "team": "Cameron Cauley UNDER 0.5",
+      "matchup": "Chicago White Sox @ Texas Rangers",
+      "line": 0.5,
+      "odds": -360,
+      "model_prob": 0.9901,
+      "implied_prob": 0.7013,
+      "edge_pct": 28.88,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "James Wood",
+      "team": "James Wood UNDER 0.5",
+      "matchup": "Washington Nationals @ Colorado Rockies",
+      "line": 0.5,
+      "odds": 110,
+      "model_prob": 0.705,
+      "implied_prob": 0.4393,
+      "edge_pct": 26.57,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Gerrit Cole",
+      "team": "Gerrit Cole UNDER 6.5",
+      "matchup": "Pittsburgh Pirates @ New York Yankees",
+      "line": 6.5,
+      "odds": -106,
+      "model_prob": 0.7038,
+      "implied_prob": 0.4854,
+      "edge_pct": 21.84,
+      "model_mu": 5.32,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Juan Soto",
+      "team": "Juan Soto UNDER 0.5",
+      "matchup": "New York Mets @ Milwaukee Brewers",
+      "line": 0.5,
+      "odds": -425,
+      "model_prob": 0.8669,
+      "implied_prob": 0.7276,
+      "edge_pct": 13.93,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
