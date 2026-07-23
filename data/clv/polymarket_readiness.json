@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23T14:55:25.959473+00:00",
+  "generated_at": "2026-07-23T20:02:17.609918+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -19,10 +19,10 @@
   "gates": [
     {
       "gate": "SAMPLE",
-      "have": 40,
+      "have": 41,
       "need": 300,
       "pass": false,
-      "detail": "40 scored of 100 logged (protocol v1)"
+      "detail": "41 scored of 110 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
@@ -33,17 +33,17 @@
     },
     {
       "gate": "FILLS",
-      "have": 47,
+      "have": 49,
       "need": 100,
       "pass": false,
-      "detail": "47 filled of 99 checked"
+      "detail": "49 filled of 109 checked"
     },
     {
       "gate": "CLV",
-      "have": 0.939,
+      "have": 1.371,
       "need": "> 0",
       "pass": true,
-      "detail": "avg +0.939% over 40 scored"
+      "detail": "avg +1.371% over 41 scored"
     },
     {
       "gate": "DRAWDOWN",
@@ -58,6 +58,6 @@
     "buckets": [],
     "worst_gap": 0.0
   },
-  "n_logged": 100,
-  "n_scored": 40
+  "n_logged": 110,
+  "n_scored": 41
 }
