@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23T09:15:28.047259+00:00",
+  "generated_at": "2026-07-23T14:55:25.959473+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -22,7 +22,7 @@
       "have": 40,
       "need": 300,
       "pass": false,
-      "detail": "40 scored of 97 logged (protocol v1)"
+      "detail": "40 scored of 100 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
@@ -33,10 +33,10 @@
     },
     {
       "gate": "FILLS",
-      "have": 42,
+      "have": 47,
       "need": 100,
       "pass": false,
-      "detail": "42 filled of 93 checked"
+      "detail": "47 filled of 99 checked"
     },
     {
       "gate": "CLV",
@@ -58,6 +58,6 @@
     "buckets": [],
     "worst_gap": 0.0
   },
-  "n_logged": 97,
+  "n_logged": 100,
   "n_scored": 40
 }

@@ -360339,7 +360339,7 @@
     "opening_opp_odds": -216.0,
     "entry_overround": 1.0114,
     "entry_board_age_min": 0.3,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -360367,7 +360367,7 @@
     "opening_opp_odds": -425.0,
     "entry_overround": 1.0317,
     "entry_board_age_min": 0.3,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -360395,7 +360395,7 @@
     "opening_opp_odds": -458.0,
     "entry_overround": 1.0291,
     "entry_board_age_min": 0.3,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -360536,7 +360536,7 @@
     "opening_draw_odds": 310.0,
     "entry_overround": 1.0231,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -363102,7 +363102,8 @@
     "opening_opp_odds": 221.0,
     "opening_draw_odds": 274.0,
     "entry_overround": 1.0335,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -363130,7 +363131,8 @@
     "opening_opp_odds": 107.0,
     "opening_draw_odds": 270.0,
     "entry_overround": 1.0391,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -363158,6 +363160,93 @@
     "opening_opp_odds": 110.0,
     "opening_draw_odds": 313.0,
     "entry_overround": 1.0168,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Abubakar Vagaev",
+    "player": null,
+    "opponent": "Saygid Izagakhmaev @ Abubakar Vagaev",
+    "sport": "mma_mixed_martial_arts",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": -233.0,
+    "opening_implied_prob": 0.6997,
+    "snapshot_time": "2026-07-23T14:55:04.756767+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T16:15:00Z",
+    "consensus_fair_prob": 0.690075,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.707724,
+    "opening_fair_sharp": 0.715971,
+    "entry_ev_vs_fair_pct": 2.325,
+    "opening_opp_odds": 239.0,
+    "entry_overround": 1.0093,
+    "entry_board_age_min": 0.3,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Internacional",
+    "player": null,
+    "opponent": "Internacional @ Atletico Paranaense",
+    "sport": "soccer_brazil_campeonato",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 335.0,
+    "opening_implied_prob": 0.229885,
+    "snapshot_time": "2026-07-23T14:55:04.756767+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T21:30:00Z",
+    "consensus_fair_prob": 0.242432,
+    "consensus_n_books": 5,
+    "opening_fair_prob": 0.243758,
+    "opening_fair_sharp": 0.242432,
+    "entry_ev_vs_fair_pct": 5.458,
+    "opening_opp_odds": 105.0,
+    "opening_draw_odds": 236.0,
+    "entry_overround": 1.0386,
+    "entry_board_age_min": 0.3,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Sporting Kansas City",
+    "player": null,
+    "opponent": "Sporting Kansas City @ Los Angeles FC",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 1150.0,
+    "opening_implied_prob": 0.08,
+    "snapshot_time": "2026-07-23T14:55:04.756767+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-26T02:30:00Z",
+    "consensus_fair_prob": 0.087838,
+    "consensus_n_books": 9,
+    "opening_fair_prob": 0.084439,
+    "opening_fair_sharp": 0.094307,
+    "entry_ev_vs_fair_pct": 17.884,
+    "opening_opp_odds": -400.0,
+    "opening_draw_odds": 600.0,
+    "entry_overround": 1.0298,
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
   }
 ]
