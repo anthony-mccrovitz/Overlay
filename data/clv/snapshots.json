@@ -360872,7 +360872,7 @@
     "opening_opp_odds": -130.0,
     "entry_overround": 1.0157,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 791.2,
     "clv_devigged": true,
     "clv_raw_pct": 0.941,
@@ -360975,7 +360975,8 @@
     "entry_ev_vs_fair_pct": 3.839,
     "opening_opp_odds": -314.0,
     "entry_overround": 1.0362,
-    "entry_board_age_min": 0.3
+    "entry_board_age_min": 0.3,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -361002,7 +361003,8 @@
     "entry_ev_vs_fair_pct": 3.181,
     "opening_opp_odds": -170.0,
     "entry_overround": 1.0265,
-    "entry_board_age_min": 0.3
+    "entry_board_age_min": 0.3,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -361057,7 +361059,8 @@
     "entry_ev_vs_fair_pct": 3.498,
     "opening_opp_odds": -216.0,
     "entry_overround": 1.0114,
-    "entry_board_age_min": 0.3
+    "entry_board_age_min": 0.3,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -361224,7 +361227,8 @@
     "opening_opp_odds": -132.0,
     "opening_draw_odds": 340.0,
     "entry_overround": 1.0343,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -361282,7 +361286,7 @@
     "opening_draw_odds": 277.0,
     "entry_overround": 1.0285,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -361311,7 +361315,7 @@
     "opening_draw_odds": 280.0,
     "entry_overround": 1.0189,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -361368,7 +361372,8 @@
     "opening_opp_odds": -158.0,
     "opening_draw_odds": 350.0,
     "entry_overround": 1.007,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -361396,7 +361401,8 @@
     "opening_opp_odds": 102.0,
     "opening_draw_odds": 292.0,
     "entry_overround": 1.0099,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
   },
   {
     "date": "2026-07-23",
@@ -361422,7 +361428,8 @@
     "closing_odds_sharp": -116.0,
     "line_clv_sharp": 0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "commence_time": "2026-07-23T16:16:00Z"
   },
   {
     "date": "2026-07-23",
@@ -363751,5 +363758,117 @@
     "line_clv": -1.0,
     "price_clv_pct": null,
     "beat_close": false
+  },
+  {
+    "date": "2026-07-23",
+    "team": "San Diego Padres",
+    "player": null,
+    "opponent": "San Diego Padres @ Atlanta Braves",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 233.0,
+    "opening_implied_prob": 0.3003,
+    "snapshot_time": "2026-07-23T09:14:56.439055+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-23T16:16:00Z",
+    "consensus_fair_prob": 0.30942,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.308932,
+    "opening_fair_sharp": 0.308932,
+    "entry_ev_vs_fair_pct": 2.875,
+    "opening_opp_odds": -245.0,
+    "entry_overround": 1.0276,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Philadelphia Union",
+    "player": null,
+    "opponent": "Seattle Sounders FC @ Philadelphia Union",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 127.0,
+    "opening_implied_prob": 0.440529,
+    "snapshot_time": "2026-07-23T09:15:09.340975+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T23:30:00Z",
+    "consensus_fair_prob": 0.441517,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.439832,
+    "opening_fair_sharp": 0.448978,
+    "entry_ev_vs_fair_pct": 1.918,
+    "opening_opp_odds": 221.0,
+    "opening_draw_odds": 274.0,
+    "entry_overround": 1.0335,
+    "entry_board_age_min": 0.2
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Toronto FC",
+    "player": null,
+    "opponent": "Toronto FC @ D.C. United",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 270.0,
+    "opening_implied_prob": 0.27027,
+    "snapshot_time": "2026-07-23T09:15:09.340975+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T23:30:00Z",
+    "consensus_fair_prob": 0.274033,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.274969,
+    "opening_fair_sharp": 0.282382,
+    "entry_ev_vs_fair_pct": 4.482,
+    "opening_opp_odds": 107.0,
+    "opening_draw_odds": 270.0,
+    "entry_overround": 1.0391,
+    "entry_board_age_min": 0.2
+  },
+  {
+    "date": "2026-07-25",
+    "team": "FC Dallas",
+    "player": null,
+    "opponent": "FC Dallas @ San Diego FC",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 223.0,
+    "opening_implied_prob": 0.309598,
+    "snapshot_time": "2026-07-23T09:15:09.340975+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-26T01:30:00Z",
+    "consensus_fair_prob": 0.302346,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.293567,
+    "opening_fair_sharp": 0.316241,
+    "entry_ev_vs_fair_pct": 2.146,
+    "opening_opp_odds": 110.0,
+    "opening_draw_odds": 313.0,
+    "entry_overround": 1.0168,
+    "entry_board_age_min": 0.2
   }
 ]
