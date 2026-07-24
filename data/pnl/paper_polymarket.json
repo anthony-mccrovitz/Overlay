@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-23T20:02:17.608846+00:00",
+  "generated_at": "2026-07-24T04:00:13.811905+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 109.32,
-  "n_settled": 19,
-  "n_pending": 102,
-  "wins": 7,
-  "losses": 12,
-  "staked": 90.05,
-  "pnl": -2.68,
-  "expected_pnl": 5.65,
-  "roi_pct": -2.98,
-  "max_drawdown": 19.4,
+  "end_bankroll": 106.1,
+  "n_settled": 22,
+  "n_pending": 109,
+  "wins": 8,
+  "losses": 14,
+  "staked": 103.04,
+  "pnl": -5.9,
+  "expected_pnl": 6.3,
+  "roi_pct": -5.73,
+  "max_drawdown": 23.77,
   "skipped": {
-    "resting order never filled": 6,
-    "exposure cap reached for the slate": 75,
+    "resting order never filled": 8,
+    "exposure cap reached for the slate": 80,
     "not settled yet": 21
   },
   "significance": {
-    "mean_edge_per_unit": 0.0621,
-    "sd_per_unit": 1.7004,
-    "n_for_2sigma": 2998
+    "mean_edge_per_unit": 0.0605,
+    "sd_per_unit": 1.7133,
+    "n_for_2sigma": 3212
   },
   "rows": [
     {
@@ -325,6 +325,54 @@
       "pnl": -4.56,
       "expected_pnl": 0.468,
       "equity": 109.32
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260723_remo_moneyline_win",
+      "date": "2026-07-23",
+      "team": "Remo",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.13,
+      "fair": 0.1428,
+      "stake": 4.37,
+      "shares": 33.62,
+      "result": "loss",
+      "pnl": -4.37,
+      "expected_pnl": 0.43,
+      "equity": 104.95
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260723_minnesota-twins_moneyline_win",
+      "date": "2026-07-23",
+      "team": "Minnesota Twins",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.43,
+      "fair": 0.4395,
+      "stake": 4.2,
+      "shares": 9.77,
+      "result": "win",
+      "pnl": 5.57,
+      "expected_pnl": 0.093,
+      "equity": 110.52
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260723_san-diego-padres_moneyline_win",
+      "date": "2026-07-23",
+      "team": "San Diego Padres",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.3,
+      "fair": 0.3089,
+      "stake": 4.42,
+      "shares": 14.73,
+      "result": "loss",
+      "pnl": -4.42,
+      "expected_pnl": 0.131,
+      "equity": 106.1
     }
   ]
 }
