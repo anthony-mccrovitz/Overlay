@@ -575469,6 +575469,41 @@
       "strategy": null,
       "tainted": null,
       "clv_status": "heuristic"
+    },
+    {
+      "pick_id": "soccer_mexico_ligamx_20260724_tijuana_moneyline_win",
+      "date": "2026-07-24",
+      "sport": "soccer_mexico_ligamx",
+      "market": "moneyline",
+      "direction": "WIN",
+      "team": "Tijuana",
+      "matchup": "Le\u00f3n @ Tijuana",
+      "odds": -105,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.5517,
+      "model_prob_raw": null,
+      "edge_pct": 3.59,
+      "raw_edge_pct": 6.9,
+      "stake": 0.5,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-07-24T19:44:34.175994+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": "tier1",
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "strategy": null,
+      "tainted": null,
+      "clv_status": "heuristic"
     }
   ]
 }
