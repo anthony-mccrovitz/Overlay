@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-24T09:11:40.259355+00:00",
+  "generated_at": "2026-07-24T14:30:36.021420+00:00",
   "summary": {
-    "n": 131,
-    "n_filled": 68,
-    "fill_rate_pct": 51.9,
-    "claimed_ev_filled": 4.66,
-    "claimed_ev_unfilled": 4.49,
-    "mean_post_fill_drift": -0.0024,
-    "median_minutes_to_fill": 423.7
+    "n": 141,
+    "n_filled": 72,
+    "fill_rate_pct": 51.1,
+    "claimed_ev_filled": 4.57,
+    "claimed_ev_unfilled": 4.39,
+    "mean_post_fill_drift": -0.0031,
+    "median_minutes_to_fill": 446.5
   },
   "rows": [
     {
@@ -1224,9 +1224,9 @@
       "claimed_ev_pct": 6.7,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.275,
+      "price_at_kickoff": 0.265,
       "post_fill_drift": null,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_tyrell-fortune_moneyline_win",
@@ -1238,9 +1238,9 @@
       "claimed_ev_pct": 3.73,
       "filled": true,
       "minutes_to_fill": 1120.5,
-      "price_at_kickoff": 0.25,
-      "post_fill_drift": -0.01,
-      "n_ticks": 177
+      "price_at_kickoff": 0.245,
+      "post_fill_drift": -0.015,
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_thomas-petersen_moneyline_win",
@@ -1254,7 +1254,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.375,
       "post_fill_drift": null,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_brendson-ribeiro_moneyline_win",
@@ -1268,7 +1268,7 @@
       "minutes_to_fill": 1530.3,
       "price_at_kickoff": 0.115,
       "post_fill_drift": -0.005,
-      "n_ticks": 176
+      "n_ticks": 206
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_mike-davis_moneyline_win",
@@ -1280,9 +1280,9 @@
       "claimed_ev_pct": 3.51,
       "filled": true,
       "minutes_to_fill": 620.1,
-      "price_at_kickoff": 0.335,
-      "post_fill_drift": 0.005,
-      "n_ticks": 176
+      "price_at_kickoff": 0.325,
+      "post_fill_drift": -0.005,
+      "n_ticks": 206
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_santiago-ponzinibbio_moneyline_win",
@@ -1294,9 +1294,9 @@
       "claimed_ev_pct": 7.22,
       "filled": true,
       "minutes_to_fill": 630.2,
-      "price_at_kickoff": 0.19,
-      "post_fill_drift": -0.01,
-      "n_ticks": 177
+      "price_at_kickoff": 0.185,
+      "post_fill_drift": -0.015,
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_cody-gibson_moneyline_win",
@@ -1308,9 +1308,9 @@
       "claimed_ev_pct": 10.21,
       "filled": true,
       "minutes_to_fill": 560.1,
-      "price_at_kickoff": 0.175,
-      "post_fill_drift": -0.015,
-      "n_ticks": 177
+      "price_at_kickoff": 0.165,
+      "post_fill_drift": -0.025,
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260725_chapecoense_moneyline_win",
@@ -1324,7 +1324,7 @@
       "minutes_to_fill": 720.1,
       "price_at_kickoff": 0.115,
       "post_fill_drift": -0.005,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260725_jeonbuk-hyundai-motors_moneyline_win",
@@ -1338,7 +1338,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.395,
       "post_fill_drift": null,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_new-york-red-bulls_moneyline_win",
@@ -1352,7 +1352,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.435,
       "post_fill_drift": null,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_fc-cincinnati_moneyline_win",
@@ -1366,7 +1366,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.235,
       "post_fill_drift": null,
-      "n_ticks": 176
+      "n_ticks": 206
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_inter-miami-cf_moneyline_win",
@@ -1380,7 +1380,7 @@
       "minutes_to_fill": 570.1,
       "price_at_kickoff": 0.455,
       "post_fill_drift": 0.005,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_atlanta-united-fc_moneyline_win",
@@ -1394,7 +1394,7 @@
       "minutes_to_fill": 220.1,
       "price_at_kickoff": 0.285,
       "post_fill_drift": 0.005,
-      "n_ticks": 176
+      "n_ticks": 206
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_nashville-sc_moneyline_win",
@@ -1408,7 +1408,7 @@
       "minutes_to_fill": 220.1,
       "price_at_kickoff": 0.445,
       "post_fill_drift": -0.015,
-      "n_ticks": 176
+      "n_ticks": 206
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_colorado-rapids_moneyline_win",
@@ -1422,7 +1422,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.285,
       "post_fill_drift": null,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_austin-fc_moneyline_win",
@@ -1436,7 +1436,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.205,
       "post_fill_drift": null,
-      "n_ticks": 176
+      "n_ticks": 206
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_minnesota-united-fc_moneyline_win",
@@ -1450,7 +1450,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.255,
       "post_fill_drift": null,
-      "n_ticks": 177
+      "n_ticks": 209
     },
     {
       "pick_id": "polymarket_ev__mlb_20260723_san-diego-padres_moneyline_win",
@@ -1478,7 +1478,7 @@
       "minutes_to_fill": 125.0,
       "price_at_kickoff": 0.445,
       "post_fill_drift": 0.005,
-      "n_ticks": 144
+      "n_ticks": 174
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_toronto-fc_moneyline_win",
@@ -1492,7 +1492,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.275,
       "post_fill_drift": null,
-      "n_ticks": 144
+      "n_ticks": 176
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_fc-dallas_moneyline_win",
@@ -1502,11 +1502,11 @@
       "limit": 0.31,
       "fair_at_entry": 0.3162,
       "claimed_ev_pct": 2.01,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.315,
-      "post_fill_drift": null,
-      "n_ticks": 145
+      "filled": true,
+      "minutes_to_fill": 1624.9,
+      "price_at_kickoff": 0.305,
+      "post_fill_drift": -0.005,
+      "n_ticks": 177
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_abubakar-vagaev_moneyline_win",
@@ -1520,7 +1520,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.705,
       "post_fill_drift": null,
-      "n_ticks": 111
+      "n_ticks": 143
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260725_internacional_moneyline_win",
@@ -1534,7 +1534,7 @@
       "minutes_to_fill": 925.1,
       "price_at_kickoff": 0.225,
       "post_fill_drift": -0.005,
-      "n_ticks": 111
+      "n_ticks": 143
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_sporting-kansas-city_moneyline_win",
@@ -1548,7 +1548,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.085,
       "post_fill_drift": null,
-      "n_ticks": 111
+      "n_ticks": 143
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_colorado-rockies_moneyline_win",
@@ -1560,9 +1560,9 @@
       "claimed_ev_pct": 9.85,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.315,
+      "price_at_kickoff": 0.305,
       "post_fill_drift": null,
-      "n_ticks": 80
+      "n_ticks": 112
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_pittsburgh-pirates_moneyline_win",
@@ -1576,7 +1576,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.525,
       "post_fill_drift": null,
-      "n_ticks": 79
+      "n_ticks": 109
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_new-york-yankees_moneyline_win",
@@ -1588,9 +1588,9 @@
       "claimed_ev_pct": 3.7,
       "filled": true,
       "minutes_to_fill": 278.5,
-      "price_at_kickoff": 0.455,
-      "post_fill_drift": -0.005,
-      "n_ticks": 80
+      "price_at_kickoff": 0.435,
+      "post_fill_drift": -0.025,
+      "n_ticks": 112
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_arizona-diamondbacks_moneyline_win",
@@ -1604,7 +1604,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.525,
       "post_fill_drift": null,
-      "n_ticks": 79
+      "n_ticks": 111
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_baltimore-orioles_moneyline_win",
@@ -1618,7 +1618,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.525,
       "post_fill_drift": null,
-      "n_ticks": 80
+      "n_ticks": 112
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_san-diego-padres_moneyline_win",
@@ -1632,7 +1632,7 @@
       "minutes_to_fill": 128.5,
       "price_at_kickoff": 0.445,
       "post_fill_drift": 0.015,
-      "n_ticks": 79
+      "n_ticks": 111
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_toronto-blue-jays_moneyline_win",
@@ -1646,7 +1646,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.465,
       "post_fill_drift": null,
-      "n_ticks": 80
+      "n_ticks": 112
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_chicago-white-sox_moneyline_win",
@@ -1660,7 +1660,7 @@
       "minutes_to_fill": 568.6,
       "price_at_kickoff": 0.555,
       "post_fill_drift": -0.005,
-      "n_ticks": 80
+      "n_ticks": 112
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_saygid-izagakhmaev_moneyline_win",
@@ -1674,7 +1674,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.295,
       "post_fill_drift": null,
-      "n_ticks": 79
+      "n_ticks": 109
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260725_pohang-steelers_moneyline_win",
@@ -1688,7 +1688,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.295,
       "post_fill_drift": null,
-      "n_ticks": 79
+      "n_ticks": 109
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_kansas-city-royals_moneyline_win",
@@ -1702,7 +1702,7 @@
       "minutes_to_fill": 40.9,
       "price_at_kickoff": 0.275,
       "post_fill_drift": -0.005,
-      "n_ticks": 32
+      "n_ticks": 64
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_new-york-mets_moneyline_win",
@@ -1714,9 +1714,9 @@
       "claimed_ev_pct": 5.21,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.425,
+      "price_at_kickoff": 0.455,
       "post_fill_drift": null,
-      "n_ticks": 32
+      "n_ticks": 62
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_cleveland-guardians_moneyline_win",
@@ -1726,11 +1726,11 @@
       "limit": 0.44,
       "fair_at_entry": 0.45,
       "claimed_ev_pct": 2.26,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.445,
-      "post_fill_drift": null,
-      "n_ticks": 32
+      "filled": true,
+      "minutes_to_fill": 460.9,
+      "price_at_kickoff": 0.455,
+      "post_fill_drift": 0.015,
+      "n_ticks": 64
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_houston-astros_moneyline_win",
@@ -1744,7 +1744,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.445,
       "post_fill_drift": null,
-      "n_ticks": 32
+      "n_ticks": 64
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260725_seattle-sounders-fc_moneyline_win",
@@ -1758,7 +1758,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.295,
       "post_fill_drift": null,
-      "n_ticks": 33
+      "n_ticks": 65
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_corinthians_moneyline_win",
@@ -1772,7 +1772,7 @@
       "minutes_to_fill": 0.5,
       "price_at_kickoff": 0.275,
       "post_fill_drift": 0.015,
-      "n_ticks": 33
+      "n_ticks": 65
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_botafogo_moneyline_win",
@@ -1786,7 +1786,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.205,
       "post_fill_drift": null,
-      "n_ticks": 33
+      "n_ticks": 65
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_coritiba_moneyline_win",
@@ -1796,11 +1796,11 @@
       "limit": 0.16,
       "fair_at_entry": 0.1686,
       "claimed_ev_pct": 5.4,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.165,
-      "post_fill_drift": null,
-      "n_ticks": 33
+      "filled": true,
+      "minutes_to_fill": 570.6,
+      "price_at_kickoff": 0.155,
+      "post_fill_drift": -0.005,
+      "n_ticks": 65
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260726_fc-anyang_moneyline_win",
@@ -1812,9 +1812,9 @@
       "claimed_ev_pct": 2.14,
       "filled": true,
       "minutes_to_fill": 0.5,
-      "price_at_kickoff": 0.22,
-      "post_fill_drift": 0.0,
-      "n_ticks": 33
+      "price_at_kickoff": 0.215,
+      "post_fill_drift": -0.005,
+      "n_ticks": 65
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260726_bucheon-fc-1995_moneyline_win",
@@ -1828,7 +1828,7 @@
       "minutes_to_fill": 0.5,
       "price_at_kickoff": 0.155,
       "post_fill_drift": -0.005,
-      "n_ticks": 33
+      "n_ticks": 65
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_atlanta-braves_moneyline_win",
@@ -1842,7 +1842,147 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 1
+      "n_ticks": 33
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_axel-sola_moneyline_win",
+      "team": "Axel Sola",
+      "sport": "mma_mixed_martial_arts",
+      "date": "2026-07-25",
+      "limit": 0.64,
+      "fair_at_entry": 0.6544,
+      "claimed_ev_pct": 2.26,
+      "filled": true,
+      "minutes_to_fill": 79.0,
+      "price_at_kickoff": 0.635,
+      "post_fill_drift": -0.005,
+      "n_ticks": 33
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_usa_mls_20260725_orlando-city-sc_moneyline_win",
+      "team": "Orlando City SC",
+      "sport": "soccer_usa_mls",
+      "date": "2026-07-25",
+      "limit": 0.3,
+      "fair_at_entry": 0.311,
+      "claimed_ev_pct": 3.67,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.305,
+      "post_fill_drift": null,
+      "n_ticks": 33
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_usa_mls_20260725_chicago-fire_moneyline_win",
+      "team": "Chicago Fire",
+      "sport": "soccer_usa_mls",
+      "date": "2026-07-25",
+      "limit": 0.33,
+      "fair_at_entry": 0.3369,
+      "claimed_ev_pct": 2.1,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.335,
+      "post_fill_drift": null,
+      "n_ticks": 33
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260726_gwangju-fc_moneyline_win",
+      "team": "Gwangju FC",
+      "sport": "soccer_korea_kleague1",
+      "date": "2026-07-26",
+      "limit": 0.22,
+      "fair_at_entry": 0.2331,
+      "claimed_ev_pct": 5.98,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.225,
+      "post_fill_drift": null,
+      "n_ticks": 33
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_chicago-cubs_moneyline_win",
+      "team": "Chicago Cubs",
+      "sport": "mlb",
+      "date": "2026-07-24",
+      "limit": 0.47,
+      "fair_at_entry": 0.4859,
+      "claimed_ev_pct": 3.38,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.475,
+      "post_fill_drift": null,
+      "n_ticks": 2
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_los-angeles-dodgers_moneyline_win",
+      "team": "Los Angeles Dodgers",
+      "sport": "mlb",
+      "date": "2026-07-24",
+      "limit": 0.54,
+      "fair_at_entry": 0.5523,
+      "claimed_ev_pct": 2.28,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.545,
+      "post_fill_drift": null,
+      "n_ticks": 2
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_boston-red-sox_moneyline_win",
+      "team": "Boston Red Sox",
+      "sport": "mlb",
+      "date": "2026-07-24",
+      "limit": 0.53,
+      "fair_at_entry": 0.5414,
+      "claimed_ev_pct": 2.14,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.535,
+      "post_fill_drift": null,
+      "n_ticks": 2
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_ismael-bonfim_moneyline_win",
+      "team": "Ismael Bonfim",
+      "sport": "mma_mixed_martial_arts",
+      "date": "2026-07-25",
+      "limit": 0.36,
+      "fair_at_entry": 0.3721,
+      "claimed_ev_pct": 3.35,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.365,
+      "post_fill_drift": null,
+      "n_ticks": 2
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_usa_mls_20260725_charlotte-fc_moneyline_win",
+      "team": "Charlotte FC",
+      "sport": "soccer_usa_mls",
+      "date": "2026-07-25",
+      "limit": 0.31,
+      "fair_at_entry": 0.3196,
+      "claimed_ev_pct": 3.1,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.315,
+      "post_fill_drift": null,
+      "n_ticks": 2
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_remo_moneyline_win",
+      "team": "Remo",
+      "sport": "soccer_brazil_campeonato",
+      "date": "2026-07-26",
+      "limit": 0.42,
+      "fair_at_entry": 0.4353,
+      "claimed_ev_pct": 3.63,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.425,
+      "post_fill_drift": null,
+      "n_ticks": 2
     }
   ]
 }
