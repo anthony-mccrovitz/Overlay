@@ -1,0 +1,98 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Brenan Hanifee",
+      "team": "Brenan Hanifee OVER 0.5",
+      "matchup": "Kansas City Royals @ Detroit Tigers",
+      "line": 0.5,
+      "odds": -125,
+      "model_prob": 0.9538,
+      "implied_prob": 0.5,
+      "edge_pct": 45.38,
+      "model_mu": 3.32,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "James Jarvis",
+      "team": "James Jarvis UNDER 0.5",
+      "matchup": "Atlanta Braves @ Baltimore Orioles",
+      "line": 0.5,
+      "odds": -400,
+      "model_prob": 0.9901,
+      "implied_prob": 0.7191,
+      "edge_pct": 27.1,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Juan Soto",
+      "team": "Juan Soto UNDER 0.5",
+      "matchup": "Los Angeles Dodgers @ New York Mets",
+      "line": 0.5,
+      "odds": 120,
+      "model_prob": 0.7051,
+      "implied_prob": 0.4193,
+      "edge_pct": 28.59,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Tommy White",
+      "team": "Tommy White OVER 0.5",
+      "matchup": "Athletics @ Minnesota Twins",
+      "line": 0.5,
+      "odds": -200,
+      "model_prob": 0.7715,
+      "implied_prob": 0.5946,
+      "edge_pct": 17.69,
+      "model_mu": 1.49,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Hunter Goodman",
+      "team": "Hunter Goodman OVER 0.5",
+      "matchup": "Colorado Rockies @ Milwaukee Brewers",
+      "line": 0.5,
+      "odds": -160,
+      "model_prob": 0.736,
+      "implied_prob": 0.5638,
+      "edge_pct": 17.23,
+      "model_mu": 2.14,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Yordan Alvarez",
+      "team": "Yordan Alvarez UNDER 0.5",
+      "matchup": "Houston Astros @ Chicago White Sox",
+      "line": 0.5,
+      "odds": -380,
+      "model_prob": 0.8632,
+      "implied_prob": 0.7105,
+      "edge_pct": 15.27,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
