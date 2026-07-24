@@ -156649,15 +156649,15 @@
     "opening_odds": 115.0,
     "opening_implied_prob": 0.465116,
     "snapshot_time": "2026-07-08T04:45:39.101128+00:00",
-    "closing_odds": 320.0,
+    "closing_odds": 140.0,
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
     "closing_line": 0.5,
     "line_clv": 0.0,
-    "price_clv_pct": -22.702,
+    "price_clv_pct": -4.845,
     "beat_close": false,
-    "price_clv_raw_pct": -22.702,
+    "price_clv_raw_pct": -4.845,
     "entry_lead_min": 900.3
   },
   {
@@ -346392,12 +346392,12 @@
     "clv": null,
     "clv_pct": null,
     "entry_lead_min": 2177.7,
+    "price_clv_raw_pct": 0.943,
     "closing_line": 5.0,
     "closing_odds": -108.0,
     "line_clv": 0.0,
     "price_clv_pct": -0.755,
     "beat_close": false,
-    "price_clv_raw_pct": 0.943,
     "closing_line_sharp": 5.0,
     "closing_odds_sharp": -108.0,
     "line_clv_sharp": 0.0,
@@ -363592,12 +363592,12 @@
     "clv_devigged": true,
     "clv_raw_pct": -0.98,
     "clv_novig_pct": -3.195,
+    "clv_novig_sharp_pct": -2.454,
     "closing_odds_sharp": -102.0,
     "closing_imp_sharp": 0.495286,
     "clv_sharp": -0.004714,
     "clv_sharp_pct": -0.471,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -2.454
+    "beat_close_sharp": false
   },
   {
     "date": "2026-07-24",
@@ -363655,12 +363655,12 @@
     "clv_devigged": true,
     "clv_raw_pct": -11.863,
     "clv_novig_pct": -13.594,
+    "clv_novig_sharp_pct": -13.328,
     "closing_odds_sharp": 218.0,
     "closing_imp_sharp": 0.307676,
     "clv_sharp": -0.121509,
     "clv_sharp_pct": -12.151,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -13.328
+    "beat_close_sharp": false
   },
   {
     "date": "2026-07-24",
@@ -363691,12 +363691,12 @@
     "clv_devigged": true,
     "clv_raw_pct": 5.947,
     "clv_novig_pct": 2.777,
+    "clv_novig_sharp_pct": 2.901,
     "closing_odds_sharp": -101.0,
     "closing_imp_sharp": 0.492927,
     "clv_sharp": 0.052398,
     "clv_sharp_pct": 5.24,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 2.901
+    "beat_close_sharp": true
   },
   {
     "date": "2026-07-24",
@@ -363810,13 +363810,13 @@
     "clv_devigged": true,
     "clv_raw_pct": 4.884,
     "clv_novig_pct": 3.859,
+    "clv_novig_sharp_pct": 4.372,
+    "poly_filled": true,
     "closing_odds_sharp": 197.0,
     "closing_imp_sharp": 0.329377,
     "clv_sharp": 0.049265,
     "clv_sharp_pct": 4.926,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 4.372,
-    "poly_filled": true
+    "beat_close_sharp": true
   },
   {
     "date": "2026-07-24",
@@ -363877,13 +363877,13 @@
     "clv_devigged": true,
     "clv_raw_pct": 14.963,
     "clv_novig_pct": 12.909,
+    "clv_novig_sharp_pct": 12.909,
+    "poly_filled": false,
     "closing_odds_sharp": -144.0,
     "closing_imp_sharp": 0.577913,
     "clv_sharp": 0.137384,
     "clv_sharp_pct": 13.738,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 12.909,
-    "poly_filled": false
+    "beat_close_sharp": true
   },
   {
     "date": "2026-07-24",
@@ -364097,7 +364097,8 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-24T22:46:00Z"
+    "commence_time": "2026-07-24T22:46:00Z",
+    "entry_lead_min": 1079.0
   },
   {
     "date": "2026-07-24",
@@ -364114,7 +364115,8 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-24T23:11:00Z"
+    "commence_time": "2026-07-24T23:11:00Z",
+    "entry_lead_min": 1104.0
   },
   {
     "date": "2026-07-24",
@@ -364131,7 +364133,8 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-25T00:06:00Z"
+    "commence_time": "2026-07-25T00:06:00Z",
+    "entry_lead_min": 1159.0
   },
   {
     "date": "2026-07-24",
@@ -366199,10 +366202,10 @@
     "opening_odds": 113.0,
     "opening_implied_prob": 0.469484,
     "snapshot_time": "2026-07-24T09:11:03.620856+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": -242.0,
+    "closing_implied_prob": 0.694981,
+    "clv": 0.225497,
+    "clv_pct": 22.55,
     "commence_time": "2026-07-24T23:06:00Z",
     "consensus_fair_prob": 0.480665,
     "consensus_n_books": 10,
@@ -366212,7 +366215,17 @@
     "opening_opp_odds": -111.0,
     "entry_overround": 1.0261,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 834.9,
+    "clv_devigged": true,
+    "clv_raw_pct": 23.812,
+    "clv_novig_pct": 20.768,
+    "closing_odds_sharp": -242.0,
+    "closing_imp_sharp": 0.692324,
+    "clv_sharp": 0.22284,
+    "clv_sharp_pct": 22.284,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": 20.503
   },
   {
     "date": "2026-07-25",
