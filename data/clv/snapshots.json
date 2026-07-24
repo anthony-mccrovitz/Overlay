@@ -360167,7 +360167,7 @@
     "opening_opp_odds": -750.0,
     "entry_overround": 1.0252,
     "entry_board_age_min": 0.3,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -363433,7 +363433,7 @@
     "opening_draw_odds": 236.0,
     "entry_overround": 1.0386,
     "entry_board_age_min": 0.3,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-07-25",
@@ -363722,7 +363722,7 @@
     "opening_opp_odds": 130.0,
     "entry_overround": 1.0216,
     "entry_board_age_min": 0.2,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 1659.4
   },
   {
@@ -363815,7 +363815,8 @@
     "clv_sharp": 0.049265,
     "clv_sharp_pct": 4.926,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 4.372
+    "clv_novig_sharp_pct": 4.372,
+    "poly_filled": true
   },
   {
     "date": "2026-07-24",
@@ -363843,7 +363844,8 @@
     "opening_opp_odds": -140.0,
     "entry_overround": 1.0181,
     "entry_board_age_min": 0.2,
-    "entry_lead_min": 1151.8
+    "entry_lead_min": 1151.8,
+    "poly_filled": false
   },
   {
     "date": "2026-07-24",
@@ -363880,7 +363882,8 @@
     "clv_sharp": 0.137384,
     "clv_sharp_pct": 13.738,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 12.909
+    "clv_novig_sharp_pct": 12.909,
+    "poly_filled": false
   },
   {
     "date": "2026-07-24",
@@ -363908,7 +363911,8 @@
     "opening_opp_odds": -128.0,
     "entry_overround": 1.0222,
     "entry_board_age_min": 0.2,
-    "entry_lead_min": 1181.8
+    "entry_lead_min": 1181.8,
+    "poly_filled": false
   },
   {
     "date": "2026-07-25",
@@ -363936,7 +363940,8 @@
     "opening_opp_odds": 115.0,
     "opening_draw_odds": 300.0,
     "entry_overround": 1.0092,
-    "entry_board_age_min": 0.3
+    "entry_board_age_min": 0.3,
+    "poly_filled": false
   },
   {
     "date": "2026-07-26",
@@ -363962,7 +363967,8 @@
     "opening_opp_odds": 330.0,
     "opening_draw_odds": 230.0,
     "entry_overround": 1.0478,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": true
   },
   {
     "date": "2026-07-26",
@@ -364015,7 +364021,8 @@
     "opening_opp_odds": 135.0,
     "opening_draw_odds": 240.0,
     "entry_overround": 1.053,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": false
   },
   {
     "date": "2026-07-26",
@@ -364072,7 +364079,8 @@
     "opening_opp_odds": -135.0,
     "opening_draw_odds": 249.0,
     "entry_overround": 1.0412,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": true
   },
   {
     "date": "2026-07-24",
@@ -364088,7 +364096,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-07-24T22:46:00Z"
   },
   {
     "date": "2026-07-24",
@@ -364104,7 +364113,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-07-24T23:11:00Z"
   },
   {
     "date": "2026-07-24",
@@ -364120,7 +364130,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-07-25T00:06:00Z"
   },
   {
     "date": "2026-07-24",
@@ -366174,5 +366185,144 @@
     "price_clv_pct": 0.34,
     "beat_close": true,
     "price_clv_raw_pct": 0.34
+  },
+  {
+    "date": "2026-07-24",
+    "team": "Atlanta Braves",
+    "player": null,
+    "opponent": "Atlanta Braves @ Baltimore Orioles",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 113.0,
+    "opening_implied_prob": 0.469484,
+    "snapshot_time": "2026-07-24T09:11:03.620856+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-24T23:06:00Z",
+    "consensus_fair_prob": 0.480665,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.487298,
+    "opening_fair_sharp": 0.487298,
+    "entry_ev_vs_fair_pct": 3.794,
+    "opening_opp_odds": -111.0,
+    "entry_overround": 1.0261,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Axel Sola",
+    "player": null,
+    "opponent": "Axel Sola @ Ismael Bonfim",
+    "sport": "mma_mixed_martial_arts",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": -178.0,
+    "opening_implied_prob": 0.640288,
+    "snapshot_time": "2026-07-24T09:11:13.883562+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T14:25:00Z",
+    "consensus_fair_prob": 0.63635,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.651163,
+    "opening_fair_sharp": 0.65444,
+    "entry_ev_vs_fair_pct": 2.21,
+    "opening_opp_odds": 180.0,
+    "entry_overround": 1.0238,
+    "entry_board_age_min": 0.2
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Orlando City SC",
+    "player": null,
+    "opponent": "Nashville SC @ Orlando City SC",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 233.0,
+    "opening_implied_prob": 0.3003,
+    "snapshot_time": "2026-07-24T09:11:13.883562+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T23:30:00Z",
+    "consensus_fair_prob": 0.304612,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.302115,
+    "opening_fair_sharp": 0.311009,
+    "entry_ev_vs_fair_pct": 3.566,
+    "opening_opp_odds": 118.0,
+    "opening_draw_odds": 280.0,
+    "entry_overround": 1.0344,
+    "entry_board_age_min": 0.2
+  },
+  {
+    "date": "2026-07-25",
+    "team": "Chicago Fire",
+    "player": null,
+    "opponent": "Chicago Fire @ New York City FC",
+    "sport": "soccer_usa_mls",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 203.0,
+    "opening_implied_prob": 0.330033,
+    "snapshot_time": "2026-07-24T09:11:13.883562+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-25T23:30:00Z",
+    "consensus_fair_prob": 0.336507,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.335927,
+    "opening_fair_sharp": 0.336914,
+    "entry_ev_vs_fair_pct": 2.085,
+    "opening_opp_odds": 135.0,
+    "opening_draw_odds": 273.0,
+    "entry_overround": 1.0445,
+    "entry_board_age_min": 0.2
+  },
+  {
+    "date": "2026-07-26",
+    "team": "Gwangju FC",
+    "player": null,
+    "opponent": "Jeju United FC @ Gwangju FC",
+    "sport": "soccer_korea_kleague1",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 355.0,
+    "opening_implied_prob": 0.21978,
+    "snapshot_time": "2026-07-24T09:11:19.896226+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-26T10:30:00Z",
+    "consensus_fair_prob": 0.238234,
+    "consensus_n_books": 5,
+    "opening_fair_prob": 0.228006,
+    "opening_fair_sharp": 0.233148,
+    "entry_ev_vs_fair_pct": 6.083,
+    "opening_opp_odds": -102.0,
+    "opening_draw_odds": 232.0,
+    "entry_overround": 1.0443,
+    "entry_board_age_min": 0.3
   }
 ]
