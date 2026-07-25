@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-24T20:03:40.347967+00:00",
+  "generated_at": "2026-07-25T03:56:06.787794+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 106.1,
-  "n_settled": 22,
-  "n_pending": 133,
-  "wins": 8,
-  "losses": 14,
-  "staked": 103.04,
-  "pnl": -5.9,
-  "expected_pnl": 6.3,
-  "roi_pct": -5.73,
+  "end_bankroll": 117.84,
+  "n_settled": 27,
+  "n_pending": 128,
+  "wins": 11,
+  "losses": 16,
+  "staked": 125.94,
+  "pnl": 5.84,
+  "expected_pnl": 7.23,
+  "roi_pct": 4.64,
   "max_drawdown": 23.77,
   "skipped": {
-    "resting order never filled": 8,
+    "resting order never filled": 11,
     "exposure cap reached for the slate": 102,
-    "not settled yet": 23
+    "not settled yet": 15
   },
   "significance": {
-    "mean_edge_per_unit": 0.0605,
-    "sd_per_unit": 1.7133,
-    "n_for_2sigma": 3212
+    "mean_edge_per_unit": 0.057,
+    "sd_per_unit": 1.6053,
+    "n_for_2sigma": 3173
   },
   "rows": [
     {
@@ -373,6 +373,86 @@
       "pnl": -4.42,
       "expected_pnl": 0.131,
       "equity": 106.1
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_colorado-rockies_moneyline_win",
+      "date": "2026-07-24",
+      "team": "Colorado Rockies",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.3,
+      "fair": 0.3296,
+      "stake": 4.24,
+      "shares": 14.13,
+      "result": "win",
+      "pnl": 9.89,
+      "expected_pnl": 0.418,
+      "equity": 115.99
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_pittsburgh-pirates_moneyline_win",
+      "date": "2026-07-24",
+      "team": "Pittsburgh Pirates",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.52,
+      "fair": 0.5325,
+      "stake": 4.64,
+      "shares": 8.92,
+      "result": "loss",
+      "pnl": -4.64,
+      "expected_pnl": 0.112,
+      "equity": 111.35
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_new-york-yankees_moneyline_win",
+      "date": "2026-07-24",
+      "team": "New York Yankees",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.46,
+      "fair": 0.477,
+      "stake": 4.45,
+      "shares": 9.67,
+      "result": "win",
+      "pnl": 5.22,
+      "expected_pnl": 0.164,
+      "equity": 116.57
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_san-diego-padres_moneyline_win",
+      "date": "2026-07-24",
+      "team": "San Diego Padres",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.43,
+      "fair": 0.4399,
+      "stake": 4.66,
+      "shares": 10.84,
+      "result": "win",
+      "pnl": 6.18,
+      "expected_pnl": 0.107,
+      "equity": 122.75
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260724_chicago-white-sox_moneyline_win",
+      "date": "2026-07-24",
+      "team": "Chicago White Sox",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.56,
+      "fair": 0.5745,
+      "stake": 4.91,
+      "shares": 8.77,
+      "result": "loss",
+      "pnl": -4.91,
+      "expected_pnl": 0.127,
+      "equity": 117.84
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-24T20:03:40.348984+00:00",
+  "generated_at": "2026-07-25T03:56:06.788601+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -26,17 +26,17 @@
     },
     {
       "gate": "ANCHOR",
-      "have": 62,
+      "have": 71,
       "need": 200,
       "pass": false,
-      "detail": "62 graded sharp-fair picks; worst bucket gap 0.000 vs max 0.05"
+      "detail": "71 graded sharp-fair picks; worst bucket gap 0.000 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 70,
+      "have": 72,
       "need": 100,
       "pass": false,
-      "detail": "70 filled of 134 checked"
+      "detail": "72 filled of 143 checked"
     },
     {
       "gate": "CLV",
@@ -54,7 +54,7 @@
     }
   ],
   "anchor": {
-    "n": 62,
+    "n": 71,
     "buckets": [],
     "worst_gap": 0.0
   },
