@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25T19:58:16.435509+00:00",
+  "generated_at": "2026-07-26T04:19:44.956581+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -26,17 +26,17 @@
     },
     {
       "gate": "ANCHOR",
-      "have": 71,
+      "have": 88,
       "need": 200,
       "pass": false,
-      "detail": "71 graded sharp-fair picks; worst bucket gap 0.000 vs max 0.05"
+      "detail": "88 graded sharp-fair picks; worst bucket gap 0.086 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 77,
+      "have": 81,
       "need": 100,
       "pass": false,
-      "detail": "77 filled of 143 checked"
+      "detail": "81 filled of 143 checked"
     },
     {
       "gate": "CLV",
@@ -54,9 +54,17 @@
     }
   ],
   "anchor": {
-    "n": 71,
-    "buckets": [],
-    "worst_gap": 0.0
+    "n": 88,
+    "buckets": [
+      {
+        "bucket": 0.4,
+        "n": 28,
+        "predicted": 0.45,
+        "actual": 0.536,
+        "gap": 0.086
+      }
+    ],
+    "worst_gap": 0.086
   },
   "n_logged": 144,
   "n_scored": 50
