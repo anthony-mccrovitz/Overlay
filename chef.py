@@ -1425,8 +1425,8 @@ def cmd_today(args: argparse.Namespace) -> int:
         print(f"  Yesterday  {yw}-{yl}-{ypu}   {ypr:+.1f}u")
     print("  " + "─" * 54)
 
-    # What to actually bet today
-    print("  TODAY'S CARD  (what to bet)")
+    # 🟢 LIVE — the only lanes that get real money today.
+    print("  🟢 BET THESE  (live lanes — validated)")
     if today_card:
         for p in sorted(today_card, key=lambda x: -(x.get("edge_pct") or 0)):
             o = p.get("odds")
@@ -1438,7 +1438,32 @@ def cmd_today(args: argparse.Namespace) -> int:
             r = p.get("result") or "pending"
             print(f"     {p.get('market', '?')[:9]:9} {t:22} {o:>6}  edge {(p.get('edge_pct') or 0):+.1f}%  [{r}]")
     else:
-        print("     (empty — no market cleared its gate today; that's correct, not a bug)")
+        print("     (nothing cleared a live gate today — a sit-out is a valid play)")
+    print("  " + "─" * 54)
+
+    # 🔵 NOT BET — every logged pick that isn't a live card pick, by lane, with
+    # WHY it isn't bet: a live lane whose edge fell short today, or a shadow lane
+    # still validating, or a paused (known-loser) lane.
+    from src.config.models import _key as _mk_key, model_status, model_tier
+    watch_today = [p for p in today_all
+                   if not p.get("card_pick") and p.get("odds") not in (None, 0)]
+    print("  🔵 NOT BET TODAY  (why each lane is held)")
+    if watch_today:
+        lanes: dict[tuple[str, str], int] = {}
+        for p in watch_today:
+            k = _mk_key(p.get("sport", ""), p.get("market", ""))
+            lanes[k] = lanes.get(k, 0) + 1
+        for (sp, mk), n in sorted(lanes.items(), key=lambda kv: -kv[1]):
+            status = model_status(sp, mk)
+            if status == "live":
+                note = "🟢 live · no edge cleared the gate today"
+            elif model_tier(sp, mk) == "paused":
+                note = "🟡 paused · known loser, logged not bet"
+            else:
+                note = "🔵 shadow · validating on CLV"
+            print(f"     {sp}/{mk:16} {n:>3} pick(s)   {note}")
+    else:
+        print("     (nothing else logged today)")
     print("  " + "─" * 54)
 
     if flags:
@@ -1446,7 +1471,7 @@ def cmd_today(args: argparse.Namespace) -> int:
         for f in flags:
             print(f"     • {f}")
         print("  " + "─" * 54)
-    print("  Deeper:  chef.py status · record · validate · audit")
+    print("  Deeper:  chef.py grid · record · validate · audit")
     print(f"  {line}\n")
     return 0 if not flags else 1
 
