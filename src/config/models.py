@@ -66,9 +66,11 @@ MODELS: dict[tuple[str, str], dict] = {
     # ── Tier 2 (theoretically sound) — also on the card, smaller stake ────────
     ("mlb",    "moneyline"): {"status": "incubating", "tier": "shadow", "label": "MLB Moneyline (41-39 +4u, shadowed 2026-05-30 — soft-book edge inflation)"},
     ("pga",    "outright"):  {"status": "live",       "tier": "t2", "label": "PGA Outright (SG)"},
-    ("nascar", "outright"):  {"status": "incubating", "tier": "shadow", "label": "NASCAR Outright Elo (shadow)"},
-    ("indycar","outright"):  {"status": "incubating", "tier": "shadow", "label": "IndyCar Outright Elo (shadow)"},
-    ("f1",     "outright"):  {"status": "incubating", "tier": "shadow", "label": "F1 Outright Elo (shadow)"},
+    # Motorsport DROPPED 2026-07-26 (code → archive/retired_sports/). Not run.
+    # Historical picks stay gradeable (see grade.py + tests KNOWN_MANUAL_ONLY).
+    ("nascar", "outright"):  {"status": "retired", "tier": "shadow", "label": "NASCAR Outright Elo — DROPPED 2026-07-26 (archive/retired_sports/)"},
+    ("indycar","outright"):  {"status": "retired", "tier": "shadow", "label": "IndyCar Outright Elo — DROPPED 2026-07-26 (archive/retired_sports/)"},
+    ("f1",     "outright"):  {"status": "retired", "tier": "shadow", "label": "F1 Outright Elo — DROPPED 2026-07-26 (archive/retired_sports/)"},
 
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
     ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (83-108 -16u, shadow — rebuild)"},
