@@ -1451,6 +1451,78 @@ def cmd_today(args: argparse.Namespace) -> int:
     return 0 if not flags else 1
 
 
+# ─────────────────────────── grid ────────────────────────────────────────────
+
+def cmd_grid(args: argparse.Namespace) -> int:
+    """The whole model board: every sport×market lane, its state + live health.
+
+    States: 🟢 live (betting) · 🔵 shadow (validating) · 🟡 paused (known loser,
+    logged not bet) · ⬜ planned (not built) · ⚫ retired (dropped). ⚙ = migrated
+    to the grid_runner (the factory assembly line).
+    """
+    from src.config.grid import GRID, cell_state, grid_counts
+    from src.analytics.market_stats import market_stats, MarketStat
+    from src.pipeline.grid_runner import ADAPTERS
+
+    stats = market_stats()
+    glyph = {"live": "🟢", "shadow": "🔵", "paused": "🟡", "planned": "⬜", "retired": "⚫"}
+
+    def _agg(sport: str, keys: list[str]) -> MarketStat:
+        agg = MarketStat(sport=sport, market="+".join(keys))
+        clv_sum = 0.0
+        for k in keys:
+            s = stats.get((sport, k))
+            if not s:
+                continue
+            agg.n += s.n
+            agg.wins += s.wins
+            agg.losses += s.losses
+            agg.pushes += s.pushes
+            agg.pnl += s.pnl
+            agg.total_logged += s.total_logged
+            if s.clv is not None:
+                clv_sum += s.clv * s.clv_n
+                agg.clv_n += s.clv_n
+        if agg.n:
+            agg.roi = agg.pnl / agg.n * 100
+        if agg.clv_n:
+            agg.clv = clv_sum / agg.clv_n
+        return agg
+
+    counts = grid_counts()
+    line = "═" * 72
+    print(f"\n  {line}")
+    print("  OVERLAY — THE MODEL GRID")
+    print(f"  {line}")
+    print(f"  🟢 {counts['live']} live   🔵 {counts['shadow']} shadow   "
+          f"🟡 {counts['paused']} paused   ⬜ {counts['planned']} planned   "
+          f"⚫ {counts['retired']} retired")
+    print("  " + "─" * 70)
+    only = getattr(args, "sport", None)
+    for sport, lanes in GRID.items():
+        if only and sport != only.lower():
+            continue
+        print(f"\n  {sport.upper()}")
+        for label, keys in lanes:
+            state = cell_state(sport, keys)
+            a = _agg(sport, keys)
+            wired = " ⚙" if any((sport, k) in ADAPTERS for k in keys) else "  "
+            if a.n:
+                roi = f"{a.roi:+.1f}%".rjust(7)
+                rec = a.record.rjust(9)
+                clv = (f"CLV {a.clv:+.1f}%({a.clv_n})" if a.clv is not None else "").ljust(16)
+                body = f"n={a.n:<4} {rec}  {roi}  {clv}"
+            elif state == "planned":
+                body = "— not built —"
+            else:
+                body = f"logged {a.total_logged}, none settled"
+            print(f"   {glyph[state]}{wired} {label:11s} {body}")
+    print(f"\n  {line}")
+    print("  🟢 bet · 🔵 validating on CLV · 🟡 don't bet · ⬜ to build · ⚙ on the factory runner")
+    print(f"  {line}\n")
+    return 0
+
+
 # ─────────────────────────── shop ────────────────────────────────────────────
 
 def cmd_shop(args: argparse.Namespace) -> int:
@@ -3287,6 +3359,10 @@ def main() -> int:
     # The one daily driver — listed first because it's the only one you run daily.
     sub.add_parser("today", help="★ THE daily driver: one screen — did it run, the record, what to bet")
 
+    # grid — the whole model board: every sport×market lane + state + health
+    p_grid = sub.add_parser("grid", help="The model grid: every sport×market lane, its state (live/shadow/planned) + live stats")
+    p_grid.add_argument("sport", nargs="?", help="Optional: show only one sport (e.g. mlb)")
+
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
     p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nba-props", "nba_props", "nhl", "nhl-props", "nhl_props", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "ufc", "mma"], help="Sport to generate picks for")
@@ -3569,6 +3645,7 @@ def main() -> int:
         "daily":    cmd_daily,
         "wc-post":  cmd_wc_post,
         "today":    cmd_today,
+        "grid":     cmd_grid,
     }
     return dispatch[args.command](args)
 
