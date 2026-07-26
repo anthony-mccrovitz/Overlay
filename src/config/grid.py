@@ -44,13 +44,6 @@ GRID: dict[str, list[tuple[str, list[str]]]] = {
         ("props", ["player_points", "player_goals", "player_assists",
                    "player_shots_on_goal", "player_blocked_shots"]),
     ],
-    "soccer": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-        ("spread", ["spread"]),
-        ("btts", ["btts"]),
-        ("props", ["anytime_scorer"]),
-    ],
     "nfl": [
         ("moneyline", ["moneyline"]),
         ("total", ["total"]),
@@ -69,6 +62,20 @@ GRID: dict[str, list[tuple[str, list[str]]]] = {
         ("outright", ["outright"]),
     ],
 }
+
+# Soccer is per-league — each league is its own row/model/gate (Liga MX and MLS
+# never share a verdict). Labels match _key('soccer_x') → 'x'.
+_SOCCER_LEAGUES = [
+    "mexico_ligamx", "usa_mls", "epl", "spain_la_liga",
+    "italy_serie_a", "germany_bundesliga", "france_ligue_one",
+]
+for _lg in _SOCCER_LEAGUES:
+    GRID[_lg] = [
+        ("moneyline", ["moneyline"]),
+        ("total", ["total"]),
+        ("btts", ["btts"]),
+        ("anytime_scorer", ["anytime_scorer"]),
+    ]
 
 # State priority when a lane folds several market keys — show the "furthest
 # along" state present.

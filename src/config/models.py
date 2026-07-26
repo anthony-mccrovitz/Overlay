@@ -54,7 +54,21 @@ MODELS: dict[tuple[str, str], dict] = {
     ("nba",    "total"):     {"status": "live",       "tier": "t1", "label": "NBA Totals (k≈0.60 realized; watch CLV, don't scale)"},
     ("mlb",    "total"):     {"status": "live",       "tier": "t1", "label": "MLB Totals (Weather) — outcome-verified, k=1.0, realized +6.7pp"},
     ("tennis", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u — stay shadow until v2 proves out)"},
-    ("soccer", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"},
+    # Soccer — ONE model per league (not a combined 'soccer' model). Each league
+    # is its own shadow lane, gated + promoted on its own CLV. Club leagues (Liga
+    # MX, MLS) have dedicated club models on the grid_runner; the rest are logged
+    # by the legacy pipeline until each gets its own fitted model.
+    ("mexico_ligamx",            "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Liga MX Dixon-Coles (club model)"},
+    ("usa_mls",                  "moneyline"): {"status": "incubating", "tier": "shadow", "label": "MLS Dixon-Coles (club model)"},
+    ("epl",                      "moneyline"): {"status": "incubating", "tier": "shadow", "label": "EPL Dixon-Coles"},
+    ("spain_la_liga",            "moneyline"): {"status": "incubating", "tier": "shadow", "label": "La Liga Dixon-Coles"},
+    ("italy_serie_a",            "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Serie A Dixon-Coles"},
+    ("germany_bundesliga",       "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Bundesliga Dixon-Coles"},
+    ("france_ligue_one",         "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Ligue 1 Dixon-Coles"},
+    ("uefa_champs_league",       "moneyline"): {"status": "incubating", "tier": "shadow", "label": "UCL Dixon-Coles"},
+    ("england_championship",     "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Championship Dixon-Coles"},
+    ("conmebol_copa_libertadores","moneyline"): {"status": "incubating", "tier": "shadow", "label": "Copa Libertadores Dixon-Coles"},
+    ("soccer",                   "moneyline"): {"status": "incubating", "tier": "shadow", "label": "Soccer (unmapped league fallback)"},
 
     # ── World Cup 2026 — own unit, all incubating until the CLV gate confirms ──
     # (promote with `chef.py promote wc <market>`; the gate refuses until proven).
@@ -120,7 +134,12 @@ def _key(sport: str, market: str) -> tuple[str, str]:
         # World Cup is gated/promoted as its OWN unit (matches chef.py edge's
         # 'wc' label) — promoting it must NOT also flip MLS/La Liga/etc. live.
         raw = "wc"
-    elif raw.startswith("soccer"):
+    elif raw.startswith("soccer_"):
+        # Per-league label (mexico_ligamx, usa_mls, epl, spain_la_liga, …) so each
+        # league is its own model/cell/gate — Liga MX and MLS never share a verdict.
+        # Matches clv_gate's label so gate rows join the registry 1:1.
+        raw = raw.replace("soccer_", "")
+    elif raw == "soccer":
         raw = "soccer"
     elif raw.startswith("tennis"):
         raw = "tennis"
@@ -323,7 +342,9 @@ def shadow_stake(sport: str, market: str) -> float:
     Tier-2 live models also use 0.5u stake until they hit the 30-pick threshold.
     """
     s, _ = _key(sport, market)
-    if s in _NEW_SPORTS:
+    # Any soccer league (per-league labels like mexico_ligamx/epl) is a new,
+    # unproven shadow lane → cap at 0.5u.
+    if s in _NEW_SPORTS or str(sport or "").lower().startswith("soccer"):
         return 0.5
     if model_tier(sport, market) == "t2":
         return 0.5

@@ -22,19 +22,23 @@ from dataclasses import dataclass, field
 from datetime import date as _date
 from pathlib import Path
 
+from functools import partial
+from typing import Callable
+
 from src.config.models import is_retired, model_status
 from src.models.pick_model import PickModel, SportContext, finalize_picks
 from src.models.adapters.mlb_totals_model import MlbTotalsModel
-from src.models.adapters.soccer_model import SoccerModel, LEAGUES as _SOCCER_LEAGUES
+from src.models.adapters.soccer_model import SoccerModel, SOCCER_LEAGUES, league_label
 
 # ── The plug-in registry ──────────────────────────────────────────────────────
-# (sport, market) → PickModel factory. Adding a market to the factory is one
-# line here plus its adapter. Everything downstream (gate, logging, promotion)
-# is automatic.
-ADAPTERS: dict[tuple[str, str], type[PickModel]] = {
+# (sport, market) → factory returning a PickModel. Adding a market is one entry
+# here plus its adapter. Everything downstream (gate, logging, promotion) is
+# automatic. Soccer registers ONE entry per league (its own model/cell).
+ADAPTERS: dict[tuple[str, str], Callable[[], PickModel]] = {
     ("mlb", "total"): MlbTotalsModel,
-    ("soccer", "moneyline"): SoccerModel,
 }
+for _lg in SOCCER_LEAGUES:
+    ADAPTERS[(league_label(_lg), "moneyline")] = partial(SoccerModel, _lg)
 
 _PNL_FILE = Path("data/pnl/picks.json")
 
@@ -79,8 +83,8 @@ def build_context(sport: str, date_str: str) -> SportContext:
     """Fetch the shared odds + matchups for a sport/date once."""
     if sport == "mlb":
         return _build_mlb_context(date_str)
-    if sport == "soccer":
-        return _build_soccer_context(date_str)
+    if f"soccer_{sport}" in SOCCER_LEAGUES:
+        return _build_soccer_league_context(f"soccer_{sport}", date_str)
     raise ValueError(f"grid_runner has no context builder for {sport!r} yet")
 
 
@@ -100,18 +104,15 @@ def _build_mlb_context(date_str: str) -> SportContext:
     return SportContext(date=date_str, odds_df=raw_odds, matchups=matchups)
 
 
-def _build_soccer_context(date_str: str) -> SportContext:
-    # Reuses run_soccer's per-league odds fetcher + slate filter, so the runner
-    # sees the same board. Events are grouped by league for the adapter.
+def _build_soccer_league_context(league: str, date_str: str) -> SportContext:
+    # One league's events. Reuses run_soccer's fetcher + slate filter so the
+    # runner sees the same board.
     from run_soccer import fetch_soccer_odds
     from src.data.slate import filter_to_slate
 
     gd = _date.fromisoformat(date_str)
-    events_by_league: dict[str, list] = {}
-    for league in _SOCCER_LEAGUES:
-        events = fetch_soccer_odds(league) or []
-        events_by_league[league] = filter_to_slate(events, gd)
-    return SportContext(date=date_str, extras={"events_by_league": events_by_league})
+    events = filter_to_slate(fetch_soccer_odds(league) or [], gd)
+    return SportContext(date=date_str, extras={"events": events})
 
 
 def run_models(models: list[PickModel], ctx: SportContext) -> list[dict]:
