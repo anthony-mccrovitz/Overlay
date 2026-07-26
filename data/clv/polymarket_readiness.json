@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-26T04:19:44.956581+00:00",
+  "generated_at": "2026-07-26T09:03:59.293178+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -26,10 +26,10 @@
     },
     {
       "gate": "ANCHOR",
-      "have": 88,
+      "have": 89,
       "need": 200,
       "pass": false,
-      "detail": "88 graded sharp-fair picks; worst bucket gap 0.086 vs max 0.05"
+      "detail": "89 graded sharp-fair picks; worst bucket gap 0.086 vs max 0.05"
     },
     {
       "gate": "FILLS",
@@ -54,7 +54,7 @@
     }
   ],
   "anchor": {
-    "n": 88,
+    "n": 89,
     "buckets": [
       {
         "bucket": 0.4,
