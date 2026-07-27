@@ -185,8 +185,23 @@ def cmd_picks(args: argparse.Namespace) -> int:
         if getattr(args, "refresh", False) or late:
             cmd.append("--refresh")
         return _run(cmd)
+    elif sport in ("grid", "all"):
+        # The factory sweep: run EVERY registered adapter lane (MLB totals/F5 +
+        # all 7 soccer leagues) through the one gate so every shadow lane
+        # accumulates the CLV it needs to earn promotion. Dry-run computes
+        # without logging.
+        from src.pipeline.grid_runner import run_all, _normalize_date
+        date_str = _normalize_date(getattr(args, "date", None))
+        dry = getattr(args, "dry_run", False)
+        results = run_all(date_str, dry_run=dry)
+        for r in results:
+            print(f"  {r.summary()}")
+        total = sum(len(r.picks) for r in results)
+        print(f"  [grid] sweep: {total} pick(s) across {len(results)} sport(s)"
+              f"{' (dry-run, nothing logged)' if dry else ''}.")
+        return 0
     else:
-        print(f"Unknown sport: {sport}. Use: mlb, mlb-props, nba, nba-props, nhl, nhl-props, wnba, soccer, pga, tennis, ufc.")
+        print(f"Unknown sport: {sport}. Use: mlb, mlb-props, nba, nba-props, nhl, nhl-props, wnba, soccer, pga, tennis, ufc, grid.")
         return 1
 
 
@@ -3273,11 +3288,13 @@ def main() -> int:
 
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
-    p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nba-props", "nba_props", "nhl", "nhl-props", "nhl_props", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "ufc", "mma"], help="Sport to generate picks for")
+    p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nba-props", "nba_props", "nhl", "nhl-props", "nhl_props", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "ufc", "mma", "grid", "all"], help="Sport to generate picks for ('grid'/'all' = factory sweep of every adapter lane)")
     p_picks.add_argument("--date",    help="Date YYYYMMDD (MLB + NBA slate / output folder)")
     p_picks.add_argument("--refresh", action="store_true", help="Force-refresh odds cache")
     p_picks.add_argument("--late",    action="store_true",
                          help="Late-line mode: refresh odds 1-2h before first pitch for best CLV")
+    p_picks.add_argument("--dry-run", action="store_true",
+                         help="grid sweep only: compute picks without logging to the ledger")
     p_picks.add_argument("--market",  type=str, default=None,
                          help="Single prop market to run (e.g. pitcher-strikeouts, player-points)")
 

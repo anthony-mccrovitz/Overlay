@@ -75,3 +75,44 @@ def test_retired_market_is_skipped(monkeypatch):
 def test_filters_by_sport(registered_fake):
     assert len(grid_runner.models_for_sport("mlb")) == 1
     assert grid_runner.models_for_sport("nba") == []
+
+
+class _FakeSoccer(PickModel):
+    sport = "epl"
+    market = "moneyline"
+
+    def generate_picks(self, ctx: SportContext):
+        return []
+
+
+def test_sports_with_adapters_is_distinct_and_skips_retired(monkeypatch):
+    monkeypatch.setattr(grid_runner, "ADAPTERS", {
+        ("mlb", "total"): _FakeTotals,
+        ("mlb", "f5_total"): _FakeTotals,   # same sport twice → one entry
+        ("epl", "moneyline"): _FakeSoccer,
+        ("nascar", "outright"): _FakeTotals,  # retired → excluded
+    })
+    assert grid_runner.sports_with_adapters() == ["mlb", "epl"]
+
+
+def test_run_all_sweeps_every_sport_and_survives_a_bad_lane(monkeypatch, tmp_path):
+    pnl = tmp_path / "picks.json"
+    pnl.write_text('{"picks": []}')
+    monkeypatch.setattr(grid_runner, "ADAPTERS", {
+        ("mlb", "total"): _FakeTotals,
+        ("epl", "moneyline"): _FakeSoccer,
+    })
+    # mlb builds its context via the real builder; stub both to avoid network.
+    ctxs = {
+        "mlb": SportContext(date="2026-07-26", odds_df=pd.DataFrame({"x": [1]})),
+        "epl": SportContext(date="2026-07-26", extras={"events": []}),
+    }
+    def _ctx(sport, date_str):
+        if sport == "epl":
+            raise RuntimeError("dead odds feed")  # one lane blows up
+        return ctxs[sport]
+    monkeypatch.setattr(grid_runner, "build_context", _ctx)
+    results = grid_runner.run_all("2026-07-26", pnl_file=pnl)
+    # epl raised but the sweep still returned mlb's result.
+    assert [r.sport for r in results] == ["mlb"]
+    assert results[0].logged == 2

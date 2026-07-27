@@ -146,6 +146,33 @@ def run_sport(
                      logged=logged, dry_run=dry_run)
 
 
+def sports_with_adapters() -> list[str]:
+    """Distinct, non-retired sports that have at least one registered adapter."""
+    seen: list[str] = []
+    for (s, m) in ADAPTERS:
+        if s not in seen and not is_retired(s, m):
+            seen.append(s)
+    return seen
+
+
+def run_all(
+    date_str: str, dry_run: bool = False, pnl_file: Path = _PNL_FILE
+) -> list[RunResult]:
+    """Run every registered sport's models for a date — the daily factory sweep.
+
+    One sport's context/fetch failing never blocks the rest; that lane just
+    returns no picks. This is the single entry point a daily cron calls to keep
+    every shadow lane accumulating the CLV it needs to earn promotion.
+    """
+    results: list[RunResult] = []
+    for sport in sports_with_adapters():
+        try:
+            results.append(run_sport(sport, date_str, dry_run=dry_run, pnl_file=pnl_file))
+        except Exception as e:  # a dead odds feed for one league can't sink the sweep
+            print(f"[grid] {sport} {date_str}: skipped ({type(e).__name__}: {e})")
+    return results
+
+
 def _normalize_date(raw: str | None) -> str:
     if not raw:
         return _date.today().isoformat()
@@ -164,6 +191,15 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     date_str = _normalize_date(args.date)
+
+    if args.sport in ("all", "grid"):
+        results = run_all(date_str, dry_run=args.dry_run)
+        for r in results:
+            print(r.summary())
+        total = sum(len(r.picks) for r in results)
+        print(f"[grid] sweep: {total} pick(s) across {len(results)} sport(s).")
+        return 0
+
     models = models_for_sport(args.sport)
     if not models:
         print(f"[grid] no registered adapters for {args.sport!r} "
