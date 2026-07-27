@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "batter_home_runs",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: noisy-but-present; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 447,
+    "record": "295-107-45",
+    "wr": 73.4,
+    "roi": 0.4,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-269",
+    "confidence": {
+      "n": 402,
+      "buckets": [
+        {
+          "lo": 0.122,
+          "hi": 0.868,
+          "n": 134,
+          "wr": 42.5
+        },
+        {
+          "lo": 0.868,
+          "hi": 0.87,
+          "n": 134,
+          "wr": 90.3
+        },
+        {
+          "lo": 0.87,
+          "hi": 0.877,
+          "n": 134,
+          "wr": 87.3
+        }
+      ],
+      "monotonic": false,
+      "spread": 44.8,
+      "verdict": "noisy-but-present"
+    }
+  }
+]

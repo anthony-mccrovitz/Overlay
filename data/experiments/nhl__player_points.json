@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nhl",
+    "market": "player_points",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 59,
+    "record": "29-30",
+    "wr": 49.2,
+    "roi": -9.1,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-114",
+    "confidence": {
+      "n": 59,
+      "buckets": [
+        {
+          "lo": 0.349,
+          "hi": 0.574,
+          "n": 19,
+          "wr": 31.6
+        },
+        {
+          "lo": 0.574,
+          "hi": 0.661,
+          "n": 19,
+          "wr": 42.1
+        },
+        {
+          "lo": 0.681,
+          "hi": 0.926,
+          "n": 21,
+          "wr": 71.4
+        }
+      ],
+      "monotonic": true,
+      "spread": 39.8,
+      "verdict": "real-signal"
+    }
+  }
+]

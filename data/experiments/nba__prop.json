@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nba",
+    "market": "prop",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=CUT/REBUILD \u2014 no signal, losing on ROI + CLV",
+    "n": 340,
+    "record": "140-160-40",
+    "wr": 46.7,
+    "roi": -4.8,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+104",
+    "confidence": {
+      "n": 300,
+      "buckets": [
+        {
+          "lo": 0.532,
+          "hi": 0.67,
+          "n": 100,
+          "wr": 45.0
+        },
+        {
+          "lo": 0.674,
+          "hi": 0.882,
+          "n": 100,
+          "wr": 48.0
+        },
+        {
+          "lo": 0.882,
+          "hi": 0.991,
+          "n": 100,
+          "wr": 47.0
+        }
+      ],
+      "monotonic": false,
+      "spread": 2.0,
+      "verdict": "flat"
+    }
+  }
+]

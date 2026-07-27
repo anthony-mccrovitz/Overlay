@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "tennis",
+    "market": "total",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=CUT/REBUILD \u2014 no signal, losing on ROI + CLV",
+    "n": 95,
+    "record": "40-52-3",
+    "wr": 43.5,
+    "roi": -17.7,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-114",
+    "confidence": {
+      "n": 92,
+      "buckets": [
+        {
+          "lo": 0.436,
+          "hi": 0.797,
+          "n": 30,
+          "wr": 43.3
+        },
+        {
+          "lo": 0.797,
+          "hi": 0.987,
+          "n": 30,
+          "wr": 43.3
+        },
+        {
+          "lo": 0.989,
+          "hi": 1.0,
+          "n": 32,
+          "wr": 43.8
+        }
+      ],
+      "monotonic": true,
+      "spread": 0.4,
+      "verdict": "flat"
+    }
+  }
+]

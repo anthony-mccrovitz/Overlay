@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "batter_hits",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=KEEP \u2014 profitable (verify edge is real, don't scale on variance)",
+    "n": 913,
+    "record": "374-403-136",
+    "wr": 48.1,
+    "roi": 3.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+110",
+    "confidence": {
+      "n": 777,
+      "buckets": [
+        {
+          "lo": 0.269,
+          "hi": 0.454,
+          "n": 259,
+          "wr": 38.2
+        },
+        {
+          "lo": 0.454,
+          "hi": 0.543,
+          "n": 259,
+          "wr": 46.7
+        },
+        {
+          "lo": 0.544,
+          "hi": 0.982,
+          "n": 259,
+          "wr": 59.5
+        }
+      ],
+      "monotonic": true,
+      "spread": 21.2,
+      "verdict": "real-signal"
+    }
+  }
+]

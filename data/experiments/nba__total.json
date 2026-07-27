@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nba",
+    "market": "total",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=KEEP \u2014 profitable (verify edge is real, don't scale on variance)",
+    "n": 109,
+    "record": "60-34-15",
+    "wr": 63.8,
+    "roi": 20.1,
+    "clv": -0.32,
+    "clv_n": 53,
+    "avg_odds": "-107",
+    "confidence": {
+      "n": 94,
+      "buckets": [
+        {
+          "lo": 0.538,
+          "hi": 0.645,
+          "n": 31,
+          "wr": 67.7
+        },
+        {
+          "lo": 0.645,
+          "hi": 0.781,
+          "n": 31,
+          "wr": 61.3
+        },
+        {
+          "lo": 0.781,
+          "hi": 0.988,
+          "n": 32,
+          "wr": 62.5
+        }
+      ],
+      "monotonic": false,
+      "spread": -5.2,
+      "verdict": "flat"
+    }
+  }
+]

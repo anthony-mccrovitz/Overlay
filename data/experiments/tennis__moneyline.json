@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "tennis",
+    "market": "moneyline",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=TUNE \u2014 beats the close, fix conversion to ROI",
+    "n": 152,
+    "record": "40-82-30",
+    "wr": 32.8,
+    "roi": -11.1,
+    "clv": 1.14,
+    "clv_n": 2,
+    "avg_odds": "+201",
+    "confidence": {
+      "n": 122,
+      "buckets": [
+        {
+          "lo": 0.215,
+          "hi": 0.5,
+          "n": 40,
+          "wr": 22.5
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.5,
+          "n": 40,
+          "wr": 37.5
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.826,
+          "n": 42,
+          "wr": 38.1
+        }
+      ],
+      "monotonic": true,
+      "spread": 15.6,
+      "verdict": "flat"
+    }
+  }
+]

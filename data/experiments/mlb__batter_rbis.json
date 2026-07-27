@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "batter_rbis",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: noisy-but-present; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 744,
+    "record": "365-282-97",
+    "wr": 56.4,
+    "roi": -5.0,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-139",
+    "confidence": {
+      "n": 647,
+      "buckets": [
+        {
+          "lo": 0.15,
+          "hi": 0.615,
+          "n": 215,
+          "wr": 28.4
+        },
+        {
+          "lo": 0.616,
+          "hi": 0.727,
+          "n": 215,
+          "wr": 71.6
+        },
+        {
+          "lo": 0.727,
+          "hi": 0.99,
+          "n": 217,
+          "wr": 69.1
+        }
+      ],
+      "monotonic": false,
+      "spread": 40.8,
+      "verdict": "noisy-but-present"
+    }
+  }
+]

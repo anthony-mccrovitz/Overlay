@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "f5_total",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=CUT/REBUILD \u2014 no signal, losing on ROI + CLV",
+    "n": 499,
+    "record": "226-240-33",
+    "wr": 48.5,
+    "roi": -9.3,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-116",
+    "confidence": {
+      "n": 466,
+      "buckets": [
+        {
+          "lo": 0.51,
+          "hi": 0.636,
+          "n": 155,
+          "wr": 46.5
+        },
+        {
+          "lo": 0.636,
+          "hi": 0.645,
+          "n": 155,
+          "wr": 45.2
+        },
+        {
+          "lo": 0.645,
+          "hi": 1.0,
+          "n": 156,
+          "wr": 53.8
+        }
+      ],
+      "monotonic": false,
+      "spread": 7.4,
+      "verdict": "flat"
+    }
+  }
+]

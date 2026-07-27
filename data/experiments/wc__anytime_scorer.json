@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "wc",
+    "market": "anytime_scorer",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=CUT/REBUILD \u2014 no signal, losing on ROI + CLV",
+    "n": 47,
+    "record": "4-43",
+    "wr": 8.5,
+    "roi": -51.3,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+404",
+    "confidence": {
+      "n": 47,
+      "buckets": [
+        {
+          "lo": 0.034,
+          "hi": 0.068,
+          "n": 15,
+          "wr": 6.7
+        },
+        {
+          "lo": 0.074,
+          "hi": 0.093,
+          "n": 15,
+          "wr": 6.7
+        },
+        {
+          "lo": 0.098,
+          "hi": 0.46,
+          "n": 17,
+          "wr": 11.8
+        }
+      ],
+      "monotonic": true,
+      "spread": 5.1,
+      "verdict": "flat"
+    }
+  }
+]

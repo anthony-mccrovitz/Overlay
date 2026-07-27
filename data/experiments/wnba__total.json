@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "wnba",
+    "market": "total",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=CUT/REBUILD \u2014 no signal, losing on ROI + CLV",
+    "n": 74,
+    "record": "30-44",
+    "wr": 40.5,
+    "roi": -22.7,
+    "clv": -1.07,
+    "clv_n": 9,
+    "avg_odds": "-110",
+    "confidence": {
+      "n": 74,
+      "buckets": [
+        {
+          "lo": 0.515,
+          "hi": 0.599,
+          "n": 24,
+          "wr": 37.5
+        },
+        {
+          "lo": 0.603,
+          "hi": 0.678,
+          "n": 24,
+          "wr": 50.0
+        },
+        {
+          "lo": 0.678,
+          "hi": 0.976,
+          "n": 26,
+          "wr": 34.6
+        }
+      ],
+      "monotonic": false,
+      "spread": -2.9,
+      "verdict": "flat"
+    }
+  }
+]

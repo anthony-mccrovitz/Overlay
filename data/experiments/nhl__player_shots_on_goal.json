@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nhl",
+    "market": "player_shots_on_goal",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=KEEP \u2014 profitable (verify edge is real, don't scale on variance)",
+    "n": 43,
+    "record": "23-20",
+    "wr": 53.5,
+    "roi": 13.3,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+102",
+    "confidence": {
+      "n": 43,
+      "buckets": [
+        {
+          "lo": 0.442,
+          "hi": 0.53,
+          "n": 14,
+          "wr": 57.1
+        },
+        {
+          "lo": 0.546,
+          "hi": 0.645,
+          "n": 14,
+          "wr": 57.1
+        },
+        {
+          "lo": 0.647,
+          "hi": 0.843,
+          "n": 15,
+          "wr": 46.7
+        }
+      ],
+      "monotonic": false,
+      "spread": -10.5,
+      "verdict": "flat"
+    }
+  }
+]

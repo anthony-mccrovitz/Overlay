@@ -38,5 +38,45 @@
       "spread": 20.4,
       "verdict": "real-signal"
     }
+  },
+  {
+    "sport": "mlb",
+    "market": "batter_total_bases",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 918,
+    "record": "445-342-131",
+    "wr": 56.5,
+    "roi": -0.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-138",
+    "confidence": {
+      "n": 787,
+      "buckets": [
+        {
+          "lo": 0.183,
+          "hi": 0.593,
+          "n": 262,
+          "wr": 45.8
+        },
+        {
+          "lo": 0.593,
+          "hi": 0.653,
+          "n": 262,
+          "wr": 57.6
+        },
+        {
+          "lo": 0.653,
+          "hi": 0.967,
+          "n": 263,
+          "wr": 66.2
+        }
+      ],
+      "monotonic": true,
+      "spread": 20.4,
+      "verdict": "real-signal"
+    }
   }
 ]

@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nhl",
+    "market": "player_goals",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=CUT/REBUILD \u2014 no signal, losing on ROI + CLV",
+    "n": 31,
+    "record": "11-20",
+    "wr": 35.5,
+    "roi": -4.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+168",
+    "confidence": {
+      "n": 31,
+      "buckets": [
+        {
+          "lo": 0.162,
+          "hi": 0.341,
+          "n": 10,
+          "wr": 20.0
+        },
+        {
+          "lo": 0.359,
+          "hi": 0.487,
+          "n": 10,
+          "wr": 30.0
+        },
+        {
+          "lo": 0.514,
+          "hi": 0.895,
+          "n": 11,
+          "wr": 54.5
+        }
+      ],
+      "monotonic": true,
+      "spread": 34.5,
+      "verdict": "flat"
+    }
+  }
+]

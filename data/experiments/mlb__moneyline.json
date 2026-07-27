@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "moneyline",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=KEEP \u2014 profitable (verify edge is real, don't scale on variance)",
+    "n": 1102,
+    "record": "557-542-3",
+    "wr": 50.7,
+    "roi": 1.5,
+    "clv": 1.81,
+    "clv_n": 164,
+    "avg_odds": "-101",
+    "confidence": {
+      "n": 744,
+      "buckets": [
+        {
+          "lo": 0.372,
+          "hi": 0.569,
+          "n": 248,
+          "wr": 46.4
+        },
+        {
+          "lo": 0.569,
+          "hi": 0.603,
+          "n": 248,
+          "wr": 48.0
+        },
+        {
+          "lo": 0.603,
+          "hi": 0.8,
+          "n": 248,
+          "wr": 48.8
+        }
+      ],
+      "monotonic": true,
+      "spread": 2.4,
+      "verdict": "flat"
+    }
+  }
+]

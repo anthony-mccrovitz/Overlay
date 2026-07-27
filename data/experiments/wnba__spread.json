@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "wnba",
+    "market": "spread",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: flat; call=TUNE \u2014 beats the close, fix conversion to ROI",
+    "n": 69,
+    "record": "24-45",
+    "wr": 34.8,
+    "roi": -32.2,
+    "clv": 19.27,
+    "clv_n": 8,
+    "avg_odds": "-105",
+    "confidence": {
+      "n": 69,
+      "buckets": [
+        {
+          "lo": 0.5,
+          "hi": 0.692,
+          "n": 23,
+          "wr": 43.5
+        },
+        {
+          "lo": 0.729,
+          "hi": 0.854,
+          "n": 23,
+          "wr": 43.5
+        },
+        {
+          "lo": 0.854,
+          "hi": 0.999,
+          "n": 23,
+          "wr": 17.4
+        }
+      ],
+      "monotonic": false,
+      "spread": -26.1,
+      "verdict": "flat"
+    }
+  }
+]

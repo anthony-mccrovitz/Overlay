@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nba",
+    "market": "moneyline",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 58,
+    "record": "28-25-5",
+    "wr": 52.8,
+    "roi": -9.7,
+    "clv": -0.22,
+    "clv_n": 42,
+    "avg_odds": "-129",
+    "confidence": {
+      "n": 53,
+      "buckets": [
+        {
+          "lo": 0.301,
+          "hi": 0.561,
+          "n": 17,
+          "wr": 29.4
+        },
+        {
+          "lo": 0.568,
+          "hi": 0.675,
+          "n": 17,
+          "wr": 52.9
+        },
+        {
+          "lo": 0.69,
+          "hi": 0.846,
+          "n": 19,
+          "wr": 73.7
+        }
+      ],
+      "monotonic": true,
+      "spread": 44.3,
+      "verdict": "real-signal"
+    }
+  }
+]

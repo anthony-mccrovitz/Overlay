@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "wc",
+    "market": "moneyline",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=KEEP \u2014 profitable (verify edge is real, don't scale on variance)",
+    "n": 200,
+    "record": "111-89",
+    "wr": 55.5,
+    "roi": 1.2,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+104",
+    "confidence": {
+      "n": 81,
+      "buckets": [
+        {
+          "lo": 0.108,
+          "hi": 0.274,
+          "n": 27,
+          "wr": 11.1
+        },
+        {
+          "lo": 0.279,
+          "hi": 0.45,
+          "n": 27,
+          "wr": 18.5
+        },
+        {
+          "lo": 0.451,
+          "hi": 0.926,
+          "n": 27,
+          "wr": 81.5
+        }
+      ],
+      "monotonic": true,
+      "spread": 70.4,
+      "verdict": "real-signal"
+    }
+  }
+]

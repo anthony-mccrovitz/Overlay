@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "nhl",
+    "market": "player_assists",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 55,
+    "record": "28-27",
+    "wr": 50.9,
+    "roi": -19.3,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-146",
+    "confidence": {
+      "n": 55,
+      "buckets": [
+        {
+          "lo": 0.248,
+          "hi": 0.632,
+          "n": 18,
+          "wr": 22.2
+        },
+        {
+          "lo": 0.632,
+          "hi": 0.807,
+          "n": 18,
+          "wr": 55.6
+        },
+        {
+          "lo": 0.819,
+          "hi": 0.926,
+          "n": 19,
+          "wr": 73.7
+        }
+      ],
+      "monotonic": true,
+      "spread": 51.5,
+      "verdict": "real-signal"
+    }
+  }
+]

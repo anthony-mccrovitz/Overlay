@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "batter_walks",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: noisy-but-present; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 952,
+    "record": "413-417-122",
+    "wr": 49.8,
+    "roi": -4.7,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-105",
+    "confidence": {
+      "n": 830,
+      "buckets": [
+        {
+          "lo": 0.294,
+          "hi": 0.302,
+          "n": 276,
+          "wr": 21.7
+        },
+        {
+          "lo": 0.302,
+          "hi": 0.702,
+          "n": 276,
+          "wr": 64.5
+        },
+        {
+          "lo": 0.702,
+          "hi": 0.994,
+          "n": 278,
+          "wr": 62.9
+        }
+      ],
+      "monotonic": false,
+      "spread": 41.2,
+      "verdict": "noisy-but-present"
+    }
+  }
+]

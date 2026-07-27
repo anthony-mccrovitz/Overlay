@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "pitcher_strikeouts",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 1127,
+    "record": "229-246-652",
+    "wr": 48.2,
+    "roi": -4.7,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-110",
+    "confidence": {
+      "n": 475,
+      "buckets": [
+        {
+          "lo": 0.231,
+          "hi": 0.621,
+          "n": 158,
+          "wr": 31.6
+        },
+        {
+          "lo": 0.622,
+          "hi": 0.729,
+          "n": 158,
+          "wr": 48.1
+        },
+        {
+          "lo": 0.729,
+          "hi": 0.99,
+          "n": 159,
+          "wr": 64.8
+        }
+      ],
+      "monotonic": true,
+      "spread": 33.1,
+      "verdict": "real-signal"
+    }
+  }
+]

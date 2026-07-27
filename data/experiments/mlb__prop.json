@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "prop",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "triage: real-signal; call=TUNE \u2014 has signal but losing; recalibrate / fix side-selection",
+    "n": 1048,
+    "record": "266-192-590",
+    "wr": 58.1,
+    "roi": -3.2,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-244",
+    "confidence": {
+      "n": 458,
+      "buckets": [
+        {
+          "lo": 0.509,
+          "hi": 0.68,
+          "n": 152,
+          "wr": 45.4
+        },
+        {
+          "lo": 0.68,
+          "hi": 0.797,
+          "n": 152,
+          "wr": 61.8
+        },
+        {
+          "lo": 0.797,
+          "hi": 0.993,
+          "n": 154,
+          "wr": 66.9
+        }
+      ],
+      "monotonic": true,
+      "spread": 21.5,
+      "verdict": "real-signal"
+    }
+  }
+]
