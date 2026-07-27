@@ -33,8 +33,31 @@ ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer"
 
 # Overlay sport_key → ESPN league code.
 ESPN_LEAGUE_CODE: dict[str, str] = {
-    "soccer_usa_mls":        "usa.1",
-    "soccer_mexico_ligamx":  "mex.1",
+    "soccer_usa_mls":            "usa.1",
+    "soccer_mexico_ligamx":      "mex.1",
+    # European top flights — each ESPN code is league-pure (cup ties live under
+    # separate codes), so these fit without a hand-curated roster (auto-derived).
+    "soccer_epl":                "eng.1",
+    "soccer_spain_la_liga":      "esp.1",
+    "soccer_italy_serie_a":      "ita.1",
+    "soccer_germany_bundesliga": "ger.1",
+    "soccer_france_ligue_one":   "fra.1",
+}
+
+# A club must appear at least this many times across the fetched seasons to be
+# counted a league member when the roster is auto-derived (a real top-flight
+# side plays ~34–38 league games/season; this floor only drops parse noise).
+_AUTO_ROSTER_MIN_GAMES = 10
+
+# Human-readable league names for logging.
+LEAGUE_NAMES: dict[str, str] = {
+    "soccer_usa_mls":            "MLS",
+    "soccer_mexico_ligamx":      "Liga MX",
+    "soccer_epl":                "Premier League",
+    "soccer_spain_la_liga":      "La Liga",
+    "soccer_italy_serie_a":      "Serie A",
+    "soccer_germany_bundesliga": "Bundesliga",
+    "soccer_france_ligue_one":   "Ligue 1",
 }
 
 # Canonical team name → set of source variants (ESPN and/or Odds API) that map
@@ -306,21 +329,35 @@ def load_club_matches(
         this_year = datetime.now().year
         seasons = list(range(this_year - 4, this_year + 1))
 
-    league_name = {"soccer_usa_mls": "MLS", "soccer_mexico_ligamx": "Liga MX"}.get(
-        sport_key, sport_key)
-    roster = LEAGUE_ROSTERS.get(sport_key, set())
+    league_name = LEAGUE_NAMES.get(sport_key, sport_key)
+    roster = LEAGUE_ROSTERS.get(sport_key)
 
-    matches: list[dict] = []
+    raw_matches: list[dict] = []
     for yr in seasons:
         for ev in _fetch_season(espn_code, yr, refresh=refresh):
             m = _parse_event(ev, league_name)
             if m is None:
                 continue
-            if intra_league_only and (
-                m["home_team"] not in roster or m["away_team"] not in roster):
-                continue
-            matches.append(m)
+            raw_matches.append(m)
         time.sleep(0.2)
+
+    # Leagues without a hand-curated roster (the European top flights) get one
+    # auto-derived from the fixtures: the ESPN league endpoint is already
+    # league-pure, so every recurring club is a real member. The appearance
+    # floor drops parse noise / a stray non-league fixture. Hand-curated rosters
+    # (MLS, Liga MX) still win — they also carry name-normalization variants.
+    if roster is None:
+        appearances: dict[str, int] = {}
+        for m in raw_matches:
+            appearances[m["home_team"]] = appearances.get(m["home_team"], 0) + 1
+            appearances[m["away_team"]] = appearances.get(m["away_team"], 0) + 1
+        roster = {t for t, n in appearances.items() if n >= _AUTO_ROSTER_MIN_GAMES}
+
+    matches = [
+        m for m in raw_matches
+        if not intra_league_only
+        or (m["home_team"] in roster and m["away_team"] in roster)
+    ]
 
     # De-dup (a fixture can appear in adjacent range windows) and sort causally.
     seen: set[tuple] = set()

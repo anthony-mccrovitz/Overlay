@@ -17,8 +17,13 @@ from __future__ import annotations
 
 from src.models.pick_model import PickModel, RawPick, SportContext
 
-# Full Odds-API sport_keys for leagues that have their OWN dedicated club model.
-SOCCER_LEAGUES = ["soccer_mexico_ligamx", "soccer_usa_mls"]
+# Full Odds-API sport_keys for leagues that have their OWN dedicated fitted
+# club model (one model each — never a combined soccer model).
+SOCCER_LEAGUES = [
+    "soccer_mexico_ligamx", "soccer_usa_mls",
+    "soccer_epl", "soccer_spain_la_liga", "soccer_italy_serie_a",
+    "soccer_germany_bundesliga", "soccer_france_ligue_one",
+]
 
 
 def league_label(sport_key: str) -> str:

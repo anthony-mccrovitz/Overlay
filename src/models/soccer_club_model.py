@@ -47,7 +47,14 @@ class SoccerClubModel(SoccerModelV2):
     K_FACTOR = 24.0         # default club Elo K; per-league overrides below
     # Per-league K from the walk-forward sweep (validate_soccer_club.py): MLS is
     # a parity league and prefers a lower, more stable K; Liga MX a bit higher.
-    K_BY_LEAGUE = {"soccer_usa_mls": 16.0, "soccer_mexico_ligamx": 24.0}
+    K_BY_LEAGUE = {
+        "soccer_usa_mls": 16.0, "soccer_mexico_ligamx": 24.0,
+        # European top flights: deep, stable, high-information leagues — a
+        # moderate K tracks form without over-reacting to single results.
+        "soccer_epl": 20.0, "soccer_spain_la_liga": 20.0,
+        "soccer_italy_serie_a": 20.0, "soccer_germany_bundesliga": 20.0,
+        "soccer_france_ligue_one": 20.0,
+    }
     REGRESS_PHI = 0.80      # keep 80% of (Elo-1500) across a break; regress 20%
     BREAK_DAYS = 45         # gap that counts as a season/tournament break
     TEMPO_SHRINK = 0.5      # club form signal (xG) is denser → shrink tempo less
