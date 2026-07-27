@@ -6,76 +6,64 @@ retired). This grid adds the lanes we haven't built yet ("planned") so the
 whole opportunity board is visible in one place — the empty cells are the
 to-do list. `chef.py grid` renders it.
 
-Each cell maps a display lane to one or more registry market keys (props and
-period lanes fold several keys into one cell). State aggregates across them.
+Every bet type is its OWN market/cell — player props and game props are never
+lumped into a generic "props" bucket; the bet type IS the market (e.g.
+batter_home_runs, player_points, player_shots_on_goal). Soccer is per-league.
+Cells with no model yet are "planned" — the to-do list. `chef.py grid` renders it.
 """
 from __future__ import annotations
 
 from src.config.models import MODELS, _key, model_status, model_tier, is_retired
 
-# Display lane → the registry market key(s) it covers, per sport. Order matters
-# (left-to-right in the view). Sourced from the Odds API menu + rebuild roadmap.
-GRID: dict[str, list[tuple[str, list[str]]]] = {
-    "mlb": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-        ("spread", ["spread"]),
-        ("period", ["f5_total", "nrfi"]),
-        ("props", ["prop", "batter_home_runs", "batter_hits", "batter_total_bases",
-                   "batter_rbis", "batter_walks", "pitcher_strikeouts"]),
-    ],
-    "wnba": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-        ("spread", ["spread"]),
-        ("props", ["prop", "player_points", "player_rebounds", "player_assists"]),
-    ],
-    "nba": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-        ("spread", ["spread"]),
-        ("props", ["prop", "player_points", "player_rebounds", "player_assists",
-                   "player_pra", "player_threes", "player_blocks", "player_steals"]),
-    ],
-    "nhl": [
-        ("moneyline", ["moneyline"]),
-        ("puck_line", ["puck_line"]),
-        ("total", ["total"]),
-        ("props", ["player_points", "player_goals", "player_assists",
-                   "player_shots_on_goal", "player_blocked_shots"]),
-    ],
-    "nfl": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-        ("spread", ["spread"]),
-        ("props", ["prop"]),
-    ],
-    "tennis": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-    ],
-    "ufc": [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-    ],
-    "pga": [
-        ("outright", ["outright"]),
-    ],
+# Core game & period markets per sport — each its own cell (bet type = market).
+_CORE: dict[str, list[str]] = {
+    "mlb":    ["moneyline", "total", "spread", "f5_total", "nrfi"],
+    "wnba":   ["moneyline", "total", "spread"],
+    "nba":    ["moneyline", "total", "spread"],
+    "nhl":    ["moneyline", "puck_line", "total"],
+    "nfl":    ["moneyline", "total", "spread"],
+    "tennis": ["moneyline", "total"],
+    "ufc":    ["moneyline", "total"],
+    "pga":    ["outright"],
 }
 
-# Soccer is per-league — each league is its own row/model/gate (Liga MX and MLS
-# never share a verdict). Labels match _key('soccer_x') → 'x'.
+# Player & game PROP markets per sport — from the Odds API menu. Each IS its own
+# market (never a lumped "props" cell), so each is gated + validated on its own.
+_PROPS: dict[str, list[str]] = {
+    "mlb": ["batter_home_runs", "batter_hits", "batter_total_bases", "batter_rbis",
+            "batter_runs_scored", "batter_walks", "batter_singles", "batter_doubles",
+            "batter_stolen_bases", "pitcher_strikeouts", "pitcher_hits_allowed",
+            "pitcher_walks", "pitcher_earned_runs", "pitcher_outs"],
+    "wnba": ["player_points", "player_rebounds", "player_assists", "player_threes",
+             "player_pra", "player_blocks", "player_steals"],
+    "nba": ["player_points", "player_rebounds", "player_assists", "player_threes",
+            "player_pra", "player_blocks", "player_steals", "player_double_double"],
+    "nhl": ["player_points", "player_goals", "player_assists", "player_shots_on_goal",
+            "player_blocked_shots", "player_saves", "player_goal_scorer_anytime"],
+    "nfl": ["player_pass_yds", "player_pass_tds", "player_rush_yds", "player_rush_tds",
+            "player_receptions", "player_reception_yds", "player_anytime_td"],
+    "ufc": ["method_of_victory", "fight_goes_distance"],
+}
+
+# Soccer is per-league — each league its own row/model/gate (Liga MX and MLS never
+# share a verdict). Labels match _key('soccer_x') → 'x'.
 _SOCCER_LEAGUES = [
     "mexico_ligamx", "usa_mls", "epl", "spain_la_liga",
     "italy_serie_a", "germany_bundesliga", "france_ligue_one",
 ]
+_SOCCER_MARKETS = ["moneyline", "total", "btts", "anytime_scorer"]
+
+# Assemble the grid: one lane per market, each mapping to its own registry key.
+GRID: dict[str, list[tuple[str, list[str]]]] = {}
+for _sport, _core in _CORE.items():
+    GRID[_sport] = [(m, [m]) for m in _core] + [(m, [m]) for m in _PROPS.get(_sport, [])]
 for _lg in _SOCCER_LEAGUES:
-    GRID[_lg] = [
-        ("moneyline", ["moneyline"]),
-        ("total", ["total"]),
-        ("btts", ["btts"]),
-        ("anytime_scorer", ["anytime_scorer"]),
-    ]
+    GRID[_lg] = [(m, [m]) for m in _SOCCER_MARKETS]
+
+
+def is_prop(market: str) -> bool:
+    """True if a market is a player/game prop (its own bet-type market)."""
+    return any(market in props for props in _PROPS.values()) or market == "anytime_scorer"
 
 # State priority when a lane folds several market keys — show the "furthest
 # along" state present.

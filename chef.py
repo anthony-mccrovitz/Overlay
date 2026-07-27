@@ -1485,9 +1485,10 @@ def cmd_grid(args: argparse.Namespace) -> int:
     logged not bet) · ⬜ planned (not built) · ⚫ retired (dropped). ⚙ = migrated
     to the grid_runner (the factory assembly line).
     """
-    from src.config.grid import GRID, cell_state, grid_counts
+    from src.config.grid import GRID, cell_state, grid_counts, is_prop
     from src.analytics.market_stats import market_stats, MarketStat
     from src.pipeline.grid_runner import ADAPTERS
+    core_only = getattr(args, "core", False)
 
     stats = market_stats()
     glyph = {"live": "🟢", "shadow": "🔵", "paused": "🟡", "planned": "⬜", "retired": "⚫"}
@@ -1527,8 +1528,11 @@ def cmd_grid(args: argparse.Namespace) -> int:
     for sport, lanes in GRID.items():
         if only and sport != only.lower():
             continue
+        shown = [(l, k) for l, k in lanes if not (core_only and is_prop(k[0]))]
+        if not shown:
+            continue
         print(f"\n  {sport.upper()}")
-        for label, keys in lanes:
+        for label, keys in shown:
             state = cell_state(sport, keys)
             a = _agg(sport, keys)
             wired = " ⚙" if any((sport, k) in ADAPTERS for k in keys) else "  "
@@ -3265,6 +3269,7 @@ def main() -> int:
     # grid — the whole model board: every sport×market lane + state + health
     p_grid = sub.add_parser("grid", help="The model grid: every sport×market lane, its state (live/shadow/planned) + live stats")
     p_grid.add_argument("sport", nargs="?", help="Optional: show only one sport (e.g. mlb)")
+    p_grid.add_argument("--core", action="store_true", help="Core game markets only — hide prop lanes")
 
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
