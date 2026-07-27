@@ -3,32 +3,38 @@
     {
       "player": "Lionel Messi",
       "team": "Argentina",
-      "exp_goals": 7.12,
-      "share": 0.3659
+      "exp_goals": 6.74,
+      "share": 0.351
     },
     {
       "player": "Harry Kane",
       "team": "England",
-      "exp_goals": 7.02,
-      "share": 0.4235
-    },
-    {
-      "player": "Kylian Mbapp\u00e9",
-      "team": "France",
-      "exp_goals": 6.57,
-      "share": 0.3787
+      "exp_goals": 6.58,
+      "share": 0.3761
     },
     {
       "player": "Erling Haaland",
       "team": "Norway",
-      "exp_goals": 5.66,
+      "exp_goals": 5.87,
       "share": 0.4997
+    },
+    {
+      "player": "Kylian Mbapp\u00e9",
+      "team": "France",
+      "exp_goals": 5.74,
+      "share": 0.3866
     },
     {
       "player": "Ra\u00fal Jim\u00e9nez",
       "team": "Mexico",
-      "exp_goals": 4.74,
-      "share": 0.3144
+      "exp_goals": 4.92,
+      "share": 0.3259
+    },
+    {
+      "player": "Mikel Oyarzabal",
+      "team": "Spain",
+      "exp_goals": 4.52,
+      "share": 0.2052
     },
     {
       "player": "Cristiano Ronaldo",
@@ -37,21 +43,15 @@
       "share": 0.332
     },
     {
-      "player": "Mikel Oyarzabal",
-      "team": "Spain",
-      "exp_goals": 3.97,
-      "share": 0.1992
-    },
-    {
       "player": "Lautaro Mart\u00ednez",
       "team": "Argentina",
-      "exp_goals": 3.76,
-      "share": 0.1931
+      "exp_goals": 3.95,
+      "share": 0.2056
     },
     {
       "player": "Jonathan David",
       "team": "Canada",
-      "exp_goals": 3.67,
+      "exp_goals": 3.7,
       "share": 0.307
     },
     {
@@ -63,25 +63,25 @@
     {
       "player": "Romelu Lukaku",
       "team": "Belgium",
-      "exp_goals": 3.16,
+      "exp_goals": 3.14,
       "share": 0.2493
     },
     {
       "player": "Breel Embolo",
       "team": "Switzerland",
-      "exp_goals": 3.14,
+      "exp_goals": 3.13,
       "share": 0.1955
     },
     {
       "player": "Juli\u00e1n Qui\u00f1ones",
       "team": "Mexico",
-      "exp_goals": 2.97,
-      "share": 0.1972
+      "exp_goals": 3.08,
+      "share": 0.2044
     },
     {
       "player": "Vin\u00edcius J\u00fanior",
       "team": "Brazil",
-      "exp_goals": 2.91,
+      "exp_goals": 2.93,
       "share": 0.2121
     },
     {
@@ -93,20 +93,20 @@
     {
       "player": "Mikel Merino",
       "team": "Spain",
-      "exp_goals": 2.69,
-      "share": 0.1348
+      "exp_goals": 2.84,
+      "share": 0.1288
+    },
+    {
+      "player": "Cyle Larin",
+      "team": "Canada",
+      "exp_goals": 2.65,
+      "share": 0.22
     },
     {
       "player": "Memphis Depay",
       "team": "Netherlands",
       "exp_goals": 2.64,
       "share": 0.1958
-    },
-    {
-      "player": "Cyle Larin",
-      "team": "Canada",
-      "exp_goals": 2.63,
-      "share": 0.22
     },
     {
       "player": "Cody Gakpo",
@@ -117,45 +117,45 @@
     {
       "player": "Mohamed Salah",
       "team": "Egypt",
-      "exp_goals": 2.61,
+      "exp_goals": 2.62,
       "share": 0.3425
     },
     {
       "player": "Marko Arnautovi\u0107",
       "team": "Austria",
-      "exp_goals": 2.57,
+      "exp_goals": 2.58,
       "share": 0.2828
-    },
-    {
-      "player": "Juli\u00e1n \u00c1lvarez",
-      "team": "Argentina",
-      "exp_goals": 2.38,
-      "share": 0.1223
     },
     {
       "player": "Jude Bellingham",
       "team": "England",
-      "exp_goals": 2.3,
-      "share": 0.139
+      "exp_goals": 2.44,
+      "share": 0.1395
+    },
+    {
+      "player": "Ferran Torres",
+      "team": "Spain",
+      "exp_goals": 2.37,
+      "share": 0.1075
+    },
+    {
+      "player": "Juli\u00e1n \u00c1lvarez",
+      "team": "Argentina",
+      "exp_goals": 2.25,
+      "share": 0.1173
     },
     {
       "player": "Viktor Gy\u00f6keres",
       "team": "Sweden",
       "exp_goals": 2.19,
       "share": 0.296
-    },
-    {
-      "player": "Edin D\u017eeko",
-      "team": "Bosnia and Herzegovina",
-      "exp_goals": 2.15,
-      "share": 0.3365
     }
   ],
-  "generated": "2026-07-14T15:01:48.902591+00:00",
+  "generated": "2026-07-27T15:51:07.776697+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
-  "model_fitted_on": "2026-07-07",
+  "model_fitted_on": "2026-07-19",
   "n_fixtures": 72,
-  "n_priced": 2,
+  "n_priced": 0,
   "kickoff": "2026-06-11"
 }

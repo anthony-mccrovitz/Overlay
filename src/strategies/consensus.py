@@ -69,6 +69,27 @@ def per_book_fair(
     return out
 
 
+def draw_team(away: str, home: str) -> str:
+    """Canonical `team` label for a DRAW-side pick: "Draw (Away @ Home)".
+
+    Every join in the pick/snapshot/closing pipeline keys on (date, team) —
+    a bare "Draw" collides with every other draw on a multi-game slate, so
+    the matchup is packed INTO the team string. Both sides of every join
+    (pick emission, entry_fair, closing fetchers) must build the key through
+    this one function so the format can never drift apart.
+    """
+    return f"Draw ({away} @ {home})"
+
+
+def is_draw_selection(team: str | None) -> bool:
+    """True when a pick/snapshot `team` value is a DRAW-side selection.
+
+    Used to bypass the substring-fallback joins: "Draw (X @ Y)" CONTAINS both
+    team names, so a partial match would silently score the draw as a team pick.
+    """
+    return str(team or "").strip().lower().startswith("draw")
+
+
 def loo_consensus(
     fair_by_book: dict[str, float],
     exclude: str | None = None,

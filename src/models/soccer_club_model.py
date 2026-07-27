@@ -384,7 +384,10 @@ class SoccerClubModel(SoccerModelV2):
                         if edge >= min_edge_pct:
                             edges.append({
                                 "sport": "soccer", "market": "moneyline",
-                                "direction": name, "team": name,
+                                # Outcome, not team name (name → schema
+                                # stamped every pick "HOME")
+                                "direction": "DRAW" if name == "Draw" else "WIN",
+                                "team": name,
                                 "matchup": f"{away} @ {home}",
                                 "odds": int(price), "best_odds": int(price),
                                 "model_prob": round(anchored, 4),
@@ -395,7 +398,9 @@ class SoccerClubModel(SoccerModelV2):
                             })
         best = {}
         for e in edges:
-            key = (e["matchup"], e["direction"])
+            # key on team — direction is now WIN/DRAW and would collapse the
+            # two win sides of a match into one
+            key = (e["matchup"], e["team"])
             if key not in best or e["edge_pct"] > best[key]["edge_pct"]:
                 best[key] = e
         return sorted(best.values(), key=lambda x: x["edge_pct"], reverse=True)

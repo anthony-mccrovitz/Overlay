@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Denzer Guzman",
+      "team": "Denzer Guzman OVER 0.5",
+      "matchup": "Detroit Tigers @ Los Angeles Angels",
+      "line": 0.5,
+      "odds": 650,
+      "model_prob": 0.6481,
+      "implied_prob": 0.125,
+      "edge_pct": 52.31,
+      "model_mu": 1.51,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Tommy White",
+      "team": "Tommy White UNDER 0.5",
+      "matchup": "Washington Nationals @ Athletics",
+      "line": 0.5,
+      "odds": 140,
+      "model_prob": 0.7881,
+      "implied_prob": 0.3741,
+      "edge_pct": 41.39,
+      "model_mu": 0.24,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Josh Kuroda-Grauer",
+      "team": "Josh Kuroda-Grauer UNDER 0.5",
+      "matchup": "Washington Nationals @ Athletics",
+      "line": 0.5,
+      "odds": -255,
+      "model_prob": 0.9901,
+      "implied_prob": 0.6423,
+      "edge_pct": 34.78,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "James Wood",
+      "team": "James Wood UNDER 0.5",
+      "matchup": "Washington Nationals @ Athletics",
+      "line": 0.5,
+      "odds": 140,
+      "model_prob": 0.7054,
+      "implied_prob": 0.3726,
+      "edge_pct": 33.28,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Tarik Skubal",
+      "team": "Tarik Skubal UNDER 8.5",
+      "matchup": "Detroit Tigers @ Los Angeles Angels",
+      "line": 8.5,
+      "odds": -130,
+      "model_prob": 0.8182,
+      "implied_prob": 0.5306,
+      "edge_pct": 28.76,
+      "model_mu": 6.04,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Willy Adames",
+      "team": "Willy Adames UNDER 1.5",
+      "matchup": "San Francisco Giants @ Seattle Mariners",
+      "line": 1.5,
+      "odds": -20000,
+      "model_prob": 0.9911,
+      "implied_prob": 0.9442,
+      "edge_pct": 4.69,
+      "model_mu": 0.14,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}

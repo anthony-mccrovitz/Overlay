@@ -1,0 +1,98 @@
+{
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "OVER",
+      "player": "Harry Ford",
+      "team": "Harry Ford OVER 0.5",
+      "matchup": "Washington Nationals @ Athletics",
+      "line": 0.5,
+      "odds": 180,
+      "model_prob": 0.9828,
+      "implied_prob": 0.3333,
+      "edge_pct": 64.95,
+      "model_mu": 57.1,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Harry Ford",
+      "team": "Harry Ford OVER 1.5",
+      "matchup": "Washington Nationals @ Athletics",
+      "line": 1.5,
+      "odds": 140,
+      "model_prob": 0.9038,
+      "implied_prob": 0.3808,
+      "edge_pct": 52.3,
+      "model_mu": 11.01,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Harry Ford",
+      "team": "Harry Ford OVER 0.5",
+      "matchup": "Washington Nationals @ Athletics",
+      "line": 0.5,
+      "odds": -200,
+      "model_prob": 0.933,
+      "implied_prob": 0.5946,
+      "edge_pct": 33.84,
+      "model_mu": 2.74,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Juan Soto",
+      "team": "Juan Soto UNDER 0.5",
+      "matchup": "New York Mets @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": 140,
+      "model_prob": 0.7053,
+      "implied_prob": 0.3846,
+      "edge_pct": 32.07,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Alan Rangel",
+      "team": "Alan Rangel OVER 3.5",
+      "matchup": "New York Mets @ Philadelphia Phillies",
+      "line": 3.5,
+      "odds": -150,
+      "model_prob": 0.8033,
+      "implied_prob": 0.5516,
+      "edge_pct": 25.17,
+      "model_mu": 5.9,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Yordan Alvarez",
+      "team": "Yordan Alvarez UNDER 0.5",
+      "matchup": "Baltimore Orioles @ Houston Astros",
+      "line": 0.5,
+      "odds": -360,
+      "model_prob": 0.8639,
+      "implied_prob": 0.7013,
+      "edge_pct": 16.26,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ]
+}

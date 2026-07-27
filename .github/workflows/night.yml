@@ -47,6 +47,15 @@ jobs:
         python run_nba_props.py || fail=1
         python run_nhl_props.py || fail=1
         python run_ufc.py       || fail=1
+        # Taint sweep: stamp picks from known-broken mechanisms (idempotent,
+        # pinned date ranges — see scripts/taint_bad_picks.py). Keeps stats,
+        # the record, and gate/calibrator fits honest.
+        python scripts/taint_bad_picks.py || fail=1
+        # Weekly NB prop-model retrain (Sundays UTC) — artifacts froze at
+        # 2026-07-08 because no job ever refit them; the pipeline only loads.
+        if [ "$(date -u +%u)" = "7" ]; then
+          python -c "from src.models.mlb_props_nb import train_all_prop_models; train_all_prop_models()" || fail=1
+        fi
         python scripts/deploy_picks.py --sport mlb || fail=1
         python scripts/deploy_picks.py --sport nba || fail=1
         exit $fail

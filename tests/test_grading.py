@@ -245,7 +245,9 @@ class TestNormalizePick:
     def test_basic_normalization(self):
         p = normalize_pick(self._base())
         assert p["sport"] == "mlb"
-        assert p["direction"] == "HOME"
+        # Side-neutral default: an unparseable moneyline direction becomes WIN
+        # (the old HOME default mislabeled away-team picks)
+        assert p["direction"] == "WIN"
         assert p["market"] == "moneyline"
         assert p["odds"] == 140
         assert p["pick_id"].startswith("mlb_20260418_")
@@ -411,7 +413,8 @@ class TestValidatePick:
         }
         result = normalize_pick(raw)
         assert result is not None
-        assert result["direction"] == "HOME"
+        # Side-neutral default: WIN (HOME was a lie for away teams)
+        assert result["direction"] == "WIN"
 
     def test_card_pick_stake_unit_scale(self):
         p = self._canonical()
@@ -420,3 +423,35 @@ class TestValidatePick:
         p["profit"] = profit_from_odds(-110, 1.0, True)
         assert abs(p["profit"] - 0.9091) < 0.001
         assert validate_pick(p) == []
+
+
+class TestPriceObservedStrategiesBypassGate:
+    """The calibration gate corrects MODEL overconfidence. polymarket_ev has no
+    model in it — its "edge" is arithmetic on two quoted prices (one venue's
+    ask vs another's devigged fair). Applying mlb::moneyline's k (~0.04, fitted
+    on our own model's realised edge) zeroed real price gaps: on 2026-07-20
+    every MLB Polymarket pick recorded edge_pct 0.0 against raw_edge_pct
+    2.0-4.5. The gate was answering a question those picks never asked.
+    """
+
+    def _pick(self, **over):
+        p = dict(date="2026-07-20", sport="mlb", market="moneyline",
+                 team="Pittsburgh Pirates", direction="WIN", odds=113,
+                 model_prob=0.4827, edge_pct=2.7, stake=0.0, card_pick=False,
+                 matchup="Pittsburgh Pirates @ New York Yankees")
+        p.update(over)
+        return p
+
+    def test_polymarket_edge_survives_the_gate(self):
+        n = normalize_pick(self._pick(strategy="polymarket_ev"))
+        assert n["edge_pct"] == 2.7
+        assert n["raw_edge_pct"] == 2.7
+
+    def test_model_picks_are_still_gated(self):
+        """The exemption must not become a hole — ordinary picks keep shrinking."""
+        n = normalize_pick(self._pick(strategy=None))
+        assert n["edge_pct"] < n["raw_edge_pct"]
+
+    def test_unknown_strategies_are_still_gated(self):
+        n = normalize_pick(self._pick(strategy="some_new_model_strategy"))
+        assert n["edge_pct"] < n["raw_edge_pct"]

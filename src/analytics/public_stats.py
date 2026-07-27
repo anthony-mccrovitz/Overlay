@@ -69,6 +69,9 @@ def write_public_stats() -> None:
         all_picks = data
     else:
         all_picks = data.get("picks", [])
+    # Tainted picks (known-broken mechanism — see scripts/taint_bad_picks.py)
+    # stay in picks.json as an audit trail but never in the public numbers.
+    all_picks = [p for p in all_picks if not p.get("tainted")]
     card_picks = [p for p in all_picks if p.get("card_pick")]
 
     # ── Composite record (all markets, all sports) ────────────────────────────

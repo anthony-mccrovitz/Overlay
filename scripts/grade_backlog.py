@@ -16,6 +16,12 @@ alert. This sweep re-grades the whole backlog:
 Left alone on purpose: futures/outrights (need --winner), tennis (has its own
 all-dates backlog grader), and picks from the last 2 days (nightly handles).
 
+Anything still pending after 30 days that is *provably* ungradeable — a
+phantom matchup no board ever carried, a prop whose stat type was never
+recorded, a tennis match outside the results source — is voided with a
+void_reason rather than left to sit as a fake open position forever. Voids
+settle at 0 profit; nothing is ever guessed into a win or a loss.
+
 Usage: python3 scripts/grade_backlog.py [--dry-run]
 """
 from __future__ import annotations
@@ -39,6 +45,14 @@ _SPORT_TO_ESPN = {
     "icehockey_nhl": "icehockey_nhl",
 }
 _GAME_LINE_MARKETS = ("moneyline", "spread", "total", "runline", "puck_line", "run_line")
+
+# A pick this old that the sweep still can't resolve is not waiting on a slow
+# data source — every source this sweep reads is complete well inside a month.
+# Past this age an unresolvable pick is voided with a reason so it stops
+# masquerading as an open position. See _terminal_void.
+_TERMINAL_AGE_DAYS = 30
+# Sports the sweep never grades (need --winner / a human); leave them alone.
+_MANUAL_ONLY_PREFIXES = ("golf", "auto_racing")
 
 
 def _norm(s: str) -> str:
@@ -208,6 +222,76 @@ def _fetch_mma_winners(date_str: str) -> dict[str, str]:
         return {}
 
 
+def _void_reason(pick: dict) -> str | None:
+    """Why this pick can never be graded, or None if it might still resolve.
+
+    Only reasons that are *provable* from the pick itself or from an exhausted
+    search count. "The sweep failed today" is not one of them.
+    """
+    sport = _norm(pick.get("sport"))
+    if any(sport.startswith(pfx) for pfx in _MANUAL_ONLY_PREFIXES):
+        return None
+    if pick.get("market") == "prop" and not pick.get("prop_market"):
+        # The emitter never recorded which stat the line was on, and the team
+        # field ("Ron Holland OVER 4.5") doesn't say. Points? Rebounds? Guessing
+        # would fabricate a result, so this is unrecoverable by construction.
+        return "prop_market_missing"
+    if sport.startswith("tennis_"):
+        # _grade_tennis_backlog re-reads tennis-data.co.uk on every run. A match
+        # still absent a month on is outside the source's coverage — it only
+        # carries main-draw results, not qualifying.
+        return "source_coverage_gap"
+    if sport in ("mma_mixed_martial_arts", "ufc", "mma"):
+        # Graded off ESPN's UFC scoreboard by fighter name, not by matchup.
+        # A fighter still missing a month on was on a card ESPN never carried
+        # (regional/prelim), so there is no winner to look up.
+        if pick.get("backlog_attempts", 0) >= 3:
+            return "source_coverage_gap"
+        return None
+    if _matchup_teams(pick) == ("", ""):
+        # Every remaining sport locates its game by "Away @ Home". Without a
+        # pair there is nothing to search boards for.
+        return "matchup_incomplete"
+    if pick.get("backlog_attempts", 0) >= 3:
+        # Three separate sweeps searched successfully-fetched boards around this
+        # date and never landed a unique match. Either the game never happened
+        # (phantom slate date) or the pairing stays ambiguous (doubleheader).
+        # Both are terminal — neither resolves by waiting longer.
+        return "unresolvable_after_retries"
+    return None
+
+
+def _terminal_void(picks: list[dict], dry_run: bool) -> dict[str, int]:
+    """Void long-stale picks that are provably ungradeable, with a reason.
+
+    Without this, an unresolvable pick sits pending forever: it inflates the
+    open-position count, trips the stale-pending watchdog every night, and
+    makes the sweep refetch boards for a game that never existed.
+    """
+    cutoff = datetime.now() - timedelta(days=_TERMINAL_AGE_DAYS)
+    voided: dict[str, int] = defaultdict(int)
+    now_iso = datetime.now(timezone.utc).isoformat()
+
+    for p in picks:
+        if p.get("result") not in (None, "pending") or p.get("odds") is None:
+            continue
+        try:
+            d = datetime.strptime((p.get("date") or "").replace("-", ""), "%Y%m%d")
+        except ValueError:
+            continue
+        if d >= cutoff:
+            continue
+        reason = _void_reason(p)
+        if reason is None:
+            continue
+        voided[f"{_norm(p.get('sport'))}/{p.get('market')} — {reason}"] += 1
+        if not dry_run:
+            p["result"], p["profit"] = "void", 0.0
+            p["resulted_at"] = now_iso
+            p["void_reason"] = reason
+    return voided
+
+
 def main() -> None:
     dry_run = "--dry-run" in sys.argv
     cutoff = (datetime.now() - timedelta(days=2)).strftime("%Y%m%d")
@@ -294,6 +378,7 @@ def main() -> None:
                     won = res == "win"
                     break
             if won is None:
+                p["backlog_attempts"] = p.get("backlog_attempts", 0) + 1
                 unresolved[tag] += 1
                 continue
             p["result"] = "win" if won else "loss"
@@ -329,17 +414,17 @@ def main() -> None:
                 wide_days = [x for x in wide_days if x < cutoff]
                 wide = [(day, _board(source, day)) for day in wide_days]
                 info = _find_game_wide(p, wide)
-                if info is None:
-                    p["backlog_attempts"] = p.get("backlog_attempts", 0) + 1
         except Exception as e:
             # One malformed pick must not kill the whole nightly sweep.
             print(f"  ⚠️ sweep error on {p.get('pick_id') or p.get('team')}: {e}")
             unresolved[tag] += 1
             continue
-        if info is None:
-            unresolved[tag] += 1
-            continue
-        if _settle(p, info) is None:
+        if info is None or _settle(p, info) is None:
+            # Count every sweep that failed to settle this pick, not just the
+            # wide-search path — _void_reason reads this to decide when the
+            # search is exhausted, and it has to mean the same thing for every
+            # sport (MLB never runs the wide search at all).
+            p["backlog_attempts"] = p.get("backlog_attempts", 0) + 1
             unresolved[tag] += 1
             continue
         graded[tag] += 1
@@ -350,6 +435,12 @@ def main() -> None:
     print("── Unresolved (left pending) ──")
     for tag, n in sorted(unresolved.items()):
         print(f"  {tag:44} {n}")
+
+    voided = _terminal_void(data["picks"], dry_run)
+    if voided:
+        print(f"── Voided (ungradeable, >{_TERMINAL_AGE_DAYS}d old) ──")
+        for tag, n in sorted(voided.items()):
+            print(f"  {tag:60} {n}")
     if mlb_prop_dates:
         print(f"── MLB prop dates to grade: {sorted(mlb_prop_dates)}")
     if scorer_dates:

@@ -75,18 +75,6 @@ class TeamRecord:
         """Has ≥MIN_N_TRUST picks AND actual WR ≥ MIN_WR_TRUST."""
         return self.n >= MIN_N_TRUST and self.wr >= MIN_WR_TRUST
 
-    def as_dict(self) -> dict:
-        return {
-            "team": self.team, "sport": self.sport, "market": self.market,
-            "n": self.n, "w": self.wins, "l": self.losses,
-            "wr": round(self.wr, 4), "pnl": round(self.pnl, 2),
-            "roi": round(self.roi, 4),
-            "avg_model_prob": round(self.avg_model_prob, 4),
-            "avg_edge_claimed": round(self.avg_edge_claimed, 2),
-            "calibration_error": round(self.calibration_error, 4),
-            "reliable": self.is_reliable,
-        }
-
 
 # ── Core loader ───────────────────────────────────────────────────────────────
 
@@ -224,38 +212,6 @@ def calibrated_edge(model_prob: float, market_implied: float,
 
 
 # ── Bet gate ──────────────────────────────────────────────────────────────────
-
-def should_bet(team: str, sport: str, market: str,
-               model_prob: float, market_implied: float,
-               min_n: int = MIN_N_TRUST,
-               min_wr: float = MIN_WR_TRUST,
-               min_edge: float = MIN_CARD_EDGE,
-               card_only: bool = False) -> tuple[bool, str]:
-    """
-    Full gate for whether a pick should be card_pick=True.
-
-    Returns (bool, reason_string).
-
-    Gate passes if ALL of:
-      1. calibrated edge ≥ min_edge %
-      2. team has ≥ min_n historical picks with WR ≥ min_wr   (OR team is new — <5 picks)
-
-    New teams (< 5 picks) pass through with a note — we need data to build a record.
-    Teams with 5–min_n picks are held back until sample is large enough.
-    """
-    cal_edge = calibrated_edge(model_prob, market_implied, sport, market, card_only)
-    if cal_edge < min_edge:
-        return False, f"calibrated edge {cal_edge:.1f}% < {min_edge}% threshold"
-
-    rec = team_record(team, sport, market, card_only=card_only)
-    if rec is None or rec.n < 5:
-        return True, f"new team ({0 if rec is None else rec.n} picks) — collecting data"
-    if rec.n < min_n:
-        return False, f"insufficient history ({rec.n} picks, need {min_n})"
-    if rec.wr < min_wr:
-        return False, f"team WR {rec.wr:.1%} below {min_wr:.1%} threshold"
-
-    return True, f"team {rec.n} picks, {rec.wr:.1%} WR, edge {cal_edge:.1f}%"
 
 
 # ── Reports ───────────────────────────────────────────────────────────────────

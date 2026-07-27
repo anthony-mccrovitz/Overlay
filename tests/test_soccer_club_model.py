@@ -74,7 +74,9 @@ def test_probabilities_normalized(key):
     m = _load(key)
     order = sorted(m.elo_ratings.items(), key=lambda x: x[1], reverse=True)
     r = m.matchup(order[0][0], order[-1][0], neutral=False)
-    assert abs(r["home_win"] + r["draw"] + r["away_win"] - 1.0) < 1e-6
+    # matchup() rounds each outcome to 4 decimals, so the sum can differ from 1
+    # by up to ~5e-4 — a 1e-6 bar is impossible for rounded probabilities.
+    assert abs(r["home_win"] + r["draw"] + r["away_win"] - 1.0) < 1e-3
 
 
 def test_market_anchoring_shrinks_edges():

@@ -407,7 +407,9 @@ class TennisModel:
                             edges.append({
                                 "sport":        "tennis",
                                 "market":       "moneyline",
-                                "direction":    name,
+                                # WIN, not the player name: a name here fell
+                                # through schema fallback → mislabeled "HOME"
+                                "direction":    "WIN",
                                 "team":         name,
                                 "matchup":      f"{away} vs {home}",
                                 "odds":         int(price),
@@ -425,10 +427,11 @@ class TennisModel:
                                 "best_of":      best_of,
                             })
 
-        # Dedup: best-book per matchup/player
+        # Dedup: best-book per matchup/player (key on team — direction is now
+        # the constant "WIN" and would collapse both players into one)
         best: dict[tuple, dict] = {}
         for e in edges:
-            key = (e["matchup"], e["direction"])
+            key = (e["matchup"], e["team"])
             if key not in best or e["edge_pct"] > best[key]["edge_pct"]:
                 best[key] = e
         return sorted(best.values(), key=lambda x: x["edge_pct"], reverse=True)

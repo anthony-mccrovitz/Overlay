@@ -361,6 +361,13 @@ def cmd_record(args: argparse.Namespace) -> int:
         print("  No picks found. Run: python3 chef.py picks mlb")
         return 0
 
+    # Tainted picks (known-broken mechanism — scripts/taint_bad_picks.py) are
+    # kept in picks.json as an audit trail but excluded from every record view.
+    n_tainted = sum(1 for p in picks if p.get("tainted"))
+    if n_tainted:
+        picks = [p for p in picks if not p.get("tainted")]
+        print(f"  (excluding {n_tainted} tainted pick(s) from broken-model periods)")
+
     filter_market    = getattr(args, "market", "all")
     filter_sport     = getattr(args, "sport",  "all")
     shadow_mode      = getattr(args, "shadow", False)
@@ -2848,6 +2855,91 @@ def cmd_strategies(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_polydash(args: argparse.Namespace) -> int:
+    """One screen for the Polymarket pilot: today's board, open exposure,
+    fills, CLV, paper P&L, and entry timing."""
+    import importlib
+    dash = importlib.import_module("scripts.polymarket_dashboard")
+    dash.run(eff_date=getattr(args, "date", None),
+             as_json=getattr(args, "as_json", False))
+    return 0
+
+
+def cmd_polyready(args: argparse.Namespace) -> int:
+    """Is the Polymarket experiment finished, and what did it conclude?
+
+    Grades the run against gates fixed in advance (polymarket_protocol.py):
+    sample size, anchor calibration, fill count, CLV, drawdown. Returns
+    WAIT / RETIRE / PROMOTE. A RETIRE is a success — it closes the idea off
+    at zero cost.
+    """
+    import importlib
+    r = importlib.import_module("scripts.polymarket_readiness")
+    r.run(as_json=getattr(args, "as_json", False))
+    return 0
+
+
+def cmd_polytiming(args: argparse.Namespace) -> int:
+    """When is Polymarket actually mispriced? Replays played games to show how
+    much price discovery is left at each lead time before kickoff."""
+    import importlib
+    t = importlib.import_module("scripts.polymarket_timing")
+    t.run(since=getattr(args, "since", None),
+          as_json=getattr(args, "as_json", False))
+    return 0
+
+
+def cmd_paper(args: argparse.Namespace) -> int:
+    """Paper-trading ledger for the Polymarket pilot — the $112 without the $112.
+
+    Replays every logged polymarket_ev pick at its recorded fill price and
+    settles it against the real result. Taker rows simulate faithfully; maker
+    rows only count when polymarket_fills judged the resting order hit.
+    """
+    import importlib
+    paper = importlib.import_module("scripts.paper_trader")
+    paper.run(bankroll=getattr(args, "bankroll", 112.0),
+              mode=getattr(args, "mode", None),
+              as_json=getattr(args, "as_json", False))
+    return 0
+
+
+def cmd_polyfills(args: argparse.Namespace) -> int:
+    """Maker fill + adverse-selection report for logged polymarket_ev picks.
+
+    The scanner's maker prices are only achievable if the resting orders fill,
+    and fills that arrive because the counterparty knew something are worse
+    than no fill at all. This replays the price history to measure both.
+    """
+    import importlib
+    fills = importlib.import_module("scripts.polymarket_fills")
+    fills.run(since=getattr(args, "since", None),
+              as_json=getattr(args, "as_json", False))
+    return 0
+
+
+def cmd_polymarket(args: argparse.Namespace) -> int:
+    """Polymarket-vs-Pinnacle price scanner — shadow strategy polymarket_ev.
+    Finds Polymarket win contracts priced under Pinnacle's devigged fair and
+    logs them as shadow picks. Prices a RESTING order inside the bid by
+    default (no fee — sports_fees_v2 is takerOnly); crossing the spread is
+    negative on nearly every board. See chef.py polyfills for whether those
+    resting orders would actually have filled."""
+    import importlib
+    scanner = importlib.import_module("scripts.polymarket_scanner")
+    date_str = None
+    if getattr(args, "date", None):
+        d = args.date
+        date_str = f"{d[:4]}-{d[4:6]}-{d[6:]}" if len(d) == 8 else d
+    scanner.run(
+        date_str=date_str,
+        min_ev=getattr(args, "min_ev", 2.0),
+        bankroll=getattr(args, "bankroll", 112.0),
+        dry_run=getattr(args, "dry_run", False),
+    )
+    return 0
+
+
 def cmd_stats(args: argparse.Namespace) -> int:
     """Refresh public_stats.json from current picks.json."""
     try:
@@ -3569,6 +3661,37 @@ def main() -> int:
     p_strat.add_argument("--report", action="store_true", help="Report CLV by strategy only; don't log new picks")
     p_strat.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
 
+    p_poly = sub.add_parser("polymarket", help="Polymarket-vs-Pinnacle scanner (shadow polymarket_ev picks)")
+    p_poly.add_argument("--date", help="Slate date YYYYMMDD (default: today)")
+    p_poly.add_argument("--min-ev", type=float, default=2.0, dest="min_ev")
+    p_poly.add_argument("--bankroll", type=float, default=112.0, help="Pilot bankroll for stake guidance")
+    p_poly.add_argument("--dry-run", action="store_true", dest="dry_run")
+
+    p_fills = sub.add_parser("polyfills",
+                             help="Did the Polymarket maker orders fill? (adverse-selection report)")
+    p_fills.add_argument("--since", help="Only picks on/after this date (YYYY-MM-DD)")
+    p_fills.add_argument("--json", action="store_true", dest="as_json")
+
+    p_paper = sub.add_parser("paper",
+                             help="Paper-trade ledger for the Polymarket pilot (no money)")
+    p_paper.add_argument("--bankroll", type=float, default=112.0)
+    p_paper.add_argument("--mode", choices=["make", "take"],
+                         help="Only simulate this execution style")
+    p_paper.add_argument("--json", action="store_true", dest="as_json")
+
+    p_dash = sub.add_parser("polydash", help="Polymarket pilot dashboard (one screen)")
+    p_dash.add_argument("--date", help="Slate date YYYY-MM-DD (default: today)")
+    p_dash.add_argument("--json", action="store_true", dest="as_json")
+
+    p_ptime = sub.add_parser("polytiming",
+                             help="When is Polymarket mispriced? (price discovery by lead time)")
+    p_ptime.add_argument("--since", help="Games on/after this date (YYYY-MM-DD)")
+    p_ptime.add_argument("--json", action="store_true", dest="as_json")
+
+    p_ready = sub.add_parser("polyready",
+                             help="Experiment verdict: WAIT / RETIRE / PROMOTE vs pre-set gates")
+    p_ready.add_argument("--json", action="store_true", dest="as_json")
+
     # bankroll — personal P&L
     p_bankroll = sub.add_parser("bankroll", help="Show personal bankroll P&L")
     p_bankroll.add_argument("--sport",  default="all", choices=["all", "mlb", "nba"])
@@ -3678,6 +3801,12 @@ def main() -> int:
         "validate": cmd_validate,
         "calibrate": cmd_calibrate,
         "strategies": cmd_strategies,
+        "polymarket": cmd_polymarket,
+        "polyfills": cmd_polyfills,
+        "paper":     cmd_paper,
+        "polydash":  cmd_polydash,
+        "polytiming": cmd_polytiming,
+        "polyready": cmd_polyready,
         "morning":  cmd_morning,
         "evening":  cmd_evening,
         "night":    cmd_night,

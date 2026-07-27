@@ -53,13 +53,3 @@ class BayesianModel:
             "n_samples": len(y),
         }
 
-    def prediction_uncertainty(self, X: pd.DataFrame) -> np.ndarray:
-        """Return prediction standard deviation (uncertainty estimate)."""
-        X_clean = prepare_features(X)
-        for col in self._feature_cols:
-            if col not in X_clean.columns:
-                X_clean[col] = 0
-        X_clean = X_clean[self._feature_cols]
-        X_scaled = self.scaler.transform(X_clean)
-        _, std = self.model.predict(X_scaled, return_std=True)
-        return std

@@ -250,27 +250,6 @@ Not financial advice. Bet responsibly. 21+
     return caption.strip()
 
 
-def print_both_captions(
-    picks: list[dict],
-    props: list[dict],
-    card_date: date | None = None,
-    record: str | None = None,
-) -> None:
-    """Print both captions to terminal, ready to copy-paste."""
-    d = card_date or date.today()
-    date_str = d.strftime("%b %-d")
-
-    print("\n" + "="*60)
-    print("CAPTION 1 — PICKS CARD")
-    print("="*60)
-    print(picks_caption(picks, date_str=date_str, record=record, card_date=d))
-
-    print("\n" + "="*60)
-    print("CAPTION 2 — PROPS CARD")
-    print("="*60)
-    print(props_caption(props, date_str=date_str, card_date=d))
-    print("="*60 + "\n")
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # NBA Captions
@@ -661,35 +640,6 @@ def f5_caption(plays: list[dict], card_date: date | None = None) -> str:
     ]
     return "\n".join(lines)
 
-
-def batter_props_caption(props: list[dict], card_date: date | None = None) -> str:
-    """Caption for batter props card (hits/HRs/RBIs/TB)."""
-    d = card_date or date.today()
-    date_str = d.strftime("%b %-d")
-    mkt_short = {"batter_hits": "Hits", "batter_home_runs": "HRs",
-                 "batter_rbis": "RBIs", "batter_total_bases": "TB"}
-    lines = [
-        f"⚾ BATTER PROPS — {date_str}",
-        "Books price batters on season BA. We adjust for pitcher matchup. Gap = edge.",
-        "━━━━━━━━━━━━━━━",
-    ]
-    for p in props[:6]:
-        player    = p.get("player", "")
-        market    = p.get("market", "")
-        direction = p.get("direction", "OVER")
-        line      = p.get("line", "")
-        odds      = p.get("odds", 0)
-        book      = p.get("book") or p.get("sportsbook", "")
-        edge      = float(p.get("edge_pct", 0) or 0)
-        odds_str  = f"{int(odds):+d}" if odds else ""
-        ms        = mkt_short.get(market, market)
-        lines.append(f"• {player} {direction} {line} {ms}  {odds_str} @ {book}  |  +{edge:.1f}%")
-    lines += [
-        "━━━━━━━━━━━━━━━",
-        "Not financial advice. 21+",
-        "#MLB #sportsbetting #batterprops #hitsbet #homerunbet #MLBprops #sharpbetting #propbets",
-    ]
-    return "\n".join(lines)
 
 
 def print_nba_captions(

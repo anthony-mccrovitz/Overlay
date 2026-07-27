@@ -36,7 +36,8 @@ class TestGate:
         assert p["direction"] == "OVER"
         assert p["line"] == 7.5
         assert p["market"] == "total"
-        assert p["edge_pct"] == 2.0            # totals store native run-edge
+        assert p["raw_edge_pct"] == 2.0        # the claimed native run-edge is pinned
+        assert p["edge_pct"] <= 2.0            # calibration gate may shrink the stored edge
         assert p["odds"] == 100
         assert p["pick_id"] == make_pick_id("mlb", DATE, "OVER 7.5", "total", "OVER")
         assert p["pick_id"] == "mlb_20260726_over-7-5_total_over"

@@ -97,6 +97,11 @@ def compute_table(picks_path: Path | str = PICKS_FILE,
     for p in picks:
         if p.get("result") not in ("win", "loss"):   # skip pending + pushes
             continue
+        if p.get("tainted"):
+            # Produced by a known-broken mechanism (degenerate calibrator,
+            # team-blind ratings…) — the gate must not learn a segment's k
+            # from picks the segment's own bug generated.
+            continue
         mp = p.get("model_prob")
         imp = _implied(p.get("odds"))
         if mp is None or imp is None:
@@ -148,19 +153,20 @@ def _load_table() -> dict:
     return _table_cache
 
 
-def reload_table() -> None:
-    """Drop the in-process cache (call after compute_table in a long-lived proc)."""
-    global _table_cache
-    _table_cache = None
-
 
 # ── the gate ─────────────────────────────────────────────────────────────────
-def shrink_factor(sport: str, market: str) -> float:
-    """Fraction of this segment's claimed edge that has historically materialized."""
+
+def is_retired_market(sport: str, market: str) -> bool:
+    """True when a segment's own history has ruled it dead: with a trusted
+    sample (n ≥ MIN_TRUST) the realized fraction of claimed edge is k = 0 —
+    the model has NO signal here. Used to stop LOGGING new picks in flood
+    markets (700 batter props/day echoing the book line at r≈0.98); markets
+    that come back to life in a future table refresh un-retire automatically.
+    """
     row = _load_table().get(_key(sport, market))
-    if not row or row.get("n", 0) < MIN_TRUST:
-        return 1.0            # not trusted enough to shrink by realization
-    return float(row.get("k", 1.0))
+    if not row:
+        return False
+    return int(row.get("n", 0)) >= MIN_TRUST and float(row.get("k", 1.0)) == 0.0
 
 
 def calibrate_edge(sport: str, market: str, raw_edge_pct: float | None) -> float | None:

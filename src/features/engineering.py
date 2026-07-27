@@ -40,10 +40,3 @@ def prepare_features(X: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def get_feature_names(X: pd.DataFrame) -> list[str]:
-    """Return the feature columns that will be used for modeling."""
-    available = [c for c in FEATURE_COLS if c in X.columns]
-    for col in BARTTORVIK_FEATURE_COLS:
-        if col in X.columns and X[col].notna().mean() > 0.5:
-            available.append(col)
-    return available

@@ -257,17 +257,6 @@ def _rounded_rect(draw, xy, radius, fill=None, outline=None, width=2):
         draw.line([x1, y0+r, x1, y1-r], fill=outline, width=width)
 
 
-def _pill(draw, x: int, y: int, text: str, font, fg: tuple, bg: tuple | None = None) -> int:
-    """Draw a pill tag. Returns the right edge x coordinate."""
-    tw = int(draw.textlength(text, font=font))
-    px, py = 14, 6
-    w = tw + px * 2
-    h = font.size + py * 2
-    if bg:
-        _rounded_rect(draw, (x, y, x + w, y + h), radius=h // 2, fill=bg)
-    draw.text((x + px, y + py), text, fill=fg, font=font)
-    return x + w
-
 
 def _scan_lines(img, opacity: int = 18):
     """Subtle horizontal scan lines for futuristic texture."""

@@ -1,0 +1,98 @@
+{
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Eddy Alvarez",
+      "team": "Eddy Alvarez UNDER 0.5",
+      "matchup": "New York Mets @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": -260,
+      "model_prob": 0.9901,
+      "implied_prob": 0.6842,
+      "edge_pct": 30.59,
+      "model_mu": 0.01,
+      "sportsbook": "theScore Bet"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Juan Soto",
+      "team": "Juan Soto UNDER 0.5",
+      "matchup": "New York Mets @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": 105,
+      "model_prob": 0.7052,
+      "implied_prob": 0.4365,
+      "edge_pct": 26.86,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Kyle Schwarber",
+      "team": "Kyle Schwarber UNDER 0.5",
+      "matchup": "New York Mets @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": -285,
+      "model_prob": 0.8644,
+      "implied_prob": 0.6624,
+      "edge_pct": 20.2,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Jared Jones",
+      "team": "Jared Jones UNDER 5.5",
+      "matchup": "Pittsburgh Pirates @ Cleveland Guardians",
+      "line": 5.5,
+      "odds": -125,
+      "model_prob": 0.6694,
+      "implied_prob": 0.5,
+      "edge_pct": 16.94,
+      "model_mu": 4.66,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Jackson Merrill",
+      "team": "Jackson Merrill UNDER 1.5",
+      "matchup": "San Diego Padres @ Kansas City Royals",
+      "line": 1.5,
+      "odds": -125,
+      "model_prob": 0.6465,
+      "implied_prob": 0.5,
+      "edge_pct": 14.65,
+      "model_mu": 1.38,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Jonatan Clase",
+      "team": "Jonatan Clase OVER 0.5",
+      "matchup": "Chicago White Sox @ Toronto Blue Jays",
+      "line": 0.5,
+      "odds": -125,
+      "model_prob": 0.6424,
+      "implied_prob": 0.5,
+      "edge_pct": 14.24,
+      "model_mu": 1.03,
+      "sportsbook": "Fliff"
+    }
+  ]
+}

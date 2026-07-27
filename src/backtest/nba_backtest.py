@@ -80,19 +80,6 @@ def fetch_season_games(season: str) -> pd.DataFrame:
     return df
 
 
-def _team_lookup(name: str, all_teams: list[dict]) -> dict | None:
-    name_lower = name.lower()
-    for t in all_teams:
-        tn = str(t.get("TEAM_NAME", "")).lower()
-        if tn == name_lower:
-            return t
-    for t in all_teams:
-        tn = str(t.get("TEAM_NAME", "")).lower()
-        for word in name_lower.split():
-            if len(word) > 3 and word in tn:
-                return t
-    return None
-
 
 def run_backtest(season: str = "2024-25", verbose: bool = True) -> pd.DataFrame:
     if verbose:

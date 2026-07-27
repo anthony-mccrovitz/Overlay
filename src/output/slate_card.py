@@ -50,23 +50,6 @@ def _load_font(paths, size: int):
     return ImageFont.load_default()
 
 
-def _load_tracker_stats() -> dict | None:
-    if not _TRACKER_FILE.exists():
-        return None
-    try:
-        data = json.loads(_TRACKER_FILE.read_text())
-        settled = [p for p in data.get("picks", []) if p.get("result") in ("win", "loss")]
-        if not settled:
-            return None
-        wins   = sum(1 for p in settled if p["result"] == "win")
-        losses = len(settled) - wins
-        staked = sum(float(p.get("stake", p.get("bet_size", 1.0))) for p in settled)
-        profit = sum(float(p.get("profit") or 0.0) for p in settled)
-        roi    = (profit / staked * 100) if staked > 0 else 0.0
-        return {"wins": wins, "losses": losses, "profit": profit, "roi": roi}
-    except Exception:
-        return None
-
 
 # Short team name map
 _SHORT = {

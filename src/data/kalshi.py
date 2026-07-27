@@ -28,8 +28,22 @@ API_BASE = "https://api.elections.kalshi.com/trade-api/v2"
 DEMO_BASE = "https://demo-api.kalshi.co/trade-api/v2"  # no auth needed
 CACHE_DIR = Path("data/cache/kalshi")
 
-# Kalshi charges ~2% fee on winnings (capped at 7 cents per contract).
-# Factor this into any arb margin calculation.
+# UNVERIFIED — do not price a real entry off this without checking Kalshi's
+# current schedule first.
+#
+# Its twin in polymarket.py was an identically-worded, identically-uncited
+# "~2%" that turned out to be wrong in BOTH directions once the live schedule
+# was read off the API (2026-07-20): the real fee is curved, peaking at a
+# coin flip and vanishing at the extremes, and it is charged to takers only.
+# A flat rate cannot express that shape, and Kalshi's published fee is also a
+# curve (~0.07 * p * (1-p) per contract), so this constant is very likely
+# wrong in the same way.
+#
+# Left as-is rather than swapped for a second guess, because guessing is what
+# caused the original bug. Only src/data/prediction_arb.py reads it, and that
+# module is reachable only from archive/experimental — nothing in the daily
+# pipeline or chef.py touches it. Fix it against live data before reviving
+# any Kalshi work.
 FEE_RATE = 0.02
 
 # Category mapping to our internal labels

@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-07-27T20:11:13.715616+00:00",
+  "protocol": {
+    "protocol_version": "v1",
+    "min_ev_pct": 2.0,
+    "min_liquidity_usd": 1000,
+    "entry_mode": "make",
+    "days_ahead": 2,
+    "bankroll_usd": 112.0,
+    "stake_frac": 0.04,
+    "max_concurrent_exposure_frac": 0.35,
+    "verdict_min_scored": 300,
+    "verdict_min_filled": 100,
+    "max_drawdown_frac": 0.25,
+    "anchor_min_sample": 200,
+    "anchor_max_miscalibration": 0.05
+  },
+  "verdict": "WAIT",
+  "gates": [
+    {
+      "gate": "SAMPLE",
+      "have": 47,
+      "need": 300,
+      "pass": false,
+      "detail": "47 scored of 144 logged (protocol v1)"
+    },
+    {
+      "gate": "ANCHOR",
+      "have": 89,
+      "need": 200,
+      "pass": false,
+      "detail": "89 graded sharp-fair picks; worst bucket gap 0.086 vs max 0.05"
+    },
+    {
+      "gate": "FILLS",
+      "have": 80,
+      "need": 100,
+      "pass": false,
+      "detail": "80 filled of 143 checked"
+    },
+    {
+      "gate": "CLV",
+      "have": 0.842,
+      "need": "> 0",
+      "pass": true,
+      "detail": "avg +0.842% over 47 scored"
+    },
+    {
+      "gate": "DRAWDOWN",
+      "have": 0.18,
+      "need": "< 0.25",
+      "pass": true,
+      "detail": "paper max drawdown 18.0% of bankroll"
+    }
+  ],
+  "anchor": {
+    "n": 89,
+    "buckets": [
+      {
+        "bucket": 0.4,
+        "n": 28,
+        "predicted": 0.45,
+        "actual": 0.536,
+        "gap": 0.086
+      }
+    ],
+    "worst_gap": 0.086
+  },
+  "n_logged": 144,
+  "n_scored": 47
+}

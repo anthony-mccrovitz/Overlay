@@ -1,0 +1,35 @@
+**Overlay AI — MLB Picks · 7/19/26 (Sunday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 98-85 (53.6% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| San Francisco Giants vs  | +163 | +18.8% | BetRivers |
+| Miami Marlins vs  | +115 | +16.0% | BetRivers |
+| Minnesota Twins vs  | +143 | +14.4% | Caesars |
+| San Diego Padres vs  | +114 | +13.1% | FanDuel |
+| Chicago White Sox vs  | -112 | +11.6% | DraftKings |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Pittsburgh Pirates @ Cleveland Guardians YRFI (Paul Skenes vs Joey Cantillo) | NRFI +120 | 43% | BetRivers |
+| San Francisco Giants @ Seattle Mariners YRFI (Robbie Ray vs Logan Gilbert) | NRFI +105 | 43% | BetRivers |
+| Minnesota Twins @ Chicago Cubs YRFI (Zebby Matthews vs Shota Imanaga) | NRFI +100 | 43% | BetRivers |
+| Tampa Bay Rays @ Boston Red Sox YRFI (Shane McClanahan vs Sonny Gray) | NRFI -103 | 43% | BetRivers |
+| Chicago White Sox @ Toronto Blue Jays YRFI (Sean Burke vs Trey Yesavage) | NRFI -105 | 43% | Caesars |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*

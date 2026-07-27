@@ -58,9 +58,14 @@ class TestAutoLogPicks:
     def test_edge_pct_percentage_points_for_moneyline(self, tmp_path):
         picks = self._run_auto_log([self._sample_ml_pick(edge_fraction=0.082)], tmp_path)
         assert len(picks) == 1
+        # The CLAIMED edge (raw_edge_pct) carries the pct-point conversion:
+        # 0.082 fraction → 8.2pp. The stored edge_pct is gate-shrunk by the
+        # segment's realized k (append_picks_safe normalizes every pick), so
+        # assert the claim exactly and that the final edge never exceeds it.
+        raw = picks[0]["raw_edge_pct"]
         edge = picks[0]["edge_pct"]
-        assert edge is not None
-        assert abs(edge - 8.2) < 0.1, f"Expected ~8.2 pct points, got {edge}"
+        assert raw is not None and abs(raw - 8.2) < 0.1, f"Expected ~8.2 pct points, got {raw}"
+        assert edge is not None and edge <= raw + 1e-9
 
     def test_zero_odds_pick_skipped(self, tmp_path):
         pick = self._sample_ml_pick()
@@ -86,7 +91,9 @@ class TestAutoLogPicks:
         pick = self._sample_ml_pick()
         pick["HomeTeam"] = "Milwaukee Brewers"
         picks = self._run_auto_log([pick], tmp_path)
-        assert picks[0]["direction"] == "AWAY"
+        # normalize_pick (applied to every write via append_picks_safe) aliases
+        # AWAY → WIN; moneyline grading matches on team name, not side label.
+        assert picks[0]["direction"] == "WIN"
 
     def test_totals_edge_not_multiplied(self, tmp_path):
         pick = {
@@ -104,9 +111,14 @@ class TestAutoLogPicks:
         }
         picks = self._run_auto_log([pick], tmp_path)
         assert len(picks) == 1
-        edge = picks[0]["edge_pct"]
-        assert edge is not None
-        assert abs(edge - 2.1) < 0.01, f"Total edge should stay as runs (2.1), got {edge}"
+        # The CLAIMED edge stays in run units (2.1) — never multiplied to 210 or
+        # divided to 0.021. The stored edge_pct is gate-shrunk by the calibration
+        # gate, so assert the claim exactly and that the final edge never exceeds
+        # it (same pattern as the moneyline test below).
+        raw = picks[0].get("raw_edge_pct", picks[0]["edge_pct"])
+        assert abs(raw - 2.1) < 0.01, f"Total edge should stay as runs (2.1), got {raw}"
+        assert picks[0]["edge_pct"] is not None
+        assert picks[0]["edge_pct"] <= raw + 1e-9
 
 
 class TestNrfiAutoLog:
