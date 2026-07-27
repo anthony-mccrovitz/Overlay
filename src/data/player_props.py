@@ -208,6 +208,30 @@ def _poisson_over(lam: float, line: float) -> float:
     return max(0.0, min(1.0, 1.0 - p_under))
 
 
+# Measured overdispersion of per-start strikeouts (validate_ks_v2.py, 1392
+# starts): Var/Mean ≈ 1.17. Poisson assumes 1.0, so it understates the tails and
+# is overconfident near the mean — which manufactured the fake big edges that
+# made pitcher_strikeouts' edge_pct anti-correlate with winning. Neg-binom with
+# this dispersion gives honest probabilities.
+_KS_VAR_MEAN = 1.17
+
+
+def _nbinom_over(mean: float, line: float, phi: float = _KS_VAR_MEAN) -> float:
+    """P(X > line) for X ~ NegativeBinomial with E[X]=mean, Var=phi·mean.
+
+    phi > 1 is overdispersed (fatter tails than Poisson). Falls back to Poisson
+    when phi ≤ 1 or the mean is tiny.
+    """
+    if mean <= 0:
+        return 0.0
+    if phi <= 1.0:
+        return _poisson_over(mean, line)
+    from scipy.stats import nbinom
+    p = 1.0 / phi                 # so that mean = r(1-p)/p and var = phi·mean
+    r = mean / (phi - 1.0)
+    return float(max(0.0, min(1.0, nbinom.sf(int(line), r, p))))
+
+
 def _project_strikeouts(k9: float, k9_l10: float, lineup_ops: float, innings: float = 5.5) -> float:
     """
     Project expected strikeouts for a starting pitcher.
@@ -361,6 +385,11 @@ def find_prop_edges(
                 sp_stats["k9"], sp_stats["k9_l10"], sp_stats["lineup_ops"],
                 innings=sp_stats["ip"],
             )
+            # Poisson. A neg-binom v2 was BUILT + VALIDATED (validate_ks_v2.py,
+            # 1392 starts) on the theory that overdispersion (Var/Mean≈1.17) made
+            # Poisson overconfident — but it LOST: Poisson had a marginally lower
+            # Brier at the mean AND in both tails. The overdispersion is too mild
+            # to help calibration, so Poisson stays. (_nbinom_over kept for reuse.)
             p_over = _poisson_over(projected, line)
             _append_edge("pitcher_strikeouts", player,
                          sp_stats["team"], sp_stats["opp"],

@@ -38,5 +38,45 @@
       "spread": 33.1,
       "verdict": "real-signal"
     }
+  },
+  {
+    "sport": "mlb",
+    "market": "pitcher_strikeouts",
+    "tag": "v2-negbinom-REVERTED",
+    "date": "2026-07-27",
+    "note": "REBUILD: (1) INNINGS fix (real IP/start vs fixed 5.5) was ALREADY LIVE in prod \u2014 validated as real (MAE 1.743->1.666 on 1392 starts); the -11%% ledger record is largely PRE-fix/stale. (2) NEG-BINOM tested for overdispersion (Var/Mean=1.17) but LOST to Poisson on held-out Brier at mean and both tails -> reverted. No new change shipped; forward-validate the innings-fixed model on shadow CLV.",
+    "n": 1127,
+    "record": "229-246-652",
+    "wr": 48.2,
+    "roi": -4.7,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-110",
+    "confidence": {
+      "n": 475,
+      "buckets": [
+        {
+          "lo": 0.231,
+          "hi": 0.621,
+          "n": 158,
+          "wr": 31.6
+        },
+        {
+          "lo": 0.622,
+          "hi": 0.729,
+          "n": 158,
+          "wr": 48.1
+        },
+        {
+          "lo": 0.729,
+          "hi": 0.99,
+          "n": 159,
+          "wr": 64.8
+        }
+      ],
+      "monotonic": true,
+      "spread": 33.1,
+      "verdict": "real-signal"
+    }
   }
 ]
