@@ -1830,10 +1830,15 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
     Log generated prop picks to pnl/picks.json. Sets card_pick based on model status
     (live → True, incubating → False). Deduplicates on pick_id.
     """
-    from src.tracking.schema import make_pick_id, append_picks_safe
+    from src.tracking.schema import make_pick_id, append_picks_safe, canonical_sport
     from src.config.models import is_live as _is_live
 
     _PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    # Canonicalize the sport key at the write boundary so props match every other
+    # MLB pick ('mlb', not 'baseball_mlb'). append_picks_safe does NOT normalize,
+    # so an un-aliased key here silently forks the ledger and desyncs grading/CLV.
+    sport = canonical_sport(sport)
 
     today  = (game_date or date.today()).isoformat()
     now_ts = datetime.now(tz=timezone.utc).isoformat()
