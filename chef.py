@@ -1597,6 +1597,30 @@ def cmd_experiment(args: argparse.Namespace) -> int:
         print(f"  {line}\n")
         return 0
 
+    if action == "optimize":
+        # Sweep a confidence floor for every lane; recommend the robust ones.
+        rows = [xl.optimize_floor(t.sport, t.market) for t in xl.triage(min_n=60)]
+        rows.sort(key=lambda r: (0 if r.verdict.startswith("TUNE-APPLY") else
+                                 1 if r.verdict.startswith("TUNE") else 2,
+                                 -(r.roi_kept or -999)))
+        line = "═" * 82
+        print(f"\n  {line}")
+        print("  CONFIDENCE-FLOOR OPTIMIZER — the best robust floor per lane")
+        print(f"  {line}")
+        print(f"  {'LANE':26s} {'BASE':>7} {'FLOOR':>6} {'KEPT':>10} {'ROI→':>7}  VERDICT")
+        print("  " + "─" * 80)
+        for r in rows:
+            base = f"{r.roi_base:+.1f}%"
+            fl = f"{r.floor:.2f}" if r.floor is not None else "—"
+            kept = f"{r.n_kept}@{r.wr_kept:.0f}%" if r.floor is not None else "—"
+            roi = f"{r.roi_kept:+.1f}%" if r.roi_kept is not None else "—"
+            print(f"  {r.sport+'/'+r.market:26s} {base:>7} {fl:>6} {kept:>10} {roi:>7}  {r.verdict}")
+        print(f"  {line}")
+        print("  TUNE-APPLY = commit the floor · TUNE-THIN/CHECK = forward-validate first · "
+              "REBUILD = needs new signal")
+        print(f"  {line}\n")
+        return 0
+
     sport = getattr(args, "sport", None)
     market = getattr(args, "market", None)
     if not sport or not market:
@@ -3371,8 +3395,8 @@ def main() -> int:
     # experiment — the model-tuning ledger (triage / snapshot / history)
     p_exp = sub.add_parser("experiment", help="Model-tuning ledger: triage every algo for real signal, snapshot a baseline, show history")
     p_exp.add_argument("action", nargs="?", default="triage",
-                       choices=["triage", "snapshot", "history"],
-                       help="triage (default): map every algo; snapshot/history: one algo")
+                       choices=["triage", "optimize", "snapshot", "history"],
+                       help="triage: map every algo; optimize: best confidence floor per lane; snapshot/history: one algo")
     p_exp.add_argument("sport", nargs="?", help="Sport (for snapshot/history)")
     p_exp.add_argument("market", nargs="?", help="Market (for snapshot/history)")
     p_exp.add_argument("--tag", help="Version tag for a snapshot (e.g. baseline, v2)")

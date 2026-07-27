@@ -60,6 +60,40 @@ def test_triage_tunes_signal_losers_and_cuts_dead_ones():
     assert _triage_call(roi=None, clv=None, signal="insufficient-data").startswith("WAIT")
 
 
+def test_optimize_floor_finds_robust_plateau(tmp_path):
+    import json as _json
+    from src.analytics.experiment_log import optimize_floor
+    # Low-confidence picks lose, high-confidence win → a robust floor exists.
+    picks = []
+    for i in range(120):
+        mp = 0.52 if i % 2 == 0 else 0.70
+        # low-conf: 40% win; high-conf: 70% win
+        win = (i % 5 == 0) if mp == 0.52 else (i % 10 != 0)
+        picks.append({"sport": "mlb", "market": "batter_hits", "odds": -110,
+                      "model_prob": mp, "result": "win" if win else "loss"})
+    pnl = tmp_path / "picks.json"
+    pnl.write_text(_json.dumps({"picks": picks}))
+    rec = optimize_floor("mlb", "batter_hits", pnl_file=pnl, min_kept=40)
+    assert rec.floor is not None
+    assert 0.52 < rec.floor <= 0.70   # gate lands above the losing low-conf band
+    assert rec.roi_kept > rec.roi_base
+    assert rec.verdict.startswith("TUNE-APPLY")
+
+
+def test_optimize_floor_flags_no_help_as_rebuild(tmp_path):
+    import json as _json
+    from src.analytics.experiment_log import optimize_floor
+    # Win rate is ~flat regardless of confidence → no floor helps → REBUILD.
+    picks = [{"sport": "nba", "market": "spread", "odds": -110,
+              "model_prob": 0.5 + (i % 20) * 0.015,
+              "result": "win" if i % 5 == 0 else "loss"} for i in range(120)]
+    pnl = tmp_path / "picks.json"
+    pnl.write_text(_json.dumps({"picks": picks}))
+    rec = optimize_floor("nba", "spread", pnl_file=pnl)
+    assert rec.floor is None
+    assert rec.verdict.startswith("REBUILD")
+
+
 def test_record_and_history_round_trip(tmp_path, monkeypatch):
     import src.analytics.experiment_log as xl
     pnl = tmp_path / "picks.json"

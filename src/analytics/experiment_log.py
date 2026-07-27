@@ -152,6 +152,75 @@ def history(sport: str, market: str) -> list[dict]:
 
 
 @dataclass
+class FloorRec:
+    """A confidence-floor recommendation for one lane, from a backtest sweep."""
+    sport: str
+    market: str
+    n_base: int
+    roi_base: float
+    floor: float | None = None
+    n_kept: int = 0
+    wr_kept: float | None = None
+    roi_kept: float | None = None
+    robust: bool = False
+    verdict: str = "REBUILD — no confidence floor helps"
+
+
+def _roi(subset: list[dict]) -> tuple[int, float, float]:
+    if not subset:
+        return (0, 0.0, 0.0)
+    w = sum(1 for x in subset if x["result"] == "win")
+    pnl = sum((_dec(x["odds"]) - 1) if x["result"] == "win" else -1 for x in subset)
+    return (len(subset), w / len(subset) * 100, pnl / len(subset) * 100)
+
+
+def optimize_floor(sport: str, market: str, pnl_file: Path = _PNL_FILE,
+                   min_kept: int = 100, min_roi: float = 2.0) -> FloorRec:
+    """Sweep model_prob floors for one lane and recommend the best ROBUST one.
+
+    Robust = the chosen floor AND its neighbours (±0.02, ±0.04) are all
+    profitable (a plateau, not an overfit spike) and it retains ≥ min_kept
+    picks. Anything thinner is flagged, never auto-applied — a floor fit to a
+    few dozen picks is just variance."""
+    picks = _load_picks(pnl_file)
+    lane = [p for p in picks
+            if _key(p.get("sport", ""), "")[0] == _key(sport, market)[0]
+            and (p.get("market") or "").lower() == market.lower()
+            and p.get("result") in ("win", "loss")
+            and p.get("odds") not in (None, 0)
+            and isinstance(p.get("model_prob"), (int, float))]
+    n_base, _, roi_base = _roi(lane)
+    rec = FloorRec(sport=_key(sport, market)[0], market=market.lower(),
+                   n_base=n_base, roi_base=round(roi_base, 1))
+    if n_base < 60:
+        rec.verdict = "WAIT — need more graded picks"
+        return rec
+
+    grid = [round(0.50 + 0.02 * i, 2) for i in range(16)]  # 0.50 .. 0.80
+    roi_at = {f: _roi([x for x in lane if x["model_prob"] >= f]) for f in grid}
+
+    # Best floor: highest ROI among those clearing min_roi and retaining enough.
+    candidates = [(f, *roi_at[f]) for f in grid
+                  if roi_at[f][2] >= min_roi and roi_at[f][0] >= min_kept]
+    best_thin = [(f, *roi_at[f]) for f in grid
+                 if roi_at[f][2] >= min_roi and roi_at[f][0] >= 25]
+    if candidates:
+        f, n, wr, roi = max(candidates, key=lambda t: t[3])
+        neigh = [f - 0.04, f - 0.02, f, f + 0.02, f + 0.04]
+        robust = all(roi_at.get(round(g, 2), (0, 0, -99))[2] > 0 for g in neigh
+                     if round(g, 2) in roi_at)
+        rec.floor, rec.n_kept, rec.wr_kept, rec.roi_kept = f, n, round(wr, 1), round(roi, 1)
+        rec.robust = robust
+        rec.verdict = ("TUNE-APPLY — robust profitable floor" if robust
+                       else "TUNE-CHECK — profitable but not a stable plateau")
+    elif best_thin:
+        f, n, wr, roi = max(best_thin, key=lambda t: t[3])
+        rec.floor, rec.n_kept, rec.wr_kept, rec.roi_kept = f, n, round(wr, 1), round(roi, 1)
+        rec.verdict = "TUNE-THIN — profitable subset too small; forward-validate"
+    return rec
+
+
+@dataclass
 class Triage:
     sport: str
     market: str
