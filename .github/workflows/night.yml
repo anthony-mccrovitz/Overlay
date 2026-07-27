@@ -30,6 +30,17 @@ jobs:
         python chef.py night --sport nba  || fail=1
         python chef.py night --sport nhl  || fail=1
         python chef.py night --sport wnba || fail=1
+        # Factory sweep: run EVERY registered adapter lane (MLB totals/F5 + all 7
+        # soccer leagues) through the one gate so the shadow lanes accumulate the
+        # opening-line CLV they need to earn promotion. MLB dedups against the
+        # per-sport runs above; the soccer leagues are covered here and nowhere
+        # else. All shadow (card_pick=False) — no real money. Runs at line-open.
+        # Must target the SAME ET-anchored slate the night pipeline uses, or a
+        # UTC "tomorrow" mismatch would price picks against the wrong day's odds
+        # (the phantom-edge bug). snapshot_from_pnl (in the prop runs below) then
+        # freezes these picks' opening lines for CLV.
+        SLATE=$(python -c "from scripts.night_pipeline import tomorrow_str; print(tomorrow_str())")
+        python chef.py picks grid --date "$SLATE" || fail=1
         # Every prop pipeline runs nightly so each prop type is its own
         # CLV-tracked market. All no-op cleanly off-season / on no-event days.
         python run_mlb_props.py || fail=1

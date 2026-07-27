@@ -47,9 +47,11 @@ SPORTS = {
     # API key so the archive file (soccer_spain_la_liga_DATE.json) matches what
     # compute_clv looks up per snapshot — the short "soccer_" prefix is reserved
     # for the World Cup and would otherwise collide.
+    "soccer_epl":                "soccer_epl",
     "soccer_spain_la_liga":      "soccer_spain_la_liga",
     "soccer_italy_serie_a":      "soccer_italy_serie_a",
     "soccer_germany_bundesliga": "soccer_germany_bundesliga",
+    "soccer_france_ligue_one":   "soccer_france_ligue_one",
     "soccer_usa_mls":            "soccer_usa_mls",
     "soccer_mexico_ligamx":      "soccer_mexico_ligamx",
     "ufc":     "mma_mixed_martial_arts",
@@ -131,9 +133,11 @@ _EXTRA_MARKETS = {
                       "player_blocked_shots,player_power_play_points,"
                       "player_total_saves,player_goal_scorer_anytime"),
     "soccer_fifa_world_cup":       _SOCCER_EXTRA,
+    "soccer_epl":                  _SOCCER_EXTRA,
     "soccer_spain_la_liga":        _SOCCER_EXTRA,
     "soccer_italy_serie_a":        _SOCCER_EXTRA,
     "soccer_germany_bundesliga":   _SOCCER_EXTRA,
+    "soccer_france_ligue_one":     _SOCCER_EXTRA,
     "soccer_usa_mls":              _SOCCER_EXTRA,
     "soccer_mexico_ligamx":        _SOCCER_EXTRA,
     "mma_mixed_martial_arts":      "fight_result_method,total_rounds",

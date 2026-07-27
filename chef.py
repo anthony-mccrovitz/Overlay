@@ -199,6 +199,16 @@ def cmd_picks(args: argparse.Namespace) -> int:
         total = sum(len(r.picks) for r in results)
         print(f"  [grid] sweep: {total} pick(s) across {len(results)} sport(s)"
               f"{' (dry-run, nothing logged)' if dry else ''}.")
+        # Freeze these picks' opening lines so the shadow lanes accrue CLV. Do it
+        # here (not in run_sport — tests call that against temp ledgers) for the
+        # exact slate we just logged, so the date always matches the picks.
+        if not dry and total:
+            try:
+                from src.analytics.clv_tracker import snapshot_from_pnl
+                n = snapshot_from_pnl(date_str)
+                print(f"  [grid] opening lines snapshotted: {n}")
+            except Exception as e:
+                print(f"  [grid] opening-line snapshot skipped: {e}")
         return 0
     else:
         print(f"Unknown sport: {sport}. Use: mlb, mlb-props, nba, nba-props, nhl, nhl-props, wnba, soccer, pga, tennis, ufc, grid.")
