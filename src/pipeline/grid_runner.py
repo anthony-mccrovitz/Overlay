@@ -28,6 +28,7 @@ from typing import Callable
 from src.config.models import is_retired, model_status
 from src.models.pick_model import PickModel, SportContext, finalize_picks
 from src.models.adapters.mlb_totals_model import MlbTotalsModel
+from src.models.adapters.mlb_f5_totals_model import MlbF5TotalsModel
 from src.models.adapters.soccer_model import SoccerModel, SOCCER_LEAGUES, league_label
 
 # ── The plug-in registry ──────────────────────────────────────────────────────
@@ -36,6 +37,7 @@ from src.models.adapters.soccer_model import SoccerModel, SOCCER_LEAGUES, league
 # automatic. Soccer registers ONE entry per league (its own model/cell).
 ADAPTERS: dict[tuple[str, str], Callable[[], PickModel]] = {
     ("mlb", "total"): MlbTotalsModel,
+    ("mlb", "f5_total"): MlbF5TotalsModel,
 }
 for _lg in SOCCER_LEAGUES:
     ADAPTERS[(league_label(_lg), "moneyline")] = partial(SoccerModel, _lg)
