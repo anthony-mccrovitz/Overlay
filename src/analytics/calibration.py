@@ -185,6 +185,32 @@ def _use_platt(market: str, n: int) -> bool:
     return _normalize_market(market) in _PLATT_MARKETS or n < _PLATT_THRESHOLD
 
 
+# Degeneracy guardrail: a calibrator that maps a wide range of raw inputs to a
+# tiny output range (or ≤2 distinct values) has collapsed and destroys all
+# per-event signal — strictly worse than falling back to the raw model prob.
+_DEGEN_GRID = [0.20, 0.30, 0.35, 0.40, 0.45, 0.50,
+               0.55, 0.60, 0.65, 0.70, 0.80, 0.90]
+_DEGEN_MIN_RANGE = 0.06      # output must span at least this much across the grid
+_DEGEN_MIN_DISTINCT = 3      # and produce at least this many distinct outputs
+
+
+def _calibrator_outputs(cal, cal_type: str) -> list[float]:
+    if cal_type == "platt":
+        return [_apply_platt(cal, p) for p in _DEGEN_GRID]
+    return [float(cal.predict([p])[0]) for p in _DEGEN_GRID]
+
+
+def is_degenerate_calibrator(cal, cal_type: str) -> bool:
+    """True if the fitted calibrator has collapsed and should not be used."""
+    try:
+        outs = _calibrator_outputs(cal, cal_type)
+    except Exception:
+        return True  # unusable → treat as degenerate
+    rng = max(outs) - min(outs)
+    distinct = len({round(o, 3) for o in outs})
+    return rng < _DEGEN_MIN_RANGE or distinct < _DEGEN_MIN_DISTINCT
+
+
 def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = True) -> dict:
     """
     Fit calibrators for each sport × market combo with enough data.
@@ -245,6 +271,18 @@ def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = Tru
             cal_type = "isotonic"
 
         path = CALIBRATORS_DIR / f"{key}.pkl"
+
+        # Guardrail: never ship a collapsed calibrator. If the fit is degenerate,
+        # remove any stale file so apply_calibration falls back to the raw model
+        # prob (which still carries per-event signal) instead of a flat constant.
+        if is_degenerate_calibrator(cal, cal_type):
+            if path.exists():
+                path.unlink()
+            if verbose:
+                print(f"  [calibration] {key} ({cal_type}): DEGENERATE fit "
+                      f"({len(data_pts)} picks) — rejected, using raw probs")
+            continue
+
         with open(path, "wb") as f:
             pickle.dump({"type": cal_type, "model": cal}, f)
 
