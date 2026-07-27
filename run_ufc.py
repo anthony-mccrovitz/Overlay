@@ -279,12 +279,39 @@ def run_ufc(args: argparse.Namespace) -> int:
     except Exception:
         pass
 
+    # Full-card predictions — ALWAYS compute a model prob for EVERY fight, not
+    # just the ones with a betting edge. Odds are optional; ratings drive the sim.
+    print("\n  Full-card model predictions (all fights):")
+    all_fights = []
+    for ev in today_events:
+        home = ev.get("home_team", "")
+        away = ev.get("away_team", "")
+        try:
+            sim = model.simulate_fight(home, away, n_rounds=n_rounds, n_sim=5000)
+            pa = sim.win_prob(away)
+            pb = sim.win_prob(home)
+        except Exception as _e:
+            all_fights.append({"away": away, "home": home, "error": str(_e)})
+            print(f"    {away} vs {home}: no rating ({_e})")
+            continue
+        pick = away if pa >= pb else home
+        conf = max(pa, pb)
+        all_fights.append({
+            "away": away, "home": home,
+            "away_prob": round(pa, 4), "home_prob": round(pb, 4),
+            "model_pick": pick, "confidence": round(conf, 4),
+        })
+        print(f"    {pick:26s} {conf:.0%}   ({away} {pa:.0%} / {home} {pb:.0%})")
+
     # 3. Save output
     out_dir = Path("output/picks") / SPORT_KEY / today_str
     out_dir.mkdir(parents=True, exist_ok=True)
     picks_path = out_dir / "picks.json"
     picks_path.write_text(json.dumps(edges, indent=2, default=str))
-    print(f"\n  Picks saved → {picks_path}")
+    preds_path = out_dir / "all_fights.json"
+    preds_path.write_text(json.dumps(all_fights, indent=2, default=str))
+    print(f"\n  Picks (edges) → {picks_path}")
+    print(f"  Full card     → {preds_path}")
 
     # 4. Auto-log
     added = _auto_log_picks(edges, game_date, SPORT_KEY)
