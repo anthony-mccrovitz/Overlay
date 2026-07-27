@@ -3094,6 +3094,20 @@ def cmd_night(args: argparse.Namespace) -> int:
     sports   = [sport] if sport else NIGHT_SPORTS
     run_night(date_str, sports)
 
+    # Factory sweep: run every registered adapter lane (all 7 soccer leagues +
+    # MLB F5/totals) so the shadow lanes accumulate the CLV they need to earn
+    # promotion. MLB dedups against the legacy path; the soccer leagues are
+    # covered here and nowhere else. All shadow (card_pick=False) — no real money.
+    if not sport:  # only on the full nightly sweep, not a single-sport run
+        try:
+            from src.pipeline.grid_runner import run_all
+            print("\n  ▸ Factory sweep (shadow lanes)...")
+            for r in run_all(date_str):
+                if r.picks:
+                    print(f"    {r.summary()}")
+        except Exception as e:
+            print(f"  ✗ factory sweep failed: {e}")
+
     # Auto-promoter: surface promote/demote recommendations nightly (report only;
     # promotions to real money stay a deliberate `--apply` decision).
     try:
