@@ -118,7 +118,8 @@ def finalize_picks(raw_picks: list[RawPick], date: str) -> list[dict]:
         if not odds:
             continue  # model-only pick, not bettable — don't log
 
-        card = is_card_pick(rp.sport, rp.market, rp.edge, rp.prop_market)
+        card = is_card_pick(rp.sport, rp.market, rp.edge, rp.prop_market,
+                            model_prob=rp.model_prob)
         raw = {
             "sport": rp.sport,
             "market": rp.market,

@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "batter_total_bases",
+    "tag": "v2-confidence-floor-0.64",
+    "date": "2026-07-27",
+    "note": "TUNE: added model_prob>=0.64 confidence gate. Backtest: base -0.5%% (n787) -> +6.9%% (n336, 66%% WR), stable across 0.62-0.68 plateau, holds first-60%%/last-40%% split. Caveat: 6-day window, forward-validate before promoting. paused->shadow.",
+    "n": 918,
+    "record": "445-342-131",
+    "wr": 56.5,
+    "roi": -0.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-138",
+    "confidence": {
+      "n": 787,
+      "buckets": [
+        {
+          "lo": 0.183,
+          "hi": 0.593,
+          "n": 262,
+          "wr": 45.8
+        },
+        {
+          "lo": 0.593,
+          "hi": 0.653,
+          "n": 262,
+          "wr": 57.6
+        },
+        {
+          "lo": 0.653,
+          "hi": 0.967,
+          "n": 263,
+          "wr": 66.2
+        }
+      ],
+      "monotonic": true,
+      "spread": 20.4,
+      "verdict": "real-signal"
+    }
+  }
+]

@@ -115,7 +115,7 @@ MODELS: dict[tuple[str, str], dict] = {
     ("mlb",  "prop"):              {"status": "incubating", "tier": "paused", "label": "MLB Batter Props (generic)"},
     ("mlb",  "batter_home_runs"):  {"status": "incubating", "tier": "paused", "label": "MLB Batter HR"},
     ("mlb",  "batter_hits"):       {"status": "incubating", "tier": "paused", "label": "MLB Batter Hits"},
-    ("mlb",  "batter_total_bases"):{"status": "incubating", "tier": "paused", "label": "MLB Batter Total Bases"},
+    ("mlb",  "batter_total_bases"):{"status": "incubating", "tier": "shadow", "label": "MLB Batter Total Bases (TUNED v2: confidence floor 0.64 → +6.9% backtest; forward-validating)"},
     ("mlb",  "batter_rbis"):       {"status": "incubating", "tier": "paused", "label": "MLB Batter RBIs"},
     ("nba",  "spread"):            {"status": "incubating", "tier": "paused", "label": "NBA Spread"},
     ("nba",  "prop"):              {"status": "incubating", "tier": "paused", "label": "NBA Props (generic bucket)"},
@@ -267,6 +267,24 @@ _CARD_EDGE_MIN: dict[str, float | None] = {
     "anytime_scorer": 8.0,  # scorer props: only post a real, sizable edge
 }
 
+# Per-market CONFIDENCE FLOOR (min model_prob) — a tuning knob from the
+# experiment ledger. A model with real ranking signal but a losing full-slate
+# record is only good WHEN it's confident; gating to model_prob ≥ floor keeps
+# the profitable high-confidence subset and drops the rest. Set from a
+# threshold-stability + temporal backtest, then forward-validated before the
+# lane is promoted. Keyed by "sport/market" (specific) or "market" (fallback).
+_MODEL_PROB_FLOOR: dict[str, float] = {
+    # batter_total_bases: base −0.5% → ≥0.64 gives 66% WR / +6.9% on a stable
+    # plateau, holding across a temporal split (needs forward proof: 6-day window).
+    "mlb/batter_total_bases": 0.64,
+}
+
+
+def model_prob_floor(sport: str, market: str) -> float | None:
+    """Min model_prob for a pick in this lane to be bettable, if one is set."""
+    return (_MODEL_PROB_FLOOR.get(f"{_key(sport, market)[0]}/{(market or '').lower()}")
+            or _MODEL_PROB_FLOOR.get((market or "").lower()))
+
 
 def is_live(sport: str, market: str, prop_market: str | None = None) -> bool:
     """True if this model's picks should be posted publicly (card_pick=True).
@@ -280,13 +298,23 @@ def is_live(sport: str, market: str, prop_market: str | None = None) -> bool:
 
 
 def is_card_pick(sport: str, market: str, edge_pct: float | None,
-                 prop_market: str | None = None) -> bool:
-    """Full card_pick gate: model must be live AND edge must meet the threshold.
+                 prop_market: str | None = None,
+                 model_prob: float | None = None) -> bool:
+    """Full card_pick gate: model must be live AND edge must meet the threshold
+    AND (if the lane has a tuned confidence floor) model_prob must clear it.
 
-    Use this everywhere a pick is logged to picks.json.
+    Use this everywhere a pick is logged to picks.json. model_prob is optional
+    so existing callers are unaffected; when omitted, the confidence floor for a
+    gated lane can't be confirmed, so the pick is held.
     """
     if not is_live(sport, market, prop_market):
         return False
+    # Confidence floor (experiment-ledger tuning knob): a gated lane only cards
+    # its high-confidence picks.
+    floor = model_prob_floor(sport, prop_market or market)
+    if floor is not None:
+        if model_prob is None or float(model_prob) < floor:
+            return False
     mkt_key = (market or "").lower()
     min_edge = _CARD_EDGE_MIN.get(mkt_key)
     if min_edge is None:

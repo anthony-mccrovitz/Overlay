@@ -469,7 +469,8 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
             from src.config.models import is_card_pick as _is_card_pick
             prop_arg = market if market not in (
                 "moneyline", "spread", "total", "nrfi", "f5_total") else None
-            if not _is_card_pick(sport, market, edge_pct, prop_arg):
+            if not _is_card_pick(sport, market, edge_pct, prop_arg,
+                                 model_prob=model_prob):
                 card_pick = False
                 stake = 0.0
         except Exception:
