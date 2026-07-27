@@ -1236,6 +1236,62 @@ def fetch_closing_totals(date_str: str, sport: str = "mlb",
         out[frozenset({away, home})] = {
             "line": float(o["Line"]), "over": float(o["Odds"]), "under": float(u["Odds"]),
         }
+    if out:
+        return out
+
+    # Fallback: no closing archive on disk (capture step didn't run) — read
+    # totals from the live odds cache, mirroring fetch_closing_lines' moneyline
+    # fallback. Only the API "totals" market lives in the cache (no F5); the
+    # cache is a moving snapshot, so this is a best-effort close, not archival.
+    if market_key != "totals":
+        return out
+    cache_path = ODDS_CACHE_DIR / f"{sport}_latest.json"
+    if not cache_path.exists() and sport == "mlb":
+        cache_path = ODDS_CACHE_DIR / "baseball_mlb_latest.json"
+    if not cache_path.exists():
+        return out
+    try:
+        raw = json.loads(cache_path.read_text())
+    except (json.JSONDecodeError, ValueError):
+        return out
+    for game in raw:
+        home = str(game.get("home_team") or "").lower().strip()
+        away = str(game.get("away_team") or "").lower().strip()
+        if not home or not away:
+            continue
+        by_book: dict[str, dict[str, dict]] = {}
+        for bm in game.get("bookmakers", []):
+            title = str(bm.get("title") or bm.get("key") or "")
+            for market in bm.get("markets", []):
+                if market.get("key") != "totals":
+                    continue
+                for oc in market.get("outcomes", []):
+                    name = str(oc.get("name") or "").strip()  # "Over" / "Under"
+                    if name in ("Over", "Under") and oc.get("price") is not None:
+                        by_book.setdefault(title, {})[name] = oc
+        chosen = None
+        if book is not None:
+            sides = by_book.get(book)
+            if sides and "Over" in sides and "Under" in sides:
+                chosen = sides
+        else:
+            for b in _SHARP_BOOK_ORDER:
+                if b in by_book and "Over" in by_book[b] and "Under" in by_book[b]:
+                    chosen = by_book[b]
+                    break
+            if chosen is None:
+                for sides in by_book.values():
+                    if "Over" in sides and "Under" in sides:
+                        chosen = sides
+                        break
+        if not chosen:
+            continue
+        o, u = chosen["Over"], chosen["Under"]
+        if o.get("point") is None:
+            continue
+        out[frozenset({away, home})] = {
+            "line": float(o["point"]), "over": float(o["price"]), "under": float(u["price"]),
+        }
     return out
 
 
