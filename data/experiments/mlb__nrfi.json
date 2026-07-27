@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "mlb",
+    "market": "nrfi",
+    "tag": "baseline",
+    "date": "2026-07-27",
+    "note": "ERA/K9-only model; ignores lineup quality. Backtest: no confidence/odds/direction filter is profitable.",
+    "n": 226,
+    "record": "102-122-2",
+    "wr": 45.5,
+    "roi": -13.0,
+    "clv": 3.36,
+    "clv_n": 69,
+    "avg_odds": "-109",
+    "confidence": {
+      "n": 219,
+      "buckets": [
+        {
+          "lo": 0.423,
+          "hi": 0.586,
+          "n": 73,
+          "wr": 47.9
+        },
+        {
+          "lo": 0.587,
+          "hi": 0.658,
+          "n": 73,
+          "wr": 43.8
+        },
+        {
+          "lo": 0.658,
+          "hi": 0.672,
+          "n": 73,
+          "wr": 43.8
+        }
+      ],
+      "monotonic": false,
+      "spread": -4.1,
+      "verdict": "inverted"
+    }
+  }
+]

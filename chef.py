@@ -1567,6 +1567,74 @@ def cmd_grid(args: argparse.Namespace) -> int:
     return 0
 
 
+# ─────────────────────────── experiment ──────────────────────────────────────
+
+def cmd_experiment(args: argparse.Namespace) -> int:
+    """The model-tuning ledger: triage every algo, snapshot a baseline, or show
+    an algo's version history (baseline → change → re-measure → keep/revert)."""
+    from src.analytics import experiment_log as xl
+    action = getattr(args, "action", "triage")
+
+    if action == "triage":
+        rows = xl.triage(min_n=getattr(args, "min_n", 30))
+        line = "═" * 78
+        print(f"\n  {line}")
+        print("  ALGO TRIAGE — is there real signal to tune? (confidence test)")
+        print(f"  {line}")
+        print(f"  {'LANE':28s} {'n':>4} {'ROI':>7} {'CLV':>7} {'SIGNAL':>18}  CALL")
+        print("  " + "─" * 76)
+        for t in rows:
+            lane = f"{t.sport}/{t.market}"
+            roi = f"{t.roi:+.1f}%" if t.roi is not None else "—"
+            clv = f"{t.clv:+.1f}%" if t.clv is not None else "—"
+            sig = t.signal + (f"({t.spread:+.0f})" if t.spread is not None else "")
+            print(f"  {lane:28s} {t.n:>4} {roi:>7} {clv:>7} {sig:>18}  {t.call}")
+        print(f"  {line}")
+        print("  SIGNAL = does higher model confidence → higher win rate? "
+              "(spread = top−bottom bucket WR, pts)")
+        print("  real-signal/noisy = tunable · flat/inverted = rebuild or cut · "
+              "insufficient = need more picks")
+        print(f"  {line}\n")
+        return 0
+
+    sport = getattr(args, "sport", None)
+    market = getattr(args, "market", None)
+    if not sport or not market:
+        print("  Usage: chef.py experiment snapshot <sport> <market> [--tag T] [--note ...]")
+        print("         chef.py experiment history  <sport> <market>")
+        return 1
+
+    if action == "snapshot":
+        snap = xl.record(sport, market, getattr(args, "tag", None) or "baseline",
+                         note=getattr(args, "note", "") or "")
+        c = snap.confidence
+        print(f"\n  Snapshot {snap.sport}/{snap.market} @ {snap.tag} ({snap.date})")
+        print(f"    n={snap.n}  {snap.record}  WR={snap.wr}%  ROI={snap.roi}%  "
+              f"CLV={snap.clv}% ({snap.clv_n})  odds={snap.avg_odds}")
+        print(f"    confidence signal: {c.get('verdict')} "
+              f"(spread {c.get('spread')} pts) — {snap.note}")
+        return 0
+
+    if action == "history":
+        hist = xl.history(sport, market)
+        if not hist:
+            print(f"  No experiment history for {sport}/{market} yet.")
+            return 0
+        print(f"\n  {sport}/{market} — experiment history")
+        print(f"  {'TAG':16s} {'DATE':12s} {'n':>4} {'ROI':>7} {'CLV':>7} {'SIGNAL':>16}  NOTE")
+        for h in hist:
+            c = h.get("confidence", {})
+            roi = f"{h['roi']:+.1f}%" if h.get("roi") is not None else "—"
+            clv = f"{h['clv']:+.1f}%" if h.get("clv") is not None else "—"
+            print(f"  {h['tag']:16s} {h['date']:12s} {h.get('n',0):>4} {roi:>7} {clv:>7} "
+                  f"{c.get('verdict','—'):>16}  {h.get('note','')}")
+        print()
+        return 0
+
+    print(f"  Unknown experiment action: {action}")
+    return 1
+
+
 # ─────────────────────────── shop ────────────────────────────────────────────
 
 def cmd_shop(args: argparse.Namespace) -> int:
@@ -3300,6 +3368,17 @@ def main() -> int:
     p_grid.add_argument("sport", nargs="?", help="Optional: show only one sport (e.g. mlb)")
     p_grid.add_argument("--core", action="store_true", help="Core game markets only — hide prop lanes")
 
+    # experiment — the model-tuning ledger (triage / snapshot / history)
+    p_exp = sub.add_parser("experiment", help="Model-tuning ledger: triage every algo for real signal, snapshot a baseline, show history")
+    p_exp.add_argument("action", nargs="?", default="triage",
+                       choices=["triage", "snapshot", "history"],
+                       help="triage (default): map every algo; snapshot/history: one algo")
+    p_exp.add_argument("sport", nargs="?", help="Sport (for snapshot/history)")
+    p_exp.add_argument("market", nargs="?", help="Market (for snapshot/history)")
+    p_exp.add_argument("--tag", help="Version tag for a snapshot (e.g. baseline, v2)")
+    p_exp.add_argument("--note", help="Note describing the change/state")
+    p_exp.add_argument("--min-n", type=int, default=30, dest="min_n", help="Min graded picks to triage a lane")
+
     # picks mlb / picks nba
     p_picks = sub.add_parser("picks", help="Generate picks for a sport")
     p_picks.add_argument("sport", choices=["mlb", "mlb-props", "mlb_props", "props", "nba", "nba-props", "nba_props", "nhl", "nhl-props", "nhl_props", "wnba", "soccer", "wc", "worldcup", "pga", "tennis", "rg", "roland-garros", "wimbledon", "ufc", "mma", "grid", "all"], help="Sport to generate picks for ('grid'/'all' = factory sweep of every adapter lane)")
@@ -3585,6 +3664,7 @@ def main() -> int:
         "wc-post":  cmd_wc_post,
         "today":    cmd_today,
         "grid":     cmd_grid,
+        "experiment": cmd_experiment,
     }
     return dispatch[args.command](args)
 
