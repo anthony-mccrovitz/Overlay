@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-27T10:31:01.418988+00:00",
+  "generated_at": "2026-07-27T15:33:16.068824+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 117.84,
-  "n_settled": 27,
-  "n_pending": 128,
+  "end_bankroll": 127.85,
+  "n_settled": 25,
+  "n_pending": 130,
   "wins": 11,
-  "losses": 16,
-  "staked": 125.94,
-  "pnl": 5.84,
-  "expected_pnl": 7.23,
-  "roi_pct": 4.64,
-  "max_drawdown": 23.77,
+  "losses": 14,
+  "staked": 120.31,
+  "pnl": 15.85,
+  "expected_pnl": 5.91,
+  "roi_pct": 13.17,
+  "max_drawdown": 20.19,
   "skipped": {
-    "resting order never filled": 11,
-    "exposure cap reached for the slate": 102,
+    "resting order never filled": 14,
+    "exposure cap reached for the slate": 101,
     "not settled yet": 15
   },
   "significance": {
-    "mean_edge_per_unit": 0.057,
-    "sd_per_unit": 1.6053,
-    "n_for_2sigma": 3173
+    "mean_edge_per_unit": 0.049,
+    "sd_per_unit": 1.4961,
+    "n_for_2sigma": 3735
   },
   "rows": [
     {
@@ -119,19 +119,19 @@
       "equity": 121.33
     },
     {
-      "pick_id": "polymarket_ev__wnba_20260720_seattle-storm_moneyline_win",
+      "pick_id": "polymarket_ev__wnba_20260720_dallas-wings_moneyline_win",
       "date": "2026-07-20",
-      "team": "Seattle Storm",
+      "team": "Dallas Wings",
       "sport": "wnba",
       "mode": "make",
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.18,
-      "fair": 0.2006,
+      "cost": 0.39,
+      "fair": 0.3992,
       "stake": 4.85,
-      "shares": 26.94,
+      "shares": 12.44,
       "result": "loss",
       "pnl": -4.85,
-      "expected_pnl": 0.555,
+      "expected_pnl": 0.114,
       "equity": 116.48
     },
     {
@@ -231,22 +231,6 @@
       "equity": 123.11
     },
     {
-      "pick_id": "polymarket_ev__wnba_20260722_chicago-sky_moneyline_win",
-      "date": "2026-07-22",
-      "team": "Chicago Sky",
-      "sport": "wnba",
-      "mode": "make",
-      "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.15,
-      "fair": 0.164,
-      "stake": 4.92,
-      "shares": 32.8,
-      "result": "loss",
-      "pnl": -4.92,
-      "expected_pnl": 0.459,
-      "equity": 118.19
-    },
-    {
       "pick_id": "polymarket_ev__wnba_20260722_washington-mystics_moneyline_win",
       "date": "2026-07-22",
       "team": "Washington Mystics",
@@ -255,28 +239,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.31,
       "fair": 0.3364,
-      "stake": 4.73,
-      "shares": 15.26,
+      "stake": 4.92,
+      "shares": 15.87,
       "result": "win",
-      "pnl": 10.53,
-      "expected_pnl": 0.403,
-      "equity": 128.72
-    },
-    {
-      "pick_id": "polymarket_ev__wnba_20260722_connecticut-sun_moneyline_win",
-      "date": "2026-07-22",
-      "team": "Connecticut Sun",
-      "sport": "wnba",
-      "mode": "make",
-      "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.15,
-      "fair": 0.1696,
-      "stake": 5.15,
-      "shares": 34.33,
-      "result": "loss",
-      "pnl": -5.15,
-      "expected_pnl": 0.673,
-      "equity": 123.57
+      "pnl": 10.95,
+      "expected_pnl": 0.419,
+      "equity": 134.06
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260722_coritiba_moneyline_win",
@@ -287,12 +255,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.23,
       "fair": 0.2384,
-      "stake": 4.94,
-      "shares": 21.48,
+      "stake": 5.36,
+      "shares": 23.3,
       "result": "loss",
-      "pnl": -4.94,
-      "expected_pnl": 0.18,
-      "equity": 118.63
+      "pnl": -5.36,
+      "expected_pnl": 0.196,
+      "equity": 128.7
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260722_chapecoense_moneyline_win",
@@ -303,12 +271,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.12,
       "fair": 0.1324,
-      "stake": 4.75,
-      "shares": 39.58,
+      "stake": 5.15,
+      "shares": 42.92,
       "result": "loss",
-      "pnl": -4.75,
-      "expected_pnl": 0.491,
-      "equity": 113.88
+      "pnl": -5.15,
+      "expected_pnl": 0.532,
+      "equity": 123.55
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260722_pohang-steelers_moneyline_win",
@@ -319,12 +287,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.19,
       "fair": 0.2095,
-      "stake": 4.56,
-      "shares": 24.0,
+      "stake": 4.94,
+      "shares": 26.0,
       "result": "loss",
-      "pnl": -4.56,
-      "expected_pnl": 0.468,
-      "equity": 109.32
+      "pnl": -4.94,
+      "expected_pnl": 0.507,
+      "equity": 118.61
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260723_remo_moneyline_win",
@@ -335,12 +303,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.13,
       "fair": 0.1428,
-      "stake": 4.37,
-      "shares": 33.62,
+      "stake": 4.74,
+      "shares": 36.46,
       "result": "loss",
-      "pnl": -4.37,
-      "expected_pnl": 0.43,
-      "equity": 104.95
+      "pnl": -4.74,
+      "expected_pnl": 0.467,
+      "equity": 113.87
     },
     {
       "pick_id": "polymarket_ev__mlb_20260723_minnesota-twins_moneyline_win",
@@ -351,12 +319,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.43,
       "fair": 0.4395,
-      "stake": 4.2,
-      "shares": 9.77,
+      "stake": 4.55,
+      "shares": 10.58,
       "result": "win",
-      "pnl": 5.57,
-      "expected_pnl": 0.093,
-      "equity": 110.52
+      "pnl": 6.03,
+      "expected_pnl": 0.101,
+      "equity": 119.9
     },
     {
       "pick_id": "polymarket_ev__mlb_20260723_san-diego-padres_moneyline_win",
@@ -367,12 +335,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.3,
       "fair": 0.3089,
-      "stake": 4.42,
-      "shares": 14.73,
+      "stake": 4.8,
+      "shares": 16.0,
       "result": "loss",
-      "pnl": -4.42,
-      "expected_pnl": 0.131,
-      "equity": 106.1
+      "pnl": -4.8,
+      "expected_pnl": 0.142,
+      "equity": 115.1
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_colorado-rockies_moneyline_win",
@@ -383,12 +351,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.3,
       "fair": 0.3296,
-      "stake": 4.24,
-      "shares": 14.13,
+      "stake": 4.6,
+      "shares": 15.33,
       "result": "win",
-      "pnl": 9.89,
-      "expected_pnl": 0.418,
-      "equity": 115.99
+      "pnl": 10.73,
+      "expected_pnl": 0.454,
+      "equity": 125.83
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_pittsburgh-pirates_moneyline_win",
@@ -399,12 +367,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.52,
       "fair": 0.5325,
-      "stake": 4.64,
-      "shares": 8.92,
+      "stake": 5.03,
+      "shares": 9.67,
       "result": "loss",
-      "pnl": -4.64,
-      "expected_pnl": 0.112,
-      "equity": 111.35
+      "pnl": -5.03,
+      "expected_pnl": 0.121,
+      "equity": 120.8
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_new-york-yankees_moneyline_win",
@@ -415,12 +383,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.46,
       "fair": 0.477,
-      "stake": 4.45,
-      "shares": 9.67,
+      "stake": 4.83,
+      "shares": 10.5,
       "result": "win",
-      "pnl": 5.22,
-      "expected_pnl": 0.164,
-      "equity": 116.57
+      "pnl": 5.67,
+      "expected_pnl": 0.178,
+      "equity": 126.47
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_san-diego-padres_moneyline_win",
@@ -431,12 +399,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.43,
       "fair": 0.4399,
-      "stake": 4.66,
-      "shares": 10.84,
+      "stake": 5.06,
+      "shares": 11.77,
       "result": "win",
-      "pnl": 6.18,
-      "expected_pnl": 0.107,
-      "equity": 122.75
+      "pnl": 6.71,
+      "expected_pnl": 0.116,
+      "equity": 133.18
     },
     {
       "pick_id": "polymarket_ev__mlb_20260724_chicago-white-sox_moneyline_win",
@@ -447,12 +415,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.56,
       "fair": 0.5745,
-      "stake": 4.91,
-      "shares": 8.77,
+      "stake": 5.33,
+      "shares": 9.52,
       "result": "loss",
-      "pnl": -4.91,
-      "expected_pnl": 0.127,
-      "equity": 117.84
+      "pnl": -5.33,
+      "expected_pnl": 0.138,
+      "equity": 127.85
     }
   ]
 }
