@@ -85,19 +85,84 @@ def _p_sp_holds_first(era: float, k9: float) -> float:
     return max(0.50, min(0.82, p))
 
 
-def project_nrfi(
+def project_nrfi_v1(
     home_sp_era: float,
     home_sp_k9: float,
     away_sp_era: float,
     away_sp_k9: float,
 ) -> float:
     """
-    Project P(NRFI) for a game.
-    home SP faces away batters; away SP faces home batters.
+    v1 (STASHED — proven dead: inverted confidence, 45.5% WR, ignores lineups).
+    Project P(NRFI) purely from starter ERA/K9. Kept for the before/after and as
+    a fallback when no offense data is available.
     """
     p_away_no_score = _p_sp_holds_first(home_sp_era, home_sp_k9)  # home SP holds away lineup
     p_home_no_score = _p_sp_holds_first(away_sp_era, away_sp_k9)  # away SP holds home lineup
     return round(p_away_no_score * p_home_no_score, 4)
+
+
+# ── v2: offense-aware first-inning model ─────────────────────────────────────
+# v1's fatal flaw: a great arm scored the same facing the Yankees' top of the
+# order as the worst lineup. v2 models each team's first-inning scoring as a
+# Poisson rate driven by BOTH the opposing starter AND the batting team's
+# offense (top-of-order OPS, or team OPS as a fallback):
+#
+#   λ_team = BASE · sp_suppression(opposing SP) · offense_factor(team OPS)
+#   P(NRFI) = P(away scores 0) · P(home scores 0) = exp(-(λ_away + λ_home))
+#
+# Coefficients are fit on historical first-inning outcomes (validate_nrfi_v2.py);
+# the defaults below are that fit. LG_OPS anchors the offense factor to league avg.
+_V2 = {
+    "base_lambda": 0.2000,   # -ln(P hold) at league-avg inputs
+    "era_coef":    0.0500,   # per run of opposing SP ERA above league
+    "k9_coef":     0.0150,   # per K/9 of opposing SP above league (suppresses)
+    "off_gamma":   1.6000,   # offense elasticity: (team_ops / LG_OPS) ** gamma
+    "lg_ops":      0.720,
+}
+_LEAGUE_AVG_OPS = 0.720
+
+
+def _lambda_first(opp_era: float, opp_k9: float, team_ops: float,
+                  p: dict | None = None) -> float:
+    """Expected first-inning runs for a team vs an opposing starter."""
+    p = p or _V2
+    sp = math.exp(p["era_coef"] * (opp_era - _LEAGUE_AVG_ERA)
+                  - p["k9_coef"] * (opp_k9 - _LEAGUE_AVG_K9))
+    off = (max(team_ops, 0.400) / p["lg_ops"]) ** p["off_gamma"]
+    return p["base_lambda"] * sp * off
+
+
+def project_nrfi_v2(
+    home_sp_era: float, home_sp_k9: float,
+    away_sp_era: float, away_sp_k9: float,
+    home_off_ops: float = _LEAGUE_AVG_OPS,
+    away_off_ops: float = _LEAGUE_AVG_OPS,
+    params: dict | None = None,
+) -> float:
+    """Offense-aware P(NRFI). home bats vs away SP; away bats vs home SP."""
+    lam_away = _lambda_first(home_sp_era, home_sp_k9, away_off_ops, params)  # away bats vs home SP
+    lam_home = _lambda_first(away_sp_era, away_sp_k9, home_off_ops, params)  # home bats vs away SP
+    return round(math.exp(-(lam_away + lam_home)), 4)
+
+
+# Live model = v1. The v2 offense rebuild was BUILT, FIT, and VALIDATED against
+# v1 on 554 real games (scripts/validate_nrfi_v2.py) — and LOST: on the held-out
+# split v1 ranked NRFI better (confidence spread +17.7pts vs v2's +10.5) with
+# lower log-loss (0.709 vs 0.723). The lesson: v1 already ranks first-inning
+# scoring fine; team OPS is ALREADY in the book's price, so adding it just
+# re-derives what the market knows — no edge gained. Reverted to v1. v2 is kept
+# for a future attempt with TOP-OF-ORDER (spots 1-3) lineup OPS, the real
+# first-inning driver, which team OPS only weakly proxies. NRFI stays shadow.
+def project_nrfi(
+    home_sp_era: float,
+    home_sp_k9: float,
+    away_sp_era: float,
+    away_sp_k9: float,
+    home_off_ops: float = _LEAGUE_AVG_OPS,
+    away_off_ops: float = _LEAGUE_AVG_OPS,
+) -> float:
+    """Project P(NRFI) — v1 (offense args accepted but ignored; see note above)."""
+    return project_nrfi_v1(home_sp_era, home_sp_k9, away_sp_era, away_sp_k9)
 
 
 def fetch_nrfi_odds(event_id: str) -> dict | None:
