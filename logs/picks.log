@@ -26448,3 +26448,1145 @@ Step 11: Writing captions (Instagram / Twitter / Reddit)...
   ✓  receipts_post.txt → output/picks/baseball_mlb/20260719/receipts_post.txt
   ✓  calibration_card.png → output/picks/baseball_mlb/20260719/calibration_card.png
   ✓  show_your_work.md → output/picks/baseball_mlb/20260719/talking_head/show_your_work.md
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 15 games
+    Minnesota Twins (Joe Ryan) @ Cleveland Guardians (Tanner Bibee)
+    Pittsburgh Pirates (Braxton Ashcraft) @ New York Yankees (Ryan Weathers)
+    Tampa Bay Rays (Nick Martinez) @ Toronto Blue Jays (Dylan Cease)
+    Baltimore Orioles (Shane Baz) @ Boston Red Sox (Payton Tolle)
+    Los Angeles Dodgers (Emmet Sheehan) @ Philadelphia Phillies (Cristopher Sánchez)
+    San Diego Padres (JP Sears) @ Atlanta Braves (Bryce Elder)
+    San Francisco Giants (Trevor McDonald) @ Kansas City Royals (Michael Wacha)
+    New York Mets (Freddy Peralta) @ Milwaukee Brewers (Jacob Misiorowski)
+    Detroit Tigers (Jack Flaherty) @ Chicago Cubs (Jameson Taillon)
+    Chicago White Sox (Erick Fedde) @ Texas Rangers (Jacob deGrom)
+    Miami Marlins (Janson Junk) @ Houston Astros (Ronel Blanco)
+    Washington Nationals (Andrew Alvarez) @ Colorado Rockies (Kyle Freeland)
+    Athletics (Jeffrey Springs) @ Arizona Diamondbacks (Mitch Bratt)
+    Cincinnati Reds (Andrew Abbott) @ Seattle Mariners (George Kirby)
+    St. Louis Cardinals (Kyle Leahy) @ Los Angeles Angels (José Soriano)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Minnesota Twins @ Cleveland Guardians: Minnesota Twins 55.6% [AGREE]
+    Pyth: 39.5%  XGB: 48.4%  Ens: 44.4%
+  Pittsburgh Pirates @ New York Yankees: New York Yankees 50.4% [SPLIT]
+    Pyth: 52.8%  XGB: 48.4%  Ens: 50.4%
+  Tampa Bay Rays @ Toronto Blue Jays: Toronto Blue Jays 51.9% [SPLIT]
+    Pyth: 56.1%  XGB: 48.4%  Ens: 51.9%
+  Baltimore Orioles @ Boston Red Sox: Boston Red Sox 54.8% [SPLIT]
+    Pyth: 62.7%  XGB: 48.4%  Ens: 54.8%
+  Los Angeles Dodgers @ Philadelphia Phillies: Los Angeles Dodgers 50.2% [SPLIT]
+    Pyth: 45.8%  XGB: 53.1%  Ens: 49.8%
+  San Diego Padres @ Atlanta Braves: Atlanta Braves 53.5% [AGREE]
+    Pyth: 54.0%  XGB: 53.1%  Ens: 53.5%
+  San Francisco Giants @ Kansas City Royals: Kansas City Royals 56.6% [AGREE]
+    Pyth: 60.8%  XGB: 53.1%  Ens: 56.6%
+  New York Mets @ Milwaukee Brewers: Milwaukee Brewers 70.1% [AGREE]
+    Pyth: 90.8%  XGB: 53.1%  Ens: 70.1%
+  Detroit Tigers @ Chicago Cubs: Detroit Tigers 54.6% [AGREE]
+    Pyth: 41.6%  XGB: 48.4%  Ens: 45.4%
+  Chicago White Sox @ Texas Rangers: Texas Rangers 50.4% [SPLIT]
+    Pyth: 52.8%  XGB: 48.4%  Ens: 50.4%
+  Miami Marlins @ Houston Astros: Houston Astros 53.0% [SPLIT]
+    Pyth: 58.5%  XGB: 48.4%  Ens: 53.0%
+  Washington Nationals @ Colorado Rockies: Washington Nationals 56.3% [AGREE]
+    Pyth: 37.9%  XGB: 48.4%  Ens: 43.7%
+  Athletics @ Arizona Diamondbacks: Arizona Diamondbacks 61.1% [SPLIT]
+    Pyth: 76.7%  XGB: 48.4%  Ens: 61.1%
+  Cincinnati Reds @ Seattle Mariners: Seattle Mariners 54.7% [SPLIT]
+    Pyth: 62.4%  XGB: 48.4%  Ens: 54.7%
+  St. Louis Cardinals @ Los Angeles Angels: St. Louis Cardinals 61.1% [AGREE]
+    Pyth: 33.9%  XGB: 42.9%  Ens: 38.9%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 16:04:09. API requests remaining: 4262
+  Odds freshness: LIVE (range 0–3 min old)
+  Pinnacle fair-prob anchor: 15/15 games on Pinnacle, rest on median devig.
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Chicago White Sox vs Texas Rangers
+    Model: 56.1% | Vegas: 39.2% | Edge: +16.8% *** STRONG ***
+    Best odds: +145 at theScore Bet
+
+  Tampa Bay Rays vs Toronto Blue Jays
+    Model: 55.4% | Vegas: 40.0% | Edge: +15.4% *** STRONG ***
+    Best odds: +140 at Caesars
+
+  Cincinnati Reds vs Seattle Mariners
+    Model: 54.1% | Vegas: 41.2% | Edge: +12.9% *** STRONG ***
+    Best odds: +138 at FanDuel
+
+  Baltimore Orioles vs Boston Red Sox
+    Model: 54.1% | Vegas: 41.5% | Edge: +12.5% *** STRONG ***
+    Best odds: +125 at Fanatics
+
+  St. Louis Cardinals vs Los Angeles Angels
+    Model: 61.2% | Vegas: 48.8% | Edge: +12.4% *** STRONG ***
+    Best odds: +105 at BetRivers
+
+  Los Angeles Dodgers vs Philadelphia Phillies
+    Model: 56.3% | Vegas: 44.2% | Edge: +12.1% *** STRONG ***
+    Best odds: +117 at DraftKings
+
+  Detroit Tigers vs Chicago Cubs
+    Model: 58.3% | Vegas: 48.7% | Edge: +9.6% ** GOOD **
+    Best odds: -105 at Fanatics
+
+  San Diego Padres vs Atlanta Braves
+    Model: 54.7% | Vegas: 45.4% | Edge: +9.3% ** GOOD **
+    Best odds: +123 at BetRivers
+
+  Miami Marlins vs Houston Astros
+    Model: 54.9% | Vegas: 46.8% | Edge: +8.1% ** GOOD **
+    Best odds: +110 at FanDuel
+
+  Total value bets: 9
+  Average edge: +12.1%
+======================================================================
+
+
+  Method B — Sharp consensus (3 edges):
+    Chicago White Sox vs Texas Rangers: Consensus 51.4% → Edge +12.2%
+    Tampa Bay Rays vs Toronto Blue Jays: Consensus 52.0% → Edge +12.0%
+    San Diego Padres vs Atlanta Braves: Consensus 54.2% → Edge +8.8%
+
+  LOCK picks (both methods agree): chicago white sox, san diego padres, tampa bay rays
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · July 20, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   TOTAL      UNDER 10.5 (Giants@Royals)       -105    +2.00R        —  Fanatics
+  2   MONEYLINE  Chicago White Sox ML             +145    +16.8%     6.4%  theScore B
+  3   TOTAL      UNDER 11.5 (Tigers@Cubs)         +100    +1.60R        —  BetMGM
+  4   TOTAL      OVER 7.5 (Pirates@Yankees)       -104    +1.60R        —  BetRivers
+  5   MONEYLINE  Tampa Bay Rays ML                +140    +15.4%     5.9%  Caesars
+  6   TOTAL      UNDER 9.25 (Athletics@Diamon)    +102    +1.40R        —  BetRivers
+  7   MONEYLINE  Cincinnati Reds ML               +138    +12.9%     5.2%  FanDuel
+  8   MONEYLINE  Baltimore Orioles ML             +125    +12.5%     4.3%  Fanatics
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: UNDER 10.5 -105 @ Fanatics
+     2.00 run totals edge
+
+  Moneyline: 4  |  Run Line: 0  |  Totals: 4
+══════════════════════════════════════════════════════════════════════
+
+  [CLV] Snapshotted opening lines for 13 pick(s) [2026-07-20]
+  [franchise] 2026-07-20: 9 new bet(s) logged for 9 model picks
+  Moneyline card → output/picks/baseball_mlb/20260720/pick_card.png
+  ML card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260720/mlb_moneyline_card.png
+  Totals card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260720/mlb_totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260720/caption_picks.txt
+  Auto-logged 13 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260720/
+
+Step 6: Scanning player props for edges...
+  Found 10 prop edge(s):
+    Ronel Blanco UNDER 4.5 Ks  edge=30.4%  odds=-190  [BetMGM]
+    Mitch Bratt UNDER 4.5 Ks  edge=27.0%  odds=-375  [theScore Bet]
+    Tanner Bibee UNDER 5.5 Ks  edge=22.7%  odds=-260  [theScore Bet]
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260720
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  ✓  Team ratings loaded: 30 teams
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  ✓  Live NBA odds fetched. API requests remaining: 4247
+  ℹ  No NBA games on the 20260720 slate (off-day) — skipping. No card pick.
+    George Kirby UNDER 7.5 Ks  edge=18.8%  odds=-190  [theScore Bet]
+    Kyle Leahy UNDER 5.5 Ks  edge=13.0%  odds=-240  [theScore Bet]
+    Payton Tolle UNDER 7.5 Ks  edge=8.2%  odds=-425  [theScore Bet]
+    Andrew Abbott UNDER 5.5 Ks  edge=7.1%  odds=-200  [theScore Bet]
+    Trevor McDonald UNDER 4.5 Ks  edge=6.4%  odds=-450  [theScore Bet]
+    Jack Flaherty UNDER 6.5 Ks  edge=6.1%  odds=-350  [theScore Bet]
+    Jacob deGrom UNDER 7.5 Ks  edge=6.1%  odds=-190  [theScore Bet]
+  Props saved → output/picks/baseball_mlb/20260720/props.json
+  Auto-logged 10 prop(s) to pnl for tracking
+  Pitcher Ks card → output/picks/baseball_mlb/20260720/mlb_pitcher_ks_card.png
+  Props caption → output/picks/baseball_mlb/20260720/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 11 NRFI/YRFI play(s):
+    New York Mets @ Milwaukee Brewers YRFI  edge=10.0%
+    Tampa Bay Rays @ Toronto Blue Jays YRFI  edge=9.7%
+    Minnesota Twins @ Cleveland Guardians YRFI  edge=9.2%
+    Pittsburgh Pirates @ New York Yankees YRFI  edge=7.7%
+    Los Angeles Dodgers @ Philadelphia Phillies YRFI  edge=7.6%
+  NRFI picks logged to pnl (5 picks)
+  (11 NRFI play(s) have live odds; 0 missing book line)
+  NRFI caption → output/picks/baseball_mlb/20260720/caption_nrfi.txt
+
+Step 8: Building F5 (first 5 innings) totals...
+  Found 11 F5 edge(s):
+    F5 OVER 5.5 (Athletics @ Arizona Diamondbacks)  edge=54.0%  odds=+104  [FanDuel]  proj=8.87
+    F5 UNDER 4.5 (Baltimore Orioles @ Boston Red Sox)  edge=13.6%  odds=-114  [FanDuel]  proj=4.25
+    F5 UNDER 5.5 (San Francisco Giants @ Kansas City Royals)  edge=13.2%  odds=-109  [Pinnacle]  proj=5.66
+    F5 UNDER 5.0 (St. Louis Cardinals @ Los Angeles Angels)  edge=12.5%  odds=-112  [Pinnacle]  proj=4.07
+    F5 UNDER 4.0 (Minnesota Twins @ Cleveland Guardians)  edge=11.8%  odds=-115  [Pinnacle]  proj=3.49
+  F5 picks logged to pnl (11 added, card_pick=True)
+  F5 card → output/picks/baseball_mlb/20260720/f5_card.png
+  F5 caption → output/picks/baseball_mlb/20260720/caption_f5.txt
+  O/U card (game totals, 4 picks) → output/picks/baseball_mlb/20260720/totals_card.png
+
+Step 10: Generating MLB parlay card...
+  ✓  Parlay card → output/picks/baseball_mlb/20260720/parlay_card.png
+
+Step 11: Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/baseball_mlb/20260720/captions/instagram.txt
+  ✓  twitter      → output/picks/baseball_mlb/20260720/captions/twitter.txt
+  ✓  reddit       → output/picks/baseball_mlb/20260720/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/baseball_mlb/20260720/captions/reddit_potd.txt
+  ✓  reddit_mlb_props  → output/picks/baseball_mlb/20260720/captions/reddit_mlb_props.txt
+  ✓  reddit_mlb_picks  → output/picks/baseball_mlb/20260720/captions/reddit_mlb_picks.txt
+  ✓  receipts_post.txt → output/picks/baseball_mlb/20260720/receipts_post.txt
+  ✓  calibration_card.png → output/picks/baseball_mlb/20260720/calibration_card.png
+  ✓  show_your_work.md → output/picks/baseball_mlb/20260720/talking_head/show_your_work.md
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 15 games
+    Minnesota Twins (Kendry Rojas) @ Cleveland Guardians (Parker Messick)
+    Los Angeles Dodgers (Justin Wrobleski) @ Philadelphia Phillies (Zack Wheeler)
+    Pittsburgh Pirates (Bubba Chandler) @ New York Yankees (Will Warren)
+    Tampa Bay Rays (Drew Rasmussen) @ Toronto Blue Jays (Kevin Gausman)
+    Baltimore Orioles (Kyle Bradish) @ Boston Red Sox (Ranger Suarez)
+    San Diego Padres (Walker Buehler) @ Atlanta Braves (Reynaldo López)
+    San Francisco Giants (Tyler Mahle) @ Kansas City Royals (Luinder Avila)
+    New York Mets (Zac Thornton) @ Milwaukee Brewers (Brandon Sproat)
+    Detroit Tigers (Framber Valdez) @ Chicago Cubs (David Peterson)
+    Chicago White Sox (Noah Schultz) @ Texas Rangers (Kumar Rocker)
+    Miami Marlins (Tyler Phillips) @ Houston Astros (Tatsuya Imai)
+    Washington Nationals (Miles Mikolas) @ Colorado Rockies (Michael Lorenzen)
+    St. Louis Cardinals (Matthew Liberatore) @ Los Angeles Angels (Walbert Ureña)
+    Athletics (Jack Perkins) @ Arizona Diamondbacks (Kohl Drake)
+    Cincinnati Reds (Chase Burns) @ Seattle Mariners (Luis Castillo)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Minnesota Twins @ Cleveland Guardians: Minnesota Twins 50.4% [SPLIT]
+    Pyth: 51.1%  XGB: 48.4%  Ens: 49.6%
+  Los Angeles Dodgers @ Philadelphia Phillies: Los Angeles Dodgers 53.3% [AGREE]
+    Pyth: 44.6%  XGB: 48.4%  Ens: 46.7%
+  Pittsburgh Pirates @ New York Yankees: Pittsburgh Pirates 50.5% [SPLIT]
+    Pyth: 50.7%  XGB: 48.4%  Ens: 49.5%
+  Tampa Bay Rays @ Toronto Blue Jays: Tampa Bay Rays 59.5% [AGREE]
+    Pyth: 37.6%  XGB: 42.9%  Ens: 40.5%
+  Baltimore Orioles @ Boston Red Sox: Boston Red Sox 50.8% [SPLIT]
+    Pyth: 53.7%  XGB: 48.4%  Ens: 50.8%
+  San Diego Padres @ Atlanta Braves: Atlanta Braves 61.7% [SPLIT]
+    Pyth: 77.9%  XGB: 48.4%  Ens: 61.7%
+  San Francisco Giants @ Kansas City Royals: Kansas City Royals 51.3% [SPLIT]
+    Pyth: 54.9%  XGB: 48.4%  Ens: 51.3%
+  New York Mets @ Milwaukee Brewers: Milwaukee Brewers 52.6% [SPLIT]
+    Pyth: 57.6%  XGB: 48.4%  Ens: 52.6%
+  Detroit Tigers @ Chicago Cubs: Detroit Tigers 56.1% [AGREE]
+    Pyth: 38.3%  XGB: 48.4%  Ens: 43.9%
+  Chicago White Sox @ Texas Rangers: Texas Rangers 50.6% [SPLIT]
+    Pyth: 47.6%  XGB: 53.1%  Ens: 50.6%
+  Miami Marlins @ Houston Astros: Miami Marlins 60.0% [AGREE]
+    Pyth: 36.4%  XGB: 42.9%  Ens: 40.0%
+  Washington Nationals @ Colorado Rockies: Colorado Rockies 53.7% [AGREE]
+    Pyth: 54.4%  XGB: 53.1%  Ens: 53.7%
+  St. Louis Cardinals @ Los Angeles Angels: Los Angeles Angels 60.0% [AGREE]
+    Pyth: 62.1%  XGB: 58.2%  Ens: 60.0%
+  Athletics @ Arizona Diamondbacks: Arizona Diamondbacks 58.5% [SPLIT]
+    Pyth: 70.7%  XGB: 48.4%  Ens: 58.5%
+  Cincinnati Reds @ Seattle Mariners: Seattle Mariners 50.2% [SPLIT]
+    Pyth: 52.3%  XGB: 48.4%  Ens: 50.2%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 16:04:29. API requests remaining: 3296
+  Odds freshness: LIVE (range 0–2 min old)
+  Pinnacle fair-prob anchor: 0/15 games on Pinnacle, rest on median devig.
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Pittsburgh Pirates vs New York Yankees
+    Model: 56.5% | Vegas: 41.7% | Edge: +14.8% *** STRONG ***
+    Best odds: +130 at FanDuel
+
+  Miami Marlins vs Houston Astros
+    Model: 60.7% | Vegas: 46.8% | Edge: +14.0% *** STRONG ***
+    Best odds: +108 at BetRivers
+
+  Minnesota Twins vs Cleveland Guardians
+    Model: 56.4% | Vegas: 42.6% | Edge: +13.9% *** STRONG ***
+    Best odds: +130 at Caesars
+
+  Los Angeles Dodgers vs Philadelphia Phillies
+    Model: 57.7% | Vegas: 45.6% | Edge: +12.1% *** STRONG ***
+    Best odds: +115 at Hard Rock Bet
+
+  New York Mets vs Milwaukee Brewers
+    Model: 55.1% | Vegas: 43.1% | Edge: +12.0% *** STRONG ***
+    Best odds: +125 at theScore Bet
+
+  Baltimore Orioles vs Boston Red Sox
+    Model: 55.9% | Vegas: 44.2% | Edge: +11.6% *** STRONG ***
+    Best odds: +125 at theScore Bet
+
+  Detroit Tigers vs Chicago Cubs
+    Model: 59.0% | Vegas: 47.8% | Edge: +11.2% *** STRONG ***
+    Best odds: +105 at theScore Bet
+
+  Tampa Bay Rays vs Toronto Blue Jays
+    Model: 60.5% | Vegas: 50.4% | Edge: +10.1% *** STRONG ***
+    Best odds: -110 at FanDuel
+
+  Chicago White Sox vs Texas Rangers
+    Model: 56.0% | Vegas: 46.2% | Edge: +9.8% ** GOOD **
+    Best odds: +110 at Caesars
+
+  Total value bets: 9
+  Average edge: +12.1%
+======================================================================
+
+
+  Method B — Sharp consensus (9 edges):
+    Pittsburgh Pirates vs New York Yankees: Consensus 52.5% → Edge +10.8%
+    Minnesota Twins vs Cleveland Guardians: Consensus 52.9% → Edge +10.3%
+    New York Mets vs Milwaukee Brewers: Consensus 53.2% → Edge +10.1%
+    San Diego Padres vs Atlanta Braves: Consensus 53.5% → Edge +10.0%
+    Baltimore Orioles vs Boston Red Sox: Consensus 53.6% → Edge +9.4%
+    Athletics vs Arizona Diamondbacks: Consensus 53.9% → Edge +9.3%
+    Los Angeles Dodgers vs Philadelphia Phillies: Consensus 54.3% → Edge +8.7%
+    Chicago White Sox vs Texas Rangers: Consensus 54.5% → Edge +8.2%
+    Miami Marlins vs Houston Astros: Consensus 54.8% → Edge +8.0%
+
+  LOCK picks (both methods agree): baltimore orioles, chicago white sox, los angeles dodgers, miami marlins, minnesota twins, new york mets, pittsburgh pirates
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · July 21, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   TOTAL      OVER 8.0 (Tigers@Cubs)           +105    +2.10R        —  Hard Rock 
+  2   MONEYLINE  Pittsburgh Pirates ML            +130    +14.8%     5.8%  FanDuel
+  3   TOTAL      UNDER 13.0 (Nationals@Rockie)    +110    +1.40R        —  theScore B
+  4   TOTAL      OVER 9.5 (Pirates@Yankees)       +100    +1.40R        —  Hard Rock 
+  5   MONEYLINE  Miami Marlins ML                 +108    +14.0%     6.1%  BetRivers
+  6   MONEYLINE  Minnesota Twins ML               +130    +13.9%     5.7%  Caesars
+  7   MONEYLINE  Los Angeles Dodgers ML           +115    +12.1%     5.2%  Hard Rock 
+  8   TOTAL      UNDER 9.5 (Giants@Royals)        -104    +1.20R        —  BetRivers
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: OVER 8.0 +105 @ Hard Rock Bet
+     2.10 run totals edge
+
+  Moneyline: 4  |  Run Line: 0  |  Totals: 4
+══════════════════════════════════════════════════════════════════════
+
+  [CLV] Snapshotted opening lines for 16 pick(s) [2026-07-21]
+  [franchise] 2026-07-21: 11 new bet(s) logged for 11 model picks
+  Moneyline card → output/picks/baseball_mlb/20260721/pick_card.png
+  ML card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260721/mlb_moneyline_card.png
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260721
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  ✓  Team ratings loaded: 30 teams
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  ✓  Live NBA odds fetched. API requests remaining: 3281
+  ℹ  No NBA games on the 20260721 slate (off-day) — skipping. No card pick.
+  Totals card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260721/mlb_totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260721/caption_picks.txt
+  Auto-logged 16 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260721/
+
+Step 6: Scanning player props for edges...
+  Found 11 prop edge(s):
+    Bubba Chandler UNDER 4.5 Ks  edge=22.2%  odds=+100  [Fanatics]
+    Will Warren UNDER 5.5 Ks  edge=21.7%  odds=-132  [FanDuel]
+    Luis Castillo UNDER 7.5 Ks  edge=21.0%  odds=-425  [theScore Bet]
+    Zack Wheeler OVER 7.5 Ks  edge=20.6%  odds=+145  [theScore Bet]
+    David Peterson OVER 4.5 Ks  edge=20.0%  odds=+125  [Hard Rock Bet]
+    Michael Lorenzen UNDER 4.5 Ks  edge=17.3%  odds=-350  [theScore Bet]
+    Chase Burns UNDER 7.5 Ks  edge=14.0%  odds=-190  [theScore Bet]
+    Matthew Liberatore UNDER 6.5 Ks  edge=10.5%  odds=-425  [theScore Bet]
+    Framber Valdez UNDER 5.5 Ks  edge=7.4%  odds=-225  [theScore Bet]
+    Noah Schultz UNDER 5.5 Ks  edge=5.9%  odds=-425  [theScore Bet]
+  Props saved → output/picks/baseball_mlb/20260721/props.json
+  Auto-logged 11 prop(s) to pnl for tracking
+  Pitcher Ks card → output/picks/baseball_mlb/20260721/mlb_pitcher_ks_card.png
+  Props caption → output/picks/baseball_mlb/20260721/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 10 NRFI/YRFI play(s):
+    Washington Nationals @ Colorado Rockies NRFI  edge=9.2%
+    Tampa Bay Rays @ Toronto Blue Jays YRFI  edge=8.3%
+    Detroit Tigers @ Chicago Cubs YRFI  edge=8.1%
+    Cincinnati Reds @ Seattle Mariners YRFI  edge=8.0%
+    Baltimore Orioles @ Boston Red Sox YRFI  edge=7.6%
+  NRFI picks logged to pnl (5 picks)
+  (10 NRFI play(s) have live odds; 0 missing book line)
+  NRFI caption → output/picks/baseball_mlb/20260721/caption_nrfi.txt
+
+Step 8: Building F5 (first 5 innings) totals...
+  Found 12 F5 edge(s):
+    F5 OVER 4.5 (Detroit Tigers @ Chicago Cubs)  edge=26.5%  odds=+105  [Pinnacle]  proj=6.79
+    F5 OVER 4.5 (Chicago White Sox @ Texas Rangers)  edge=22.6%  odds=-112  [Pinnacle]  proj=6.85
+    F5 UNDER 4.5 (Los Angeles Dodgers @ Philadelphia Phillies)  edge=14.5%  odds=-103  [Pinnacle]  proj=2.72
+    F5 UNDER 4.0 (Cincinnati Reds @ Seattle Mariners)  edge=14.4%  odds=-104  [Pinnacle]  proj=3.96
+    F5 UNDER 7.0 (Washington Nationals @ Colorado Rockies)  edge=14.1%  odds=-105  [Pinnacle]  proj=6.8
+  F5 picks logged to pnl (12 added, card_pick=True)
+  F5 card → output/picks/baseball_mlb/20260721/f5_card.png
+  F5 caption → output/picks/baseball_mlb/20260721/caption_f5.txt
+  O/U card (game totals, 5 picks) → output/picks/baseball_mlb/20260721/totals_card.png
+
+Step 10: Generating MLB parlay card...
+  ✓  Parlay card → output/picks/baseball_mlb/20260721/parlay_card.png
+
+Step 11: Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/baseball_mlb/20260721/captions/instagram.txt
+  ✓  twitter      → output/picks/baseball_mlb/20260721/captions/twitter.txt
+  ✓  reddit       → output/picks/baseball_mlb/20260721/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/baseball_mlb/20260721/captions/reddit_potd.txt
+  ✓  reddit_mlb_props  → output/picks/baseball_mlb/20260721/captions/reddit_mlb_props.txt
+  ✓  reddit_mlb_picks  → output/picks/baseball_mlb/20260721/captions/reddit_mlb_picks.txt
+  ✓  receipts_post.txt → output/picks/baseball_mlb/20260721/receipts_post.txt
+  ✓  calibration_card.png → output/picks/baseball_mlb/20260721/calibration_card.png
+  ✓  show_your_work.md → output/picks/baseball_mlb/20260721/talking_head/show_your_work.md
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 17 games
+    Pittsburgh Pirates (Mitch Keller) @ New York Yankees (Gerrit Cole)
+    Pittsburgh Pirates (Bubba Chandler) @ New York Yankees (Max Fried)
+    Baltimore Orioles (Dean Kremer) @ Boston Red Sox (Jake Bennett)
+    Baltimore Orioles (Kyle Bradish) @ Boston Red Sox (TBD)
+    San Francisco Giants (Landen Roupp) @ Kansas City Royals (Seth Lugo)
+    New York Mets (Christian Scott) @ Milwaukee Brewers (Logan Henderson)
+    Washington Nationals (Cade Cavalli) @ Colorado Rockies (Gabriel Hughes)
+    Athletics (Gage Jump) @ Arizona Diamondbacks (Merrill Kelly)
+    Cincinnati Reds (Brady Singer) @ Seattle Mariners (Emerson Hancock)
+    St. Louis Cardinals (Hunter Dobbins) @ Los Angeles Angels (Reid Detmers)
+    Minnesota Twins (Bailey Ober) @ Cleveland Guardians (Slade Cecconi)
+    Los Angeles Dodgers (Eric Lauer) @ Philadelphia Phillies (Aaron Nola)
+    Tampa Bay Rays (Griffin Jax) @ Toronto Blue Jays (Braydon Fisher)
+    San Diego Padres (Michael King) @ Atlanta Braves (Martín Pérez)
+    Chicago White Sox (Anthony Kay) @ Texas Rangers (Tyler Alexander)
+    Detroit Tigers (Keider Montero) @ Chicago Cubs (Colin Rea)
+    Miami Marlins (Sandy Alcantara) @ Houston Astros (Peter Lambert)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Pittsburgh Pirates @ New York Yankees: New York Yankees 50.9% [SPLIT]
+    Pyth: 53.9%  XGB: 48.4%  Ens: 50.9%
+  Pittsburgh Pirates @ New York Yankees: New York Yankees 54.5% [SPLIT]
+    Pyth: 62.0%  XGB: 48.4%  Ens: 54.5%
+  Baltimore Orioles @ Boston Red Sox: Boston Red Sox 63.6% [AGREE]
+    Pyth: 76.5%  XGB: 53.1%  Ens: 63.6%
+  Baltimore Orioles @ Boston Red Sox: Baltimore Orioles 53.7% [SPLIT]
+    Pyth: 50.9%  XGB: 42.5%  Ens: 46.3%
+  San Francisco Giants @ Kansas City Royals: San Francisco Giants 57.3% [AGREE]
+    Pyth: 42.3%  XGB: 42.9%  Ens: 42.7%
+  New York Mets @ Milwaukee Brewers: Milwaukee Brewers 59.5% [SPLIT]
+    Pyth: 72.9%  XGB: 48.4%  Ens: 59.5%
+  Washington Nationals @ Colorado Rockies: Washington Nationals 55.0% [AGREE]
+    Pyth: 48.0%  XGB: 42.5%  Ens: 45.0%
+  Athletics @ Arizona Diamondbacks: Arizona Diamondbacks 56.9% [AGREE]
+    Pyth: 61.4%  XGB: 53.1%  Ens: 56.9%
+  Cincinnati Reds @ Seattle Mariners: Seattle Mariners 50.5% [SPLIT]
+    Pyth: 53.1%  XGB: 48.4%  Ens: 50.5%
+  St. Louis Cardinals @ Los Angeles Angels: St. Louis Cardinals 53.4% [AGREE]
+    Pyth: 44.4%  XGB: 48.4%  Ens: 46.6%
+  Minnesota Twins @ Cleveland Guardians: Cleveland Guardians 55.4% [AGREE]
+    Pyth: 58.1%  XGB: 53.1%  Ens: 55.4%
+  Los Angeles Dodgers @ Philadelphia Phillies: Los Angeles Dodgers 57.1% [AGREE]
+    Pyth: 36.2%  XGB: 48.4%  Ens: 42.9%
+  Tampa Bay Rays @ Toronto Blue Jays: Tampa Bay Rays 50.0% [SPLIT]
+    Pyth: 51.9%  XGB: 48.4%  Ens: 50.0%
+  San Diego Padres @ Atlanta Braves: Atlanta Braves 51.1% [SPLIT]
+    Pyth: 54.4%  XGB: 48.4%  Ens: 51.1%
+  Chicago White Sox @ Texas Rangers: Chicago White Sox 52.2% [SPLIT]
+    Pyth: 53.7%  XGB: 42.9%  Ens: 47.8%
+  Detroit Tigers @ Chicago Cubs: Chicago Cubs 50.1% [SPLIT]
+    Pyth: 52.1%  XGB: 48.4%  Ens: 50.1%
+  Miami Marlins @ Houston Astros: Houston Astros 51.4% [SPLIT]
+    Pyth: 55.1%  XGB: 48.4%  Ens: 51.4%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 16:00:53. API requests remaining: 2214
+  Odds freshness: LIVE (range 0–2 min old)
+  Pinnacle fair-prob anchor: 17/17 games on Pinnacle, rest on median devig.
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  Pittsburgh Pirates vs New York Yankees
+    Model: 54.2% | Vegas: 38.4% | Edge: +15.8% *** STRONG ***
+    Best odds: +150 at FanDuel
+
+  Baltimore Orioles vs Boston Red Sox
+    Model: 57.9% | Vegas: 42.8% | Edge: +15.1% *** STRONG ***
+    Best odds: +130 at Caesars
+
+  Cincinnati Reds vs Seattle Mariners
+    Model: 56.0% | Vegas: 41.4% | Edge: +14.7% *** STRONG ***
+    Best odds: +135 at Hard Rock Bet
+
+  St. Louis Cardinals vs Los Angeles Angels
+    Model: 57.8% | Vegas: 46.7% | Edge: +11.1% *** STRONG ***
+    Best odds: +108 at FanDuel
+
+  Detroit Tigers vs Chicago Cubs
+    Model: 56.2% | Vegas: 48.0% | Edge: +8.2% ** GOOD **
+    Best odds: +102 at BetRivers
+
+  Total value bets: 5
+  Average edge: +13.0%
+======================================================================
+
+
+  Method B — Sharp consensus (3 edges):
+    Pittsburgh Pirates vs New York Yankees: Consensus 51.5% → Edge +13.1%
+    Minnesota Twins vs Cleveland Guardians: Consensus 54.8% → Edge +8.3%
+    St. Louis Cardinals vs Los Angeles Angels: Consensus 54.8% → Edge +8.1%
+
+  LOCK picks (both methods agree): pittsburgh pirates, st. louis cardinals
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · July 22, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   RUN LINE   Colorado Rockies +1.5 RL         -125    +2.53R        —  Fanatics
+  2   TOTAL      UNDER 9.0 (Athletics@Diamon)     +100    +1.90R        —  Caesars
+  3   TOTAL      OVER 8.0 (Marlins@Astros)        +105    +1.90R        —  theScore B
+  4   MONEYLINE  Pittsburgh Pirates ML            +150    +15.8%     5.9%  FanDuel
+  5   MONEYLINE  Baltimore Orioles ML             +130    +15.1%     6.4%  Caesars
+  6   MONEYLINE  Cincinnati Reds ML               +135    +14.7%     5.9%  Hard Rock 
+  7   MONEYLINE  St. Louis Cardinals ML           +108    +11.1%     4.7%  FanDuel
+  8   MONEYLINE  Minnesota Twins ML               +111     +8.3%     3.5%  Pinnacle
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: Colorado Rockies +1.5 -125 @ Fanatics
+     2.53 run RL edge
+
+  Moneyline: 5  |  Run Line: 1  |  Totals: 2
+══════════════════════════════════════════════════════════════════════
+
+  [CLV] Snapshotted opening lines for 3 pick(s) [2026-07-22]
+  [franchise] 2026-07-22: 2 new bet(s) logged for 7 model picks
+  Moneyline card → output/picks/baseball_mlb/20260722/pick_card.png
+  ML card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260722/mlb_moneyline_card.png
+  Totals card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260722/mlb_totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260722/caption_picks.txt
+  Auto-logged 9 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260722/
+
+Step 6: Scanning player props for edges...
+  Found 11 prop edge(s):
+    Gabriel Hughes OVER 4.5 Ks  edge=35.9%  odds=+129  [Pinnacle]
+    Emerson Hancock UNDER 6.5 Ks  edge=15.4%  odds=-225  [theScore Bet]
+    Slade Cecconi UNDER 4.5 Ks  edge=15.3%  odds=-200  [theScore Bet]
+    Logan Henderson UNDER 6.5 Ks  edge=14.6%  odds=-225  [theScore Bet]
+    Brady Singer UNDER 6.5 Ks  edge=13.9%  odds=-375  [theScore Bet]
+    Landen Roupp UNDER 6.5 Ks  edge=9.9%  odds=-425  [theScore Bet]
+    Eric Lauer UNDER 4.5 Ks  edge=7.6%  odds=-275  [theScore Bet]
+    Anthony Kay UNDER 5.5 Ks  edge=7.4%  odds=-260  [theScore Bet]
+    Bailey Ober UNDER 5.5 Ks  edge=5.1%  odds=-500  [theScore Bet]
+    Merrill Kelly UNDER 4.5 Ks  edge=4.9%  odds=-260  [theScore Bet]
+  Props saved → output/picks/baseball_mlb/20260722/props.json
+  Auto-logged 11 prop(s) to pnl for tracking
+  Pitcher Ks card → output/picks/baseball_mlb/20260722/mlb_pitcher_ks_card.png
+  Props caption → output/picks/baseball_mlb/20260722/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 16 NRFI/YRFI play(s):
+    Washington Nationals @ Colorado Rockies NRFI  edge=28.6%
+    Los Angeles Dodgers @ Philadelphia Phillies NRFI  edge=19.5%
+    Athletics @ Arizona Diamondbacks NRFI  edge=19.0%
+    Chicago White Sox @ Texas Rangers NRFI  edge=18.7%
+    Miami Marlins @ Houston Astros NRFI  edge=18.3%
+  NRFI picks logged to pnl (5 picks)
+  (16 NRFI play(s) have live odds; 0 missing book line)
+  NRFI caption → output/picks/baseball_mlb/20260722/caption_nrfi.txt
+
+Step 8: Building F5 (first 5 innings) totals...
+  Found 12 F5 edge(s):
+    F5 UNDER 4.5 (Baltimore Orioles @ Boston Red Sox)  edge=14.3%  odds=-105  [Pinnacle]  proj=3.04
+    F5 UNDER 4.5 (Baltimore Orioles @ Boston Red Sox)  edge=14.3%  odds=-105  [Pinnacle]  proj=3.04
+    F5 UNDER 6.0 (Washington Nationals @ Colorado Rockies)  edge=12.5%  odds=-112  [Pinnacle]  proj=3.4
+    F5 UNDER 4.5 (Cincinnati Reds @ Seattle Mariners)  edge=12.0%  odds=-122  [FanDuel]  proj=4.32
+    F5 UNDER 5.0 (Athletics @ Arizona Diamondbacks)  edge=11.5%  odds=-117  [Pinnacle]  proj=5.17
+  F5 picks logged to pnl (3 added, card_pick=True)
+  F5 card → output/picks/baseball_mlb/20260722/f5_card.png
+  F5 caption → output/picks/baseball_mlb/20260722/caption_f5.txt
+  O/U card (game totals, 2 picks) → output/picks/baseball_mlb/20260722/totals_card.png
+
+Step 10: Generating MLB parlay card...
+  ✓  Parlay card → output/picks/baseball_mlb/20260722/parlay_card.png
+
+Step 11: Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/baseball_mlb/20260722/captions/instagram.txt
+  ✓  twitter      → output/picks/baseball_mlb/20260722/captions/twitter.txt
+  ✓  reddit       → output/picks/baseball_mlb/20260722/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/baseball_mlb/20260722/captions/reddit_potd.txt
+  ✓  reddit_mlb_props  → output/picks/baseball_mlb/20260722/captions/reddit_mlb_props.txt
+  ✓  reddit_mlb_picks  → output/picks/baseball_mlb/20260722/captions/reddit_mlb_picks.txt
+  ✓  receipts_post.txt → output/picks/baseball_mlb/20260722/receipts_post.txt
+  ✓  calibration_card.png → output/picks/baseball_mlb/20260722/calibration_card.png
+  ✓  show_your_work.md → output/picks/baseball_mlb/20260722/talking_head/show_your_work.md
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260722
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  ✓  Team ratings loaded: 30 teams
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  ✓  Live NBA odds fetched. API requests remaining: 2155
+  ℹ  No NBA games on the 20260722 slate (off-day) — skipping. No card pick.
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x164029c10>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='statsapi.mlb.com', port=443): Max retries exceeded with url: /api/v1/schedule?date=2026-07-23&sportId=1&hydrate=probablePitcher%2Cteam (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x164029c10>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 2403, in <module>
+    main()
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 125, in main
+    run_daily(args)
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 2266, in run_daily
+    _run_mlb_daily(args, sport)
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 607, in _run_mlb_daily
+    matchups = get_todays_matchups(game_date=game_date)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 432, in get_todays_matchups
+    schedule = fetch_schedule(game_date)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 106, in fetch_schedule
+    data = _cached_get(
+           ^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 46, in _cached_get
+    raise last_exc  # type: ignore[misc]
+    ^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 37, in _cached_get
+    resp = requests.get(url, params=params or {}, timeout=30)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='statsapi.mlb.com', port=443): Max retries exceeded with url: /api/v1/schedule?date=2026-07-23&sportId=1&hydrate=probablePitcher%2Cteam (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x164029c10>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260723
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  [nba_stats] team ratings: HTTPSConnectionPool(host='stats.nba.com', port=443): Max retries exceeded with url: /stats/leaguedashteamstats?Conference=&DateFrom=&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Advanced&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=Totals&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2025-26&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=&TwoWay=&VsConference=&VsDivision= (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10e783cd0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ✓  Team ratings loaded: 30 teams
+  [nba_stats] player stats: HTTPSConnectionPool(host='stats.nba.com', port=443): Max retries exceeded with url: /stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2025-26&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=&TwoWay=&VsConference=&VsDivision=&Weight= (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10e791cd0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  [run_nba] Odds fetch error: HTTPSConnectionPool(host='api.the-odds-api.com', port=443): Max retries exceeded with url: /v4/sports/basketball_nba/odds?apiKey=bcc22ac30b59d35698cc90aa1211e613&regions=us%2Cus2&markets=h2h%2Cspreads%2Ctotals&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Cwilliamhill_us%2Cbetrivers%2Cespnbet%2Cfanatics%2Chardrockbet%2Cballybet%2Cpinnacle (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10e87e750>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ℹ  No NBA games on the 20260723 slate (off-day) — skipping. No card pick.
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260724
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  [nba_stats] team ratings: HTTPSConnectionPool(host='stats.nba.com', port=443): Max retries exceeded with url: /stats/leaguedashteamstats?Conference=&DateFrom=&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Advanced&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=Totals&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2025-26&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=&TwoWay=&VsConference=&VsDivision= (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10356b490>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ✓  Team ratings loaded: 30 teams
+  [nba_stats] player stats: HTTPSConnectionPool(host='stats.nba.com', port=443): Max retries exceeded with url: /stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2025-26&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=&TwoWay=&VsConference=&VsDivision=&Weight= (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10c191e10>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  [run_nba] Odds fetch error: HTTPSConnectionPool(host='api.the-odds-api.com', port=443): Max retries exceeded with url: /v4/sports/basketball_nba/odds?apiKey=bcc22ac30b59d35698cc90aa1211e613&regions=us%2Cus2&markets=h2h%2Cspreads%2Ctotals&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Cwilliamhill_us%2Cbetrivers%2Cespnbet%2Cfanatics%2Chardrockbet%2Cballybet%2Cpinnacle (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10c27e9d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ℹ  No NBA games on the 20260724 slate (off-day) — skipping. No card pick.
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x12c879990>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='statsapi.mlb.com', port=443): Max retries exceeded with url: /api/v1/teams/stats?stats=season&group=pitching&season=2026&sportIds=1 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x12c879990>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 2403, in <module>
+    main()
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 125, in main
+    run_daily(args)
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 2266, in run_daily
+    _run_mlb_daily(args, sport)
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 607, in _run_mlb_daily
+    matchups = get_todays_matchups(game_date=game_date)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 436, in get_todays_matchups
+    teams = fetch_team_stats(season)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 152, in fetch_team_stats
+    pitching = _cached_get(
+               ^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 46, in _cached_get
+    raise last_exc  # type: ignore[misc]
+    ^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 37, in _cached_get
+    resp = requests.get(url, params=params or {}, timeout=30)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='statsapi.mlb.com', port=443): Max retries exceeded with url: /api/v1/teams/stats?stats=season&group=pitching&season=2026&sportIds=1 (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x12c879990>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260725
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  [nba_stats] team ratings: HTTPSConnectionPool(host='stats.nba.com', port=443): Max retries exceeded with url: /stats/leaguedashteamstats?Conference=&DateFrom=&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Advanced&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=Totals&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2025-26&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=&TwoWay=&VsConference=&VsDivision= (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x119690090>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ✓  Team ratings loaded: 30 teams
+  [nba_stats] player stats: HTTPSConnectionPool(host='stats.nba.com', port=443): Max retries exceeded with url: /stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2025-26&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=&TwoWay=&VsConference=&VsDivision=&Weight= (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x119691f50>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  [run_nba] Odds fetch error: HTTPSConnectionPool(host='api.the-odds-api.com', port=443): Max retries exceeded with url: /v4/sports/basketball_nba/odds?apiKey=f57324a365299b10ec3ae1907d262927&regions=us%2Cus2&markets=h2h%2Cspreads%2Ctotals&oddsFormat=american&bookmakers=draftkings%2Cfanduel%2Cbetmgm%2Cwilliamhill_us%2Cbetrivers%2Cespnbet%2Cfanatics%2Chardrockbet%2Cballybet%2Cpinnacle (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x11977aad0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+  ℹ  No NBA games on the 20260725 slate (off-day) — skipping. No card pick.
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 174, in _new_conn
+    conn = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/util/connection.py", line 72, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/socket.py", line 962, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._validate_conn(conn)
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 1042, in _validate_conn
+    conn.connect()
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 363, in connect
+    self.sock = conn = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connection.py", line 186, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x16dd29dd0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/urllib3/util/retry.py", line 592, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='statsapi.mlb.com', port=443): Max retries exceeded with url: /api/v1/schedule?date=2026-07-25&sportId=1&hydrate=probablePitcher%2Cteam (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x16dd29dd0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 2403, in <module>
+    main()
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 125, in main
+    run_daily(args)
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 2266, in run_daily
+    _run_mlb_daily(args, sport)
+  File "/Users/anthonymccrovitz/march-madness/predict.py", line 607, in _run_mlb_daily
+    matchups = get_todays_matchups(game_date=game_date)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 432, in get_todays_matchups
+    schedule = fetch_schedule(game_date)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 106, in fetch_schedule
+    data = _cached_get(
+           ^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 46, in _cached_get
+    raise last_exc  # type: ignore[misc]
+    ^^^^^^^^^^^^^^
+  File "/Users/anthonymccrovitz/march-madness/src/data/mlb_stats.py", line 37, in _cached_get
+    resp = requests.get(url, params=params or {}, timeout=30)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='statsapi.mlb.com', port=443): Max retries exceeded with url: /api/v1/schedule?date=2026-07-25&sportId=1&hydrate=probablePitcher%2Cteam (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x16dd29dd0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+======================================================================
+  MARCH MADNESS 2026 — AI BRACKET PREDICTOR
+======================================================================
+
+
+======================================================================
+  OVERLAY DAILY — baseball_mlb
+======================================================================
+
+Step 1: Fetching MLB schedule and team stats...
+  Found 15 games
+    Cleveland Guardians (Parker Messick) @ Tampa Bay Rays (Drew Rasmussen)
+    Arizona Diamondbacks (Kohl Drake) @ Washington Nationals (Miles Mikolas)
+    Chicago Cubs (Jameson Taillon) @ Pittsburgh Pirates (Braxton Ashcraft)
+    Toronto Blue Jays (Kevin Gausman) @ Boston Red Sox (Ranger Suarez)
+    Atlanta Braves (Reynaldo López) @ Baltimore Orioles (Shane Baz)
+    Kansas City Royals (Luinder Avila) @ Detroit Tigers (Framber Valdez)
+    Los Angeles Dodgers (Emmet Sheehan) @ New York Mets (Freddy Peralta)
+    San Diego Padres (Walker Buehler) @ Miami Marlins (Janson Junk)
+    Athletics (Jeffrey Springs) @ Minnesota Twins (Connor Prielipp)
+    Houston Astros (Ronel Blanco) @ Chicago White Sox (Erick Fedde)
+    Colorado Rockies (Kyle Freeland) @ Milwaukee Brewers (Jacob Misiorowski)
+    Cincinnati Reds (Andrew Abbott) @ St. Louis Cardinals (Kyle Leahy)
+    Seattle Mariners (Logan Gilbert) @ Texas Rangers (Jacob deGrom)
+    Los Angeles Angels (José Soriano) @ San Francisco Giants (Carson Whisenhunt)
+    New York Yankees (Will Warren) @ Philadelphia Phillies (Cristopher Sánchez)
+
+Step 2: Running ensemble (4 models + Pythagorean) — v6 features, 91 total...
+  Cleveland Guardians @ Tampa Bay Rays: Cleveland Guardians 52.3% [AGREE]
+    Pyth: 46.7%  XGB: 48.4%  Ens: 47.7%
+  Arizona Diamondbacks @ Washington Nationals: Arizona Diamondbacks 51.5% [AGREE]
+    Pyth: 48.5%  XGB: 48.4%  Ens: 48.5%
+  Chicago Cubs @ Pittsburgh Pirates: Pittsburgh Pirates 50.5% [SPLIT]
+    Pyth: 53.1%  XGB: 48.4%  Ens: 50.5%
+  Toronto Blue Jays @ Boston Red Sox: Boston Red Sox 68.5% [AGREE]
+    Pyth: 73.8%  XGB: 64.1%  Ens: 68.5%
+  Atlanta Braves @ Baltimore Orioles: Atlanta Braves 51.9% [AGREE]
+    Pyth: 47.8%  XGB: 48.4%  Ens: 48.1%
+  Kansas City Royals @ Detroit Tigers: Detroit Tigers 52.0% [AGREE]
+    Pyth: 50.6%  XGB: 53.1%  Ens: 52.0%
+  Los Angeles Dodgers @ New York Mets: Los Angeles Dodgers 53.5% [SPLIT]
+    Pyth: 38.5%  XGB: 53.1%  Ens: 46.5%
+  San Diego Padres @ Miami Marlins: Miami Marlins 55.6% [AGREE]
+    Pyth: 58.7%  XGB: 53.1%  Ens: 55.6%
+  Athletics @ Minnesota Twins: Minnesota Twins 61.3% [AGREE]
+    Pyth: 71.2%  XGB: 53.1%  Ens: 61.3%
+  Houston Astros @ Chicago White Sox: Chicago White Sox 62.0% [AGREE]
+    Pyth: 59.4%  XGB: 64.1%  Ens: 62.0%
+  Colorado Rockies @ Milwaukee Brewers: Milwaukee Brewers 72.1% [AGREE]
+    Pyth: 87.5%  XGB: 58.2%  Ens: 72.1%
+  Cincinnati Reds @ St. Louis Cardinals: St. Louis Cardinals 62.1% [AGREE]
+    Pyth: 73.1%  XGB: 53.1%  Ens: 62.1%
+  Seattle Mariners @ Texas Rangers: Seattle Mariners 55.8% [AGREE]
+    Pyth: 45.6%  XGB: 42.9%  Ens: 44.2%
+  Los Angeles Angels @ San Francisco Giants: San Francisco Giants 50.4% [SPLIT]
+    Pyth: 60.1%  XGB: 42.5%  Ens: 50.4%
+  New York Yankees @ Philadelphia Phillies: New York Yankees 50.0% [SPLIT]
+    Pyth: 51.9%  XGB: 48.4%  Ens: 50.0%
+
+Step 3: Fetching LIVE sportsbook odds...
+  ✓  Live odds fetched at 16:00:18. API requests remaining: 216
+  Odds freshness: LIVE (range 0–1 min old)
+  Pinnacle fair-prob anchor: 15/15 games on Pinnacle, rest on median devig.
+
+======================================================================
+  VALUE BETS (MONEYLINE) — Model Edge vs Vegas
+======================================================================
+
+  New York Yankees vs Philadelphia Phillies
+    Model: 55.4% | Vegas: 36.8% | Edge: +15.6% *** STRONG ***
+    Best odds: +163 at BetRivers
+
+  Kansas City Royals vs Detroit Tigers
+    Model: 54.6% | Vegas: 37.0% | Edge: +14.6% *** STRONG ***
+    Best odds: +170 at BetRivers
+
+  Chicago Cubs vs Pittsburgh Pirates
+    Model: 55.2% | Vegas: 45.5% | Edge: +9.7% ** GOOD **
+    Best odds: +112 at FanDuel
+
+  Cleveland Guardians vs Tampa Bay Rays
+    Model: 56.4% | Vegas: 46.7% | Edge: +9.7% ** GOOD **
+    Best odds: +110 at theScore Bet
+
+  Seattle Mariners vs Texas Rangers
+    Model: 57.8% | Vegas: 49.8% | Edge: +8.1% ** GOOD **
+    Best odds: -106 at FanDuel
+
+  Total value bets: 5
+  Average edge: +11.5%
+======================================================================
+
+
+  Method B — Sharp consensus (3 edges):
+    Cincinnati Reds vs St. Louis Cardinals: Consensus 53.3% → Edge +8.1%
+    San Diego Padres vs Miami Marlins: Consensus 53.6% → Edge +8.1%
+    Chicago Cubs vs Pittsburgh Pirates: Consensus 53.5% → Edge +8.1%
+
+  LOCK picks (both methods agree): chicago cubs
+
+══════════════════════════════════════════════════════════════════════
+  TODAY'S TOP PLAYS — MLB · July 26, 2026
+══════════════════════════════════════════════════════════════════════
+
+  #   MARKET     BET                              ODDS      EDGE    KELLY  BOOK
+  ────────────────────────────────────────────────────────────────────────
+  1   RUN LINE   New York Mets +1.5 RL            -120    +2.47R        —  Hard Rock 
+  2   TOTAL      OVER 10.0 (Diamondbacks@Nat)     +100    +2.30R        —  Hard Rock 
+  3   TOTAL      UNDER 9.0 (Dodgers@Mets)         +115    +2.10R        —  Hard Rock 
+  4   TOTAL      OVER 7.5 (Rockies@Brewers)       -103    +2.00R        —  BetRivers
+  5   TOTAL      OVER 7.0 (Guardians@Rays)        -105    +1.60R        —  BetMGM
+  6   TOTAL      UNDER 9.5 (Astros@Sox)           -115    +1.60R        —  BetRivers
+  7   MONEYLINE  New York Yankees ML              +163    +15.6%     7.0%  BetRivers
+  8   TOTAL      UNDER 10.0 (Athletics@Twins)     +105    +1.50R        —  theScore B
+
+  ────────────────────────────────────────────────────────────────────────
+
+  ⚡ BEST BET: New York Mets +1.5 -120 @ Hard Rock Bet
+     2.47 run RL edge
+
+  Moneyline: 1  |  Run Line: 1  |  Totals: 6
+══════════════════════════════════════════════════════════════════════
+
+  [CLV] Snapshotted opening lines for 3 pick(s) [2026-07-26]
+  [franchise] 2026-07-26: 2 new bet(s) logged for 8 model picks
+  Moneyline card → output/picks/baseball_mlb/20260726/pick_card.png
+  ML card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260726/mlb_moneyline_card.png
+  Totals card → /Users/anthonymccrovitz/march-madness/output/picks/baseball_mlb/20260726/mlb_totals_card.png
+  Picks caption → output/picks/baseball_mlb/20260726/caption_picks.txt
+  Auto-logged 14 pick(s) to data/pnl/picks.json
+
+Saved picks to output/picks/baseball_mlb/20260726/
+
+Step 6: Scanning player props for edges...
+  Found 8 prop edge(s):
+    Luinder Avila OVER 4.5 Ks  edge=26.6%  odds=+145  [theScore Bet]
+    Carson Whisenhunt UNDER 5.5 Ks  edge=26.6%  odds=-350  [theScore Bet]
+    Kyle Leahy UNDER 5.5 Ks  edge=13.3%  odds=-325  [theScore Bet]
+    Framber Valdez UNDER 5.5 Ks  edge=10.7%  odds=-225  [theScore Bet]
+    Drew Rasmussen UNDER 6.5 Ks  edge=10.1%  odds=-500  [theScore Bet]
+    Emmet Sheehan UNDER 6.5 Ks  edge=8.8%  odds=-215  [theScore Bet]
+    Janson Junk UNDER 4.5 Ks  edge=5.0%  odds=-240  [theScore Bet]
+    Jacob deGrom UNDER 8.5 Ks  edge=4.8%  odds=-325  [theScore Bet]
+  Props saved → output/picks/baseball_mlb/20260726/props.json
+  Auto-logged 8 prop(s) to pnl for tracking
+  Pitcher Ks card → output/picks/baseball_mlb/20260726/mlb_pitcher_ks_card.png
+  Props caption → output/picks/baseball_mlb/20260726/caption_props.txt
+
+Step 7: Building NRFI/YRFI plays...
+  Found 8 NRFI/YRFI play(s):
+    Seattle Mariners @ Texas Rangers YRFI  edge=10.8%
+    Toronto Blue Jays @ Boston Red Sox YRFI  edge=10.1%
+    Cleveland Guardians @ Tampa Bay Rays YRFI  edge=10.0%
+    Colorado Rockies @ Milwaukee Brewers YRFI  edge=7.8%
+    New York Yankees @ Philadelphia Phillies YRFI  edge=6.2%
+  NRFI picks logged to pnl (5 picks)
+  (8 NRFI play(s) have live odds; 0 missing book line)
+  NRFI caption → output/picks/baseball_mlb/20260726/caption_nrfi.txt
+
+Step 8: Building F5 (first 5 innings) totals...
+  Found 6 F5 edge(s):
+    F5 OVER 5.0 (San Diego Padres @ Miami Marlins)  edge=44.2%  odds=-103  [Pinnacle]  proj=8.66
+    F5 UNDER 4.5 (Los Angeles Angels @ San Francisco Giants)  edge=15.8%  odds=+102  [Pinnacle]  proj=4.54
+    F5 UNDER 5.5 (Arizona Diamondbacks @ Washington Nationals)  edge=13.6%  odds=-114  [FanDuel]  proj=4.87
+    F5 UNDER 5.0 (Atlanta Braves @ Baltimore Orioles)  edge=11.5%  odds=-117  [Pinnacle]  proj=4.78
+    F5 UNDER 5.5 (Houston Astros @ Chicago White Sox)  edge=11.1%  odds=-119  [Pinnacle]  proj=5.76
+  F5 picks logged to pnl (0 added, card_pick=True)
+  F5 card → output/picks/baseball_mlb/20260726/f5_card.png
+  F5 caption → output/picks/baseball_mlb/20260726/caption_f5.txt
+  O/U card (game totals, 5 picks) → output/picks/baseball_mlb/20260726/totals_card.png
+
+Step 10: Generating MLB parlay card...
+  ✓  Parlay card → output/picks/baseball_mlb/20260726/parlay_card.png
+
+Step 11: Writing captions (Instagram / Twitter / Reddit)...
+  ✓  instagram    → output/picks/baseball_mlb/20260726/captions/instagram.txt
+  ✓  twitter      → output/picks/baseball_mlb/20260726/captions/twitter.txt
+  ✓  reddit       → output/picks/baseball_mlb/20260726/captions/reddit.txt
+  ✓  reddit_potd       → output/picks/baseball_mlb/20260726/captions/reddit_potd.txt
+  ✓  reddit_mlb_props  → output/picks/baseball_mlb/20260726/captions/reddit_mlb_props.txt
+  ✓  reddit_mlb_picks  → output/picks/baseball_mlb/20260726/captions/reddit_mlb_picks.txt
+  ✓  receipts_post.txt → output/picks/baseball_mlb/20260726/receipts_post.txt
+  ✓  calibration_card.png → output/picks/baseball_mlb/20260726/calibration_card.png
+  ✓  show_your_work.md → output/picks/baseball_mlb/20260726/talking_head/show_your_work.md
+
+  Overlay — NBA Picks Pipeline
+  Date: 20260726
+  Fetching NBA team ratings...
+  ✓  Injury data loaded (0 reported injuries)
+  ✓  Team ratings loaded: 30 teams
+  ✓  Player stats loaded: 582 players
+  Fetching NBA odds...
+  ✓  Live NBA odds fetched. API requests remaining: 156
+  ℹ  No NBA games on the 20260726 slate (off-day) — skipping. No card pick.

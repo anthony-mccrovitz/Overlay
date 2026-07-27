@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-18T06:18:26.318403+00:00",
+  "updated_at": "2026-07-27T06:51:03.203970+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -16,10 +16,60 @@
       "tier": "shadow",
       "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u \u2014 stay shadow until v2 proves out)"
     },
+    "mexico_ligamx_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Liga MX Dixon-Coles (club model)"
+    },
+    "usa_mls_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "MLS Dixon-Coles (club model)"
+    },
+    "epl_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "EPL Dixon-Coles"
+    },
+    "spain_la_liga_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "La Liga Dixon-Coles"
+    },
+    "italy_serie_a_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Serie A Dixon-Coles"
+    },
+    "germany_bundesliga_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Bundesliga Dixon-Coles"
+    },
+    "france_ligue_one_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Ligue 1 Dixon-Coles"
+    },
+    "uefa_champs_league_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "UCL Dixon-Coles"
+    },
+    "england_championship_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Championship Dixon-Coles"
+    },
+    "conmebol_copa_libertadores_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Copa Libertadores Dixon-Coles"
+    },
     "soccer_moneyline": {
       "status": "incubating",
       "tier": "shadow",
-      "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"
+      "label": "Soccer (unmapped league fallback)"
     },
     "wc_moneyline": {
       "status": "incubating",
@@ -52,19 +102,19 @@
       "label": "PGA Outright (SG)"
     },
     "nascar_outright": {
-      "status": "incubating",
+      "status": "retired",
       "tier": "shadow",
-      "label": "NASCAR Outright Elo (shadow)"
+      "label": "NASCAR Outright Elo \u2014 DROPPED 2026-07-26 (archive/retired_sports/)"
     },
     "indycar_outright": {
-      "status": "incubating",
+      "status": "retired",
       "tier": "shadow",
-      "label": "IndyCar Outright Elo (shadow)"
+      "label": "IndyCar Outright Elo \u2014 DROPPED 2026-07-26 (archive/retired_sports/)"
     },
     "f1_outright": {
-      "status": "incubating",
+      "status": "retired",
       "tier": "shadow",
-      "label": "F1 Outright Elo (shadow)"
+      "label": "F1 Outright Elo \u2014 DROPPED 2026-07-26 (archive/retired_sports/)"
     },
     "mlb_pitcher_strikeouts": {
       "status": "incubating",
@@ -238,11 +288,11 @@
         "matched_price_n": 186
       },
       "total": {
-        "count": 282,
-        "avg_line_clv": 0.05,
-        "beat_close_pct": 50.7,
-        "avg_price_clv_pct": 0.297,
-        "matched_price_n": 100
+        "count": 283,
+        "avg_line_clv": 0.049,
+        "beat_close_pct": 50.5,
+        "avg_price_clv_pct": 0.25,
+        "matched_price_n": 101
       },
       "f5_total": {
         "count": 223,
@@ -295,27 +345,27 @@
       }
     },
     "totals_coverage": {
-      "scored": 282,
-      "scoreable": 558,
-      "pct": 50.5
+      "scored": 283,
+      "scoreable": 572,
+      "pct": 49.5
     },
     "spread_coverage": {
       "scored": 269,
-      "scoreable": 473,
-      "pct": 56.9
+      "scoreable": 480,
+      "pct": 56.0
     }
   },
   "summary": {
-    "total_picks": 297,
-    "settled": 287,
-    "pending": 0,
-    "wins": 159,
-    "losses": 122,
+    "total_picks": 309,
+    "settled": 297,
+    "pending": 2,
+    "wins": 165,
+    "losses": 126,
     "pushes": 6,
-    "win_rate": 0.5658,
-    "units_profit": 33.84,
-    "roi": 0.1228,
-    "streak": -3
+    "win_rate": 0.567,
+    "units_profit": 36.65,
+    "roi": 0.1212,
+    "streak": 3
   },
   "nrfi": {
     "total": 0,
@@ -328,16 +378,16 @@
   },
   "by_market": {
     "moneyline": {
-      "total": 112,
-      "settled": 112,
+      "total": 114,
+      "settled": 114,
       "pending": 0,
-      "wins": 60,
+      "wins": 62,
       "losses": 52,
       "pushes": 0,
-      "win_rate": 0.5357,
-      "units_profit": 9.38,
-      "roi": 0.0845,
-      "streak": 4
+      "win_rate": 0.5439,
+      "units_profit": 15.72,
+      "roi": 0.1361,
+      "streak": 6
     },
     "puck_line": {
       "total": 2,
@@ -364,28 +414,28 @@
       "streak": 1
     },
     "total": {
-      "total": 181,
-      "settled": 171,
-      "pending": 0,
-      "wins": 96,
-      "losses": 69,
+      "total": 191,
+      "settled": 179,
+      "pending": 2,
+      "wins": 100,
+      "losses": 73,
       "pushes": 6,
-      "win_rate": 0.5818,
-      "units_profit": 23.99,
-      "roi": 0.1485,
-      "streak": -3
+      "win_rate": 0.578,
+      "units_profit": 20.45,
+      "roi": 0.1112,
+      "streak": 2
     }
   },
   "by_sport": {
     "mlb": {
-      "total": 188,
-      "settled": 188,
-      "pending": 0,
-      "wins": 98,
-      "losses": 85,
-      "win_rate": 0.5355,
-      "units_profit": 15.16,
-      "roi": 0.0828
+      "total": 198,
+      "settled": 196,
+      "pending": 2,
+      "wins": 102,
+      "losses": 89,
+      "win_rate": 0.534,
+      "units_profit": 11.63,
+      "roi": 0.0566
     },
     "nba": {
       "total": 97,
@@ -406,6 +456,26 @@
       "win_rate": 0.5455,
       "units_profit": -0.29,
       "roi": -0.0534
+    },
+    "soccer_mexico_ligamx": {
+      "total": 1,
+      "settled": 1,
+      "pending": 0,
+      "wins": 1,
+      "losses": 0,
+      "win_rate": 1.0,
+      "units_profit": 3.0,
+      "roi": 1.0
+    },
+    "wnba": {
+      "total": 1,
+      "settled": 1,
+      "pending": 0,
+      "wins": 1,
+      "losses": 0,
+      "win_rate": 1.0,
+      "units_profit": 3.35,
+      "roi": 2.23
     }
   },
   "backtest_mlb": [
@@ -426,114 +496,114 @@
   ],
   "recent_picks": [
     {
-      "date": "2026-05-31",
-      "sport": "nhl",
-      "market": "total",
-      "team": "Under 5.5",
-      "matchup": "Vegas Golden Knights @ Carolina Hurricanes",
-      "odds": 102,
-      "result": "loss",
-      "profit": -0.5,
-      "edge_pct": 8.99
+      "date": "2026-07-24",
+      "sport": "soccer_mexico_ligamx",
+      "market": "moneyline",
+      "team": "Tijuana",
+      "matchup": "Le\u00f3n @ Tijuana",
+      "odds": 100,
+      "result": "win",
+      "profit": 3.0,
+      "edge_pct": 0.02
     },
     {
-      "date": "2026-06-05",
-      "sport": "nba",
+      "date": "2026-07-24",
+      "sport": "mlb",
       "market": "total",
-      "team": "OVER 216.5",
-      "matchup": "New York Knicks @ San Antonio Spurs",
-      "odds": -105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 15.69
-    },
-    {
-      "date": "2026-06-03",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 219.0",
-      "matchup": "New York Knicks @ San Antonio Spurs",
-      "odds": -109,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 14.2
-    },
-    {
-      "date": "2026-05-29",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 212.5",
-      "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
+      "team": "UNDER 8.5",
+      "matchup": "Cincinnati Reds @ St. Louis Cardinals",
       "odds": -110,
       "result": "win",
-      "profit": 0.91,
-      "edge_pct": 15.51
+      "profit": 2.73,
+      "edge_pct": 1.0
     },
     {
-      "date": "2026-05-27",
-      "sport": "nhl",
-      "market": "moneyline",
-      "team": "Carolina Hurricanes",
-      "matchup": "Carolina Hurricanes @ Montr\u00e9al Canadiens",
-      "odds": -142,
-      "result": "win",
-      "profit": 0.35,
-      "edge_pct": 12.12
-    },
-    {
-      "date": "2026-06-13",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Chicago Cubs",
-      "matchup": "San Francisco Giants",
-      "odds": -125,
-      "result": "win",
-      "profit": 0.8,
-      "edge_pct": 16.39
-    },
-    {
-      "date": "2026-06-13",
+      "date": "2026-07-24",
       "sport": "mlb",
       "market": "total",
-      "team": "UNDER 14.0",
-      "matchup": "Colorado Rockies @ Athletics",
+      "team": "OVER 7.5",
+      "matchup": "Seattle Mariners @ Texas Rangers",
+      "odds": -110,
+      "result": "win",
+      "profit": 2.73,
+      "edge_pct": 1.2
+    },
+    {
+      "date": "2026-07-24",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 9.5",
+      "matchup": "Arizona Diamondbacks @ Washington Nationals",
+      "odds": -105,
+      "result": "loss",
+      "profit": -3.0,
+      "edge_pct": 1.8
+    },
+    {
+      "date": "2026-07-23",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.0",
+      "matchup": "San Diego Padres @ Atlanta Braves",
+      "odds": -122,
+      "result": "win",
+      "profit": 2.46,
+      "edge_pct": 1.1
+    },
+    {
+      "date": "2026-07-22",
+      "sport": "wnba",
+      "market": "moneyline",
+      "team": "Washington Mystics",
+      "matchup": "Las Vegas Aces @ Washington Mystics",
+      "odds": 223,
+      "result": "win",
+      "profit": 3.35,
+      "edge_pct": 5.64
+    },
+    {
+      "date": "2026-07-22",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.25",
+      "matchup": "Miami Marlins @ Houston Astros",
+      "odds": 120,
+      "result": "loss",
+      "profit": -3.0,
+      "edge_pct": 1.6
+    },
+    {
+      "date": "2026-07-22",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 8.0",
+      "matchup": "Minnesota Twins @ Cleveland Guardians",
+      "odds": 115,
+      "result": "loss",
+      "profit": -3.0,
+      "edge_pct": 1.6
+    },
+    {
+      "date": "2026-07-22",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 9.0",
+      "matchup": "Athletics @ Arizona Diamondbacks",
+      "odds": 127,
+      "result": "loss",
+      "profit": -3.5,
+      "edge_pct": 1.9
+    },
+    {
+      "date": "2026-07-21",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.0",
+      "matchup": "Detroit Tigers @ Chicago Cubs",
       "odds": 105,
       "result": "win",
       "profit": 1.05,
-      "edge_pct": 7.4
-    },
-    {
-      "date": "2026-06-12",
-      "sport": "mlb",
-      "market": "moneyline",
-      "team": "Chicago Cubs",
-      "matchup": "San Francisco Giants",
-      "odds": -104,
-      "result": "win",
-      "profit": 0.96,
-      "edge_pct": 12.76
-    },
-    {
-      "date": "2026-06-12",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 13.5",
-      "matchup": "Colorado Rockies @ Athletics",
-      "odds": -105,
-      "result": "win",
-      "profit": 0.95,
-      "edge_pct": 5.7
-    },
-    {
-      "date": "2026-07-05",
-      "sport": "mlb",
-      "market": "total",
-      "team": "UNDER 11.0",
-      "matchup": "Miami Marlins @ Athletics",
-      "odds": 105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 3.0
+      "edge_pct": 2.3
     }
   ]
 }
