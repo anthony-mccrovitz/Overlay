@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-28T09:25:35.165136+00:00",
+  "generated_at": "2026-07-28T15:07:36.359975+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 137.63,
-  "n_settled": 31,
+  "end_bankroll": 112.2,
+  "n_settled": 36,
   "n_pending": 146,
   "wins": 13,
-  "losses": 18,
-  "staked": 143.98,
-  "pnl": 25.63,
-  "expected_pnl": 7.0,
-  "roi_pct": 17.8,
-  "max_drawdown": 18.31,
+  "losses": 23,
+  "staked": 158.81,
+  "pnl": 0.2,
+  "expected_pnl": 8.77,
+  "roi_pct": 0.13,
+  "max_drawdown": 30.81,
   "skipped": {
-    "resting order never filled": 14,
-    "exposure cap reached for the slate": 113,
-    "not settled yet": 19
+    "resting order never filled": 16,
+    "exposure cap reached for the slate": 116,
+    "not settled yet": 14
   },
   "significance": {
-    "mean_edge_per_unit": 0.0488,
-    "sd_per_unit": 1.5877,
-    "n_for_2sigma": 4230
+    "mean_edge_per_unit": 0.0555,
+    "sd_per_unit": 1.6533,
+    "n_for_2sigma": 3554
   },
   "rows": [
     {
@@ -407,6 +407,86 @@
       "equity": 115.92
     },
     {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_tyrell-fortune_moneyline_win",
+      "date": "2026-07-25",
+      "team": "Tyrell Fortune",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.26,
+      "fair": 0.2697,
+      "stake": 4.64,
+      "shares": 17.85,
+      "result": "loss",
+      "pnl": -4.64,
+      "expected_pnl": 0.173,
+      "equity": 111.28
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_brendson-ribeiro_moneyline_win",
+      "date": "2026-07-25",
+      "team": "Brendson Ribeiro",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.12,
+      "fair": 0.1484,
+      "stake": 4.45,
+      "shares": 37.08,
+      "result": "loss",
+      "pnl": -4.45,
+      "expected_pnl": 1.053,
+      "equity": 106.83
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_mike-davis_moneyline_win",
+      "date": "2026-07-25",
+      "team": "Mike Davis",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.33,
+      "fair": 0.3416,
+      "stake": 4.27,
+      "shares": 12.94,
+      "result": "loss",
+      "pnl": -4.27,
+      "expected_pnl": 0.15,
+      "equity": 102.56
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_santiago-ponzinibbio_moneyline_win",
+      "date": "2026-07-25",
+      "team": "Santiago Ponzinibbio",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.2,
+      "fair": 0.2144,
+      "stake": 4.1,
+      "shares": 20.5,
+      "result": "loss",
+      "pnl": -4.1,
+      "expected_pnl": 0.295,
+      "equity": 98.46
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260725_cody-gibson_moneyline_win",
+      "date": "2026-07-25",
+      "team": "Cody Gibson",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.19,
+      "fair": 0.2094,
+      "stake": 3.94,
+      "shares": 20.74,
+      "result": "loss",
+      "pnl": -3.94,
+      "expected_pnl": 0.402,
+      "equity": 94.52
+    },
+    {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_corinthians_moneyline_win",
       "date": "2026-07-26",
       "team": "Corinthians",
@@ -415,12 +495,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.26,
       "fair": 0.2677,
-      "stake": 4.64,
-      "shares": 17.85,
+      "stake": 3.78,
+      "shares": 14.54,
       "result": "loss",
-      "pnl": -4.64,
-      "expected_pnl": 0.137,
-      "equity": 111.28
+      "pnl": -3.78,
+      "expected_pnl": 0.112,
+      "equity": 90.74
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_botafogo_moneyline_win",
@@ -431,12 +511,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.2,
       "fair": 0.2107,
-      "stake": 4.45,
-      "shares": 22.25,
+      "stake": 3.63,
+      "shares": 18.15,
       "result": "win",
-      "pnl": 17.8,
-      "expected_pnl": 0.238,
-      "equity": 129.08
+      "pnl": 14.52,
+      "expected_pnl": 0.194,
+      "equity": 105.26
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_coritiba_moneyline_win",
@@ -447,12 +527,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.16,
       "fair": 0.1686,
-      "stake": 5.16,
-      "shares": 32.25,
+      "stake": 4.21,
+      "shares": 26.31,
       "result": "loss",
-      "pnl": -5.16,
-      "expected_pnl": 0.277,
-      "equity": 123.92
+      "pnl": -4.21,
+      "expected_pnl": 0.226,
+      "equity": 101.05
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260726_fc-anyang_moneyline_win",
@@ -463,12 +543,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.22,
       "fair": 0.2247,
-      "stake": 4.96,
-      "shares": 22.55,
+      "stake": 4.04,
+      "shares": 18.36,
       "result": "win",
-      "pnl": 17.59,
-      "expected_pnl": 0.106,
-      "equity": 141.51
+      "pnl": 14.32,
+      "expected_pnl": 0.086,
+      "equity": 115.37
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260726_bucheon-fc-1995_moneyline_win",
@@ -479,12 +559,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.16,
       "fair": 0.1708,
-      "stake": 5.66,
-      "shares": 35.38,
+      "stake": 4.61,
+      "shares": 28.81,
       "result": "loss",
-      "pnl": -5.66,
-      "expected_pnl": 0.382,
-      "equity": 135.85
+      "pnl": -4.61,
+      "expected_pnl": 0.311,
+      "equity": 110.76
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260726_gwangju-fc_moneyline_win",
@@ -495,12 +575,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.22,
       "fair": 0.2331,
-      "stake": 5.43,
-      "shares": 24.68,
+      "stake": 4.43,
+      "shares": 20.14,
       "result": "loss",
-      "pnl": -5.43,
-      "expected_pnl": 0.323,
-      "equity": 130.42
+      "pnl": -4.43,
+      "expected_pnl": 0.264,
+      "equity": 106.33
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260726_remo_moneyline_win",
@@ -511,12 +591,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.42,
       "fair": 0.4353,
-      "stake": 5.22,
-      "shares": 12.43,
+      "stake": 4.25,
+      "shares": 10.12,
       "result": "win",
-      "pnl": 7.21,
-      "expected_pnl": 0.19,
-      "equity": 137.63
+      "pnl": 5.87,
+      "expected_pnl": 0.155,
+      "equity": 112.2
     }
   ]
 }
