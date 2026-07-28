@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-28T13:17:26.252475+00:00",
+  "updated_at": "2026-07-28T15:31:10.787494+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -274,9 +274,9 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.605,
+      "avg_clv_pct": -0.598,
       "positive_pct": 35.9,
-      "n": 1986,
+      "n": 1989,
       "verdict": "NEGATIVE CLV \u2014 getting worse moneyline numbers than closing"
     },
     "spread_total": {
@@ -310,10 +310,10 @@
       },
       "batter_walks": {
         "count": 1429,
-        "avg_line_clv": 0.006,
+        "avg_line_clv": 0.007,
         "beat_close_pct": 56.3,
-        "avg_price_clv_pct": 1.397,
-        "matched_price_n": 1415
+        "avg_price_clv_pct": 1.383,
+        "matched_price_n": 1416
       },
       "batter_rbis": {
         "count": 1200,
@@ -331,16 +331,16 @@
       },
       "batter_home_runs": {
         "count": 957,
-        "avg_line_clv": 0.0,
+        "avg_line_clv": 0.001,
         "beat_close_pct": 24.6,
-        "avg_price_clv_pct": -1.416,
-        "matched_price_n": 949
+        "avg_price_clv_pct": -1.407,
+        "matched_price_n": 956
       },
       "batter_total_bases": {
         "count": 1470,
         "avg_line_clv": 0.218,
         "beat_close_pct": 59.3,
-        "avg_price_clv_pct": 0.824,
+        "avg_price_clv_pct": 0.84,
         "matched_price_n": 1097
       },
       "prop": {
@@ -353,8 +353,8 @@
     },
     "totals_coverage": {
       "scored": 326,
-      "scoreable": 600,
-      "pct": 54.3
+      "scoreable": 602,
+      "pct": 54.2
     },
     "spread_coverage": {
       "scored": 295,
