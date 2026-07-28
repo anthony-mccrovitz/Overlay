@@ -119,13 +119,21 @@ def clv_gate(min_n: int = 200):
         # Beat-rate: share of picks that beat the (best-price) close. 50% is the
         # coin-flip line; a real edge sits meaningfully above it. Reported next to
         # the mean because a high mean dragged by a few outliers ≠ a repeatable edge.
-        beat_pct = round(sum(1 for x in xs if x > 0) / n * 100, 1) if n else None
+        # FLATS (line didn't move / exact-same price) are EXCLUDED: a stuck line is
+        # neutral, not a loss. Counting it as a loss unfairly punishes sticky
+        # markets — MLB totals sit flat ~46% of the time vs ~4% for moneyline, so
+        # including flats made totals look like 32% beat when the real directional
+        # rate (among lines that moved) is 59%. Beat-rate = accuracy when it moved.
+        moved = [x for x in xs if abs(x) > 1e-9]
+        beat_pct = round(sum(1 for x in moved if x > 0) / len(moved) * 100, 1) if moved else None
+        flat_pct = round((n - len(moved)) / n * 100, 1) if n else None
         # Sharp side: same picks scored vs Pinnacle's close. This is the honest test.
         sharps = [sp for _, _, _, sp in vals if sp is not None]
         sharp_n = len(sharps)
         sharp_mean = statistics.fmean(sharps) if sharps else None
-        sharp_beat_pct = (round(sum(1 for x in sharps if x > 0) / sharp_n * 100, 1)
-                          if sharp_n else None)
+        sharp_moved = [x for x in sharps if abs(x) > 1e-9]
+        sharp_beat_pct = (round(sum(1 for x in sharp_moved if x > 0) / len(sharp_moved) * 100, 1)
+                          if sharp_moved else None)
         p_pos = None
         is_candidate = False
         if n < min_n:
@@ -145,8 +153,11 @@ def clv_gate(min_n: int = 200):
             "sport": sport, "market": mkt, "label": f"{sport} · {mkt}",
             "n": n, "mean": mean, "unit": unit, "rmean": rmean,
             "p_pos": p_pos, "verdict": verdict, "is_candidate": is_candidate,
-            "beat_pct": beat_pct,
+            "beat_pct": beat_pct, "flat_pct": flat_pct,
             "sharp_n": sharp_n, "sharp_mean": sharp_mean,
             "sharp_beat_pct": sharp_beat_pct,
+            # non-flat sharp sample: the REAL denominator behind sharp_beat_pct.
+            # A high beat on a tiny moved-sample (props sit ~99% flat) is noise.
+            "sharp_moved_n": len(sharp_moved),
         })
     return rows, {"min_n": min_n, "alpha": alpha, "m_tests": m_tests}

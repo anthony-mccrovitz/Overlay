@@ -1592,7 +1592,7 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
     beat the sharp close ≥55% AND positive ROI over ≥30 settled bets. Answers
     'which of my algos are becoming bettable, and which are dead?' at a glance.
     """
-    from src.config.grid import GRID, cell_state
+    from src.config.grid import GRID, cell_state, is_prop
     from src.analytics.market_stats import market_stats, MarketStat
     from src.analytics.clv_gate import clv_gate
     from src.pipeline.promoter import PROMOTE_BEAT_MIN, PROMOTE_ROI_MIN_N
@@ -1626,11 +1626,13 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
         return agg
 
     def _clv_agg(sport: str, keys: list[str]):
+        # Returns (moved_sample, beat_pct) — the moved-sample (non-flat) is the
+        # real denominator; a beat-rate on <MOVED_FLOOR moves is noise.
         tot = 0; beat_w = 0.0
         for k in keys:
             r = clv_idx.get((sport, _nm(k)))
-            if r and r.get("sharp_n"):
-                n = r["sharp_n"]; tot += n
+            if r and r.get("sharp_moved_n"):
+                n = r["sharp_moved_n"]; tot += n
                 beat_w += (r.get("sharp_beat_pct") or 0) * n
         return (tot, beat_w / tot) if tot else (0, None)
 
@@ -1650,49 +1652,48 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
             if state in ("planned", "retired"):
                 continue
             a = _agg(sport, keys)
-            sharp_n, sharp_beat = _clv_agg(sport, keys)
+            moved_n, sharp_beat = _clv_agg(sport, keys)
             roi_ok = a.roi is not None and a.n >= PROMOTE_ROI_MIN_N and a.roi > 0
             clv_ok = sharp_beat is not None and sharp_beat >= PROMOTE_BEAT_MIN
-            # CLV vs the sharp close is only trustworthy for MONEYLINE lanes. For
-            # totals/spreads/props the closing-line join is a known artifact
-            # ([[project_clv_limitations]]) — judge those on ROI/outcome instead.
-            is_ml = _nm(keys[0]) == "moneyline"
+            prop = is_prop(keys[0])
+            # CLV (beat the sharp close, flats excluded) is the edge test for GAME
+            # lines — moneyline/total/spread/f5. PROPS are excluded: they "echo the
+            # line" (r≈0.97), so a high prop beat-rate is line-following noise, not
+            # edge (batter_total_bases: 91% beat yet −3% ROI). Judge props on ROI.
 
             if state == "live":
                 verdict = "✅ promoted — betting"
             elif state == "paused":
                 verdict = "🟡 held — known loser"
-            elif is_ml:  # ── CLV is the real edge test ──
-                if sharp_n == 0:
-                    verdict = "⏳ no CLV scored yet"
-                elif sharp_n < PROMOTE_ROI_MIN_N:
-                    verdict = f"⏳ building CLV ({sharp_n}/{PROMOTE_ROI_MIN_N})"
-                elif clv_ok and roi_ok:
-                    verdict = "✅ READY — clears gate"
-                elif clv_ok:
-                    verdict = f"🟠 CLV✓ · ROI {a.roi:+.0f}% must be >0"
-                elif sharp_beat >= 50:
-                    verdict = f"🟠 close: {sharp_beat:.0f}% → {PROMOTE_BEAT_MIN:.0f}%"
-                else:
-                    verdict = f"❌ not beating close ({sharp_beat:.0f}%)"
-            else:  # ── non-ML: CLV unreliable, judge on outcome/ROI ──
+            elif prop:  # props: CLV is line-echo noise → judge on outcome
                 if a.n < PROMOTE_ROI_MIN_N:
                     verdict = f"⏳ building sample ({a.n}/{PROMOTE_ROI_MIN_N})"
                 elif a.roi is not None and a.roi > 0:
-                    verdict = f"📈 +{a.roi:.0f}% ROI — needs outcome-verify"
+                    verdict = f"📈 +{a.roi:.0f}% ROI (CLV n/a — props echo line)"
                 else:
                     verdict = f"❌ losing ({a.roi:+.0f}% ROI)"
+            elif moved_n == 0:
+                verdict = "⏳ no CLV scored yet"
+            elif moved_n < PROMOTE_ROI_MIN_N:  # too few line MOVES to trust the rate
+                verdict = f"⏳ building CLV ({moved_n}/{PROMOTE_ROI_MIN_N} moved)"
+            elif clv_ok and roi_ok:
+                verdict = "✅ READY — clears gate"
+            elif clv_ok:
+                verdict = f"🟠 CLV✓ {sharp_beat:.0f}% · ROI {a.roi:+.0f}% must be >0"
+            elif sharp_beat >= 50:
+                verdict = f"🟠 close {sharp_beat:.0f}% → {PROMOTE_BEAT_MIN:.0f}%"
+            else:
+                verdict = f"❌ not beating close ({sharp_beat:.0f}%)"
 
             roi_s = f"{a.roi:+.1f}%".rjust(7) if a.roi is not None else "   —   "
-            # Blank the beat column for non-ML lanes so the artifact number can't mislead.
-            if is_ml and sharp_beat is not None:
-                beat_s, bar = f"{sharp_beat:.0f}%".rjust(4), _bar(sharp_beat)
-            else:
+            # Props show n/a for beat (CLV is line-echo); game lines show real CLV.
+            if prop or sharp_beat is None:
                 beat_s, bar = " n/a", "·····"
+            else:
+                beat_s, bar = f"{sharp_beat:.0f}%".rjust(4), _bar(sharp_beat)
             row = (f"   {sport}/{keys[0]:<16} n={a.n:<4} {roi_s}  "
                    f"beat {beat_s} {bar}  {verdict}")
-            # Sort key: real CLV for ML lanes, ROI proxy for the rest.
-            sort_key = sharp_beat if (is_ml and sharp_beat is not None) else (a.roi or -999) / 10 - 50
+            sort_key = sharp_beat if (not prop and sharp_beat is not None) else (a.roi or -999)/10 - 60
             (live if state == "live" else held if state == "paused" else proving).append(
                 (sort_key, row))
 
@@ -1715,10 +1716,10 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
         for _, r in sorted(held, key=lambda x: -x[0]):
             print(r)
     print(f"\n  {line}")
-    print("  MONEYLINE lanes are judged on CLV — beating the sharp CLOSE proves the")
-    print("  edge is real (winning bets alone can be a lucky run of longshots).")
-    print("  TOTALS/SPREADS/PROPS show 'n/a': their closing-line join is a known")
-    print("  artifact, so they prove via ROI + outcome-verification, not CLV.")
+    print("  Every lane is judged on CLV — beating the sharp CLOSE proves the edge")
+    print("  is real (winning bets alone can be a lucky run of longshots). Beat-rate")
+    print("  EXCLUDES flats (a stuck line is neutral), so sticky totals aren't")
+    print("  unfairly punished. PROMOTE needs CLV ≥55% AND positive ROI.")
     print(f"  {line}\n")
     return 0
 
