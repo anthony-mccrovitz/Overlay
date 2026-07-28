@@ -39600,6 +39600,57 @@
       "result": "WIN",
       "profit": 0.6667,
       "logged_at": "2026-07-24T15:15:45.044564"
+    },
+    {
+      "bet_id": "franchise_20260728_guardians_moneyline",
+      "date": "2026-07-28",
+      "team": "Cleveland Guardians",
+      "team_slug": "guardians",
+      "matchup": "Cleveland Guardians vs Cincinnati Reds",
+      "market": "moneyline",
+      "direction": "home",
+      "line": null,
+      "odds": 135,
+      "implied_pct": 42.55,
+      "sportsbook": "theScore Bet",
+      "stake": 1.0,
+      "result": null,
+      "profit": null,
+      "logged_at": "2026-07-28T04:41:52.095835"
+    },
+    {
+      "bet_id": "franchise_20260728_reds_run_line_dog",
+      "date": "2026-07-28",
+      "team": "Cincinnati Reds",
+      "team_slug": "reds",
+      "matchup": "Cincinnati Reds vs Cleveland Guardians",
+      "market": "run_line_dog",
+      "direction": "home",
+      "line": "+1.5",
+      "odds": -135,
+      "implied_pct": 57.45,
+      "sportsbook": "theScore Bet",
+      "stake": 1.0,
+      "result": null,
+      "profit": null,
+      "logged_at": "2026-07-28T04:41:52.095835"
+    },
+    {
+      "bet_id": "franchise_20260728_rangers_moneyline",
+      "date": "2026-07-28",
+      "team": "Texas Rangers",
+      "team_slug": "rangers",
+      "matchup": "Texas Rangers vs Tampa Bay Rays",
+      "market": "moneyline",
+      "direction": "home",
+      "line": null,
+      "odds": 150,
+      "implied_pct": 40.0,
+      "sportsbook": "FanDuel",
+      "stake": 1.0,
+      "result": null,
+      "profit": null,
+      "logged_at": "2026-07-28T04:41:52.095835"
     }
   ]
 }
