@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-27T15:51:08.587888+00:00",
+  "updated_at": "2026-07-28T03:27:34.614623+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -16,10 +16,60 @@
       "tier": "shadow",
       "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u \u2014 stay shadow until v2 proves out)"
     },
+    "mexico_ligamx_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Liga MX Dixon-Coles (club model)"
+    },
+    "usa_mls_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "MLS Dixon-Coles (club model)"
+    },
+    "epl_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "EPL Dixon-Coles"
+    },
+    "spain_la_liga_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "La Liga Dixon-Coles"
+    },
+    "italy_serie_a_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Serie A Dixon-Coles"
+    },
+    "germany_bundesliga_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Bundesliga Dixon-Coles"
+    },
+    "france_ligue_one_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Ligue 1 Dixon-Coles"
+    },
+    "uefa_champs_league_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "UCL Dixon-Coles"
+    },
+    "england_championship_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Championship Dixon-Coles"
+    },
+    "conmebol_copa_libertadores_moneyline": {
+      "status": "incubating",
+      "tier": "shadow",
+      "label": "Copa Libertadores Dixon-Coles"
+    },
     "soccer_moneyline": {
       "status": "incubating",
       "tier": "shadow",
-      "label": "Soccer Dixon-Coles (4-8 -1.5u, rebuilding)"
+      "label": "Soccer (unmapped league fallback)"
     },
     "wc_moneyline": {
       "status": "incubating",
@@ -52,19 +102,19 @@
       "label": "PGA Outright (SG)"
     },
     "nascar_outright": {
-      "status": "incubating",
+      "status": "retired",
       "tier": "shadow",
-      "label": "NASCAR Outright Elo (shadow)"
+      "label": "NASCAR Outright Elo \u2014 DROPPED 2026-07-26 (archive/retired_sports/)"
     },
     "indycar_outright": {
-      "status": "incubating",
+      "status": "retired",
       "tier": "shadow",
-      "label": "IndyCar Outright Elo (shadow)"
+      "label": "IndyCar Outright Elo \u2014 DROPPED 2026-07-26 (archive/retired_sports/)"
     },
     "f1_outright": {
-      "status": "incubating",
+      "status": "retired",
       "tier": "shadow",
-      "label": "F1 Outright Elo (shadow)"
+      "label": "F1 Outright Elo \u2014 DROPPED 2026-07-26 (archive/retired_sports/)"
     },
     "mlb_pitcher_strikeouts": {
       "status": "incubating",
@@ -188,8 +238,8 @@
     },
     "mlb_batter_total_bases": {
       "status": "incubating",
-      "tier": "paused",
-      "label": "MLB Batter Total Bases"
+      "tier": "shadow",
+      "label": "MLB Batter Total Bases (TUNED v2: confidence floor 0.64 \u2192 +6.9% backtest; forward-validating)"
     },
     "mlb_batter_rbis": {
       "status": "incubating",
