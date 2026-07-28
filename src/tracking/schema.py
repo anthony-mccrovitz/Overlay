@@ -65,6 +65,15 @@ def load_picks_safe(path: str | Path) -> dict:
             fcntl.flock(lf, fcntl.LOCK_UN)
 
 
+def _is_ungraded(pick: dict) -> bool:
+    """A pick is ungraded (safe to refresh) only if it has no settled result.
+    Any win/loss/push — or a booked profit — means it's final and immutable."""
+    result = str(pick.get("result") or "").strip().lower()
+    if result in ("win", "loss", "push"):
+        return False
+    return pick.get("profit") is None
+
+
 def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
     """Append new_picks to picks.json atomically under an exclusive lock.
 
@@ -96,7 +105,8 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
             else:
                 data = {"picks": []}
 
-            existing_ids = {p.get("pick_id", "") for p in data["picks"] if isinstance(p, dict)}
+            existing_by_id = {p.get("pick_id", ""): p for p in data["picks"]
+                              if isinstance(p, dict) and p.get("pick_id")}
             added = 0
             for pick in new_picks:
                 norm = normalize_pick(pick)
@@ -105,10 +115,19 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                 # Merge: canonical fields win, emitter extras survive
                 merged = {**pick, **norm}
                 pid = merged.get("pick_id", "")
-                if pid and pid in existing_ids:
+                if pid and pid in existing_by_id:
+                    # Re-logging an existing pick. If it's still UNGRADED, refresh
+                    # its gate decision from the latest generation so a registry
+                    # change (e.g. a retuned edge band) propagates to picks whose
+                    # line didn't move. A SETTLED pick is immutable — never touch
+                    # its card_pick/result. CLV lock fields (odds/line/recorded_at)
+                    # are left as first logged.
+                    cur = existing_by_id[pid]
+                    if _is_ungraded(cur):
+                        cur["card_pick"] = merged.get("card_pick", cur.get("card_pick"))
                     continue
                 data["picks"].append(merged)
-                existing_ids.add(pid)
+                existing_by_id[pid] = merged
                 added += 1
 
             # Write to temp file then rename — atomic on POSIX

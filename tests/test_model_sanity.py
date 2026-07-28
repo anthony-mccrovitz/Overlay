@@ -176,6 +176,40 @@ class TestChokePoint:
         assert append_picks_safe(path, [twin]) == 0
         assert len(json.loads(path.read_text())["picks"]) == 1
 
+    @staticmethod
+    def _totals(edge, card):
+        # Mirrors what the emitter hands the choke point: card_pick already
+        # computed via is_card_pick, edge_pct carrying the run-edge.
+        return _raw_pick(sport="mlb", market="total", direction="OVER",
+                         team="OVER 8.5", line=8.5, model_prob=0.62,
+                         edge_pct=edge, card_pick=card, player=None)
+
+    def test_ungraded_card_refreshes_on_relog(self, tmp_path):
+        # A registry change (retuned totals band) must propagate to an already-
+        # logged pick whose line didn't move — its pick_id collides, but as long
+        # as it's UNGRADED the refreshed gate decision wins.
+        path = tmp_path / "picks.json"
+        assert append_picks_safe(path, [self._totals(0.5, False)]) == 1   # shadow
+        assert json.loads(path.read_text())["picks"][0]["card_pick"] is False
+        # emitter re-logs the same pick_id, now in-band and carded
+        assert append_picks_safe(path, [self._totals(1.5, True)]) == 0    # not re-added
+        picks = json.loads(path.read_text())["picks"]
+        assert len(picks) == 1
+        assert picks[0]["card_pick"] is True                              # refreshed
+
+    def test_graded_card_never_refreshed_on_relog(self, tmp_path):
+        # A SETTLED pick is immutable — re-logging must never flip its card_pick.
+        path = tmp_path / "picks.json"
+        assert append_picks_safe(path, [self._totals(1.5, True)]) == 1    # in band → card
+        data = json.loads(path.read_text())
+        data["picks"][0].update(result="loss", profit=-1.0)              # settle it
+        path.write_text(json.dumps(data))
+        # emitter re-logs, now shadowing it — settled pick must not change
+        assert append_picks_safe(path, [self._totals(3.5, False)]) == 0
+        stored = json.loads(path.read_text())["picks"][0]
+        assert stored["card_pick"] is True                                # unchanged
+        assert stored["result"] == "loss"
+
     def test_double_normalize_idempotent(self):
         once = normalize_pick(_raw_pick())
         twice = normalize_pick(once)
