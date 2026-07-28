@@ -37,6 +37,11 @@ def store(tmp_path, monkeypatch):
     monkeypatch.setattr(rd, "PICKS_FILE", picks)
     monkeypatch.setattr(rd, "SNAPSHOTS_FILE", snaps)
     monkeypatch.setattr(rd, "OUT_FILE", out)
+    # evaluate() also calls the REAL paper_trader for the DRAWDOWN gate — isolate
+    # it too, or the live paper_polymarket.json leaks in and its drawdown decides
+    # the verdict. Default: no drawdown; the drawdown test overrides this.
+    import scripts.paper_trader as pt
+    monkeypatch.setattr(pt, "run", lambda **k: {"max_drawdown": 0.0})
 
     def _write(picks_rows=(), snap_rows=()):
         picks.write_text(json.dumps({"picks": list(picks_rows)}))
