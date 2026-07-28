@@ -29,6 +29,14 @@ OVER_BIAS_CORRECTION = 0.0    # disabled: it double-tilted an already-under-bias
                               # EV thumb on the scale.
 WNBA_TOTAL_RECENTER = 3.2     # measured proj-minus-line offset (proj ran 3.2 pts low)
 MIN_IMPLIED_PROB = 0.30       # skip picks at odds better than +233
+WNBA_EDGE_CAP_PCT = 10.0      # WNBA has NO trained calibrator yet (needs 30+ clean
+                              # graded picks/market — currently 8/9/22 usable). Until
+                              # it does, the raw net-rating model is overconfident and
+                              # emits phantom double-digit "edges" (a +33% spread is the
+                              # model being wrong, not the book). Cap the SURFACED edge
+                              # so the shadow board can't tempt a manual bet on an
+                              # un-earned number. model_prob_raw is stamped BEFORE the
+                              # cap, so calibration fuel is unaffected.
 
 POSSESSIONS_PER_PACE = 100.0
 GAME_MINUTES = 40.0    # WNBA games are 40 min, not 48
@@ -78,6 +86,21 @@ def _calibrated_symmetric(p: float, market: str) -> float:
         return apply_calibration_symmetric(p, "wnba", market)
     except Exception:
         return p
+
+
+def _cap_edge(model_p: float, imp_p: float) -> tuple[float, float]:
+    """Clamp the surfaced edge to ±WNBA_EDGE_CAP_PCT, pulling model_prob toward
+    the implied prob so model_prob and edge_pct stay mutually consistent. This is
+    a display-honesty guard, not a calibrator: with no trained WNBA calibrator the
+    raw net-rating model is overconfident, so a >10% "edge" is noise, not signal.
+    Symmetric, so phantom NEGATIVE edges are capped too."""
+    edge = (model_p - imp_p) * 100.0
+    cap = WNBA_EDGE_CAP_PCT
+    if edge > cap:
+        return imp_p + cap / 100.0, cap
+    if edge < -cap:
+        return imp_p - cap / 100.0, -cap
+    return model_p, edge
 
 
 def project_game(
@@ -235,7 +258,7 @@ def find_wnba_edges(
                     ]:
                         if imp_p < MIN_IMPLIED_PROB:
                             continue
-                        edge = (model_p - imp_p) * 100
+                        model_p, edge = _cap_edge(model_p, imp_p)
                         if edge >= min_edge_pct:
                             edges.append({
                                 "sport":       "basketball_wnba",
@@ -281,7 +304,7 @@ def find_wnba_edges(
                         (home, model_home_p, model_home_p_raw,       imp_home, home_odds, home_line),
                         (away, model_away_p, 1.0 - model_home_p_raw, imp_away, away_odds, -home_line),
                     ]:
-                        edge = (model_p - imp_p) * 100
+                        model_p, edge = _cap_edge(model_p, imp_p)
                         if edge >= min_edge_pct:
                             edges.append({
                                 "sport":       "basketball_wnba",
@@ -319,7 +342,7 @@ def find_wnba_edges(
                         (home, ml_home_p, home_win_p,       imp_home, home_odds),
                         (away, ml_away_p, 1.0 - home_win_p, imp_away, away_odds),
                     ]:
-                        edge = (model_p - imp_p) * 100
+                        model_p, edge = _cap_edge(model_p, imp_p)
                         if edge >= min_edge_pct:
                             edges.append({
                                 "sport":       "basketball_wnba",

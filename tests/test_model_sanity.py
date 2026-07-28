@@ -486,3 +486,30 @@ class TestTaintRules:
         table = compute_table(pf, tmp_path / "table.json")
         row = table.get("mlb::moneyline")
         assert row is not None and row["n"] == 1     # only the untainted pick
+
+
+class TestWnbaEdgeCap:
+    """WNBA has no trained calibrator yet, so the raw net-rating model is
+    overconfident and emits phantom double-digit edges (a +33% spread is the
+    model being wrong, not the book). _cap_edge clamps the SURFACED edge so the
+    shadow board can't tempt a manual bet on an un-earned number."""
+
+    def test_positive_phantom_edge_is_capped(self):
+        from src.models.wnba_model import _cap_edge, WNBA_EDGE_CAP_PCT
+        # model 0.90 vs implied 0.55 -> raw +35% -> capped to the ceiling
+        model_p, edge = _cap_edge(0.90, 0.55)
+        assert edge == WNBA_EDGE_CAP_PCT
+        # model_prob is pulled to imp + cap so prob and edge stay consistent
+        assert model_p == pytest.approx(0.55 + WNBA_EDGE_CAP_PCT / 100.0)
+
+    def test_negative_phantom_edge_is_capped(self):
+        from src.models.wnba_model import _cap_edge, WNBA_EDGE_CAP_PCT
+        model_p, edge = _cap_edge(0.10, 0.55)
+        assert edge == -WNBA_EDGE_CAP_PCT
+        assert model_p == pytest.approx(0.55 - WNBA_EDGE_CAP_PCT / 100.0)
+
+    def test_in_band_edge_untouched(self):
+        from src.models.wnba_model import _cap_edge
+        model_p, edge = _cap_edge(0.60, 0.548)   # +5.2%, under the cap
+        assert model_p == pytest.approx(0.60)
+        assert edge == pytest.approx(5.2, abs=1e-6)

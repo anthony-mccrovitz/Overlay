@@ -144,6 +144,7 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
             "model_prob":  e.get("model_prob"),
             "model_prob_raw": e.get("model_prob_raw"),  # pre-calibration, for refits
             "edge_pct":    e.get("edge_pct"),
+            "strategy":    e.get("strategy"),  # None for the plain model board
             "stake":       shadow_stake("wnba", market),
             "card_pick":   is_live("wnba", market),
             "result":      None,
@@ -160,6 +161,31 @@ def _auto_log_wnba_picks(edges: list[dict], game_date: date) -> int:
 
     PNL_FILE.parent.mkdir(parents=True, exist_ok=True)
     return append_picks_safe(PNL_FILE, entries)
+
+
+def _wnba_ml_fade_picks(events: list[dict]) -> list[dict]:
+    """The WNBA ML model is a SIGNIFICANT wrong-side picker — it beat the sharp
+    close only 39% over 167 graded picks (z=-2.83), overrating underdogs whose
+    lines then move against them. If that bias is real and not this season's
+    noise, the OPPOSITE side is the edge. Log the fade (the ML side the model
+    LIKES LEAST per game) as a shadow strategy so the existing CLV pipeline can
+    prove or kill it over ~30 bets before a dollar ever rides on it. Shadow-only
+    (card_pick gated by is_live, which is False for WNBA)."""
+    from collections import defaultdict
+    ml = [e for e in find_wnba_edges(events, min_edge_pct=-1000.0)
+          if e.get("market") == "moneyline"]
+    by_game: dict[str, list[dict]] = defaultdict(list)
+    for e in ml:
+        by_game[e.get("matchup", "")].append(e)
+    fades: list[dict] = []
+    for rows in by_game.values():
+        if len(rows) < 2:
+            continue
+        rows.sort(key=lambda x: x.get("edge_pct", 0.0))
+        fade = dict(rows[0])              # lowest model edge = the side to fade onto
+        fade["strategy"] = "wnba_ml_fade"
+        fades.append(fade)
+    return fades
 
 
 # ─────────────────────────── Main ────────────────────────────────────────────
@@ -283,6 +309,16 @@ def run_wnba(args: argparse.Namespace) -> int:
         print(f"  [pnl] Logged {n_logged} WNBA pick(s) for CLV tracking (full board)")
     except Exception as _log_err:
         print(f"  [pnl] WNBA log failed: {_log_err}")
+
+    # 5b. Fade shadow: the ML model is a significant wrong-side picker (39% beat
+    # close), so log the OPPOSITE ML side tagged strategy=wnba_ml_fade. The CLV
+    # pipeline proves or kills the fade over ~30 bets before it's ever bet.
+    try:
+        n_fade = _auto_log_wnba_picks(_wnba_ml_fade_picks(today_events), game_date)
+        if n_fade:
+            print(f"  [pnl] Logged {n_fade} WNBA ML fade shadow pick(s)")
+    except Exception as _fade_err:
+        print(f"  [fade] skipped: {_fade_err}")
 
     # 6. CLV snapshot
     try:
