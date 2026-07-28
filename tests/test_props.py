@@ -299,11 +299,14 @@ class TestModelRegistry:
         assert is_card_pick("mlb", "moneyline", 8.0) is False
         assert is_card_pick("mlb", "moneyline", 50.0) is False
 
-    def test_live_total_respects_edge_floor(self):
-        # mlb·total is live but must clear the 3% floor (sub-3% is noise).
+    def test_live_total_respects_edge_band(self):
+        # mlb·total is live but only cards edges in the 1.0–2.0 run band: below
+        # 1.0 is noise, above 2.0 is the untrusted big-disagreement tail.
         from src.config.models import is_card_pick
-        assert is_card_pick("mlb", "total", 2.5) is False
-        assert is_card_pick("mlb", "total", 3.5) is True
+        assert is_card_pick("mlb", "total", 0.5) is False   # below band
+        assert is_card_pick("mlb", "total", 1.5) is True    # in band
+        assert is_card_pick("mlb", "total", 2.5) is False   # above band
+        assert is_card_pick("mlb", "total", 3.5) is False   # above band
 
     def test_live_models_list(self):
         from src.config.models import live_models

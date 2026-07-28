@@ -247,7 +247,7 @@ def clv_status(sport: str, market: str) -> str:
 _CARD_EDGE_MIN: dict[str, float | None] = {
     "moneyline":  12.0,   # 54% WR model — only high-conviction edges
     "ml":         12.0,
-    "total":      3.0,    # 66-68% WR — minimum 3% edge; sub-3% is statistical noise
+    "total":      1.0,    # run-edge BAND floor — see _CARD_EDGE_MAX["total"]
     "f5_total":   None,   # shadow — handled by model status
     "spread":     12.0,
     "run_line":   12.0,
@@ -255,6 +255,18 @@ _CARD_EDGE_MIN: dict[str, float | None] = {
     "nrfi":       None,   # paused
     "outright":   10.0,
     "anytime_scorer": 8.0,  # scorer props: only post a real, sizable edge
+}
+
+# Upper cap on the card edge, per market (None = no cap). Totals use a BAND, not
+# a floor: an edge-bucket backtest of 187 graded MLB totals showed the profit
+# lives in the 1.0–2.0 run band (+9.1% / +9.6%), while the big-disagreement tail
+# LOSES (2.0–2.5: −1.8%, 3.0+: −17.5%, n=17) — when the model screams a 3+ run
+# gap vs a sharp book it's usually the model that's wrong (stale lineup / data /
+# weather the book already priced), not a real edge. The old 3.0 FLOOR bet only
+# that losing tail and sat out the profitable band (that's why the board kept
+# saying "nothing"). Reversible: delete this entry to drop the cap. 2026-07-28.
+_CARD_EDGE_MAX: dict[str, float | None] = {
+    "total": 2.0,
 }
 
 # Per-market CONFIDENCE FLOOR (min model_prob) — a tuning knob from the
@@ -311,7 +323,14 @@ def is_card_pick(sport: str, market: str, edge_pct: float | None,
         return True   # no edge threshold for this market type
     if edge_pct is None:
         return False  # can't confirm edge — don't post
-    return float(edge_pct) >= min_edge
+    if float(edge_pct) < min_edge:
+        return False
+    # Optional upper cap (a card BAND): edges above the cap are model-vs-book
+    # disagreements too large to trust — held as shadow, not carded.
+    max_edge = _CARD_EDGE_MAX.get(mkt_key)
+    if max_edge is not None and float(edge_pct) > max_edge:
+        return False
+    return True
 
 
 def is_paused(sport: str, market: str) -> bool:

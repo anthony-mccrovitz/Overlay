@@ -101,10 +101,11 @@ class TestSchemaIntegration:
         assert two["raw_edge_pct"] == 43.5 and two["edge_pct"] == one["edge_pct"]
 
     def test_proven_market_still_makes_card(self, monkeypatch):
+        # Edge sits inside the 1.0–2.0 run card band; k=1.0 means no gate shrink.
         _seed_table(monkeypatch, {"mlb::total": {
-            "n": 195, "claimed_pp": 4.8, "realized_pp": 6.7, "k": 1.0}})
+            "n": 195, "claimed_pp": 1.8, "realized_pp": 2.1, "k": 1.0}})
         m = normalize_pick({
             "sport": "mlb", "market": "total", "team": "UNDER 8.5",
             "date": "2026-07-20", "odds": -110, "model_prob": 0.58,
-            "edge_pct": 4.8, "stake": 1.0, "card_pick": True, "result": None})
-        assert m["edge_pct"] == 4.8 and m["card_pick"] is True
+            "edge_pct": 1.8, "stake": 1.0, "card_pick": True, "result": None})
+        assert m["edge_pct"] == 1.8 and m["card_pick"] is True

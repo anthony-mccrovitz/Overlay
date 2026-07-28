@@ -44,14 +44,19 @@ class TestGate:
         assert validate_pick(p) == []          # no missing canonical fields
 
     def test_card_gate_respects_edge_threshold(self):
-        # mlb total is a live model with a 3.0-run card threshold.
-        below = finalize_picks([_totals_raw(edge=2.0)], DATE)[0]
-        above = finalize_picks([_totals_raw(edge=3.5)], DATE)[0]
-        assert below["card_pick"] is False     # 2.0 < 3.0 → shadow
-        assert above["card_pick"] is True      # 3.5 ≥ 3.0 → card
+        # mlb total is a live model with a 1.0–2.0 run card BAND: the profitable
+        # edge band per the backtest. Below 1.0 = noise, above 2.0 = untrusted
+        # big-disagreement tail — both held as shadow.
+        low = finalize_picks([_totals_raw(edge=0.5)], DATE)[0]   # below band
+        inband = finalize_picks([_totals_raw(edge=1.5)], DATE)[0]  # in band
+        high = finalize_picks([_totals_raw(edge=3.5)], DATE)[0]  # above band
+        assert low["card_pick"] is False       # 0.5 < 1.0 → shadow
+        assert inband["card_pick"] is True      # 1.0 ≤ 1.5 ≤ 2.0 → card
+        assert high["card_pick"] is False       # 3.5 > 2.0 → shadow
         # Gate matches the registry's own is_card_pick decision.
-        assert below["card_pick"] == is_card_pick("mlb", "total", 2.0)
-        assert above["card_pick"] == is_card_pick("mlb", "total", 3.5)
+        assert low["card_pick"] == is_card_pick("mlb", "total", 0.5)
+        assert inband["card_pick"] == is_card_pick("mlb", "total", 1.5)
+        assert high["card_pick"] == is_card_pick("mlb", "total", 3.5)
 
     def test_unbettable_pick_is_dropped(self):
         assert finalize_picks([_totals_raw(edge=2.0, odds=0)], DATE) == []
@@ -93,4 +98,4 @@ class TestAdapterContract:
         # And the full round-trip: adapter → gate → canonical pick.
         p = finalize_picks(raw, DATE)[0]
         assert p["team"] == "OVER 7.5"
-        assert p["card_pick"] is False  # 2.0-run edge < 3.0 threshold
+        assert p["card_pick"] is True  # 2.0-run edge sits at the top of the 1.0–2.0 band
