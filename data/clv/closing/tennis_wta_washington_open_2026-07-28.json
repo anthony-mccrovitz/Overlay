@@ -844,13 +844,13 @@
     "sport": "tennis_wta_washington_open",
     "home_team": "Daria Kasatkina",
     "away_team": "Anna Kalinskaya",
-    "commence_time": "2026-07-28T19:00:00Z",
-    "captured_at": "2026-07-28T17:48:55.629119+00:00",
-    "mins_to_commence": 71.1,
-    "closing_final": false,
-    "BestHomeML": 187,
+    "commence_time": "2026-07-28T19:10:00Z",
+    "captured_at": "2026-07-28T18:59:27.772751+00:00",
+    "mins_to_commence": 10.5,
+    "closing_final": true,
+    "BestHomeML": 190,
     "BestAwayML": -190,
-    "HomeBook": "DraftKings",
+    "HomeBook": "Pinnacle",
     "AwayBook": "Hard Rock Bet",
     "all_odds": [
       {
@@ -993,7 +993,7 @@
         "Market": "h2h",
         "Name": "Anna Kalinskaya",
         "Selection": "Anna Kalinskaya",
-        "Odds": -211,
+        "Odds": -217,
         "Line": null
       },
       {
@@ -1004,7 +1004,7 @@
         "Market": "h2h",
         "Name": "Daria Kasatkina",
         "Selection": "Daria Kasatkina",
-        "Odds": 185,
+        "Odds": 190,
         "Line": null
       },
       {
@@ -1037,8 +1037,8 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": 120,
-        "Line": 22.5
+        "Odds": -105,
+        "Line": 21.5
       },
       {
         "EventID": "bd995bfc6e0b88ea080135f644f0a95a",
@@ -1048,8 +1048,8 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -170,
-        "Line": 22.5
+        "Odds": -130,
+        "Line": 21.5
       },
       {
         "EventID": "bd995bfc6e0b88ea080135f644f0a95a",
@@ -1103,7 +1103,7 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
-        "Odds": -106,
+        "Odds": -104,
         "Line": 21.0
       },
       {
@@ -1114,8 +1114,288 @@
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -108,
+        "Odds": -110,
         "Line": 21.0
+      }
+    ]
+  },
+  {
+    "event_id": "a1ee84a1e7426c2f0a22850180bd8e44",
+    "sport": "tennis_wta_washington_open",
+    "home_team": "Magdalena Frech",
+    "away_team": "Ann Li",
+    "commence_time": "2026-07-28T20:20:00Z",
+    "captured_at": "2026-07-28T18:59:28.111087+00:00",
+    "mins_to_commence": 80.5,
+    "closing_final": false,
+    "BestHomeML": 183,
+    "BestAwayML": -200,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "theScore Bet",
+    "all_odds": [
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -208,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 183,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -225,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 180,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -200,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 160,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -217,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 175,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -215,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 170,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -215,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 170,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Ann Li",
+        "Selection": "Ann Li",
+        "Odds": -210,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Magdalena Frech",
+        "Selection": "Magdalena Frech",
+        "Odds": 170,
+        "Line": null
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -111,
+        "Line": 21.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -103,
+        "Line": 21.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -136,
+        "Line": 20.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 104,
+        "Line": 20.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 105,
+        "Line": 22.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -145,
+        "Line": 22.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Bally Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 21.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "Bally Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -112,
+        "Line": 21.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "BetRivers",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -120,
+        "Line": 21.5
+      },
+      {
+        "EventID": "a1ee84a1e7426c2f0a22850180bd8e44",
+        "HomeTeam": "Magdalena Frech",
+        "AwayTeam": "Ann Li",
+        "Sportsbook": "BetRivers",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -112,
+        "Line": 21.5
       }
     ]
   }
