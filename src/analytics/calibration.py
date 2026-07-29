@@ -199,34 +199,80 @@ def _use_platt(market: str, n: int) -> bool:
 # flips every pick to one side.
 
 _PROBE_GRID = [round(0.05 + 0.05 * i, 2) for i in range(19)]  # 0.05 … 0.95
-_MIN_SPREAD     = 0.15  # f(0.8) − f(0.2) must retain at least this much signal
-# Mid-band check: model probs live almost entirely in [0.35, 0.65], so a curve
-# that is flat THERE destroys the slate even if its global spread looks fine
-# (the collapsed F5 isotonic had global spread 0.34 but mid-band 0.075 — every
-# realistic input landed on one plateau).
-_MIN_MID_SPREAD = 0.10  # f(0.65) − f(0.35)
+_MIN_SPREAD     = 0.15  # f(0.8) − f(0.2), used only when training X is unknown
+_MIN_MID_SPREAD = 0.10  # f(0.65) − f(0.35), same fallback caveat
+
+# Across the range the model ACTUALLY emits, calibrated probabilities must vary
+# by at least this much. A curve flat where real inputs land pins the whole slate
+# to one constant (the quarantined mlb_total mapped every game to 0.5833).
+_MIN_SUPPORT_SPREAD = 0.10
+
+# The support band is measured at these quantiles rather than min/max, so one
+# outlier pick can't stretch the band and hide a collapse inside it.
+_SUPPORT_LO_Q, _SUPPORT_HI_Q = 0.10, 0.90
+
+# A model whose own outputs are nearly constant cannot be rescued by any
+# calibrator — that is a model defect, and identity is the honest fallback.
+_MIN_SUPPORT_WIDTH = 0.06
 
 
-def _calibrator_curve(cal_type: str, cal) -> list[float]:
+def _calibrator_curve(cal_type: str, cal, grid: list[float] | None = None) -> list[float]:
+    grid = _PROBE_GRID if grid is None else grid
     if cal_type == "platt":
-        return [_apply_platt(cal, p) for p in _PROBE_GRID]
-    return [float(v) for v in cal.predict(_PROBE_GRID)]
+        return [_apply_platt(cal, p) for p in grid]
+    return [float(v) for v in cal.predict(grid)]
 
 
-def validate_calibrator(cal_type: str, cal) -> tuple[bool, str]:
-    """Probe a fitted calibrator on a fixed grid. Returns (ok, reason).
+def _support_band(X: list[float]) -> tuple[float, float]:
+    """The probability range the model actually emits, at _SUPPORT_*_Q."""
+    xs = sorted(float(v) for v in X)
+    n = len(xs)
+    return xs[int(_SUPPORT_LO_Q * (n - 1))], xs[int(_SUPPORT_HI_Q * (n - 1))]
 
-    Rejects: inverted / non-monotone mappings (higher raw prob must never mean
-    lower calibrated prob) and range collapse (a flat curve destroys all
+
+def validate_calibrator(cal_type: str, cal,
+                        X: list[float] | None = None) -> tuple[bool, str]:
+    """Probe a fitted calibrator. Returns (ok, reason).
+
+    Rejects inverted/non-monotone mappings (a higher raw prob must never map to
+    a lower calibrated prob) and range collapse (a flat curve destroys all
     per-game signal and pins an entire slate to one constant).
+
+    The spread check runs over the model's OWN output range when the training
+    probabilities are supplied. The previous version probed fixed points —
+    f(0.65)-f(0.35) — on the stated assumption that "model probs live almost
+    entirely in [0.35, 0.65]". That holds for moneyline models and is false for
+    totals models: mlb/f5_total emits in [0.51, 0.99] with exactly ONE pick below
+    0.51, so f(0.35) was pure flat extrapolation below the data. Its perfectly
+    healthy isotonic fit (spread 0.335 across its real range) was rejected for a
+    "mid-band collapse" of 0.009 measured where the model never operates — and
+    the lane then ran uncalibrated, claiming 17.4pp of edge while delivering 1.4.
     """
     try:
         curve = _calibrator_curve(cal_type, cal)
     except Exception as e:  # unpicklable/broken model object
         return False, f"probe failed: {e}"
+
     eps = 1e-9
     if any(b < a - eps for a, b in zip(curve, curve[1:])):
         return False, "non-monotone (inverted) mapping"
+
+    if X:
+        lo, hi = _support_band(X)
+        if hi - lo < _MIN_SUPPORT_WIDTH:
+            return False, (f"model support is degenerate: emits only "
+                           f"[{lo:.3f}, {hi:.3f}] — no calibrator can fix that")
+        try:
+            f_lo, f_hi = _calibrator_curve(cal_type, cal, [lo, hi])
+        except Exception as e:
+            return False, f"probe failed: {e}"
+        spread = f_hi - f_lo
+        if spread < _MIN_SUPPORT_SPREAD:
+            return False, (f"collapse across model support [{lo:.2f}, {hi:.2f}]: "
+                           f"f({hi:.2f})-f({lo:.2f})={spread:.3f} < {_MIN_SUPPORT_SPREAD}")
+        return True, f"ok (support [{lo:.2f}, {hi:.2f}], spread {spread:.3f})"
+
+    # No training data supplied (legacy callers): fall back to the fixed grid.
     i20, i80 = _PROBE_GRID.index(0.2), _PROBE_GRID.index(0.8)
     spread = curve[i80] - curve[i20]
     if spread < _MIN_SPREAD:
@@ -316,7 +362,9 @@ def recalibrate_all(min_picks: int = MIN_PICKS_TO_CALIBRATE, verbose: bool = Tru
         # previously-saved pkl for this key so a stale degenerate can't linger —
         # apply_calibration then falls back to identity and the edge gate (k)
         # handles the segment's honesty.
-        ok, reason = validate_calibrator(cal_type, cal)
+        # Pass the training probabilities so the collapse check is measured over
+        # the range this model actually emits, not a fixed moneyline-shaped band.
+        ok, reason = validate_calibrator(cal_type, cal, X)
         if not ok:
             if verbose:
                 print(f"  [calibration] {key} ({cal_type}): REJECTED — {reason}; "

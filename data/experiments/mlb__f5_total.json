@@ -38,5 +38,85 @@
       "spread": 7.4,
       "verdict": "flat"
     }
+  },
+  {
+    "sport": "mlb",
+    "market": "f5_total",
+    "tag": "pre-calibration",
+    "date": "2026-07-29",
+    "note": "baseline before fitting the missing calibrator; k=0.08, beats close 56.3%",
+    "n": 482,
+    "record": "225-230-27",
+    "wr": 49.5,
+    "roi": -7.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-116",
+    "confidence": {
+      "n": 455,
+      "buckets": [
+        {
+          "lo": 0.51,
+          "hi": 0.637,
+          "n": 151,
+          "wr": 43.7
+        },
+        {
+          "lo": 0.637,
+          "hi": 0.66,
+          "n": 151,
+          "wr": 49.0
+        },
+        {
+          "lo": 0.66,
+          "hi": 1.0,
+          "n": 153,
+          "wr": 55.6
+        }
+      ],
+      "monotonic": true,
+      "spread": 11.8,
+      "verdict": "real-signal"
+    }
+  },
+  {
+    "sport": "mlb",
+    "market": "f5_total",
+    "tag": "post-calibration",
+    "date": "2026-07-29",
+    "note": "isotonic fitted after support-aware guard fix; Brier 0.2771->0.2287, ECE 0.1809; raw 0.95 now maps to 0.6675",
+    "n": 482,
+    "record": "225-230-27",
+    "wr": 49.5,
+    "roi": -7.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-116",
+    "confidence": {
+      "n": 455,
+      "buckets": [
+        {
+          "lo": 0.51,
+          "hi": 0.637,
+          "n": 151,
+          "wr": 43.7
+        },
+        {
+          "lo": 0.637,
+          "hi": 0.66,
+          "n": 151,
+          "wr": 49.0
+        },
+        {
+          "lo": 0.66,
+          "hi": 1.0,
+          "n": 153,
+          "wr": 55.6
+        }
+      ],
+      "monotonic": true,
+      "spread": 11.8,
+      "verdict": "real-signal"
+    }
   }
 ]
