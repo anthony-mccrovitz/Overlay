@@ -30,7 +30,12 @@ LAB    = Path("data/pnl/picks.json")
 
 # Real starting bankroll, in dollars. This is the number every dollar figure
 # downstream is anchored to, so it lives in exactly one place.
-BANKROLL_START = 308.0
+#
+# 2026-07-29: ledger reset to a clean slate for the line-shop trial. Everything
+# before this date is archived at data/pnl/backups/personal_picks_archived_*.json
+# — it was the model era and mixes methodologies, so grinding it into the new
+# record would blur the one question the trial exists to answer.
+BANKROLL_START = 304.52
 
 SETTLED = ("win", "loss", "push")
 

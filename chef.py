@@ -1869,6 +1869,112 @@ def cmd_shop(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── arb ─────────────────────────────────────────────
 
+def cmd_scan(args: argparse.Namespace) -> int:
+    """MARKET track: scan every cached board for books priced off the sharp fair.
+
+    Predicts nothing. Reads the odds cache (zero API credits), de-vigs Pinnacle
+    for a true probability, and reports every bettable book offering better than
+    that number. Logs shadow-only under strategy=line_shop so the existing CLV
+    pipeline proves or kills it before a dollar rides on it.
+    """
+    from src.strategies.line_shop_scanner import scan_sport, to_pick, MIN_EV_PCT
+    from src.tracking.schema import append_picks_safe
+
+    min_ev  = float(getattr(args, "min_ev", None) or MIN_EV_PCT)
+    only    = (getattr(args, "sport", None) or "").lower()
+    do_log  = bool(getattr(args, "log", False))
+    max_age = float(getattr(args, "max_age", None) or 90.0)
+
+    boards = sorted(Path("data/cache/odds").glob("*_latest.json"))
+    if only:
+        boards = [b for b in boards if only in b.name]
+    if not boards:
+        print("  No cached odds boards. Run: python3 chef.py picks <sport>")
+        return 1
+
+    all_rows: list[dict] = []
+    diags: list[dict] = []
+    for b in boards:
+        rows, diag = scan_sport(b.name.replace("_latest.json", ""),
+                                min_ev=min_ev, max_age_min=max_age)
+        all_rows.extend(rows)
+        diags.append(diag)
+
+    line = "═" * 78
+    print(f"\n  {line}")
+    print(f"  MARKET TRACK — line shop  ·  fair = Pinnacle de-vig, consensus fallback")
+    print(f"  min EV {min_ev:.1f}%  ·  boards ≤{max_age:.0f}m old  ·  0 API credits")
+    print(f"  {line}")
+
+    live = [d for d in diags if d["status"] == "ok"]
+    skipped = [d for d in diags if d["status"] != "ok"]
+    print(f"\n  BOARDS  {len(live)} scanned, {len(skipped)} skipped")
+    n_rejected = sum(d.get("rejected", 0) for d in live)
+    for d in sorted(live, key=lambda x: -x.get("found", 0)):
+        rej = f"  ⚠ {d['rejected']} over ceiling" if d.get("rejected") else ""
+        print(f"    {d['sport']:<34} {d['events']:>3} events  "
+              f"{d.get('with_sharp',0):>3} w/ Pinnacle  →  {d.get('found',0):>3} edges{rej}")
+    if n_rejected:
+        from src.strategies.line_shop_scanner import MAX_EV_PCT
+        print(f"\n  ⚠  {n_rejected} row(s) exceeded the {MAX_EV_PCT:.0f}% EV ceiling and were")
+        print(f"     DROPPED. Books don't leave that on the table — a double-digit")
+        print(f"     edge is a market-structure bug, not a bet. Sample:")
+        for d in live:
+            for r in d.get("rejected_rows", [])[:2]:
+                bet = f"{r['selection']}" + (f" {r['line']}" if r.get("line") is not None else "")
+                print(f"       {r['ev_pct']:>+7.1f}%  {bet[:28]:<28} {r['odds']:>+6} "
+                      f"{r['book'][:10]:<10} ({r['source']})")
+    if skipped:
+        stale = ", ".join(f"{d['sport'].replace('_latest','')} ({d['status']})"
+                          for d in skipped[:6])
+        print(f"    skipped: {stale}{' …' if len(skipped) > 6 else ''}")
+
+    if not all_rows:
+        print(f"\n  No +EV opportunities at {min_ev:.1f}%+.")
+        print("  Zero is the correct and common result — a tight board means the")
+        print("  books agree, and inventing an edge there is how bankrolls die.")
+        print(f"\n  {line}\n")
+        return 0
+
+    all_rows.sort(key=lambda r: -r["ev_pct"])
+    print(f"\n  {len(all_rows)} OPPORTUNITY(S)")
+    print(f"  {'EV%':>6}  {'BOOK':<11} {'BET':<30} {'ODDS':>6} {'FAIR':>6} "
+          f"{'¼K$':>6}  SRC")
+    print(f"  {'─'*76}")
+    bankroll = float(getattr(args, "bankroll", None) or 0) or _bankroll_balance()
+    for r in all_rows[:40]:
+        bet = f"{r['selection']}"
+        if r.get("line") is not None:
+            bet += f" {r['line']}"
+        bet += f" ({r['market'][:5]})"
+        quarter = r["kelly"] * 0.25 * bankroll
+        src = r["fair_source"][:4] + (f"/{r['n_books']}" if r["fair_source"] == "consensus" else "")
+        print(f"  {r['ev_pct']:>+6.2f}  {r['book']:<11} {bet:<30} "
+              f"{r['odds']:>+6} {r['fair_odds']:>+6} ${quarter:>5.2f}  {src}")
+
+    if len(all_rows) > 40:
+        print(f"  … and {len(all_rows)-40} more")
+
+    if do_log:
+        today = datetime.now().strftime("%Y-%m-%d")
+        picks = [to_pick(r, today) for r in all_rows]
+        n = append_picks_safe(_PNL_FILE, picks)
+        print(f"\n  [pnl] Logged {n} line_shop shadow pick(s) — CLV will judge them.")
+    else:
+        print(f"\n  Not logged. Re-run with --log to start the CLV proving period.")
+
+    print(f"\n  {line}\n")
+    return 0
+
+
+def _bankroll_balance() -> float:
+    try:
+        from src.tracking import bankroll as bk
+        return bk.summary()["balance"]
+    except Exception:
+        return 300.0
+
+
 def cmd_arb(args: argparse.Namespace) -> int:
     """Scan for guaranteed-profit arbitrage opportunities across all books."""
     try:
@@ -3715,6 +3821,20 @@ def main() -> int:
     p_shop.add_argument("--min-ev", type=float, default=2.0,
                         help="Minimum EV%% vs Pinnacle fair line (default 2.0)")
 
+    # scan — MARKET track (+EV line shop across every cached board)
+    p_scan = sub.add_parser("scan",
+        help="★ MARKET track: every book priced off the sharp fair, all sports (0 API credits)")
+    p_scan.add_argument("--sport", default=None,
+                        help="Substring filter on the board name (mlb, wnba, tennis, soccer…)")
+    p_scan.add_argument("--min-ev", type=float, default=None,
+                        help="Minimum true EV%% per unit staked (default 2.0)")
+    p_scan.add_argument("--max-age", type=float, default=None,
+                        help="Skip boards older than N minutes (default 90)")
+    p_scan.add_argument("--bankroll", type=float, default=None,
+                        help="Override bankroll for ¼-Kelly sizing (default: live balance)")
+    p_scan.add_argument("--log", action="store_true",
+                        help="Log hits as strategy=line_shop shadow picks for CLV scoring")
+
     # arb — arbitrage finder
     p_arb = sub.add_parser("arb", help="Scan for guaranteed-profit arbitrage opportunities")
     p_arb.add_argument("--sport",    default="all", choices=["all", "mlb", "nba", "nhl"])
@@ -3954,6 +4074,7 @@ def main() -> int:
         "grade":    cmd_grade,
         "record":   cmd_record,
         "shop":     cmd_shop,
+        "scan":     cmd_scan,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
         "clv-watch": cmd_clv_watch,
