@@ -47,28 +47,25 @@ _MIN_CLAIM_PP = 0.5
 _table_cache: dict | None = None
 
 
-# ── canonical (sport, market) key — mirror src/config/models._key ────────────
+# ── canonical (sport, market) key ────────────────────────────────────────────
 def _key(sport: str, market: str) -> str:
-    raw = (sport or "").lower()
-    for prefix in ("baseball_", "basketball_", "icehockey_"):
-        raw = raw.replace(prefix, "")
-    if raw.startswith("soccer_fifa_world_cup") or raw == "wc":
-        raw = "wc"
-    elif raw.startswith("soccer"):
-        raw = "soccer"
-    elif raw.startswith("tennis"):
-        raw = "tennis"
-    elif raw.startswith("auto_racing_nascar"):
-        raw = "nascar"
-    elif raw.startswith("auto_racing_indycar"):
-        raw = "indycar"
-    elif raw.startswith("auto_racing_formula"):
-        raw = "f1"
-    elif raw.startswith("mma"):
-        raw = "ufc"
-    elif raw.startswith("golf_pga"):
-        raw = "pga"
-    return f"{raw}::{(market or '').lower()}"
+    """Canonical "sport::market" key, delegated to src.config.models._key.
+
+    This was a hand-copied mirror of that function whose own comment claimed it
+    mirrored it — and it had drifted. It collapsed every club league to a single
+    "soccer" bucket while the registry keys them per league, so the edge-shrink
+    record for MLS was written to `soccer::moneyline` and every lookup for
+    `usa_mls::moneyline` came back empty. The lane reported "no edge-shrink
+    record" while its record existed under a name nothing asked for.
+
+    Sixth module found re-deriving this mapping today. Delegate; never re-copy.
+    """
+    try:
+        from src.config.models import _key as _registry_key
+        s, _ = _registry_key(sport or "", "")
+    except Exception:                                   # keep the gate usable
+        s = (sport or "").lower()
+    return f"{s}::{(market or '').lower()}"
 
 
 def _implied(odds: float) -> float | None:

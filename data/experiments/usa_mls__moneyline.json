@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "usa_mls",
+    "market": "moneyline",
+    "tag": "post-remediation",
+    "date": "2026-07-29",
+    "note": "post-remediation baseline: canonical sport keys across clv_gate/calibration/calibration_gate, support-aware calibrator guard, void+home/away+direction schema fixes, 9 lanes retired. ROI clock starts here.",
+    "n": 59,
+    "record": "19-40",
+    "wr": 32.2,
+    "roi": 7.9,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+228",
+    "confidence": {
+      "n": 59,
+      "buckets": [
+        {
+          "lo": 0.103,
+          "hi": 0.277,
+          "n": 19,
+          "wr": 31.6
+        },
+        {
+          "lo": 0.282,
+          "hi": 0.353,
+          "n": 19,
+          "wr": 21.1
+        },
+        {
+          "lo": 0.353,
+          "hi": 0.571,
+          "n": 21,
+          "wr": 42.9
+        }
+      ],
+      "monotonic": false,
+      "spread": 11.3,
+      "verdict": "flat"
+    }
+  }
+]

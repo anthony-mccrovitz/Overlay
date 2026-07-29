@@ -38,5 +38,45 @@
       "spread": 12.6,
       "verdict": "flat"
     }
+  },
+  {
+    "sport": "wnba",
+    "market": "moneyline",
+    "tag": "post-remediation",
+    "date": "2026-07-29",
+    "note": "post-remediation baseline: canonical sport keys across clv_gate/calibration/calibration_gate, support-aware calibrator guard, void+home/away+direction schema fixes, 9 lanes retired. ROI clock starts here.",
+    "n": 167,
+    "record": "84-83",
+    "wr": 50.3,
+    "roi": 20.6,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+116",
+    "confidence": {
+      "n": 103,
+      "buckets": [
+        {
+          "lo": 0.164,
+          "hi": 0.412,
+          "n": 34,
+          "wr": 32.4
+        },
+        {
+          "lo": 0.412,
+          "hi": 0.588,
+          "n": 34,
+          "wr": 41.2
+        },
+        {
+          "lo": 0.588,
+          "hi": 0.773,
+          "n": 35,
+          "wr": 54.3
+        }
+      ],
+      "monotonic": true,
+      "spread": 21.9,
+      "verdict": "flat"
+    }
   }
 ]

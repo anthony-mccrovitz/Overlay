@@ -38,5 +38,45 @@
       "spread": 15.6,
       "verdict": "flat"
     }
+  },
+  {
+    "sport": "tennis",
+    "market": "moneyline",
+    "tag": "post-remediation",
+    "date": "2026-07-29",
+    "note": "post-remediation baseline: canonical sport keys across clv_gate/calibration/calibration_gate, support-aware calibrator guard, void+home/away+direction schema fixes, 9 lanes retired. ROI clock starts here.",
+    "n": 152,
+    "record": "41-84-27",
+    "wr": 32.8,
+    "roi": -11.0,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+201",
+    "confidence": {
+      "n": 125,
+      "buckets": [
+        {
+          "lo": 0.215,
+          "hi": 0.5,
+          "n": 41,
+          "wr": 24.4
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.5,
+          "n": 41,
+          "wr": 36.6
+        },
+        {
+          "lo": 0.5,
+          "hi": 0.826,
+          "n": 43,
+          "wr": 37.2
+        }
+      ],
+      "monotonic": true,
+      "spread": 12.8,
+      "verdict": "flat"
+    }
   }
 ]

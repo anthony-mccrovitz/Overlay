@@ -1,0 +1,42 @@
+[
+  {
+    "sport": "ufc",
+    "market": "moneyline",
+    "tag": "post-remediation",
+    "date": "2026-07-29",
+    "note": "post-remediation baseline: canonical sport keys across clv_gate/calibration/calibration_gate, support-aware calibrator guard, void+home/away+direction schema fixes, 9 lanes retired. ROI clock starts here.",
+    "n": 32,
+    "record": "7-24-1",
+    "wr": 22.6,
+    "roi": -43.0,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "+202",
+    "confidence": {
+      "n": 31,
+      "buckets": [
+        {
+          "lo": 0.148,
+          "hi": 0.289,
+          "n": 10,
+          "wr": 10.0
+        },
+        {
+          "lo": 0.312,
+          "hi": 0.394,
+          "n": 10,
+          "wr": 0.0
+        },
+        {
+          "lo": 0.422,
+          "hi": 0.716,
+          "n": 11,
+          "wr": 54.5
+        }
+      ],
+      "monotonic": false,
+      "spread": 44.5,
+      "verdict": "flat"
+    }
+  }
+]

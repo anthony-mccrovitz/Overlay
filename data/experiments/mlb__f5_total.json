@@ -118,5 +118,45 @@
       "spread": 11.8,
       "verdict": "real-signal"
     }
+  },
+  {
+    "sport": "mlb",
+    "market": "f5_total",
+    "tag": "post-remediation",
+    "date": "2026-07-29",
+    "note": "post-remediation baseline: canonical sport keys across clv_gate/calibration/calibration_gate, support-aware calibrator guard, void+home/away+direction schema fixes, 9 lanes retired. ROI clock starts here.",
+    "n": 482,
+    "record": "225-230-27",
+    "wr": 49.5,
+    "roi": -7.5,
+    "clv": null,
+    "clv_n": 0,
+    "avg_odds": "-116",
+    "confidence": {
+      "n": 455,
+      "buckets": [
+        {
+          "lo": 0.51,
+          "hi": 0.637,
+          "n": 151,
+          "wr": 43.7
+        },
+        {
+          "lo": 0.637,
+          "hi": 0.66,
+          "n": 151,
+          "wr": 49.0
+        },
+        {
+          "lo": 0.66,
+          "hi": 1.0,
+          "n": 153,
+          "wr": 55.6
+        }
+      ],
+      "monotonic": true,
+      "spread": 11.8,
+      "verdict": "real-signal"
+    }
   }
 ]
