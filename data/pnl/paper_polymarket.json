@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-28T20:10:27.313936+00:00",
+  "generated_at": "2026-07-29T03:58:27.468079+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 112.2,
-  "n_settled": 36,
-  "n_pending": 157,
-  "wins": 13,
-  "losses": 23,
-  "staked": 158.81,
-  "pnl": 0.2,
-  "expected_pnl": 8.77,
-  "roi_pct": 0.13,
+  "end_bankroll": 107.54,
+  "n_settled": 39,
+  "n_pending": 154,
+  "wins": 14,
+  "losses": 25,
+  "staked": 172.09,
+  "pnl": -4.46,
+  "expected_pnl": 9.36,
+  "roi_pct": -2.59,
   "max_drawdown": 30.81,
   "skipped": {
-    "resting order never filled": 16,
+    "resting order never filled": 18,
     "exposure cap reached for the slate": 124,
-    "not settled yet": 17
+    "not settled yet": 12
   },
   "significance": {
-    "mean_edge_per_unit": 0.0555,
-    "sd_per_unit": 1.6533,
-    "n_for_2sigma": 3554
+    "mean_edge_per_unit": 0.0546,
+    "sd_per_unit": 1.6204,
+    "n_for_2sigma": 3525
   },
   "rows": [
     {
@@ -597,6 +597,54 @@
       "pnl": 5.87,
       "expected_pnl": 0.155,
       "equity": 112.2
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260728_baltimore-orioles_moneyline_win",
+      "date": "2026-07-28",
+      "team": "Baltimore Orioles",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.43,
+      "fair": 0.4422,
+      "stake": 4.49,
+      "shares": 10.44,
+      "result": "loss",
+      "pnl": -4.49,
+      "expected_pnl": 0.127,
+      "equity": 107.71
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260728_miami-marlins_moneyline_win",
+      "date": "2026-07-28",
+      "team": "Miami Marlins",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.5,
+      "fair": 0.5116,
+      "stake": 4.31,
+      "shares": 8.62,
+      "result": "win",
+      "pnl": 4.31,
+      "expected_pnl": 0.1,
+      "equity": 112.02
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260728_connecticut-sun_moneyline_win",
+      "date": "2026-07-28",
+      "team": "Connecticut Sun",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.31,
+      "fair": 0.3349,
+      "stake": 4.48,
+      "shares": 14.45,
+      "result": "loss",
+      "pnl": -4.48,
+      "expected_pnl": 0.36,
+      "equity": 107.54
     }
   ]
 }
