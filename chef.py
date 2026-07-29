@@ -1869,6 +1869,80 @@ def cmd_shop(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── arb ─────────────────────────────────────────────
 
+def cmd_audit_models(args: argparse.Namespace) -> int:
+    """Audit every lane against the build standard (src/config/model_standard.py).
+
+    The same checks tests/test_model_standard.py enforces, as a report — so a
+    lane's gaps are visible BEFORE you start rebuilding it, and so a shadow lane
+    can be measured against the bar it would have to clear to go live.
+    """
+    from src.config.model_standard import audit, is_exempt, EXEMPTIONS, CHECKS
+    from src.config.models import MODELS, is_live
+
+    only  = (getattr(args, "sport", None) or "").lower()
+    live_only = bool(getattr(args, "live", False))
+
+    lanes = sorted({(s, m) for (s, m) in MODELS})
+    if only:
+        lanes = [l for l in lanes if l[0] == only]
+    if live_only:
+        lanes = [l for l in lanes if is_live(*l)]
+    if not lanes:
+        print("  No lanes match.")
+        return 1
+
+    names = [n for n, _ in CHECKS]
+    line = "═" * 92
+    print(f"\n  {line}")
+    print(f"  BUILD STANDARD AUDIT — {len(lanes)} lane(s)")
+    print(f"  {line}")
+    print(f"\n  {'LANE':<38}{'':<4}" + "".join(f"{n[:9]:<11}" for n in names))
+    print(f"  {'─'*100}")
+
+    failing_live = 0
+    for sport, market in lanes:
+        results = audit(sport, market)
+        live = is_live(sport, market)
+        cells = ""
+        for c in results:
+            if c.ok:
+                cells += f"{'  ok':<11}"
+            elif is_exempt(sport, market, c.name):
+                cells += f"{'  ex':<11}"
+            else:
+                cells += f"{'  ✗':<11}"
+        flag = "🟢" if live else "  "
+        print(f"  {sport+'/'+market:<38}{flag:<4}{cells}")
+        if live and any(not c.ok and not is_exempt(sport, market, c.name)
+                        for c in results):
+            failing_live += 1
+
+    print(f"\n  ok = passes · ex = documented exemption · ✗ = gap · 🟢 = LIVE (takes real money)")
+
+    # Detail only where it matters: live lanes, and anything the user asked for.
+    detail_lanes = [l for l in lanes if is_live(*l)] if not only else lanes
+    for sport, market in detail_lanes:
+        results = audit(sport, market)
+        gaps = [c for c in results if not c.ok]
+        if not gaps:
+            continue
+        print(f"\n  {sport}/{market}" + ("  🟢 LIVE" if is_live(sport, market) else ""))
+        for c in gaps:
+            tag = "EXEMPT" if is_exempt(sport, market, c.name) else "GAP   "
+            print(f"    {tag}  {c.name:<16} {c.detail}")
+
+    if EXEMPTIONS:
+        print(f"\n  {'─'*90}")
+        print(f"  EXEMPTIONS ({len(EXEMPTIONS)})")
+        for (s, m), ex in EXEMPTIONS.items():
+            print(f"    {s}/{m}  [{', '.join(ex['checks'])}]  since {ex['since']}")
+            print(f"      why:     {ex['why'][:150]}")
+            print(f"      retire:  {ex['retire_when'][:150]}")
+
+    print(f"\n  {line}\n")
+    return 1 if failing_live else 0
+
+
 def cmd_scan(args: argparse.Namespace) -> int:
     """MARKET track: scan every cached board for books priced off the sharp fair.
 
@@ -3854,6 +3928,12 @@ def main() -> int:
     p_shop.add_argument("--min-ev", type=float, default=2.0,
                         help="Minimum EV%% vs Pinnacle fair line (default 2.0)")
 
+    # audit-models — the build standard, as a report
+    p_am = sub.add_parser("audit-models",
+        help="★ Audit every lane against the build standard (what tests/test_model_standard.py enforces)")
+    p_am.add_argument("--sport", default=None, help="Only this sport (e.g. mlb)")
+    p_am.add_argument("--live", action="store_true", help="Only lanes that are LIVE")
+
     # scan — MARKET track (+EV line shop across every cached board)
     p_scan = sub.add_parser("scan",
         help="★ MARKET track: every book priced off the sharp fair, all sports (0 API credits)")
@@ -4110,6 +4190,7 @@ def main() -> int:
         "record":   cmd_record,
         "shop":     cmd_shop,
         "scan":     cmd_scan,
+        "audit-models": cmd_audit_models,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
         "clv-watch": cmd_clv_watch,
