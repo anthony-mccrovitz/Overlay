@@ -2075,6 +2075,15 @@ def cmd_audit_models(args: argparse.Namespace) -> int:
     return 1 if failing_live else 0
 
 
+# Boards the market scan seeds on a cold start (empty cache, e.g. CI). Kept to
+# in-season leagues so an off-season key isn't spent on an empty board; each is
+# one cheap call and the scan itself is free thereafter.
+SCAN_SPORTS = (
+    "baseball_mlb", "basketball_wnba", "mma_mixed_martial_arts",
+    "soccer_usa_mls", "soccer_mexico_ligamx",
+)
+
+
 def cmd_scan(args: argparse.Namespace) -> int:
     """MARKET track: scan every cached board for books priced off the sharp fair.
 
@@ -2094,9 +2103,29 @@ def cmd_scan(args: argparse.Namespace) -> int:
     boards = sorted(Path("data/cache/odds").glob("*_latest.json"))
     if only:
         boards = [b for b in boards if only in b.name]
-    if not boards:
-        print("  No cached odds boards. Run: python3 chef.py picks <sport>")
+
+    if not boards and not getattr(args, "refresh", False):
+        print("  No cached odds boards. Run: python3 chef.py picks <sport>, "
+              "or re-run with --refresh to fetch them.")
         return 1
+
+    if getattr(args, "refresh", False) and not boards:
+        # A CI runner starts with an EMPTY cache — data/cache/ is gitignored, so
+        # there is nothing to "refresh" and the scan exited 1 on a clean box even
+        # though the API key was fine. Seed the in-season board set from scratch.
+        from src.data.odds_api import fetch_odds
+        print(f"  No cached boards (clean checkout) — seeding {len(SCAN_SPORTS)} board(s)…")
+        for sport_key in SCAN_SPORTS:
+            try:
+                fetch_odds(sport=sport_key, refresh=True)
+            except Exception as err:
+                print(f"    {sport_key}: skipped ({str(err)[:60]})")
+        boards = sorted(Path("data/cache/odds").glob("*_latest.json"))
+        if only:
+            boards = [b for b in boards if only in b.name]
+        if not boards:
+            print("  Could not fetch any board — check ODDS_API_KEY and quota.")
+            return 1
 
     if getattr(args, "refresh", False):
         # The scan itself is free — it reads the cache. But a cache is only an
