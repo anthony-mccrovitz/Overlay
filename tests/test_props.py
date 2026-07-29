@@ -268,10 +268,23 @@ class TestModelRegistry:
         from src.config.models import is_live
         assert is_live("mlb", "spread") is False
 
-    def test_nrfi_is_incubating(self):
+    def test_nrfi_is_retired(self):
+        # RETIRED 2026-07-29: ROI -10.9% on n=361 (z=-2.99, significantly
+        # negative), on top of the earlier finding that its confidence signal is
+        # inverted and no filter made it profitable.
         from src.config.models import is_live, model_status
         assert is_live("mlb", "nrfi") is False
-        assert model_status("mlb", "nrfi") == "incubating"
+        assert model_status("mlb", "nrfi") == "retired"
+
+    def test_retired_lanes_never_card(self):
+        """Retirement must actually stop a lane, not just relabel it. is_retired
+        drops it from the factory sweep; is_live keeps it off the card."""
+        from src.config.models import is_live, is_retired, model_status, MODELS
+        retired = [(s, m) for (s, m) in MODELS if model_status(s, m) == "retired"]
+        assert retired, "expected at least one retired lane"
+        for sport, market in retired:
+            assert is_retired(sport, market) is True
+            assert is_live(sport, market) is False
 
     def test_pitcher_ks_is_incubating(self):
         from src.config.models import is_live

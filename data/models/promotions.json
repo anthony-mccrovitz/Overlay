@@ -1,4 +1,67 @@
 {
+  "mlb::batter_hits": {
+    "previous_status": "incubating",
+    "reason": "No demonstrable edge: ROI +2.4% on n=1681 but z=0.83 \u2014 indistinguishable from zero after 1681 bets, so any true effect is smaller than the vig. Prop CLV (27.5%) is a line-echo artifact and cannot adjudicate. Retired for cost, not for loss; MOST LIKELY of the props to be worth reviving.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::batter_home_runs": {
+    "previous_status": "incubating",
+    "reason": "No demonstrable edge: ROI -1.6% on n=864, z=-0.30. Indistinguishable from zero; prop CLV unusable.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::batter_rbis": {
+    "previous_status": "incubating",
+    "reason": "ROI -6.8% on n=1073, z=-2.18 \u2014 significantly negative.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::batter_total_bases": {
+    "previous_status": "incubating",
+    "reason": "No demonstrable edge: ROI -3.3% on n=1306, z=-1.22. The 87.7% beat-close is the prop line-echo artifact, NOT an edge.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::batter_walks": {
+    "previous_status": "incubating",
+    "reason": "ROI -10.6% on n=1288, z=-3.35 \u2014 significantly negative. Beat-close 29.1% on 762 moved lines (prop CLV is an artifact, but the ROI stands alone).",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::moneyline": {
+    "previous_status": "incubating",
+    "reason": "38.0% beat-close on 1,114 moved lines and k=0.00 (claims 8.86pp, realizes -0.21pp). Calibration is non-monotone across its own operating band: stated 0.544->actual 0.464, stated 0.583->actual 0.440. No discrimination where the model actually lives.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::nrfi": {
+    "previous_status": "incubating",
+    "reason": "ROI -10.9% on n=361, z=-2.99 \u2014 significantly negative. Previously proven dead: inverted confidence signal, no profitable filter, ERA/K9-only model ignores lineups.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::pitcher_strikeouts": {
+    "previous_status": "incubating",
+    "reason": "ROI -11.9% on n=1052, z=-3.81 \u2014 the most significantly negative lane on the board.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
+  "mlb::prop": {
+    "previous_status": "incubating",
+    "reason": "No demonstrable edge: ROI -3.8% on n=673, z=-1.44. Generic prop bucket superseded by per-market lanes.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
+    "tier": "shadow"
+  },
   "nba::total": {
     "status": "incubating",
     "tier": "shadow"
@@ -12,7 +75,10 @@
     "tier": "shadow"
   },
   "pga::outright": {
-    "status": "incubating",
+    "previous_status": "incubating",
+    "reason": "0-21 lifetime on graded outrights. No CLV coverage. Nothing to salvage.",
+    "retired_on": "2026-07-29",
+    "status": "retired",
     "tier": "shadow"
   }
 }

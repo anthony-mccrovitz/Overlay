@@ -3087,6 +3087,37 @@ def cmd_demote(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_retire(args: argparse.Namespace) -> int:
+    """Retire a lane: stop running it at all, and record WHY.
+
+    Distinct from demote, which returns a lane to shadow so it keeps logging and
+    can still earn promotion. Retirement is the verdict that there is nothing to
+    earn — is_retired() drops the lane from the factory sweep entirely, so it
+    stops consuming API credits and stops adding rows nobody will ever bet.
+
+    The reason is mandatory. A retirement with no evidence is indistinguishable
+    from someone quietly deleting an inconvenient model, and in six months the
+    only question anyone asks is "why did we kill this?".
+    """
+    from src.config.models import _key, set_promotion, model_status
+
+    reason = (getattr(args, "reason", None) or "").strip()
+    if not reason:
+        print("  Refusing to retire without --reason. Record the evidence.")
+        return 1
+
+    s_label, mkt = _key(args.sport, args.market)
+    before = model_status(args.sport, args.market)
+    set_promotion(args.sport, args.market, "retired", "shadow",
+                  evidence={"reason": reason,
+                            "retired_on": datetime.now().strftime("%Y-%m-%d"),
+                            "previous_status": before})
+    print(f"\n  ⛔  Retired {s_label} · {mkt}  (was {before})")
+    print(f"      {reason}")
+    print(f"      Reversible: chef.py demote {s_label} {mkt}\n")
+    return 0
+
+
 def cmd_audit(args: argparse.Namespace) -> int:
     """Bet-tracking completeness audit — guarantees we never silently lose a bet's
     closing line / CLV / EV / odds / ROI.
@@ -4141,6 +4172,13 @@ def main() -> int:
     p_demote.add_argument("sport", help="Sport/league key")
     p_demote.add_argument("market", help="Market")
 
+    p_retire = sub.add_parser("retire",
+        help="Retire a lane so it stops running at all (requires --reason). Undo with demote.")
+    p_retire.add_argument("sport", help="Sport/league key")
+    p_retire.add_argument("market", help="Market")
+    p_retire.add_argument("--reason", required=True,
+                          help="Evidence for the decision — recorded in promotions.json")
+
     p_audit = sub.add_parser("audit", help="Bet-tracking completeness: odds/EV/CLV/ROI coverage + flags settled bets missing their closing line (exits RED on gaps)")
     p_audit.add_argument("--days", type=int, help="Window for the missing-closing alarm (default 21)")
 
@@ -4271,6 +4309,7 @@ def main() -> int:
         "scan":     cmd_scan,
         "audit-models": cmd_audit_models,
         "coverage": cmd_coverage,
+        "retire":   cmd_retire,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
         "clv-watch": cmd_clv_watch,
