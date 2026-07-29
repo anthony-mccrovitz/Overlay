@@ -68,9 +68,26 @@ def _load_picks(pnl_file: Path) -> list[dict]:
     return raw.get("picks", raw) if isinstance(raw, dict) else raw
 
 
-def market_stats(pnl_file: Path = _PNL_FILE) -> dict[tuple[str, str], MarketStat]:
-    """Return {(canonical_sport, market): MarketStat} across the whole ledger."""
+def market_stats(pnl_file: Path = _PNL_FILE,
+                 include_tainted: bool = False) -> dict[tuple[str, str], MarketStat]:
+    """Return {(canonical_sport, market): MarketStat} across the whole ledger.
+
+    TAINTED picks are excluded by default. They came from a known-broken
+    mechanism (a degenerate calibrator that flattened every game to one
+    probability, team-blind ratings), and this function is the ROI source for
+    `chef.py record`, the build standard's promotion gate, the triage table and
+    the dashboard — so including them let a broken model's output decide whether
+    its own lane was profitable enough to promote.
+
+    It also made `triage` self-inconsistent: it counted untainted picks for n
+    while reading ROI from here, so a single row mixed two different samples.
+
+    Pass include_tainted=True only for an audit view that deliberately wants the
+    polluted history.
+    """
     picks = _load_picks(pnl_file)
+    if not include_tainted:
+        picks = [p for p in picks if not p.get("tainted")]
     groups: dict[tuple[str, str], list[dict]] = {}
     for p in picks:
         key = (_key(p.get("sport", ""), "")[0], (p.get("market") or "").lower())

@@ -536,3 +536,96 @@ class TestVoidIsTerminal:
             "result": "cancelled",
         })
         assert p["result"] is None
+
+
+class TestGradedProfitIsConsistent:
+    """A win must book the payout its odds and stake imply.
+
+    214 wins across mlb/prop, nba/prop and mlb/f5_total were graded with
+    profit=0.0 — resulted_at was set, so a grader ran and wrote a winning result
+    with no payout. It hid 188u and flipped mlb/f5_total's clean ROI from -7.5%
+    to +2.3%. The ledger's own arithmetic has to be checkable.
+    """
+
+    @staticmethod
+    def _dec(o):
+        o = float(o)
+        return 1 + (o / 100 if o > 0 else 100 / abs(o))
+
+    def test_no_settled_pick_books_zero_profit(self):
+        """Both directions. Fixing only the wins would have overstated the
+        ledger by 188u; the same grader window left 261 losses at -0.0."""
+        import json
+        from pathlib import Path
+        raw = json.loads(Path("data/pnl/picks.json").read_text())
+        rows = raw.get("picks", raw) if isinstance(raw, dict) else raw
+        # Requires odds: 58 mlb/nrfi wins were graded with odds=None, so their
+        # payout is unrecoverable rather than wrong. That is a separate
+        # data-capture failure, asserted on its own below.
+        bad = [r for r in rows
+               if r.get("result") in ("win", "loss")
+               and r.get("stake")
+               and r.get("odds") is not None
+               and r.get("profit") is not None
+               and abs(float(r["profit"])) < 1e-9]
+        assert not bad, (
+            f"{len(bad)} settled pick(s) booked 0 profit on a non-zero stake. "
+            f"First: {bad[0].get('date')} {bad[0].get('sport')}/{bad[0].get('market')} "
+            f"{bad[0].get('result')}"
+        )
+
+    def test_unscoreable_picks_do_not_grow(self):
+        """A graded pick with no odds can never be scored for ROI or CLV — it is
+        dead weight that silently shrinks a lane's real sample. 206 mlb/nrfi
+        picks are in this state from April; the lane is retired, so this pins
+        the number rather than requiring a backfill."""
+        import json
+        from pathlib import Path
+        raw = json.loads(Path("data/pnl/picks.json").read_text())
+        rows = raw.get("picks", raw) if isinstance(raw, dict) else raw
+        bad = [r for r in rows
+               if r.get("result") in ("win", "loss") and r.get("odds") is None]
+        assert len(bad) <= 206, (
+            f"{len(bad)} graded picks have no odds (was 206). A new emitter is "
+            f"logging unscoreable picks."
+        )
+
+    def test_no_win_books_zero_profit(self):
+        import json
+        from pathlib import Path
+        raw = json.loads(Path("data/pnl/picks.json").read_text())
+        rows = raw.get("picks", raw) if isinstance(raw, dict) else raw
+        bad = [r for r in rows
+               if r.get("result") == "win"
+               and r.get("odds") is not None
+               and r.get("stake")
+               and r.get("profit") is not None
+               and float(r["profit"]) == 0.0]
+        assert not bad, (
+            f"{len(bad)} winning pick(s) booked 0 profit despite a non-zero "
+            f"stake — the grader wrote a result without a payout. "
+            f"First: {bad[0].get('date')} {bad[0].get('sport')}/{bad[0].get('market')}"
+        )
+
+    def test_booked_profit_matches_odds_and_stake(self):
+        """Allows a small tolerance: the grader may settle against a slightly
+        different price than the entry odds stored on the pick."""
+        import json
+        from pathlib import Path
+        raw = json.loads(Path("data/pnl/picks.json").read_text())
+        rows = raw.get("picks", raw) if isinstance(raw, dict) else raw
+        bad = []
+        for r in rows:
+            if r.get("result") not in ("win", "loss"):
+                continue
+            o, st, pf = r.get("odds"), r.get("stake"), r.get("profit")
+            if o is None or st is None or pf is None:
+                continue
+            exp = (self._dec(o) - 1) * float(st) if r["result"] == "win" else -float(st)
+            if abs(float(pf) - exp) > 0.15:
+                bad.append((r.get("date"), r.get("sport"), r.get("market"),
+                            r["result"], o, st, pf, round(exp, 3)))
+        assert len(bad) <= 15, (
+            f"{len(bad)} pick(s) book a profit inconsistent with odds x stake. "
+            f"First 3: {bad[:3]}"
+        )
