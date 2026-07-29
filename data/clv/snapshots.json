@@ -371245,7 +371245,11 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-30T02:00:00Z"
+    "commence_time": "2026-07-30T02:00:00Z",
+    "opening_fair_prob": 0.508664,
+    "opening_opp_odds": -106.0,
+    "entry_overround": 1.0473,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-29",
@@ -372329,7 +372333,11 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-29T23:41:00Z"
+    "commence_time": "2026-07-29T23:41:00Z",
+    "opening_fair_prob": 0.527897,
+    "opening_opp_odds": 105.0,
+    "entry_overround": 1.0333,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-29",
@@ -372348,7 +372356,11 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-29T23:11:00Z"
+    "commence_time": "2026-07-29T23:11:00Z",
+    "opening_fair_prob": 0.472103,
+    "opening_opp_odds": -120.0,
+    "entry_overround": 1.0333,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-29",
@@ -372367,7 +372379,13 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-30T01:41:00Z"
+    "commence_time": "2026-07-30T01:41:00Z",
+    "opening_fair_prob": 0.498813,
+    "opening_fair_sharp": 0.50458,
+    "entry_ev_vs_fair_pct": -0.073,
+    "opening_opp_odds": -104.0,
+    "entry_overround": 1.0172,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-29",
@@ -372386,7 +372404,13 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-07-29T17:06:00Z"
+    "commence_time": "2026-07-29T17:06:00Z",
+    "opening_fair_prob": 0.476461,
+    "opening_fair_sharp": 0.476461,
+    "entry_ev_vs_fair_pct": -4.708,
+    "opening_opp_odds": -118.0,
+    "entry_overround": 1.0339,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-29",
@@ -372710,7 +372734,13 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-08-15T23:00:00Z",
+    "opening_fair_prob": 0.224586,
+    "opening_opp_odds": 470.0,
+    "opening_draw_odds": 310.0,
+    "entry_overround": 1.086,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-29",
@@ -373278,5 +373308,51 @@
     "opening_draw_odds": 270.0,
     "entry_overround": 1.0662,
     "entry_board_age_min": 0.2
+  },
+  {
+    "date": "2026-07-29",
+    "team": "Colorado Rockies",
+    "player": null,
+    "opponent": "Colorado Rockies @ San Diego Padres",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "devig_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 145.0,
+    "opening_implied_prob": 0.408163,
+    "snapshot_time": "2026-07-29T15:18:04.168280+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "catalyst": "stale_opener",
+    "commence_time": "2026-07-29T20:11:00Z",
+    "consensus_fair_prob": 0.40686,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.408847,
+    "opening_fair_sharp": 0.421038,
+    "entry_ev_vs_fair_pct": 3.154,
+    "opening_opp_odds": -144.0,
+    "entry_overround": 0.9983,
+    "entry_board_age_min": 0.0
+  },
+  {
+    "date": "2026-07-29",
+    "team": "San Diego Padres",
+    "player": null,
+    "opponent": "Colorado Rockies @ San Diego Padres",
+    "sport": "mlb",
+    "market": "spread",
+    "strategy": "consensus_ev_spreads",
+    "opening_line": -1.5,
+    "direction": "HOME",
+    "opening_odds": 150.0,
+    "opening_implied_prob": 0.4,
+    "snapshot_time": "2026-07-29T15:18:04.168280+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null
   }
 ]
