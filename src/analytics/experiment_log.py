@@ -48,7 +48,18 @@ class ConfidenceSignal:
 
 
 def _confidence_signal(graded: list[dict], n_buckets: int = 3) -> ConfidenceSignal:
+    """Does a higher model_prob actually mean a higher win rate?
+
+    TAINTED picks are excluded by the callers, and must be: they came from a
+    known-broken mechanism (a degenerate calibrator that flattened every game to
+    one probability, team-blind ratings), so their model_prob is the previous
+    bug's output. Reading a confidence signal off them measures the bug, not the
+    model — WNBA spread read a confident "inverted (-34pts)" from 65 tainted rows
+    while holding only 8 clean ones, which would have justified building a fade
+    strategy on noise from a model that no longer exists.
+    """
     pts = [(p["model_prob"], p["result"]) for p in graded
+           if not p.get("tainted")
            if isinstance(p.get("model_prob"), (int, float))
            and p["result"] in ("win", "loss")]
     sig = ConfidenceSignal(n=len(pts))
@@ -113,7 +124,8 @@ def algo_snapshot(sport: str, market: str, tag: str, note: str = "",
               if _key(p.get("sport", ""), "")[0] == csport
               and (p.get("market") or "").lower() == cmarket
               and p.get("result") in ("win", "loss")
-              and p.get("odds") not in (None, 0)]
+              and p.get("odds") not in (None, 0)
+              and not p.get("tainted")]
     sig = _confidence_signal(graded)
     return AlgoSnapshot(
         sport=csport, market=cmarket, tag=tag, date=date.today().isoformat(),
@@ -263,6 +275,8 @@ def triage(pnl_file: Path = _PNL_FILE, min_n: int = 30) -> list[Triage]:
     stats = market_stats(pnl_file)
     groups: dict[tuple[str, str], list[dict]] = {}
     for p in picks:
+        if p.get("tainted"):
+            continue
         key = (_key(p.get("sport", ""), "")[0], (p.get("market") or "").lower())
         if p.get("result") in ("win", "loss") and p.get("odds") not in (None, 0):
             groups.setdefault(key, []).append(p)

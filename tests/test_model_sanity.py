@@ -556,3 +556,60 @@ class TestWnbaEdgeCap:
         model_p, edge = _cap_edge(0.60, 0.548)   # +5.2%, under the cap
         assert model_p == pytest.approx(0.60)
         assert edge == pytest.approx(5.2, abs=1e-6)
+
+
+class TestConfidenceSignalExcludesTainted:
+    """The confidence signal drives KEEP/TUNE/CUT verdicts, so it must never be
+    computed from picks the rest of the codebase throws away.
+
+    Tainted picks came from a known-broken mechanism — a degenerate calibrator
+    that flattened every game to one probability, team-blind ratings — so their
+    model_prob IS the previous bug's output. WNBA spread read a confident
+    "inverted (-34pts)" from 65 tainted rows while holding only 8 clean ones,
+    which would have justified building a fade strategy on a model that no
+    longer exists.
+    """
+
+    def _rows(self, n, tainted, *, inverted):
+        """n graded picks. inverted=True makes HIGH model_prob lose."""
+        out = []
+        for i in range(n):
+            mp = 0.40 + 0.5 * (i / max(1, n - 1))
+            high = mp > 0.65
+            win = (not high) if inverted else high
+            out.append({"model_prob": mp, "result": "win" if win else "loss",
+                        "odds": -110, "tainted": tainted or None})
+        return out
+
+    def test_tainted_rows_cannot_create_a_verdict(self):
+        from src.analytics.experiment_log import _confidence_signal
+        sig = _confidence_signal(self._rows(90, True, inverted=True))
+        assert sig.n == 0
+        assert sig.verdict == "insufficient-data"
+
+    def test_clean_rows_still_produce_a_verdict(self):
+        from src.analytics.experiment_log import _confidence_signal
+        sig = _confidence_signal(self._rows(90, False, inverted=False))
+        assert sig.n == 90
+        assert sig.verdict in ("real-signal", "noisy-but-present")
+        assert sig.spread > 0
+
+    def test_tainted_cannot_flip_a_clean_verdict(self):
+        """A clean lane with genuine signal must not be dragged to 'inverted' by
+        appending tainted rows that point the other way."""
+        from src.analytics.experiment_log import _confidence_signal
+        clean = self._rows(60, False, inverted=False)
+        poisoned = clean + self._rows(120, True, inverted=True)
+        assert _confidence_signal(poisoned).verdict == _confidence_signal(clean).verdict
+
+    def test_snapshot_excludes_tainted(self, tmp_path):
+        import json
+        from src.analytics.experiment_log import algo_snapshot
+        rows = []
+        for r in self._rows(80, True, inverted=True):
+            rows.append({**r, "sport": "wnba", "market": "spread",
+                         "date": "2026-07-01", "pick_id": f"t{len(rows)}"})
+        f = tmp_path / "picks.json"
+        f.write_text(json.dumps({"picks": rows}))
+        snap = algo_snapshot("wnba", "spread", tag="t", pnl_file=f)
+        assert snap.confidence["n"] == 0
