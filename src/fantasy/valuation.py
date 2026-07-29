@@ -30,7 +30,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from src.fantasy import scoring, sleeper
+from src.fantasy import adjustments, scoring, sleeper
 
 # A season is 17 games, but nobody plays 17. Using a full season overstates
 # every injury-prone player relative to the iron men who actually win weeks.
@@ -83,6 +83,9 @@ class PlayerValue:
     adp_delta: float | None = None  # our rank minus market rank; +ve = falls to us
     games_2025: float = 0.0
     note: str = ""
+    age_factor: float = 1.0
+    depth_factor: float = 1.0
+    depth: int | None = None
 
 
 # ─────────────────────────── roster rules ────────────────────────────────────
@@ -146,6 +149,13 @@ def project(stats_by_pid: dict, players_db: dict,
         keep = rates[:max(12, len(rates) // 3)]     # starter-ish, not the tail
         pos_mean[pos] = sum(keep) / len(keep) if keep else 0.0
 
+    # Starter-level per-game rate per position, the yardstick the depth-chart
+    # check compares a player's implied role against.
+    starter_rate = {}
+    for pos, rates in by_pos.items():
+        top = sorted(rates, reverse=True)[:12]
+        starter_rate[pos] = (sum(top) / len(top)) if top else 0.0
+
     out: dict[str, PlayerValue] = {}
     for pid, (rate, gp, p) in raw.items():
         pos = p["position"]
@@ -154,12 +164,33 @@ def project(stats_by_pid: dict, players_db: dict,
         # Availability: a player who missed half of last season is likelier to
         # miss games again, but one bad year shouldn't halve his projection.
         avail = min(1.0, 0.75 + 0.25 * (gp / 17.0))
-        proj = shrunk * EXPECTED_GAMES * avail
+
+        # Age and current job. Both gentle and both documented in adjustments.py
+        # — a projection nudged 15% by a real signal is an improvement, one swung
+        # 60% by a heuristic is a new source of error.
+        af = adjustments.age_factor(pos, p.get("age"))
+        df = adjustments.depth_factor(pos, p.get("depth_chart_order"),
+                                      shrunk, starter_rate.get(pos, 0.0))
+
+        proj = shrunk * EXPECTED_GAMES * avail * af * df
+
+        flags = []
+        if af < 0.93:
+            flags.append(f"age {p.get('age')}")
+        elif af > 1.02:
+            flags.append("ascending")
+        if df < 0.9:
+            flags.append(f"DC{p.get('depth_chart_order')}")
+        elif df > 1.0:
+            flags.append("has the job")
+
         out[pid] = PlayerValue(
             player_id=pid, name=sleeper.display_name(p), position=pos,
             team=p.get("team") or "FA", age=p.get("age"),
             proj_points=round(proj, 1), ppg=round(proj / EXPECTED_GAMES, 2),
-            games_2025=gp,
+            games_2025=gp, note=" · ".join(flags),
+            age_factor=round(af, 3), depth_factor=round(df, 3),
+            depth=p.get("depth_chart_order"),
         )
     return out
 
