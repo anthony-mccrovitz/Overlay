@@ -1869,6 +1869,117 @@ def cmd_shop(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── arb ─────────────────────────────────────────────
 
+def cmd_draft(args: argparse.Namespace) -> int:
+    """Fantasy football draft board, and the live assistant during the draft."""
+    import time as _t
+    from src.fantasy import sleeper as _sl
+    from src.fantasy.league import load as _load_league
+    from src.fantasy.valuation import build_board, starters_from_settings
+    from src.fantasy.draft import load_state, recommend, roster_counts
+
+    cfg = _load_league()
+    board = build_board(cfg.scoring_settings, cfg.roster_positions, cfg.teams)
+    starters = {k: int(round(v / cfg.teams))
+                for k, v in starters_from_settings(cfg.roster_positions, cfg.teams).items()}
+
+    line = "═" * 96
+    print(f"\n  {line}")
+    print(f"  {cfg.summary()}")
+    print(f"  {line}")
+
+    if getattr(args, "sim", False):
+        from src.fantasy.simulate import compare_openings
+        from src.fantasy import sleeper as _s2
+        drafts = _s2.league_drafts(cfg.league_id)
+        d = _s2.draft(drafts[0]["draft_id"]) if drafts else {}
+        me = _s2.user(args.user)["user_id"]
+        slot = int((d.get("draft_order") or {}).get(me, 1))
+        rounds = int((d.get("settings") or {}).get("rounds") or 14)
+        openings = [("RB", "RB"), ("WR", "RB"), ("RB", "WR"), ("WR", "WR"),
+                    ("RB", "RB", "WR"), ("WR", "RB", "RB"), ("RB", "WR", "WR")]
+        print(f"\n  Simulating {args.trials} drafts per opening from slot {slot}…")
+        res = compare_openings(board, openings, slot, cfg.teams, rounds,
+                               cfg.roster_positions, trials=args.trials)
+        print(f"\n  {'OPENING':<20}{'MEAN':>8}{'p25':>8}{'p75':>8}{'WORST':>8}")
+        print(f"  {'─'*54}")
+        for r in res:
+            print(f"  {'-'.join(r.opening):<18}{r.mean_starter_vorp:>8.0f}"
+                  f"{r.p25:>8.0f}{r.p75:>8.0f}{r.worst:>8.0f}")
+        print(f"\n  Scored on your STARTING lineup, not your roster — a fourth RB")
+        print(f"  contributes nothing to a lineup that starts two.")
+        print(f"  Opponents draft near ADP with realistic noise, so runs emerge")
+        print(f"  naturally. Waivers, trades and injuries are NOT modelled, so this")
+        print(f"  ranks openings against each other — it is not a points forecast.\n")
+        return 0
+
+    if not getattr(args, "live", False):
+        rows = board
+        if getattr(args, "pos", None):
+            rows = [v for v in rows if v.position == args.pos.upper()]
+        print(f"\n  {'#':<4}{'PLAYER':<26}{'POS':<5}{'TM':<4}{'PROJ':>6}{'VORP':>6}"
+              f"{'TIER':>5}{'ADP':>6}{'DELTA':>7}  NOTE")
+        print(f"  {'─'*94}")
+        for i, v in enumerate(rows[:args.top], 1):
+            print(f"  {i:<4}{v.name:<26}{v.position:<5}{v.team:<4}{v.proj_points:>6.0f}"
+                  f"{v.vorp:>6.0f}{v.tier:>5}{(v.adp or 0):>6.0f}"
+                  f"{(v.adp_delta if v.adp_delta is not None else 0):>+7.0f}  {v.note}")
+        print(f"\n  DELTA = market ADP minus our rank. Positive = he falls to you.")
+        print(f"  Large deltas are a QUESTION, not an instruction — our projections")
+        print(f"  don't model team changes, depth charts or coaching.\n")
+        return 0
+
+    # ── live ──
+    try:
+        me = _sl.user(args.user)
+        my_id = me.get("user_id")
+    except Exception as err:
+        print(f"  Could not resolve Sleeper user '{args.user}': {err}")
+        return 1
+
+    drafts = _sl.league_drafts(cfg.league_id)
+    if not drafts:
+        print("  No draft found for this league.")
+        return 1
+    draft_id = drafts[0]["draft_id"]
+
+    while True:
+        st = load_state(draft_id, my_id)
+        bmap = {v.player_id: v for v in board}
+        have = roster_counts(st.my_players, bmap)
+        try:
+            from src.fantasy.draft import positional_run, run_alert
+            _picks = _sl.draft_picks(draft_id)
+            alert = run_alert(positional_run(_picks, bmap))
+        except Exception:
+            alert = None
+        nexts = st.my_next_picks(3)
+        on_clock = bool(nexts and nexts[0] == st.current_pick)
+
+        print(f"\n  Pick {st.current_pick} of {st.teams * st.rounds}"
+              f"   ·   your slot {st.my_slot}"
+              f"   ·   your next: {', '.join(map(str, nexts)) or '—'}"
+              f"{'   ← ON THE CLOCK' if on_clock else ''}")
+        print(f"  roster: " + "  ".join(f"{k}:{v}" for k, v in have.items() if v))
+        if alert:
+            print(f"  ⚠  {alert}")
+
+        recs = recommend(board, st, starters, top=args.top)
+        print(f"\n  {'':<3}{'PLAYER':<24}{'POS':<5}{'VORP':>6}{'ADJ':>7}{'SURV':>6}{'ADP':>6}  WHY")
+        print(f"  {'─'*92}")
+        for i, s_ in enumerate(recs, 1):
+            v = s_.value
+            print(f"  {i:<3}{v.name:<24}{v.position:<5}{v.vorp:>6.0f}{s_.adjusted:>7.0f}"
+                  f"{s_.survives:>6.0%}{(v.adp or 0):>6.0f}  {s_.reason}")
+
+        if not getattr(args, "watch", False):
+            print()
+            return 0
+        if st.picks_made >= st.teams * st.rounds:
+            print("\n  Draft complete.\n")
+            return 0
+        _t.sleep(8)
+
+
 def cmd_filters(args: argparse.Namespace) -> int:
     """Report every registered subgroup filter, in-sample vs out-of-sample.
 
@@ -4146,6 +4257,20 @@ def main() -> int:
     p_shop.add_argument("--min-ev", type=float, default=2.0,
                         help="Minimum EV%% vs Pinnacle fair line (default 2.0)")
 
+    # draft — fantasy football draft assistant
+    p_draft = sub.add_parser("draft",
+        help="★ Fantasy draft board + live assistant (Sleeper)")
+    p_draft.add_argument("--user", default="amccrovitz", help="Your Sleeper username")
+    p_draft.add_argument("--top", type=int, default=15, help="Rows to show")
+    p_draft.add_argument("--pos", default=None, help="Filter to a position (RB/WR/QB/TE)")
+    p_draft.add_argument("--live", action="store_true",
+                         help="Poll the live draft and recommend for your current pick")
+    p_draft.add_argument("--watch", action="store_true",
+                         help="With --live: refresh continuously until the draft ends")
+    p_draft.add_argument("--sim", action="store_true",
+                         help="Monte-Carlo which opening pair works best from your slot")
+    p_draft.add_argument("--trials", type=int, default=250, help="Simulation trials")
+
     # filters — prove a subgroup finding forward
     sub.add_parser("filters",
         help="Subgroup filters under prospective test (in-sample vs out-of-sample)")
@@ -4436,6 +4561,7 @@ def main() -> int:
         "audit-models": cmd_audit_models,
         "coverage": cmd_coverage,
         "filters":  cmd_filters,
+        "draft":    cmd_draft,
         "retire":   cmd_retire,
         "arb":      cmd_arb,
         "clv":      cmd_clv,

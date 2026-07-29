@@ -151,6 +151,34 @@ class Suggestion:
     reason: str
 
 
+def positional_run(picks: list[dict], board: dict[str, PlayerValue],
+                   window: int = 8) -> dict[str, int]:
+    """How many of each position went in the last `window` picks.
+
+    Runs are real and self-reinforcing: once three managers take running backs,
+    the rest panic and the tier empties in a round. Seeing it one pick early is
+    the difference between getting the last back in a tier and getting the first
+    of the next one — which is a whole round of value.
+    """
+    out: dict[str, int] = {}
+    for pk in picks[-window:]:
+        v = board.get(pk.get("player_id"))
+        if v:
+            out[v.position] = out.get(v.position, 0) + 1
+    return out
+
+
+def run_alert(runs: dict[str, int], window: int = 8) -> str | None:
+    """A human-readable warning when a position is emptying fast."""
+    if not runs:
+        return None
+    pos, n = max(runs.items(), key=lambda kv: kv[1])
+    # Half the window going to one position is a run by any standard.
+    if n >= max(3, window // 2):
+        return f"RUN: {n} of the last {window} picks were {pos}"
+    return None
+
+
 def bye_conflict(candidate: PlayerValue, my_players: list[str],
                  board: dict[str, PlayerValue], starters_needed: dict[str, int]) -> int:
     """How many players I'd already have resting on this candidate's bye week.
