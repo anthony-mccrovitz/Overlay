@@ -73,15 +73,35 @@ def _normalize_market(m: str) -> str:
 
 
 def _normalize_sport(s: str) -> str:
+    """Canonical lane key for calibrator naming.
+
+    Delegates to src.config.models._key so a calibrator file lands on the same
+    key the registry, the CLV gate and the coverage report all use. This module
+    previously stopped at mlb/nba/wnba/nhl and let everything else pass through
+    verbatim, which fit calibrators under tournament-scoped names
+    (tennis_atp_wimbledon_moneyline, mma_mixed_martial_arts_moneyline,
+    soccer_usa_mls_moneyline) that no lookup by registry key could ever find.
+    Those lanes reported "no calibrator" while holding several.
+
+    Pooling is the intended side effect: tennis fits ONE calibrator across
+    tournaments instead of one per event. Individually none reached the 30-pick
+    floor, so the practical alternative was no calibrator at all. What is being
+    calibrated is the model's confidence, which is a property of the model
+    rather than of the surface it played on.
+    """
     s = (s or "").lower()
-    # wnba MUST precede nba: "nba" is a substring of "wnba", and the old order
-    # silently pooled WNBA picks into NBA calibrator fits (and would have
-    # applied NBA calibrators to WNBA probabilities).
-    if "wnba" in s: return "wnba"
-    if "mlb" in s or s == "baseball": return "mlb"
-    if "nba" in s or s == "basketball": return "nba"
-    if "nhl" in s or s == "hockey": return "nhl"
-    return s
+    # Guard the substring trap explicitly: "nba" is inside "wnba", and an
+    # ordering slip here silently pools WNBA picks into the NBA fit.
+    if "wnba" in s:
+        return "wnba"
+    try:
+        from src.config.models import _key
+        return _key(s, "")[0]
+    except Exception:
+        if "mlb" in s or s == "baseball": return "mlb"
+        if "nba" in s or s == "basketball": return "nba"
+        if "nhl" in s or s == "hockey": return "nhl"
+        return s
 
 
 # ── Core calibration ─────────────────────────────────────────────────────────
