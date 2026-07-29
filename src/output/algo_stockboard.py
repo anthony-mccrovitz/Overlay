@@ -20,14 +20,20 @@ ROOT       = Path(__file__).resolve().parent.parent.parent
 PICKS_FILE = ROOT / "data" / "pnl" / "picks.json"
 OUT_DIR    = ROOT / "output" / "stockboard"
 
-SPORT_CLEAN = {
-    "baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
-    "icehockey_nhl": "nhl", "soccer_germany_bundesliga": "soccer",
-    "soccer_italy_serie_a": "soccer", "soccer_spain_la_liga": "soccer",
-    "soccer_usa_mls": "soccer", "soccer_conmebol_copa_libertadores": "soccer",
-    "tennis_atp_french_open": "tennis", "tennis_atp_italian_open": "tennis",
-    "mma_mixed_martial_arts": "ufc",
-}
+# Canonical lane key. Delegated to src.config.models._key rather than
+# hand-mapped: this file previously carried its own copy, and the copies across
+# the repo had each drifted to a DIFFERENT answer for the same sport — one said
+# "mma", one "ufc"; one collapsed every club league to "soccer", another invented
+# "soccer_mls". A report keyed differently from the registry silently fails to
+# join it.
+def _canon_sport(s) -> str:
+    try:
+        from src.config.models import _key
+        return _key(str(s or ""), "")[0]
+    except Exception:
+        return str(s or "?")
+
+
 
 
 # ── Data layer ───────────────────────────────────────────────────────────────
@@ -40,7 +46,7 @@ def _load_picks() -> list[dict]:
 
 def _canon_sport(p: dict) -> str:
     s = (p.get("sport") or "").lower()
-    return SPORT_CLEAN.get(s, s)
+    return _canon_sport(s)
 
 
 def _stats(picks: list[dict]) -> dict:

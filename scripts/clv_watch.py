@@ -38,23 +38,15 @@ HISTORY = ROOT / "data" / "clv" / "clv_watch_history.jsonl"
 LATEST = ROOT / "data" / "clv" / "clv_watch_latest.json"
 SNAPSHOTS = ROOT / "data" / "clv" / "snapshots.json"
 
-# Sport label map — MUST match chef._clv_gate._sport_label so keys line up.
-_SPORT_LABEL = {
-    "baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
-    "icehockey_nhl": "nhl", "mma_mixed_martial_arts": "mma",
-    "soccer_fifa_world_cup": "wc",
-}
-
-
+# Sport label — delegated to src.config.models._key, the single definition.
+# This was a hand-copied mirror that answered "mma" where the registry says
+# "ufc", so watch rows could never be joined back to a promotable lane.
 def _sport_label(sp: str) -> str:
     try:
-        from src.analytics.clv_tracker import _normalize_sport
-        sp = _normalize_sport(str(sp or "?"))
+        from src.config.models import _key
+        return _key(str(sp or "?"), "")[0]
     except Exception:
-        sp = str(sp or "?")
-    return _SPORT_LABEL.get(
-        sp, sp.replace("soccer_", "").replace("tennis_atp_", "atp-")
-              .replace("tennis_wta_", "wta-").replace("golf_", "golf-")[:14])
+        return str(sp or "?")
 
 
 def _has_clv(s: dict) -> bool:

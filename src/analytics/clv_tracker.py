@@ -58,17 +58,12 @@ def collapse_board(edges: list[dict]) -> list[dict]:
     return list(best.values())
 
 
-# Canonical sport key aliases — same table as schema.py so CLV join always matches.
-_SPORT_ALIASES: dict[str, str] = {
-    "baseball_mlb":                 "mlb",
-    "basketball_nba":               "nba",
-    "basketball_nba_summer_league": "nba",
-    "basketball_wnba":              "wnba",
-    "americanfootball_nfl":         "nfl",
-    "americanfootball_ncaaf":       "ncaaf",
-    "basketball_ncaab":             "ncaab",
-    "icehockey_nhl":                "nhl",
-}
+# The LEDGER storage alias table, imported from schema.py rather than copied.
+# This is a DIFFERENT mapping from the registry lane key: it normalises how a
+# sport is stored on a pick (baseball_mlb -> mlb) and deliberately leaves club
+# leagues alone (soccer_usa_mls stays as-is). The old comment here said "same
+# table as schema.py", which is exactly the kind of promise a copy cannot keep.
+from src.tracking.schema import _SPORT_ALIASES  # noqa: E402
 
 
 def _normalize_sport(sport: str) -> str:
@@ -2293,14 +2288,17 @@ def get_clv_matrix() -> dict:
 
 
 def _sport_short(sp: str) -> str:
-    """Short label for a sport key — matches chef.py's gate labels."""
-    sp = _normalize_sport(str(sp or "?"))
-    return {
-        "baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
-        "icehockey_nhl": "nhl", "mma_mixed_martial_arts": "mma",
-        "soccer_fifa_world_cup": "wc",
-    }.get(sp, sp.replace("soccer_", "").replace("tennis_atp_", "atp-")
-              .replace("tennis_wta_", "wta-").replace("golf_", "golf-")[:14])
+    """Short label for a sport key — the SAME key the registry and gates use.
+
+    Was a local copy that answered "mma" where the registry says "ufc" and
+    truncated tournament keys to 14 chars, so the CLV matrix labelled rows that
+    could never be joined back to a promotable lane.
+    """
+    try:
+        from src.config.models import _key
+        return _key(_normalize_sport(str(sp or "?")), "")[0]
+    except Exception:
+        return str(sp or "?")
 
 
 def print_clv_matrix(min_picks: int = 3) -> None:
