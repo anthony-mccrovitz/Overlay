@@ -16,6 +16,53 @@ import json
 from pathlib import Path
 
 
+_TAINT_CACHE: set | None = None
+
+
+def _taint_index() -> set:
+    """Keys of every TAINTED pick, for filtering snapshots.
+
+    Snapshots carry no taint flag of their own, so they are matched back to the
+    ledger on the fields both records share: canonical sport, market, date and
+    bet side. Cached because clv_gate is called repeatedly by the audit.
+    """
+    global _TAINT_CACHE
+    if _TAINT_CACHE is not None:
+        return _TAINT_CACHE
+    try:
+        raw = json.loads(Path("data/pnl/picks.json").read_text())
+        picks = raw.get("picks", raw) if isinstance(raw, dict) else raw
+    except (json.JSONDecodeError, ValueError, OSError):
+        _TAINT_CACHE = set()
+        return _TAINT_CACHE
+    from src.config.models import _key
+    out = set()
+    for p in picks:
+        if not isinstance(p, dict) or not p.get("tainted"):
+            continue
+        try:
+            sport = _key(str(p.get("sport") or ""), "")[0]
+        except Exception:
+            sport = str(p.get("sport") or "")
+        out.add((sport, str(p.get("market") or "").lower(),
+                 str(p.get("date")), str(p.get("team") or "").lower().strip()))
+    _TAINT_CACHE = out
+    return out
+
+
+def _is_tainted_snapshot(s: dict) -> bool:
+    if not isinstance(s, dict):
+        return False
+    from src.config.models import _key
+    try:
+        sport = _key(str(s.get("sport") or ""), "")[0]
+    except Exception:
+        sport = str(s.get("sport") or "")
+    key = (sport, str(s.get("market") or "").lower(),
+           str(s.get("date")), str(s.get("team") or "").lower().strip())
+    return key in _taint_index()
+
+
 def clv_gate(min_n: int = 200):
     """Compute the CLV promotion gate for every (sport, market).
 
@@ -36,6 +83,19 @@ def clv_gate(min_n: int = 200):
         snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
     except (json.JSONDecodeError, ValueError, OSError):
         return None
+
+    # Drop snapshots belonging to TAINTED picks.
+    #
+    # The taint flag lives on the pick, never on the snapshot, so the CLV
+    # pipeline was the one place it was never applied — calibration,
+    # market_stats and the confidence signal all filter it. That let picks from
+    # a known-broken mechanism (a degenerate calibrator that flattened every game
+    # to one probability, team-blind WNBA ratings) set the beat-close rate for
+    # their own lane. Contamination was concentrated exactly where the verdicts
+    # were shakiest: wnba/spread 89%, wnba/total 87%, wnba/moneyline 55%,
+    # mlb/f5_total 47%, mlb/moneyline 42%. A model cannot be allowed to grade
+    # itself on output it produced while broken.
+    snaps = [s for s in snaps if not _is_tainted_snapshot(s)]
 
     def clv_val(s):
         # natural per-market metric: prob markets in %, line markets in points.

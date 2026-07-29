@@ -613,3 +613,68 @@ class TestConfidenceSignalExcludesTainted:
         f.write_text(json.dumps({"picks": rows}))
         snap = algo_snapshot("wnba", "spread", tag="t", pnl_file=f)
         assert snap.confidence["n"] == 0
+
+
+class TestClvGateExcludesTaintedSnapshots:
+    """The taint flag lives on the PICK, never on the snapshot, so the CLV
+    pipeline was the one place it was never applied — calibration, market_stats
+    and the confidence signal all filter it. That let picks from a known-broken
+    mechanism set the beat-close rate for their own lane: wnba/spread was 89%
+    tainted, wnba/total 87%, wnba/moneyline 55%, mlb/f5_total 47%.
+
+    A model must not grade itself on output it produced while broken.
+    """
+
+    def test_snapshot_of_a_tainted_pick_is_excluded(self, tmp_path, monkeypatch):
+        import json
+        from pathlib import Path
+        import src.analytics.clv_gate as gate
+
+        picks = {"picks": [{
+            "sport": "wnba", "market": "moneyline", "date": "2026-06-01",
+            "team": "Las Vegas Aces", "tainted": True, "result": "loss",
+        }]}
+        (tmp_path / "picks.json").write_text(json.dumps(picks))
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "data" / "pnl").mkdir(parents=True)
+        (tmp_path / "data" / "pnl" / "picks.json").write_text(json.dumps(picks))
+        monkeypatch.setattr(gate, "_TAINT_CACHE", None)
+
+        snap = {"sport": "basketball_wnba", "market": "moneyline",
+                "date": "2026-06-01", "team": "Las Vegas Aces"}
+        assert gate._is_tainted_snapshot(snap) is True
+
+    def test_clean_snapshot_is_kept(self, tmp_path, monkeypatch):
+        import json
+        import src.analytics.clv_gate as gate
+        picks = {"picks": [{
+            "sport": "wnba", "market": "moneyline", "date": "2026-06-01",
+            "team": "Las Vegas Aces", "tainted": True,
+        }]}
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "data" / "pnl").mkdir(parents=True)
+        (tmp_path / "data" / "pnl" / "picks.json").write_text(json.dumps(picks))
+        monkeypatch.setattr(gate, "_TAINT_CACHE", None)
+
+        other = {"sport": "basketball_wnba", "market": "moneyline",
+                 "date": "2026-06-02", "team": "New York Liberty"}
+        assert gate._is_tainted_snapshot(other) is False
+
+    def test_match_is_sport_normalized(self, tmp_path, monkeypatch):
+        """Snapshots store the full Odds API key (basketball_wnba) while picks
+        store the short one (wnba); the join must normalise both or it silently
+        matches nothing and the filter becomes a no-op."""
+        import json
+        import src.analytics.clv_gate as gate
+        picks = {"picks": [{
+            "sport": "mma_mixed_martial_arts", "market": "moneyline",
+            "date": "2026-06-01", "team": "Fighter A", "tainted": True,
+        }]}
+        monkeypatch.chdir(tmp_path)
+        (tmp_path / "data" / "pnl").mkdir(parents=True)
+        (tmp_path / "data" / "pnl" / "picks.json").write_text(json.dumps(picks))
+        monkeypatch.setattr(gate, "_TAINT_CACHE", None)
+
+        assert gate._is_tainted_snapshot({
+            "sport": "ufc", "market": "moneyline",
+            "date": "2026-06-01", "team": "Fighter A"}) is True

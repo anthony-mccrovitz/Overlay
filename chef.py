@@ -1869,6 +1869,42 @@ def cmd_shop(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── arb ─────────────────────────────────────────────
 
+def cmd_filters(args: argparse.Namespace) -> int:
+    """Report every registered subgroup filter, in-sample vs out-of-sample.
+
+    A subgroup found by slicing is a description, not a prediction. These are
+    registered with a start date and judged only on picks emitted after it.
+    """
+    from src.analytics.filter_experiment import evaluate_all
+
+    results = evaluate_all()
+    if not results:
+        print("  No filters registered.")
+        return 0
+
+    line = "═" * 78
+    print(f"\n  {line}")
+    print("  SUBGROUP FILTERS UNDER TEST")
+    print(f"  {line}")
+    for r in results:
+        print(f"\n  {r.name}   [{r.sport}/{r.market}, from {r.start_date}]")
+        print(f"    hypothesis: {r.hypothesis}")
+        if r.note:
+            print(f"    caveat:     {r.note}")
+        def fmt(n, wr, roi):
+            if not n:
+                return "no graded picks yet"
+            return f"n={n:<5} WR={wr:>5.1f}%  ROI={roi:>+6.1f}%"
+        print(f"    in-sample  (descriptive) : {fmt(r.in_n, r.in_wr, r.in_roi)}")
+        print(f"    OUT-OF-SAMPLE (evidence) : {fmt(r.out_n, r.out_wr, r.out_roi)}")
+        if r.comp_n:
+            print(f"    complement (the bets it skips): n={r.comp_n:<5} "
+                  f"ROI={r.comp_roi:>+6.1f}%")
+        print(f"    → {r.verdict}")
+    print(f"\n  {line}\n")
+    return 0
+
+
 def cmd_coverage(args: argparse.Namespace) -> int:
     """Is the pipeline still running? Per-lane emission + closing-line capture.
 
@@ -2061,6 +2097,32 @@ def cmd_scan(args: argparse.Namespace) -> int:
     if not boards:
         print("  No cached odds boards. Run: python3 chef.py picks <sport>")
         return 1
+
+    if getattr(args, "refresh", False):
+        # The scan itself is free — it reads the cache. But a cache is only an
+        # entry market while it's fresh, and the pick pipelines refresh boards
+        # twice a day while this can run four times, so without this two runs in
+        # three would find every board stale and scan nothing. Refresh only the
+        # sports whose board is already too old to use.
+        from src.data.odds_api import fetch_odds
+        import time as _time
+        stale = []
+        for b in boards:
+            age_min = (_time.time() - b.stat().st_mtime) / 60.0
+            if age_min > max_age:
+                stale.append(b.name.replace("_latest.json", ""))
+        if not stale:
+            print(f"  All {len(boards)} board(s) fresh — no refresh needed (0 credits).")
+        else:
+            print(f"  Refreshing {len(stale)} stale board(s)…")
+            for sport_key in stale:
+                try:
+                    fetch_odds(sport=sport_key, refresh=True)
+                except Exception as err:
+                    print(f"    {sport_key}: skipped ({str(err)[:60]})")
+            boards = sorted(Path("data/cache/odds").glob("*_latest.json"))
+            if only:
+                boards = [b for b in boards if only in b.name]
 
     all_rows: list[dict] = []
     diags: list[dict] = []
@@ -4055,6 +4117,10 @@ def main() -> int:
     p_shop.add_argument("--min-ev", type=float, default=2.0,
                         help="Minimum EV%% vs Pinnacle fair line (default 2.0)")
 
+    # filters — prove a subgroup finding forward
+    sub.add_parser("filters",
+        help="Subgroup filters under prospective test (in-sample vs out-of-sample)")
+
     # coverage — is the pipeline still running?
     p_cov = sub.add_parser("coverage",
         help="★ Pipeline health: which lanes stopped emitting, and are closing lines being captured")
@@ -4085,6 +4151,9 @@ def main() -> int:
                         help="Override bankroll for ¼-Kelly sizing (default: live balance)")
     p_scan.add_argument("--days", type=float, default=None,
                         help="Only show events starting within N days (default 3)")
+    p_scan.add_argument("--refresh", action="store_true",
+                        help="Re-fetch boards that are already too stale to scan "
+                             "(costs API credits; only the stale ones)")
     p_scan.add_argument("--log", action="store_true",
                         help="Log hits as strategy=line_shop shadow picks for CLV scoring")
 
@@ -4337,6 +4406,7 @@ def main() -> int:
         "scan":     cmd_scan,
         "audit-models": cmd_audit_models,
         "coverage": cmd_coverage,
+        "filters":  cmd_filters,
         "retire":   cmd_retire,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
