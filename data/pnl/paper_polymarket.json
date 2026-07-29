@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-07-29T03:58:27.468079+00:00",
+  "generated_at": "2026-07-29T09:31:29.216432+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 107.54,
-  "n_settled": 39,
-  "n_pending": 154,
+  "end_bankroll": 103.24,
+  "n_settled": 40,
+  "n_pending": 153,
   "wins": 14,
-  "losses": 25,
-  "staked": 172.09,
-  "pnl": -4.46,
-  "expected_pnl": 9.36,
-  "roi_pct": -2.59,
+  "losses": 26,
+  "staked": 176.39,
+  "pnl": -8.76,
+  "expected_pnl": 9.56,
+  "roi_pct": -4.97,
   "max_drawdown": 30.81,
   "skipped": {
-    "resting order never filled": 18,
+    "resting order never filled": 19,
     "exposure cap reached for the slate": 124,
-    "not settled yet": 12
+    "not settled yet": 10
   },
   "significance": {
-    "mean_edge_per_unit": 0.0546,
-    "sd_per_unit": 1.6204,
-    "n_for_2sigma": 3525
+    "mean_edge_per_unit": 0.0544,
+    "sd_per_unit": 1.6128,
+    "n_for_2sigma": 3512
   },
   "rows": [
     {
@@ -645,6 +645,22 @@
       "pnl": -4.48,
       "expected_pnl": 0.36,
       "equity": 107.54
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260728_los-angeles-sparks_moneyline_win",
+      "date": "2026-07-28",
+      "team": "Los Angeles Sparks",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.37,
+      "fair": 0.3879,
+      "stake": 4.3,
+      "shares": 11.62,
+      "result": "loss",
+      "pnl": -4.3,
+      "expected_pnl": 0.208,
+      "equity": 103.24
     }
   ]
 }
