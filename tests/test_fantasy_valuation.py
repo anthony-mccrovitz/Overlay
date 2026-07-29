@@ -118,3 +118,82 @@ class TestAdpArbitrage:
         add_vorp(vals, {"TE": 12})
         add_adp(vals, {})
         assert vals["a"].adp is None and vals["a"].adp_delta is None
+
+
+class TestStreamingDiscount:
+    """The correction VORP alone gets wrong.
+
+    VORP measures value against the replacement available AT THE DRAFT, but you
+    never have to live with that: QB/TE/K/DEF are startable off waivers most
+    weeks, so the real alternative to the 8th quarterback is "whichever QB has a
+    good matchup, for free". Running backs are not like this.
+
+    Without it the board put Josh Allen 15th overall (market ADP 27) and
+    Matthew Stafford in the third round, which is how people lose drafts.
+    """
+
+    def _mixed(self):
+        vals = {}
+        for i in range(20):
+            vals[f"qb{i}"] = _mk(f"qb{i}", "QB", 330 - 4 * i)
+        for i in range(40):
+            vals[f"rb{i}"] = _mk(f"rb{i}", "RB", 300 - 6 * i)
+        return vals
+
+    def test_streamable_positions_are_discounted(self):
+        from src.fantasy.valuation import STREAMABILITY
+        vals = self._mixed()
+        add_vorp(vals, {"QB": 12, "RB": 31})
+        qb = vals["qb0"]
+        assert qb.vorp == pytest.approx(qb.raw_vorp * STREAMABILITY["QB"])
+        assert qb.vorp < qb.raw_vorp
+
+    def test_scarce_positions_are_untouched(self):
+        vals = self._mixed()
+        add_vorp(vals, {"QB": 12, "RB": 31})
+        rb = vals["rb0"]
+        assert rb.vorp == pytest.approx(rb.raw_vorp)
+
+    def test_discount_does_not_reorder_within_a_position(self):
+        """It changes WHEN you take a QB, never WHICH QB."""
+        vals = self._mixed()
+        add_vorp(vals, {"QB": 12, "RB": 31})
+        qbs = sorted([v for v in vals.values() if v.position == "QB"],
+                     key=lambda v: -v.vorp)
+        raw = sorted([v for v in vals.values() if v.position == "QB"],
+                     key=lambda v: -v.raw_vorp)
+        assert [v.player_id for v in qbs] == [v.player_id for v in raw]
+
+    def test_can_be_disabled_for_inspection(self):
+        vals = self._mixed()
+        add_vorp(vals, {"QB": 12, "RB": 31}, apply_streaming=False)
+        assert vals["qb0"].vorp == pytest.approx(vals["qb0"].raw_vorp)
+
+    def test_kickers_are_crushed(self):
+        """Any kicker is any other kicker. The board must never surface one
+        before the last round."""
+        vals = {f"k{i}": _mk(f"k{i}", "K", 150 - 2 * i) for i in range(20)}
+        vals["rb0"] = _mk("rb0", "RB", 200)
+        for i in range(1, 40):
+            vals[f"rb{i}"] = _mk(f"rb{i}", "RB", 200 - 5 * i)
+        add_vorp(vals, {"K": 12, "RB": 31})
+        assert vals["k0"].vorp < vals["rb0"].vorp
+
+
+class TestRealLeagueConfig:
+    """This league is FULL PPR with only 2 WR starters + a flex. The obvious
+    default guess (half-PPR, 3 WR) put WR demand at 41.4 instead of 29.4, which
+    makes every receiver look ~40% more valuable than he is."""
+
+    def test_two_wr_plus_flex_is_not_three_wr(self):
+        real = starters_from_settings(
+            ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX", "K", "DEF",
+             "BN", "BN", "BN", "BN", "BN"], teams=12)
+        assert real["WR"] == pytest.approx(12 * (2 + 0.45))
+        assert real["WR"] < 12 * 3
+
+    def test_full_ppr_doubles_reception_value_vs_half(self):
+        line = {"rec": 100, "rec_yd": 1200}
+        full = scoring.score(line, {"rec": 1.0, "rec_yd": 0.1})
+        half = scoring.score(line, {"rec": 0.5, "rec_yd": 0.1})
+        assert full - half == pytest.approx(50.0)

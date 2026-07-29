@@ -45,6 +45,27 @@ REGRESSION = {"QB": 0.20, "RB": 0.30, "WR": 0.25, "TE": 0.30, "K": 0.50, "DEF": 
 # Minimum games in the source season for the sample to mean anything.
 MIN_GAMES = 4
 
+# STREAMING DISCOUNT — the correction VORP alone gets wrong.
+#
+# VORP measures value against the replacement available AT THE DRAFT. But you do
+# not have to live with your draft-day replacement all season: QB, TE, K and DEF
+# are startable off waivers most weeks, so the real alternative to drafting the
+# 8th quarterback is not the 13th quarterback, it is "whichever quarterback has a
+# good matchup, for free, every week". Running backs are not like this — a
+# starting RB almost never appears on waivers.
+#
+# Without this the board recommends Matthew Stafford in the third round because
+# his raw VORP is high, which is how people lose leagues. The multiplier shrinks
+# VORP toward the streamable floor; it does NOT reorder within a position.
+STREAMABILITY = {
+    "QB":  0.45,   # 1-QB league: ~20 startable QBs for 12 slots
+    "TE":  0.70,   # thin at the top, streamable after the cliff
+    "RB":  1.00,   # scarce and not replaceable in-season
+    "WR":  1.00,
+    "K":   0.10,   # never draft early; any kicker is any other kicker
+    "DEF": 0.20,   # matchup-streamed all year
+}
+
 
 @dataclass
 class PlayerValue:
@@ -55,7 +76,8 @@ class PlayerValue:
     age: int | None = None
     proj_points: float = 0.0        # projected season total
     ppg: float = 0.0                # projected per game
-    vorp: float = 0.0               # points above replacement
+    vorp: float = 0.0               # points above replacement, streaming-adjusted
+    raw_vorp: float = 0.0           # before the streaming discount
     tier: int = 0
     adp: float | None = None
     adp_delta: float | None = None  # our rank minus market rank; +ve = falls to us
@@ -144,13 +166,17 @@ def project(stats_by_pid: dict, players_db: dict,
 
 # ─────────────────────────── VORP + tiers ────────────────────────────────────
 
-def add_vorp(values: dict[str, PlayerValue], starters: dict[str, float]) -> None:
+def add_vorp(values: dict[str, PlayerValue], starters: dict[str, float],
+             apply_streaming: bool = True) -> None:
     """Set .vorp on every player: points above the last startable man at his
-    position.
+    position, discounted by how replaceable that position is in-season.
 
     Replacement is the (starters+1)-th best, not the worst rosterable body: the
     relevant alternative to drafting a RB is the RB you can still start, not a
     handcuff nobody plays.
+
+    The streaming discount is what stops the board recommending a quarterback in
+    round three. See STREAMABILITY.
     """
     by_pos: dict[str, list[PlayerValue]] = {}
     for v in values.values():
@@ -161,8 +187,10 @@ def add_vorp(values: dict[str, PlayerValue], starters: dict[str, float]) -> None
         n = int(round(starters.get(pos, 0)))
         idx = min(max(n, 0), len(group) - 1)
         replacement = group[idx].proj_points if group else 0.0
+        mult = STREAMABILITY.get(pos, 1.0) if apply_streaming else 1.0
         for v in group:
-            v.vorp = round(v.proj_points - replacement, 1)
+            v.raw_vorp = round(v.proj_points - replacement, 1)
+            v.vorp = round(v.raw_vorp * mult, 1)
 
 
 def add_tiers(values: dict[str, PlayerValue], gap_factor: float = 0.75) -> None:
