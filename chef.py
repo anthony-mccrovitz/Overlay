@@ -737,16 +737,20 @@ def cmd_record_personal(args: argparse.Namespace) -> int:
     if filter_market != "all":
         picks = [p for p in picks if p.get("market") == filter_market]
 
-    settled  = [p for p in picks if p.get("result") in ("win", "loss", "push")]
+    settled  = [p for p in picks if p.get("result") in bk.SETTLED]
     non_push = [p for p in settled if p.get("result") != "push"]
     wins     = [p for p in non_push if p.get("result") == "win"]
     losses   = [p for p in non_push if p.get("result") == "loss"]
-    pending  = [p for p in picks if not p.get("result")]
-    staked   = sum(float(p.get("stake_dollars") or p.get("stake") or 0) for p in non_push)
-    profit   = sum(float(p.get("profit_dollars") or 0) for p in non_push)
-    wr       = len(wins) / len(non_push) if non_push else 0.0
-    roi      = profit / staked * 100 if staked > 0 else 0.0
-    bankroll = _PERSONAL_BANKROLL_START + profit
+    # An unsettled bet is anything not in SETTLED — including the literal string
+    # "pending", which older rows carry. Testing `not p.get("result")` treated
+    # those as graded, so they showed up in neither column and went unnoticed.
+    pending  = bk.open_bets(picks)
+    summary  = bk.summary(picks, start=_PERSONAL_BANKROLL_START)
+    staked   = summary["staked"]
+    profit   = summary["profit"]
+    wr       = summary["win_rate"] / 100
+    roi      = summary["roi_pct"]
+    bankroll = summary["balance"]
 
     sep = "═" * 60
     print(f"\n  {sep}")
