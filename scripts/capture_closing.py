@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -54,6 +55,14 @@ SPORTS = {
     "soccer_france_ligue_one":   "soccer_france_ligue_one",
     "soccer_usa_mls":            "soccer_usa_mls",
     "soccer_mexico_ligamx":      "soccer_mexico_ligamx",
+    # Added 2026-07-29. The dynamic event scanner had been logging picks for both
+    # of these for weeks while capture never fetched their closings, so they sat
+    # at 0/13 scored — a lane accruing a CLV sample it could never score, which
+    # looks like patient progress and is actually a lane disqualifying itself.
+    # tests/test_capture_coverage.py now fails the build if any sport logging
+    # snapshots is missing from this dict, so the next league can't repeat it.
+    "soccer_brazil_campeonato":  "soccer_brazil_campeonato",
+    "soccer_korea_kleague1":     "soccer_korea_kleague1",
     "ufc":     "mma_mixed_martial_arts",
     "mma":     "mma_mixed_martial_arts",
     # NOTE: tennis is handled dynamically (see _active_tennis_keys) because it runs
@@ -411,6 +420,50 @@ def capture_golf_outrights(force: bool) -> int:
     return captured
 
 
+def _preflight_quota() -> None:
+    """Refuse to run blind: exit RED when the Odds API has no credits left.
+
+    An exhausted quota is the nastiest failure this script has, because nothing
+    about it looks like a failure. /v4/sports is free, so it keeps answering 200
+    with a full sports list; only the paid odds calls 401. The fetch layer turns
+    that 401 into an empty DataFrame, `capture_sport` reads empty as "this game
+    has no odds" and skips it, and the run ends with "Total events captured: 0"
+    and exit 0 — a green workflow that archived nothing.
+
+    Closing lines are the one input that cannot be backfilled: miss tonight's
+    close and that CLV is gone permanently. So a run that CANNOT capture must be
+    loud, not quiet. Exiting non-zero turns the workflow red, which is what fires
+    the alert issue via scripts/alert_issue.sh.
+    """
+    import requests
+    key = os.environ.get("ODDS_API_KEY")
+    if not key:
+        _log("  FATAL: ODDS_API_KEY is not set — cannot capture closing lines.")
+        sys.exit(1)
+    try:
+        r = requests.get("https://api.the-odds-api.com/v4/sports",
+                         params={"apiKey": key}, timeout=15)
+    except Exception as e:                       # network flake: let the run try
+        _log(f"  WARN preflight quota check failed ({e}) — attempting capture anyway")
+        return
+    if r.status_code in (401, 429):
+        _log(f"  FATAL: Odds API rejected the key (HTTP {r.status_code}): "
+             f"{r.text[:160]}")
+        sys.exit(1)
+    try:
+        remaining = int(r.headers.get("x-requests-remaining", "-1"))
+    except (TypeError, ValueError):
+        remaining = -1
+    if remaining == 0:
+        _log("  FATAL: Odds API quota EXHAUSTED (0 remaining). Closing lines are "
+             "NOT being captured and tonight's CLV is being lost permanently. "
+             "Top up the plan or cut request volume.")
+        sys.exit(1)
+    if 0 < remaining <= 250:
+        _log(f"  WARN: only {remaining} Odds API requests remaining — capture will "
+             f"start failing silently when this hits 0.")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--sport", choices=list(SPORTS.keys()) + ["tennis", "golf", "all"], default="all")
@@ -426,6 +479,8 @@ def main() -> None:
     ap.add_argument("--force", action="store_true",
                     help="Re-capture even if event already in archive")
     args = ap.parse_args()
+
+    _preflight_quota()
 
     # Pre-game band: from GRACE minutes after first pitch (lag grace) out to
     # --window minutes before start. delta = minutes until commence (>0 = future).

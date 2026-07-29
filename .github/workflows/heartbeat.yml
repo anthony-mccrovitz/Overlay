@@ -1,0 +1,86 @@
+name: Daily heartbeat
+
+# Sends ONE digest a day, green or red, so that SILENCE becomes the alarm.
+#
+# The alarm-only design has a hole you can drive a season through: an alarm that
+# stops firing looks exactly like a system that's healthy. monitor.yml went red
+# for twelve straight days and the experience was twelve quiet days. Worse, if
+# the runner, the cron, the credentials, or the repo itself break, the alarm
+# can't fire at all — the failure mode silences its own detector.
+#
+# A heartbeat inverts that. It arrives every day regardless of state, so you stop
+# waiting for bad news to arrive and start noticing when good news doesn't. No
+# digest by evening = something upstream of every check is broken.
+#
+# Delivery deliberately reuses scripts/alert_issue.sh — the same path real alarms
+# take. One channel, exercised daily, so a delivery regression can't hide.
+on:
+  schedule:
+    # 21:40 UTC — after the day's picks, capture, grading and monitor have run.
+    - cron: "40 21 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: heartbeat
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet pandas numpy requests python-dotenv
+
+      - name: Build the digest
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        # `heartbeat` always exits 0 — it reports state rather than judging it.
+        # If it somehow can't run at all, say so in the digest instead of
+        # skipping delivery: "the reporter is broken" is itself the day's news.
+        run: |
+          python chef.py heartbeat > /tmp/heartbeat.out 2>&1 || true
+          [ -s /tmp/heartbeat.out ] || \
+            echo "chef.py heartbeat produced NO OUTPUT — the digest generator itself is broken. Check this run's log." > /tmp/heartbeat.out
+          cat /tmp/heartbeat.out
+
+      - name: Post the digest to the Actions summary
+        if: always()
+        run: |
+          {
+            echo '### 📟 Daily heartbeat'
+            echo '```'
+            cat /tmp/heartbeat.out
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Deliver the digest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # A single long-lived issue that accumulates one comment per day. You
+          # are its assignee, so every comment notifies you by default — and the
+          # comment history doubles as a scrollable record of how the pipeline
+          # has actually behaved over time.
+          ALERT_LABEL: heartbeat
+          ALERT_INTRO: "today's pipeline heartbeat"
+          ALERT_RECUR: "today's pipeline heartbeat"
+          ALERT_FOOTER: "Leave this issue OPEN — it collects one heartbeat per day. A day with no new comment means the pipeline stopped reporting."
+        run: bash scripts/alert_issue.sh "📟 Daily heartbeat" /tmp/heartbeat.out
+
+      - name: Explain a red heartbeat
+        if: failure()
+        run: |
+          echo "::error::The heartbeat could not be DELIVERED. Alarm delivery"
+          echo "::error::shares this code path, so real integrity alarms are"
+          echo "::error::probably not reaching you either. Check scripts/alert_issue.sh."

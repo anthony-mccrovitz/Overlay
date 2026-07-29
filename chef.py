@@ -2319,8 +2319,23 @@ def cmd_scan(args: argparse.Namespace) -> int:
                           for d in skipped[:6])
         print(f"    skipped: {stale}{' …' if len(skipped) > 6 else ''}")
 
+    # UNKNOWN ≠ CLEAN. If every board was skipped we scanned nothing at all, and
+    # "no +EV opportunities" below would be a lie of omission: it reads as "the
+    # market is tight today" when the truth is "this tool did no work." That is
+    # how a scanner sits dead for a week behind green CI runs. A scan that
+    # examined zero boards is a failure, and says so.
+    if not live:
+        print(f"\n  ✗ UNKNOWN — 0 boards scanned, {len(skipped)} skipped.")
+        print("    NOTHING was checked, so this is NOT 'no edges today'. Every")
+        print("    board was missing or older than the "
+              f"{max_age:.0f}m freshness limit.")
+        print("    Fix: run with --refresh, or check ODDS_API_KEY / quota.")
+        print(f"\n  {line}\n")
+        return 1
+
     if not all_rows:
         print(f"\n  No +EV opportunities at {min_ev:.1f}%+.")
+        print(f"  ({len(live)} board(s) genuinely scanned — this is a real result.)")
         print("  Zero is the correct and common result — a tight board means the")
         print("  books agree, and inventing an edge there is how bankrolls die.")
         print(f"\n  {line}\n")
@@ -2941,16 +2956,13 @@ def cmd_health(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_monitor(args: argparse.Namespace) -> int:
-    """Loud data-integrity monitor — flags any IN-SEASON market that's gone dark.
+def _monitor_run(emit=print) -> tuple[int, list[str]]:
+    """Run every integrity check, sending each output line to `emit`.
 
-    The silent-failure trap that bit us repeatedly: workflows exit green even
-    when a component stops producing (props, MLB spreads, motorsport all died
-    when the laptop was retired and nothing noticed for weeks). This asks the
-    Odds API what's *actually* in season, then verifies every market we model
-    for those sports produced a pick in the last 2 days, closings are being
-    captured, and CLV is scoring. Exits NON-ZERO on any gap so the GitHub
-    Action turns RED — a visible alarm instead of a silently-green check.
+    Split out of cmd_monitor so the daily heartbeat reports the SAME verdict
+    the alarm does. When the digest and the alarm each had their own notion of
+    "healthy" they would eventually disagree, and the one you read every day
+    would be the one that was wrong. Returns (gap_count, unverifiable_reasons).
     """
     from datetime import date as _date, timedelta
     from collections import defaultdict
@@ -2958,20 +2970,55 @@ def cmd_monitor(args: argparse.Namespace) -> int:
 
     today  = _date.today()
     cutoff = (today - timedelta(days=2)).isoformat()
-    print(f"\n  ─ Integrity Monitor — {today.strftime('%A %b %d, %Y')} ────────────────")
+    emit(f"\n  ─ Integrity Monitor — {today.strftime('%A %b %d, %Y')} ────────────────")
 
-    # 1. Ground truth: what's actually in season (Odds API active-sports list)
+    # 1. Ground truth: what's actually in season (Odds API active-sports list).
+    #    `unknown` tracks checks that could not be RUN, as opposed to checks that
+    #    ran and failed. Both are red (see the exit at the bottom) — an alarm that
+    #    can't see is not an all-clear — but they're reported separately so the
+    #    fix is obvious: a gap means a pipeline broke, an UNKNOWN means the
+    #    monitor itself is blind and every "✓" below is unverified.
+    unknown: list[str] = []
     active: set = set()
     try:
         import requests
         key = os.environ.get("ODDS_API_KEY")
-        if key:
+        if not key:
+            unknown.append("ODDS_API_KEY is not set — cannot tell which sports "
+                           "are in season, so no market can be checked")
+        else:
             r = requests.get("https://api.the-odds-api.com/v4/sports",
                              params={"apiKey": key}, timeout=15)
             if r.ok:
+                # Quota exhaustion does NOT look like an error. /v4/sports keeps
+                # returning 200 with a full sports list (it's a free endpoint)
+                # while every paid odds call 401s, and the fetch layer turns that
+                # into an empty DataFrame — which capture_closing reads as "no
+                # odds for this game" and skips. On 2026-07-29 the key sat at
+                # 0/500 remaining and the day's closing lines were simply never
+                # archived, with nothing anywhere reporting a problem. Read the
+                # credit header and treat empty as blind, not as healthy.
+                try:
+                    remaining = int(r.headers.get("x-requests-remaining", "-1"))
+                except (TypeError, ValueError):
+                    remaining = -1
+                if remaining == 0:
+                    unknown.append(
+                        "Odds API quota EXHAUSTED (0 requests remaining) — odds "
+                        "calls are 401ing, so closing lines are NOT being captured "
+                        "and today's CLV is being lost permanently")
+                elif 0 < remaining <= 250:
+                    unknown.append(f"Odds API quota nearly gone ({remaining} left) "
+                                   f"— capture will start failing silently")
                 active = {s["key"] for s in r.json() if s.get("active")}
+                if not active:
+                    unknown.append("Odds API returned an EMPTY active-sports list "
+                                   "(quota exhausted or upstream outage)")
+            else:
+                unknown.append(f"Odds API active-sports call failed "
+                               f"(HTTP {r.status_code}) — season check impossible")
     except Exception as e:
-        print(f"  ⚠ could not fetch active sports ({e}) — season check skipped")
+        unknown.append(f"could not fetch active sports ({e}) — season check impossible")
 
     # 2. Last pick date per (sport, market) from the canonical record
     try:
@@ -2997,38 +3044,111 @@ def cmd_monitor(args: argparse.Namespace) -> int:
 
     # 3. What we model per sport + how to tell its season is live. Off-season
     #    sports (no active key) are skipped, so this never false-alarms.
-    specs = [
+    #
+    #    Which markets to EXPECT comes from the model registry, not a list kept by
+    #    hand here. The hand-kept list had drifted: it still demanded daily output
+    #    from mlb/pitcher_strikeouts and nhl/puck_line, both deliberately RETIRED
+    #    in ba820633 — so the monitor spent every day reporting that lanes we
+    #    chose to kill were not producing. Same lesson as models._key: one source
+    #    of truth, delegated to, never re-typed.
+    #
+    #    A lane is expected to produce when it is (a) not retired and (b) has
+    #    logged at least once, i.e. actually wired up. Never-logged lanes are
+    #    unbuilt, not broken — `chef.py grid` is where "to build" belongs, and
+    #    dumping them into the daily alarm is how the alarm loses its meaning.
+    try:
+        from src.config.models import MODELS as _REG, model_status as _rstatus
+    except Exception as _e:                       # registry unreadable → say so,
+        _REG, _rstatus = {}, None                 # rather than silently expecting
+        unknown.append(f"model registry unreadable ({_e}) — cannot tell which "  # nothing
+                       f"lanes are supposed to be producing")
+
+    def _expected(reg_sports, sport_test) -> list[str]:
+        if not _rstatus:
+            return []
+        out = []
+        for (s, m) in sorted(_REG):
+            if s not in reg_sports or _rstatus(s, m) == "retired":
+                continue
+            if not _last_for(sport_test, m):
+                continue                          # never wired — not a regression
+            out.append(m)
+        return out
+
+    _specs_raw = [
         ("MLB",        lambda a: "baseball_mlb" in a,
-                       lambda s: s in ("mlb", "baseball_mlb"),
-                       ["moneyline", "total", "spread", "f5_total", "nrfi", "pitcher_strikeouts"]),
+                       lambda s: s in ("mlb", "baseball_mlb"),            ("mlb",)),
         ("NBA",        lambda a: "basketball_nba" in a,
-                       lambda s: s in ("nba", "basketball_nba"),
-                       ["moneyline", "spread", "total"]),
+                       lambda s: s in ("nba", "basketball_nba"),          ("nba",)),
         ("NHL",        lambda a: "icehockey_nhl" in a,
-                       lambda s: s in ("nhl", "icehockey_nhl"),
-                       ["moneyline", "puck_line", "total"]),
+                       lambda s: s in ("nhl", "icehockey_nhl"),           ("nhl",)),
         ("WNBA",       lambda a: "basketball_wnba" in a,
-                       lambda s: s in ("wnba", "basketball_wnba"),
-                       ["moneyline", "spread", "total"]),
+                       lambda s: s in ("wnba", "basketball_wnba"),        ("wnba",)),
         ("Soccer/WC",  lambda a: "soccer_fifa_world_cup" in a,
-                       lambda s: s == "soccer_fifa_world_cup",
-                       ["moneyline"]),
+                       lambda s: s == "soccer_fifa_world_cup",            ("wc",)),
         ("Tennis",     lambda a: any(k.startswith("tennis_") for k in a),
-                       lambda s: s.startswith("tennis_"),
-                       ["moneyline"]),
+                       lambda s: s.startswith("tennis_"),                 ("tennis",)),
         ("Golf",       lambda a: any(k.startswith("golf_") for k in a),
-                       lambda s: s.startswith("golf_"),
-                       ["outright"]),
+                       lambda s: s.startswith("golf_"),                   ("pga",)),
         ("MMA/UFC",    lambda a: any(k.startswith("mma_") for k in a),
-                       lambda s: s.startswith("mma_"),
-                       ["moneyline"]),
+                       lambda s: s.startswith("mma_"),                    ("ufc",)),
         ("Motorsport", lambda a: any("auto_racing" in k for k in a),
                        lambda s: "auto_racing" in s,
-                       ["win"]),
+                       ("f1", "nascar", "indycar")),
     ]
+    specs = [(label, at, st, _expected(reg, st))
+             for label, at, st, reg in _specs_raw]
+
+    # 3b. "Active" in the Odds API does NOT mean "playing". It means the sport key
+    #     is live in their system, which includes a board posted months ahead for
+    #     next season. On 2026-07-29 that flagged icehockey_nhl as active while its
+    #     earliest event was 2026-09-29 — so the monitor screamed that NHL
+    #     moneyline/total/puck_line had gone DARK, in July, about a league on its
+    #     summer break. Three false alarms every single day, in the same report as
+    #     the real ones. That is how a daily red run becomes background noise and
+    #     stops being read at all, so a precise season test is load-bearing for
+    #     the alarm's credibility, not a nicety.
+    #
+    #     Ground truth instead: does this sport have an event starting inside the
+    #     next SEASON_WINDOW days? The /events endpoint is free (0 quota credits),
+    #     and we only probe the handful of keys our specs actually care about.
+    #
+    #     EXCEPTION — outright/futures lanes. Golf is modelled as tournament
+    #     outrights, and its only active keys are season-long winner markets whose
+    #     single "event" is dated a year out (golf_masters_tournament_winner →
+    #     2027-04-08). Judging those by an imminent-event window would quietly
+    #     drop golf from monitoring altogether — trading three noisy false alarms
+    #     for a silent blind spot, which is the worse trade. Futures lanes keep
+    #     the API's own active flag as their season test.
+    SEASON_WINDOW = 7
+    FUTURES_LANES = {"Golf", "Motorsport"}
+    if active:
+        from datetime import datetime as _dt, timezone as _tz
+        horizon = (_dt.now(_tz.utc) + timedelta(days=SEASON_WINDOW)).isoformat()
+        futures_keys = {k for k in active
+                        if any(test({k}) for lbl, test, _, _ in specs
+                               if lbl in FUTURES_LANES)}
+        candidates = {k for k in active
+                      if any(test({k}) for _, test, _, _ in specs)} - futures_keys
+        playing: set = set(futures_keys)
+        for k in sorted(candidates):
+            try:
+                ev = requests.get(
+                    f"https://api.the-odds-api.com/v4/sports/{k}/events",
+                    params={"apiKey": os.environ.get("ODDS_API_KEY")}, timeout=15)
+                if not ev.ok:
+                    unknown.append(f"could not list {k} events (HTTP {ev.status_code}) "
+                                   f"— cannot tell if it is in season")
+                    continue
+                if any((e.get("commence_time") or "") <= horizon for e in ev.json()):
+                    playing.add(k)
+            except Exception as e:
+                unknown.append(f"could not list {k} events ({type(e).__name__}) "
+                               f"— cannot tell if it is in season")
+        active = playing
 
     issues = 0
-    print("  In-season market coverage:")
+    emit("  In-season market coverage:")
     any_active = False
     for label, active_test, sport_test, markets in specs:
         if not active or not active_test(active):
@@ -3037,13 +3157,17 @@ def cmd_monitor(args: argparse.Namespace) -> int:
         for mk in markets:
             d = _last_for(sport_test, mk)
             if d and d >= cutoff:
-                print(f"    ✓ {label:11} {mk:18} last {d}")
+                emit(f"    ✓ {label:11} {mk:18} last {d}")
             else:
                 shown = f"DARK (last {d})" if d else "NEVER logged"
-                print(f"    ✗ {label:11} {mk:18} {shown}  ← in season, not producing")
+                emit(f"    ✗ {label:11} {mk:18} {shown}  ← in season, not producing")
                 issues += 1
-    if not any_active:
-        print("    (no active sports detected — Odds API key issue or true off-day)")
+    if not any_active and not unknown:
+        # Reached the API fine and it named sports, but none of them are ones we
+        # model. Genuinely possible, but rare enough to be worth surfacing rather
+        # than passing over in silence.
+        unknown.append("no sport we model is in season right now — nothing was "
+                       "verified (real off-day, or the season tests are stale)")
 
     # 4. Closing capture freshness (the irreplaceable data CLV joins against)
     close_files = glob.glob("data/clv/closing/*.json")
@@ -3058,9 +3182,9 @@ def cmd_monitor(args: argparse.Namespace) -> int:
         except (json.JSONDecodeError, ValueError, OSError):
             pass
     if nonempty:
-        print(f"  ✓ Closing capture   {nonempty} non-empty archive(s) in last 2 days")
+        emit(f"  ✓ Closing capture   {nonempty} non-empty archive(s) in last 2 days")
     else:
-        print(f"  ✗ Closing capture   NONE in last 2 days  ← CLV can't score (capture-closing.yml)")
+        emit(f"  ✗ Closing capture   NONE in last 2 days  ← CLV can't score (capture-closing.yml)")
         issues += 1
 
     # 5. CLV scoring fresh
@@ -3071,12 +3195,12 @@ def cmd_monitor(args: argparse.Namespace) -> int:
                   and (s.get("clv") is not None or s.get("line_clv") is not None)]
         sd = sorted({s.get("date") for s in scored if s.get("date")})
         if sd and sd[-1] >= cutoff:
-            print(f"  ✓ CLV scoring       latest scored {sd[-1]}")
+            emit(f"  ✓ CLV scoring       latest scored {sd[-1]}")
         else:
-            print(f"  ✗ CLV scoring       stale (latest {sd[-1] if sd else 'never'})  ← join not happening")
+            emit(f"  ✗ CLV scoring       stale (latest {sd[-1] if sd else 'never'})  ← join not happening")
             issues += 1
     except (json.JSONDecodeError, ValueError, OSError):
-        print(f"  ✗ CLV scoring       snapshots.json unreadable")
+        emit(f"  ✗ CLV scoring       snapshots.json unreadable")
         issues += 1
 
     # 6. Per-market CLV COVERAGE guard — the silent-regression catcher.
@@ -3107,7 +3231,7 @@ def cmd_monitor(args: argparse.Namespace) -> int:
         if (s.get("clv_pct") is not None or s.get("line_clv") is not None
                 or s.get("clv") is not None):
             cell[1] += 1
-    print("  CLV coverage (settled window, in-season markets):")
+    emit("  CLV coverage (settled window, in-season markets):")
     for label, active_test, sport_test, markets in specs:
         if not active or not active_test(active):
             continue
@@ -3120,19 +3244,194 @@ def cmd_monitor(args: argparse.Namespace) -> int:
                 continue  # too few settled to judge — no alarm
             frac = scr / tot
             if frac < COV_FLOOR:
-                print(f"    ✗ {label:11} {mk:18} {scr}/{tot} scored "
+                emit(f"    ✗ {label:11} {mk:18} {scr}/{tot} scored "
                       f"({frac*100:.0f}%)  ← CLV join REGRESSED (floor {COV_FLOOR*100:.0f}%)")
                 issues += 1
             else:
-                print(f"    ✓ {label:11} {mk:18} {scr}/{tot} scored ({frac*100:.0f}%)")
+                emit(f"    ✓ {label:11} {mk:18} {scr}/{tot} scored ({frac*100:.0f}%)")
 
-    print(f"  {'─' * 58}")
+    # 7. CAPTURE-RATE GATE — is this lane even CAPABLE of being validated?
+    #    Sections 1–6 ask whether picks flow and whether the join works on what
+    #    was captured. This asks a prior question they both miss: are we archiving
+    #    the closing lines at all? A lane at 19% capture (tennis) or 0% (brazil,
+    #    korea) can log picks forever and accrue a CLV sample that will never
+    #    reach any promotion floor — it looks like patient progress and is
+    #    actually a lane quietly disqualifying itself. Delegates to the shared
+    #    src.analytics.coverage helpers rather than recomputing the rate here.
+    from src.analytics.coverage import (capture_rate as _cap_rate,
+                                        canon_sport as _canon,
+                                        MIN_CAPTURE_RATE as _CAP_FLOOR)
+    #    Measured over a SETTLED window ending CAP_LAG days ago, never one ending
+    #    today. Closing lines are captured minutes before first pitch, so today's
+    #    and tomorrow's picks legitimately have no close yet — counting them as
+    #    misses made healthy lanes look broken (WNBA read 42% purely because 56 of
+    #    its 68 "missing" closes were tonight's unplayed games). An alarm that
+    #    fires on games that haven't happened yet teaches you to ignore it.
+    CAP_DAYS, CAP_MIN_N, CAP_LAG = 14, 10, 3
+    cap_end = today - timedelta(days=CAP_LAG)
+    cap_lo = (cap_end - timedelta(days=CAP_DAYS)).isoformat()
+    cap_hi = cap_end.isoformat()
+    sports_seen = sorted({_canon(s.get("sport")) for s in _snaps
+                          if isinstance(s, dict) and s.get("sport")
+                          and cap_lo <= str(s.get("date") or "")[:10] <= cap_hi})
+    emit(f"  Closing-line capture ({CAP_DAYS}d ending {cap_hi}) — "
+         f"can these lanes ever be validated?")
+    for sp in sports_seen:
+        n, closed, rate = _cap_rate(sp, CAP_DAYS, cap_end)
+        if n < CAP_MIN_N:
+            continue  # too thin to judge — not evidence of a problem
+        if rate < _CAP_FLOOR:
+            emit(f"    ✗ {sp:<22} {closed:>5}/{n:<5} {rate:>5.0%}  "
+                  f"← UN-VALIDATABLE (floor {_CAP_FLOOR:.0%}): picks accruing "
+                  f"that CLV can never score")
+            issues += 1
+        else:
+            emit(f"    ✓ {sp:<22} {closed:>5}/{n:<5} {rate:>5.0%}")
+
+    emit(f"  {'─' * 58}")
+    if unknown:
+        emit(f"  ✗ {len(unknown)} CHECK(S) COULD NOT BE RUN — this is NOT a pass:")
+        for u in unknown:
+            emit(f"      · {u}")
+        emit("    Any ✓ above is unverified. Treat today as UNMONITORED until fixed.")
     if issues:
-        print(f"  ⚠ {issues} INTEGRITY GAP(S) — see ✗ above. Action exits RED on purpose.")
+        emit(f"  ⚠ {issues} INTEGRITY GAP(S) — see ✗ above. Action exits RED on purpose.")
+    if not issues and not unknown:
+        emit(f"  ✓ ALL GREEN — every in-season market producing, closings + CLV fresh")
+    return issues, unknown
+
+
+def cmd_monitor(args: argparse.Namespace) -> int:
+    """Loud data-integrity monitor — exits NON-ZERO on any gap OR blind spot.
+
+    Wraps _monitor_run and turns its findings into an exit code. Non-zero here
+    is what turns the GitHub Action red, which is what fires the alert issue.
+    """
+    issues, unknown = _monitor_run(print)
+    return 1 if ((issues or unknown) and not getattr(args, "soft", False)) else 0
+
+
+def cmd_heartbeat(args: argparse.Namespace) -> int:
+    """One digest, EVERY day, green or red — so silence becomes the alarm.
+
+    Alarms alone can't be trusted: an alarm that stops firing is indistinguishable
+    from a system that's fine, which is precisely how twelve consecutive red days
+    read as twelve quiet days. A heartbeat inverts the burden of proof. It arrives
+    daily whatever the state, so a missing digest — cron dead, runner broken,
+    repo unreachable, credentials expired — is itself the signal, and no positive
+    alarm has to survive for you to notice.
+
+    Deliberately dependency-free: it reads the committed record and never calls
+    an external API, so it can still report on the day the Odds API is the thing
+    that's down. Always exits 0 — the heartbeat reports state, it doesn't judge
+    it; `chef.py monitor` is what goes red.
+    """
+    import json as _json
+    from datetime import date as _date, timedelta as _td
+    import glob as _glob
+
+    today = _date.today()
+    t_iso = today.isoformat()
+
+    # Same checks the alarm runs, so the digest and the alarm can never disagree.
+    sink: list[str] = []
+    try:
+        issues, unknown = _monitor_run(sink.append)
+    except Exception as e:                       # a broken check must not
+        issues, unknown = 0, [f"monitor itself raised {type(e).__name__}: {e}"]
+
+    try:
+        raw = _json.loads(_PNL_FILE.read_text())
+        picks = raw if isinstance(raw, list) else raw.get("picks", [])
+    except (OSError, ValueError):
+        picks = []
+
+    today_all  = [p for p in picks if p.get("date") == t_iso]
+    card       = [p for p in picks if p.get("card_pick")]
+    today_card = [p for p in card if p.get("date") == t_iso]
+    sports_today = sorted({str(p.get("sport", "?")) for p in today_all})
+
+    settled = [p for p in card if p.get("result") in ("win", "loss", "push")]
+    w  = sum(1 for p in settled if p.get("result") == "win")
+    l  = sum(1 for p in settled if p.get("result") == "loss")
+    pu = sum(1 for p in settled if p.get("result") == "push")
+    profit = sum((p.get("profit") or 0) for p in settled)
+    roi = (profit / len(settled) * 100) if settled else 0.0
+
+    # Ungraded settled picks: the backlog that silently rots the record.
+    stale_cut = (today - _td(days=3)).isoformat()
+    ungraded = sum(1 for p in picks
+                   if not p.get("result") and str(p.get("date") or "") <= stale_cut)
+
+    # Closing capture + CLV freshness, straight off disk.
+    todays_files = [f for f in _glob.glob("data/clv/closing/*.json")
+                    if Path(f).stem[-10:] == t_iso]
+    events = 0
+    for f in todays_files:
+        try:
+            d = _json.loads(Path(f).read_text().replace("NaN", "null"))
+            events += len(d) if isinstance(d, list) else 0
+        except (json.JSONDecodeError, ValueError, OSError):
+            pass
+    try:
+        snaps = _json.loads(Path("data/clv/snapshots.json").read_text().replace("NaN", "null"))
+        snaps = snaps.get("snapshots", snaps) if isinstance(snaps, dict) else snaps
+        scored = [s for s in snaps if isinstance(s, dict)
+                  and (s.get("clv_pct") is not None or s.get("line_clv") is not None
+                       or s.get("clv") is not None)]
+        sd = sorted({s.get("date") for s in scored if s.get("date")})
+        clv_line = f"latest {sd[-1] if sd else 'never'} · {len(scored)} scored all-time"
+    except (json.JSONDecodeError, ValueError, OSError):
+        clv_line = "snapshots.json UNREADABLE"
+
+    try:
+        from src.config.models import MODELS, is_live
+        n_live = sum(1 for (s, m) in MODELS if is_live(s, m))
+        lanes_line = f"{n_live} live · {len(MODELS) - n_live} not live"
+    except Exception:
+        lanes_line = "registry unreadable"
+
+    # The un-validatable lanes the capture gate found, pulled from the same run.
+    unval = [ln.strip().split()[1] for ln in sink if "UN-VALIDATABLE" in ln]
+
+    if unknown:
+        state = f"🟡 UNVERIFIED — {len(unknown)} check(s) could not run"
+    elif issues:
+        state = f"🔴 RED — {issues} integrity gap(s)"
     else:
-        print(f"  ✓ ALL GREEN — every in-season market producing, closings + CLV fresh")
-    # Loud by default: non-zero exit turns the GitHub Action RED on any gap.
-    return 1 if (issues and not getattr(args, "soft", False)) else 0
+        state = "🟢 GREEN — all checks passed"
+
+    line = "═" * 64
+    print(f"\n  {line}")
+    print(f"  📟 OVERLAY HEARTBEAT — {today:%A %b %d, %Y}")
+    print(f"  {line}")
+    print(f"  STATE      {state}")
+    print(f"  PIPELINE   {len(today_all)} pick(s) today across {len(sports_today)} sport(s)")
+    print(f"  CARD       {len(today_card)} today · record {w}-{l}-{pu}  "
+          f"{profit:+.1f}u ({roi:+.1f}% ROI)")
+    print(f"  CAPTURE    {events} event(s) archived today in {len(todays_files)} file(s)")
+    print(f"  CLV        {clv_line}")
+    print(f"  GRADING    {ungraded} pick(s) unsettled and older than 3d")
+    print(f"  LANES      {lanes_line}")
+    if unval:
+        print(f"  BLOCKED    un-validatable (capture < 60%): {' · '.join(unval)}")
+    for u in unknown:
+        print(f"  ⚠ UNKNOWN  {u}")
+    if issues:
+        # Only the findings themselves ("← reason" marks a real gap), never the
+        # monitor's own tallies — echoing those back would pad the digest with
+        # counts of the very list being printed.
+        detail = [ln.strip() for ln in sink
+                  if "←" in ln and "UN-VALIDATABLE" not in ln]
+        if detail:
+            print("  " + "─" * 62)
+            for ln in detail:
+                print(f"  {ln}")
+    print("  " + "─" * 62)
+    print("  This digest is sent EVERY day, green or red. If a day passes with")
+    print("  no digest, the pipeline itself is down — that silence IS the alarm.")
+    print(f"  {line}\n")
+    return 0
 
 
 def cmd_verify(args: argparse.Namespace) -> int:
@@ -4425,6 +4724,7 @@ def main() -> int:
     sub.add_parser("health", help="Daily 30s health check: picks/closings/CLV/grading fresh?")
     p_monitor = sub.add_parser("monitor", help="Loud integrity check: flag any IN-SEASON market gone dark (exits RED on gaps)")
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
+    sub.add_parser("heartbeat", help="★ Daily digest, sent green OR red — a missing digest is the alarm")
     p_verify = sub.add_parser("verify", help="Trigger core cloud workflows NOW and report pass/fail (~2-5 min, no waiting for cron)")
     p_verify.add_argument("--workflows", type=str, help="Comma-separated workflow files (default: monitor.yml,night.yml,clv.yml)")
     p_cal = sub.add_parser("calibrate", help="Refit all sport×market calibrators from settled results (fixes overconfident edges)")
@@ -4597,6 +4897,7 @@ def main() -> int:
         "status":   cmd_status,
         "health":   cmd_health,
         "monitor":  cmd_monitor,
+        "heartbeat": cmd_heartbeat,
         "verify":   cmd_verify,
         "edge":     cmd_edge,
         "promote":  cmd_promote,
