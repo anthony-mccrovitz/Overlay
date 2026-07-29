@@ -42,3 +42,13 @@ jobs:
 
       - name: Model calibration gate (fails only if a LIVE market is overconfident)
         run: python chef.py validate --gate
+
+      # The test suite proves the standard's LOGIC; this proves the live board
+      # still SATISFIES it. Without this, a lane can silently stop emitting and
+      # every downstream number keeps quoting a frozen sample — which is exactly
+      # how mlb/total missed 15 of 45 days while its 58% beat-close was current.
+      - name: Pipeline coverage gate (fails if a LIVE lane stopped emitting)
+        run: python chef.py coverage --gate
+
+      - name: Build standard audit (fails if a LIVE lane has an unexempted gap)
+        run: python chef.py audit-models --live

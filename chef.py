@@ -1884,6 +1884,31 @@ def cmd_coverage(args: argparse.Namespace) -> int:
     days = int(getattr(args, "days", None) or 30)
     only = (getattr(args, "sport", None) or "").lower()
     min_n = int(getattr(args, "min_picks", None) or 1)
+    gate  = bool(getattr(args, "gate", False))
+
+    if gate:
+        # CI mode: judge ONLY live lanes. A shadow lane going quiet is research
+        # drifting; a live lane going quiet means the thing taking real money
+        # stopped and its numbers are being quoted from a frozen sample.
+        bad = []
+        for c in report(days):
+            if not is_live(c.sport, c.market):
+                continue
+            ok, msg = healthy(c)
+            n, closed, rate = capture_rate(c.sport, days)
+            if not ok:
+                bad.append(f"{c.sport}/{c.market}: {msg}")
+            elif n and rate < MIN_CAPTURE_RATE:
+                bad.append(f"{c.sport}/{c.market}: capture {rate:.0%} "
+                           f"({closed}/{n}) — snapshots can't be scored")
+        if bad:
+            print("\n  ✗ COVERAGE GATE FAILED — a LIVE lane is not healthy:")
+            for b in bad:
+                print(f"      {b}")
+            print("\n  Run `chef.py coverage` for the day-by-day breakdown.\n")
+            return 1
+        print("  ✓ coverage gate: every live lane is emitting and being captured.")
+        return 0
 
     lanes = report(days)
     if only:
@@ -4037,6 +4062,9 @@ def main() -> int:
     p_cov.add_argument("--sport", default=None, help="Only this sport")
     p_cov.add_argument("--min-picks", type=int, default=None, dest="min_picks",
                        help="Hide lanes below this activity floor")
+    p_cov.add_argument("--gate", action="store_true",
+                       help="CI mode: exit non-zero if any LIVE lane stopped emitting "
+                            "or its closing lines stopped being captured")
 
     # audit-models — the build standard, as a report
     p_am = sub.add_parser("audit-models",

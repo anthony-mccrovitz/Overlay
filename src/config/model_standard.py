@@ -20,6 +20,7 @@ into permanent cover.
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -183,6 +184,24 @@ def has_clv_coverage(sport: str, market: str) -> tuple[bool, str]:
     return True, f"{n} moved lines, beats close {beat}%"
 
 
+def beat_significance(beat_pct: float | None, n: int) -> tuple[float | None, int | None]:
+    """(z, n_needed) for a beat-close rate against the coin-flip null.
+
+    Beating the close 58% of the time sounds decisive and, on 112 moved lines,
+    is not: z=1.69, which is the wrong side of 1.96. The promotion gate's n>=30
+    floor is a data-sufficiency check, NOT a significance test — at a true 55%
+    edge you need ~2,400 moved lines to prove it, and at 58% you need 151.
+    Reporting z alongside the rate keeps "clears the gate" from being read as
+    "proven".
+    """
+    if beat_pct is None or not n:
+        return None, None
+    p = beat_pct / 100.0
+    z = (p - 0.5) / math.sqrt(0.25 / n)
+    needed = math.ceil(0.25 * (1.96 / (p - 0.5)) ** 2) if p > 0.5 else None
+    return z, needed
+
+
 def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
     """The gate a lane must clear to be LIVE: beat the close AND make money."""
     r = _clv_rows().get((sport, market))
@@ -203,7 +222,16 @@ def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
     if roi is None:
         return False, f"beats close {beat}% but ROI unknown"
     ok = beat >= PROMOTE_BEAT_MIN and roi > 0
-    return ok, f"beats close {beat}% on n={n}, ROI {roi:+.1f}%"
+    z, needed = beat_significance(beat, n)
+    sig = ""
+    if z is not None:
+        if abs(z) >= 1.96:
+            sig = f", z={z:+.2f} SIGNIFICANT"
+        else:
+            sig = f", z={z:+.2f} NOT significant"
+            if needed:
+                sig += f" (needs n≈{needed})"
+    return ok, f"beats close {beat}% on n={n}, ROI {roi:+.1f}%{sig}"
 
 
 # ─────────────────────────── the standard ────────────────────────────────────
