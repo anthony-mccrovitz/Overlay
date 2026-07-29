@@ -1,0 +1,50 @@
+[
+  {
+    "sport": "tennis_wta_washington_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Alexandra Eala",
+    "matchup": "Alexandra Eala vs Leylah Fernandez",
+    "odds": -139,
+    "model_prob": 0.6077,
+    "model_prob_raw": 0.3683,
+    "market_fair": 0.6077,
+    "model_weight": 0.0,
+    "implied_prob": 0.5463,
+    "edge_pct": 6.14,
+    "sportsbook": "BetRivers",
+    "surface": "clay",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_washington_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Naomi Osaka",
+    "matchup": "Naomi Osaka vs Ashlyn Krueger",
+    "odds": -340,
+    "model_prob": 0.7767,
+    "model_prob_raw": 0.8214,
+    "market_fair": 0.7319,
+    "model_weight": 0.5,
+    "implied_prob": 0.7243,
+    "edge_pct": 5.24,
+    "sportsbook": "theScore Bet",
+    "surface": "clay",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_washington_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Elisabetta Cocciaretto @ Emma Navarro",
+    "odds": -110,
+    "best_odds": -110,
+    "line": 21.5,
+    "model_prob": 0.5756,
+    "implied_prob": 0.4889,
+    "edge_pct": 8.66,
+    "sportsbook": "BetRivers"
+  }
+]
