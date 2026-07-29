@@ -1869,6 +1869,77 @@ def cmd_shop(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── arb ─────────────────────────────────────────────
 
+def cmd_coverage(args: argparse.Namespace) -> int:
+    """Is the pipeline still running? Per-lane emission + closing-line capture.
+
+    Separates a dead pipeline (the sport logged nothing) from a silent model
+    (the sport logged fine, this market produced nothing) — they look identical
+    in the ledger and need completely different fixes.
+    """
+    from src.analytics.coverage import (
+        report, capture_rate, healthy, canon_sport, MIN_CAPTURE_RATE,
+    )
+    from src.config.models import is_live
+
+    days = int(getattr(args, "days", None) or 30)
+    only = (getattr(args, "sport", None) or "").lower()
+    min_n = int(getattr(args, "min_picks", None) or 1)
+
+    lanes = report(days)
+    if only:
+        lanes = [c for c in lanes if canon_sport(c.sport) == canon_sport(only)]
+    lanes = [c for c in lanes if c.market_days or c.sport_active_days >= min_n]
+    if not lanes:
+        print("  No lanes with activity in the window.")
+        return 0
+
+    line = "═" * 86
+    print(f"\n  {line}")
+    print(f"  PIPELINE COVERAGE — last {days} days")
+    print(f"  {line}")
+    print(f"\n  {'LANE':<30}{'':<4}{'EMITTED':>10}{'COVER':>8}{'GAP':>6}   STATUS")
+    print(f"  {'─'*84}")
+
+    unhealthy = 0
+    for c in sorted(lanes, key=lambda x: (x.sport, x.market)):
+        ok, msg = healthy(c)
+        live = is_live(c.sport, c.market)
+        if not ok and (live or c.market_days):
+            unhealthy += 1
+        flag = "🟢" if live else "  "
+        mark = "ok" if ok else "✗ "
+        print(f"  {c.sport+'/'+c.market:<30}{flag:<4}"
+              f"{str(c.market_days)+'/'+str(c.sport_active_days):>10}"
+              f"{c.market_coverage:>7.0%}{c.longest_gap:>6}   {mark} "
+              f"{'' if ok else msg[:44]}")
+
+    # Detail where it matters: the gaps themselves, split by cause.
+    for c in sorted(lanes, key=lambda x: (x.sport, x.market)):
+        if not (c.pipeline_gap_days or c.market_gap_days):
+            continue
+        if not (is_live(c.sport, c.market) or c.market_days >= 5):
+            continue
+        print(f"\n  {c.sport}/{c.market}" + ("  🟢 LIVE" if is_live(c.sport, c.market) else ""))
+        if c.pipeline_gap_days:
+            print(f"    PIPELINE DOWN ({len(c.pipeline_gap_days)}d) — sport logged nothing:")
+            print(f"      {', '.join(c.pipeline_gap_days[:12])}")
+        if c.market_gap_days:
+            print(f"    MODEL SILENT ({len(c.market_gap_days)}d) — pipeline ran, this market didn't:")
+            print(f"      {', '.join(c.market_gap_days[:12])}")
+
+    print(f"\n  {'─'*84}")
+    print(f"  CLOSING-LINE CAPTURE (a snapshot with no close can never be scored)")
+    for sport in sorted({canon_sport(c.sport) for c in lanes}):
+        n, closed, rate = capture_rate(sport, days)
+        if not n:
+            continue
+        mark = "ok" if rate >= MIN_CAPTURE_RATE else "✗ "
+        print(f"    {mark} {sport:<22}{closed:>6}/{n:<6} {rate:>6.0%}")
+
+    print(f"\n  {line}\n")
+    return 1 if unhealthy else 0
+
+
 def cmd_audit_models(args: argparse.Namespace) -> int:
     """Audit every lane against the build standard (src/config/model_standard.py).
 
@@ -3928,6 +3999,14 @@ def main() -> int:
     p_shop.add_argument("--min-ev", type=float, default=2.0,
                         help="Minimum EV%% vs Pinnacle fair line (default 2.0)")
 
+    # coverage — is the pipeline still running?
+    p_cov = sub.add_parser("coverage",
+        help="★ Pipeline health: which lanes stopped emitting, and are closing lines being captured")
+    p_cov.add_argument("--days", type=int, default=None, help="Window in days (default 30)")
+    p_cov.add_argument("--sport", default=None, help="Only this sport")
+    p_cov.add_argument("--min-picks", type=int, default=None, dest="min_picks",
+                       help="Hide lanes below this activity floor")
+
     # audit-models — the build standard, as a report
     p_am = sub.add_parser("audit-models",
         help="★ Audit every lane against the build standard (what tests/test_model_standard.py enforces)")
@@ -4191,6 +4270,7 @@ def main() -> int:
         "shop":     cmd_shop,
         "scan":     cmd_scan,
         "audit-models": cmd_audit_models,
+        "coverage": cmd_coverage,
         "arb":      cmd_arb,
         "clv":      cmd_clv,
         "clv-watch": cmd_clv_watch,

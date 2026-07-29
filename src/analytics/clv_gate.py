@@ -55,16 +55,20 @@ def clv_gate(min_n: int = 200):
     except Exception:
         def _normalize_sport(x): return x
 
-    # Short, readable sport label — MUST match src.config.models._key so a row
-    # here maps 1:1 to a promotable registry entry (e.g. 'wc', 'mlb', 'wnba').
+    # Short sport label. This MUST be src.config.models._key itself, not a
+    # re-implementation of it: the label is the join key between a CLV row and a
+    # promotable registry entry, and the two drifted badly.
+    #
+    # The old local copy produced tournament-scoped labels truncated to 14 chars
+    # ('atp-french_ope', 'wta-bad_hombur', 'golf-the_open_'), which broke the
+    # join two ways. Tennis fragmented across six tournament rows that each
+    # stayed under the n=30 floor, so a sport with 246 snapshots reported ZERO
+    # measurable CLV; and 'mma'/'golf-*' never matched the registry's 'ufc'/'pga'
+    # at all. Those lanes looked un-instrumented when they were merely mislabelled.
+    from src.config.models import _key as _registry_key
+
     def _sport_label(sp: str) -> str:
-        sp = _normalize_sport(str(sp or "?"))
-        return {
-            "baseball_mlb": "mlb", "basketball_nba": "nba", "basketball_wnba": "wnba",
-            "icehockey_nhl": "nhl", "mma_mixed_martial_arts": "mma",
-            "soccer_fifa_world_cup": "wc",
-        }.get(sp, sp.replace("soccer_", "").replace("tennis_atp_", "atp-")
-                  .replace("tennis_wta_", "wta-").replace("golf_", "golf-")[:14])
+        return _registry_key(_normalize_sport(str(sp or "?")), "")[0]
 
     recent_cut = (_date.today() - timedelta(days=30)).isoformat()
     # Key on (sport, market) — NOT market alone. Pooling sports is Simpson's

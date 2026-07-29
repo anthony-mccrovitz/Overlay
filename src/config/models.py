@@ -151,7 +151,12 @@ def _key(sport: str, market: str) -> tuple[str, str]:
         raw = "f1"
     elif raw.startswith("mma") or raw == "mma_mixed_martial_arts":
         raw = "ufc"
-    elif raw.startswith("golf_pga"):
+    elif raw.startswith("golf"):
+        # Every golf board is tournament-scoped (golf_us_open_winner,
+        # golf_masters_tournament_winner, golf_the_open_championship_winner, …)
+        # but the registry holds ONE pga lane. Mapping only golf_pga* left the
+        # majors unable to join it, so their CLV never reached the lane it was
+        # supposed to promote or retire.
         raw = "pga"
     s = raw
     m = (market or "").lower()

@@ -208,12 +208,36 @@ def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
 
 # ─────────────────────────── the standard ────────────────────────────────────
 
+def pipeline_health(sport: str, market: str) -> tuple[bool, str]:
+    """Is the lane still emitting, and are its lines still being captured?
+
+    Every other check reads history. This one asks whether the history is still
+    being written — the failure mode where a model's numbers stay frozen and
+    keep getting quoted. mlb/total missed 15 of 45 days while its 58% beat-close
+    was treated as current, and 9 of those were days the pipeline ran fine and
+    only the totals model went silent.
+    """
+    from src.analytics.coverage import (
+        lane_coverage, capture_rate, healthy, MIN_CAPTURE_RATE,
+    )
+    cov = lane_coverage(sport, market)
+    ok, detail = healthy(cov)
+    if not ok:
+        return False, detail
+    n, closed, rate = capture_rate(sport)
+    if n and rate < MIN_CAPTURE_RATE:
+        return False, (f"{detail}; but only {closed}/{n} snapshots "
+                       f"({rate:.0%}) got a closing line — unscoreable")
+    return True, f"{detail}; capture {rate:.0%}"
+
+
 CHECKS = (
     ("backtest",   has_backtest),
     ("calibrator", has_calibrator),
     ("edge_shrink", edge_shrink),
     ("clv_coverage", has_clv_coverage),
     ("grader_test", has_grader_test),
+    ("pipeline", pipeline_health),
     ("promotion_gate", clears_promotion_gate),
 )
 
