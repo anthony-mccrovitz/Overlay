@@ -455,3 +455,84 @@ class TestPriceObservedStrategiesBypassGate:
     def test_unknown_strategies_are_still_gated(self):
         n = normalize_pick(self._pick(strategy="some_new_model_strategy"))
         assert n["edge_pct"] < n["raw_edge_pct"]
+
+
+class TestHomeAwayDerivation:
+    """home_team/away_team exist on the schema and nothing ever wrote them —
+    0% populated on every lane with a real sample. Any home/away analysis
+    therefore classified every pick as away and produced a bias that looked
+    real. normalize_pick derives them from `matchup`, which IS populated."""
+
+    def test_derives_both_sides_from_matchup(self):
+        from src.tracking.schema import normalize_pick
+        p = normalize_pick({
+            "sport": "mlb", "market": "total", "direction": "OVER", "line": 8.5,
+            "odds": -110, "date": "2026-07-29", "team": "OVER 8.5",
+            "matchup": "Toronto Blue Jays @ Washington Nationals",
+            "model_prob": 0.55, "edge_pct": 1.2,
+        })
+        assert p["away_team"] == "Toronto Blue Jays"
+        assert p["home_team"] == "Washington Nationals"
+
+    def test_explicit_values_win_over_derivation(self):
+        from src.tracking.schema import normalize_pick
+        p = normalize_pick({
+            "sport": "mlb", "market": "moneyline", "direction": "WIN",
+            "odds": 120, "date": "2026-07-29", "team": "Mets",
+            "matchup": "A @ B", "home_team": "Real Home", "away_team": "Real Away",
+            "model_prob": 0.55, "edge_pct": 1.2,
+        })
+        assert p["home_team"] == "Real Home"
+        assert p["away_team"] == "Real Away"
+
+    def test_ambiguous_separator_is_not_guessed(self):
+        """' v ' ordering is not reliably away-first on soccer/tennis boards, so
+        guessing would silently invert home and away across whole leagues."""
+        from src.tracking.schema import _split_matchup
+        assert _split_matchup("Team A v Team B") == (None, None)
+        assert _split_matchup("Team A vs Team B") == (None, None)
+
+    def test_missing_matchup_is_safe(self):
+        from src.tracking.schema import _split_matchup
+        assert _split_matchup(None) == (None, None)
+        assert _split_matchup("") == (None, None)
+
+
+class TestVoidIsTerminal:
+    """grade.py writes result="void" in five places (cancelled game, withdrawn
+    player, postponed event) and market_stats/public_stats both treat it as
+    settled — but schema.py only knew win/loss/push, so normalize_pick silently
+    nulled it. Every migrate turned 1,628 legitimately-voided picks back into
+    "pending", producing a grading backlog no grader could ever clear."""
+
+    def test_void_survives_normalization(self):
+        from src.tracking.schema import normalize_pick
+        p = normalize_pick({
+            "sport": "mlb", "market": "moneyline", "direction": "WIN",
+            "odds": -110, "date": "2026-07-20", "team": "Mets",
+            "matchup": "A @ B", "model_prob": 0.55, "edge_pct": 1.2,
+            "result": "void", "profit": 0.0,
+        })
+        assert p["result"] == "void"
+
+    def test_void_is_valid(self):
+        from src.tracking.schema import validate_pick
+        pick = {f: None for f in __import__(
+            "src.tracking.schema", fromlist=["CANONICAL_FIELDS"]).CANONICAL_FIELDS}
+        pick.update({"market": "moneyline", "direction": "WIN", "result": "void"})
+        assert not [i for i in validate_pick(pick) if "invalid result" in i]
+
+    def test_void_counts_as_graded_so_it_is_immutable(self):
+        from src.tracking.schema import _is_ungraded
+        assert _is_ungraded({"result": "void", "profit": None}) is False
+        assert _is_ungraded({"result": None, "profit": None}) is True
+
+    def test_unknown_result_is_still_rejected(self):
+        from src.tracking.schema import normalize_pick
+        p = normalize_pick({
+            "sport": "mlb", "market": "moneyline", "direction": "WIN",
+            "odds": -110, "date": "2026-07-20", "team": "Mets",
+            "matchup": "A @ B", "model_prob": 0.55, "edge_pct": 1.2,
+            "result": "cancelled",
+        })
+        assert p["result"] is None

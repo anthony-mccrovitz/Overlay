@@ -65,11 +65,20 @@ def load_picks_safe(path: str | Path) -> dict:
             fcntl.flock(lf, fcntl.LOCK_UN)
 
 
+# Terminal settlement states. "void" is written by grade.py in five places
+# (cancelled game, withdrawn player, postponed event) and is treated as settled
+# by market_stats and public_stats — but this module only ever knew about
+# win/loss/push, so normalize_pick silently nulled it. That made every migrate
+# convert legitimately-voided picks back into "pending": 1,628 of them, which
+# then read as a grading backlog that no grader could ever clear.
+SETTLED_RESULTS = ("win", "loss", "push", "void")
+
+
 def _is_ungraded(pick: dict) -> bool:
     """A pick is ungraded (safe to refresh) only if it has no settled result.
-    Any win/loss/push — or a booked profit — means it's final and immutable."""
+    Any settled result — or a booked profit — means it's final and immutable."""
     result = str(pick.get("result") or "").strip().lower()
-    if result in ("win", "loss", "push"):
+    if result in SETTLED_RESULTS:
         return False
     return pick.get("profit") is None
 
@@ -171,12 +180,50 @@ def rewrite_picks_safe(path: str | Path, data: dict) -> None:
 
 
 # Required fields — every canonical pick must have these.
+# Markets validate_pick accepts. The list previously held only the six original
+# game markets, so every per-market prop lane added since — batter_hits,
+# pitcher_strikeouts, player_points and the rest — reported as an invalid market.
+# That was 8,815 of 13,996 rows flagged on every migrate, which is loud enough
+# that nobody reads the output and a REAL validation failure hides in it.
+VALID_MARKETS = frozenset({
+    # game markets
+    "moneyline", "spread", "total", "f5_total", "nrfi", "outright", "unknown",
+    # generic prop bucket (legacy) + per-market prop lanes
+    "prop",
+    "batter_hits", "batter_walks", "batter_rbis", "batter_home_runs",
+    "batter_total_bases", "pitcher_strikeouts",
+    "player_points", "player_assists", "player_rebounds", "player_goals",
+    "player_shots_on_goal", "player_blocks", "player_steals", "player_threes",
+    "player_pra", "player_blocked_shots",
+    "anytime_scorer", "draw_no_bet", "win",
+})
+
+# Required fields, enforced by validate_pick. home_team/away_team are
+# deliberately NOT here: they're derived from `matchup` on a best-effort basis
+# and are absent whenever the fixture format is ambiguous, so requiring them
+# would fail valid picks.
 CANONICAL_FIELDS = (
     "pick_id", "date", "sport", "market", "direction",
     "team", "matchup", "odds", "line", "sportsbook",
     "model_prob", "edge_pct", "stake", "card_pick",
     "result", "profit", "recorded_at", "resulted_at",
 )
+
+
+def _split_matchup(matchup) -> tuple[str | None, str | None]:
+    """('AWAY @ HOME') -> (away, home). Returns (None, None) if unparseable.
+
+    Only " @ " is accepted as the separator. Soccer and tennis boards sometimes
+    render fixtures with " v " or " vs ", where the ordering convention is NOT
+    reliably away-first, and guessing there would silently invert home and away
+    on entire leagues.
+    """
+    s = str(matchup or "").strip()
+    if " @ " not in s:
+        return None, None
+    away, home = s.split(" @ ", 1)
+    away, home = away.strip(), home.strip()
+    return (away or None), (home or None)
 
 # Strategies whose edge is an OBSERVED price difference between two venues,
 # not a probability our models estimated. The calibration gate corrects model
@@ -282,7 +329,7 @@ def validate_pick(pick: dict) -> list[str]:
             issues.append(f"missing field: {f}")
 
     market = pick.get("market", "")
-    if market not in ("moneyline", "spread", "total", "nrfi", "prop", "f5_total", "unknown"):
+    if market not in VALID_MARKETS:
         issues.append(f"invalid market: {market!r}")
 
     direction = pick.get("direction", "")
@@ -290,7 +337,7 @@ def validate_pick(pick: dict) -> list[str]:
         issues.append(f"invalid direction: {direction!r}")
 
     result = pick.get("result")
-    if result not in (None, "win", "loss", "push"):
+    if result not in (None,) + SETTLED_RESULTS:
         issues.append(f"invalid result: {result!r}")
 
     odds = pick.get("odds")
@@ -459,7 +506,7 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
 
     # ── Result / Profit ───────────────────────────────────────────────────────
     result = raw.get("result")
-    if result not in (None, "win", "loss", "push"):
+    if result not in (None,) + SETTLED_RESULTS:
         result = None
 
     # ── Calibration gate (X1) ─────────────────────────────────────────────────
@@ -579,6 +626,18 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         # 'validated' the moment a market is promoted — no per-runner change.
         "clv_status":      raw.get("clv_status") or _clv_status_safe(sport, market),
     }
+    # Derive home/away from the matchup. Both fields exist on the schema and
+    # essentially nothing ever wrote them — 0% populated on every lane with a
+    # meaningful sample — while `matchup` is populated ~100% of the time in
+    # "AWAY @ HOME" form. Any home/away split therefore silently classified every
+    # pick as away and produced a bias that looked real. Deriving here means one
+    # implementation instead of one per runner, and `chef.py migrate` backfills
+    # the history.
+    if not norm.get("home_team") or not norm.get("away_team"):
+        away, home = _split_matchup(norm.get("matchup"))
+        norm["home_team"] = raw.get("home_team") or home
+        norm["away_team"] = raw.get("away_team") or away
+
     # Auto-classify shadow_filter if missing — keeps every pipeline tagged
     # without each one needing to import the filter explicitly.
     if not norm["shadow_filter"]:

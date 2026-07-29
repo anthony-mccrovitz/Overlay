@@ -35,6 +35,18 @@ TESTS_DIR       = Path("tests")
 MIN_CLV_SAMPLE = 30
 
 # Promotion gate — must match src/pipeline/promoter.py.
+#
+# DECIDED 2026-07-29: the gate does NOT require statistical significance, and
+# that is deliberate rather than an oversight. n>=30 is a data-sufficiency floor;
+# proving a true 55% edge against the close needs ~2,400 moved lines, and even
+# mlb/total's 58% on n=112 is only z=+1.69.
+#
+# Enforcing z>=1.96 would demote the only live lane and leave nothing carding for
+# weeks. The bet taken instead: three independent signals agreeing (beat-close,
+# positive ROI, and k=0.81 saying the claimed edges are real) is enough to size
+# at quarter-Kelly on a small bankroll, where a false positive costs little and
+# waiting costs real edge. `beat_significance` reports z and n_needed on every
+# gate line so "clears the gate" can never again be misread as "proven".
 PROMOTE_BEAT_MIN = 55.0
 PROMOTE_MIN_N    = 30
 
