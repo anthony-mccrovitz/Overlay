@@ -1887,13 +1887,31 @@ def cmd_draft(args: argparse.Namespace) -> int:
     print(f"  {cfg.summary()}")
     print(f"  {line}")
 
+    if getattr(args, "handcuffs", False):
+        from src.fantasy.roster_risk import handcuffs
+        from src.fantasy import sleeper as _s3
+        bmap = {v.player_id: v for v in board}
+        print("\n  RB HANDCUFFS — the back who inherits a startable role")
+        print(f"  {'TM':<5}{'STARTER':<24}{'VORP':>6}   {'BACKUP':<24}{'VORP':>6}")
+        print(f"  {'─'*70}")
+        for h in handcuffs("RB", _s3.players()):
+            sv = bmap.get(h.starter_id)
+            bv = bmap.get(h.backup_id)
+            print(f"  {h.team:<5}{h.starter:<24}{(sv.vorp if sv else 0):>6.0f}   "
+                  f"{h.backup:<24}{(bv.vorp if bv else 0):>6.0f}")
+        print("\n  A RB2 is worth almost nothing until the moment he is worth a")
+        print("  great deal. Protect the handcuffs behind YOUR backs; the rest are")
+        print("  late-round lottery tickets, not roster spots.\n")
+        return 0
+
     if getattr(args, "sim", False):
         from src.fantasy.simulate import compare_openings
         from src.fantasy import sleeper as _s2
         drafts = _s2.league_drafts(cfg.league_id)
         d = _s2.draft(drafts[0]["draft_id"]) if drafts else {}
         me = _s2.user(args.user)["user_id"]
-        slot = int((d.get("draft_order") or {}).get(me, 1))
+        slot = int(getattr(args, "slot", None)
+                   or (d.get("draft_order") or {}).get(me, 1))
         rounds = int((d.get("settings") or {}).get("rounds") or 14)
         openings = [("RB", "RB"), ("WR", "RB"), ("RB", "WR"), ("WR", "WR"),
                     ("RB", "RB", "WR"), ("WR", "RB", "RB"), ("RB", "WR", "WR")]
@@ -4270,6 +4288,10 @@ def main() -> int:
     p_draft.add_argument("--sim", action="store_true",
                          help="Monte-Carlo which opening pair works best from your slot")
     p_draft.add_argument("--trials", type=int, default=250, help="Simulation trials")
+    p_draft.add_argument("--slot", type=int, default=None,
+                         help="Simulate a different draft slot (e.g. after a pick swap)")
+    p_draft.add_argument("--handcuffs", action="store_true",
+                         help="Show the RB2 behind each starter")
 
     # filters — prove a subgroup finding forward
     sub.add_parser("filters",

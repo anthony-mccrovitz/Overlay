@@ -30,7 +30,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from src.fantasy import adjustments, scoring, sleeper
+from src.fantasy import adjustments, roster_risk, scoring, sleeper
 
 # A season is 17 games, but nobody plays 17. Using a full season overstates
 # every injury-prone player relative to the iron men who actually win weeks.
@@ -174,9 +174,17 @@ def project(stats_by_pid: dict, players_db: dict,
         df = adjustments.depth_factor(pos, p.get("depth_chart_order"),
                                       shrunk, starter_rate.get(pos, 0.0))
 
-        proj = shrunk * EXPECTED_GAMES * avail * af * df
+        # Availability NOW. A player on IR/PUP is not a projection adjustment,
+        # he is a different asset — drafting one at his healthy price is a
+        # straight loss. Tucker Kraft (PUP, torn ACL) was appearing on the board
+        # at full value before this.
+        inj_mult, inj_label = roster_risk.injury_flag(p)
+
+        proj = shrunk * EXPECTED_GAMES * avail * af * df * inj_mult
 
         flags = []
+        if inj_label:
+            flags.append(inj_label)
         if af < 0.93:
             flags.append(f"age {p.get('age')}")
         elif af > 1.02:
