@@ -6,14 +6,6 @@ edges against sportsbook lines using ensemble models (XGBoost + LightGBM + CatBo
 generates daily picks with Kelly sizing, tracks CLV, and serves picks through a Next.js
 subscription web app.
 
-## Tech Stack
-- Python 3.12+
-- Data: pandas, numpy
-- ML: scikit-learn, xgboost, lightgbm, catboost
-- API: requests (MLB Stats API, Odds API, OpenWeatherMap)
-- Web: Next.js 14 (App Router), Tailwind CSS, TypeScript
-- Deployment: Vercel (web), cron (Python pipeline)
-
 ## Daily Workflow
 
 All operations go through `chef.py` — the unified CLI.
@@ -59,6 +51,37 @@ python3 chef.py stats                      # refresh public_stats.json
 - **Units**: `1u = 1 unit staked flat`. Win at +140 → +1.40u. Win at -110 → +0.909u. Loss → -1.0u
 - **`edge_pct`** — stored as percentage points (8.4 = 8.4%). Do NOT multiply by 100
 - **Schema source of truth**: `src/tracking/schema.py` — normalization, validation, migration
+
+## Invariants (enforced by tests — don't work around them)
+
+- **Never re-implement `src/config/models._key`.** It is the registry lane key
+  that joins picks to the registry, the CLV gate, calibrators and the promotion
+  gate. Six modules had each hand-copied it and drifted to different answers,
+  which made real lanes report as un-instrumented while holding hundreds of rows
+  (tennis had 246 CLV snapshots and reported zero). Delegate:
+  `from src.config.models import _key; canonical = _key(sport, "")[0]`.
+  `tests/test_sport_key_single_source.py` fails the build on a new copy.
+  Two other sport mappings legitimately exist and are NOT this one: the ledger
+  storage key (`schema._SPORT_ALIASES`, leaves `soccer_usa_mls` intact) and
+  display/path maps (human labels, archive prefixes, tag slugs).
+
+- **A lane cannot go live by omission.** `src/config/model_standard.py` defines
+  seven checks and `tests/test_model_standard.py` fails the build when a live
+  lane violates one. Legacy uses documented `EXEMPTIONS` (reason + retirement
+  condition), never weakened checks — and a stale exemption fails too.
+  `edge_shrink`, `clv_coverage` and `promotion_gate` are NON_EXEMPTIBLE.
+
+- **"Clears the promotion gate" ≠ "proven".** `PROMOTE_MIN_N=30` is a
+  data-sufficiency floor, not a significance test. Every gate line reports z and
+  the n needed; mlb/total is z=+1.69 (~90% confidence), and that is accepted
+  deliberately, not overlooked.
+
+- **Judge a MODEL at flat 1u**, not on the stored `profit` field — shadow stakes
+  are often 0.0 or 0.5, so dividing stored profit by pick count is meaningless.
+  `market_stats` recomputes from odds for this reason.
+
+- **Prop CLV is an artifact.** Prop models echo the book's line (r≈0.97), so
+  beat-close measures line-following, not skill. Judge props on ROI alone.
 
 ## Key Files
 
