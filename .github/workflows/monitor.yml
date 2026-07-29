@@ -49,26 +49,16 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # You don't check the dashboard daily — so a RED run must reach you. The
+        # delivery logic lives in scripts/alert_issue.sh (NOT inlined here) so
+        # that alert-canary.yml can exercise the real thing weekly. This step was
+        # inlined once, broke on shell quoting, and swallowed 12 consecutive days
+        # of legitimate alarms; see the header of that script for the post-mortem.
         run: |
-          # You don't check the dashboard daily — so a RED run must reach you.
-          # Open a durable GitHub issue AND assign + @mention you: the "assigned to
-          # you" and "mentioned" notifications are ON BY DEFAULT for every account
-          # and fire regardless of whether you watch the repo — so this can't be
-          # silently missed. DEDUPE: if an alarm issue is already open, comment on
-          # it (re-pinging you) instead of spamming a new one. Close it when fixed.
-          who="anthony-mccrovitz"
-          title="🚨 Pipeline integrity alarm"
-          stamp="$(date -u +%Y-%m-%dT%H:%MZ)"
-          body="$(cat /tmp/monitor.out 2>/dev/null || echo 'monitor produced no output')"
-          num="$(gh issue list --state open --search \"$title in:title\" \
-                   --json number -q '.[0].number' 2>/dev/null)"
-          if [ -n "$num" ]; then
-            gh issue edit "$num" --add-assignee "$who" 2>/dev/null || true
-            gh issue comment "$num" --body "$(printf '@%s — still RED at %s:\n\n```\n%s\n```' "$who" "$stamp" "$body")"
-          else
-            gh issue create --title "$title" \
-              --assignee "$who" --label "alert" \
-              --body "$(printf '@%s — the daily integrity monitor went RED at %s. A market stopped producing, closings stopped, or CLV coverage regressed below floor. Details:\n\n```\n%s\n```\n\nFix the cause, then close this issue — a new alarm will reopen one if it recurs.' "$who" "$stamp" "$body")" \
-              || gh issue create --title "$title" --assignee "$who" \
-                   --body "$(printf '@%s — integrity monitor RED at %s:\n\n```\n%s\n```' "$who" "$stamp" "$body")"
-          fi
+          # An infrastructure failure (checkout, pip, python missing) never wrote
+          # monitor.out. That case still has to reach you — "the job died before it
+          # could tell you why" is exactly the silence this whole workflow exists
+          # to prevent — so synthesise a body rather than skipping the alert.
+          [ -s /tmp/monitor.out ] || \
+            echo "The integrity monitor produced no output — the JOB itself failed (checkout / deps / python). See the Actions run log." > /tmp/monitor.out
+          bash scripts/alert_issue.sh "🚨 Pipeline integrity alarm" /tmp/monitor.out

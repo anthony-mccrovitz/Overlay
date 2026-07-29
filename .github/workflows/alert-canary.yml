@@ -1,0 +1,88 @@
+name: Alert canary
+
+# Proves the ALARM PATH ITSELF still works, end to end, on a schedule.
+#
+# Why this exists: monitor.yml went RED every day from 2026-07-18 to 2026-07-29
+# and delivered zero notifications, because the inlined `gh` call had a shell
+# quoting bug. Twelve days of true alarms vanished. The monitor was fine; the
+# notifier was broken; and nothing anywhere tested the notifier. A one-off
+# "alert delivery test" issue had been opened manually on 2026-07-08 and passed,
+# because it exercised a hand-typed command instead of the real code path.
+#
+# So: once a week this runs the SAME scripts/alert_issue.sh that real alarms use,
+# against a throwaway title, verifies an open issue actually appeared, then closes
+# it. If delivery ever breaks again, THIS run goes red — and because a broken
+# notifier can't notify you about itself, the canary also fails loudly enough to
+# show up in the weekly Actions summary and on the repo's badge.
+on:
+  schedule:
+    # Mondays 13:10 UTC — start of the week, before the day's monitor run.
+    - cron: "10 13 * * 1"
+  workflow_dispatch: {}
+
+concurrency:
+  group: alert-canary
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Deliver a canary alarm through the real alert path
+        id: deliver
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          title="🐤 Alert canary — delivery self-test"
+          cat > /tmp/canary.out <<'EOF'
+          This is the weekly self-test of the pipeline alarm path.
+
+          It was delivered by scripts/alert_issue.sh — the same code that delivers
+          real integrity alarms. If you are reading this as a NEW issue, delivery
+          works. The canary closes it automatically moments after opening it, so
+          an issue that lingers means the close step failed, not the alert.
+          EOF
+          num="$(bash scripts/alert_issue.sh "$title" /tmp/canary.out)"
+          echo "num=$num"    >> "$GITHUB_OUTPUT"
+          echo "title=$title" >> "$GITHUB_OUTPUT"
+          echo "Canary delivered as issue #$num"
+
+      - name: Verify the issue is really there
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          num="${{ steps.deliver.outputs.num }}"
+          # Independent read-back: don't trust the writer's own report of success.
+          state="$(gh issue view "$num" --json state -q .state)"
+          if [ "$state" != "OPEN" ]; then
+            echo "::error::Canary issue #$num is '$state', expected OPEN — alarm delivery is broken."
+            exit 1
+          fi
+          echo "Verified: issue #$num is OPEN."
+
+      - name: Clean up the canary issue
+        if: always() && steps.deliver.outputs.num != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue close "${{ steps.deliver.outputs.num }}" \
+            --comment "Canary verified — alarm delivery is working. Closing automatically." \
+            || echo "::warning::Could not close canary issue; close it by hand."
+
+      - name: Explain a red canary
+        if: failure()
+        run: |
+          echo "::error::ALARM DELIVERY IS BROKEN. Real integrity alarms are being"
+          echo "::error::generated but are NOT reaching you. Fix scripts/alert_issue.sh"
+          echo "::error::before trusting any green day on the pipeline."

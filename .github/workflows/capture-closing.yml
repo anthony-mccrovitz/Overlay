@@ -52,11 +52,24 @@ jobs:
       - name: Capture closing lines
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        # Wide 90-min pre-game lead so capture survives GitHub's sporadic/late
-        # cron (the narrow band silently broke closing capture — and all CLV —
-        # once the laptop's every-2-min cron was removed). Idempotent: the first
-        # run inside the band locks each game's late-pre-game line.
-        run: python scripts/capture_closing.py --window 90
+        # Window MUST exceed the real gap between runs, not the scheduled one.
+        # Measured 2026-07-29: this workflow asks for 96 runs/day and actually
+        # gets 12.9 — GitHub drops ~87% of scheduled triggers under load. That
+        # leaves an average ~112 min between ticks, so a 90-min band was NARROWER
+        # THAN THE GAP: any event whose entire pre-game window fell between two
+        # surviving ticks was never captured at all.
+        #
+        # It failed exactly where it was hardest to notice. MLB plays 15 games
+        # across 10 hours, so something is always in-band and capture sat at 96%;
+        # UFC runs one card a week and landed at 25%, tennis 50%. The lanes with
+        # the fewest events — the ones needing every single data point to reach a
+        # promotion floor — were the ones losing their closing lines.
+        #
+        # 240 min comfortably clears the observed gap. Cost is unchanged: the
+        # events poll is free, and capture is idempotent (an event already
+        # archived is re-fetched only to upgrade it to a true closing line inside
+        # FINAL_WINDOW_MIN), so a wider band does not multiply per-event credits.
+        run: python scripts/capture_closing.py --window 240
 
       - name: Commit new archives
         run: |
