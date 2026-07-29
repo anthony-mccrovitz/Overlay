@@ -191,7 +191,7 @@ def pick_profit_units(pick: dict) -> float:
 def build_ticker(picks: list[dict], limit: int = 18) -> list[dict]:
     settled = [
         p for p in picks
-        if p.get("result") in ("win", "loss", "push") and p.get("card_pick")
+        if p.get("result") in _SETTLED and p.get("card_pick")
     ]
     settled.sort(key=lambda p: (p.get("resulted_at") or p.get("date") or ""), reverse=True)
     out = []
@@ -199,7 +199,9 @@ def build_ticker(picks: list[dict], limit: int = 18) -> list[dict]:
         out.append({
             "sport": ticker_label(p.get("sport", "")),
             "matchup": matchup_short(p.get("matchup") or ""),
-            "result": p.get("result", "").upper()[0],  # W / L / P
+            # W / L / P / V — void now reaches here, and showing it as its own
+            # letter is honest: a cancelled game is not a push we won or lost.
+            "result": (p.get("result") or "").upper()[:1],
             "units": pick_profit_units(p),
         })
     return out
@@ -208,7 +210,7 @@ def build_ticker(picks: list[dict], limit: int = 18) -> list[dict]:
 def build_recent_picks(picks: list[dict], limit: int = 10) -> list[dict]:
     settled = [
         p for p in picks
-        if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
+        if p.get("card_pick") and p.get("result") in _SETTLED
     ]
     settled.sort(key=lambda p: (p.get("date") or "", p.get("resulted_at") or ""), reverse=True)
     out = []
@@ -283,15 +285,15 @@ def build_models(picks: list[dict]) -> list[dict]:
         tier = model_tier(sport, market)
         label = model_label(sport, market)
 
-        settled = [p for p in bucket_picks if p.get("result") in ("win", "loss", "push")]
-        pending = [p for p in bucket_picks if p.get("result") not in ("win", "loss", "push")]
+        settled = [p for p in bucket_picks if p.get("result") in _SETTLED]
+        pending = [p for p in bucket_picks if p.get("result") not in _SETTLED]
         wins = sum(1 for p in settled if p["result"] == "win")
         losses = sum(1 for p in settled if p["result"] == "loss")
-        pushes = sum(1 for p in settled if p["result"] == "push")
+        pushes = sum(1 for p in settled if p["result"] in _NO_ACTION)
         decided = wins + losses
         win_rate = round(wins / decided * 100, 1) if decided else None
         # Default to 1.0u per pick if stake is missing/zero (matches PNL convention)
-        stakes = sum((p.get("stake") or 1.0) for p in settled if p["result"] != "push")
+        stakes = sum((p.get("stake") or 1.0) for p in settled if p["result"] not in _NO_ACTION)
         profit = sum(p.get("profit") or 0.0 for p in settled)
         roi = round(profit / stakes * 100, 1) if stakes else None
 
@@ -321,7 +323,7 @@ def build_models(picks: list[dict]) -> list[dict]:
 def build_equity_curve(picks: list[dict], points: int = 80) -> list[dict]:
     settled = [
         p for p in picks
-        if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
+        if p.get("card_pick") and p.get("result") in _SETTLED
         and p.get("date")
     ]
     settled.sort(key=lambda p: p["date"])
@@ -419,9 +421,29 @@ UPCOMING_MODELS = [
 ]
 
 
+# Settlement states. "void" (cancelled game, withdrawn player, postponed event)
+# is written by grade.py and treated as settled by market_stats — but every
+# public-facing counter here listed only win/loss/push, so a voided card pick
+# fell into neither "settled" nor "pending" and vanished from the record
+# entirely. Zero card picks are voided today, which is exactly why it would have
+# gone unnoticed until the first cancelled game.
+_SETTLED = ("win", "loss", "push", "void")
+_NO_ACTION = ("push", "void")
+
+
 def build_feed(target_date: str | None = None) -> dict:
     raw = json.loads(PICKS_PATH.read_text())
     picks = raw["picks"] if isinstance(raw, dict) else raw
+
+    # Tainted picks came from a known-broken mechanism (a degenerate calibrator
+    # that flattened every game to one probability, team-blind ratings). They
+    # stay in picks.json as an audit trail and must never reach a customer.
+    #
+    # This file is the only public-facing consumer that was missing the filter,
+    # and it matters more here than anywhere else: the per-lane performance
+    # section deliberately buckets ALL picks rather than just card picks, so a
+    # broken model's record was being shown as that lane's record.
+    picks = [p for p in picks if not p.get("tainted")]
 
     today = target_date or date.today().isoformat()
 
@@ -445,7 +467,7 @@ def build_feed(target_date: str | None = None) -> dict:
 
     settled_card = [
         p for p in picks
-        if p.get("card_pick") and p.get("result") in ("win", "loss", "push")
+        if p.get("card_pick") and p.get("result") in _SETTLED
     ]
     odds_vals = [p.get("odds") for p in settled_card if p.get("odds") is not None]
     avg_odds = int(sum(odds_vals) / len(odds_vals)) if odds_vals else None

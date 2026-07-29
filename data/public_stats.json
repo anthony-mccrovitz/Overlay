@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-28T11:38:16.394624+00:00",
+  "updated_at": "2026-07-29T12:37:30.491246+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -353,19 +353,19 @@
     },
     "totals_coverage": {
       "scored": 326,
-      "scoreable": 600,
-      "pct": 54.3
+      "scoreable": 602,
+      "pct": 54.2
     },
     "spread_coverage": {
       "scored": 295,
-      "scoreable": 499,
-      "pct": 59.1
+      "scoreable": 501,
+      "pct": 58.9
     }
   },
   "summary": {
-    "total_picks": 267,
+    "total_picks": 262,
     "settled": 260,
-    "pending": 0,
+    "pending": 2,
     "wins": 145,
     "losses": 109,
     "pushes": 6,
@@ -409,9 +409,9 @@
       "streak": 3
     },
     "total": {
-      "total": 181,
+      "total": 176,
       "settled": 174,
-      "pending": 0,
+      "pending": 2,
       "wins": 99,
       "losses": 69,
       "pushes": 6,
@@ -423,9 +423,9 @@
   },
   "by_sport": {
     "mlb": {
-      "total": 158,
+      "total": 160,
       "settled": 158,
-      "pending": 0,
+      "pending": 2,
       "wins": 81,
       "losses": 72,
       "win_rate": 0.5294,
@@ -433,9 +433,9 @@
       "roi": 0.0687
     },
     "nba": {
-      "total": 97,
+      "total": 90,
       "settled": 90,
-      "pending": 7,
+      "pending": 0,
       "wins": 58,
       "losses": 32,
       "win_rate": 0.6444,

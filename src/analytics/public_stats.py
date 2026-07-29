@@ -29,15 +29,25 @@ def _streak(picks: list[dict]) -> int:
     return s
 
 
+# Settlement states. "void" (cancelled game, withdrawn player, postponed event)
+# is written by grade.py and treated as settled by market_stats — but every
+# public-facing counter here listed only win/loss/push, so a voided card pick
+# fell into neither "settled" nor "pending" and vanished from the record
+# entirely. Zero card picks are voided today, which is exactly why it would have
+# gone unnoticed until the first cancelled game.
+_SETTLED = ("win", "loss", "push", "void")
+_NO_ACTION = ("push", "void")
+
+
 def _market_stats(picks: list[dict], market: str) -> dict:
     """Compute record for a single market among card picks."""
     cat     = [p for p in picks if p.get("market") == market]
-    settled = [p for p in cat if p.get("result") in ("win", "loss", "push")]
+    settled = [p for p in cat if p.get("result") in _SETTLED]
     wins    = [p for p in settled if p.get("result") == "win"]
     losses  = [p for p in settled if p.get("result") == "loss"]
-    pending = [p for p in cat if not p.get("result")]
+    pending = [p for p in cat if p.get("result") not in _SETTLED]
 
-    non_push    = [p for p in settled if p.get("result") != "push"]
+    non_push    = [p for p in settled if p.get("result") not in _NO_ACTION]
     profit      = sum(float(p.get("profit") or 0) for p in non_push)
     staked      = sum(float(p.get("stake") or 1) for p in non_push)
     win_rate    = len(wins) / len(non_push) if non_push else 0.0
@@ -75,11 +85,11 @@ def write_public_stats() -> None:
     card_picks = [p for p in all_picks if p.get("card_pick")]
 
     # ── Composite record (all markets, all sports) ────────────────────────────
-    settled  = [p for p in card_picks if p.get("result") in ("win", "loss", "push")]
+    settled  = [p for p in card_picks if p.get("result") in _SETTLED]
     wins     = [p for p in settled if p.get("result") == "win"]
     losses   = [p for p in settled if p.get("result") == "loss"]
     pending  = [p for p in card_picks if not p.get("result")]
-    non_push = [p for p in settled if p.get("result") != "push"]
+    non_push = [p for p in settled if p.get("result") not in _NO_ACTION]
 
     total_profit = sum(float(p.get("profit") or 0) for p in non_push)
     total_staked = sum(float(p.get("stake") or 1) for p in non_push)
@@ -101,8 +111,8 @@ def write_public_stats() -> None:
     # ── By sport ──────────────────────────────────────────────────────────────
     def _sport_stats(sport: str) -> dict:
         sp      = [p for p in card_picks if p.get("sport") == sport]
-        sp_set  = [p for p in sp if p.get("result") in ("win", "loss", "push")]
-        sp_np   = [p for p in sp_set if p.get("result") != "push"]
+        sp_set  = [p for p in sp if p.get("result") in _SETTLED]
+        sp_np   = [p for p in sp_set if p.get("result") not in _NO_ACTION]
         sp_w    = sum(1 for p in sp_np if p.get("result") == "win")
         sp_l    = len(sp_np) - sp_w
         sp_prof = sum(float(p.get("profit") or 0) for p in sp_np)
@@ -155,7 +165,7 @@ def write_public_stats() -> None:
 
     yesterday_graded = [_fmt_pick(p) for p in card_picks
                         if str(p.get("date", "")).startswith(_yesterday_str)
-                        and p.get("result") in ("win", "loss", "void")]
+                        and p.get("result") in _SETTLED]
 
     # Pick of the day: highest-edge pending ML pick today (not totals/F5/shadow)
     # Falls back to best win yesterday if nothing pending today
