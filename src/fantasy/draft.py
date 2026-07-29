@@ -151,6 +151,25 @@ class Suggestion:
     reason: str
 
 
+def bye_conflict(candidate: PlayerValue, my_players: list[str],
+                 board: dict[str, PlayerValue], starters_needed: dict[str, int]) -> int:
+    """How many players I'd already have resting on this candidate's bye week.
+
+    Three starters on the same bye is a game you lose in September for a reason
+    you chose in August, and it is entirely avoidable — the schedule is public.
+    Counted across starting-calibre positions only; a backup sharing a bye is
+    irrelevant.
+    """
+    if candidate.bye is None:
+        return 0
+    n = 0
+    for pid in my_players:
+        v = board.get(pid)
+        if v and v.bye == candidate.bye and v.position in starters_needed:
+            n += 1
+    return n
+
+
 def recommend(board_list: list[PlayerValue], state: DraftState,
               starters_needed: dict[str, int], top: int = 12) -> list[Suggestion]:
     """Rank the available players for THIS pick.
@@ -177,7 +196,22 @@ def recommend(board_list: list[PlayerValue], state: DraftState,
         # carries no premium; one certain to vanish carries his full value.
         adjusted = base * (1.0 + 0.5 * (1.0 - surv))
 
+        # Bye stacking. One shared bye is a note; a third starter resting the
+        # same week is a game you lose in September for a reason you chose in
+        # August, so it costs the player ground against an equal alternative.
+        clash = bye_conflict(v, state.my_players, board, starters_needed)
+        if clash >= 2:
+            adjusted *= 0.90 ** (clash - 1)
+
         bits = []
+        if clash >= 2:
+            bits.append(f"⚠ {clash} others on bye {v.bye}")
+        elif clash == 1:
+            bits.append(f"bye {v.bye} clash")
+        if v.playoff_sos is not None and v.playoff_sos >= 1.06:
+            bits.append(f"easy playoffs ({v.playoff_sos:.2f})")
+        elif v.playoff_sos is not None and v.playoff_sos <= 0.94:
+            bits.append(f"hard playoffs ({v.playoff_sos:.2f})")
         if mult < 1.0:
             bits.append(f"bench {v.position} (×{mult:.2f})")
         if surv < 0.35:

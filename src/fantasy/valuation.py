@@ -83,6 +83,8 @@ class PlayerValue:
     adp_delta: float | None = None  # our rank minus market rank; +ve = falls to us
     games_2025: float = 0.0
     note: str = ""
+    bye: int | None = None
+    playoff_sos: float | None = None    # >1.0 = easy weeks 15-17
     age_factor: float = 1.0
     depth_factor: float = 1.0
     depth: int | None = None
@@ -374,4 +376,18 @@ def build_board(scoring_settings: dict | None = None,
     impute_from_adp(values, adp_map, db)
     add_tiers(values)
     add_adp(values, adp_map)          # refresh ranks now the board is complete
+
+    # Bye weeks and playoff schedule. Attached for display and roster
+    # construction — NOT folded into VORP. Defenses change more between seasons
+    # than offenses do, so SOS is a tiebreaker between close players, never a
+    # reason to move someone rounds up the board.
+    try:
+        from src.fantasy.schedule import load_view
+        view = load_view()
+        for v in values.values():
+            v.bye = view.byes.get(v.team)
+            v.playoff_sos = view.playoff_sos(v.team, v.position)
+    except Exception:
+        pass
+
     return sorted(values.values(), key=lambda v: -v.vorp)
