@@ -351,6 +351,21 @@ def _cmd_record_shadow(picks: list[dict], filter_market: str, filter_sport: str)
             res_ = str(p.get("result") or "?").upper()
             print(f"  {d_:<12} {sp_:<5} {mkt_:<11} {tm_:<26} {res_:<6} {_profit_str(p.get('profit')):>6}")
 
+    # The lab just settled, so real bets riding those same games can settle too.
+    # Without this the money ledger only updates when `chef.py bankroll` is run
+    # by hand, which is how it went stale for six weeks in June.
+    try:
+        from src.tracking import bankroll as bk
+        _bets, _n = bk.autograde()
+        if _n:
+            bk.save_bets(_bets)
+            s = bk.summary(_bets)
+            print(f"\n  💰 BANKROLL — auto-graded {_n} real bet(s)")
+            print(f"     ${s['balance']:.2f}  ({s['profit']:+.2f})  "
+                  f"{s['wins']}-{s['losses']}  ROI {s['roi_pct']:+.1f}%")
+    except Exception as _bk_err:
+        print(f"  [bankroll] auto-grade skipped: {_bk_err}")
+
     print(f"\n  {sep}\n")
     return 0
 
@@ -555,7 +570,7 @@ def cmd_record(args: argparse.Namespace) -> int:
 
 # ─────────────────────────── personal bankroll ───────────────────────────────
 
-_PERSONAL_BANKROLL_START = 100.0   # dollars
+from src.tracking.bankroll import BANKROLL_START as _PERSONAL_BANKROLL_START
 
 
 def _load_personal() -> list[dict]:
@@ -700,7 +715,15 @@ def cmd_result(args: argparse.Namespace) -> int:
 
 def cmd_record_personal(args: argparse.Namespace) -> int:
     """Show personal bankroll P&L separate from algo record."""
-    picks = _load_personal()
+    from src.tracking import bankroll as bk
+
+    # Settle anything the lab already graded before reporting. This is what
+    # keeps the money ledger alive — it died in June because grading was manual.
+    picks, n_auto = bk.autograde()
+    if n_auto:
+        bk.save_bets(picks)
+        print(f"\n  ✓  Auto-graded {n_auto} bet(s) from lab results.")
+
     if not picks:
         print("\n  No personal bets recorded yet.")
         print("  Log a bet with: python3 chef.py bet <team> <odds> <stake_dollars>\n")
@@ -746,7 +769,10 @@ def cmd_record_personal(args: argparse.Namespace) -> int:
             d_    = str(p.get("date") or "")[:10]
             sp_   = str(p.get("sport") or "?").upper()
             mkt_  = str(p.get("market") or "?")[:10]
-            tm_   = str(p.get("team") or "?")[:21]
+            # Totals carry no team — label them by the side actually bet.
+            tm_   = str(p.get("team")
+                        or f"{p.get('direction','')} {p.get('line','')}".strip()
+                        or "?")[:21]
             odds_ = int(p.get("odds") or 0)
             stk_  = float(p.get("stake_dollars") or p.get("stake") or 0)
             res_  = str(p.get("result") or "?").upper()
