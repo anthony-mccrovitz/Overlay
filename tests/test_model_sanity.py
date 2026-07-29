@@ -290,13 +290,56 @@ class TestCalibratorFeedbackLoop:
 # ── Direction labels ─────────────────────────────────────────────────────────
 
 class TestDirectionLabels:
-    def test_team_name_direction_becomes_win_not_home(self):
+    def test_team_name_direction_resolves_to_the_real_side(self):
+        """A team name used as the direction is now resolved against the matchup.
+
+        This previously became WIN, because the venue was unknowable and
+        stamping HOME would have been a lie for away teams. home_team/away_team
+        are now derived from the matchup, so the correct side is recoverable and
+        WIN would throw away real information.
+        """
         p = normalize_pick({
             "date": "2026-07-18", "sport": "soccer_fifa_world_cup",
             "market": "moneyline", "direction": "England",
             "team": "England", "matchup": "England @ France", "odds": 290,
         })
+        assert p["direction"] == "AWAY"
+
+        home = normalize_pick({
+            "date": "2026-07-18", "sport": "soccer_fifa_world_cup",
+            "market": "moneyline", "direction": "France",
+            "team": "France", "matchup": "England @ France", "odds": 150,
+        })
+        assert home["direction"] == "HOME"
+
+    def test_short_team_name_is_not_missed(self):
+        """The old rule only rewrote a bad direction when len > 5, so PISA,
+        NICE, IRAN, IRAQ and QATAR slipped through and failed validation
+        forever. Length was never the signal."""
+        p = normalize_pick({
+            "date": "2026-05-23", "sport": "soccer_italy_serie_a",
+            "market": "moneyline", "direction": "PISA",
+            "team": "Pisa", "matchup": "Pisa @ Lazio", "odds": 150,
+        })
+        assert p["direction"] == "AWAY"
+
+    def test_unknown_venue_still_falls_back_to_win(self):
+        """With no parseable matchup the side is genuinely unknown, and WIN is
+        the only claim that stays true."""
+        p = normalize_pick({
+            "date": "2026-07-18", "sport": "tennis_atp_wimbledon",
+            "market": "moneyline", "direction": "Alcaraz",
+            "team": "Alcaraz", "matchup": "Alcaraz v Sinner", "odds": 120,
+        })
         assert p["direction"] == "WIN"
+
+    def test_scorer_yes_is_valid_not_just_normalized(self):
+        """All 35 anytime_scorer picks used YES and were well-formed, but only
+        normalize_pick knew that — validate_pick rejected every one."""
+        from src.tracking.schema import validate_pick, CANONICAL_FIELDS
+        pick = {f: None for f in CANONICAL_FIELDS}
+        pick.update({"market": "anytime_scorer", "direction": "YES", "result": None})
+        assert not [i for i in validate_pick(pick) if "invalid direction" in i]
 
     def test_missing_moneyline_direction_defaults_to_win(self):
         p = normalize_pick({

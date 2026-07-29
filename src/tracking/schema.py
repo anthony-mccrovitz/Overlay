@@ -275,6 +275,16 @@ _MARKET_ALIASES: dict[str, str] = {
     "f5 total":   "f5_total",
 }
 
+# Canonical bet directions, shared by normalize_pick and validate_pick — they
+# previously kept separate inline copies and drifted apart. YES/NO are the
+# convention every anytime_scorer pick already used ("will this player score"),
+# but only normalize_pick knew that, so all 35 of them failed validation while
+# being perfectly well-formed.
+VALID_DIRECTIONS: frozenset[str] = frozenset({
+    "WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER",
+    "NRFI", "YRFI", "DRAW", "YES", "NO",
+})
+
 _DEFAULT_DIRECTION: dict[str, str] = {
     # WIN, not HOME: a moneyline direction we can't parse (e.g. a soccer model
     # emitting the team name) says nothing about which side of the venue the
@@ -333,7 +343,7 @@ def validate_pick(pick: dict) -> list[str]:
         issues.append(f"invalid market: {market!r}")
 
     direction = pick.get("direction", "")
-    if direction not in ("WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER", "NRFI", "YRFI", "DRAW", ""):
+    if direction not in VALID_DIRECTIONS | {""}:
         issues.append(f"invalid direction: {direction!r}")
 
     result = pick.get("result")
@@ -406,7 +416,6 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
 
     # ── Direction ────────────────────────────────────────────────────────────
     direction = str(raw.get("direction") or "").upper().strip()
-    _VALID_DIRECTIONS = {"WIN", "HOME", "AWAY", "COVER", "OVER", "UNDER", "NRFI", "YRFI", "DRAW"}
     direction = _DIRECTION_ALIASES.get(direction, direction)
     if not direction:
         if market == "total":
@@ -414,14 +423,30 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
             direction = parts[0] if parts and parts[0] in ("OVER", "UNDER") else "OVER"
         else:
             direction = _DEFAULT_DIRECTION.get(market, "WIN")
-    elif direction not in _VALID_DIRECTIONS:
+    elif direction not in VALID_DIRECTIONS:
         # Numeric string used as direction (e.g. "-15.5" from WNBA spread bug)
         try:
             float(direction)
             direction = "COVER" if market == "spread" else "OVER"
         except ValueError:
-            # Long team name used as direction (tennis/soccer model bug)
-            if len(direction) > 5 and direction not in _VALID_DIRECTIONS:
+            # A team name used as the direction (soccer/tennis model bug). This
+            # used to be gated on len(direction) > 5, which quietly let every
+            # SHORT name through — PISA, NICE, IRAN, IRAQ, QATAR all survived
+            # normalization and then failed validation forever. Length was never
+            # the signal; "not a valid direction" is.
+            #
+            # Prefer HOME/AWAY when the venue is known: home_team/away_team are
+            # now derived from the matchup, so the old objection that stamping
+            # HOME would be "a lie for away teams" no longer applies. Fall back
+            # to the market default only when the venue is genuinely unknown.
+            away_t, home_t = _split_matchup(raw.get("matchup"))
+            home_t = (raw.get("home_team") or home_t or "").upper().strip()
+            away_t = (raw.get("away_team") or away_t or "").upper().strip()
+            if home_t and direction == home_t:
+                direction = "HOME"
+            elif away_t and direction == away_t:
+                direction = "AWAY"
+            else:
                 direction = _DEFAULT_DIRECTION.get(market, "WIN")
 
     # ── Line ─────────────────────────────────────────────────────────────────
