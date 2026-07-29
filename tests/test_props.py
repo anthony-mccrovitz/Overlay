@@ -255,9 +255,13 @@ class TestBatterPropsEdgeFinder:
 # ─────────────────────────── Model registry ──────────────────────────────────
 
 class TestModelRegistry:
-    def test_nba_totals_is_live(self):
+    def test_nba_totals_demoted(self):
+        # DEMOTED 2026-07-29. Read +24.8% ROI on n=88 while beating the sharp
+        # close only 41.7% — the profile of running hot, not an edge. NBA is
+        # also out of season, and a stale live flag auto-cards the moment a
+        # board reappears.
         from src.config.models import is_live
-        assert is_live("nba", "total") is True
+        assert is_live("nba", "total") is False
 
     def test_mlb_spread_is_incubating(self):
         # mlb·spread has not cleared the CLV gate (negative ROI) — stays shadow.
@@ -277,14 +281,23 @@ class TestModelRegistry:
         from src.config.models import is_live
         assert is_live("mlb", "batter_home_runs") is False
 
-    def test_nhl_is_live(self):
-        # NHL moneyline + puck line stay live. NHL totals were DEMOTED 2026-07-15
-        # (36% win, CLV -2.2% — overconfident and losing to the close), so it must
-        # no longer post publicly.
+    def test_nhl_fully_demoted(self):
+        # NHL totals went 2026-07-15 (36% win, CLV -2.2%). Moneyline and puck
+        # line followed 2026-07-29: NHL is out of season and moneyline was
+        # 2-9 / 18.2% WR / -52.5% ROI. No NHL lane posts publicly.
         from src.config.models import is_live
-        assert is_live("nhl", "moneyline") is True
-        assert is_live("nhl", "puck_line") is True
+        assert is_live("nhl", "moneyline") is False
+        assert is_live("nhl", "puck_line") is False
         assert is_live("nhl", "total") is False
+
+    def test_mlb_total_is_the_only_live_lane(self):
+        """The registry's live set is the card_pick gate, so it must reflect
+        evidence rather than history. mlb/total is the one lane clearing both
+        gates (58.0% beat-close on n=112, +10.3% ROI); everything else is shadow
+        until it earns promotion."""
+        from src.config.models import MODELS, is_live
+        live = {(s, m) for (s, m) in MODELS if is_live(s, m)}
+        assert live == {("mlb", "total")}, f"unexpected live lanes: {sorted(live)}"
 
     def test_unknown_model_defaults_incubating(self):
         from src.config.models import model_status
