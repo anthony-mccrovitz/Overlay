@@ -1936,24 +1936,52 @@ def cmd_scan(args: argparse.Namespace) -> int:
         print(f"\n  {line}\n")
         return 0
 
-    all_rows.sort(key=lambda r: -r["ev_pct"])
-    print(f"\n  {len(all_rows)} OPPORTUNITY(S)")
-    print(f"  {'EV%':>6}  {'BOOK':<11} {'BET':<30} {'ODDS':>6} {'FAIR':>6} "
-          f"{'¼K$':>6}  SRC")
-    print(f"  {'─'*76}")
-    bankroll = float(getattr(args, "bankroll", None) or 0) or _bankroll_balance()
-    for r in all_rows[:40]:
-        bet = f"{r['selection']}"
-        if r.get("line") is not None:
-            bet += f" {r['line']}"
-        bet += f" ({r['market'][:5]})"
-        quarter = r["kelly"] * 0.25 * bankroll
-        src = r["fair_source"][:4] + (f"/{r['n_books']}" if r["fair_source"] == "consensus" else "")
-        print(f"  {r['ev_pct']:>+6.2f}  {r['book']:<11} {bet:<30} "
-              f"{r['odds']:>+6} {r['fair_odds']:>+6} ${quarter:>5.2f}  {src}")
+    # Drop anything already started or outside the requested window — a stale
+    # "edge" on a game in progress is not a bet.
+    days = float(getattr(args, "days", None) or 3)
+    horizon = days * 24.0
+    fresh = [r for r in all_rows
+             if r.get("hours_out") is not None and 0 <= r["hours_out"] <= horizon]
+    dropped = len(all_rows) - len(fresh)
+    all_rows = fresh
 
-    if len(all_rows) > 40:
-        print(f"  … and {len(all_rows)-40} more")
+    if not all_rows:
+        print(f"\n  No +EV opportunities starting in the next {days:.0f} day(s).")
+        if dropped:
+            print(f"  ({dropped} hit(s) fell outside the window — use --days to widen.)")
+        print(f"\n  {line}\n")
+        return 0
+
+    bankroll = float(getattr(args, "bankroll", None) or 0) or _bankroll_balance()
+    by_day: dict[str, list[dict]] = {}
+    for r in sorted(all_rows, key=lambda x: (x.get("commence") or "", -x["ev_pct"])):
+        by_day.setdefault(r.get("starts_date") or "unknown", []).append(r)
+
+    print(f"\n  {len(all_rows)} OPPORTUNITY(S) — next {days:.0f} day(s), "
+          f"times in {_local_tz_label()}")
+    if dropped:
+        print(f"  ({dropped} outside the window, not shown)")
+
+    for day, rows in by_day.items():
+        try:
+            pretty = datetime.strptime(day, "%Y-%m-%d").strftime("%A %d %B")
+        except ValueError:
+            pretty = day
+        print(f"\n  ── {pretty} ──")
+        print(f"  {'START':<7} {'EV%':>6}  {'SPORT':<17} {'BOOK':<11} "
+              f"{'ODDS':>6} {'FAIR':>6} {'¼K$':>7}  BET")
+        print(f"  {'─'*120}")
+        for r in rows:
+            src = "P" if r["fair_source"] == "pinnacle" else f"c{r['n_books']}"
+            quarter = r["kelly"] * 0.25 * bankroll
+            start = (r.get("starts_local") or "—").split(" ", 1)
+            hhmm = start[1] if len(start) > 1 else start[0]
+            print(f"  {hhmm:<7} {r['ev_pct']:>+6.2f}  {r['sport_name'][:17]:<17} "
+                  f"{r['book']:<11} {r['odds']:>+6} {r['fair_odds']:>+6} "
+                  f"${quarter:>6.2f}  {r['bet_label'][:60]}  [{src}]")
+
+    print(f"\n  Fair from: [P] Pinnacle de-vig · [cN] median of N books.")
+    print(f"  ¼-Kelly sized against ${bankroll:.2f}.")
 
     if do_log:
         today = datetime.now().strftime("%Y-%m-%d")
@@ -1965,6 +1993,11 @@ def cmd_scan(args: argparse.Namespace) -> int:
 
     print(f"\n  {line}\n")
     return 0
+
+
+def _local_tz_label() -> str:
+    from src.strategies.line_shop_scanner import LOCAL_TZ
+    return LOCAL_TZ.split("/")[-1].replace("_", " ")
 
 
 def _bankroll_balance() -> float:
@@ -3832,6 +3865,8 @@ def main() -> int:
                         help="Skip boards older than N minutes (default 90)")
     p_scan.add_argument("--bankroll", type=float, default=None,
                         help="Override bankroll for ¼-Kelly sizing (default: live balance)")
+    p_scan.add_argument("--days", type=float, default=None,
+                        help="Only show events starting within N days (default 3)")
     p_scan.add_argument("--log", action="store_true",
                         help="Log hits as strategy=line_shop shadow picks for CLV scoring")
 

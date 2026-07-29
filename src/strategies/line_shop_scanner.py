@@ -60,6 +60,46 @@ BETTABLE = {
 
 SHARP = "pinnacle"
 
+# What the sport is actually called. Odds API keys are machine names, and a
+# board that says "mma_mixed_martial_arts" instead of "UFC" is a board you have
+# to decode before you can bet it.
+SPORT_NAMES = {
+    "baseball_mlb":              "MLB",
+    "basketball_nba":            "NBA",
+    "basketball_wnba":           "WNBA",
+    "basketball_ncaab":          "NCAAB",
+    "icehockey_nhl":             "NHL",
+    "americanfootball_nfl":      "NFL",
+    "mma_mixed_martial_arts":    "UFC/MMA",
+    "soccer_usa_mls":            "MLS",
+    "soccer_mexico_ligamx":      "Liga MX",
+    "soccer_fifa_world_cup":     "World Cup",
+    "soccer_epl":                "Premier League",
+    "soccer_spain_la_liga":      "La Liga",
+    "soccer_italy_serie_a":      "Serie A",
+    "soccer_germany_bundesliga": "Bundesliga",
+    "soccer_france_ligue_one":   "Ligue 1",
+    "soccer_korea_kleague1":     "K League",
+    "soccer_brazil_campeonato":  "Brasileirão",
+    "soccer_sweden_allsvenskan": "Allsvenskan",
+    "soccer_uefa_champs_league": "Champions League",
+    "soccer_conmebol_copa_libertadores": "Copa Libertadores",
+}
+
+
+def sport_name(key: str) -> str:
+    """Human name for an Odds API sport key."""
+    if key in SPORT_NAMES:
+        return SPORT_NAMES[key]
+    if key.startswith("tennis_"):
+        # tennis_atp_washington_open -> "ATP Washington Open"
+        parts = key.split("_")[1:]
+        tour = parts[0].upper() if parts and parts[0] in ("atp", "wta") else ""
+        rest = " ".join(p.capitalize() for p in parts[1:]) if tour else \
+               " ".join(p.capitalize() for p in parts)
+        return f"{tour} {rest}".strip()
+    return key.replace("_", " ").title()
+
 # A board this old is not an entry market — prices have moved and any "edge"
 # it shows is against a number nobody is offering.
 MAX_BOARD_AGE_MIN = 90.0
@@ -124,6 +164,66 @@ def kelly_fraction(fair_prob: float, odds: float) -> float:
         return 0.0
     f = (fair_prob * b - (1.0 - fair_prob)) / b
     return max(0.0, f)
+
+
+# Anthony bets from Zurich against US slates, so a bet's usable time is its
+# LOCAL start time — a 01:10 tip means the game runs while he's asleep.
+LOCAL_TZ = "Europe/Zurich"
+
+
+def _parse_utc(iso: str):
+    if not iso:
+        return None
+    try:
+        return datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return None
+
+
+def _to_local(iso: str):
+    dt = _parse_utc(iso)
+    if dt is None:
+        return None
+    try:
+        from zoneinfo import ZoneInfo
+        return dt.astimezone(ZoneInfo(LOCAL_TZ))
+    except Exception:
+        return dt
+
+
+def local_time(iso: str) -> str:
+    """Start time in local wall-clock, e.g. 'Wed 01:10'."""
+    dt = _to_local(iso)
+    return dt.strftime("%a %H:%M") if dt else "—"
+
+
+def local_date(iso: str) -> str:
+    dt = _to_local(iso)
+    return dt.strftime("%Y-%m-%d") if dt else ""
+
+
+def hours_until(iso: str) -> float | None:
+    dt = _parse_utc(iso)
+    if dt is None:
+        return None
+    return round((dt - datetime.now(timezone.utc)).total_seconds() / 3600.0, 1)
+
+
+def bet_label(market: str, selection: str, point, home: str, away: str) -> str:
+    """The bet as you'd place it at the counter.
+
+    A moneyline row is only meaningful attached to its fixture — "Draw" is not a
+    bet, "Draw — Austin FC v LA Galaxy" is. Totals and spreads carry their line.
+    """
+    fixture = f"{away} v {home}"
+    if market == "total":
+        return f"{selection} {point} — {fixture}"
+    if market == "spread":
+        sign = f"+{point}" if (point is not None and point > 0) else f"{point}"
+        return f"{selection} {sign} — {fixture}"
+    if selection.lower() == "draw":
+        return f"Draw — {fixture}"
+    return f"{selection} ML — {fixture}"
 
 
 def _devig_pair(p_a: float, p_b: float) -> tuple[float, float] | None:
@@ -296,12 +396,19 @@ def scan_event(event: dict, sport: str, min_ev: float = MIN_EV_PCT,
                                      "book": bkey, "odds": int(price),
                                      "ev_pct": round(ev, 1), "source": source})
                 continue
+            commence = event.get("commence_time", "")
             out.append({
                 "sport":       sport,
+                "sport_name":  sport_name(sport),
                 "market":      market,
                 "selection":   name,
                 "line":        point,
                 "matchup":     matchup,
+                "home":        home,
+                "away":        away,
+                # What you actually walk into the book and ask for. "Draw" alone
+                # is unbettable information — it has to name the fixture.
+                "bet_label":   bet_label(market, name, point, home, away),
                 "book":        BETTABLE[bkey],
                 "book_key":    bkey,
                 "odds":        int(price),
@@ -311,7 +418,10 @@ def scan_event(event: dict, sport: str, min_ev: float = MIN_EV_PCT,
                 "kelly":       round(kelly_fraction(fair_prob, price), 4),
                 "fair_source": source,
                 "n_books":     n_books,
-                "commence":    event.get("commence_time", ""),
+                "commence":    commence,
+                "starts_local": local_time(commence),
+                "starts_date":  local_date(commence),
+                "hours_out":    hours_until(commence),
             })
     return out
 
