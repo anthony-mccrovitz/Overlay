@@ -237,6 +237,95 @@ def add_adp(values: dict[str, PlayerValue], adp_map: dict[str, float]) -> None:
             v.adp_delta = round(v.adp - our_rank.get(v.player_id, 999), 1)
 
 
+# ─────────────────────────── market imputation ───────────────────────────────
+
+def impute_from_adp(values: dict[str, PlayerValue], adp_map: dict[str, float],
+                    players_db: dict) -> int:
+    """Give a value to draftable players we cannot project from stats.
+
+    Rookies have no prior NFL season, and veterans who missed last year (injury,
+    holdout) have no usable sample either. Leaving them off the board is not
+    neutral — it is a confident claim that they are worthless, and this league's
+    ADP has a rookie running back at pick 21. A board that cannot see the 21st
+    pick is not a draft board.
+
+    So for these players only, we take the MARKET's word: fit the relationship
+    between ADP and VORP on everyone we CAN project, then read an imputed VORP
+    off that curve. This deliberately adds no information — it places them where
+    consensus already has them, which is the honest default when we know less
+    than the market does. Every imputed player is flagged so the board never
+    passes market opinion off as our own analysis.
+    """
+    known = [(v.adp, v.vorp) for v in values.values()
+             if v.adp is not None and v.vorp is not None]
+    if len(known) < 30:
+        return 0
+    known.sort()
+
+    # Bin by ADP and take the MEDIAN VORP per bin, then enforce a monotonically
+    # non-increasing curve.
+    #
+    # Interpolating between adjacent raw points looked reasonable and was badly
+    # wrong: ADP order is not our VORP order, so two players a pick apart can
+    # differ by 80 points of value, and the nearest neighbour is noise rather
+    # than signal. That put a rookie with ADP 21 at board rank 57 — i.e. the
+    # imputation was quietly disagreeing with the very market it was supposed to
+    # be deferring to. Median-of-bin plus monotonicity is the least we can do and
+    # still land a player where consensus has him.
+    BIN = 12                                   # roughly one round per bin
+    buckets: dict[int, list[float]] = {}
+    for a, w in known:
+        buckets.setdefault(int(a // BIN), []).append(w)
+
+    curve: list[tuple[float, float]] = []
+    for b in sorted(buckets):
+        vals_b = sorted(buckets[b])
+        med = vals_b[len(vals_b) // 2]
+        curve.append(((b + 0.5) * BIN, med))
+
+    # Later picks can never be worth more than earlier ones.
+    for i in range(1, len(curve)):
+        if curve[i][1] > curve[i - 1][1]:
+            curve[i] = (curve[i][0], curve[i - 1][1])
+
+    def vorp_at(adp: float) -> float:
+        if adp <= curve[0][0]:
+            return curve[0][1]
+        if adp >= curve[-1][0]:
+            return curve[-1][1]
+        for i in range(len(curve) - 1):
+            a1, w1 = curve[i]
+            a2, w2 = curve[i + 1]
+            if a1 <= adp <= a2:
+                t = (adp - a1) / (a2 - a1) if a2 > a1 else 0.0
+                return w1 + t * (w2 - w1)
+        return curve[-1][1]
+
+    added = 0
+    for pid, adp_val in adp_map.items():
+        if pid in values:
+            continue
+        p = players_db.get(pid)
+        if not isinstance(p, dict):
+            continue
+        if not p.get("active") or not p.get("team"):
+            continue
+        pos = p.get("position")
+        if pos not in ("QB", "RB", "WR", "TE"):
+            continue
+        exp = p.get("years_exp")
+        values[pid] = PlayerValue(
+            player_id=pid, name=sleeper.display_name(p), position=pos,
+            team=p.get("team") or "FA", age=p.get("age"),
+            proj_points=0.0, ppg=0.0,
+            vorp=round(vorp_at(adp_val), 1), raw_vorp=round(vorp_at(adp_val), 1),
+            adp=adp_val, games_2025=0.0,
+            note="ROOKIE — market value" if exp == 0 else "no 2025 sample — market value",
+        )
+        added += 1
+    return added
+
+
 def build_board(scoring_settings: dict | None = None,
                 roster_positions: list[str] | None = None,
                 teams: int = 12,
@@ -247,6 +336,11 @@ def build_board(scoring_settings: dict | None = None,
     values = project(stats, db, scoring_settings)
     starters = starters_from_settings(roster_positions, teams)
     add_vorp(values, starters)
+    adp_map = sleeper.adp(season + 1)
+    add_adp(values, adp_map)
+    # Impute AFTER real values exist, so the curve is fitted on genuine
+    # projections rather than on other imputations.
+    impute_from_adp(values, adp_map, db)
     add_tiers(values)
-    add_adp(values, sleeper.adp(season + 1))
+    add_adp(values, adp_map)          # refresh ranks now the board is complete
     return sorted(values.values(), key=lambda v: -v.vorp)
