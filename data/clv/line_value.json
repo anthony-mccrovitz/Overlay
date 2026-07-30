@@ -1,0 +1,231 @@
+{
+  "generated_at": "2026-07-30T15:06:17.087989+00:00",
+  "window_days": 60,
+  "method": "within-event demeaned OLS on cross-book line disagreement",
+  "lanes": {
+    "mlb::batter_hits": {
+      "prob_per_point": -0.325676,
+      "prob_per_half_point": 0.162838,
+      "r2": 0.8436,
+      "n_events": 370,
+      "n_obs": 1549,
+      "usable": true
+    },
+    "mlb::batter_rbis": {
+      "prob_per_point": -0.163836,
+      "prob_per_half_point": 0.081918,
+      "r2": 0.6844,
+      "n_events": 401,
+      "n_obs": 1679,
+      "usable": true
+    },
+    "mlb::batter_runs_scored": {
+      "prob_per_point": -0.244377,
+      "prob_per_half_point": 0.122188,
+      "r2": 0.8444,
+      "n_events": 399,
+      "n_obs": 1300,
+      "usable": true
+    },
+    "mlb::batter_singles": {
+      "prob_per_point": -0.284329,
+      "prob_per_half_point": 0.142164,
+      "r2": 0.8333,
+      "n_events": 400,
+      "n_obs": 1670,
+      "usable": true
+    },
+    "mlb::batter_total_bases": {
+      "prob_per_point": -0.187521,
+      "prob_per_half_point": 0.093761,
+      "r2": 0.7729,
+      "n_events": 412,
+      "n_obs": 2512,
+      "usable": true
+    },
+    "mlb::f5_total": {
+      "prob_per_point": -0.112078,
+      "prob_per_half_point": 0.056039,
+      "r2": 0.8786,
+      "n_events": 362,
+      "n_obs": 2137,
+      "usable": true
+    },
+    "mlb::nrfi": {
+      "prob_per_point": -0.196495,
+      "prob_per_half_point": 0.098248,
+      "r2": 0.971,
+      "n_events": 191,
+      "n_obs": 1065,
+      "usable": true
+    },
+    "mlb::pitcher_earned_runs": {
+      "prob_per_point": -0.043437,
+      "prob_per_half_point": 0.021719,
+      "r2": 0.2248,
+      "n_events": 169,
+      "n_obs": 717,
+      "usable": false
+    },
+    "mlb::pitcher_hits_allowed": {
+      "prob_per_point": -0.042499,
+      "prob_per_half_point": 0.02125,
+      "r2": 0.2917,
+      "n_events": 230,
+      "n_obs": 1161,
+      "usable": true
+    },
+    "mlb::pitcher_outs": {
+      "prob_per_point": -0.005415,
+      "prob_per_half_point": 0.002707,
+      "r2": 0.0142,
+      "n_events": 295,
+      "n_obs": 2024,
+      "usable": false
+    },
+    "mlb::pitcher_strikeouts": {
+      "prob_per_point": -0.055815,
+      "prob_per_half_point": 0.027908,
+      "r2": 0.3212,
+      "n_events": 428,
+      "n_obs": 3173,
+      "usable": true
+    },
+    "mlb::pitcher_walks": {
+      "prob_per_point": -0.095948,
+      "prob_per_half_point": 0.047974,
+      "r2": 0.4374,
+      "n_events": 46,
+      "n_obs": 110,
+      "usable": true
+    },
+    "mlb::spread": {
+      "prob_per_point": 0.09268,
+      "prob_per_half_point": 0.04634,
+      "r2": 0.9751,
+      "n_events": 263,
+      "n_obs": 5010,
+      "usable": true
+    },
+    "mlb::total": {
+      "prob_per_point": -0.078869,
+      "prob_per_half_point": 0.039434,
+      "r2": 0.7962,
+      "n_events": 366,
+      "n_obs": 5198,
+      "usable": true
+    },
+    "soccer::alternate_spreads": {
+      "prob_per_point": 0.194128,
+      "prob_per_half_point": 0.097064,
+      "r2": 0.9419,
+      "n_events": 61,
+      "n_obs": 340,
+      "usable": true
+    },
+    "soccer::alternate_totals": {
+      "prob_per_point": -0.133968,
+      "prob_per_half_point": 0.066984,
+      "r2": 0.8636,
+      "n_events": 54,
+      "n_obs": 241,
+      "usable": true
+    },
+    "soccer::spread": {
+      "prob_per_point": 0.21529,
+      "prob_per_half_point": 0.107645,
+      "r2": 0.9654,
+      "n_events": 51,
+      "n_obs": 200,
+      "usable": true
+    },
+    "soccer::total": {
+      "prob_per_point": -0.039504,
+      "prob_per_half_point": 0.019752,
+      "r2": 0.142,
+      "n_events": 58,
+      "n_obs": 421,
+      "usable": false
+    },
+    "soccer_usa_mls::alternate_spreads": {
+      "prob_per_point": 0.178191,
+      "prob_per_half_point": 0.089096,
+      "r2": 0.9499,
+      "n_events": 21,
+      "n_obs": 97,
+      "usable": true
+    },
+    "soccer_usa_mls::alternate_totals": {
+      "prob_per_point": -0.155828,
+      "prob_per_half_point": 0.077914,
+      "r2": 0.9766,
+      "n_events": 20,
+      "n_obs": 81,
+      "usable": true
+    },
+    "soccer_usa_mls::spread": {
+      "prob_per_point": 0.21135,
+      "prob_per_half_point": 0.105675,
+      "r2": 0.9934,
+      "n_events": 20,
+      "n_obs": 40,
+      "usable": true
+    },
+    "wnba::player_assists": {
+      "prob_per_point": -0.000751,
+      "prob_per_half_point": 0.000376,
+      "r2": 0.0003,
+      "n_events": 89,
+      "n_obs": 472,
+      "usable": false
+    },
+    "wnba::player_points": {
+      "prob_per_point": -0.000597,
+      "prob_per_half_point": 0.000298,
+      "r2": 0.0086,
+      "n_events": 90,
+      "n_obs": 483,
+      "usable": false
+    },
+    "wnba::player_points_rebounds_assists": {
+      "prob_per_point": -0.00012,
+      "prob_per_half_point": 6e-05,
+      "r2": 0.0014,
+      "n_events": 77,
+      "n_obs": 154,
+      "usable": false
+    },
+    "wnba::player_rebounds": {
+      "prob_per_point": 0.001428,
+      "prob_per_half_point": 0.000714,
+      "r2": 0.0035,
+      "n_events": 90,
+      "n_obs": 483,
+      "usable": false
+    },
+    "wnba::player_threes": {
+      "prob_per_point": -0.062499,
+      "prob_per_half_point": 0.03125,
+      "r2": 0.1426,
+      "n_events": 54,
+      "n_obs": 226,
+      "usable": false
+    },
+    "wnba::spread": {
+      "prob_per_point": 0.022149,
+      "prob_per_half_point": 0.011075,
+      "r2": 0.7074,
+      "n_events": 98,
+      "n_obs": 1269,
+      "usable": true
+    },
+    "wnba::total": {
+      "prob_per_point": -0.009032,
+      "prob_per_half_point": 0.004516,
+      "r2": 0.3503,
+      "n_events": 104,
+      "n_obs": 1296,
+      "usable": true
+    }
+  }
+}

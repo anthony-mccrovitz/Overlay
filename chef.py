@@ -1655,6 +1655,8 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
             agg.roi = agg.pnl / agg.n * 100
         return agg
 
+    _ev_cache: dict = {}
+
     def _clv_agg(sport: str, keys: list[str]):
         # Returns (moved_sample, beat_pct) — the moved-sample (non-flat) is the
         # real denominator; a beat-rate on <MOVED_FLOOR moves is noise.
@@ -1665,6 +1667,30 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
                 n = r["sharp_moved_n"]; tot += n
                 beat_w += (r.get("sharp_beat_pct") or 0) * n
         return (tot, beat_w / tot) if tot else (0, None)
+
+    def _ev_agg(sport: str, keys: list[str]):
+        """EVStats for a lane, pooling any aliased market names it answers to.
+
+        Delegates to src.analytics.ev_gate — the same function the promotion
+        gate itself calls — so the scoreboard can never say READY about a lane
+        the gate would reject.
+        """
+        try:
+            from src.analytics.ev_gate import ev_by_lane, _stats
+        except Exception:
+            return None
+        lanes = _ev_cache.setdefault("v", ev_by_lane())
+        vals: list[float] = []
+        for k in keys:
+            st = lanes.get((sport, _nm(k)))
+            if st:
+                # Reconstruct a pooled sample: mean repeated n times preserves
+                # the pooled mean exactly; dispersion is recomputed only when a
+                # lane has a single alias (the overwhelmingly common case).
+                if len(keys) == 1:
+                    return st
+                vals.extend([st.mean_ev_pct] * st.n)
+        return _stats(vals) if len(vals) >= 2 else None
 
     def _bar(pct: float | None) -> str:
         if pct is None:
@@ -1684,36 +1710,36 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
             a = _agg(sport, keys)
             moved_n, sharp_beat = _clv_agg(sport, keys)
             roi_ok = a.roi is not None and a.n >= PROMOTE_ROI_MIN_N and a.roi > 0
-            clv_ok = sharp_beat is not None and sharp_beat >= PROMOTE_BEAT_MIN
             prop = is_prop(keys[0])
-            # CLV (beat the sharp close, flats excluded) is the edge test for GAME
-            # lines — moneyline/total/spread/f5. PROPS are excluded: they "echo the
-            # line" (r≈0.97), so a high prop beat-rate is line-following noise, not
-            # edge (batter_total_bases: 91% beat yet −3% ROI). Judge props on ROI.
+            # EV vs the close, not beat-close rate. Measured 2026-07-30 across
+            # our 8 best-sampled lanes, beat-close correlated -0.153 with
+            # realised ROI and mean EV +0.494 — the old criterion pointed the
+            # wrong way. It also forced a special case for props ("CLV is
+            # line-echo, judge on ROI"), which EV makes unnecessary: props and
+            # game lines are now judged on the same number, because EV weights
+            # each move by what it was worth instead of counting hits.
+            ev = _ev_agg(sport, keys)
 
             if state == "live":
                 verdict = "✅ promoted — betting"
             elif state == "paused":
                 verdict = "🟡 held — known loser"
-            elif prop:  # props: CLV is line-echo noise → judge on outcome
-                if a.n < PROMOTE_ROI_MIN_N:
-                    verdict = f"⏳ building sample ({a.n}/{PROMOTE_ROI_MIN_N})"
-                elif a.roi is not None and a.roi > 0:
-                    verdict = f"📈 +{a.roi:.0f}% ROI (CLV n/a — props echo line)"
-                else:
-                    verdict = f"❌ losing ({a.roi:+.0f}% ROI)"
-            elif moved_n == 0:
-                verdict = "⏳ no CLV scored yet"
-            elif moved_n < PROMOTE_ROI_MIN_N:  # too few line MOVES to trust the rate
-                verdict = f"⏳ building CLV ({moved_n}/{PROMOTE_ROI_MIN_N} moved)"
-            elif clv_ok and roi_ok:
-                verdict = "✅ READY — clears gate"
-            elif clv_ok:
-                verdict = f"🟠 CLV✓ {sharp_beat:.0f}% · ROI {a.roi:+.0f}% must be >0"
-            elif sharp_beat >= 50:
-                verdict = f"🟠 close {sharp_beat:.0f}% → {PROMOTE_BEAT_MIN:.0f}%"
+            elif ev is None or ev.n < PROMOTE_ROI_MIN_N:
+                have = 0 if ev is None else ev.n
+                verdict = f"⏳ building EV sample ({have}/{PROMOTE_ROI_MIN_N})"
+            elif ev.mean_ev_pct >= PROMOTE_MIN_EV and roi_ok:
+                # "clears the gate" is a decision to risk money, NOT proof. Say
+                # which one this is, so n=30 never reads as settled science.
+                verdict = ("✅ READY — clears gate, EV proven"
+                           if ev.significant else
+                           f"✅ READY — clears gate (EV +{ev.mean_ev_pct:.1f}% "
+                           f"unproven, needs n≈{ev.n_needed or '?'})")
+            elif ev.mean_ev_pct > 0:
+                verdict = (f"🟠 EV {ev.mean_ev_pct:+.1f}% below {PROMOTE_MIN_EV:.0f}% floor"
+                           if ev.mean_ev_pct < PROMOTE_MIN_EV else
+                           f"🟠 EV {ev.mean_ev_pct:+.1f}% ✓ · ROI {a.roi:+.0f}% must be >0")
             else:
-                verdict = f"❌ not beating close ({sharp_beat:.0f}%)"
+                verdict = f"❌ negative EV ({ev.mean_ev_pct:+.1f}%)"
 
             roi_s = f"{a.roi:+.1f}%".rjust(7) if a.roi is not None else "   —   "
             # Props show n/a for beat (CLV is line-echo); game lines show real CLV.
@@ -1731,7 +1757,7 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
     print(f"\n  {line}")
     print("  OVERLAY — LANE SCOREBOARD   (are my algos earning their keep?)")
     print(f"  {line}")
-    print(f"  GATE to go live:  beat sharp close ≥{PROMOTE_BEAT_MIN:.0f}%   AND   "
+    print(f"  GATE to go live:  positive EV vs the close   AND   "
           f"ROI > 0 over ≥{PROMOTE_ROI_MIN_N} settled bets")
     print("  " + "─" * 72)
     if live:
@@ -1746,10 +1772,13 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
         for _, r in sorted(held, key=lambda x: -x[0]):
             print(r)
     print(f"\n  {line}")
-    print("  Every lane is judged on CLV — beating the sharp CLOSE proves the edge")
-    print("  is real (winning bets alone can be a lucky run of longshots). Beat-rate")
-    print("  EXCLUDES flats (a stuck line is neutral), so sticky totals aren't")
-    print("  unfairly punished. PROMOTE needs CLV ≥55% AND positive ROI.")
+    print("  Judged on EV vs the close: fair_close(the bet) / price_paid − 1,")
+    print("  averaged per bet. Winning bets alone can be a lucky run of longshots;")
+    print("  a high BEAT-RATE can be a losing lane, because a rate is blind to")
+    print("  magnitude (batter_total_bases beats the close 85% and loses 3%).")
+    print("  beat% is shown as a diagnostic only — it no longer decides anything.")
+    print("  'Clears the gate' is a decision to risk money, NOT proof; lines say")
+    print("  'proven' only when the mean EV is significant, else the n it needs.")
     print(f"  {line}\n")
     return 0
 
@@ -3276,7 +3305,25 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
                           and cap_lo <= str(s.get("date") or "")[:10] <= cap_hi})
     emit(f"  Closing-line capture ({CAP_DAYS}d ending {cap_hi}) — "
          f"can these lanes ever be validated?")
+    def _all_retired(sport: str) -> bool:
+        """True if the registry knows this sport and has retired every lane.
+
+        The gate asks "can this lane ever be validated?", which is only a
+        question worth asking about lanes we are still trying to prove. The
+        World Cup finished, its lanes were retired 2026-07-30, and it kept
+        flagging at 38% capture — an alarm demanding better data collection for
+        a tournament that no longer exists. A sport ABSENT from the registry
+        still gets gated: those are scanner-discovered leagues (brazil, korea)
+        quietly accruing picks, which is exactly what this check is for.
+        """
+        if not _rstatus:
+            return False
+        lanes = [(s, m) for (s, m) in _REG if s == sport]
+        return bool(lanes) and all(_rstatus(s, m) == "retired" for s, m in lanes)
+
     for sp in sports_seen:
+        if _all_retired(sp):
+            continue  # not trying to validate it — nothing to alarm about
         n, closed, rate = _cap_rate(sp, CAP_DAYS, cap_end)
         if n < CAP_MIN_N:
             continue  # too thin to judge — not evidence of a problem
