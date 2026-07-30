@@ -63,6 +63,25 @@ def _is_tainted_snapshot(s: dict) -> bool:
     return key in _taint_index()
 
 
+_EV_CACHE = {}
+
+
+def _ev_lookup(sport: str, market: str):
+    """EVStats for a lane, or None. Delegates to ev_gate — never recomputed here.
+
+    One EV implementation, one place: the promotion gate, the scoreboard and
+    this function must agree about a lane or they will eventually disagree in
+    the direction someone finds convenient.
+    """
+    if not _EV_CACHE:
+        try:
+            from src.analytics.ev_gate import ev_by_lane
+            _EV_CACHE.update(ev_by_lane())
+        except Exception:
+            _EV_CACHE["__failed__"] = True
+    return _EV_CACHE.get((sport, str(market).lower()))
+
+
 def clv_gate(min_n: int = 200):
     """Compute the CLV promotion gate for every (sport, market).
 
@@ -207,8 +226,28 @@ def clv_gate(min_n: int = 200):
             p_pos = p_gt0(mean, sd, n)
             p_neg = p_gt0(-mean, sd, n)
             if mean > 0 and p_pos < alpha and (rmean is None or rmean > 0):
-                verdict = "✅ EDGE CANDIDATE → out-of-sample watch"
-                is_candidate = True
+                # Significant positive CLV in the lane's own unit is necessary
+                # but NOT sufficient. `mean` here is points (or price %) and a
+                # rate/size measured in those units is blind to what the moves
+                # were worth: mlb/batter_total_bases clears this test at +0.23pt
+                # and beat 90.0%, and loses 2.9% of stake. This function was
+                # calling it a PROVEN EDGE CANDIDATE while the promotion gate
+                # blocked it — two surfaces giving opposite advice about the same
+                # lane, which is how a losing model gets funded.
+                #
+                # Final say goes to EV vs the close, the same number the gate
+                # uses (see src/analytics/ev_gate.py and the -0.153 vs +0.494
+                # correlations recorded there). Absent EV data we decline to
+                # crown a candidate rather than fall back to the weaker test.
+                ev = _ev_lookup(sport, mkt)
+                if ev is not None and ev.mean_ev_pct > 0:
+                    verdict = "✅ EDGE CANDIDATE → out-of-sample watch"
+                    is_candidate = True
+                elif ev is None:
+                    verdict = "unverifiable (no EV data — not a candidate)"
+                else:
+                    verdict = (f"🚫 unit-CLV positive but EV {ev.mean_ev_pct:+.2f}% "
+                               f"— moves are small when right, big when wrong")
             elif mean < 0 and p_neg < alpha:
                 verdict = "❌ negative — fade or stop modeling"
             else:
