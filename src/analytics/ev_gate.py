@@ -83,6 +83,44 @@ def _stats(values: list[float]) -> EVStats | None:
     return EVStats(n, mean, sd, t, needed, abs(t) >= Z_95)
 
 
+def ev_values_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], list[float]]:
+    """{(sport, market): [per-bet EV%]} — the raw values behind EVStats.
+
+    Exposed so callers that need to POOL several markets can concatenate real
+    observations. Reconstructing a pooled sample by repeating a lane's mean n
+    times preserves the mean and destroys the variance, which silently forces
+    `significant=False` — a lane that could never be proven, for arithmetic
+    reasons rather than evidential ones.
+    """
+    buckets: dict[tuple[str, str], list[float]] = defaultdict(list)
+    for r in (rows if rows is not None else _load()):
+        if r.get("tainted"):
+            continue
+        ev = r.get("clv_ev_pct")
+        if ev is None:
+            continue
+        market = str(r.get("market") or "").lower()
+        market = {"ml": "moneyline", "h2h": "moneyline"}.get(market, market)
+        sport = str(r.get("sport") or "")
+        if not sport or not market:
+            continue
+        try:
+            buckets[(sport, market)].append(float(ev))
+        except (TypeError, ValueError):
+            continue
+    return dict(buckets)
+
+
+def pooled_ev(lanes: list[tuple[str, str]],
+              rows: list[dict] | None = None) -> EVStats | None:
+    """EVStats over several lanes pooled from their REAL observations."""
+    by_lane = ev_values_by_lane(rows)
+    vals: list[float] = []
+    for lane in lanes:
+        vals.extend(by_lane.get(lane, []))
+    return _stats(vals)
+
+
 def ev_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], EVStats]:
     """{(sport, market): EVStats} over every snapshot carrying clv_ev_pct.
 

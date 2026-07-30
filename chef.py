@@ -1626,6 +1626,10 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
     from src.analytics.market_stats import market_stats, MarketStat
     from src.analytics.clv_gate import clv_gate
     from src.pipeline.promoter import PROMOTE_BEAT_MIN, PROMOTE_ROI_MIN_N
+    # The EV floor the promotion gate enforces. Imported from the same module
+    # the gate reads so the scoreboard can never advertise a lane as READY that
+    # clears_promotion_gate would reject.
+    from src.config.model_standard import PROMOTE_MIN_EV
 
     stats = market_stats()
 
@@ -1676,21 +1680,20 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
         the gate would reject.
         """
         try:
-            from src.analytics.ev_gate import ev_by_lane, _stats
+            from src.analytics.ev_gate import ev_by_lane, pooled_ev
         except Exception:
             return None
-        lanes = _ev_cache.setdefault("v", ev_by_lane())
-        vals: list[float] = []
-        for k in keys:
-            st = lanes.get((sport, _nm(k)))
-            if st:
-                # Reconstruct a pooled sample: mean repeated n times preserves
-                # the pooled mean exactly; dispersion is recomputed only when a
-                # lane has a single alias (the overwhelmingly common case).
-                if len(keys) == 1:
-                    return st
-                vals.extend([st.mean_ev_pct] * st.n)
-        return _stats(vals) if len(vals) >= 2 else None
+        if len(keys) == 1:
+            lanes = _ev_cache.setdefault("v", ev_by_lane())
+            return lanes.get((sport, _nm(keys[0])))
+        # Several markets under one label: pool their REAL observations. An
+        # earlier version rebuilt the sample by repeating each lane's mean n
+        # times, which preserves the pooled mean and flattens the variance to
+        # zero — so a multi-market lane could never read as significant, for
+        # arithmetic reasons rather than evidential ones. No lane in GRID has
+        # multiple keys today, which is exactly why this had to be fixed now
+        # rather than discovered by the first one that does.
+        return pooled_ev([(sport, _nm(k)) for k in keys])
 
     def _bar(pct: float | None) -> str:
         if pct is None:

@@ -63,7 +63,8 @@ def _is_tainted_snapshot(s: dict) -> bool:
     return key in _taint_index()
 
 
-_EV_CACHE = {}
+_EV_CACHE: dict = {}
+_EV_LOADED = False
 
 
 def _ev_lookup(sport: str, market: str):
@@ -72,13 +73,21 @@ def _ev_lookup(sport: str, market: str):
     One EV implementation, one place: the promotion gate, the scoreboard and
     this function must agree about a lane or they will eventually disagree in
     the direction someone finds convenient.
+
+    Loaded-ness is tracked by a flag, NOT by whether the cache is non-empty. An
+    EMPTY result is a legitimate answer (a fresh checkout before the first CLV
+    re-score has no clv_ev_pct rows at all), and keying on emptiness made every
+    lookup re-read and re-parse the whole 15k-row snapshots file — once per lane
+    examined, on exactly the runs that were already slowest.
     """
-    if not _EV_CACHE:
+    global _EV_LOADED
+    if not _EV_LOADED:
+        _EV_LOADED = True
         try:
             from src.analytics.ev_gate import ev_by_lane
             _EV_CACHE.update(ev_by_lane())
         except Exception:
-            _EV_CACHE["__failed__"] = True
+            pass                       # absent EV data is handled by the caller
     return _EV_CACHE.get((sport, str(market).lower()))
 
 
