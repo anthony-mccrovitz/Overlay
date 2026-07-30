@@ -1,5 +1,23 @@
 # Models & Markets — Overlay
 
+> **Status claims in this file are NOT maintained by hand.** They drifted badly
+> once — on 2026-07-30 this document described World Cup, tennis, golf, WNBA
+> props and UFC as "live" (all were retired or incubating) while also asserting
+> "Nothing is bet. All markets shadow", by which point `mlb/total` had been
+> taking real money for weeks. Wrong in both directions at the same time.
+>
+> **For current state, run the commands — they read the registry and cannot drift:**
+>
+> ```
+> chef.py grid          every lane and its status
+> chef.py scoreboard    how close each lane is to earning real money
+> chef.py moneypath     can I bet today, link by link
+> ```
+>
+> What stays here is what a command CANNOT tell you: which algorithm each lane
+> uses and why it was built that way.
+
+
 Source of truth for **every model, the markets it prices, how it's validated, and
 its known limitations.** Updated 2026-06-21.
 
@@ -13,26 +31,6 @@ Two independent validation signals are tracked for each market:
 
 **Everything is shadow (`card_pick=False`, `stake=0`) until both signals agree.**
 EV is never trusted on its own — overconfident models produce gaudy fake EV.
-
----
-
-## Coverage matrix
-
-| Sport | Markets priced | Model | Status |
-|-------|----------------|-------|--------|
-| MLB | moneyline, total, spread, F5 total, NRFI | ensemble (XGB/Pythag) + Poisson | live, calibrated on spread/total; ML/NRFI overconfident |
-| MLB props | pitcher_strikeouts, batter_hits/HR/TB/RBI/runs… (each own market) | per-stat NB / distributional | live, overconfident — shadow |
-| NBA | moneyline, spread, total | XGBoost + ratings | off-season; spread/total were calibrated |
-| NBA props | player_points/rebounds/assists/… | distributional | off-season, wired |
-| NHL | moneyline, puck_line, total | ratings model | off-season |
-| NHL props | player_points/goals/assists/shots_on_goal | distributional | off-season, wired |
-| **World Cup** | **moneyline, total, spread, anytime_scorer** | **Dixon-Coles v2 + scorer thinning** | **live (spread+scorer NEW 2026-06-21)** |
-| Soccer leagues | moneyline, total, spread | Dixon-Coles v2 | off-season |
-| **Tennis** | **moneyline, total (games)** | **Elo serve model + MC games (NEW)** | **live (totals NEW 2026-06-21)** |
-| Golf (majors) | outright winner | SG + Monte-Carlo sim | live during majors |
-| WNBA | moneyline, spread, total, **player props (NEW)** | ratings + distributional props | **live (props NEW 2026-06-21)** |
-| MMA/UFC | moneyline | fighter sim | live (sparse fighter ratings) |
-| Motorsport | win (outright) | Elo/engine | low priority |
 
 ---
 
@@ -87,10 +85,3 @@ EV is never trusted on its own — overconfident models produce gaudy fake EV.
   pulls the Draw price. (WC CLV was +72% garbage; now sane.)
 - **`chef.py edge`** keys on `(sport, market)` — no Simpson's-paradox blending.
 - **`chef.py validate`** — outcome calibration per market.
-
-## Current honest verdict (2026-06-21)
-- **No market clears the CLV promotion gate** at the proper sample floor.
-  `mlb · spread` and `mlb · total` are the positive leads — and notably the only
-  markets `validate` calls *calibrated*. Everything ML/prop is OVERCONFIDENT.
-- **Nothing is bet.** All markets shadow. The instrument now measures every
-  market two ways (CLV + calibration); promotion waits on persistence.

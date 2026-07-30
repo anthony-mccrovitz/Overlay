@@ -3496,9 +3496,32 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
     roi = (profit / len(settled) * 100) if settled else 0.0
 
     # Ungraded settled picks: the backlog that silently rots the record.
+    #
+    # Split by whether the lane is still one we care about. On 2026-07-30 this
+    # read "105 unsettled" every single day, and 75 of those sat on lanes we
+    # RETIRED on purpose — 66 of them pga/outright alone. A number that never
+    # moves and mostly counts abandoned work is a number you stop reading, which
+    # is how a genuine grading gap would slip past. The retired count is still
+    # printed, just not conflated with work that matters.
     stale_cut = (today - _td(days=3)).isoformat()
-    ungraded = sum(1 for p in picks
-                   if not p.get("result") and str(p.get("date") or "") <= stale_cut)
+    try:
+        from src.config.models import model_status as _mstat, _key as _mkey
+    except Exception:
+        _mstat = _mkey = None
+
+    def _retired(p) -> bool:
+        if not (_mstat and _mkey):
+            return False
+        try:
+            return _mstat(_mkey(str(p.get("sport") or ""), "")[0],
+                          str(p.get("market") or "")) == "retired"
+        except Exception:
+            return False
+
+    _stale_all = [p for p in picks
+                  if not p.get("result") and str(p.get("date") or "") <= stale_cut]
+    ungraded_retired = sum(1 for p in _stale_all if _retired(p))
+    ungraded = len(_stale_all) - ungraded_retired
 
     # Closing capture + CLV freshness, straight off disk.
     todays_files = [f for f in _glob.glob("data/clv/closing/*.json")
@@ -3548,7 +3571,9 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
           f"{profit:+.1f}u ({roi:+.1f}% ROI)")
     print(f"  CAPTURE    {events} event(s) archived today in {len(todays_files)} file(s)")
     print(f"  CLV        {clv_line}")
-    print(f"  GRADING    {ungraded} pick(s) unsettled and older than 3d")
+    _retired_note = (f"  (+{ungraded_retired} on retired lanes, not chased)"
+                     if ungraded_retired else "")
+    print(f"  GRADING    {ungraded} pick(s) unsettled and older than 3d{_retired_note}")
     print(f"  LANES      {lanes_line}")
     if unval:
         print(f"  BLOCKED    un-validatable (capture < 60%): {' · '.join(unval)}")

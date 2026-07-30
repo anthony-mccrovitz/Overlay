@@ -1,3 +1,14 @@
+> **ARCHIVED-IN-PLACE 2026-07-30.** Written 2026-06-21; its "Where we are"
+> section asserted the system "can't silently break — the integrity monitor goes
+> RED on any in-season market gone dark". That claim was false for twelve
+> consecutive days in July: the monitor DID go red and delivered zero alerts,
+> because the alert step itself was broken and nothing tested it. It is true
+> again now, but a roadmap that asserts a guarantee it cannot check is how the
+> gap stayed invisible.
+>
+> Current state: `chef.py scoreboard` / `chef.py moneypath`, or README.md.
+> Kept for the plan history below.
+
 # Roadmap — Overlay
 
 Updated 2026-06-21, after the multi-market model build (PRs #23–#30).
