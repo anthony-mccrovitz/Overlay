@@ -306,14 +306,14 @@
     "sport": "tennis_atp_washington_open",
     "home_team": "Alex de Minaur",
     "away_team": "Cruz Hewitt",
-    "commence_time": "2026-07-30T17:00:00Z",
-    "captured_at": "2026-07-30T13:11:18.326542+00:00",
-    "mins_to_commence": 228.7,
-    "closing_final": false,
-    "BestHomeML": -1250,
-    "BestAwayML": 903,
-    "HomeBook": "theScore Bet",
-    "AwayBook": "Pinnacle",
+    "commence_time": "2026-07-30T17:20:00Z",
+    "captured_at": "2026-07-30T17:06:18.804234+00:00",
+    "mins_to_commence": 13.7,
+    "closing_final": true,
+    "BestHomeML": -980,
+    "BestAwayML": 800,
+    "HomeBook": "DraftKings",
+    "AwayBook": "FanDuel",
     "all_odds": [
       {
         "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
@@ -345,7 +345,7 @@
         "Market": "h2h",
         "Name": "Alex de Minaur",
         "Selection": "Alex de Minaur",
-        "Odds": -1360,
+        "Odds": -980,
         "Line": null
       },
       {
@@ -356,7 +356,7 @@
         "Market": "h2h",
         "Name": "Cruz Hewitt",
         "Selection": "Cruz Hewitt",
-        "Odds": 770,
+        "Odds": 610,
         "Line": null
       },
       {
@@ -389,7 +389,7 @@
         "Market": "h2h",
         "Name": "Alex de Minaur",
         "Selection": "Alex de Minaur",
-        "Odds": -2000,
+        "Odds": -1667,
         "Line": null
       },
       {
@@ -400,7 +400,7 @@
         "Market": "h2h",
         "Name": "Cruz Hewitt",
         "Selection": "Cruz Hewitt",
-        "Odds": 900,
+        "Odds": 750,
         "Line": null
       },
       {
@@ -411,7 +411,7 @@
         "Market": "h2h",
         "Name": "Alex de Minaur",
         "Selection": "Alex de Minaur",
-        "Odds": -2000,
+        "Odds": -1667,
         "Line": null
       },
       {
@@ -422,7 +422,7 @@
         "Market": "h2h",
         "Name": "Cruz Hewitt",
         "Selection": "Cruz Hewitt",
-        "Odds": 900,
+        "Odds": 750,
         "Line": null
       },
       {
@@ -433,7 +433,7 @@
         "Market": "h2h",
         "Name": "Alex de Minaur",
         "Selection": "Alex de Minaur",
-        "Odds": -2000,
+        "Odds": -1600,
         "Line": null
       },
       {
@@ -444,7 +444,7 @@
         "Market": "h2h",
         "Name": "Cruz Hewitt",
         "Selection": "Cruz Hewitt",
-        "Odds": 900,
+        "Odds": 750,
         "Line": null
       },
       {
@@ -455,7 +455,7 @@
         "Market": "h2h",
         "Name": "Alex de Minaur",
         "Selection": "Alex de Minaur",
-        "Odds": -1468,
+        "Odds": -1144,
         "Line": null
       },
       {
@@ -466,7 +466,29 @@
         "Market": "h2h",
         "Name": "Cruz Hewitt",
         "Selection": "Cruz Hewitt",
-        "Odds": 903,
+        "Odds": 776,
+        "Line": null
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Alex de Minaur",
+        "Selection": "Alex de Minaur",
+        "Odds": -1300,
+        "Line": null
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Cruz Hewitt",
+        "Selection": "Cruz Hewitt",
+        "Odds": 800,
         "Line": null
       },
       {
@@ -477,85 +499,409 @@
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
+        "Odds": -105,
+        "Line": 19.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -125,
+        "Line": 19.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "Bally Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -150,
+        "Line": 18.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "Bally Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 114,
+        "Line": 18.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "BetRivers",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -109,
+        "Line": 19.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "BetRivers",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -121,
+        "Line": 19.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 102,
+        "Line": 19.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -114,
+        "Line": 19.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 118,
+        "Line": 20.5
+      },
+      {
+        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
+        "HomeTeam": "Alex de Minaur",
+        "AwayTeam": "Cruz Hewitt",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -158,
+        "Line": 20.5
+      }
+    ]
+  },
+  {
+    "event_id": "03fd45966d7f69242b90a177bfc4fbac",
+    "sport": "tennis_atp_washington_open",
+    "home_team": "Terence Atmane",
+    "away_team": "Alejandro Tabilo",
+    "commence_time": "2026-07-30T20:30:00Z",
+    "captured_at": "2026-07-30T17:06:19.096396+00:00",
+    "mins_to_commence": 203.7,
+    "closing_final": false,
+    "BestHomeML": -106,
+    "BestAwayML": 100,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Bally Bet",
+    "all_odds": [
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": -108,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "DraftKings",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -113,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": -105,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -115,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": -108,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -114,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": -104,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -106,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": -110,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -118,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
         "Odds": 100,
-        "Line": 19.5
+        "Line": null
       },
       {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -125,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": 100,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "BetRivers",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -125,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Alejandro Tabilo",
+        "Selection": "Alejandro Tabilo",
+        "Odds": 100,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Hard Rock Bet",
+        "Market": "h2h",
+        "Name": "Terence Atmane",
+        "Selection": "Terence Atmane",
+        "Odds": -125,
+        "Line": null
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "theScore Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": 105,
+        "Line": 24.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
         "Sportsbook": "theScore Bet",
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -130,
-        "Line": 19.5
+        "Odds": -135,
+        "Line": 24.5
       },
       {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
-        "Sportsbook": "Bally Bet",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 18.5
-      },
-      {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
-        "Sportsbook": "Bally Bet",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -103,
-        "Line": 18.5
-      },
-      {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
-        "Sportsbook": "BetRivers",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -130,
-        "Line": 18.5
-      },
-      {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
-        "Sportsbook": "BetRivers",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -103,
-        "Line": 18.5
-      },
-      {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
-        "Sportsbook": "Pinnacle",
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "FanDuel",
         "Market": "totals",
         "Name": "Over",
         "Selection": "Over",
         "Odds": -110,
-        "Line": 19.0
+        "Line": 24.5
       },
       {
-        "EventID": "c17e55d9075b598b1bff5cbf14a36a59",
-        "HomeTeam": "Alex de Minaur",
-        "AwayTeam": "Cruz Hewitt",
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "FanDuel",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -122,
+        "Line": 24.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -102,
+        "Line": 23.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
         "Sportsbook": "Pinnacle",
         "Market": "totals",
         "Name": "Under",
         "Selection": "Under",
-        "Odds": -104,
-        "Line": 19.0
+        "Odds": -110,
+        "Line": 23.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Bally Bet",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -114,
+        "Line": 23.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "Bally Bet",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 23.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "BetRivers",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -114,
+        "Line": 23.5
+      },
+      {
+        "EventID": "03fd45966d7f69242b90a177bfc4fbac",
+        "HomeTeam": "Terence Atmane",
+        "AwayTeam": "Alejandro Tabilo",
+        "Sportsbook": "BetRivers",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 23.5
       }
     ]
   }
