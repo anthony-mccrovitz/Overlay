@@ -29,6 +29,7 @@ concurrency:
 
 permissions:
   contents: write                # needed to commit captured archives back
+  issues: write                  # so a failed capture can raise an alarm
 
 jobs:
   capture:
@@ -69,7 +70,32 @@ jobs:
         # events poll is free, and capture is idempotent (an event already
         # archived is re-fetched only to upgrade it to a true closing line inside
         # FINAL_WINDOW_MIN), so a wider band does not multiply per-event credits.
-        run: python scripts/capture_closing.py --window 240
+        #
+        # Output is teed so the alert step below can quote the actual failure.
+        # pipefail matters: without it the pipeline reports tee's exit code and a
+        # dead capture would look green — the precise failure mode this workflow
+        # was rebuilt to eliminate.
+        run: |
+          set -o pipefail
+          python scripts/capture_closing.py --window 240 2>&1 | tee /tmp/capture.out
+
+      - name: Alert on failure — open a GitHub issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # ALERT_ONCE: this workflow fires ~13x/day, so commenting on every
+          # failure would post a dozen pings a day and train you to ignore the
+          # label. One issue per outage instead; close it when fixed and a
+          # recurrence opens a fresh one. The daily monitor still re-pings for
+          # as long as the underlying cause persists, so a lingering outage is
+          # not silent — it is just not spamming from two places at once.
+          ALERT_ONCE: "1"
+          ALERT_INTRO: "closing-line capture is FAILING"
+          ALERT_FOOTER: "Closing lines cannot be backfilled — every run that fails here loses that window's CLV permanently. Usual cause: Odds API quota exhausted (the preflight in capture_closing.py exits RED rather than archiving nothing). Close this issue once capture is green again."
+        run: |
+          [ -s /tmp/capture.out ] || \
+            echo "capture_closing produced no output — the JOB failed before it ran (checkout / deps / python). See the Actions log." > /tmp/capture.out
+          bash scripts/alert_issue.sh "🚨 Closing-line capture failing" /tmp/capture.out
 
       - name: Commit new archives
         run: |

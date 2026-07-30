@@ -80,6 +80,17 @@ if [ -n "$existing" ]; then
   [ "$st" = "OPEN" ] || existing=""
 fi
 
+if [ -n "$existing" ] && [ "${ALERT_ONCE:-0}" = "1" ]; then
+  # ONE issue per outage, no re-ping. For a workflow that runs every 15 minutes
+  # (capture-closing), commenting on each failure would post a dozen notifications
+  # a day and teach you to filter the label — which is how the original twelve
+  # silent days happened, just from the opposite direction. The daily monitor
+  # still re-pings while the cause persists, so nothing goes quiet; it simply
+  # doesn't alarm from two places at once.
+  echo "$existing"
+  exit 0
+fi
+
 if [ -n "$existing" ]; then
   # Re-ping rather than spawn a duplicate: an alarm that stays red for a week
   # should be one issue with seven comments, not seven issues.
