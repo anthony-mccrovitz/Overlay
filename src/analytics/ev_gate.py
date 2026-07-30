@@ -58,6 +58,36 @@ class EVStats:
         return self.mean_ev_pct > 0
 
 
+def _canon_sport(raw) -> str:
+    """Snapshot sport → the REGISTRY lane key, via models._key. Never re-derived.
+
+    This is the repo's most expensive recurring defect and it bit again here.
+    Snapshots carry the raw Odds API sport (`soccer_usa_mls`,
+    `tennis_atp_washington_open`, `mma_mixed_martial_arts`), while the registry,
+    market_stats and the promotion gate all key on the canonical lane
+    (`usa_mls`, `tennis`, `ufc`). Keying EV on the raw value silently broke 12
+    lanes:
+
+      · usa_mls/moneyline held 46 scored rows and the gate reported 0
+      · ufc/moneyline held 16 and reported 0
+      · tennis fragmented across FOUR tournament keys (17+9+5+2 = 33 rows), each
+        under the n>=30 floor, so a lane with a real sample reported nothing —
+        the precise failure the invariant docs describe for the six earlier
+        hand-rolled copies of this mapping
+
+    The symptom never looks like a key bug: the lane reads "building EV sample
+    (0/30)" while holding plenty of data.
+    """
+    s = str(raw or "")
+    if not s:
+        return ""
+    try:
+        from src.config.models import _key
+        return _key(s, "")[0]
+    except Exception:
+        return s          # unmapped sport: keep the raw key rather than drop it
+
+
 def _load() -> list[dict]:
     try:
         blob = json.loads(SNAPSHOTS.read_text().replace("NaN", "null"))
@@ -101,7 +131,7 @@ def ev_values_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], l
             continue
         market = str(r.get("market") or "").lower()
         market = {"ml": "moneyline", "h2h": "moneyline"}.get(market, market)
-        sport = str(r.get("sport") or "")
+        sport = _canon_sport(r.get("sport"))
         if not sport or not market:
             continue
         try:
@@ -137,7 +167,7 @@ def ev_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], EVStats]
             continue
         market = str(r.get("market") or "").lower()
         market = {"ml": "moneyline", "h2h": "moneyline"}.get(market, market)
-        sport = str(r.get("sport") or "")
+        sport = _canon_sport(r.get("sport"))
         if not sport or not market:
             continue
         try:

@@ -3675,11 +3675,18 @@ def cmd_edge(args: argparse.Namespace) -> int:
             candidates.append(r)
         pstr = f"{r['p_pos']:.4f}" if r["p_pos"] is not None else "—"
         bstr = f"{r['beat_pct']:.0f}%" if r["beat_pct"] is not None else "—"
-        if r.get("sharp_n"):
-            sm = f"{r['sharp_mean']:+.2f}{r['unit']}"
-            sb = f"{r['sharp_beat_pct']:.0f}%"
-        else:
-            sm, sb = "—", "—"
+        # `sharp_n` counts SCORED snapshots; `sharp_beat_pct` is computed over
+        # MOVED ones only, because a flat line is neither a win nor a loss. A
+        # lane whose every sharp snapshot came back flat therefore has sharp_n>0
+        # and sharp_beat_pct=None — and the old `if r.get("sharp_n")` guard
+        # treated one field's presence as proof of the other's, crashing the
+        # whole report with a TypeError. Four real lanes hit this (nhl/puck_line,
+        # nhl/spread, wc/spread, wnba/spread), so `chef.py edge` died before
+        # printing its verdict block. Each field is now formatted on its own.
+        sm = (f"{r['sharp_mean']:+.2f}{r['unit']}"
+              if r.get("sharp_n") and r.get("sharp_mean") is not None else "—")
+        sb = (f"{r['sharp_beat_pct']:.0f}%"
+              if r.get("sharp_beat_pct") is not None else "—")
         # Mirage = positive vs best price but negative vs the sharp close: the
         # "edge" is just us shopping the loosest book, not beating the market.
         if (r.get("sharp_n") and r["mean"] > 0 and r["sharp_mean"] is not None
