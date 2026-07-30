@@ -1,3 +1,8 @@
+> **ARCHIVED 2026-07-30 — completed; remediation landed and its guards are now enforced by tests**
+>
+> Kept for history. This describes a past plan, not current state.
+> For current state run `chef.py scoreboard` / `chef.py moneypath`, or read README.md.
+
 # Model Remediation Plan — Getting to a Verified Edge
 
 **Created:** 2026-07-15

@@ -1,3 +1,8 @@
+> **ARCHIVED 2026-07-30 — superseded; the promotion gate was rewritten to run on EV vs the close, with an independence floor**
+>
+> Kept for history. This describes a past plan, not current state.
+> For current state run `chef.py scoreboard` / `chef.py moneypath`, or read README.md.
+
 # Promotion Watch — out-of-sample gates in progress
 
 The `chef.py edge` gate flags candidates; promotion requires the edge to HOLD on

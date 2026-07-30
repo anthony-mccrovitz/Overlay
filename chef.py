@@ -3496,9 +3496,32 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
     roi = (profit / len(settled) * 100) if settled else 0.0
 
     # Ungraded settled picks: the backlog that silently rots the record.
+    #
+    # Split by whether the lane is still one we care about. On 2026-07-30 this
+    # read "105 unsettled" every single day, and 75 of those sat on lanes we
+    # RETIRED on purpose — 66 of them pga/outright alone. A number that never
+    # moves and mostly counts abandoned work is a number you stop reading, which
+    # is how a genuine grading gap would slip past. The retired count is still
+    # printed, just not conflated with work that matters.
     stale_cut = (today - _td(days=3)).isoformat()
-    ungraded = sum(1 for p in picks
-                   if not p.get("result") and str(p.get("date") or "") <= stale_cut)
+    try:
+        from src.config.models import model_status as _mstat, _key as _mkey
+    except Exception:
+        _mstat = _mkey = None
+
+    def _retired(p) -> bool:
+        if not (_mstat and _mkey):
+            return False
+        try:
+            return _mstat(_mkey(str(p.get("sport") or ""), "")[0],
+                          str(p.get("market") or "")) == "retired"
+        except Exception:
+            return False
+
+    _stale_all = [p for p in picks
+                  if not p.get("result") and str(p.get("date") or "") <= stale_cut]
+    ungraded_retired = sum(1 for p in _stale_all if _retired(p))
+    ungraded = len(_stale_all) - ungraded_retired
 
     # Closing capture + CLV freshness, straight off disk.
     todays_files = [f for f in _glob.glob("data/clv/closing/*.json")
@@ -3548,7 +3571,9 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
           f"{profit:+.1f}u ({roi:+.1f}% ROI)")
     print(f"  CAPTURE    {events} event(s) archived today in {len(todays_files)} file(s)")
     print(f"  CLV        {clv_line}")
-    print(f"  GRADING    {ungraded} pick(s) unsettled and older than 3d")
+    _retired_note = (f"  (+{ungraded_retired} on retired lanes, not chased)"
+                     if ungraded_retired else "")
+    print(f"  GRADING    {ungraded} pick(s) unsettled and older than 3d{_retired_note}")
     print(f"  LANES      {lanes_line}")
     if unval:
         print(f"  BLOCKED    un-validatable (capture < 60%): {' · '.join(unval)}")
@@ -4700,11 +4725,23 @@ def cmd_deploy(args: argparse.Namespace) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(
         prog="chef",
-        description="Overlay unified picks + grading CLI",
+        description=(
+            "Overlay unified picks + grading CLI\n\n"
+            "START HERE\n"
+            "  chef.py today        did it run, the record, what to bet\n"
+            "  chef.py moneypath    CAN I BET? every link from odds to a placed bet\n"
+            "  chef.py scoreboard   every lane, and how close it is to real money\n\n"
+            "Sixty commands live below. Six are marked ★ — those are the ones\n"
+            "worth knowing. The rest are research and operations you reach for\n"
+            "by name, not by browsing."
+        ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
-    sub = parser.add_subparsers(dest="command", required=True)
+    # metavar collapses argparse's default behaviour of printing all sixty
+    # command names inline — twice in usage, again on every error. A typo used
+    # to produce ~1,000 characters of wall before the actual message.
+    sub = parser.add_subparsers(dest="command", required=True, metavar="COMMAND")
 
     # The one daily driver — listed first because it's the only one you run daily.
     sub.add_parser("today", help="★ THE daily driver: one screen — did it run, the record, what to bet")
@@ -5065,6 +5102,23 @@ def main() -> int:
                           help="Include card_pick=False picks (shows full thesis)")
     p_shadow.add_argument("--backfill", action="store_true",
                           help="Re-run shadow_filter classification on all picks first")
+
+    # Suggest the command they meant. argparse's stock behaviour on a typo is to
+    # print the full sixty-name choice list — twice — with no hint, which is a
+    # wall of text where a one-line answer belongs.
+    if len(sys.argv) > 1 and not sys.argv[1].startswith("-"):
+        _typed = sys.argv[1]
+        _known = set(sub.choices)
+        if _typed not in _known:
+            import difflib
+            _near = difflib.get_close_matches(_typed, sorted(_known), n=3, cutoff=0.6)
+            print(f"\n  chef: unknown command '{_typed}'")
+            if _near:
+                print(f"  did you mean:  " + "  ".join(_near))
+            else:
+                print("  start with:    chef.py today · chef.py moneypath · chef.py scoreboard")
+            print("  full list:     chef.py --help\n")
+            return 2
 
     args = parser.parse_args()
 

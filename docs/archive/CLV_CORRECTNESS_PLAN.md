@@ -1,3 +1,8 @@
+> **ARCHIVED 2026-07-30 — completed; the vig-consistent CLV ladder shipped, and the gate has since moved to EV entirely**
+>
+> Kept for history. This describes a past plan, not current state.
+> For current state run `chef.py scoreboard` / `chef.py moneypath`, or read README.md.
+
 # CLV Correctness Plan — vig-consistent CLV for every market + experiment verdicts
 
 **Status (2026-07-10): IMPLEMENTED — all 159 tests pass. Uncommitted on `main` working tree
