@@ -70,6 +70,21 @@ PROMOTE_MIN_N    = 30
 # nothing magic about the number, only about it not being zero.
 PROMOTE_MIN_EV   = 1.0
 
+# Independence floor. n counts SNAPSHOTS; this counts the distinct DAYS they
+# came from, because bets on one slate share a weather front, a stale board and
+# a news cycle — they are not independent draws.
+#
+# usa_mls/moneyline exposed the gap: 46 rows spread over FOUR days, 63% of them
+# on a single one, mean EV +13.00% driven by outliers (median +5.98%; dropping
+# the top 3 rows collapses it to +5.01%), entered a MEDIAN 3.7 days before
+# kickoff so the "closing line value" largely measures three days of news
+# arriving. A t-test assuming 46 independent observations called that
+# significant. The live lane for comparison: 215 rows across 60 days.
+#
+# 15 days is deliberately below mlb/total's 60 and far above the 4 that slipped
+# through — enough slates that one unusual card cannot carry a promotion.
+PROMOTE_MIN_DAYS = 15
+
 # Edge-shrink floor. k is realized_pp / claimed_pp: how much of the edge the
 # model claims actually shows up in results. Below this the model's edges are
 # mostly fiction, and any Kelly sizing built on them is oversized.
@@ -273,6 +288,12 @@ def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
     if roi is None:
         return False, f"EV {ev.mean_ev_pct:+.2f}% but ROI unknown"
 
+    if ev.n_days and ev.n_days < PROMOTE_MIN_DAYS:
+        return False, (f"EV {ev.mean_ev_pct:+.2f}% on n={ev.n} but only "
+                       f"{ev.n_days} distinct day(s) "
+                       f"({ev.max_day_share:.0%} on one) — need "
+                       f"{PROMOTE_MIN_DAYS}; clustered samples are not "
+                       f"independent{beat_txt}")
     ok = ev.mean_ev_pct >= PROMOTE_MIN_EV and roi > 0
     # n>=PROMOTE_MIN_N is a DATA-SUFFICIENCY floor, never a significance test.
     # Report the t-statistic and the sample a real verdict would need, so

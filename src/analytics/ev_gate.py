@@ -52,6 +52,15 @@ class EVStats:
     t: float | None
     n_needed: int | None      # bets required for significance at the observed mean
     significant: bool
+    # Independence, not just volume. Bets on ONE slate share a weather front, a
+    # stale board, a news cycle — they are not 46 independent draws. usa_mls
+    # cleared the n>=30 floor with 46 rows spread over FOUR days, 63% of them on
+    # a single one, and a t-test that assumed 46 independent observations
+    # returned t=+2.28 "significant". The live lane, by contrast, is 215 rows
+    # across 60 days. Counting days is the cheap guard against a sample that is
+    # large and thin at the same time.
+    n_days: int = 0
+    max_day_share: float = 0.0
 
     @property
     def positive(self) -> bool:
@@ -97,20 +106,25 @@ def _load() -> list[dict]:
     return [r for r in rows if isinstance(r, dict)]
 
 
-def _stats(values: list[float]) -> EVStats | None:
+def _stats(values: list[float], days: list[str] | None = None) -> EVStats | None:
     n = len(values)
     if n < 2:
         return None
+    n_days = len(set(days)) if days else 0
+    max_share = 0.0
+    if days:
+        from collections import Counter
+        max_share = Counter(days).most_common(1)[0][1] / len(days)
     mean = sum(values) / n
     var = sum((v - mean) ** 2 for v in values) / (n - 1)
     sd = math.sqrt(var)
     if sd <= 0:
         # Every bet scored identically — degenerate, not significant.
-        return EVStats(n, mean, 0.0, None, None, False)
+        return EVStats(n, mean, 0.0, None, None, False, n_days, max_share)
     t = mean / (sd / math.sqrt(n))
     # n required for |t| >= Z_95 at this mean and dispersion.
     needed = math.ceil((Z_95 * sd / abs(mean)) ** 2) if mean else None
-    return EVStats(n, mean, sd, t, needed, abs(t) >= Z_95)
+    return EVStats(n, mean, sd, t, needed, abs(t) >= Z_95, n_days, max_share)
 
 
 def ev_values_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], list[float]]:
@@ -159,6 +173,7 @@ def ev_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], EVStats]
     them measures a thing that no longer exists.
     """
     buckets: dict[tuple[str, str], list[float]] = defaultdict(list)
+    days: dict[tuple[str, str], list[str]] = defaultdict(list)
     for r in (rows if rows is not None else _load()):
         if r.get("tainted"):
             continue
@@ -174,10 +189,11 @@ def ev_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], EVStats]
             buckets[(sport, market)].append(float(ev))
         except (TypeError, ValueError):
             continue
+        days[(sport, market)].append(str(r.get("date") or "")[:10])
 
     out: dict[tuple[str, str], EVStats] = {}
     for lane, vals in buckets.items():
-        st = _stats(vals)
+        st = _stats(vals, days.get(lane))
         if st is not None:
             out[lane] = st
     return out
