@@ -47,8 +47,28 @@ MIN_CLV_SAMPLE = 30
 # at quarter-Kelly on a small bankroll, where a false positive costs little and
 # waiting costs real edge. `beat_significance` reports z and n_needed on every
 # gate line so "clears the gate" can never again be misread as "proven".
+#
+# 2026-07-30: PROMOTE_BEAT_MIN no longer gates promotion. Measured across our 8
+# best-sampled lanes, beat-close correlated -0.153 with realised ROI while mean
+# EV correlated +0.494 — the gate criterion was pointing the wrong way. The gate
+# now runs on EV (see clears_promotion_gate); this threshold is retained only
+# for the diagnostic beat-close reporting that still appears on every gate line.
 PROMOTE_BEAT_MIN = 55.0
 PROMOTE_MIN_N    = 30
+
+# Minimum MEAN EV (%) vs the close before a lane may take real money.
+#
+# Not zero, deliberately. `EV > 0` let mlb/moneyline through at +0.09% on 1,132
+# scored bets — t=+0.24, needing ~75,000 bets to distinguish from zero. That is
+# a coin flip wearing a plus sign, and it cleared a gate meant to authorise real
+# stakes. A floor above zero is also what the parameter-uncertainty literature
+# argues for: estimated edges are biased upward, so the honest response is to
+# require the estimate to clear a margin rather than merely a sign.
+#
+# 1.0% sits below the live lane (mlb/total, +2.99%) and above the noise floor
+# every break-even lane occupies. Raise it if you want a stricter book; there is
+# nothing magic about the number, only about it not being zero.
+PROMOTE_MIN_EV   = 1.0
 
 # Edge-shrink floor. k is realized_pp / claimed_pp: how much of the edge the
 # model claims actually shows up in results. Below this the model's edges are
@@ -215,14 +235,34 @@ def beat_significance(beat_pct: float | None, n: int) -> tuple[float | None, int
 
 
 def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
-    """The gate a lane must clear to be LIVE: beat the close AND make money."""
+    """The gate a lane must clear to be LIVE: positive EV vs the close AND profit.
+
+    The criterion changed on 2026-07-30. It used to be `beat close >= 55%`, which
+    measured across our own 8 best-sampled lanes turned out to be mildly
+    NEGATIVELY related to profit (corr -0.153 vs ROI), while mean EV was
+    positively related (+0.494). mlb/batter_total_bases beat the close 65.3% of
+    the time — the highest rate of any lane — and lost 3.3%.
+
+    A hit rate is blind to magnitude: winning 65% of small favourable moves while
+    losing 35% large ones is a losing lane that clears a beat-close gate. EV
+    weights every move by what it was worth, which is why it tracks money.
+
+    Beat-close is still reported — it says whether the market agrees with us —
+    it just no longer decides. See src/analytics/ev_gate.py for the evidence.
+    """
+    try:
+        from src.analytics.ev_gate import lane_ev
+        ev = lane_ev(sport, market)
+    except Exception:
+        ev = None
     r = _clv_rows().get((sport, market))
-    if not r:
-        return False, "no CLV evidence"
-    n = r.get("sharp_moved_n") or 0
-    beat = r.get("sharp_beat_pct")
-    if beat is None or n < PROMOTE_MIN_N:
-        return False, f"insufficient sample (n={n})"
+    beat = (r or {}).get("sharp_beat_pct")
+    beat_txt = f", beats close {beat}%" if beat is not None else ""
+
+    if ev is None:
+        return False, "no EV evidence (lane has no scored clv_ev_pct rows)"
+    if ev.n < PROMOTE_MIN_N:
+        return False, f"insufficient sample (n={ev.n}, need {PROMOTE_MIN_N})"
 
     try:
         from src.analytics.market_stats import market_stats
@@ -230,20 +270,24 @@ def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
         roi = (st.pnl / st.n * 100) if st and st.n else None
     except Exception:
         roi = None
-
     if roi is None:
-        return False, f"beats close {beat}% but ROI unknown"
-    ok = beat >= PROMOTE_BEAT_MIN and roi > 0
-    z, needed = beat_significance(beat, n)
-    sig = ""
-    if z is not None:
-        if abs(z) >= 1.96:
-            sig = f", z={z:+.2f} SIGNIFICANT"
-        else:
-            sig = f", z={z:+.2f} NOT significant"
-            if needed:
-                sig += f" (needs n≈{needed})"
-    return ok, f"beats close {beat}% on n={n}, ROI {roi:+.1f}%{sig}"
+        return False, f"EV {ev.mean_ev_pct:+.2f}% but ROI unknown"
+
+    ok = ev.mean_ev_pct >= PROMOTE_MIN_EV and roi > 0
+    # n>=PROMOTE_MIN_N is a DATA-SUFFICIENCY floor, never a significance test.
+    # Report the t-statistic and the sample a real verdict would need, so
+    # "clears the gate" can never be read as "proven" — the same discipline the
+    # old beat-close gate applied with z, preserved on the new criterion.
+    if ev.significant:
+        sig = f", t={ev.t:+.2f} SIGNIFICANT"
+    elif ev.t is not None:
+        sig = f", t={ev.t:+.2f} NOT significant"
+        if ev.n_needed:
+            sig += f" (needs n≈{ev.n_needed})"
+    else:
+        sig = ", t=n/a"
+    return ok, (f"EV {ev.mean_ev_pct:+.2f}% on n={ev.n}, "
+                f"ROI {roi:+.1f}%{sig}{beat_txt}")
 
 
 # ─────────────────────────── the standard ────────────────────────────────────

@@ -2204,6 +2204,17 @@ def compute_clv(date_str: str | None = None) -> list[dict]:
         else:
             snap.pop("clv_novig_pct", None)
 
+        # Same EV definition props and totals use (see _ou_combined_ev), so the
+        # promotion gate can judge every market on ONE comparable number:
+        #   EV% = fair_close(this bet) / price_we_paid - 1
+        # Without this, moneyline lanes have no EV and an EV-based gate would
+        # fail them for missing data rather than on their merits.
+        entry_raw = snap.get("opening_implied_prob")
+        if entry_raw and closing_imp and 0.0 < closing_imp < 1.0:
+            snap["clv_ev_pct"] = round((closing_imp / float(entry_raw) - 1.0) * 100, 3)
+        else:
+            snap.pop("clv_ev_pct", None)
+
         # ── Sharp CLV: same pick measured against PINNACLE's de-vigged close ──
         # clv_pct above uses the BEST price across all books, which flatters us
         # (we score against the loosest number any book offered). Pinnacle is the
