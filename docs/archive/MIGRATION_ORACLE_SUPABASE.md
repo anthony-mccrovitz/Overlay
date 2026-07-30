@@ -1,3 +1,8 @@
+> **ARCHIVED 2026-07-30 — not pursued; the pipeline runs on GitHub Actions instead**
+>
+> Kept for history. This describes a past plan, not current state.
+> For current state run `chef.py scoreboard` / `chef.py moneypath`, or read README.md.
+
 # Migration Plan: Oracle Cloud VPS + Supabase
 
 **Goal:** Move the betting pipeline off the always-on laptop onto a free, always-running

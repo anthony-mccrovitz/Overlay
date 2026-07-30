@@ -1,3 +1,8 @@
+> **ARCHIVED 2026-07-30 — completed; shadow strategies ship and are measured by chef.py strategies**
+>
+> Kept for history. This describes a past plan, not current state.
+> For current state run `chef.py scoreboard` / `chef.py moneypath`, or read README.md.
+
 # Shadow Picks & Strategy CLV — Plan
 
 **Status:** proposed → building Phase 1
