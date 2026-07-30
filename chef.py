@@ -3571,6 +3571,53 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def cmd_moneypath(args: argparse.Namespace) -> int:
+    """Walk every link between raw odds and a bet you can actually place.
+
+    The repo is ~90k lines across 254 files and 94 of its 95 lanes cannot move
+    money. Understanding all of it is neither achievable nor useful. This answers
+    the only question that decides whether to bet today: is the chain that
+    produces a REAL BET intact?
+
+    Read-only and offline — spends no API credits, so it still reports on the day
+    the Odds API is the thing that's down.
+    """
+    from src.analytics.money_path import audit, verdict
+
+    sport = (getattr(args, "sport", None) or "mlb").lower()
+    market = (getattr(args, "market", None) or "total").lower()
+    links = audit(sport, market)
+    ok, why = verdict(links)
+
+    line = "=" * 78
+    print(f"\n  {line}")
+    print(f"  THE MONEY PATH — {sport}/{market}")
+    print(f"  raw odds -> a bet you can place. Every link, checked against live data.")
+    print(f"  {line}")
+    for l in links:
+        mark = {True: "OK  ", False: ("EXPT" if l.exempt else "FAIL"), None: "??  "}[l.ok]
+        print(f"\n  {mark} {l.n:>2}. {l.name}")
+        print(f"        does:   {l.does}")
+        print(f"        proof:  {l.proof}")
+        if l.exempt:
+            print(f"        ACCEPTED: {l.exempt[:150]}")
+        elif l.ok is not True:
+            print(f"        BROKEN: {l.if_broken}")
+    print(f"\n  {line}")
+    if ok:
+        print(f"  VERDICT: BETTABLE — {why}.")
+        print(f"  Every link from the odds board to your stake is verified today.")
+    else:
+        print(f"  VERDICT: DO NOT BET — {why}.")
+        print(f"  Fix the links marked FAIL/?? above before staking this lane.")
+    print(f"  {line}")
+    print(f"  Silence is the enemy: each broken link above says what its FAILURE")
+    print(f"  would look like downstream, because every expensive defect in this")
+    print(f"  repo's history was silent rather than loud.")
+    print(f"  {line}\n")
+    return 0 if ok else 1
+
 def cmd_verify(args: argparse.Namespace) -> int:
     """Trigger core workflows in the cloud on-demand and report pass/fail.
 
@@ -4869,6 +4916,9 @@ def main() -> int:
     p_monitor = sub.add_parser("monitor", help="Loud integrity check: flag any IN-SEASON market gone dark (exits RED on gaps)")
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
     sub.add_parser("heartbeat", help="★ Daily digest, sent green OR red — a missing digest is the alarm")
+    p_mp = sub.add_parser("moneypath", help="★ CAN I BET? Every link from raw odds to a placed bet, verified")
+    p_mp.add_argument("--sport", help="Sport (default mlb)")
+    p_mp.add_argument("--market", help="Market (default total)")
     p_verify = sub.add_parser("verify", help="Trigger core cloud workflows NOW and report pass/fail (~2-5 min, no waiting for cron)")
     p_verify.add_argument("--workflows", type=str, help="Comma-separated workflow files (default: monitor.yml,night.yml,clv.yml)")
     p_cal = sub.add_parser("calibrate", help="Refit all sport×market calibrators from settled results (fixes overconfident edges)")
@@ -5042,6 +5092,7 @@ def main() -> int:
         "health":   cmd_health,
         "monitor":  cmd_monitor,
         "heartbeat": cmd_heartbeat,
+        "moneypath": cmd_moneypath,
         "verify":   cmd_verify,
         "edge":     cmd_edge,
         "promote":  cmd_promote,
