@@ -151,6 +151,58 @@ def _odds_to_implied(odds: float | int) -> float:
     return abs(odds) / (abs(odds) + 100.0)
 
 
+def _devig_pair(over_odds, under_odds, market: str) -> tuple[float, float] | None:
+    """Fair (P(over), P(under)) using the method this market's vig warrants.
+
+    Delegates to src.analytics.devig so the Shin-for-props / multiplicative-for-
+    game-lines rule lives in exactly one place. Hand-rolling it here is how the
+    sport-key mapping ended up with six divergent copies.
+    """
+    try:
+        from src.analytics.devig import devig as _dv
+    except Exception:
+        return None
+    if over_odds is None or under_odds is None:
+        return None
+    out = _dv([float(over_odds), float(under_odds)], market=market)
+    return (out[0], out[1]) if out else None
+
+
+_LINE_VALUE_CACHE: dict | None = None
+
+
+def _line_value(sport: str, market: str) -> tuple[float | None, bool]:
+    """(probability per point of line, usable) for a sport×market.
+
+    Calibrated by scripts/calibrate_line_value.py from cross-book line
+    disagreement inside the same event. Lanes whose slope explains too little of
+    the price variation are marked unusable, and callers must leave those in raw
+    points rather than converting through a meaningless factor.
+    """
+    global _LINE_VALUE_CACHE
+    if _LINE_VALUE_CACHE is None:
+        try:
+            blob = json.loads((Path("data/clv/line_value.json")).read_text())
+            _LINE_VALUE_CACHE = blob.get("lanes", {})
+        except (json.JSONDecodeError, ValueError, OSError):
+            _LINE_VALUE_CACHE = {}
+    rec = _LINE_VALUE_CACHE.get(f"{sport}::{market}")
+    if not rec:
+        return None, False
+    return rec.get("prob_per_point"), bool(rec.get("usable"))
+
+
+def _implied_to_american(p: float) -> float:
+    """Implied probability → American odds (inverse of _odds_to_implied).
+
+    Needed to take a MEDIAN across books: American odds jump discontinuously
+    across ±100 (+101 and -101 are adjacent prices but 202 apart numerically),
+    so the median must be taken in probability space and converted back.
+    """
+    p = min(max(float(p), 1e-6), 1.0 - 1e-6)
+    return round(-100.0 * p / (1.0 - p), 2) if p >= 0.5 else round(100.0 * (1.0 - p) / p, 2)
+
+
 def _devig_prob(picked_odds: float, *opponent_odds: float) -> float:
     """
     De-vig an N-way market using the additive (Pinnacle) method.
@@ -1368,21 +1420,72 @@ def fetch_closing_props(date_str: str, sport: str = "mlb", market_key: str = "pi
             line = r.get("Line") or r.get("Point")
             if not player or line is None:
                 continue
-            by_player_line.setdefault((player.lower().strip(), float(line)), {})[side] = r
+            (by_player_line.setdefault((player.lower().strip(), float(line)), {})
+                           .setdefault(side, []).append(r))
+
+        # ── Choose ONE closing quote per player, deterministically ──────────
+        # What was here before: `if key not in out: out[key] = cand` — a
+        # first-write-wins pick whose winner was decided by JSON row order. An
+        # audit on 2026-07-30 found the resulting "closing book" was theScore
+        # Bet 58% of the time and FanDuel 32%, with books disagreeing by a
+        # median of 20c and a p90 of 218c on the SAME prop at the SAME line.
+        # Re-scoring the identical archive under shuffled row order changed 96%
+        # of closing prices (Freddy Peralta: +100 / +110 / -109). Every prop CLV
+        # number in the ledger was measured against a benchmark that was, in
+        # effect, randomly selected per player.
+        #
+        # A CLV benchmark has to be DECLARED and REPRODUCIBLE. So:
+        #   line  — the modal line across books (ties → lower line), because the
+        #           consensus number is the market's opinion, not one book's.
+        #   price — Pinnacle when it prices this prop (the sharp reference,
+        #           ~36% of MLB props); otherwise the MEDIAN across books,
+        #           taken in probability space because American odds are
+        #           discontinuous either side of ±100 and cannot be averaged
+        #           directly.
+        #   source— tagged "pinnacle" or "median_N" so the two are never blended
+        #           in a report. A sharp benchmark and a consensus benchmark
+        #           measure different things and averaging them measures neither.
+        by_player: dict[str, dict[float, dict[str, list]]] = {}
         for (p_lower, line), sides in by_player_line.items():
-            if "over" not in sides or "under" not in sides:
+            by_player.setdefault(p_lower, {})[line] = sides
+
+        for p_lower, lines in by_player.items():
+            usable = {ln: s for ln, s in lines.items()
+                      if s.get("over") and s.get("under")}
+            if not usable:
                 continue
-            o = sides["over"]; u = sides["under"]
-            if o.get("Odds") is None or u.get("Odds") is None:
+            # Modal line: most books quoting it; deterministic tiebreak on the
+            # lower line so the same archive always yields the same answer.
+            line = min(usable, key=lambda ln: (-len(usable[ln]["over"]), ln))
+            sides = usable[line]
+
+            def _quote(rows: list[dict]) -> tuple[float | None, str, int]:
+                priced = [(str(r.get("Sportsbook", "")), r.get("Odds"))
+                          for r in rows if r.get("Odds") is not None]
+                if not priced:
+                    return None, "", 0
+                pin = [o for b, o in priced if b.strip().lower().startswith("pinnacle")]
+                if pin:
+                    return float(pin[0]), "pinnacle", len(priced)
+                probs = sorted(_odds_to_implied(float(o)) for _, o in priced)
+                mid = (probs[len(probs) // 2] if len(probs) % 2
+                       else (probs[len(probs) // 2 - 1] + probs[len(probs) // 2]) / 2.0)
+                return _implied_to_american(mid), f"median_{len(priced)}", len(priced)
+
+            over_odds, over_src, n_over = _quote(sides["over"])
+            under_odds, under_src, _ = _quote(sides["under"])
+            if over_odds is None or under_odds is None:
                 continue
-            # Keep the BEST line per player (longest over price; tie → first)
-            key = (p_lower, market_key)
-            cand = {"line": line, "over": float(o["Odds"]), "under": float(u["Odds"]),
-                    "book": str(o.get("Sportsbook", ""))}
-            if key not in out:
-                out[key] = cand
-        # Note: simple last-write-wins per player; for multi-line alternate markets
-        # the scoring function below pivots on the snapshot's line value anyway.
+            # Never mix a sharp over with a consensus under: that pair devigs to
+            # a probability neither book would recognise.
+            if over_src != under_src.split("_")[0] and not (
+                    over_src.startswith("median") and under_src.startswith("median")):
+                continue
+            out[(p_lower, market_key)] = {
+                "line": line, "over": over_odds, "under": under_odds,
+                "book": "Pinnacle" if over_src == "pinnacle" else "consensus",
+                "source": over_src, "n_books": n_over,
+            }
     return out
 
 
@@ -1501,7 +1604,65 @@ def _score_prop(snap: dict, closing: dict) -> dict | None:
            "line_clv": line_clv, "price_clv_pct": price_clv_pct, "beat_close": beat}
     if price_clv_pct is not None:
         out["price_clv_raw_pct"] = price_clv_pct  # alias: already raw-vs-raw
+
+    # ── One number that combines the line move AND the price move ───────────
+    # Everything above measures one dimension at a time, and `price_clv_pct` is
+    # computed ONLY when the line didn't move — which on props is the minority
+    # of cases. So whenever a prop moved 5.5→6.5 AND -110→-130, the price half
+    # was silently discarded and the bet was graded on the line alone.
+    #
+    # The fix is to stop treating them as two measurements and value the bet:
+    #   EV% = fair_close(your exact bet) / price_you_paid − 1
+    # This is the standard +EV computation — devig the reference market, compare
+    # to the raw price actually paid — so mixing a devigged close against a raw
+    # entry is correct here, not the asymmetry error it would be in a
+    # fair-vs-fair CLV%. It also sidesteps a real data limitation: prop
+    # snapshots record only the side we took, so the entry CANNOT be devigged.
+    #
+    # When the closing line differs from ours, the closing market is re-priced
+    # to OUR line using the calibrated points→probability slope, so the answer
+    # always describes the bet we actually made.
+    out.update(_ou_combined_ev(snap, closing, direction, open_line, close_line))
     return out
+
+
+def _ou_combined_ev(snap: dict, closing: dict, direction: str,
+                    open_line: float, close_line: float) -> dict:
+    """EV% of an over/under bet against the devigged close, line AND price.
+
+    Shared by props and totals so the two can never drift to different
+    definitions of the same number.
+
+    Returns {} rather than a guess whenever the closing market can't be
+    honestly re-priced to our line — a missing calibration is a reason to
+    report nothing, not a reason to interpolate through a slope we don't trust.
+    """
+    fair = _devig_pair(closing.get("over"), closing.get("under"),
+                       market=str(snap.get("market") or "prop"))
+    if fair is None:
+        return {"clv_ev_pct": None}
+    p_over, p_under = fair
+    p_side = p_over if direction == "OVER" else p_under
+
+    d_line = open_line - close_line
+    if abs(d_line) < 1e-9:
+        p_at_our_line = p_side
+    else:
+        slope, usable = _line_value(str(snap.get("sport") or ""),
+                                    str(snap.get("market") or ""))
+        if not (usable and slope):
+            return {"clv_ev_pct": None}
+        # slope is d(P(Over))/d(line); the Under side moves the other way.
+        p_at_our_line = (p_side + slope * d_line) if direction == "OVER" \
+            else (p_side - slope * d_line)
+
+    entry_p = snap.get("opening_implied_prob")
+    if not entry_p or not (0.0 < p_at_our_line < 1.0):
+        return {"clv_ev_pct": None}
+    return {
+        "clv_ev_pct": round((p_at_our_line / float(entry_p) - 1.0) * 100, 3),
+        "closing_fair_prob_at_entry_line": round(p_at_our_line, 6),
+    }
 
 
 def fetch_closing_outrights(sport: str) -> dict[str, dict]:
@@ -1680,6 +1841,10 @@ def _score_total(snap: dict, closing: dict) -> dict | None:
         out["price_clv_raw_pct"] = price_clv_raw
     if price_clv_novig is not None:
         out["price_clv_novig_pct"] = price_clv_novig
+    # Totals have the same blind spot props did: every price_clv_* above is
+    # computed only when the line held. This adds the line-and-price answer, and
+    # is what finally makes mlb/total's "+0.19pt" expressible as expected value.
+    out.update(_ou_combined_ev(snap, closing, direction, open_line, close_line))
     return out
 
 
