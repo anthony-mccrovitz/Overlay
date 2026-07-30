@@ -2988,6 +2988,70 @@ def cmd_health(args: argparse.Namespace) -> int:
     return 0
 
 
+# Gaps we have ALREADY fixed at the source and are waiting on data to clear.
+#
+# Why this exists: on 2026-07-30 the monitor had four findings whose code fixes
+# had already landed — brazil/korea were added to capture_closing.SPORTS, and
+# UFC's misses were the 90-min capture window being narrower than the real gap
+# between throttled runs. None of them could clear that day, because the gate
+# measures a 14-day SETTLED window: the fix only shows up once new games are
+# played and captured. So the alarm would have been red every day for a
+# fortnight while nothing was wrong and nothing could be done.
+#
+# A permanently-red alarm is the failure this whole program set out to remove.
+# Twelve consecutive red days went unread once already; the second way to get
+# there is an alarm that is always red for known reasons.
+#
+# Same contract as model_standard.EXPEMPTIONS, deliberately: dated, with a
+# stated reason and an EXPIRY. An acknowledged gap is still printed — it never
+# disappears — it just doesn't turn the run red. And an acknowledgement that
+# outlives its expiry turns the run red BY ITSELF, so this cannot rot into
+# permanent cover for a real problem.
+ACKNOWLEDGED_GAPS: dict[tuple[str, str], dict] = {
+    ("capture", "brazil_campeonato"): {
+        "since": "2026-07-30", "expires": "2026-08-14",
+        "why": "added to capture_closing.SPORTS on 2026-07-30 (first line archived "
+               "the same day); the 14d settled window cannot reflect it until "
+               "roughly two weeks of fixtures have been played and captured",
+    },
+    ("capture", "korea_kleague1"): {
+        "since": "2026-07-30", "expires": "2026-08-16",
+        "why": "added to capture_closing.SPORTS on 2026-07-30; K-League next "
+               "fixtures 2026-08-01, so the settled window clears later than Brazil's",
+    },
+    ("capture", "ufc"): {
+        "since": "2026-07-30", "expires": "2026-08-14",
+        "why": "capture window widened 90->240 min on 2026-07-30 because GitHub "
+               "delivers ~12.9 of 96 scheduled runs/day (~112 min between ticks, "
+               "wider than the old band). UFC runs one card a week, so this needs "
+               "two cards to show up in a 14d window",
+    },
+    ("clv_join", "ufc/moneyline"): {
+        "since": "2026-07-30", "expires": "2026-08-14",
+        "why": "downstream of the UFC capture gap above — the join has nothing to "
+               "join against for cards that were never captured. Clears with it",
+    },
+}
+
+
+def sport_key_for_ack(label: str) -> str:
+    """Monitor display label ("MMA/UFC") → the key acknowledgements use ("ufc").
+
+    The monitor prints human labels; acknowledgements are keyed on registry-ish
+    names so they read the same as everything else in the codebase.
+    """
+    return {"MMA/UFC": "ufc", "Soccer/WC": "wc", "Golf": "pga",
+            "Motorsport": "motorsport"}.get(label, label.lower())
+
+
+def _ack(kind: str, key: str, today) -> dict | None:
+    """The live acknowledgement for a gap, or None. Expired ones return None."""
+    rec = ACKNOWLEDGED_GAPS.get((kind, key))
+    if not rec:
+        return None
+    return rec if today.isoformat() <= rec.get("expires", "") else None
+
+
 def _monitor_run(emit=print) -> tuple[int, list[str]]:
     """Run every integrity check, sending each output line to `emit`.
 
@@ -3276,9 +3340,15 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
                 continue  # too few settled to judge — no alarm
             frac = scr / tot
             if frac < COV_FLOOR:
-                emit(f"    ✗ {label:11} {mk:18} {scr}/{tot} scored "
-                      f"({frac*100:.0f}%)  ← CLV join REGRESSED (floor {COV_FLOOR*100:.0f}%)")
-                issues += 1
+                ack = _ack("clv_join", f"{sport_key_for_ack(label)}/{mk}", today)
+                mark = "≈" if ack else "✗"
+                note = (f"  ← ACKNOWLEDGED until {ack['expires']}: {ack['why'][:70]}…"
+                        if ack else
+                        f"  ← CLV join REGRESSED (floor {COV_FLOOR*100:.0f}%)")
+                emit(f"    {mark} {label:11} {mk:18} {scr}/{tot} scored "
+                     f"({frac*100:.0f}%){note}")
+                if not ack:
+                    issues += 1
             else:
                 emit(f"    ✓ {label:11} {mk:18} {scr}/{tot} scored ({frac*100:.0f}%)")
 
@@ -3331,12 +3401,29 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
         if n < CAP_MIN_N:
             continue  # too thin to judge — not evidence of a problem
         if rate < _CAP_FLOOR:
-            emit(f"    ✗ {sp:<22} {closed:>5}/{n:<5} {rate:>5.0%}  "
-                  f"← UN-VALIDATABLE (floor {_CAP_FLOOR:.0%}): picks accruing "
-                  f"that CLV can never score")
-            issues += 1
+            ack = _ack("capture", sp, today)
+            mark = "≈" if ack else "✗"
+            note = (f"← ACKNOWLEDGED until {ack['expires']}: {ack['why'][:70]}…"
+                    if ack else
+                    f"← UN-VALIDATABLE (floor {_CAP_FLOOR:.0%}): picks accruing "
+                    f"that CLV can never score")
+            emit(f"    {mark} {sp:<22} {closed:>5}/{n:<5} {rate:>5.0%}  {note}")
+            if not ack:
+                issues += 1
         else:
             emit(f"    ✓ {sp:<22} {closed:>5}/{n:<5} {rate:>5.0%}")
+
+    # An acknowledgement that outlived its expiry is itself a finding. Without
+    # this the escape hatch becomes permanent cover — the exact way a documented
+    # exception rots into an unwatched blind spot.
+    stale = [f"{k[0]}:{k[1]} expired {v['expires']}"
+             for k, v in ACKNOWLEDGED_GAPS.items()
+             if today.isoformat() > v.get("expires", "")]
+    if stale:
+        emit(f"  ✗ {len(stale)} EXPIRED acknowledgement(s) — re-check or re-date:")
+        for sline in stale:
+            emit(f"      · {sline}")
+        issues += len(stale)
 
     emit(f"  {'─' * 58}")
     if unknown:
