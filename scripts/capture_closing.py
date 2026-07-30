@@ -423,45 +423,19 @@ def capture_golf_outrights(force: bool) -> int:
 def _preflight_quota() -> None:
     """Refuse to run blind: exit RED when the Odds API has no credits left.
 
-    An exhausted quota is the nastiest failure this script has, because nothing
-    about it looks like a failure. /v4/sports is free, so it keeps answering 200
-    with a full sports list; only the paid odds calls 401. The fetch layer turns
-    that 401 into an empty DataFrame, `capture_sport` reads empty as "this game
-    has no odds" and skips it, and the run ends with "Total events captured: 0"
-    and exit 0 — a green workflow that archived nothing.
+    Delegates to src.data.quota so capture, line-movement and any future
+    credit-spending script report the SAME cause with the SAME message. This was
+    duplicated here first; one exhausted key then produced seven red runs across
+    three workflows on 2026-07-30, each with a different-looking symptom.
 
-    Closing lines are the one input that cannot be backfilled: miss tonight's
-    close and that CLV is gone permanently. So a run that CANNOT capture must be
-    loud, not quiet. Exiting non-zero turns the workflow red, which is what fires
-    the alert issue via scripts/alert_issue.sh.
+    Closing lines cannot be backfilled — miss tonight's close and that CLV is
+    gone permanently — so a run that CANNOT capture must exit non-zero rather
+    than archive nothing and report success.
     """
-    import requests
-    key = os.environ.get("ODDS_API_KEY")
-    if not key:
-        _log("  FATAL: ODDS_API_KEY is not set — cannot capture closing lines.")
+    from src.data.quota import preflight_quota
+    ok, _why = preflight_quota(log=_log)
+    if not ok:
         sys.exit(1)
-    try:
-        r = requests.get("https://api.the-odds-api.com/v4/sports",
-                         params={"apiKey": key}, timeout=15)
-    except Exception as e:                       # network flake: let the run try
-        _log(f"  WARN preflight quota check failed ({e}) — attempting capture anyway")
-        return
-    if r.status_code in (401, 429):
-        _log(f"  FATAL: Odds API rejected the key (HTTP {r.status_code}): "
-             f"{r.text[:160]}")
-        sys.exit(1)
-    try:
-        remaining = int(r.headers.get("x-requests-remaining", "-1"))
-    except (TypeError, ValueError):
-        remaining = -1
-    if remaining == 0:
-        _log("  FATAL: Odds API quota EXHAUSTED (0 remaining). Closing lines are "
-             "NOT being captured and tonight's CLV is being lost permanently. "
-             "Top up the plan or cut request volume.")
-        sys.exit(1)
-    if 0 < remaining <= 250:
-        _log(f"  WARN: only {remaining} Odds API requests remaining — capture will "
-             f"start failing silently when this hits 0.")
 
 
 def main() -> None:

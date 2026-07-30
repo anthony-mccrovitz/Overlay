@@ -215,8 +215,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.show_movement:
-        show_movement(sport=args.sport, date_str=args.date)
+        show_movement(sport=args.sport, date_str=args.date)   # reads disk, no credits
     else:
+        # Fail with a readable reason instead of a raw 401 traceback. On
+        # 2026-07-30 one exhausted key produced seven red runs across three
+        # workflows, each showing a different-looking symptom; this is the
+        # shared check so they all report the same cause.
+        from src.data.quota import preflight_quota
+        ok, _why = preflight_quota()
+        if not ok:
+            sys.exit(1)
         n = snapshot(sport=args.sport)
         if n == 0:
             sys.exit(1)

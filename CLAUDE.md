@@ -83,30 +83,6 @@ python3 chef.py stats                      # refresh public_stats.json
 - **Prop CLV is an artifact.** Prop models echo the book's line (r≈0.97), so
   beat-close measures line-following, not skill. Judge props on ROI alone.
 
-## Key Files
-
-- `chef.py` — unified CLI dispatcher (picks / grade / record / migrate / test / stats)
-- `predict.py` — MLB model + picks generation (run via `chef.py picks mlb`)
-- `run_nba.py` — NBA model + picks generation + grading (run via `chef.py picks nba`)
-- `grade.py` — grades settled picks, writes public_stats.json (run via `chef.py grade`)
-- `src/tracking/schema.py` — canonical schema: `make_pick_id`, `normalize_pick`, `validate_pick`, `migrate_picks_file`
-- `src/analytics/public_stats.py` — computes and writes public_stats.json for web app
-- `src/output/card_html.py` — HTML pick card generator (MLB + NBA)
-- `tests/test_grading.py` — grading unit tests (54 tests, run via `chef.py test`)
-- `data/pnl/picks.json` — the canonical bet record
-- `data/public_stats.json` — computed stats for web API
-- `web/public/data/public_stats.json` — mirror for Vercel/Next.js
-
-## gstack
-
-Use /browse from gstack for all web browsing. Never use mcp__claude-in-chrome__* tools.
-
-Available skills: /plan-ceo-review, /plan-eng-review, /plan-design-review,
-/design-consultation, /review, /ship, /browse, /qa, /qa-only, /qa-design-review,
-/setup-browser-cookies, /retro, /document-release.
-
-If gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to rebuild.
-
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
