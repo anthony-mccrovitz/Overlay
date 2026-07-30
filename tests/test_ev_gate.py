@@ -263,3 +263,51 @@ def test_every_decision_surface_agrees_about_a_lane():
     import inspect
     src = inspect.getsource(cg.clv_gate)
     assert "_ev_lookup" in src, "clv_gate no longer consults EV — it will drift again"
+
+
+def test_pooling_preserves_variance_not_just_the_mean():
+    """Pooling several markets must use REAL observations.
+
+    An earlier scoreboard helper rebuilt the pooled sample by repeating each
+    lane's mean n times. That preserves the pooled mean exactly and flattens the
+    variance to zero, so `significant` was forced False forever — a lane that
+    could never be proven for arithmetic reasons rather than evidential ones. No
+    GRID lane has multiple market keys today, so the bug was latent: the first
+    multi-market lane added would have inherited it silently.
+    """
+    from src.analytics.ev_gate import pooled_ev, ev_values_by_lane
+
+    rows = (_rows("mlb", "a", [3.0, 3.2, 2.8, 3.1] * 10)
+            + _rows("mlb", "b", [2.9, 3.0, 3.3, 2.7] * 10))
+    vals = ev_values_by_lane(rows)
+    assert len(vals[("mlb", "a")]) == 40
+
+    st = pooled_ev([("mlb", "a"), ("mlb", "b")], rows)
+    assert st.n == 80
+    assert st.sd > 0, "pooled sample has no variance — means were repeated"
+    assert st.significant, "a real, tight positive edge should be provable"
+
+
+def test_ev_lookup_caches_an_empty_result():
+    """An EMPTY EV table is a legitimate answer (fresh checkout, pre-rescore).
+
+    Keying loaded-ness on 'cache is non-empty' made every lookup re-read and
+    re-parse the whole snapshots file, once per lane examined — on exactly the
+    runs that were already slowest.
+    """
+    import src.analytics.clv_gate as cg
+    import src.analytics.ev_gate as eg
+
+    cg._EV_CACHE.clear()
+    cg._EV_LOADED = False
+    calls = {"n": 0}
+    orig = eg.ev_by_lane
+    eg.ev_by_lane = lambda *a, **k: (calls.__setitem__("n", calls["n"] + 1), {})[1]
+    try:
+        for _ in range(5):
+            cg._ev_lookup("mlb", "total")
+    finally:
+        eg.ev_by_lane = orig
+        cg._EV_CACHE.clear()
+        cg._EV_LOADED = False
+    assert calls["n"] == 1, f"re-parsed snapshots {calls['n']}x for 5 lookups"
