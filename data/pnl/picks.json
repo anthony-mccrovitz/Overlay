@@ -612014,6 +612014,43 @@
       "away_team": "Bogdan Grad",
       "poly_filled": false,
       "poly_fill_checked_at": "2026-07-30T14:56:20.490679+00:00"
+    },
+    {
+      "pick_id": "devig_ev__wnba_20260730_toronto-tempo_moneyline_home",
+      "date": "2026-07-30",
+      "sport": "wnba",
+      "market": "moneyline",
+      "direction": "HOME",
+      "team": "Toronto Tempo",
+      "matchup": "Minnesota Lynx @ Toronto Tempo",
+      "odds": 525,
+      "line": null,
+      "sportsbook": "BetMGM",
+      "model_prob": 0.1633,
+      "model_prob_raw": null,
+      "edge_pct": 2.06,
+      "raw_edge_pct": 2.06,
+      "stake": 0.0,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-07-30T15:21:48.483394+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "strategy": "devig_ev",
+      "tainted": null,
+      "clv_status": "heuristic",
+      "home_team": "Toronto Tempo",
+      "away_team": "Minnesota Lynx"
     }
   ]
 }
