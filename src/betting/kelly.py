@@ -19,6 +19,53 @@ import pandas as pd
 import numpy as np
 
 
+def _implied_prob(american_odds: float) -> float:
+    """American odds → implied (with-vig) probability."""
+    o = float(american_odds)
+    if o == 0:
+        return 0.5
+    return 100.0 / (o + 100.0) if o > 0 else abs(o) / (abs(o) + 100.0)
+
+
+def shrunk_prob(model_prob: float, american_odds: float,
+                sport: str | None = None, market: str | None = None) -> float:
+    """Pull the model's probability toward the market by its measured reliability.
+
+    WHY: Kelly is exquisitely sensitive to the edge estimate, and our edge
+    estimates are known to be inflated — `edge_shrink` measures k = realised_pp /
+    claimed_pp per lane, and mlb/total (the only live lane) sits at k=0.67: it
+    claims 6.17pp and delivers 4.12pp.
+
+    Until now that shrink was applied to the edge RECORDED in the ledger
+    (schema.py calls calibrate_edge) but never to the stake, because size_bets
+    passes the raw ModelProb to kelly_fraction. So every bet was written down at
+    a shrunk edge and sized at an unshrunk one — the ledger and the wallet
+    disagreed about the same bet, and the wallet was the optimistic one.
+
+    At k=0.67 that oversizes by roughly half, which turns a nominal quarter-Kelly
+    into ~0.37 Kelly. The asymmetry matters: overbetting Kelly costs growth much
+    faster than underbetting, and past ~1.5x the growth rate can go negative. So
+    the correction is applied to the EDGE (prob − implied), not to the
+    probability itself, which is what "shrink toward the market" actually means.
+
+    No shrink record → returns the input unchanged, matching prior behaviour.
+    """
+    if sport is None or market is None:
+        return model_prob
+    try:
+        from src.analytics.calibration_gate import calibrate_edge
+    except Exception:
+        return model_prob
+    implied = _implied_prob(american_odds)
+    claimed_pp = (model_prob - implied) * 100.0
+    if claimed_pp <= 0:
+        return model_prob                     # no claimed edge → nothing to shrink
+    adj_pp = calibrate_edge(sport, market, claimed_pp)
+    if adj_pp is None:
+        return model_prob
+    return max(0.0, min(1.0, implied + adj_pp / 100.0))
+
+
 def kelly_fraction(
     model_prob: float,
     american_odds: float,
@@ -48,8 +95,11 @@ def kelly_fraction(
     # Kelly formula
     kelly = (b * p - q) / b
 
-    # No bet if no edge
-    if kelly <= 0:
+    # No bet if no edge. The epsilon matters: shrinking a lane's edge to zero
+    # lands the probability exactly on the implied price, where this arithmetic
+    # yields ~3e-17 rather than 0 — a "stake" that is numerically non-zero and
+    # would keep a fully-discredited lane technically bettable.
+    if kelly <= 1e-12:
         return 0.0
 
     # Apply fraction (half Kelly is more conservative)
@@ -61,6 +111,8 @@ def size_bets(
     bankroll: float,
     kelly_fraction_pct: float = 0.5,
     max_bet_pct: float = 0.10,
+    sport: str | None = None,
+    market: str | None = None,
 ) -> pd.DataFrame:
     """
     Add bet sizing to value bets DataFrame.
@@ -79,9 +131,13 @@ def size_bets(
 
     df = value_bets.copy()
 
+    # Size on the SHRUNK edge. Without sport/market we cannot look up the lane's
+    # measured reliability, so this degrades to the old behaviour rather than
+    # guessing — callers that know their lane should pass it (predict.py does).
     df["KellyFraction"] = df.apply(
         lambda row: kelly_fraction(
-            row["ModelProb"],
+            shrunk_prob(row["ModelProb"], row["BestOdds"],
+                        row.get("Sport", sport), row.get("Market", market)),
             row["BestOdds"],
             fraction=kelly_fraction_pct,
         ),
