@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-07-30T09:20:39.905332+00:00",
+  "generated_at": "2026-07-30T14:56:22.608798+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 121.5,
-  "n_settled": 3,
-  "n_pending": 232,
+  "end_bankroll": 116.64,
+  "n_settled": 4,
+  "n_pending": 237,
   "wins": 2,
-  "losses": 1,
-  "staked": 14.38,
-  "pnl": 9.5,
-  "expected_pnl": 0.59,
-  "roi_pct": 66.06,
-  "max_drawdown": 5.06,
+  "losses": 2,
+  "staked": 18.43,
+  "pnl": 4.64,
+  "expected_pnl": 0.72,
+  "roi_pct": 25.18,
+  "max_drawdown": 9.49,
   "skipped": {
-    "high \u2014 taker fills at the quoted ask within depth": 59,
-    "exposure cap reached for the slate": 147,
-    "not settled yet": 24,
+    "high \u2014 taker fills at the quoted ask within depth": 60,
+    "exposure cap reached for the slate": 154,
+    "not settled yet": 21,
     "resting order never filled": 2
   },
   "significance": {
-    "mean_edge_per_unit": 0.0407,
-    "sd_per_unit": 1.2361,
-    "n_for_2sigma": 3689
+    "mean_edge_per_unit": 0.039,
+    "sd_per_unit": 1.629,
+    "n_for_2sigma": 6978
   },
   "rows": [
     {
@@ -40,6 +40,38 @@
       "equity": 121.1
     },
     {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260729_internacional_moneyline_win",
+      "date": "2026-07-29",
+      "team": "Internacional",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.22,
+      "fair": 0.2287,
+      "stake": 4.84,
+      "shares": 22.0,
+      "result": "loss",
+      "pnl": -4.84,
+      "expected_pnl": 0.191,
+      "equity": 116.26
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260729_bahia_moneyline_win",
+      "date": "2026-07-29",
+      "team": "Bahia",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.19,
+      "fair": 0.2007,
+      "stake": 4.65,
+      "shares": 24.47,
+      "result": "loss",
+      "pnl": -4.65,
+      "expected_pnl": 0.262,
+      "equity": 111.61
+    },
+    {
       "pick_id": "polymarket_ev__mlb_20260729_san-francisco-giants_moneyline_win",
       "date": "2026-07-29",
       "team": "San Francisco Giants",
@@ -48,28 +80,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.47,
       "fair": 0.4836,
-      "stake": 4.84,
-      "shares": 10.3,
+      "stake": 4.46,
+      "shares": 9.49,
       "result": "win",
-      "pnl": 5.46,
-      "expected_pnl": 0.14,
-      "equity": 126.56
-    },
-    {
-      "pick_id": "polymarket_ev__mlb_20260729_colorado-rockies_moneyline_win",
-      "date": "2026-07-29",
-      "team": "Colorado Rockies",
-      "sport": "mlb",
-      "mode": "make",
-      "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.41,
-      "fair": 0.4354,
-      "stake": 5.06,
-      "shares": 12.34,
-      "result": "loss",
-      "pnl": -5.06,
-      "expected_pnl": 0.313,
-      "equity": 121.5
+      "pnl": 5.03,
+      "expected_pnl": 0.129,
+      "equity": 116.64
     }
   ]
 }

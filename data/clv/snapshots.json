@@ -375931,7 +375931,8 @@
     "entry_ev_vs_fair_pct": 3.7,
     "opening_opp_odds": -345.0,
     "entry_overround": 1.0228,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": true
   },
   {
     "date": "2026-08-01",
@@ -375958,7 +375959,8 @@
     "entry_ev_vs_fair_pct": 3.569,
     "opening_opp_odds": -315.0,
     "entry_overround": 1.0188,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": true
   },
   {
     "date": "2026-08-01",
@@ -375985,7 +375987,8 @@
     "entry_ev_vs_fair_pct": 6.774,
     "opening_opp_odds": -340.0,
     "entry_overround": 1.0387,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": true
   },
   {
     "date": "2026-08-01",
@@ -376012,7 +376015,8 @@
     "entry_ev_vs_fair_pct": 7.586,
     "opening_opp_odds": -550.0,
     "entry_overround": 1.0137,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376039,7 +376043,8 @@
     "entry_ev_vs_fair_pct": 9.052,
     "opening_opp_odds": -291.0,
     "entry_overround": 1.022,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376066,7 +376071,8 @@
     "entry_ev_vs_fair_pct": 4.987,
     "opening_opp_odds": -222.0,
     "entry_overround": 1.0343,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376094,7 +376100,8 @@
     "opening_opp_odds": -182.0,
     "opening_draw_odds": 314.0,
     "entry_overround": 1.0362,
-    "entry_board_age_min": 0.5
+    "entry_board_age_min": 0.5,
+    "poly_filled": true
   },
   {
     "date": "2026-08-01",
@@ -376118,7 +376125,8 @@
     "opening_opp_odds": 280.0,
     "opening_draw_odds": 320.0,
     "entry_overround": 1.0665,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376142,7 +376150,8 @@
     "opening_opp_odds": 125.0,
     "opening_draw_odds": 260.0,
     "entry_overround": 1.067,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376166,7 +376175,8 @@
     "opening_opp_odds": 340.0,
     "opening_draw_odds": 330.0,
     "entry_overround": 1.0825,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376190,7 +376200,8 @@
     "opening_opp_odds": 165.0,
     "opening_draw_odds": 310.0,
     "entry_overround": 1.0657,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376214,7 +376225,8 @@
     "opening_opp_odds": 135.0,
     "opening_draw_odds": 270.0,
     "entry_overround": 1.0662,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376238,7 +376250,8 @@
     "opening_opp_odds": 200.0,
     "opening_draw_odds": 270.0,
     "entry_overround": 1.0687,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376262,7 +376275,8 @@
     "opening_opp_odds": -210.0,
     "opening_draw_odds": 380.0,
     "entry_overround": 1.0676,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376286,7 +376300,8 @@
     "opening_opp_odds": 125.0,
     "opening_draw_odds": 280.0,
     "entry_overround": 1.0647,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-08-01",
@@ -376310,7 +376325,8 @@
     "opening_opp_odds": 180.0,
     "opening_draw_odds": 280.0,
     "entry_overround": 1.0647,
-    "entry_board_age_min": 0.4
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   },
   {
     "date": "2026-07-30",
@@ -376328,7 +376344,16 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-07-31T00:10:00Z",
+    "consensus_fair_prob": 0.157564,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.15502,
+    "opening_fair_sharp": 0.164117,
+    "entry_ev_vs_fair_pct": 1.753,
+    "opening_opp_odds": -682.0,
+    "entry_overround": 1.0321,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-07-30",
@@ -376346,6 +376371,183 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-08-01T22:00:00Z",
+    "consensus_fair_prob": 0.321839,
+    "consensus_n_books": 7,
+    "opening_fair_prob": 0.30846,
+    "opening_fair_sharp": 0.325333,
+    "entry_ev_vs_fair_pct": 4.107,
+    "opening_opp_odds": -234.0,
+    "entry_overround": 1.0131,
+    "entry_board_age_min": 0.1
+  },
+  {
+    "date": "2026-07-30",
+    "team": "Chicago Cubs",
+    "player": null,
+    "opponent": "Chicago Cubs @ St. Louis Cardinals",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 113.0,
+    "opening_implied_prob": 0.469484,
+    "snapshot_time": "2026-07-30T14:55:54.824897+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-30T18:16:00Z",
+    "consensus_fair_prob": 0.484198,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.483579,
+    "opening_fair_sharp": 0.483579,
+    "entry_ev_vs_fair_pct": 3.002,
+    "opening_opp_odds": -111.0,
+    "entry_overround": 1.0187,
+    "entry_board_age_min": 0.2,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-30",
+    "team": "Las Vegas Aces",
+    "player": null,
+    "opponent": "New York Liberty @ Las Vegas Aces",
+    "sport": "wnba",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": -178.0,
+    "opening_implied_prob": 0.640288,
+    "snapshot_time": "2026-07-30T14:55:54.824897+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-31T02:10:00Z",
+    "consensus_fair_prob": 0.655647,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.655172,
+    "opening_fair_sharp": 0.657949,
+    "entry_ev_vs_fair_pct": 2.758,
+    "opening_opp_odds": 185.0,
+    "entry_overround": 1.0175,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-30",
+    "team": "Alejandro Tabilo",
+    "player": null,
+    "opponent": "Alejandro Tabilo @ Terence Atmane",
+    "sport": "tennis_atp_washington_open",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 108.0,
+    "opening_implied_prob": 0.480769,
+    "snapshot_time": "2026-07-30T14:55:54.824897+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-30T20:30:00Z",
+    "consensus_fair_prob": 0.473684,
+    "consensus_n_books": 7,
+    "opening_fair_prob": 0.490566,
+    "opening_fair_sharp": 0.493028,
+    "entry_ev_vs_fair_pct": 2.55,
+    "opening_opp_odds": -108.0,
+    "entry_overround": 1.0192,
+    "entry_board_age_min": 0.0,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-30",
+    "team": "Brandon Nakashima",
+    "player": null,
+    "opponent": "Jakub Mensik @ Brandon Nakashima",
+    "sport": "tennis_atp_washington_open",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 150.0,
+    "opening_implied_prob": 0.4,
+    "snapshot_time": "2026-07-30T14:55:54.824897+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-30T15:00:00Z",
+    "consensus_fair_prob": 0.416882,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.410584,
+    "opening_fair_sharp": 0.410584,
+    "entry_ev_vs_fair_pct": 2.646,
+    "opening_opp_odds": -152.0,
+    "entry_overround": 1.0233,
+    "entry_board_age_min": 0.0,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-07-30",
+    "team": "Anastasia Potapova",
+    "player": null,
+    "opponent": "Anastasia Potapova @ Diana Shnaider",
+    "sport": "tennis_wta_washington_open",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 117.0,
+    "opening_implied_prob": 0.460829,
+    "snapshot_time": "2026-07-30T14:55:54.824897+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-07-30T22:00:00Z",
+    "consensus_fair_prob": 0.471596,
+    "consensus_n_books": 7,
+    "opening_fair_prob": 0.470395,
+    "opening_fair_sharp": 0.471596,
+    "entry_ev_vs_fair_pct": 2.336,
+    "opening_opp_odds": -118.0,
+    "entry_overround": 1.0221,
+    "entry_board_age_min": 0.0,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-08-01",
+    "team": "Bogdan Grad",
+    "player": null,
+    "opponent": "Bogdan Grad @ Dennis Buzukja",
+    "sport": "mma_mixed_martial_arts",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": -170.0,
+    "opening_implied_prob": 0.62963,
+    "snapshot_time": "2026-07-30T14:56:10.241807+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-01T22:00:00Z",
+    "consensus_fair_prob": 0.63869,
+    "consensus_n_books": 7,
+    "opening_fair_prob": 0.650399,
+    "opening_fair_sharp": 0.647256,
+    "entry_ev_vs_fair_pct": 2.799,
+    "opening_opp_odds": 180.0,
+    "entry_overround": 1.0216,
+    "entry_board_age_min": 0.4,
+    "poly_filled": false
   }
 ]
