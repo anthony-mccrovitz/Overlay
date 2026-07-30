@@ -375693,7 +375693,13 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-08-16T23:00:00Z",
+    "opening_fair_prob": 0.21605,
+    "opening_opp_odds": -190.0,
+    "opening_draw_odds": 330.0,
+    "entry_overround": 1.0764,
+    "entry_board_age_min": 0.0
   },
   {
     "date": "2026-07-30",
@@ -376549,5 +376555,33 @@
     "entry_overround": 1.0216,
     "entry_board_age_min": 0.4,
     "poly_filled": false
+  },
+  {
+    "date": "2026-07-30",
+    "team": "Toronto Tempo",
+    "player": null,
+    "opponent": "Minnesota Lynx @ Toronto Tempo",
+    "sport": "wnba",
+    "market": "moneyline",
+    "strategy": "devig_ev",
+    "opening_line": null,
+    "direction": "HOME",
+    "opening_odds": 525.0,
+    "opening_implied_prob": 0.16,
+    "snapshot_time": "2026-07-30T15:21:51.313848+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "catalyst": "stale_opener",
+    "commence_time": "2026-07-31T00:10:00Z",
+    "consensus_fair_prob": 0.159882,
+    "consensus_n_books": 8,
+    "opening_fair_prob": 0.154898,
+    "opening_fair_sharp": 0.163289,
+    "entry_ev_vs_fair_pct": 2.055,
+    "opening_opp_odds": -687.0,
+    "entry_overround": 1.0329,
+    "entry_board_age_min": 0.0
   }
 ]
