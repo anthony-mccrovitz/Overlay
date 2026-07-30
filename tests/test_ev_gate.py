@@ -233,3 +233,33 @@ def test_the_floor_is_above_zero():
     hole above, so the constant is asserted rather than trusted."""
     from src.config.model_standard import PROMOTE_MIN_EV
     assert PROMOTE_MIN_EV > 0
+
+
+def test_every_decision_surface_agrees_about_a_lane():
+    """The gate, clv_gate and triage must not give opposite advice.
+
+    After the gate moved to EV, two other screens still recommended on the old
+    metrics and contradicted it on real lanes:
+      · clv-watch called mlb/batter_total_bases a "PROVEN EDGE CANDIDATE"
+        (+0.23pt, beat 90.0%) while the gate blocked it at EV -2.20%
+      · triage called mlb/f5_total "KEEP — profitable" (+1.9% ROI) while the
+        gate blocked it at EV -5.74%
+    A losing model only needs one screen that likes it to get funded, so all
+    three now consult the same EV source.
+    """
+    from src.analytics import clv_gate as cg
+    from src.analytics.experiment_log import _triage_call
+
+    # A lane that is profitable on ROI but negative EV must be flagged, never
+    # endorsed — this is the f5_total shape.
+    call = _triage_call(roi=1.9, clv=None, signal="flat", ev=-5.74)
+    assert "DON'T SCALE" in call and "KEEP" not in call
+
+    # ...and the same lane with positive EV is a normal keep.
+    call_ok = _triage_call(roi=1.9, clv=None, signal="flat", ev=+3.0)
+    assert "KEEP" in call_ok
+
+    # clv_gate must consult EV rather than crowning on unit-CLV alone.
+    import inspect
+    src = inspect.getsource(cg.clv_gate)
+    assert "_ev_lookup" in src, "clv_gate no longer consults EV — it will drift again"

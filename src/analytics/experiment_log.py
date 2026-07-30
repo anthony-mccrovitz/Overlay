@@ -245,17 +245,32 @@ class Triage:
     call: str              # what to do about it
 
 
-def _triage_call(roi, clv, signal) -> str:
+def _triage_call(roi, clv, signal, ev=None) -> str:
     """The action a lane's numbers imply — the honest keep/tune/cut recommendation.
 
     Money comes first: a profitable or +CLV lane is never a 'cut', whatever the
     confidence test says (that test is a supporting diagnostic for LOSING lanes,
     not an override of real results). Only lanes losing on BOTH ROI and CLV, with
-    no usable confidence signal, are rebuild/cut candidates."""
+    no usable confidence signal, are rebuild/cut candidates.
+
+    EV QUALIFIES 'PROFITABLE' (added 2026-07-30). Realised ROI on a few hundred
+    bets is a noisy read on a lane's edge, and this function was calling
+    mlb/f5_total "KEEP — profitable" on +1.9% ROI while its mean EV against the
+    close was -5.74% (t=-10.4) and the promotion gate blocked it. Two tools
+    giving opposite advice about the same lane is how a losing model gets funded
+    by whichever screen someone happened to open.
+
+    So a lane that is profitable-but-negative-EV is now flagged rather than
+    endorsed: the profit is real and belongs on the record, but it is variance
+    sitting on top of a negative edge, and scaling it is the mistake."""
     profitable = roi is not None and roi > 1.0
     beats_close = clv is not None and clv > 0.5
+    ev_negative = ev is not None and ev < 0
     if signal == "insufficient-data":
         return "WAIT — need ≥30 graded picks"
+    if profitable and ev_negative:
+        return (f"⚠ DON'T SCALE — +ROI but EV {ev:+.1f}% vs close "
+                f"(profit is variance on a negative edge)")
     if profitable:
         return "KEEP — profitable (verify edge is real, don't scale on variance)"
     if beats_close:
@@ -281,6 +296,14 @@ def triage(pnl_file: Path = _PNL_FILE, min_n: int = 30) -> list[Triage]:
         if p.get("result") in ("win", "loss") and p.get("odds") not in (None, 0):
             groups.setdefault(key, []).append(p)
 
+    # One EV implementation, shared with the promotion gate and clv_gate, so the
+    # triage screen and the gate cannot give opposite advice about a lane.
+    try:
+        from src.analytics.ev_gate import ev_by_lane
+        _ev = ev_by_lane()
+    except Exception:
+        _ev = {}
+
     out: list[Triage] = []
     for (sport, market), graded in groups.items():
         if len(graded) < min_n:
@@ -293,7 +316,9 @@ def triage(pnl_file: Path = _PNL_FILE, min_n: int = 30) -> list[Triage]:
             sport=sport, market=market, n=len(graded), roi=roi,
             clv=clv, clv_n=st.clv_n if st else 0,
             signal=sig.verdict, spread=sig.spread,
-            call=_triage_call(roi, clv, sig.verdict),
+            call=_triage_call(roi, clv, sig.verdict,
+                              ev=(_ev.get((sport, market)).mean_ev_pct
+                                  if _ev.get((sport, market)) else None)),
         ))
     # Real signal first, then by ROI — the tunable, promising lanes on top.
     _rank = {"real-signal": 0, "noisy-but-present": 1, "flat": 2, "inverted": 3,
