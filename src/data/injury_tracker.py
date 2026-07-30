@@ -55,6 +55,30 @@ def _save_cache(sport: str, date_str: str, data: dict) -> None:
     _cache_path(sport, date_str).write_text(json.dumps(data, indent=2))
 
 
+def _is_backfill(ds: str) -> bool:
+    """True when asked for a PAST date we have no cache for.
+
+    Every upstream here reports CURRENT status — the NHL call literally requests
+    `/roster/{team}/current`. The per-date cache is what makes this honest going
+    forward: each day's fetch records what was known THAT day. But asking for a
+    past date with no cache would fetch today's injuries and file them under the
+    old date, inventing knowledge the model could not have had.
+
+    That is the single most cited way betting models fool themselves — an injury
+    designation that matches what was CONFIRMED later rather than what was KNOWN
+    at bet time. It inflates every backtest it touches and cannot be detected
+    from the results, because the leak makes the model look good in exactly the
+    spots it was supposed to be tested on.
+
+    So a cache miss on a past date returns nothing. An absent feature costs some
+    accuracy; a time-travelling one costs the validity of the whole evaluation.
+    """
+    try:
+        return ds < date.today().strftime("%Y%m%d")
+    except Exception:
+        return False
+
+
 def fetch_nba_injuries(date_str: str | None = None) -> dict[str, list[dict]]:
     """
     Fetch NBA injury report for date_str (YYYYMMDD). Returns {team: [player_info]}.
@@ -65,6 +89,8 @@ def fetch_nba_injuries(date_str: str | None = None) -> dict[str, list[dict]]:
     cached = _load_cache("nba", ds)
     if cached:
         return {k: v for k, v in cached.items() if not k.startswith("_")}
+    if _is_backfill(ds):
+        return {}      # see _is_backfill: never label today's news as old news
 
     injuries: dict[str, list[dict]] = {}
 
@@ -99,6 +125,8 @@ def fetch_nhl_injuries(date_str: str | None = None) -> dict[str, list[dict]]:
     cached = _load_cache("nhl", ds)
     if cached:
         return {k: v for k, v in cached.items() if not k.startswith("_")}
+    if _is_backfill(ds):
+        return {}      # /roster/{team}/current is TODAY's truth, not that date's
 
     injuries: dict[str, list[dict]] = {}
 

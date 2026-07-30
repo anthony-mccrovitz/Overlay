@@ -90,6 +90,36 @@ FILTERS: dict[str, dict] = {
             "bar and FAILS Bonferroni (2.81). In-sample numbers are descriptive."
         ),
     },
+    "mlb_batter_props_over_only": {
+        "sport": "mlb",
+        "market": ("batter_hits", "batter_total_bases", "batter_rbis",
+                   "batter_home_runs"),
+        "start_date": "2026-07-30",
+        "predicate": lambda p: str(p.get("direction", "")).upper() == "OVER",
+        "hypothesis": (
+            "The batter-prop models have a SIDE-SELECTION tilt, not a bad model. "
+            "They pick UNDER 71-89% of the time, and UNDER is precisely where the "
+            "expected value is negative, while the OVER minority is positive on "
+            "every one of the four markets: hits OVER +10.07% EV vs UNDER -5.35%, "
+            "home_runs +41.00% vs -7.24%, rbis +14.26% vs -5.24%, total_bases "
+            "+2.07% vs -6.74%. That is the signature of count models whose "
+            "distributions are compressed toward the mean, which makes any line "
+            "above the mean look like an easy UNDER. If the tilt is the whole "
+            "problem, the OVER subset should stay positive-EV out of sample and "
+            "the UNDER complement should stay negative."
+        ),
+        "note": (
+            "STRICTLY IN-SAMPLE at registration: the sides were chosen by looking "
+            "at the EV they produced, on the same data. That is the definition of "
+            "a post-hoc split and the in-sample numbers below are descriptive "
+            "ONLY. Four markets tested at once, so a naive 95% bar needs a "
+            "Bonferroni correction to 98.75%. Related prior art: the 2026-06-30 "
+            "one-sided over/under fixes (NB dispersion + mean bugs) addressed this "
+            "same failure mode elsewhere, which is a reason to suspect a real "
+            "mechanism here rather than noise -- and NOT a reason to skip the "
+            "out-of-sample test."
+        ),
+    },
 }
 
 
@@ -132,9 +162,16 @@ def evaluate(name: str, picks: list[dict] | None = None) -> FilterResult:
     pred: Callable[[dict], bool] = spec["predicate"]
     start = spec["start_date"]
 
+    # `market` may name one market or several. A hypothesis about a MECHANISM —
+    # count models compressed toward the mean, which tilts every one of them to
+    # the UNDER — is a claim about the family, and testing it market-by-market
+    # would quarter the sample and multiply the comparisons for no reason.
+    markets = spec["market"]
+    markets = (markets,) if isinstance(markets, str) else tuple(markets)
+
     lane = [r for r in rows
             if r.get("sport") == spec["sport"]
-            and r.get("market") == spec["market"]
+            and r.get("market") in markets
             and not r.get("tainted")]
 
     inside  = [r for r in lane if str(r.get("date") or "") < start]
