@@ -3276,7 +3276,25 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
                           and cap_lo <= str(s.get("date") or "")[:10] <= cap_hi})
     emit(f"  Closing-line capture ({CAP_DAYS}d ending {cap_hi}) — "
          f"can these lanes ever be validated?")
+    def _all_retired(sport: str) -> bool:
+        """True if the registry knows this sport and has retired every lane.
+
+        The gate asks "can this lane ever be validated?", which is only a
+        question worth asking about lanes we are still trying to prove. The
+        World Cup finished, its lanes were retired 2026-07-30, and it kept
+        flagging at 38% capture — an alarm demanding better data collection for
+        a tournament that no longer exists. A sport ABSENT from the registry
+        still gets gated: those are scanner-discovered leagues (brazil, korea)
+        quietly accruing picks, which is exactly what this check is for.
+        """
+        if not _rstatus:
+            return False
+        lanes = [(s, m) for (s, m) in _REG if s == sport]
+        return bool(lanes) and all(_rstatus(s, m) == "retired" for s, m in lanes)
+
     for sp in sports_seen:
+        if _all_retired(sp):
+            continue  # not trying to validate it — nothing to alarm about
         n, closed, rate = _cap_rate(sp, CAP_DAYS, cap_end)
         if n < CAP_MIN_N:
             continue  # too thin to judge — not evidence of a problem
