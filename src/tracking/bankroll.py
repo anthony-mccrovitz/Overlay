@@ -35,7 +35,13 @@ LAB    = Path("data/pnl/picks.json")
 # before this date is archived at data/pnl/backups/personal_picks_archived_*.json
 # — it was the model era and mixes methodologies, so grinding it into the new
 # record would blur the one question the trial exists to answer.
-BANKROLL_START = 304.52
+# Reconciled 2026-07-31 against the ACTUAL Polymarket account: cash $298.52 +
+# one open position $5.78 = $304.30 total. The ledger's settled history carries
+# -$20.65 of June bets placed at US books BEFORE this balance existed (owner
+# was in the US then; Polymarket is the venue now), so the anchor absorbs them:
+# 324.95 - 20.65 settled = 304.30 shown, matching the app to the cent. The
+# anchor is notional by construction; the CURRENT balance is the real number.
+BANKROLL_START = 324.95
 
 SETTLED = ("win", "loss", "push")
 

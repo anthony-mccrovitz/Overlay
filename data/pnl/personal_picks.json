@@ -85,11 +85,11 @@
       "model_prob": 0.598,
       "edge_pct": 31.6,
       "card_pick": false,
-      "result": "pending",
+      "result": "loss",
       "profit": null,
-      "profit_dollars": null,
+      "profit_dollars": -10.0,
       "recorded_at": "2026-06-12T07:45:37.418361+00:00",
-      "resulted_at": null,
+      "resulted_at": "2026-07-31T15:10:10.909259+00:00",
       "source": "personal_daily"
     },
     {
@@ -108,11 +108,11 @@
       "model_prob": 0.441,
       "edge_pct": 9.6,
       "card_pick": false,
-      "result": "pending",
+      "result": "loss",
       "profit": null,
-      "profit_dollars": null,
+      "profit_dollars": -5.0,
       "recorded_at": "2026-06-12T07:45:37.418361+00:00",
-      "resulted_at": null,
+      "resulted_at": "2026-07-31T15:10:11.037787+00:00",
       "source": "personal_daily"
     },
     {
@@ -131,11 +131,11 @@
       "model_prob": 0.597,
       "edge_pct": 21.2,
       "card_pick": false,
-      "result": "pending",
+      "result": "loss",
       "profit": null,
-      "profit_dollars": null,
+      "profit_dollars": -5.0,
       "recorded_at": "2026-06-12T07:45:37.418361+00:00",
-      "resulted_at": null,
+      "resulted_at": "2026-07-31T15:10:11.155623+00:00",
       "source": "personal_daily"
     },
     {
@@ -407,6 +407,28 @@
       "recorded_at": "2026-07-28T18:00:00+00:00",
       "resulted_at": "2026-07-29T07:02:54.041371+00:00",
       "graded_via": "lab:mlb_20260728_under-9-0_total_under"
+    },
+    {
+      "pick_id": "personal_mlb_20260731_over-7-5_total",
+      "date": "2026-07-31",
+      "sport": "mlb",
+      "market": "total",
+      "direction": "WIN",
+      "team": "OVER 7.5",
+      "matchup": "Pirates @ Reds",
+      "odds": -110,
+      "line": null,
+      "sportsbook": "Polymarket",
+      "stake": 5.78,
+      "stake_dollars": 5.78,
+      "model_prob": null,
+      "edge_pct": null,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "profit_dollars": null,
+      "recorded_at": "2026-07-31T15:07:47.197149+00:00",
+      "resulted_at": null
     }
   ]
 }
