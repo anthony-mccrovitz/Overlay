@@ -1614,13 +1614,53 @@ def cmd_grid(args: argparse.Namespace) -> int:
     return 0
 
 
+def _scoreboard_verdict(state: str, ev, roi_ok: bool, sport: str, market: str,
+                        min_n: int, min_ev: float) -> str:
+    """One lane's verdict string. READY is decided by THE gate, never locally.
+
+    WHY THIS IS A FUNCTION. Until 2026-07-31 the scoreboard re-implemented a
+    subset of the promotion gate inline (EV floor, ROI, n) and skipped the
+    independence check — so it printed '✅ READY — clears gate, EV proven' for
+    usa_mls/moneyline while clears_promotion_gate refused the same lane: 46
+    rows drawn from 4 days, 63% from one, is a clustered sample wearing a
+    disguise. A green checkmark the real gate contradicts is worse than no
+    scoreboard at all; someone acts on it. Same disease, same cure as the
+    models._key invariant: decide in ONE place and delegate.
+
+    The local pre-checks below are a fast-path filter only: every check here is
+    a strict subset of the gate's checks, so a lane that fails locally can never
+    pass the gate, and only plausible candidates pay for the full gate call.
+    """
+    if state == "live":
+        return "✅ promoted — betting"
+    if state == "paused":
+        return "🟡 held — known loser"
+    if ev is None or ev.n < min_n:
+        have = 0 if ev is None else ev.n
+        return f"⏳ building EV sample ({have}/{min_n})"
+    if ev.mean_ev_pct >= min_ev and roi_ok:
+        from src.config.model_standard import clears_promotion_gate
+        ok, why = clears_promotion_gate(sport, market)
+        if not ok:
+            return f"🟠 gate: {why}"
+        return ("✅ READY — clears gate, EV proven"
+                if ev.significant else
+                f"✅ READY — clears gate (EV +{ev.mean_ev_pct:.1f}% "
+                f"unproven, needs n≈{ev.n_needed or '?'})")
+    if ev.mean_ev_pct > 0:
+        return (f"🟠 EV {ev.mean_ev_pct:+.1f}% below {min_ev:.0f}% floor"
+                if ev.mean_ev_pct < min_ev else
+                f"🟠 EV {ev.mean_ev_pct:+.1f}% ✓ · ROI must be >0")
+    return f"❌ negative EV ({ev.mean_ev_pct:+.1f}%)"
+
+
 def cmd_scoreboard(args: argparse.Namespace) -> int:
     """Promotion scoreboard: how close is every shadow lane to earning its keep?
 
-    Joins the ledger's ROI/record (market_stats) with the sharp-close CLV
-    (clv_gate) and scores each lane against the SAME gate the promoter uses —
-    beat the sharp close ≥55% AND positive ROI over ≥30 settled bets. Answers
-    'which of my algos are becoming bettable, and which are dead?' at a glance.
+    Joins the ledger's ROI/record (market_stats) with the sharp-close CLV and
+    scores each lane against THE promotion gate — model_standard.
+    clears_promotion_gate, the same function the promoter calls. The verdict
+    column is the gate's answer, not a local reconstruction of it.
     """
     from src.config.grid import GRID, cell_state, is_prop
     from src.analytics.market_stats import market_stats, MarketStat
@@ -1723,26 +1763,11 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
             # each move by what it was worth instead of counting hits.
             ev = _ev_agg(sport, keys)
 
-            if state == "live":
-                verdict = "✅ promoted — betting"
-            elif state == "paused":
-                verdict = "🟡 held — known loser"
-            elif ev is None or ev.n < PROMOTE_ROI_MIN_N:
-                have = 0 if ev is None else ev.n
-                verdict = f"⏳ building EV sample ({have}/{PROMOTE_ROI_MIN_N})"
-            elif ev.mean_ev_pct >= PROMOTE_MIN_EV and roi_ok:
-                # "clears the gate" is a decision to risk money, NOT proof. Say
-                # which one this is, so n=30 never reads as settled science.
-                verdict = ("✅ READY — clears gate, EV proven"
-                           if ev.significant else
-                           f"✅ READY — clears gate (EV +{ev.mean_ev_pct:.1f}% "
-                           f"unproven, needs n≈{ev.n_needed or '?'})")
-            elif ev.mean_ev_pct > 0:
-                verdict = (f"🟠 EV {ev.mean_ev_pct:+.1f}% below {PROMOTE_MIN_EV:.0f}% floor"
-                           if ev.mean_ev_pct < PROMOTE_MIN_EV else
-                           f"🟠 EV {ev.mean_ev_pct:+.1f}% ✓ · ROI {a.roi:+.0f}% must be >0")
-            else:
-                verdict = f"❌ negative EV ({ev.mean_ev_pct:+.1f}%)"
+            # No lane in GRID carries multiple keys today (asserted where
+            # pooled_ev is called above); the gate is keyed on the first.
+            verdict = _scoreboard_verdict(state, ev, roi_ok, sport,
+                                          _nm(keys[0]), PROMOTE_ROI_MIN_N,
+                                          PROMOTE_MIN_EV)
 
             roi_s = f"{a.roi:+.1f}%".rjust(7) if a.roi is not None else "   —   "
             # Props show n/a for beat (CLV is line-echo); game lines show real CLV.
@@ -1760,8 +1785,9 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
     print(f"\n  {line}")
     print("  OVERLAY — LANE SCOREBOARD   (are my algos earning their keep?)")
     print(f"  {line}")
-    print(f"  GATE to go live:  positive EV vs the close   AND   "
-          f"ROI > 0 over ≥{PROMOTE_ROI_MIN_N} settled bets")
+    from src.config.model_standard import PROMOTE_MIN_DAYS as _PMD
+    print(f"  GATE to go live:  EV ≥ +{PROMOTE_MIN_EV:.0f}% vs the close  ·  ROI > 0  ·  "
+          f"n ≥ {PROMOTE_ROI_MIN_N}  ·  ≥{_PMD} distinct days")
     print("  " + "─" * 72)
     if live:
         print("\n  🟢 LIVE  (earned it — betting real money)")
@@ -3891,50 +3917,48 @@ def cmd_edge(args: argparse.Namespace) -> int:
 
 
 def cmd_promote(args: argparse.Namespace) -> int:
-    """Promote a market to live card picks — REFUSES unless it clears the CLV gate.
+    """Promote a market to live card picks — decided by THE promotion gate.
 
-    Manual, deliberate, auditable: the same gate `chef.py edge` uses decides
-    eligibility; this records the flip in data/models/promotions.json (git-tracked).
+    HISTORY, because it explains the shape. Until 2026-07-31 this command
+    decided with its own rule — mean CLV over ≥200 snapshots with a p-value —
+    written before the 2026-07-30 gate rework and never migrated. Meanwhile the
+    scoreboard decided with a partial inline copy of the reworked gate. Three
+    implementations, three answers: the scoreboard printed '✅ READY' for
+    usa_mls/moneyline, this command refused it for having 46 of 200 snapshots,
+    and the documented gate refused it for the reason that actually matters —
+    46 rows from 4 days (63% on one) is a clustered sample, not evidence.
+
+    Now the decision is model_standard.clears_promotion_gate and nothing else:
+    the gate METHODOLOGY §6 documents, the one tests/test_model_standard.py
+    enforces on every live lane, the one the scoreboard displays. One gate,
+    one answer, every surface.
     """
     from datetime import datetime, timezone
-    from src.config.models import _key, model_status, model_label, set_promotion
+    from src.config.model_standard import clears_promotion_gate
+    from src.config.models import _key, model_label, model_status, set_promotion
 
     s_label, mkt = _key(args.sport, args.market)
-    res = _clv_gate(getattr(args, "min_n", None) or 200)
-    if res is None:
-        print("  ✗ snapshots.json unreadable")
-        return 1
-    rows, meta = res
-    match = next((r for r in rows if r["sport"] == s_label and r["market"] == mkt), None)
-
     print(f"\n  ─ Promote {s_label} · {mkt} ─ ({model_label(args.sport, args.market)}) ─")
     if model_status(args.sport, args.market) == "live":
         print(f"  ℹ  Already LIVE — nothing to do.")
         return 0
-    if match is None:
-        print(f"  ✗ REFUSED — no CLV-scored picks for {s_label} · {mkt} yet. Can't confirm an edge.")
-        return 1
-    if not match["is_candidate"]:
-        need = meta["min_n"]
-        extra = f" (have {match['n']}, need {need})" if match["n"] < need else \
-                f" (n={match['n']}, mean {match['mean']:+.3f}{match['unit']}, p={match['p_pos']:.4f} ≥ α={meta['alpha']:.4f})"
-        print(f"  ✗ REFUSED — {match['verdict']}{extra}.")
-        print(f"     The CLV gate is not satisfied. Keep collecting; do not bet.")
+
+    ok, why = clears_promotion_gate(s_label, mkt)
+    if not ok:
+        print(f"  ✗ REFUSED — {why}.")
+        print(f"     The promotion gate is not satisfied. Keep collecting; do not bet.")
         return 1
 
     tier = getattr(args, "tier", None) or "t2"
     set_promotion(args.sport, args.market, "live", tier, evidence={
         "promoted_at": datetime.now(timezone.utc).isoformat(),
-        "clv_n": match["n"], "clv_mean": round(match["mean"], 4),
-        "clv_unit": match["unit"],
-        "clv_p": round(match["p_pos"], 4) if match["p_pos"] is not None else None,
-        "clv_30d": round(match["rmean"], 4) if match["rmean"] is not None else None,
+        # The gate's own one-line summary IS the evidence: EV, n, ROI, t, and
+        # beat-close, exactly as computed at the moment of promotion.
+        "gate": why,
     })
-    r30 = f"{match['rmean']:+.3f}" if match["rmean"] is not None else "—"
     print(f"  ✅ PROMOTED → live (tier {tier}). New {s_label} {mkt} picks meeting the")
     print(f"     edge threshold will now post as card picks (card_pick=True).")
-    print(f"     Evidence: n={match['n']}, mean CLV {match['mean']:+.3f}{match['unit']}, "
-          f"p(>0)={match['p_pos']:.4f}, 30d {r30}")
+    print(f"     Evidence: {why}")
     print(f"     Revert anytime: `python3 chef.py demote {s_label} {mkt}`")
     return 0
 
@@ -5074,7 +5098,6 @@ def main() -> int:
     p_promote = sub.add_parser("promote", help="Promote a market to live card picks (REFUSED unless it clears the CLV gate). e.g. promote wc moneyline")
     p_promote.add_argument("sport", help="Sport/league key (e.g. wc, mlb, nba, tennis)")
     p_promote.add_argument("market", help="Market (e.g. moneyline, total, spread, anytime_scorer)")
-    p_promote.add_argument("--min-n", type=int, dest="min_n", help="Minimum scored picks to test (default 200)")
     p_promote.add_argument("--tier", choices=["t1", "t2"], help="Tier to assign on promotion (default t2)")
 
     p_demote = sub.add_parser("demote", help="Demote a market back to shadow/incubating (undo a promotion). e.g. demote wc moneyline")
