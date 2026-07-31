@@ -47,12 +47,23 @@ def train_totals_model(
     verbose: bool = True,
 ) -> dict:
     """Train an XGBoost regression model for game totals."""
-    from src.models.mlb_xgboost import ALL_SEASONS, TEST_SEASONS
+    # TRAIN_SEASONS, not ALL_SEASONS. ALL_SEASONS includes the test season, so
+    # the old default put every 2025 game in both sets and reported the result
+    # as held out — test MAE came out BELOW train MAE, which is the signature.
+    # See src/analytics/backtest_guard.py for the full account.
+    from src.analytics.backtest_guard import check_split, describe
+    from src.models.mlb_xgboost import TEST_SEASONS, TRAIN_SEASONS
 
     if train_seasons is None:
-        train_seasons = ALL_SEASONS
+        train_seasons = TRAIN_SEASONS
     if test_seasons is None:
         test_seasons = TEST_SEASONS
+
+    # Raise rather than warn: a quiet warning beside a confident number is how
+    # the original leak survived unnoticed.
+    check_split(train_seasons, test_seasons, label="mlb/total")
+    if verbose:
+        print(f"  Split — {describe(train_seasons, test_seasons)}")
 
     if verbose:
         print("\n  Building training data for totals model...")

@@ -34,7 +34,7 @@ command reads live data, this file is written by hand.
 | | |
 |---|---|
 | Lanes in the registry | 54 (**1 live**, 37 incubating, 16 retired) |
-| The one live lane | `mlb/total` — EV +3.02% vs the close, ROI +8.9%, t=+3.38 |
+| The one live lane | `mlb/total` — EV +3.02% vs the close, ROI +8.9%, t=+3.38 (realised, from logged bets) |
 | Card record | 286 settled, +34.5u, +12.1% ROI |
 
 **One lane can take money.** Everything else logs, researches, or sits dormant.
@@ -108,7 +108,7 @@ src/analytics/          CLV, EV gate, devig, coverage, the money path
 src/betting/            Kelly sizing (on the SHRUNK edge, not the claimed one)
 src/tracking/           canonical pick schema and the ledger
 scripts/                capture, calibration, backfills, alerting
-tests/                  68 files — the executable form of the invariants
+tests/                  71 files — the executable form of the invariants
 data/pnl/picks.json     the canonical bet record
 data/clv/               closing-line archives and CLV snapshots
 docs/archive/           completed plans, kept for history — not current state

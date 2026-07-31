@@ -3597,6 +3597,99 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
 
 
 
+def cmd_card(args: argparse.Namespace) -> int:
+    """Print the model's read on EVERY fight on a card, bettable or not.
+
+    Deliberately separate from `picks`. `picks` answers "where is there an edge",
+    and on a retired lane the honest answer is "nowhere". This answers "what does
+    the model think of each fight", which is a different and still-useful
+    question — and it is the one people actually ask about a fight card.
+
+    Every bout gets a line, including ones the model cannot read. A debut is
+    reported as a debut with its measured base rate, never dressed up as a
+    fighter-specific opinion.
+    """
+    from src.models.ufc_card import group_by_block, read_card
+
+    try:
+        from run_ufc import fetch_ufc_odds
+    except ImportError:
+        print("  Could not import the MMA odds fetcher (run_ufc.py).")
+        return 1
+
+    want = getattr(args, "date", None)
+    events = fetch_ufc_odds(refresh=bool(getattr(args, "refresh", False)))
+    if not events:
+        print("  No MMA events available (no ODDS_API_KEY and no cache).")
+        return 1
+
+    if want:
+        iso = f"{want[:4]}-{want[4:6]}-{want[6:8]}"
+        events = [e for e in events if str(e.get("commence_time", "")).startswith(iso)]
+        if not events:
+            print(f"  No MMA fights found for {iso}.")
+            print("  The feed carries roughly two weeks out; try `chef.py card` with no date.")
+            return 1
+
+    bouts = read_card(events)
+    blocks = group_by_block(bouts)
+    line = "=" * 78
+
+    print(f"\n  {line}")
+    print("  FIGHT CARD — what the model thinks of every bout")
+    print(f"  {line}")
+
+    for block, fights in blocks.items():
+        print(f"\n  ── {block}  ({len(fights)} fights) " + "─" * max(0, 46 - len(block)))
+        for b in fights:
+            r = b.read
+            if r.basis == "no_data":
+                verdict = "no read"
+                pct = "  —  "
+            else:
+                verdict = r.favourite
+                pct = f"{r.confidence:.0%}"
+            flag = ""
+            if r.basis == "debut_prior":
+                flag = "  [debut — base rate only]"
+            elif r.basis == "model" and r.is_coinflip:
+                flag = "  [too close to call]"
+            print(f"\n    {b.fighter_a}  vs  {b.fighter_b}")
+            print(f"      model : {verdict:28s} {pct}{flag}")
+            if b.market_p_a is not None:
+                mfav = b.fighter_a if b.market_p_a >= 0.5 else b.fighter_b
+                mp = max(b.market_p_a, 1 - b.market_p_a)
+                tag = "  ← model disagrees" if b.disagrees_with_market else ""
+                print(f"      market: {mfav:28s} {mp:.0%}  ({b.book}){tag}")
+            for d in r.drivers:
+                print(f"        · {d}")
+            if r.note:
+                print(f"        {r.note}")
+
+    n_model = sum(1 for b in bouts if b.read.basis == "model")
+    n_debut = sum(1 for b in bouts if b.read.basis == "debut_prior")
+    n_none = sum(1 for b in bouts if b.read.basis == "no_data")
+    m = UFC_META()
+    print(f"\n  {line}")
+    print(f"  {len(bouts)} fights: {n_model} read by the model, "
+          f"{n_debut} debut base-rate, {n_none} no read.")
+    if m:
+        print(f"  Model: {m.get('mean_holdout_accuracy', 0):.1%} accuracy across "
+              f"{len(m.get('walk_forward', []))} held-out years "
+              f"(log-loss {m.get('mean_holdout_log_loss', 0):.4f} vs "
+              f"{m.get('coin_flip_log_loss', 0.6931):.4f} for a coin flip).")
+    print("  NOT betting advice: ufc/moneyline is RETIRED. This accuracy is about")
+    print("  what the closing market achieves unaided, so there is no edge here.")
+    print(f"  {line}\n")
+    return 0
+
+
+def UFC_META() -> dict:
+    """Holdout scores recorded when the UFC artifact was trained."""
+    from src.models.ufc_features import UFCFightModel
+    return UFCFightModel().meta
+
+
 def cmd_moneypath(args: argparse.Namespace) -> int:
     """Walk every link between raw odds and a bet you can actually place.
 
@@ -4953,6 +5046,10 @@ def main() -> int:
     p_monitor = sub.add_parser("monitor", help="Loud integrity check: flag any IN-SEASON market gone dark (exits RED on gaps)")
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
     sub.add_parser("heartbeat", help="★ Daily digest, sent green OR red — a missing digest is the alarm")
+    p_card = sub.add_parser("card", help="Every fight on a card and what the model thinks — bettable or not")
+    p_card.add_argument("--date", help="Slate date YYYYMMDD (default: everything the feed carries)")
+    p_card.add_argument("--refresh", action="store_true", help="Force a fresh odds pull")
+
     p_mp = sub.add_parser("moneypath", help="★ CAN I BET? Every link from raw odds to a placed bet, verified")
     p_mp.add_argument("--sport", help="Sport (default mlb)")
     p_mp.add_argument("--market", help="Market (default total)")
@@ -5146,6 +5243,7 @@ def main() -> int:
         "health":   cmd_health,
         "monitor":  cmd_monitor,
         "heartbeat": cmd_heartbeat,
+        "card":     cmd_card,
         "moneypath": cmd_moneypath,
         "verify":   cmd_verify,
         "edge":     cmd_edge,

@@ -1,0 +1,134 @@
+{
+  "coefficients": {
+    "age": -0.381729,
+    "ctrl": -0.059418,
+    "elo": 0.376434,
+    "exp": -0.135717,
+    "finish": 0.079347,
+    "form": -0.11971,
+    "height": -0.020842,
+    "kd15": -0.09237,
+    "layoff": -0.033402,
+    "reach": 0.102758,
+    "sacc": 0.109751,
+    "sapm": -0.21405,
+    "sdef": 0.139622,
+    "slpm": 0.124098,
+    "sub15": -0.076341,
+    "td15": 0.186389,
+    "tdacc": -0.088481,
+    "tddef": 0.087423
+  },
+  "feature_mean": {
+    "age": 0.094584,
+    "ctrl": 0.014792,
+    "elo": 2.231189,
+    "exp": 0.179437,
+    "finish": 0.0002,
+    "form": 0.003301,
+    "height": 0.017136,
+    "kd15": -0.018363,
+    "layoff": -0.011456,
+    "reach": 0.074663,
+    "sacc": 0.000236,
+    "sapm": -0.00259,
+    "sdef": -0.005533,
+    "slpm": 0.011561,
+    "sub15": -0.003232,
+    "td15": 0.061751,
+    "tdacc": 0.001263,
+    "tddef": -0.004196
+  },
+  "feature_median": {
+    "age": 0.157426,
+    "ctrl": 0.012435,
+    "elo": 1.064448,
+    "exp": 0.0,
+    "finish": 0.0,
+    "form": 0.0,
+    "height": 0.0,
+    "kd15": 0.0,
+    "layoff": 0.0,
+    "reach": 0.0,
+    "sacc": 6.6e-05,
+    "sapm": -0.003496,
+    "sdef": -0.006599,
+    "slpm": 0.013861,
+    "sub15": 0.0,
+    "td15": 0.032391,
+    "tdacc": 0.0,
+    "tddef": 0.0
+  },
+  "feature_sd": {
+    "age": 5.287475,
+    "ctrl": 0.20395,
+    "elo": 73.511006,
+    "exp": 7.283177,
+    "finish": 0.294916,
+    "form": 0.288982,
+    "height": 2.43811,
+    "kd15": 1.08598,
+    "layoff": 0.536728,
+    "reach": 3.214876,
+    "sacc": 0.109566,
+    "sapm": 1.667089,
+    "sdef": 0.106217,
+    "slpm": 1.823525,
+    "sub15": 1.260156,
+    "td15": 1.965046,
+    "tdacc": 0.281138,
+    "tddef": 0.27823
+  },
+  "metadata": {
+    "coin_flip_log_loss": 0.6931,
+    "mean_holdout_accuracy": 0.6313,
+    "mean_holdout_log_loss": 0.6391,
+    "n_train": 4085,
+    "note": "Scores are from year-by-year holdouts, never from the fit above. Roughly market-level accuracy \u2014 this is a read on a fight, not evidence of a betting edge.",
+    "walk_forward": [
+      {
+        "accuracy": 0.625,
+        "auc": 0.6632,
+        "log_loss": 0.6505,
+        "n": 328,
+        "test_year": 2021
+      },
+      {
+        "accuracy": 0.5855,
+        "auc": 0.6395,
+        "log_loss": 0.6586,
+        "n": 345,
+        "test_year": 2022
+      },
+      {
+        "accuracy": 0.6159,
+        "auc": 0.675,
+        "log_loss": 0.645,
+        "n": 315,
+        "test_year": 2023
+      },
+      {
+        "accuracy": 0.6676,
+        "auc": 0.7117,
+        "log_loss": 0.6233,
+        "n": 358,
+        "test_year": 2024
+      },
+      {
+        "accuracy": 0.6628,
+        "auc": 0.7004,
+        "log_loss": 0.6324,
+        "n": 347,
+        "test_year": 2025
+      },
+      {
+        "accuracy": 0.6308,
+        "auc": 0.7027,
+        "log_loss": 0.6249,
+        "n": 130,
+        "test_year": 2026
+      }
+    ]
+  },
+  "trained_on": "2026-07-31"
+}
