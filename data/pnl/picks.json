@@ -252534,10 +252534,10 @@
     "raw_edge_pct": 13.71,
     "stake": 1.0,
     "card_pick": false,
-    "result": null,
+    "result": "void",
     "profit": 0.0,
     "recorded_at": "2026-06-30T05:42:40.785445+00:00",
-    "resulted_at": "2026-07-13T17:12:49.074859+00:00",
+    "resulted_at": "2026-07-31T10:20:18.603018+00:00",
     "model_version": null,
     "model_tier": "tier2",
     "weather_context": null,
@@ -252553,7 +252553,8 @@
     "clv_status": "heuristic",
     "home_team": null,
     "away_team": null,
-    "backlog_attempts": 1
+    "backlog_attempts": 2,
+    "void_reason": "matchup_incomplete"
   },
   {
     "pick_id": "mlb_20260701_washington-nationals_moneyline_away",
@@ -261661,7 +261662,7 @@
     "clv_status": "heuristic",
     "home_team": null,
     "away_team": null,
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260703_st-louis-cardinals_moneyline_away",
@@ -445434,7 +445435,7 @@
     "clv_status": "heuristic",
     "home_team": "Argentina",
     "away_team": "Switzerland",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "soccer_fifa_world_cup_20260711_over-2-5_total_over",
@@ -445472,7 +445473,7 @@
     "clv_status": "heuristic",
     "home_team": "Argentina",
     "away_team": "Switzerland",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "soccer_fifa_world_cup_20260711_under-2-5_total_under",
@@ -445510,7 +445511,7 @@
     "clv_status": "heuristic",
     "home_team": "Norway",
     "away_team": "England",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "soccer_fifa_world_cup_20260711_england-0-5_spread_cover",
@@ -445548,7 +445549,7 @@
     "clv_status": "heuristic",
     "home_team": "Norway",
     "away_team": "England",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "soccer_fifa_world_cup_20260711_declan-rice_anytime_scorer_yes",
@@ -456321,7 +456322,7 @@
     "clv_status": "heuristic",
     "home_team": "Cleveland Guardians",
     "away_team": "Pittsburgh Pirates",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260717_san-francisco-giants-seattle-mariners_nrfi_yrfi",
@@ -456895,7 +456896,7 @@
     "clv_status": "heuristic",
     "home_team": "Cleveland Guardians",
     "away_team": "Pittsburgh Pirates",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260717_f5-under-4-5-texas-rangers-atlanta-brave_f5_total_under",
@@ -490035,7 +490036,7 @@
     "clv_status": "heuristic",
     "home_team": "Cleveland Guardians",
     "away_team": "Pittsburgh Pirates",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260718_f5-over-4-5-chicago-white-sox-toronto-bl_f5_total_over",
@@ -490206,7 +490207,7 @@
     "clv_status": "heuristic",
     "home_team": "New York Yankees",
     "away_team": "Los Angeles Dodgers",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260718_f5-under-4-5-minnesota-twins-chicago-cub_f5_total_under",
@@ -570521,7 +570522,7 @@
     "clv_status": "heuristic",
     "home_team": "Boston Red Sox",
     "away_team": "Baltimore Orioles",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260721_f5-under-5-0-new-york-mets-milwaukee-bre_f5_total_under",
@@ -570692,7 +570693,7 @@
     "clv_status": "heuristic",
     "home_team": "New York Yankees",
     "away_team": "Pittsburgh Pirates",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260721_f5-over-4-5-st-louis-cardinals-los-angel_f5_total_over",
@@ -579298,7 +579299,7 @@
     "clv_status": "heuristic",
     "home_team": "New York Yankees",
     "away_team": "Pittsburgh Pirates",
-    "backlog_attempts": 1
+    "backlog_attempts": 2
   },
   {
     "pick_id": "mlb_20260722_f5-under-5-0-chicago-white-sox-texas-ran_f5_total_under",
@@ -607674,7 +607675,8 @@
     },
     "strategy": "polymarket_ev",
     "tainted": null,
-    "clv_status": "heuristic"
+    "clv_status": "heuristic",
+    "backlog_attempts": 1
   },
   {
     "sport": "mlb",
