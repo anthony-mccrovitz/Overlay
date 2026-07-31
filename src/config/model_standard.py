@@ -273,6 +273,12 @@ def clears_promotion_gate(sport: str, market: str) -> tuple[bool, str]:
     r = _clv_rows().get((sport, market))
     beat = (r or {}).get("sharp_beat_pct")
     beat_txt = f", beats close {beat}%" if beat is not None else ""
+    # Repriced-market rows are excluded from the evidence (see
+    # ev_gate.MAX_IMPLIED_MOVE) but never silently: a lane that needed the
+    # quarantine says so in every verdict about it.
+    if ev is not None and getattr(ev, "n_quarantined", 0):
+        beat_txt += (f" [{ev.n_quarantined} repriced row(s) quarantined "
+                     f"from the EV sample]")
 
     if ev is None:
         return False, "no EV evidence (lane has no scored clv_ev_pct rows)"

@@ -259,6 +259,43 @@ original one-word bug fails the build.
 
 ---
 
+## 9. Repriced markets are not evidence — the EV quarantine
+
+**Choice.** A scored EV row whose absolute implied-probability move from entry
+to close exceeds **35 points** is quarantined: excluded from lane evidence,
+counted visibly in `EVStats.n_quarantined`, named in every gate verdict about
+the lane. `src/analytics/ev_gate.MAX_IMPLIED_MOVE`.
+
+**Why.** `tennis/moneyline` showed the best EV on the scoreboard (+19.25%)
+against a realised ROI of −11%. Those cannot both be true of the same bets. The
+mean was carried by three rows, the worst being Francesca Jones at Wimbledon:
+opening +294, closing −325 — a 51-point implied flip scored as "+201% EV".
+
+A two-way market does not move 35+ points on betting flow. It moves on news
+that voids or remakes the bet: a tennis pre-match withdrawal **refunds the
+stake**, so the +201% was never collectable by anyone; or the closing join
+matched the opposite side. Either way the row measures a repricing, not an
+edge. Averaging it into lane evidence produced a number that flatly
+contradicted the money.
+
+**The bound is measured, not aesthetic.** Across all 1,525 scored rows carrying
+both prices: p99 of |move| = 23 points, p99.9 = 46. Five rows (0.33%) exceed 35
+and each is flip-shaped on inspection. The bound binds only what cannot be an
+honest line move, boundary cases are kept (Kudermetova sits at exactly 35.0 and
+stays), and the live lane loses zero rows to it.
+
+**What it changed:** tennis +19.25% → +13.56% (still clustered on 8 days, still
+refused by the gate, still −11% realised — the lane's honest read is its
+ledger); `usa_mls` +13.00% → +9.00% (one flip row of its own). `mlb/total`
+unchanged at +3.02%.
+
+**Status: MEASURED HERE.** Rows lacking either price (props) are not judged by
+this bound — "unknown" is not evidence of a flip, and prop entry prices are
+recorded differently. If prop benchmarks ever store both prices, the same bound
+applies.
+
+---
+
 ## Sources
 
 - [Buchdahl on closing line value](https://www.pinnacleoddsdropper.com/blog/closing-line-value--clv-demystified-by-expert-joseph-buchdahl)

@@ -22,6 +22,7 @@ _CORE: dict[str, list[str]] = {
     "nba":    ["moneyline", "total", "spread"],
     "nhl":    ["moneyline", "puck_line", "total"],
     "nfl":    ["moneyline", "total", "spread"],
+    "ncaaf":  ["total", "spread"],
     "tennis": ["moneyline", "total"],
     "ufc":    ["moneyline", "total"],
     "pga":    ["outright"],

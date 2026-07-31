@@ -15,8 +15,13 @@ class TestGridState:
         assert cell_state("mlb", ["total"]) == "live"
 
     def test_unbuilt_lane_is_planned(self):
-        # NFL has no models yet.
-        assert cell_state("nfl", ["total"]) == "planned"
+        # NFL game lines were this test's example until 2026-07-31, when the
+        # lane was wired for the season (registry incubating/shadow). Its PROP
+        # markets remain genuinely unbuilt — in the grid, absent from the
+        # registry — which is exactly the state this test pins.
+        assert cell_state("nfl", ["player_pass_yds"]) == "planned"
+        # And the game lines now read shadow, not planned: wired, unproven.
+        assert cell_state("nfl", ["total"]) == "shadow"
 
     def test_retired_lane_resolves_retired(self):
         # nascar/outright is registered but status=retired (dropped 2026-07-26).
