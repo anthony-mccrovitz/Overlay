@@ -51,6 +51,38 @@ class GlickoRating:
         """P(self beats opponent) ignoring RD uncertainty (point estimate)."""
         return 1.0 / (1.0 + 10.0 ** ((opponent.mu - self.mu) / 400.0))
 
+    def win_prob_vs_uncertain(self, opponent: "GlickoRating") -> float:
+        """P(self beats opponent) WITH rating uncertainty folded in properly.
+
+        This is Glicko's own expected-score function. The attenuation g(φ) pulls
+        the prediction toward 0.5 as combined deviation grows, which is the
+        correct behaviour — but on the right scale.
+
+        WHY IT EXISTS. `simulate_fight` used to do this by hand: sample noise of
+        sd sqrt(φa²+φb²)/400 and add it to (p − 0.5) inside a sigmoid with a
+        gain of 4. With every fighter stuck at the default φ=350 that is ~5σ of
+        logit noise on a signal of 0.4, so every fight came back 50–53%. Ten
+        predictions, one number. The fix is both to set φ from the fighter's
+        actual record and to combine it with the standard formula instead of an
+        ad-hoc one.
+        """
+        q = GLICKO_Q
+        phi = math.sqrt(self.phi ** 2 + opponent.phi ** 2)
+        g = 1.0 / math.sqrt(1.0 + 3.0 * q * q * phi * phi / (math.pi ** 2))
+        return 1.0 / (1.0 + 10.0 ** (-g * (self.mu - opponent.mu) / 400.0))
+
+
+def phi_from_bouts(n: int) -> float:
+    """Rating deviation implied by how much we have actually seen.
+
+    A fighter with 24 UFC bouts is not as uncertain as one we have never seen,
+    and treating them identically is what flattened the model. Deviation decays
+    as 1/sqrt(1+n) — the standard shape for the standard error of a mean — from
+    the 350 "no information" prior toward a 50-point floor that keeps a long
+    record from ever implying certainty.
+    """
+    return max(50.0, GLICKO_PHI0 / math.sqrt(1.0 + max(0, int(n))))
+
 
 # ── Style profiles ────────────────────────────────────────────────────────────
 
@@ -318,7 +350,10 @@ class UFCModel:
 
         if computed:
             for name, data in computed.items():
-                self.ratings[name] = GlickoRating(mu=data["mu"])
+                # Deviation from the fighter's own bout count — NOT the 350
+                # default, which asserts we have never seen them.
+                self.ratings[name] = GlickoRating(
+                    mu=data["mu"], phi=phi_from_bouts(data.get("n", 0)))
                 s = data.get("style", {})
                 self.styles[name] = StyleProfile(
                     striking  = s.get("striking", 0.5),
@@ -388,17 +423,14 @@ class UFCModel:
         """
         rng = np.random.default_rng(seed)
 
-        # 1. Win probability from Glicko
+        # 1. Win probability from Glicko, with rating uncertainty folded in by
+        #    the standard attenuation rather than by injected noise. See
+        #    GlickoRating.win_prob_vs_uncertain for what that replaced and why.
         ra = self._get_rating(fighter_a)
         rb = self._get_rating(fighter_b)
-        p_a_wins = ra.win_prob_vs(rb)
+        p_a_wins = ra.win_prob_vs_uncertain(rb)
 
-        # Uncertainty: add RD-based noise
-        elo_std = math.sqrt(ra.phi ** 2 + rb.phi ** 2) / 400.0
-        noise   = rng.normal(0, elo_std, n_sim)
-        p_a_base = 1.0 / (1.0 + np.exp(-4.0 * (p_a_wins - 0.5 + noise)))
-
-        a_wins = rng.random(n_sim) < p_a_base
+        a_wins = rng.random(n_sim) < p_a_wins
 
         # 2. Method distribution from base rates + style matchup
         wc_key  = weight_class.lower().replace(" ", "_")
