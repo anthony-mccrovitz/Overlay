@@ -3718,6 +3718,67 @@ def cmd_card(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_golf(args: argparse.Namespace) -> int:
+    """This week's PGA Tour event — whatever it is — priced across every market
+    the simulation supports.
+
+    The PGA model only ever ran four weeks a year, and not because the model
+    was majors-only: it derived the FIELD from the Odds API board, and the Odds
+    API only lists the majors. The field now comes from ESPN (every week,
+    free), skill from SG data where it exists and the OWGR mapping where it
+    doesn't, and odds are joined only when a board for THIS event exists.
+    """
+    from src.data.golf_field import current_event
+    from src.models.golf_week import market_for_event, read_week
+
+    ev = current_event()
+    if ev is None:
+        print("  No PGA Tour event on the ESPN scoreboard (and no cache).")
+        return 1
+
+    n_top = int(getattr(args, "top", None) or 25)
+    reads, _sim = read_week(ev, n_sim=int(getattr(args, "n_sim", None) or 100_000))
+    from collections import Counter
+    src = Counter(r.source for r in reads)
+
+    line = "=" * 78
+    print(f"\n  {line}")
+    print(f"  {ev.name}  ·  {ev.start} → {ev.end}  ·  {ev.status}")
+    print(f"  {line}")
+    print(f"  Field {len(reads)}: {src.get('sg', 0)} with strokes-gained data, "
+          f"{src.get('owgr', 0)} priced from world ranking (r²=0.52 map), "
+          f"{src.get('none', 0)} unrated.")
+    if ev.in_progress:
+        print("  NOTE: event IN PROGRESS — these are PRE-tournament reads; the")
+        print("  live scores shown are context, not something the sim knows about.")
+
+    print(f"\n  {'player':24s} {'win':>6} {'top5':>6} {'top10':>6} {'top20':>6} {'cut':>5}  score")
+    for r in reads[:n_top]:
+        tag = {"owgr": " ·owgr", "none": " ·UNRATED"}.get(r.source, "")
+        print(f"  {r.player:24s} {r.win_pct:5.1f}% {r.top5_pct:5.1f}% "
+              f"{r.top10_pct:5.1f}% {r.top20_pct:5.1f}% {r.make_cut_pct:4.0f}%  "
+              f"{r.live_score}{tag}")
+
+    market = market_for_event(ev)
+    if market:
+        by = {r.player: r for r in reads}
+        print(f"\n  MARKET ({len(market)} priced) — model vs best board price:")
+        shown = 0
+        for name, m in sorted(market.items(), key=lambda kv: -kv[1]["implied_prob"]):
+            r = by.get(name)
+            if r is None or shown >= 12:
+                continue
+            print(f"    {name:24s} board {m['best_odds']:+6d} "
+                  f"(imp {m['implied_prob']:.1%})  model {r.win_pct:.1f}%")
+            shown += 1
+    else:
+        print(f"\n  No betting board exists for this event (the Odds API carries")
+        print(f"  golf as majors-only futures) — these are READS, not edges, and")
+        print(f"  nothing here is logged as a pick.")
+    print(f"  {line}\n")
+    return 0
+
+
 def UFC_META() -> dict:
     """Holdout scores recorded when the UFC artifact was trained."""
     from src.models.ufc_features import UFCFightModel
@@ -5078,6 +5139,10 @@ def main() -> int:
     p_monitor = sub.add_parser("monitor", help="Loud integrity check: flag any IN-SEASON market gone dark (exits RED on gaps)")
     p_monitor.add_argument("--soft", action="store_true", help="Always exit 0 (report only, don't fail the run)")
     sub.add_parser("heartbeat", help="★ Daily digest, sent green OR red — a missing digest is the alarm")
+    p_golf = sub.add_parser("golf", help="This week's PGA event: field, win/top-N/cut model reads, market when one exists")
+    p_golf.add_argument("--top", type=int, help="rows to show (default 25)")
+    p_golf.add_argument("--n-sim", type=int, dest="n_sim", help="simulation count (default 100k)")
+
     p_card = sub.add_parser("card", help="Every fight on a card and what the model thinks — bettable or not")
     p_card.add_argument("--date", help="Slate date YYYYMMDD (default: everything the feed carries)")
     p_card.add_argument("--refresh", action="store_true", help="Force a fresh odds pull")
@@ -5275,6 +5340,7 @@ def main() -> int:
         "monitor":  cmd_monitor,
         "heartbeat": cmd_heartbeat,
         "card":     cmd_card,
+        "golf":     cmd_golf,
         "moneypath": cmd_moneypath,
         "verify":   cmd_verify,
         "edge":     cmd_edge,

@@ -34,6 +34,13 @@
     "status": "retired",
     "tier": "shadow"
   },
+  "mlb::f5_total": {
+    "previous_status": "incubating",
+    "reason": "EV vs the close: -5.74% on n=292 across 41 days, t=-10.38 \u2014 not noise, a systematically wrong side of subsequent line movement. Realised ROI +1.9% (n=265) is luck running ahead of a provably negative process; at this t the long-run sign is settled. Beat-close 59% alongside negative EV is the exact magnitude trap the EV gate was built to catch (wins many small moves, loses the big ones). No rebuild hypothesis stated: 'fade the model' is the market's signal, not ours. A future rebuild needs a new mechanism (e.g., later entry timing, starter-news modeling) and starts as a fresh shadow via demote.",
+    "retired_on": "2026-07-31",
+    "status": "retired",
+    "tier": "shadow"
+  },
   "mlb::moneyline": {
     "previous_status": "incubating",
     "reason": "38.0% beat-close on 1,114 moved lines and k=0.00 (claims 8.86pp, realizes -0.21pp). Calibration is non-monotone across its own operating band: stated 0.544->actual 0.464, stated 0.583->actual 0.440. No discrimination where the model actually lives.",
