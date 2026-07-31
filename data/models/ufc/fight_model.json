@@ -59,6 +59,26 @@
     "tdacc": 0.0,
     "tddef": 0.0
   },
+  "feature_order": [
+    "elo",
+    "exp",
+    "age",
+    "reach",
+    "height",
+    "slpm",
+    "sapm",
+    "sacc",
+    "sdef",
+    "td15",
+    "tdacc",
+    "tddef",
+    "sub15",
+    "ctrl",
+    "kd15",
+    "finish",
+    "form",
+    "layoff"
+  ],
   "feature_sd": {
     "age": 5.287475,
     "ctrl": 0.20395,
@@ -130,5 +150,6 @@
       }
     ]
   },
-  "trained_on": "2026-07-31"
+  "trained_on": "2026-07-31",
+  "uses_global_features": false
 }

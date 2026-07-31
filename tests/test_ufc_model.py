@@ -16,6 +16,7 @@ from datetime import date
 from pathlib import Path
 
 import pytest
+from types import SimpleNamespace
 
 from src.models.ufc_features import (
     DEBUT_WIN_RATE,
@@ -350,3 +351,79 @@ def test_age_matters_more_than_rating():
     assert coef["age"] < 0, "older fighter should be less likely to win"
     assert coef["elo"] > 0, "higher-rated fighter should be more likely to win"
     assert abs(coef["age"]) > 0.15 and abs(coef["elo"]) > 0.15
+
+
+# ── the global fallback tier ─────────────────────────────────────────────────
+def test_global_fallback_artifact_records_the_split_verdict():
+    """Both halves of the experiment are recorded, because both are true:
+    career features refused by the main model's gate, decisive on the refused
+    population. The artifact must beat flat on its holdouts to exist at all."""
+    import json
+    from pathlib import Path
+    p = Path("data/models/ufc/global_fallback.json")
+    if not p.exists():
+        pytest.skip("global fallback not trained")
+    blob = json.loads(p.read_text())
+    meta = blob["metadata"]
+    assert meta["mean_model_log_loss"] < meta["mean_flat_log_loss"]
+    assert len(meta["walk_forward"]) >= 3
+    assert set(blob["coefficients"]) == {"gelo_diff", "top_share_diff",
+                                         "pro_exp_diff"}
+
+
+@needs_data
+def test_global_tier_prices_two_ufc_unknowns_when_both_resolve(monkeypatch):
+    """The Leka-vs-Poppeck case: no UFC record on either side, both known to
+    the global graph — must produce a real probability, not 'no read'."""
+    model = UFCFightModel()
+    if not model.gf_ok:
+        pytest.skip("global fallback not trained")
+    led, _ = build_ledger()
+
+    from src.models.global_elo import GlobalLedger
+    gled = GlobalLedger()
+    for i in range(12):
+        gled.apply_bout({"date": date(2024, 1, 1 + i), "w": "Strong-One-1",
+                         "l": f"Foe-{i}", "promotion": "Oktagon",
+                         "method": "KO"})
+        gled.apply_bout({"date": date(2024, 2, 1 + i), "w": f"Rival-{i}",
+                         "l": "Weak-One-2", "promotion": "Oktagon",
+                         "method": "Decision"})
+    model._gled = gled
+    model._slug_of = {}
+    monkeypatch.setattr(
+        "src.data.sherdog.resolve",
+        lambda name, dob=None: SimpleNamespace(slug={"Strong Fighter": "Strong-One-1",
+                                                     "Weak Fighter": "Weak-One-2"}[name]))
+    r = model.predict(led, "Strong Fighter", "Weak Fighter", date(2026, 8, 1))
+    assert r.basis == "global_record"
+    assert r.p_a > 0.5, "a 12-0 career must be favoured over an 0-12 one"
+    assert "professional record" in r.note
+
+
+@needs_data
+def test_global_tier_refuses_when_identity_does_not_resolve(monkeypatch):
+    """Identity doubt falls through to the honest lower tiers, never a guess."""
+    model = UFCFightModel()
+    if not model.gf_ok:
+        pytest.skip("global fallback not trained")
+    led, _ = build_ledger()
+    from src.models.global_elo import GlobalLedger
+    model._gled = GlobalLedger()
+    model._slug_of = {}
+    monkeypatch.setattr("src.data.sherdog.resolve", lambda name, dob=None: None)
+    r = model.predict(led, "Nobody One", "Nobody Two", date(2026, 8, 1))
+    assert r.basis == "no_data", "unresolvable identity must stay a no-read"
+
+
+@needs_data
+def test_global_tier_never_outranks_the_main_model():
+    """Where both fighters have UFC records the main model decides — career
+    features were offered there and measurably did not help."""
+    model = UFCFightModel()
+    if not model.gf_ok or not model.ok:
+        pytest.skip("artifacts not trained")
+    led, _ = build_ledger()
+    rated = sorted(n for n, s in led.book.items() if s.n >= 8)
+    r = model.predict(led, rated[0], rated[1], date(2026, 8, 1))
+    assert r.basis == "model"
