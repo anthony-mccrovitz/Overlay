@@ -1,0 +1,62 @@
+{
+  "coefficients": {
+    "gelo_diff": 0.680611,
+    "pro_exp_diff": -0.480613,
+    "top_share_diff": 0.21928
+  },
+  "feature_mean": {
+    "gelo_diff": -2.906798,
+    "pro_exp_diff": 0.192997,
+    "top_share_diff": -0.009089
+  },
+  "feature_sd": {
+    "gelo_diff": 96.284555,
+    "pro_exp_diff": 10.493314,
+    "top_share_diff": 0.298582
+  },
+  "intercept": 0.014946,
+  "metadata": {
+    "mean_flat_log_loss": 0.6939,
+    "mean_model_log_loss": 0.6489,
+    "n_train": 1171,
+    "note": "Applies ONLY to fights the main model refuses (a fighter under 2 UFC bouts) where BOTH fighters resolve in the global graph. The same features were offered to the main model and refused \u2014 both verdicts are recorded because both are true.",
+    "walk_forward": [
+      {
+        "auc": 0.6489,
+        "flat_log_loss": 0.6941,
+        "model_log_loss": 0.6648,
+        "n": 73,
+        "test_year": 2018
+      },
+      {
+        "auc": 0.6392,
+        "flat_log_loss": 0.6959,
+        "model_log_loss": 0.6683,
+        "n": 86,
+        "test_year": 2019
+      },
+      {
+        "auc": 0.7144,
+        "flat_log_loss": 0.6927,
+        "model_log_loss": 0.6365,
+        "n": 73,
+        "test_year": 2020
+      },
+      {
+        "auc": 0.6777,
+        "flat_log_loss": 0.6945,
+        "model_log_loss": 0.6412,
+        "n": 52,
+        "test_year": 2021
+      },
+      {
+        "auc": 0.679,
+        "flat_log_loss": 0.6922,
+        "model_log_loss": 0.6336,
+        "n": 45,
+        "test_year": 2022
+      }
+    ]
+  },
+  "trained_on": "2026-07-31"
+}

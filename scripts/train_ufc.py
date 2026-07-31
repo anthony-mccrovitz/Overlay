@@ -233,6 +233,122 @@ def train_debut_model() -> dict | None:
     }
 
 
+GLOBAL_FALLBACK_FEATURES = ["gelo_diff", "top_share_diff", "pro_exp_diff"]
+
+
+def train_global_fallback() -> dict | None:
+    """The tier for fights the MAIN model refuses (≥1 fighter under 2 UFC bouts).
+
+    THE SPLIT VERDICT THIS ENCODES. Career-wide features were offered to the
+    main model and REFUSED by its gate (base 0.6391 vs +global 0.6444 —
+    worse in 5 of 6 holdout years): where both fighters have UFC records, the
+    UFC data already carries the information and the 45% imputation is noise.
+    But on the population the main model cannot score at all, career Elo alone
+    is decisively better than the flat base rate we served instead:
+
+        n=1,167 refused fights, 5 one-year holdouts (2018-2022)
+        flat 0.6941  →  global 0.6490      AUC 0.673
+
+    Both answers came from the same experiment; this trains the half that won.
+    Ships only if it beats flat on the holdouts, same rule as everything else.
+    """
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import log_loss, roc_auc_score
+
+    from src.models.global_elo import (
+        GlobalLedger,
+        load_global_bouts,
+        name_to_slug,
+    )
+    from src.models.ufc_features import Ledger, normalize_name
+
+    bouts, stats, tott = load_bouts()
+    slug_of = name_to_slug()
+    tt = {normalize_name(k): v for k, v in tott.items()}
+
+    def slug(name: str) -> str | None:
+        nn = normalize_name(name)
+        dob = (tt.get(nn) or {}).get("dob")
+        return slug_of.get((nn, dob.isoformat() if dob else None))
+
+    gb = load_global_bouts()
+    gled = GlobalLedger()
+    gi = 0
+    uled = Ledger(stats, tott)
+    rows, ys, yrs = [], [], []
+    for b in bouts:
+        d = b["date"]
+        while gi < len(gb) and gb[gi]["date"] < d:
+            gled.apply_bout(gb[gi])
+            gi += 1
+        w, l = b["w"], b["l"]
+        if d.year >= 2010 and min(uled.state(w).n, uled.state(l).n) < MIN_PRIOR_BOUTS:
+            a, z = (w, l) if w < l else (l, w)
+            sa, sz = slug(a), slug(z)
+            if sa and sz and gled.known(sa) and gled.known(sz):
+                fa, fz = gled.features_for(sa, d), gled.features_for(sz, d)
+                rows.append([fa["gelo"] - fz["gelo"],
+                             fa["top_share"] - fz["top_share"],
+                             fa["pro_exp"] - fz["pro_exp"]])
+                ys.append(1 if a == w else 0)
+                yrs.append(d.year)
+        uled.apply_bout(b)
+
+    if len(ys) < 400:
+        print(f"  global fallback: only {len(ys)} scoreable fights — not training")
+        return None
+    X, Y, yr = np.array(rows), np.array(ys), np.array(yrs)
+
+    folds, f_lls, m_lls = [], [], []
+    for y in range(2018, int(yr.max()) + 1):
+        tr, te = yr < y, yr == y
+        if te.sum() < 40 or tr.sum() < 200:
+            continue
+        mu, sd = X[tr].mean(0), X[tr].std(0)
+        sd[sd == 0] = 1.0
+        m = LogisticRegression(C=1.0, max_iter=2000).fit((X[tr] - mu) / sd, Y[tr])
+        p = m.predict_proba((X[te] - mu) / sd)[:, 1]
+        flat = np.full(int(te.sum()), Y[tr].mean())
+        f_ll = float(log_loss(Y[te], flat, labels=[0, 1]))
+        m_ll = float(log_loss(Y[te], p, labels=[0, 1]))
+        auc = (float(roc_auc_score(Y[te], p))
+               if len(set(Y[te])) > 1 else float("nan"))
+        folds.append({"test_year": int(y), "n": int(te.sum()),
+                      "flat_log_loss": round(f_ll, 4),
+                      "model_log_loss": round(m_ll, 4), "auc": round(auc, 4)})
+        f_lls.append(f_ll)
+        m_lls.append(m_ll)
+        print(f"  global-fallback {y}: n={te.sum():3d}  flat={f_ll:.4f}  "
+              f"model={m_ll:.4f}  AUC={auc:.3f}")
+    if not folds or float(np.mean(m_lls)) >= float(np.mean(f_lls)):
+        print("  global fallback does not beat the flat rate — not shipping")
+        return None
+
+    mu, sd = X.mean(0), X.std(0)
+    sd[sd == 0] = 1.0
+    m = LogisticRegression(C=1.0, max_iter=2000).fit((X - mu) / sd, Y)
+    return {
+        "coefficients": {k: round(float(v), 6)
+                         for k, v in zip(GLOBAL_FALLBACK_FEATURES, m.coef_[0])},
+        "intercept": round(float(m.intercept_[0]), 6),
+        "feature_mean": {k: round(float(v), 6)
+                         for k, v in zip(GLOBAL_FALLBACK_FEATURES, mu)},
+        "feature_sd": {k: round(float(v), 6)
+                       for k, v in zip(GLOBAL_FALLBACK_FEATURES, sd)},
+        "metadata": {
+            "n_train": int(len(Y)),
+            "walk_forward": folds,
+            "mean_flat_log_loss": round(float(np.mean(f_lls)), 4),
+            "mean_model_log_loss": round(float(np.mean(m_lls)), 4),
+            "note": ("Applies ONLY to fights the main model refuses (a fighter "
+                     "under 2 UFC bouts) where BOTH fighters resolve in the "
+                     "global graph. The same features were offered to the main "
+                     "model and refused — both verdicts are recorded because "
+                     "both are true."),
+        },
+    }
+
+
 def _impute(A: np.ndarray, med: np.ndarray) -> np.ndarray:
     out = A.copy()
     for j in range(out.shape[1]):
@@ -390,6 +506,17 @@ def main() -> int:
         # its place — the flat base rate is the honest fallback.
         dpath.unlink(missing_ok=True)
         print("No debut artifact written; the flat base rate applies.")
+
+    print("\nGlobal fallback — the fights the main model refuses:")
+    gf = train_global_fallback()
+    gpath = Path("data/models/ufc/global_fallback.json")
+    if gf:
+        gf["trained_on"] = date.today().isoformat()
+        gpath.write_text(json.dumps(gf, indent=2, sort_keys=True))
+        print(f"Wrote {gpath}")
+    else:
+        gpath.unlink(missing_ok=True)
+        print("No global-fallback artifact; base rates continue to apply.")
     return 0
 
 

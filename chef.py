@@ -3676,7 +3676,9 @@ def cmd_card(args: argparse.Namespace) -> int:
                 verdict = r.favourite
                 pct = f"{r.confidence:.0%}"
             flag = ""
-            if r.basis == "debut_model":
+            if r.basis == "global_record":
+                flag = "  [priced from full pro record, all promotions]"
+            elif r.basis == "debut_model":
                 flag = "  [no UFC record — age + opponent only]"
             elif r.basis == "debut_prior":
                 flag = "  [no UFC record — flat base rate]"
@@ -3701,12 +3703,14 @@ def cmd_card(args: argparse.Namespace) -> int:
                 print(f"        {b.pro_note}")
 
     n_model = sum(1 for b in bouts if b.read.basis == "model")
+    n_global = sum(1 for b in bouts if b.read.basis == "global_record")
     n_debut = sum(1 for b in bouts if b.read.basis in ("debut_model", "debut_prior"))
     n_none = sum(1 for b in bouts if b.read.basis == "no_data")
     m = UFC_META()
     print(f"\n  {line}")
     print(f"  {len(bouts)} fights: {n_model} read in full, "
-          f"{n_debut} priced without a UFC record, {n_none} no read.")
+          f"{n_global} from full pro records (all promotions), "
+          f"{n_debut} on partial data, {n_none} no read.")
     if m:
         print(f"  Model: {m.get('mean_holdout_accuracy', 0):.1%} accuracy across "
               f"{len(m.get('walk_forward', []))} held-out years "

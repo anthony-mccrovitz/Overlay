@@ -44,6 +44,7 @@ from pathlib import Path
 _DIR = Path("data/ufc")
 _MODEL = Path("data/models/ufc/fight_model.json")
 _DEBUT_MODEL = Path("data/models/ufc/debut_model.json")
+_GLOBAL_FALLBACK = Path("data/models/ufc/global_fallback.json")
 
 # Elo constants. Chosen by grid search on held-out log-loss, not by convention:
 # the usual 28/40 scored 0.6822 and 64/80 scored 0.6795. Higher K disperses a
@@ -414,6 +415,108 @@ class UFCFightModel:
         except (OSError, ValueError, KeyError):
             pass
 
+        # The global fallback: career-wide Elo for fights the main model
+        # refuses. Same optionality contract — the trainer only writes it when
+        # it beats the flat rate on held-out years, and deletes it otherwise.
+        self.gf: dict = {}
+        self.gf_ok = False
+        try:
+            g = json.loads(_GLOBAL_FALLBACK.read_text())
+            if all(k in g for k in ("coefficients", "intercept",
+                                    "feature_mean", "feature_sd")):
+                self.gf = g
+                self.gf_ok = True
+        except (OSError, ValueError, KeyError):
+            pass
+        self._gled = None          # global ledger, built once on first use
+        self._slug_of = None
+
+    def _global_read(self, ledger: Ledger, a: str, b: str) -> Read | None:
+        """Career-wide read for a fight the UFC-only model refuses, or None.
+
+        THE SPLIT VERDICT. Career features were offered to the main model and
+        its gate said no (0.6391 -> 0.6444 held-out): where both fighters have
+        UFC records, UFC data already carries the information. On the refused
+        population — a fighter with no UFC record — career Elo alone beat the
+        flat base rate decisively: flat 0.6941 -> 0.6490, AUC 0.673 over
+        1,167 held-out fights (2018-2022). Both verdicts are recorded in their
+        artifacts, because both are true.
+
+        Returns None whenever EITHER fighter fails to resolve into the global
+        graph — identity resolution refuses ambiguity, and this tier inherits
+        that refusal rather than guessing.
+        """
+        if not self.gf_ok:
+            return None
+        if self._gled is None:
+            from src.models.global_elo import build_global_ledger, name_to_slug
+            self._gled = build_global_ledger()
+            self._slug_of = name_to_slug()
+
+        def slug(name: str) -> str | None:
+            nn = normalize_name(name)
+            dob = (ledger.tott.get(nn) or {}).get("dob")
+            s = self._slug_of.get((nn, dob.isoformat() if dob else None))
+            if s is None and dob is None:
+                # No ufcstats dob (true newcomer): accept a name-only key when
+                # it is unambiguous — name_to_slug already dropped ambiguous
+                # keys, but a (name, None) key exists only if Sherdog itself
+                # has no dob for them, so this stays exact-match-or-nothing.
+                s = self._slug_of.get((nn, None))
+            if s is None:
+                # The strict join misses two real cases: a name variant
+                # ("Vlasto" on the odds feed, "Vlastislav" on Sherdog) and a
+                # fighter the crawl has not reached yet. sherdog.resolve
+                # handles both under the same refuse-on-ambiguity rules (dob
+                # must agree; variants additionally need a shared surname),
+                # and it is what the card's pro-record line already uses.
+                try:
+                    from src.data.sherdog import resolve
+                    f = resolve(name, dob=dob)
+                    if f is not None:
+                        s = f.slug
+                except Exception:
+                    s = None
+            return s
+
+        sa, sb = slug(a), slug(b)
+        if not sa or not sb:
+            return None
+        if not self._gled.known(sa) or not self._gled.known(sb):
+            # slug() may have just resolve()d a fighter INTO the cache; the
+            # ledger predates that fetch, so rebuild it once before giving up.
+            from src.models.global_elo import build_global_ledger
+            self._gled = build_global_ledger()
+        if not self._gled.known(sa) or not self._gled.known(sb):
+            return None
+
+        from datetime import date as _date
+        fa = self._gled.features_for(sa, _date.today())
+        fb = self._gled.features_for(sb, _date.today())
+        raw = {"gelo_diff": fa["gelo"] - fb["gelo"],
+               "top_share_diff": fa["top_share"] - fb["top_share"],
+               "pro_exp_diff": fa["pro_exp"] - fb["pro_exp"]}
+        z = self.gf["intercept"]
+        for name, coef in self.gf["coefficients"].items():
+            sd = self.gf["feature_sd"].get(name, 1.0) or 1.0
+            z += coef * (raw.get(name, 0.0) - self.gf["feature_mean"].get(name, 0.0)) / sd
+        p_a = 1.0 / (1.0 + math.exp(-max(-30.0, min(30.0, z))))
+        fav = a if p_a >= 0.5 else b
+        sa_st, sb_st = self._gled.state(sa), self._gled.state(sb)
+        drivers = [
+            f"{a}: career Elo {sa_st.elo:.0f} over {sa_st.n} pro bouts "
+            f"({sa_st.top_n} in top-tier promotions)",
+            f"{b}: career Elo {sb_st.elo:.0f} over {sb_st.n} pro bouts "
+            f"({sb_st.top_n} in top-tier promotions)",
+        ]
+        note = ("Priced from the FULL professional record across every "
+                "promotion — validated on 1,167 UFC fights of exactly this "
+                "class (AUC 0.67, log-loss 0.649 vs 0.694 flat). A regional "
+                "record is weaker evidence than a UFC one, and that discount "
+                "is IN the fit, not assumed.")
+        return Read(a, b, p_a, fav, max(p_a, 1 - p_a), "global_record",
+                    drivers, note)
+
     def _debut_prob(self, ledger: Ledger, unrated: str, rated: str,
                     on: date) -> tuple[float, str, str]:
         """P(the unrated fighter wins), and how we got there.
@@ -482,6 +585,19 @@ class UFCFightModel:
         # false about a fighter like Dakota Ditcheva.
         cutoff = f" (data through {ledger.through})" if ledger.through else ""
 
+        # Career-wide tier — ONLY for fights the main model refuses. Where both
+        # fighters have UFC records the main model decides: career features
+        # were offered there and its gate measurably said no. On the refused
+        # population the fallback is stronger than the debut model (held-out
+        # 0.6490 vs 0.6600) and covers the both-unrated case the debut model
+        # cannot touch. The first version of this call sat above the ka/kb
+        # check and quietly outranked the main model everywhere — caught by
+        # test_global_tier_never_outranks_the_main_model before it shipped.
+        if not (ka and kb):
+            g = self._global_read(ledger, a, b)
+            if g is not None:
+                return g
+
         if not ka and not kb:
             return Read(a, b, 0.5, a, 0.5, "no_data", [],
                         f"Neither fighter has a UFC record{cutoff}. Both may be "
@@ -543,5 +659,5 @@ _LABEL = {
 }
 
 
-def _explain(name: str, signed: float, favourite: str) -> str:
+def _explain(name: str, _signed: float, favourite: str) -> str:
     return f"{_LABEL.get(name, name)} favours {favourite}"
