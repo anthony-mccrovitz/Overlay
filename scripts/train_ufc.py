@@ -42,6 +42,65 @@ MIN_PRIOR_BOUTS = 2
 C_REG = 0.5
 
 
+GLOBAL_FEATURES = ["gelo", "pro_exp", "top_share", "pro_form", "pro_layoff"]
+
+
+def build_global_matrix(dates: list[date], pairs: list[tuple[str, str]]) -> np.ndarray | None:
+    """Career-wide features aligned to the UFC training rows, or None.
+
+    Returns None — rather than a matrix of mostly-imputed values — when the
+    Sherdog crawl has not covered enough of the roster. Comparing a model built
+    on 3% real data against one built on none measures the imputation, not the
+    features, and would happily report an improvement that is an artifact.
+    """
+    from src.models.global_elo import (
+        MIN_ROSTER_COVERAGE,
+        GlobalLedger,
+        load_global_bouts,
+        name_to_slug,
+        roster_coverage,
+    )
+    from src.models.ufc_features import load_bouts as _lb
+    from src.models.ufc_features import normalize_name
+
+    bouts, _s, tott = _lb()
+    names = {n for b in bouts for n in (b["w"], b["l"])}
+    cov = roster_coverage(names, tott)
+    print(f"  global graph covers {cov:.1%} of the ufcstats roster "
+          f"(need {MIN_ROSTER_COVERAGE:.0%})")
+    if cov < MIN_ROSTER_COVERAGE:
+        print("  -> too thin; global features not offered to the model")
+        return None
+
+    slug_of = name_to_slug()
+    tt = {normalize_name(k): v for k, v in tott.items()}
+
+    def slug(name: str) -> str | None:
+        nn = normalize_name(name)
+        dob = (tt.get(nn) or {}).get("dob")
+        return slug_of.get((nn, dob.isoformat() if dob else None))
+
+    gb = load_global_bouts()
+    led = GlobalLedger()
+    gi = 0
+    rows: list[list[float]] = []
+    for d, (a, z) in zip(dates, pairs):
+        # Advance the global ledger to just before this fight — same
+        # point-in-time contract, applied across a second data source.
+        while gi < len(gb) and gb[gi]["date"] < d:
+            led.apply_bout(gb[gi])
+            gi += 1
+        sa, sz = slug(a), slug(z)
+        fa = led.features_for(sa, d) if sa else {}
+        fz = led.features_for(sz, d) if sz else {}
+        rows.append([
+            (fa.get(k) - fz.get(k))
+            if (fa.get(k) is not None and fz.get(k) is not None) else np.nan
+            for k in GLOBAL_FEATURES
+        ])
+    return np.array(rows, float)
+
+
 def build_matrix() -> tuple[np.ndarray, np.ndarray, list[date], np.ndarray]:
     """Replay every bout, emitting one row per fight BEFORE folding it in.
 
@@ -54,6 +113,7 @@ def build_matrix() -> tuple[np.ndarray, np.ndarray, list[date], np.ndarray]:
     ys: list[int] = []
     dates: list[date] = []
     minprior: list[int] = []
+    pairs: list[tuple[str, str]] = []
 
     for b in bouts:
         a, z = (b["w"], b["l"]) if b["w"] < b["l"] else (b["l"], b["w"])
@@ -61,10 +121,11 @@ def build_matrix() -> tuple[np.ndarray, np.ndarray, list[date], np.ndarray]:
         ys.append(1 if a == b["w"] else 0)
         dates.append(b["date"])
         minprior.append(min(led.state(a).n, led.state(z).n))
+        pairs.append((a, z))
         led.apply_bout(b)          # ← state moves only after the row is emitted
 
     X = np.array([[np.nan if v is None else v for v in r] for r in rows], dtype=float)
-    return X, np.array(ys), dates, np.array(minprior)
+    return X, np.array(ys), dates, np.array(minprior), pairs
 
 
 # Features for the debut model, from the UNRATED fighter's point of view.
@@ -206,7 +267,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="evaluate without writing")
     args = ap.parse_args()
 
-    X, Y, dates, minprior = build_matrix()
+    X, Y, dates, minprior, pairs = build_matrix()
     yr = np.array([d.year for d in dates])
     usable = (yr >= SCORE_FROM) & (minprior >= MIN_PRIOR_BOUTS)
     print(f"{len(Y)} bouts loaded; {int(usable.sum())} scoreable "
@@ -231,6 +292,41 @@ def main() -> int:
 
     mean_acc = sum(f["accuracy"] for f in folds) / len(folds)
     mean_ll = sum(f["log_loss"] for f in folds) / len(folds)
+
+    # ── do career-wide features earn their place? ────────────────────────────
+    # Same holdout years, same everything, one difference: five features built
+    # from the fighter's WHOLE professional record rather than the UFC slice.
+    # They ship only if they lower held-out log-loss. A feature that sounds
+    # obviously useful and does not measure better is still not useful.
+    print("\nGlobal (career-wide) features — do they help?")
+    G = build_global_matrix(dates, pairs)
+    global_used = False
+    global_folds: list[dict] = []
+    if G is not None:
+        XG = np.hstack([X, G])
+        g_lls, b_lls = [], []
+        for f in folds:
+            y = f["test_year"]
+            tr = (yr < y) & usable
+            te = (yr == y) & usable
+            m, med, mu, sd = _fit(XG[tr], Y[tr])
+            s = _score(m, med, mu, sd, XG[te], Y[te])
+            global_folds.append({"test_year": int(y), **s})
+            g_lls.append(s["log_loss"])
+            b_lls.append(f["log_loss"])
+            print(f"  {y}:  base={f['log_loss']:.4f}  +global={s['log_loss']:.4f}  "
+                  f"acc {f['accuracy']:.1%} -> {s['accuracy']:.1%}")
+        mg, mb = float(np.mean(g_lls)), float(np.mean(b_lls))
+        print(f"  mean: base={mb:.4f}  +global={mg:.4f}")
+        if mg < mb:
+            global_used = True
+            print("  -> global features EARN their place; shipping them")
+            X = XG
+            mean_ll = mg
+            mean_acc = sum(f["accuracy"] for f in global_folds) / len(global_folds)
+            folds = global_folds
+        else:
+            print("  -> no improvement; keeping the UFC-only model")
     print(f"\n  mean across {len(folds)} holdout years: "
           f"acc={mean_acc:.1%}  log-loss={mean_ll:.4f}  (coin flip = {math.log(2):.4f})")
 
@@ -244,11 +340,15 @@ def main() -> int:
     m, med, mu, sd = _fit(X[fit], Y[fit])
     art = {
         "trained_on": date.today().isoformat(),
-        "coefficients": {k: round(float(v), 6) for k, v in zip(FEATURES, m.coef_[0])},
+        "feature_order": FEATURES + (GLOBAL_FEATURES if global_used else []),
+        "uses_global_features": global_used,
+        "coefficients": {k: round(float(v), 6)
+                         for k, v in zip(FEATURES + (GLOBAL_FEATURES if global_used else []),
+                                         m.coef_[0])},
         "feature_median": {k: (None if np.isnan(v) else round(float(v), 6))
-                           for k, v in zip(FEATURES, med)},
-        "feature_mean": {k: round(float(v), 6) for k, v in zip(FEATURES, mu)},
-        "feature_sd": {k: round(float(v), 6) for k, v in zip(FEATURES, sd)},
+                           for k, v in zip(FEATURES + (GLOBAL_FEATURES if global_used else []), med)},
+        "feature_mean": {k: round(float(v), 6) for k, v in zip(FEATURES + (GLOBAL_FEATURES if global_used else []), mu)},
+        "feature_sd": {k: round(float(v), 6) for k, v in zip(FEATURES + (GLOBAL_FEATURES if global_used else []), sd)},
         "metadata": {
             "n_train": int(fit.sum()),
             "walk_forward": folds,

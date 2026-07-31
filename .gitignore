@@ -57,3 +57,6 @@ dashboard/.next/
 # archived frontends — never track their deps/build output
 legacy/**/node_modules/
 legacy/**/.next/
+
+# Sherdog fighter cache — regenerable, thousands of files
+data/ufc/sherdog/
