@@ -200,10 +200,62 @@ sample a real verdict would need**, so "clears the gate" can never be read as
   noisiest as a benchmark.
 - **The card record is not evidence the system works.** 89% of the +12.1% comes
   from two lanes that would fail today's gate.
-- **Backtests here are not purged/embargoed cross-validation.** `mlb_batter_props`
-  builds features point-in-time (`prior = logs[:i]`) and splits by season, which
-  is sound. Other lanes have not been audited to that standard.
+- **Backtests here are not purged/embargoed cross-validation.** See §8 for what
+  has now been audited and what has not.
 - **One lane is live.** Everything else is research.
+
+---
+
+## 8. Backtest discipline — what is audited, and what was found
+
+**Choice.** Every held-out score must come from a split where the training
+periods and the test periods are disjoint *and* the training periods all precede
+the test periods. Enforced by `src/analytics/backtest_guard.py`, which **raises**
+rather than warns.
+
+**What the audit found.** The live lane was leaking.
+`train_totals_model` defaulted its training set to `ALL_SEASONS` (2008–2025)
+while testing on `TEST_SEASONS` = `[2025]`. The test season sat inside the
+training set, so every 2025 game was scored by a model that had already seen its
+result. A correct `TRAIN_SEASONS` constant (2008–2024) existed one file over and
+was used by the moneyline trainer — the totals trainer imported the wrong name.
+
+The output had been saying so all along:
+
+| metric | value | what it means |
+|---|---|---|
+| `train_mae` | 3.267 | |
+| `test_mae` | **3.155** | test error BELOW train error — the signature |
+| `model_ou_accuracy` | **61.9%** | computed on the leaky split |
+| `cv_mean_ou_accuracy` | **52.2%** | same file's clean walk-forward CV |
+
+**The honest over/under accuracy for `mlb/total` is 52.2%, not 61.9%.** The
+walk-forward CV block in the same function was always correct
+(`cv_train_seasons = sorted_seasons[:i]`); only the headline was wrong.
+
+**This does not change the decision to run the lane live.** Promotion is decided
+on *realised* EV against the close and *realised* ROI from actual logged bets
+(EV +3.02%, ROI +8.9%, n=215 across 60 days, t=+3.38) — never on a backtest
+metric. The leak corrupted how good the model *looked*, not the evidence that
+promoted it. It is still exactly the failure this repo keeps finding: a number
+nobody could check was rendered as a number that had been checked.
+
+**Status by lane:**
+
+| lane | point-in-time features | split | status |
+|---|---|---|---|
+| `ufc/moneyline` | yes — state updates after row emission | walk-forward, 6 one-year holdouts | **AUDITED**, test-enforced |
+| `mlb/total` | yes — features built before accumulators update | **was leaky**, now guarded | **FIXED** |
+| `mlb/batter_props` | yes — `prior = logs[:i]` | by season | AUDITED (previously) |
+| `nba/*` | not audited | walk-forward by season (`s < val_season`) | split looks sound, features **unaudited** |
+| `soccer_club` | rolling Elo computed before each match | temporal holdout for calibration | split looks sound, **unaudited** |
+| everything else | — | — | **NOT AUDITED** |
+
+"Looks sound" means the code was read and the ordering appeared correct. It does
+not mean a test enforces it. Only `ufc` and `mlb/total` have that.
+
+**Status: MEASURED HERE.** The guard is mutation-tested — reintroducing the
+original one-word bug fails the build.
 
 ---
 
