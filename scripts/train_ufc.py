@@ -67,6 +67,111 @@ def build_matrix() -> tuple[np.ndarray, np.ndarray, list[date], np.ndarray]:
     return X, np.array(ys), dates, np.array(minprior)
 
 
+# Features for the debut model, from the UNRATED fighter's point of view.
+# We know nothing about their fighting; we do know how old they are and who
+# they have been matched against. Both turn out to carry signal.
+DEBUT_FEATURES = ["age_diff", "reach_diff", "opp_elo", "opp_exp", "opp_form"]
+
+
+def build_debut_matrix() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Rows for fights where exactly ONE fighter has a UFC record.
+
+    Why this exists: reporting a flat 43.4% for every debut throws away the
+    date of birth we already hold for these fighters, and age is the strongest
+    feature in the main model. Measured over 1,273 such fights, using it beats
+    the flat base rate in six of seven holdout years (mean log-loss 0.6612 vs
+    0.6832, AUC 0.635).
+
+    Deliberately NOT extended to fights where BOTH fighters are unrated: that
+    was measured too, and age alone gives AUC 0.490 — worse than a coin flip.
+    There, "no read" is the honest answer and it stays.
+    """
+    bouts, stats, tott = load_bouts()
+    led = Ledger(stats, tott)
+    rows, ys, yrs = [], [], []
+    for b in bouts:
+        w, l, d = b["w"], b["l"], b["date"]
+        if d.year >= 2010:
+            for unrated, ranked, y in ((w, l, 1), (l, w, 0)):
+                if led.known(unrated) or not led.known(ranked):
+                    continue
+                fu = led.features_for(unrated, d)
+                fr = led.features_for(ranked, d)
+                if fu["age"] is None or fr["age"] is None:
+                    continue
+                reach = (fu["reach"] - fr["reach"]) if (fu["reach"] and fr["reach"]) else np.nan
+                rows.append([fu["age"] - fr["age"], reach, fr["elo"] - 1500.0,
+                             min(fr["exp"], 25.0), fr["form"] if fr["form"] is not None else 0.5])
+                ys.append(y)
+                yrs.append(d.year)
+                break
+        led.apply_bout(b)
+    return np.array(rows, float), np.array(ys), np.array(yrs)
+
+
+def train_debut_model() -> dict | None:
+    """Fit and validate the debut model. Returns None if it fails to beat the
+    flat base rate — in which case the flat rate is what ships."""
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import log_loss, roc_auc_score
+
+    X, Y, yrs = build_debut_matrix()
+    if len(Y) < 300:
+        print("  debut model: too few debut fights to fit — keeping the flat base rate")
+        return None
+
+    med = np.nanmedian(X, axis=0)
+    X = _impute(X, med)
+
+    folds, flat_lls, mdl_lls = [], [], []
+    for y in range(2019, int(yrs.max()) + 1):
+        tr, te = yrs < y, yrs == y
+        if te.sum() < 40 or tr.sum() < 200:
+            continue
+        mu, sd = X[tr].mean(0), X[tr].std(0)
+        sd[sd == 0] = 1.0
+        m = LogisticRegression(C=1.0, max_iter=2000).fit((X[tr] - mu) / sd, Y[tr])
+        p = m.predict_proba((X[te] - mu) / sd)[:, 1]
+        flat = np.full(int(te.sum()), Y[tr].mean())
+        f_ll = float(log_loss(Y[te], flat, labels=[0, 1]))
+        m_ll = float(log_loss(Y[te], p, labels=[0, 1]))
+        auc = float(roc_auc_score(Y[te], p)) if len(set(Y[te])) > 1 else float("nan")
+        folds.append({"test_year": int(y), "n": int(te.sum()),
+                      "flat_log_loss": round(f_ll, 4),
+                      "model_log_loss": round(m_ll, 4), "auc": round(auc, 4)})
+        flat_lls.append(f_ll)
+        mdl_lls.append(m_ll)
+        print(f"  debut {y}: n={te.sum():3d}  flat={f_ll:.4f}  model={m_ll:.4f}  AUC={auc:.3f}")
+
+    if not folds:
+        return None
+    mean_flat, mean_mdl = float(np.mean(flat_lls)), float(np.mean(mdl_lls))
+    print(f"  debut mean: flat={mean_flat:.4f}  model={mean_mdl:.4f}")
+    if mean_mdl >= mean_flat:
+        print("  debut model does not beat the flat base rate — not shipping it")
+        return None
+
+    mu, sd = X.mean(0), X.std(0)
+    sd[sd == 0] = 1.0
+    m = LogisticRegression(C=1.0, max_iter=2000).fit((X - mu) / sd, Y)
+    return {
+        "coefficients": {k: round(float(v), 6) for k, v in zip(DEBUT_FEATURES, m.coef_[0])},
+        "intercept": round(float(m.intercept_[0]), 6),
+        "feature_median": {k: round(float(v), 6) for k, v in zip(DEBUT_FEATURES, med)},
+        "feature_mean": {k: round(float(v), 6) for k, v in zip(DEBUT_FEATURES, mu)},
+        "feature_sd": {k: round(float(v), 6) for k, v in zip(DEBUT_FEATURES, sd)},
+        "metadata": {
+            "n_train": int(len(Y)),
+            "walk_forward": folds,
+            "mean_flat_log_loss": round(mean_flat, 4),
+            "mean_model_log_loss": round(mean_mdl, 4),
+            "note": ("Applies only when exactly ONE fighter has a UFC record. "
+                     "When BOTH are unrated, age alone gives AUC 0.490 — worse "
+                     "than chance — so that case stays 'no read'."),
+        },
+    }
+
+
 def _impute(A: np.ndarray, med: np.ndarray) -> np.ndarray:
     out = A.copy()
     for j in range(out.shape[1]):
@@ -172,6 +277,19 @@ def main() -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(art, indent=2, sort_keys=True))
     print(f"\nWrote {out}")
+
+    print("\nDebut model — fights where exactly one fighter has a UFC record:")
+    debut = train_debut_model()
+    dpath = Path("data/models/ufc/debut_model.json")
+    if debut:
+        debut["trained_on"] = date.today().isoformat()
+        dpath.write_text(json.dumps(debut, indent=2, sort_keys=True))
+        print(f"Wrote {dpath}")
+    else:
+        # Never leave a stale artifact behind a model that just failed to earn
+        # its place — the flat base rate is the honest fallback.
+        dpath.unlink(missing_ok=True)
+        print("No debut artifact written; the flat base rate applies.")
     return 0
 
 
