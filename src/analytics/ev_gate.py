@@ -33,6 +33,7 @@ from __future__ import annotations
 import json
 import math
 from collections import defaultdict
+import dataclasses
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -61,6 +62,9 @@ class EVStats:
     # large and thin at the same time.
     n_days: int = 0
     max_day_share: float = 0.0
+    # Rows excluded by MAX_IMPLIED_MOVE. Visible so a lane whose "evidence"
+    # was mostly repriced markets reads as exactly that, not as a small n.
+    n_quarantined: int = 0
 
     @property
     def positive(self) -> bool:
@@ -95,6 +99,46 @@ def _canon_sport(raw) -> str:
         return _key(s, "")[0]
     except Exception:
         return s          # unmapped sport: keep the raw key rather than drop it
+
+
+# A pre-close move this large means the market REPRICED, not that we beat it.
+# Found 2026-07-31: tennis/moneyline read EV +19.25%, carried entirely by rows
+# like Francesca Jones +294 -> -325 — a 51-point implied flip. A two-way market
+# does not move 35+ points on flow; it moves on news that voids or remakes the
+# bet (tennis pre-match withdrawal REFUNDS the stake at the books we track, so
+# the "EV" of such a row was never collectable), or the join swapped sides.
+# Empirically (n=1,525 rows with both prices): p99 of |move| is 23 pts and only
+# 5 rows (0.33%) exceed 35 — each one, on inspection, flip-shaped. Rows beyond
+# the bound are QUARANTINED: excluded from lane evidence, counted visibly in
+# EVStats.n_quarantined, never silently averaged into a mean someone bets on.
+MAX_IMPLIED_MOVE = 0.35
+
+
+def _usable_ev(r: dict) -> float | None:
+    """The row's EV if it may count as lane evidence, else None."""
+    if r.get("tainted"):
+        return None
+    ev = r.get("clv_ev_pct")
+    if ev is None:
+        return None
+    o, c = r.get("opening_implied_prob"), r.get("closing_implied_prob")
+    # The epsilon keeps float noise from deciding a boundary case: 0.558-0.208
+    # is 0.35000000000000003 in IEEE754, and "exactly at the bound" must stay.
+    if (o is not None and c is not None
+            and abs(float(c) - float(o)) > MAX_IMPLIED_MOVE + 1e-9):
+        return None
+    try:
+        return float(ev)
+    except (TypeError, ValueError):
+        return None
+
+
+def _is_quarantined(r: dict) -> bool:
+    if r.get("tainted") or r.get("clv_ev_pct") is None:
+        return False
+    o, c = r.get("opening_implied_prob"), r.get("closing_implied_prob")
+    return (o is not None and c is not None
+            and abs(float(c) - float(o)) > MAX_IMPLIED_MOVE + 1e-9)
 
 
 def _load() -> list[dict]:
@@ -138,9 +182,7 @@ def ev_values_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], l
     """
     buckets: dict[tuple[str, str], list[float]] = defaultdict(list)
     for r in (rows if rows is not None else _load()):
-        if r.get("tainted"):
-            continue
-        ev = r.get("clv_ev_pct")
+        ev = _usable_ev(r)
         if ev is None:
             continue
         market = str(r.get("market") or "").lower()
@@ -148,10 +190,7 @@ def ev_values_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], l
         sport = _canon_sport(r.get("sport"))
         if not sport or not market:
             continue
-        try:
-            buckets[(sport, market)].append(float(ev))
-        except (TypeError, ValueError):
-            continue
+        buckets[(sport, market)].append(ev)
     return dict(buckets)
 
 
@@ -174,28 +213,27 @@ def ev_by_lane(rows: list[dict] | None = None) -> dict[tuple[str, str], EVStats]
     """
     buckets: dict[tuple[str, str], list[float]] = defaultdict(list)
     days: dict[tuple[str, str], list[str]] = defaultdict(list)
+    quarantined: dict[tuple[str, str], int] = defaultdict(int)
     for r in (rows if rows is not None else _load()):
-        if r.get("tainted"):
-            continue
-        ev = r.get("clv_ev_pct")
-        if ev is None:
-            continue
         market = str(r.get("market") or "").lower()
         market = {"ml": "moneyline", "h2h": "moneyline"}.get(market, market)
         sport = _canon_sport(r.get("sport"))
         if not sport or not market:
             continue
-        try:
-            buckets[(sport, market)].append(float(ev))
-        except (TypeError, ValueError):
+        if _is_quarantined(r):
+            quarantined[(sport, market)] += 1
             continue
+        ev = _usable_ev(r)
+        if ev is None:
+            continue
+        buckets[(sport, market)].append(ev)
         days[(sport, market)].append(str(r.get("date") or "")[:10])
 
     out: dict[tuple[str, str], EVStats] = {}
     for lane, vals in buckets.items():
         st = _stats(vals, days.get(lane))
         if st is not None:
-            out[lane] = st
+            out[lane] = dataclasses.replace(st, n_quarantined=quarantined.get(lane, 0))
     return out
 
 
