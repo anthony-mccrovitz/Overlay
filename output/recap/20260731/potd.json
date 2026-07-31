@@ -1,0 +1,86 @@
+{
+  "pick_id": "mlb_20260731_over-7-5_total_over",
+  "date": "2026-07-31",
+  "sport": "mlb",
+  "market": "total",
+  "direction": "OVER",
+  "team": "OVER 7.5",
+  "matchup": "Pittsburgh Pirates @ Cincinnati Reds",
+  "odds": -115,
+  "line": 7.5,
+  "sportsbook": "Hard Rock Bet",
+  "model_prob": 0.7487,
+  "model_prob_raw": NaN,
+  "edge_pct": 1.27,
+  "model_agreement": true,
+  "model_tier": "tier1",
+  "weather_context": null,
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-07-31T04:57:30.568531+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 113,
+      "season_rs_per_g": 4.1,
+      "season_ra_per_g": 4.74,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 3.14,
+        "ra_per_game": 3.86,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 3.69,
+        "ra_per_game": 4.38,
+        "wins": 8,
+        "losses": 5,
+        "wl": "8-5"
+      }
+    },
+    "away": {
+      "team_id": 134,
+      "season_rs_per_g": 5.14,
+      "season_ra_per_g": 4.81,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 3.57,
+        "ra_per_game": 5.14,
+        "wins": 3,
+        "losses": 4,
+        "wl": "3-4"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 3.77,
+        "ra_per_game": 4.38,
+        "wins": 5,
+        "losses": 8,
+        "wl": "5-8"
+      }
+    },
+    "snapshot_date": "2026-07-31"
+  },
+  "shadow_filter": {
+    "name": null,
+    "matchup_class": "cold_both",
+    "recommendation": "na",
+    "reason": "no shadow filter for market=total"
+  },
+  "raw_edge_pct": 1.9,
+  "model_version": null,
+  "strategy": null,
+  "tainted": null,
+  "clv_status": "heuristic",
+  "home_team": "Cincinnati Reds",
+  "away_team": "Pittsburgh Pirates"
+}
