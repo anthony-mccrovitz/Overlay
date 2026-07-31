@@ -53,6 +53,17 @@ This section records **decisions and dates**, which commands cannot.
 - **NBA / NHL wiring** before their seasons open — same four-link checklist,
   now test-enforced.
 
+## Queued builds (after the current stabilisation)
+- **Live dashboard ("Bloomberg terminal for the algorithm")**: a Vercel-hosted
+  page updated by the pipeline each run — per-lane EV vs close, CLV, ROI,
+  average odds, bankroll curve, gate distance. The data already exists
+  (`public_stats.json` + scoreboard internals); the build is a renderer, not
+  new measurement. Owner wants this visible daily.
+- **Polymarket as the EXECUTION venue**: owner bets from Switzerland, so US
+  books are display-only references — Polymarket is where stakes actually go.
+  Card picks should therefore also print their Polymarket-equivalent price
+  threshold (fair prob − fees) so the daily bet is executable in-app.
+
 ## Standing, no date
 - `mlb/total` remains the only live lane; sizing stays quarter-Kelly on the
   shrunk edge.
