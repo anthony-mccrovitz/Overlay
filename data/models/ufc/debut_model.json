@@ -1,0 +1,89 @@
+{
+  "coefficients": {
+    "age_diff": -0.228077,
+    "opp_elo": -0.53014,
+    "opp_exp": 0.220682,
+    "opp_form": -0.016075,
+    "reach_diff": 0.040708
+  },
+  "feature_mean": {
+    "age_diff": -1.794112,
+    "opp_elo": 19.101193,
+    "opp_exp": 4.471328,
+    "opp_form": 0.49314,
+    "reach_diff": -0.186174
+  },
+  "feature_median": {
+    "age_diff": -1.73306,
+    "opp_elo": 15.631284,
+    "opp_exp": 3.0,
+    "opp_form": 0.5,
+    "reach_diff": 0.0
+  },
+  "feature_sd": {
+    "age_diff": 4.95926,
+    "opp_elo": 62.99091,
+    "opp_exp": 4.3627,
+    "opp_form": 0.335962,
+    "reach_diff": 3.038232
+  },
+  "intercept": -0.278148,
+  "metadata": {
+    "mean_flat_log_loss": 0.6832,
+    "mean_model_log_loss": 0.66,
+    "n_train": 1273,
+    "note": "Applies only when exactly ONE fighter has a UFC record. When BOTH are unrated, age alone gives AUC 0.490 \u2014 worse than chance \u2014 so that case stays 'no read'.",
+    "walk_forward": [
+      {
+        "auc": 0.5464,
+        "flat_log_loss": 0.6819,
+        "model_log_loss": 0.7217,
+        "n": 106,
+        "test_year": 2019
+      },
+      {
+        "auc": 0.6586,
+        "flat_log_loss": 0.669,
+        "model_log_loss": 0.6406,
+        "n": 85,
+        "test_year": 2020
+      },
+      {
+        "auc": 0.5617,
+        "flat_log_loss": 0.6629,
+        "model_log_loss": 0.6832,
+        "n": 75,
+        "test_year": 2021
+      },
+      {
+        "auc": 0.6772,
+        "flat_log_loss": 0.6682,
+        "model_log_loss": 0.6253,
+        "n": 76,
+        "test_year": 2022
+      },
+      {
+        "auc": 0.6573,
+        "flat_log_loss": 0.7048,
+        "model_log_loss": 0.6573,
+        "n": 101,
+        "test_year": 2023
+      },
+      {
+        "auc": 0.6796,
+        "flat_log_loss": 0.6856,
+        "model_log_loss": 0.6337,
+        "n": 64,
+        "test_year": 2024
+      },
+      {
+        "auc": 0.6688,
+        "flat_log_loss": 0.7097,
+        "model_log_loss": 0.6584,
+        "n": 79,
+        "test_year": 2025
+      }
+    ]
+  },
+  "trained_on": "2026-07-31"
+}

@@ -43,6 +43,7 @@ from pathlib import Path
 
 _DIR = Path("data/ufc")
 _MODEL = Path("data/models/ufc/fight_model.json")
+_DEBUT_MODEL = Path("data/models/ufc/debut_model.json")
 
 # Elo constants. Chosen by grid search on held-out log-loss, not by convention:
 # the usual 28/40 scored 0.6822 and 64/80 scored 0.6795. Higher K disperses a
@@ -56,6 +57,9 @@ ELO_START = 1500.0
 # bucket). Measured here, not assumed — it is what we report when a fighter has
 # no UFC record at all, instead of silently defaulting them to average.
 DEBUT_WIN_RATE = 0.434
+
+_FLAT_NOTE = (f"Base rate only — we do not even have a date of birth, so "
+              f"nothing fighter-specific is being used.")
 
 # Order matters: it is the order of `coefficients` in the model artifact.
 FEATURES = [
@@ -379,7 +383,8 @@ class UFCFightModel:
     thing said what it said.
     """
 
-    def __init__(self, artifact: Path | None = None) -> None:
+    def __init__(self, artifact: Path | None = None,
+                 debut_artifact: Path | None = None) -> None:
         path = artifact or _MODEL
         self.ok = False
         self.meta: dict = {}
@@ -393,6 +398,69 @@ class UFCFightModel:
             self.ok = all(k in self.coef for k in FEATURES)
         except (OSError, ValueError, KeyError):
             self.coef = self.mean = self.sd = self.median = {}
+
+        # The debut model is optional by design: scripts/train_ufc.py only
+        # writes it when it actually beats the flat base rate, and deletes any
+        # stale artifact when it does not. Absent means "fall back", not "broken".
+        dpath = debut_artifact or _DEBUT_MODEL
+        self.debut: dict = {}
+        self.debut_ok = False
+        try:
+            d = json.loads(dpath.read_text())
+            if all(k in d for k in ("coefficients", "intercept", "feature_mean",
+                                    "feature_sd", "feature_median")):
+                self.debut = d
+                self.debut_ok = True
+        except (OSError, ValueError, KeyError):
+            pass
+
+    def _debut_prob(self, ledger: Ledger, unrated: str, rated: str,
+                    on: date) -> tuple[float, str, str]:
+        """P(the unrated fighter wins), and how we got there.
+
+        Two tiers, because the data supports exactly two. A fighter with no UFC
+        record still has a date of birth in the tale-of-the-tape file, and age
+        is the strongest feature in the main model — reporting a flat 43.4% for
+        everyone threw that away. Measured over 1,273 such fights it beats the
+        flat rate in six of seven holdout years (log-loss 0.6612 vs 0.6832).
+
+        When we do not even have a date of birth, the flat base rate is all
+        there is, and it is reported as exactly that.
+        """
+        if not self.debut_ok:
+            return DEBUT_WIN_RATE, "debut_prior", _FLAT_NOTE
+
+        fu = ledger.features_for(unrated, on)
+        fr = ledger.features_for(rated, on)
+        if fu["age"] is None or fr["age"] is None:
+            return DEBUT_WIN_RATE, "debut_prior", _FLAT_NOTE
+
+        reach = ((fu["reach"] - fr["reach"])
+                 if (fu["reach"] and fr["reach"]) else None)
+        raw = {
+            "age_diff": fu["age"] - fr["age"],
+            "reach_diff": reach,
+            "opp_elo": fr["elo"] - 1500.0,
+            "opp_exp": min(fr["exp"], 25.0),
+            "opp_form": fr["form"] if fr["form"] is not None else 0.5,
+        }
+        z = self.debut["intercept"]
+        for name, coef in self.debut["coefficients"].items():
+            v = raw.get(name)
+            if v is None:
+                v = self.debut["feature_median"].get(name, 0.0)
+            sd = self.debut["feature_sd"].get(name, 1.0) or 1.0
+            z += coef * (v - self.debut["feature_mean"].get(name, 0.0)) / sd
+        p = 1.0 / (1.0 + math.exp(-max(-30.0, min(30.0, z))))
+
+        gap = raw["age_diff"]
+        older = unrated if gap > 0 else rated
+        detail = (f"age gap {abs(gap):.0f}y in favour of "
+                  f"{rated if older == unrated else unrated}"
+                  if abs(gap) >= 2 else "similar ages")
+        return p, "debut_model", (
+            f"Priced from age and the opponent's record only ({detail}); "
+            f"the flat base rate for this situation is {DEBUT_WIN_RATE:.1%}.")
 
     def predict(self, ledger: Ledger, a: str, b: str, on: date) -> Read:
         """Probability that `a` beats `b` on `on`.
@@ -422,19 +490,17 @@ class UFCFightModel:
 
         if not ka or not kb:
             unrated, rated = (a, b) if not ka else (b, a)
-            p_unrated = DEBUT_WIN_RATE
+            n_vet = ledger.state(rated).n
+            drivers = [f"{unrated} has no UFC record{cutoff}",
+                       f"{rated} has {n_vet} UFC bout{'s' if n_vet != 1 else ''}"]
+
+            p_unrated, basis, extra = self._debut_prob(ledger, unrated, rated, on)
             p_a = p_unrated if unrated == a else 1 - p_unrated
             fav = a if p_a >= 0.5 else b
-            n_vet = ledger.state(rated).n
-            return Read(a, b, p_a, fav, max(p_a, 1 - p_a), "debut_prior",
-                        [f"{unrated} has no UFC record{cutoff}",
-                         f"{rated} has {n_vet} UFC bout{'s' if n_vet != 1 else ''}"],
-                        f"Base rate only: a fighter with no UFC record wins "
-                        f"{DEBUT_WIN_RATE:.1%} against a rostered opponent "
-                        f"(n=1,291 since 2010, flat in the opponent's "
-                        f"experience). This is NOT a read on these two fighters "
-                        f"— if {unrated} is an established name elsewhere, the "
-                        f"market knows things this number does not.")
+            note = (f"No UFC record for {unrated}, so this is not a read on how "
+                    f"they fight. {extra} If {unrated} is an established name in "
+                    f"another promotion, the market knows things this does not.")
+            return Read(a, b, p_a, fav, max(p_a, 1 - p_a), basis, drivers, note)
 
         diffs = ledger.diff_vector(a, b, on)
         z = 0.0

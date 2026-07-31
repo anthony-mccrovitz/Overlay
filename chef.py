@@ -3650,8 +3650,10 @@ def cmd_card(args: argparse.Namespace) -> int:
                 verdict = r.favourite
                 pct = f"{r.confidence:.0%}"
             flag = ""
-            if r.basis == "debut_prior":
-                flag = "  [debut — base rate only]"
+            if r.basis == "debut_model":
+                flag = "  [no UFC record — age + opponent only]"
+            elif r.basis == "debut_prior":
+                flag = "  [no UFC record — flat base rate]"
             elif r.basis == "model" and r.is_coinflip:
                 flag = "  [too close to call]"
             print(f"\n    {b.fighter_a}  vs  {b.fighter_b}")
@@ -3667,12 +3669,12 @@ def cmd_card(args: argparse.Namespace) -> int:
                 print(f"        {r.note}")
 
     n_model = sum(1 for b in bouts if b.read.basis == "model")
-    n_debut = sum(1 for b in bouts if b.read.basis == "debut_prior")
+    n_debut = sum(1 for b in bouts if b.read.basis in ("debut_model", "debut_prior"))
     n_none = sum(1 for b in bouts if b.read.basis == "no_data")
     m = UFC_META()
     print(f"\n  {line}")
-    print(f"  {len(bouts)} fights: {n_model} read by the model, "
-          f"{n_debut} debut base-rate, {n_none} no read.")
+    print(f"  {len(bouts)} fights: {n_model} read in full, "
+          f"{n_debut} priced without a UFC record, {n_none} no read.")
     if m:
         print(f"  Model: {m.get('mean_holdout_accuracy', 0):.1%} accuracy across "
               f"{len(m.get('walk_forward', []))} held-out years "

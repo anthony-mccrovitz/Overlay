@@ -244,6 +244,77 @@ def test_a_fighter_with_no_ufc_record_is_never_priced_as_average():
     assert "no read" in both.note.lower() or "cannot see" in both.note.lower()
 
 
+@needs_data
+@needs_model
+def test_a_known_date_of_birth_is_used_even_with_no_fight_record():
+    """The challenge that produced this: "are you sure we don't have data?"
+
+    We did. A fighter with no UFC bouts still has a date of birth in the
+    tale-of-the-tape file, and age is the strongest feature in the main model.
+    Reporting a flat 43.4% for every such fighter threw that away. Measured over
+    1,273 of these fights, using age plus the opponent's record beats the flat
+    rate in six of seven holdout years (log-loss 0.6612 vs 0.6832, AUC 0.635).
+    """
+    model = UFCFightModel()
+    if not model.debut_ok:
+        pytest.skip("debut artifact not trained")
+    led, _ = build_ledger()
+    rated = next(n for n, s in led.book.items() if s.n >= 5)
+
+    # Two synthetic unrated fighters, 15 years apart, same opponent.
+    led.tott["young unrated"] = {"dob": date(2002, 1, 1), "reach": None,
+                                 "height": None, "stance": ""}
+    led.tott["old unrated"] = {"dob": date(1987, 1, 1), "reach": None,
+                               "height": None, "stance": ""}
+    young = model.predict(led, "young unrated", rated, date(2026, 8, 1))
+    old = model.predict(led, "old unrated", rated, date(2026, 8, 1))
+
+    assert young.basis == "debut_model" and old.basis == "debut_model"
+    assert young.p_a != old.p_a, "age was ignored for a fighter with no UFC record"
+    assert young.p_a > old.p_a, "the 39-year-old should not be favoured over the 24-year-old"
+
+
+@needs_data
+@needs_model
+def test_without_a_date_of_birth_it_falls_back_to_the_flat_rate():
+    """Graceful degradation, stated plainly rather than invented."""
+    model = UFCFightModel()
+    led, _ = build_ledger()
+    rated = next(n for n, s in led.book.items() if s.n >= 5)
+    r = model.predict(led, "totally unknown person", rated, date(2026, 8, 1))
+    assert r.basis == "debut_prior"
+    assert r.p_a == pytest.approx(DEBUT_WIN_RATE)
+    assert "date of birth" in r.note
+
+
+@needs_data
+@needs_model
+def test_two_unrated_fighters_still_get_no_read():
+    """The other half of the same question, and the answer went the other way.
+    Age alone across two unrated fighters scored AUC 0.490 — worse than chance —
+    so this case must NOT be dressed up with a number."""
+    model = UFCFightModel()
+    led, _ = build_ledger()
+    led.tott["nobody one"] = {"dob": date(2000, 1, 1), "reach": 72.0,
+                              "height": 70.0, "stance": ""}
+    led.tott["nobody two"] = {"dob": date(1990, 1, 1), "reach": 70.0,
+                              "height": 68.0, "stance": ""}
+    r = model.predict(led, "nobody one", "nobody two", date(2026, 8, 1))
+    assert r.basis == "no_data", (
+        "two unrated fighters must stay a no-read even when both have a DOB — "
+        "that was measured and there is no signal there")
+    assert r.p_a == 0.5
+
+
+def test_debut_model_is_optional_and_absence_is_not_breakage(tmp_path):
+    """An absent debut artifact means 'fall back to the base rate', not 'fail'.
+    The trainer only writes it when it beats the flat rate, and deletes a stale
+    one when it does not."""
+    m = UFCFightModel(debut_artifact=tmp_path / "nothing.json")
+    assert not m.debut_ok
+    assert m.ok, "the main model must still load when the debut model is absent"
+
+
 def test_missing_artifact_reports_no_data_rather_than_guessing(tmp_path):
     """A missing model must say so. 'Couldn't check' rendering as 'all clear' is
     the single most expensive bug class in this repo."""
