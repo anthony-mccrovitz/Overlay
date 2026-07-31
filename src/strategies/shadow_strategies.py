@@ -62,6 +62,15 @@ DEFAULT_SPORTS = [
     # European seasons resume in August.
     "soccer_usa_mls",
     "soccer_mexico_ligamx",
+    # American football, added 2026-07-31 ahead of the season. An off-season key
+    # returns an empty board for one cheap call; preseason boards appear ~Aug 6
+    # and week 1 evidence starts accruing 2026-09-10 instead of whenever someone
+    # remembered. Closing capture for both was wired the same day (the
+    # capture-coverage test enforces the pairing), and models._key maps the
+    # americanfootball_* prefixes so the lanes are born whole instead of
+    # fragmenting like tennis did.
+    "americanfootball_nfl",
+    "americanfootball_ncaaf",
 ]
 
 

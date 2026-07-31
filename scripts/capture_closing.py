@@ -65,6 +65,13 @@ SPORTS = {
     "soccer_korea_kleague1":     "soccer_korea_kleague1",
     "ufc":     "mma_mixed_martial_arts",
     "mma":     "mma_mixed_martial_arts",
+    # American football, added 2026-07-31 — five weeks BEFORE kickoff, because
+    # the soccer leagues above document what happens in the other order: picks
+    # accrue, closings don't, and the lane disqualifies itself at 0/13 scored
+    # while looking like patient progress. Off-season these keys return an
+    # empty events list for one cheap call each.
+    "nfl":     "americanfootball_nfl",
+    "ncaaf":   "americanfootball_ncaaf",
     # NOTE: tennis is handled dynamically (see _active_tennis_keys) because it runs
     # many concurrent tournament keys that a static dict can't enumerate — each
     # match IS a normal event with a commence_time, so it captures like any game.

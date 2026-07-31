@@ -86,6 +86,20 @@ MODELS: dict[tuple[str, str], dict] = {
     ("indycar","outright"):  {"status": "retired", "tier": "shadow", "label": "IndyCar Outright Elo — DROPPED 2026-07-26 (archive/retired_sports/)"},
     ("f1",     "outright"):  {"status": "retired", "tier": "shadow", "label": "F1 Outright Elo — DROPPED 2026-07-26 (archive/retired_sports/)"},
 
+    # ── NFL / college football (registered 2026-07-31, ~5 weeks before kickoff)
+    # Wired BEFORE the season so evidence accrues from week 1 instead of the
+    # clock starting in October. Shadow-only: picks come from the market-relative
+    # strategies (consensus_ev et al.), not a team model — there is no NFL model
+    # to trust yet, and the gate demands ≥30 EV rows over ≥15 days before that
+    # conversation can even start. Preseason boards (from ~Aug 6) are real,
+    # closable markets and log like any other; the gate's day-window makes the
+    # evidence auditable by date if preseason ever needs separating.
+    ("nfl", "total"):     {"status": "incubating", "tier": "shadow", "label": "NFL Totals (shadow — wired 2026-07-31 pre-season)"},
+    ("nfl", "spread"):    {"status": "incubating", "tier": "shadow", "label": "NFL Spreads (shadow — wired 2026-07-31 pre-season)"},
+    ("nfl", "moneyline"): {"status": "incubating", "tier": "shadow", "label": "NFL Moneyline (shadow — wired 2026-07-31 pre-season)"},
+    ("ncaaf", "total"):   {"status": "incubating", "tier": "shadow", "label": "CFB Totals (shadow — wired 2026-07-31 pre-season)"},
+    ("ncaaf", "spread"):  {"status": "incubating", "tier": "shadow", "label": "CFB Spreads (shadow — wired 2026-07-31 pre-season)"},
+
     # ── Shadow (tracking only — building sample / rebuilding) ────────────────
     ("mlb", "pitcher_strikeouts"): {"status": "incubating", "tier": "shadow", "label": "MLB Pitcher Ks (83-108 -16u, shadow — rebuild)"},
     ("mlb", "f5_total"):           {"status": "incubating", "tier": "shadow", "label": "MLB F5 Totals (63-47 shadow, promoting after first 30 live picks)"},
@@ -130,6 +144,16 @@ def _key(sport: str, market: str) -> tuple[str, str]:
     raw = (sport or "").lower()
     for prefix in ("baseball_", "basketball_", "icehockey_"):
         raw = raw.replace(prefix, "")
+    # American football, added 2026-07-31 BEFORE the first NFL snapshot exists.
+    # Order of operations matters here: every prior sport was wired first and
+    # mapped later, and each one spent weeks fragmented ("building EV sample
+    # (0/30)" while holding rows under its raw Odds API key — tennis split
+    # across four tournament keys, usa_mls reported zero with 46 rows). The
+    # mapping precedes the data this time, so the lane is born whole.
+    if raw.startswith("americanfootball_nfl"):
+        raw = "nfl"
+    elif raw.startswith("americanfootball_ncaaf"):
+        raw = "ncaaf"
     if raw.startswith("soccer_fifa_world_cup") or raw == "wc":
         # World Cup is gated/promoted as its OWN unit (matches chef.py edge's
         # 'wc' label) — promoting it must NOT also flip MLS/La Liga/etc. live.
