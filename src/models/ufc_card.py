@@ -164,6 +164,71 @@ def _pro_record(name: str, led) -> str:
     return f"{rec} ({len(f.bouts)} bouts) — {top}"
 
 
+def read_official_card(date_yyyymmdd: str, events: list[dict],
+                       pro_records: bool = True) -> tuple[str, list[Bout]] | None:
+    """The OFFICIAL UFC card for a date, in broadcast order, odds joined on.
+
+    ESPN's bout list is the spine (src/data/espn_mma.py explains the failure
+    this replaces). For each scheduled bout, in order, the model prices it and
+    any matching odds-feed event contributes market numbers. A priced fight
+    that is not on the official card is simply never shown, and a bout ESPN
+    lists that no book prices still appears — with the model's read and no
+    market column. Returns (event name, bouts main-event-first), or None when
+    ESPN lists no UFC card that day.
+    """
+    from src.data.espn_mma import fetch_card
+
+    card = fetch_card(date_yyyymmdd)
+    if card is None or not card.bouts:
+        return None
+
+    from src.models.ufc_features import normalize_name
+    by_pair: dict[frozenset, dict] = {}
+    for ev in events:
+        a = (ev.get("home_team") or "").strip()
+        b = (ev.get("away_team") or "").strip()
+        if a and b:
+            by_pair[frozenset((normalize_name(a), normalize_name(b)))] = ev
+
+    model = UFCFightModel()
+    led, _ = build_ledger()
+    out: list[Bout] = []
+    for eb in card.bouts:
+        if not eb.scheduled:
+            continue
+        ev = by_pair.get(frozenset((normalize_name(eb.fighter_a),
+                                    normalize_name(eb.fighter_b))))
+        # Prefer the odds feed's spellings when a board exists (they match the
+        # books your bet slip would show); ESPN's otherwise.
+        a = (ev.get("home_team") if ev else eb.fighter_a) or eb.fighter_a
+        b = (ev.get("away_team") if ev else eb.fighter_b) or eb.fighter_b
+        try:
+            starts = datetime.fromisoformat(
+                str((ev or {}).get("commence_time", "")).replace("Z", "+00:00"))
+        except ValueError:
+            starts = datetime.now(timezone.utc)
+        read = model.predict(led, a, b, date(int(date_yyyymmdd[:4]),
+                                            int(date_yyyymmdd[4:6]),
+                                            int(date_yyyymmdd[6:8])))
+        mp, book = _market_prob(ev) if ev else (None, "")
+        ra = rb = ""
+        note = ""
+        if read.basis != "model" and pro_records:
+            if not led.known(a):
+                ra = _pro_record(a, led)
+            if not led.known(b):
+                rb = _pro_record(b, led)
+            if ra or rb:
+                note = ("Full professional record, all promotions. Not run "
+                        "through the model — regional opposition is weaker than "
+                        "UFC opposition, and by how much is not yet measured.")
+        out.append(Bout(a, b, starts, read, mp, book, ra, rb, note))
+    # ESPN lists chronologically (main event LAST); broadcast reading order is
+    # the reverse.
+    out.reverse()
+    return card.name, out
+
+
 def group_by_block(bouts: list[Bout]) -> dict[str, list[Bout]]:
     """Split a day's fights into cards by start time.
 

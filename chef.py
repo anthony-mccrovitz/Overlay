@@ -3623,6 +3623,63 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
 
 
 
+
+def _print_card_bouts(fights) -> None:
+    """One block of bouts, shared by the official-card and fallback paths."""
+    for b in fights:
+        r = b.read
+        if r.basis == "no_data":
+            verdict, pct = "no read", "  —  "
+        else:
+            verdict, pct = r.favourite, f"{r.confidence:.0%}"
+        flag = ""
+        if r.basis == "global_record":
+            flag = "  [priced from full pro record, all promotions]"
+        elif r.basis == "debut_model":
+            flag = "  [no UFC record — age + opponent only]"
+        elif r.basis == "debut_prior":
+            flag = "  [no UFC record — flat base rate]"
+        elif r.basis == "model" and r.is_coinflip:
+            flag = "  [too close to call]"
+        print(f"\n    {b.fighter_a}  vs  {b.fighter_b}")
+        print(f"      model : {verdict:28s} {pct}{flag}")
+        if b.market_p_a is not None:
+            mfav = b.fighter_a if b.market_p_a >= 0.5 else b.fighter_b
+            mp = max(b.market_p_a, 1 - b.market_p_a)
+            tag = "  ← model disagrees" if b.disagrees_with_market else ""
+            print(f"      market: {mfav:28s} {mp:.0%}  ({b.book}){tag}")
+        if b.pro_record_a:
+            print(f"      pro   : {b.fighter_a} — {b.pro_record_a}")
+        if b.pro_record_b:
+            print(f"      pro   : {b.fighter_b} — {b.pro_record_b}")
+        for d in r.drivers:
+            print(f"        · {d}")
+        if r.note:
+            print(f"        {r.note}")
+        if b.pro_note:
+            print(f"        {b.pro_note}")
+
+
+def _print_card_summary(bouts, line: str) -> None:
+    n_model = sum(1 for b in bouts if b.read.basis == "model")
+    n_global = sum(1 for b in bouts if b.read.basis == "global_record")
+    n_debut = sum(1 for b in bouts if b.read.basis in ("debut_model", "debut_prior"))
+    n_none = sum(1 for b in bouts if b.read.basis == "no_data")
+    m = UFC_META()
+    print(f"\n  {line}")
+    print(f"  {len(bouts)} fights: {n_model} read in full, "
+          f"{n_global} from full pro records (all promotions), "
+          f"{n_debut} on partial data, {n_none} no read.")
+    if m:
+        print(f"  Model: {m.get('mean_holdout_accuracy', 0):.1%} accuracy across "
+              f"{len(m.get('walk_forward', []))} held-out years "
+              f"(log-loss {m.get('mean_holdout_log_loss', 0):.4f} vs "
+              f"{m.get('coin_flip_log_loss', 0.6931):.4f} for a coin flip).")
+    print("  NOT betting advice: ufc/moneyline is RETIRED. This accuracy is about")
+    print("  what the closing market achieves unaided, so there is no edge here.")
+    print(f"  {line}\n")
+
+
 def cmd_card(args: argparse.Namespace) -> int:
     """Print the model's read on EVERY fight on a card, bettable or not.
 
@@ -3656,6 +3713,24 @@ def cmd_card(args: argparse.Namespace) -> int:
             print(f"  No MMA fights found for {iso}.")
             print("  The feed carries roughly two weeks out; try `chef.py card` with no date.")
             return 1
+
+        # The OFFICIAL card first: ESPN's bout list is the spine and the odds
+        # feed only joins onto it — a priced fight not on the official card
+        # never appears, and the bout ORDER is the real one, not an invention
+        # of commence_time grouping. (That grouping misfiled four UFC prelims
+        # under another promotion on 2026-08-01, and the error survived until
+        # the user produced screenshots.)
+        from src.models.ufc_card import read_official_card
+        official = read_official_card(want, events)
+        if official is not None:
+            name, obouts = official
+            line = "=" * 78
+            print(f"\n  {line}")
+            print(f"  {name} — OFFICIAL CARD, broadcast order")
+            print(f"  {line}")
+            _print_card_bouts(obouts)
+            _print_card_summary(obouts, line)
+            return 0
 
     bouts = read_card(events)
     blocks = group_by_block(bouts)

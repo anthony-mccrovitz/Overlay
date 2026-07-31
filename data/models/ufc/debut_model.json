@@ -1,37 +1,37 @@
 {
   "coefficients": {
-    "age_diff": -0.228077,
-    "opp_elo": -0.53014,
-    "opp_exp": 0.220682,
-    "opp_form": -0.016075,
-    "reach_diff": 0.040708
+    "age_diff": -0.229477,
+    "opp_elo": -0.521605,
+    "opp_exp": 0.202265,
+    "opp_form": -0.03692,
+    "reach_diff": 0.041151
   },
   "feature_mean": {
-    "age_diff": -1.794112,
-    "opp_elo": 19.101193,
-    "opp_exp": 4.471328,
-    "opp_form": 0.49314,
-    "reach_diff": -0.186174
+    "age_diff": -1.812069,
+    "opp_elo": 18.962052,
+    "opp_exp": 4.482866,
+    "opp_form": 0.492342,
+    "reach_diff": -0.173676
   },
   "feature_median": {
-    "age_diff": -1.73306,
-    "opp_elo": 15.631284,
+    "age_diff": -1.7577,
+    "opp_elo": 15.559162,
     "opp_exp": 3.0,
     "opp_form": 0.5,
     "reach_diff": 0.0
   },
   "feature_sd": {
-    "age_diff": 4.95926,
-    "opp_elo": 62.99091,
-    "opp_exp": 4.3627,
-    "opp_form": 0.335962,
-    "reach_diff": 3.038232
+    "age_diff": 4.951263,
+    "opp_elo": 63.131359,
+    "opp_exp": 4.389933,
+    "opp_form": 0.336302,
+    "reach_diff": 3.03077
   },
-  "intercept": -0.278148,
+  "intercept": -0.268302,
   "metadata": {
-    "mean_flat_log_loss": 0.6832,
-    "mean_model_log_loss": 0.66,
-    "n_train": 1273,
+    "mean_flat_log_loss": 0.6895,
+    "mean_model_log_loss": 0.6527,
+    "n_train": 1284,
     "note": "Applies only when exactly ONE fighter has a UFC record. When BOTH are unrated, age alone gives AUC 0.490 \u2014 worse than chance \u2014 so that case stays 'no read'.",
     "walk_forward": [
       {
@@ -77,11 +77,18 @@
         "test_year": 2024
       },
       {
-        "auc": 0.6688,
-        "flat_log_loss": 0.7097,
-        "model_log_loss": 0.6584,
-        "n": 79,
+        "auc": 0.6704,
+        "flat_log_loss": 0.7116,
+        "model_log_loss": 0.6591,
+        "n": 78,
         "test_year": 2025
+      },
+      {
+        "auc": 0.7725,
+        "flat_log_loss": 0.7319,
+        "model_log_loss": 0.6003,
+        "n": 41,
+        "test_year": 2026
       }
     ]
   },
