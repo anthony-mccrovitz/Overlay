@@ -143,7 +143,7 @@ def test_trainer_emits_each_row_before_folding_the_bout_in():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
 
-    X, Y, dates, minprior = mod.build_matrix()
+    X, Y, dates, minprior, _pairs = mod.build_matrix()
     assert len(Y) > 1000
 
     # The very first bout in history: both fighters unrated, so every difference

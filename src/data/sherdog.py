@@ -41,10 +41,10 @@ _BASE = "https://www.sherdog.com"
 _CACHE = Path("data/ufc/sherdog")
 _STAMP = _CACHE / ".last_request"
 
-# 2 seconds between requests. robots.txt sets no crawl-delay; this is politeness,
-# and it is enforced across processes via a timestamp file so a parallel run
-# cannot multiply the rate.
-_MIN_INTERVAL = 2.0
+# 1 second between requests. robots.txt sets no crawl-delay and Allow: / for
+# every agent, so this is courtesy rather than compliance. Enforced across
+# processes via a timestamp file so a parallel run cannot multiply the rate.
+_MIN_INTERVAL = 1.0
 
 _UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
        "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
