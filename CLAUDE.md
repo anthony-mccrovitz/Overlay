@@ -65,6 +65,15 @@ python3 chef.py stats                      # refresh public_stats.json
   storage key (`schema._SPORT_ALIASES`, leaves `soccer_usa_mls` intact) and
   display/path maps (human labels, archive prefixes, tag slugs).
 
+- **Never re-implement the promotion gate either.**
+  `model_standard.clears_promotion_gate` is the ONLY promote/refuse decision.
+  Three copies had accreted by 2026-07-31: the scoreboard printed "✅ READY"
+  for usa_mls while `chef.py promote` refused the same lane, because the
+  scoreboard's inline copy skipped the independence check — the exact check
+  the lane fails. Surfaces may pre-filter with a strict SUBSET of the gate's
+  checks for speed, but READY/PROMOTED must come from the gate itself.
+  `tests/test_gate_single_source.py` fails the build on a divergent copy.
+
 - **A lane cannot go live by omission.** `src/config/model_standard.py` defines
   seven checks and `tests/test_model_standard.py` fails the build when a live
   lane violates one. Legacy uses documented `EXEMPTIONS` (reason + retirement

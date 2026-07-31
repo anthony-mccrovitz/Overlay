@@ -9,7 +9,62 @@
 > Current state: `chef.py scoreboard` / `chef.py moneypath`, or README.md.
 > Kept for the plan history below.
 
-# Roadmap — Overlay
+# The plan — as of 2026-07-31
+
+Live state always comes from commands, never from this file: `chef.py
+scoreboard` (every lane vs the gate), `chef.py moneypath` (can I bet today).
+This section records **decisions and dates**, which commands cannot.
+
+## Now → this weekend
+- **UFC global Elo**: the Sherdog crawl is filling the career-wide fight graph
+  (`crawl_sherdog.py --status`). When roster coverage passes the 55% gate, run
+  `python3 scripts/train_ufc.py` — it fits UFC-only vs +career features on the
+  same holdout years and ships the addition **only if held-out log-loss
+  improves**. Either answer is recorded in the artifact.
+- **`chef.py card`** already reads every fight (model / debut model / pro
+  record), independent of the crawl.
+
+## Week of Aug 4
+- **NFL + CFB first light**: preseason boards appear ~Aug 6. The lanes were
+  wired whole on 2026-07-31 (key map → registry → shadow logging → closing
+  capture, pairing enforced by `tests/test_nfl_wiring.py`). Verify first
+  snapshots score: `chef.py scoreboard --sport nfl`.
+- **Decision owed — `mlb/f5_total`**: EV **−5.7%** on n=292. The math has
+  rejected it; every day it runs spends capture on a lane that cannot promote.
+  Retire, or state the rebuild hypothesis and re-derive.
+- **Fantasy football**: drafts land late August; `chef.py draft` + the
+  ceiling/floor module are built — polish pass before draft night.
+
+## August
+- **European club soccer resumes (~Aug 15)**: la_liga / serie_a / bundesliga /
+  EPL closings are already captured; add their keys to
+  `shadow_strategies.DEFAULT_SPORTS` when fixtures appear so picks accrue
+  (the capture-pairing test holds the other half of the contract).
+- **usa_mls**: EV +9.0% (post-quarantine) but 4 distinct days against the
+  15-day independence floor. MLS plays ~2 slates/week → earliest honest gate
+  read ~mid-September. Nothing to do but let it accrue.
+- **Tennis / US Open (Aug 31)**: stays shadow. Its honest read is the ledger
+  (−11% over 152); the +19% EV headline was three repriced-market flips, now
+  quarantined (METHODOLOGY §9).
+
+## September
+- **NFL week 1 (Sept 10)**: evidence accrual starts in earnest. First gate
+  reads possible ~mid-October (n≥30 across ≥15 days).
+- **NBA / NHL wiring** before their seasons open — same four-link checklist,
+  now test-enforced.
+
+## Standing, no date
+- `mlb/total` remains the only live lane; sizing stays quarter-Kelly on the
+  shrunk edge.
+- Backtest audit beyond ufc + mlb/total (METHODOLOGY §8 lists what "audited"
+  means; nba and club soccer are "read, looks sound, unenforced").
+- Public-record honesty: 89% of the card's +12.1% comes from lanes that would
+  fail today's gate. Whether to caveat the public number is an open OWNER
+  decision.
+
+---
+
+# Roadmap — Overlay (archived)
 
 Updated 2026-06-21, after the multi-market model build (PRs #23–#30).
 
