@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Julio Rodriguez",
+      "team": "Julio Rodriguez OVER 0.5",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": 600,
+      "model_prob": 0.6665,
+      "implied_prob": 0.1333,
+      "edge_pct": 53.32,
+      "model_mu": 1.62,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Julio Rodriguez",
+      "team": "Julio Rodriguez OVER 0.5",
+      "matchup": "Seattle Mariners @ Los Angeles Dodgers",
+      "line": 0.5,
+      "odds": 600,
+      "model_prob": 0.6246,
+      "implied_prob": 0.1333,
+      "edge_pct": 49.13,
+      "model_mu": 0.98,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Erick Fedde",
+      "team": "Erick Fedde OVER 3.5",
+      "matchup": "Chicago White Sox @ Tampa Bay Rays",
+      "line": 3.5,
+      "odds": -115,
+      "model_prob": 0.8379,
+      "implied_prob": 0.4783,
+      "edge_pct": 35.96,
+      "model_mu": 6.31,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "James Wood",
+      "team": "James Wood UNDER 0.5",
+      "matchup": "Washington Nationals @ Atlanta Braves",
+      "line": 0.5,
+      "odds": 100,
+      "model_prob": 0.7049,
+      "implied_prob": 0.4483,
+      "edge_pct": 25.67,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Jac Caglianone",
+      "team": "Jac Caglianone UNDER 0.5",
+      "matchup": "Kansas City Royals @ Colorado Rockies",
+      "line": 0.5,
+      "odds": -135,
+      "model_prob": 0.7153,
+      "implied_prob": 0.513,
+      "edge_pct": 20.24,
+      "model_mu": 0.4,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Hunter Goodman",
+      "team": "Hunter Goodman UNDER 0.5",
+      "matchup": "Kansas City Royals @ Colorado Rockies",
+      "line": 0.5,
+      "odds": -425,
+      "model_prob": 0.8651,
+      "implied_prob": 0.7276,
+      "edge_pct": 13.75,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
