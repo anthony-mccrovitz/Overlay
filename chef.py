@@ -3663,10 +3663,16 @@ def cmd_card(args: argparse.Namespace) -> int:
                 mp = max(b.market_p_a, 1 - b.market_p_a)
                 tag = "  ← model disagrees" if b.disagrees_with_market else ""
                 print(f"      market: {mfav:28s} {mp:.0%}  ({b.book}){tag}")
+            if b.pro_record_a:
+                print(f"      pro   : {b.fighter_a} — {b.pro_record_a}")
+            if b.pro_record_b:
+                print(f"      pro   : {b.fighter_b} — {b.pro_record_b}")
             for d in r.drivers:
                 print(f"        · {d}")
             if r.note:
                 print(f"        {r.note}")
+            if b.pro_note:
+                print(f"        {b.pro_note}")
 
     n_model = sum(1 for b in bouts if b.read.basis == "model")
     n_debut = sum(1 for b in bouts if b.read.basis in ("debut_model", "debut_prior"))

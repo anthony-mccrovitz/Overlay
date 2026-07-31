@@ -27,6 +27,14 @@ class Bout:
     read: Read
     market_p_a: float | None = None      # devigged market probability for A
     book: str = ""
+    # Full professional records, shown for fighters the UFC-only model cannot
+    # read. This is a FACT about the fighter, not a model output, so it is not
+    # subject to the global-Elo coverage gate — that gate exists to stop a
+    # thinly-populated rating graph from being fitted into a probability, and
+    # "22-7 in Oktagon" is neither fitted nor a probability.
+    pro_record_a: str = ""
+    pro_record_b: str = ""
+    pro_note: str = ""
 
     @property
     def disagrees_with_market(self) -> bool:
@@ -83,7 +91,8 @@ def _market_prob(event: dict) -> tuple[float | None, str]:
     return mid, f"{len(books)} books"
 
 
-def read_card(events: list[dict], on: date | None = None) -> list[Bout]:
+def read_card(events: list[dict], on: date | None = None,
+              pro_records: bool = True) -> list[Bout]:
     """Price every event given. `events` is Odds API shape (h2h markets).
 
     The ledger is replayed once for the whole card, not per fight — rebuilding
@@ -106,9 +115,53 @@ def read_card(events: list[dict], on: date | None = None) -> list[Bout]:
         fight_day = on or starts.date()
         read = model.predict(led, a, b, fight_day)
         mp, book = _market_prob(ev)
-        out.append(Bout(a, b, starts, read, mp, book))
+
+        # Only look up records for fighters the UFC data cannot see. A handful
+        # of requests per card, cached permanently — and it turns "no read" into
+        # something a human can actually use.
+        ra = rb = ""
+        note = ""
+        if read.basis != "model" and pro_records:
+            if not led.known(a):
+                ra = _pro_record(a, led)
+            if not led.known(b):
+                rb = _pro_record(b, led)
+            if ra or rb:
+                note = ("Full professional record, all promotions. Not run "
+                        "through the model — regional opposition is weaker than "
+                        "UFC opposition, and by how much is not yet measured.")
+        out.append(Bout(a, b, starts, read, mp, book, ra, rb, note))
     out.sort(key=lambda x: (x.starts, x.fighter_a))
     return out
+
+
+def _pro_record(name: str, led) -> str:
+    """'22-7 (30 bouts) — Oktagon, KSW' or '' when we cannot be sure who this is.
+
+    Resolution uses the date of birth we already hold from ufcstats, because
+    name alone is not an identity: four fighters are called Michael Oliveira and
+    the first search hit is 0-2. An ambiguous lookup returns nothing rather than
+    somebody else's career.
+    """
+    try:
+        from src.data.sherdog import resolve
+        from src.models.ufc_features import normalize_name
+    except ImportError:
+        return ""
+    dob = (led.tott.get(normalize_name(name)) or {}).get("dob")
+    try:
+        f = resolve(name, dob=dob)
+    except Exception:
+        return ""
+    if f is None or not f.bouts:
+        return ""
+    w, l, d = f.record
+    promos: dict[str, int] = {}
+    for bt in f.bouts:
+        promos[bt.promotion] = promos.get(bt.promotion, 0) + 1
+    top = ", ".join(p for p, _ in sorted(promos.items(), key=lambda kv: -kv[1])[:2])
+    rec = f"{w}-{l}" + (f"-{d}" if d else "")
+    return f"{rec} ({len(f.bouts)} bouts) — {top}"
 
 
 def group_by_block(bouts: list[Bout]) -> dict[str, list[Bout]]:
