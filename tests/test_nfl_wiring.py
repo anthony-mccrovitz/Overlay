@@ -46,6 +46,16 @@ def test_shadow_logging_covers_football():
     assert "americanfootball_ncaaf" in DEFAULT_SPORTS
 
 
+def test_shadow_logging_covers_european_soccer():
+    """Added 2026-07-31 ahead of the mid-August restarts, so matchday 1 accrues
+    instead of waiting for someone to remember. Registry lanes and closing
+    capture for all five already existed — logging was the missing link."""
+    from src.strategies.shadow_strategies import DEFAULT_SPORTS
+    for k in ("soccer_epl", "soccer_spain_la_liga", "soccer_italy_serie_a",
+              "soccer_germany_bundesliga", "soccer_france_ligue_one"):
+        assert k in DEFAULT_SPORTS, k
+
+
 def test_every_shadow_sport_has_closing_capture():
     """The pairing rule, enforced generally: a sport that logs shadow picks
     MUST have closing capture, or it accrues rows it can never score. This is

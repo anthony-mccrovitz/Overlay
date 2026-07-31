@@ -62,6 +62,17 @@ DEFAULT_SPORTS = [
     # European seasons resume in August.
     "soccer_usa_mls",
     "soccer_mexico_ligamx",
+    # European top flights, added 2026-07-31 ahead of the mid-August restarts
+    # (EPL/La Liga/Ligue 1 ~Aug 15, Serie A/Bundesliga ~Aug 22). Same rationale
+    # as the football keys below: an off-season key costs one cheap empty call,
+    # and wiring BEFORE the season means evidence accrues from matchday 1
+    # instead of whenever someone remembered. Closing capture for all five has
+    # been in place since 2026-07-29; the pairing test enforces it stays.
+    "soccer_epl",
+    "soccer_spain_la_liga",
+    "soccer_italy_serie_a",
+    "soccer_germany_bundesliga",
+    "soccer_france_ligue_one",
     # American football, added 2026-07-31 ahead of the season. An off-season key
     # returns an empty board for one cheap call; preseason boards appear ~Aug 6
     # and week 1 evidence starts accruing 2026-09-10 instead of whenever someone
