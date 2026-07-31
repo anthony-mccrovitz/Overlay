@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-07-30T20:08:13.488616+00:00",
+  "generated_at": "2026-07-31T04:07:38.483049+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 116.64,
-  "n_settled": 4,
-  "n_pending": 244,
+  "end_bankroll": 107.49,
+  "n_settled": 6,
+  "n_pending": 251,
   "wins": 2,
-  "losses": 2,
-  "staked": 18.43,
-  "pnl": 4.64,
-  "expected_pnl": 0.72,
-  "roi_pct": 25.18,
-  "max_drawdown": 9.49,
+  "losses": 4,
+  "staked": 27.58,
+  "pnl": -4.51,
+  "expected_pnl": 1.3,
+  "roi_pct": -16.35,
+  "max_drawdown": 13.61,
   "skipped": {
-    "high \u2014 taker fills at the quoted ask within depth": 60,
-    "exposure cap reached for the slate": 156,
-    "not settled yet": 26,
-    "resting order never filled": 2
+    "high \u2014 taker fills at the quoted ask within depth": 61,
+    "exposure cap reached for the slate": 163,
+    "not settled yet": 21,
+    "resting order never filled": 6
   },
   "significance": {
-    "mean_edge_per_unit": 0.039,
-    "sd_per_unit": 1.629,
-    "n_for_2sigma": 6978
+    "mean_edge_per_unit": 0.0468,
+    "sd_per_unit": 1.6912,
+    "n_for_2sigma": 5217
   },
   "rows": [
     {
@@ -86,6 +86,38 @@
       "pnl": 5.03,
       "expected_pnl": 0.129,
       "equity": 116.64
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260730_toronto-tempo_moneyline_win",
+      "date": "2026-07-30",
+      "team": "Toronto Tempo",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.16,
+      "fair": 0.1747,
+      "stake": 4.67,
+      "shares": 29.19,
+      "result": "loss",
+      "pnl": -4.67,
+      "expected_pnl": 0.429,
+      "equity": 111.97
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260730_connecticut-sun_moneyline_win",
+      "date": "2026-07-30",
+      "team": "Connecticut Sun",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.39,
+      "fair": 0.4029,
+      "stake": 4.48,
+      "shares": 11.49,
+      "result": "loss",
+      "pnl": -4.48,
+      "expected_pnl": 0.148,
+      "equity": 107.49
     }
   ]
 }
