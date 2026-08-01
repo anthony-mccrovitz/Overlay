@@ -1,5 +1,38 @@
 """
-Franchise Bet Tracker — all 30 MLB teams.
+Franchise Bet Tracker — all 30 MLB teams. **RETIRED 2026-08-01.**
+
+NOTHING CALLS THIS DAILY ANY MORE. The nightly logger (predict.py), the grade
+hook (chef.py cmd_grade), the morning step (chef.py) and the cron schedule
+(.github/workflows/franchise.yml) were all removed. `chef.py franchise` still
+runs it by hand and the 2,563 logged bets stay queryable.
+
+WHY IT WAS RETIRED — the design cannot answer its own question. Judging a
+flat-1u lane at roughly even money, the standard error on ROI is ~0.95/sqrt(n),
+so separating a real +3% edge from zero needs ~4,000 bets in ONE team-market
+lane. A team plays 162 games a year, so a lane accrues ~162 bets a season:
+about 25 seasons. The entity being measured does not survive that — a franchise
+is not a constant, it is a roster that turns over every few years. Nothing it
+produced was ever significant: run-line -4.8% on n=616 carries +/-7.7pp at 2SE,
+and the 38-lane "leaderboard" of ~35-bet lanes was noise presented as a ranking.
+
+FOUR KNOWN BUGS, LEFT UNFIXED ON PURPOSE. Fixing them buys a trustworthy answer
+to an unanswerable question. They are recorded here so that anyone tempted to
+restart this knows the data is not clean:
+
+  1. `log_today` writes matchup as "{team} vs {opp}" while `grade_bets` looks
+     games up in a dict keyed "{away} @ {home}". 324 pending bets can NEVER
+     grade, and `print_leaderboard` reports them as ordinary backlog.
+  2. `log_today` hardcodes direction="home" for every bet (line ~233, with a
+     comment claiming the grader ignores it — `grade_bets` uses it to pick the
+     winning side). 228 of 267 checkable bets are labelled with the wrong side,
+     so fixing bug 1 alone would grade them BACKWARDS.
+  3. Two loggers mint different bet_id formats (with and without a position
+     suffix), so `save_bets` dedup misses the collision: 282 duplicate
+     (date, team, market) groups, 28 of them already double-counted in W/L.
+  4. `grade_bets` matches on matchup with no date component, so an ungraded
+     bet from game 1 of a series can settle on game 3's score.
+
+Original documentation follows.
 
 Tracks shadow bets on every team every day they play:
   - Moneyline
@@ -450,9 +483,14 @@ def print_leaderboard(min_picks: int = 5) -> None:
     min_roi       = cfg.get("validation", {}).get("min_roi", 0.05)
 
     print(f"\n{'='*88}")
-    print(f"  FRANCHISE LEADERBOARD — {total_combos} combos tracked  ·  {total_settled} settled  "
-          f"·  review {review_date}")
-    print(f"  Ranked by ROI. Validation gate: ≥30 picks + ROI ≥ {min_roi:.0%} + WR ≥ break-even.")
+    print(f"  FRANCHISE LEADERBOARD — {total_combos} combos tracked  ·  {total_settled} settled")
+    print(f"  ⚠  RETIRED 2026-08-01 — THIS RANKING IS NOISE, NOT A RESULT.")
+    print(f"     A ~35-bet lane has a ROI error bar of roughly ±32pp at 2SE, so the top and")
+    print(f"     bottom of this table are indistinguishable from each other and from zero.")
+    print(f"     Separating a real +3% edge from luck needs ~4,000 bets in ONE lane; a team")
+    print(f"     plays 162 games a year. The data is also known-dirty (4 bugs, see the module")
+    print(f"     docstring): 324 bets can never grade and 282 are stored twice.")
+    print(f"     Kept queryable as history. Do not bet from it.")
     print(f"  AvgOdds = avg price you bet at. BE-WR = WR needed to profit at those odds.")
     print(f"{'='*88}")
     print(_HDR)

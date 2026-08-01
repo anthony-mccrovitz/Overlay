@@ -244,12 +244,8 @@ def cmd_grade(args: argparse.Namespace) -> int:
     except Exception as _jc_err:
         print(f"  [june_challenge] skipped: {_jc_err}")
 
-    # Franchise shadow bets — grade yesterday's results
-    try:
-        from scripts.run_franchise_bets import grade_yesterday
-        grade_yesterday(verbose=True)
-    except Exception as _fe:
-        pass  # non-blocking, franchise tracker is supplementary
+    # The franchise tracker used to grade here, wrapped in a bare `except: pass`
+    # that would have hidden its own failure forever. RETIRED 2026-08-01.
 
     return rc
 
@@ -4764,14 +4760,8 @@ def cmd_morning(args: argparse.Namespace) -> int:
     except Exception as _ve:
         print(f"  ✗ Voice brief skipped: {_ve}")
 
-    # 14c) Franchise shadow bets — log today's franchise team games
-    print("  ▸ Logging franchise shadow bets...")
-    try:
-        from scripts.run_franchise_bets import log_franchise_bets
-        _fvd = datetime.strptime(today, "%Y%m%d").date()
-        log_franchise_bets(_fvd)
-    except Exception as _fe:
-        print(f"  ✗ Franchise bets skipped: {_fe}")
+    # 14c) Franchise shadow bets — RETIRED 2026-08-01. The step logged 90 bets a
+    # day into an experiment that cannot be resolved (see franchise_tracker.py).
 
     # 15) Rebuild overlay slate data (for /slate page on overlay-gray.vercel.app)
     print("  ▸ Rebuilding slate_data.json for overlay...")

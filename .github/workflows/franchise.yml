@@ -1,9 +1,33 @@
-name: Franchise tracker
+name: Franchise tracker (RETIRED)
 
-# 9:30 AM ET (13:30 UTC, EDT) — log morning futures odds for franchise bets.
+# RETIRED 2026-08-01. The daily schedule is gone; this runs only if you ask for
+# it by hand.
+#
+# The experiment: log a moneyline and both run-line sides for all 30 MLB teams
+# every day, and see whether blindly backing any one franchise is profitable.
+# It ran from 2026-04-23 and logged 2,563 bets.
+#
+# WHY IT STOPPED. Not because it was buggy (it was — see below) but because the
+# question cannot be answered by this design. Judging a flat-1u lane at roughly
+# even money, the standard error on ROI is about 0.95/sqrt(n): distinguishing a
+# real +3% edge from zero needs ~4,000 bets in ONE team-market lane. A team
+# plays 162 games a season, so a lane accrues ~162 bets a year — 25 seasons.
+# The entity being measured does not survive that: the 2026 White Sox and the
+# 2031 White Sox share a logo and nothing else. Every "finding" it produced
+# carries an error bar wider than the effect (run-line -4.8% on n=616 is
+# +/-7.7pp at 2SE — indistinguishable from zero or from -10%).
+#
+# It also spent Odds API credits every morning (two refresh=True board calls),
+# which is the resource whose exhaustion broke closing-line capture on
+# 2026-07-31.
+#
+# The data is kept: data/franchise/bets.json (2,163 graded bets) is a real
+# historical record and stays queryable via `python3 chef.py franchise`.
+# The known bugs were left unfixed deliberately — fixing them would have bought
+# a trustworthy answer to an unanswerable question. They are documented in
+# src/analytics/franchise_tracker.py so nobody re-runs this thinking it works.
+
 on:
-  schedule:
-    - cron: "41 13 * * *"
   workflow_dispatch: {}
 
 permissions:

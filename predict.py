@@ -1957,13 +1957,9 @@ def _save_picks(value_bets, sport: str, args, ensemble_preds=None, raw_odds=None
     except Exception as _clv_err:
         print(f"  [CLV] Opening-line snapshot failed: {_clv_err}")
 
-    # Auto-log to franchise shadow tracker (the missing daily logger — without
-    # this, bets.json was a frozen 2-day snapshot from June 6/8.)
-    try:
-        from src.analytics.franchise_tracker import log_today
-        log_today(game_date=_game_date, sport=sport, verbose=True)
-    except Exception as _fr_err:
-        print(f"  [franchise] auto-log failed: {_fr_err}")
+    # The franchise shadow tracker used to log here. RETIRED 2026-08-01 — see
+    # src/analytics/franchise_tracker.py for why the experiment cannot be
+    # resolved. `chef.py franchise` still runs it by hand if ever wanted.
 
     picks_list = [p for p in value_bets.to_dict(orient="records") if p.get("BestOdds") and p.get("BestOdds") != 0]
 
