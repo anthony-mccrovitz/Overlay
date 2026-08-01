@@ -396,9 +396,17 @@ class UFCFightModel:
             self.sd = blob["feature_sd"]
             self.median = blob["feature_median"]
             self.meta = blob.get("metadata", {})
-            self.ok = all(k in self.coef for k in FEATURES)
+            # The artifact declares its own feature set: since the 78.7%-
+            # coverage retrain the trainer's gate ships career-wide columns
+            # (gelo, pro_exp, ...) alongside the UFC-only ones. Scoring MUST
+            # follow this list, not FEATURES — a coefficient the scorer never
+            # reads is a silently different model from the one validated.
+            self.order = list(blob.get("feature_order", FEATURES))
+            self.ok = (all(k in self.coef for k in self.order)
+                       and set(FEATURES) <= set(self.coef))
         except (OSError, ValueError, KeyError):
             self.coef = self.mean = self.sd = self.median = {}
+            self.order = list(FEATURES)
 
         # The debut model is optional by design: scripts/train_ufc.py only
         # writes it when it actually beats the flat base rate, and deletes any
@@ -431,23 +439,13 @@ class UFCFightModel:
         self._gled = None          # global ledger, built once on first use
         self._slug_of = None
 
-    def _global_read(self, ledger: Ledger, a: str, b: str) -> Read | None:
-        """Career-wide read for a fight the UFC-only model refuses, or None.
+    def _resolve_global_pair(self, ledger: Ledger, a: str,
+                             b: str) -> tuple[str | None, str | None]:
+        """Both fighters' Sherdog slugs, or (None, None) when either refuses.
 
-        THE SPLIT VERDICT. Career features were offered to the main model and
-        its gate said no (0.6391 -> 0.6444 held-out): where both fighters have
-        UFC records, UFC data already carries the information. On the refused
-        population — a fighter with no UFC record — career Elo alone beat the
-        flat base rate decisively: flat 0.6941 -> 0.6490, AUC 0.673 over
-        1,167 held-out fights (2018-2022). Both verdicts are recorded in their
-        artifacts, because both are true.
-
-        Returns None whenever EITHER fighter fails to resolve into the global
-        graph — identity resolution refuses ambiguity, and this tier inherits
-        that refusal rather than guessing.
+        Shared by the global-fallback tier and the main model's career
+        columns so the two paths can never disagree about who a fighter is.
         """
-        if not self.gf_ok:
-            return None
         if self._gled is None:
             from src.models.global_elo import build_global_ledger, name_to_slug
             self._gled = build_global_ledger()
@@ -481,13 +479,61 @@ class UFCFightModel:
 
         sa, sb = slug(a), slug(b)
         if not sa or not sb:
-            return None
+            return None, None
         if not self._gled.known(sa) or not self._gled.known(sb):
             # slug() may have just resolve()d a fighter INTO the cache; the
             # ledger predates that fetch, so rebuild it once before giving up.
             from src.models.global_elo import build_global_ledger
             self._gled = build_global_ledger()
         if not self._gled.known(sa) or not self._gled.known(sb):
+            return None, None
+        return sa, sb
+
+    def _global_diffs(self, ledger: Ledger, a: str, b: str,
+                      on: date) -> dict[str, float | None]:
+        """Career-wide feature diffs for the main model's global columns.
+
+        None per feature when either fighter fails to resolve — downstream
+        median imputation is then the SAME regime the trainer fitted (21% of
+        training rows had an unresolvable fighter), not a silent degradation.
+        """
+        names = [k for k in self.order if k not in FEATURES]
+        out: dict[str, float | None] = {k: None for k in names}
+        if not names:
+            return out
+        try:
+            sa, sb = self._resolve_global_pair(ledger, a, b)
+            if not sa or not sb:
+                return out
+            fa = self._gled.features_for(sa, on)
+            fb = self._gled.features_for(sb, on)
+            for k in names:
+                va, vb = fa.get(k), fb.get(k)
+                out[k] = (va - vb) if (va is not None and vb is not None) else None
+        except Exception:
+            pass
+        return out
+
+    def _global_read(self, ledger: Ledger, a: str, b: str) -> Read | None:
+        """Career-wide read for a fight the UFC-only model refuses, or None.
+
+        THE SPLIT VERDICT — a statement about coverage, it turned out. At
+        55-74% roster coverage the main model's gate refused career features
+        (0.6391 -> 0.6444 held-out); when the crawl completed (78.7%,
+        2026-08-01) the same gate passed them (0.6380 -> 0.6359) and they now
+        ship in the main model. On THIS tier's population — a fighter with no
+        UFC record — career Elo beat the flat base rate at every coverage
+        level tried: flat 0.6941 -> 0.6490, AUC 0.673 over 1,167 held-out
+        fights (2018-2022). Every verdict is recorded in its artifact.
+
+        Returns None whenever EITHER fighter fails to resolve into the global
+        graph — identity resolution refuses ambiguity, and this tier inherits
+        that refusal rather than guessing.
+        """
+        if not self.gf_ok:
+            return None
+        sa, sb = self._resolve_global_pair(ledger, a, b)
+        if not sa or not sb:
             return None
 
         from datetime import date as _date
@@ -585,14 +631,15 @@ class UFCFightModel:
         # false about a fighter like Dakota Ditcheva.
         cutoff = f" (data through {ledger.through})" if ledger.through else ""
 
-        # Career-wide tier — ONLY for fights the main model refuses. Where both
-        # fighters have UFC records the main model decides: career features
-        # were offered there and its gate measurably said no. On the refused
-        # population the fallback is stronger than the debut model (held-out
-        # 0.6490 vs 0.6600) and covers the both-unrated case the debut model
-        # cannot touch. The first version of this call sat above the ka/kb
-        # check and quietly outranked the main model everywhere — caught by
-        # test_global_tier_never_outranks_the_main_model before it shipped.
+        # Career-wide tier — ONLY for fights the main model refuses. Where
+        # both fighters have UFC records the main model decides (and since
+        # the 78.7%-coverage retrain it weighs career columns itself). On the
+        # refused population the fallback is stronger than the debut model
+        # (held-out 0.6490 vs 0.6600) and covers the both-unrated case the
+        # debut model cannot touch. The first version of this call sat above
+        # the ka/kb check and quietly outranked the main model everywhere —
+        # caught by test_global_tier_never_outranks_the_main_model before it
+        # shipped.
         if not (ka and kb):
             g = self._global_read(ledger, a, b)
             if g is not None:
@@ -618,10 +665,14 @@ class UFCFightModel:
                     f"another promotion, the market knows things this does not.")
             return Read(a, b, p_a, fav, max(p_a, 1 - p_a), basis, drivers, note)
 
-        diffs = ledger.diff_vector(a, b, on)
+        raw_by_name: dict[str, float | None] = dict(
+            zip(FEATURES, ledger.diff_vector(a, b, on)))
+        if any(k not in FEATURES for k in self.order):
+            raw_by_name.update(self._global_diffs(ledger, a, b, on))
         z = 0.0
         contrib: list[tuple[str, float]] = []
-        for name, raw in zip(FEATURES, diffs):
+        for name in self.order:
+            raw = raw_by_name.get(name)
             v = raw if raw is not None else self.median.get(name, 0.0)
             sd = self.sd.get(name, 1.0) or 1.0
             term = self.coef[name] * (v - self.mean.get(name, 0.0)) / sd
@@ -656,6 +707,11 @@ _LABEL = {
     "finish": "finishing rate",
     "form": "recent form",
     "layoff": "time since last fight",
+    "gelo": "career-wide rating, all promotions",
+    "pro_exp": "professional experience, all promotions",
+    "top_share": "share of career against top-tier opposition",
+    "pro_form": "recent form across all promotions",
+    "pro_layoff": "time since last professional fight",
 }
 
 

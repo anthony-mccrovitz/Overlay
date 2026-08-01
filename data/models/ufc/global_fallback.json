@@ -1,76 +1,83 @@
 {
   "coefficients": {
-    "gelo_diff": 0.687739,
-    "pro_exp_diff": -0.430757,
-    "top_share_diff": 0.203164
+    "gelo_diff": 0.610173,
+    "pro_exp_diff": -0.398202,
+    "top_share_diff": 0.219028
   },
   "feature_mean": {
-    "gelo_diff": -1.139708,
-    "pro_exp_diff": 0.047038,
-    "top_share_diff": 0.00092
+    "gelo_diff": -1.353019,
+    "pro_exp_diff": -0.030303,
+    "top_share_diff": -0.004355
   },
   "feature_sd": {
-    "gelo_diff": 96.839632,
-    "pro_exp_diff": 10.201831,
-    "top_share_diff": 0.292632
+    "gelo_diff": 96.558155,
+    "pro_exp_diff": 9.874613,
+    "top_share_diff": 0.286775
   },
-  "intercept": 0.058591,
+  "intercept": 0.026258,
   "metadata": {
-    "mean_flat_log_loss": 0.6926,
-    "mean_model_log_loss": 0.6527,
-    "n_train": 1722,
+    "mean_flat_log_loss": 0.6933,
+    "mean_model_log_loss": 0.6671,
+    "n_train": 2079,
     "note": "Applies ONLY to fights the main model refuses (a fighter under 2 UFC bouts) where BOTH fighters resolve in the global graph. The same features were offered to the main model and refused \u2014 both verdicts are recorded because both are true.",
     "walk_forward": [
       {
-        "auc": 0.6572,
-        "flat_log_loss": 0.6932,
-        "model_log_loss": 0.6518,
-        "n": 112,
+        "auc": 0.6426,
+        "flat_log_loss": 0.6928,
+        "model_log_loss": 0.6613,
+        "n": 135,
         "test_year": 2018
       },
       {
-        "auc": 0.6572,
-        "flat_log_loss": 0.6917,
-        "model_log_loss": 0.6456,
-        "n": 140,
+        "auc": 0.6443,
+        "flat_log_loss": 0.6915,
+        "model_log_loss": 0.6608,
+        "n": 162,
         "test_year": 2019
       },
       {
-        "auc": 0.6693,
+        "auc": 0.6409,
         "flat_log_loss": 0.6943,
-        "model_log_loss": 0.6517,
-        "n": 113,
+        "model_log_loss": 0.6685,
+        "n": 136,
         "test_year": 2020
       },
       {
-        "auc": 0.6777,
-        "flat_log_loss": 0.6927,
-        "model_log_loss": 0.6422,
-        "n": 99,
+        "auc": 0.6571,
+        "flat_log_loss": 0.6923,
+        "model_log_loss": 0.6469,
+        "n": 126,
         "test_year": 2021
       },
       {
-        "auc": 0.692,
-        "flat_log_loss": 0.6909,
-        "model_log_loss": 0.6305,
-        "n": 85,
+        "auc": 0.6313,
+        "flat_log_loss": 0.6942,
+        "model_log_loss": 0.6597,
+        "n": 116,
         "test_year": 2022
       },
       {
-        "auc": 0.6204,
-        "flat_log_loss": 0.6928,
-        "model_log_loss": 0.6708,
-        "n": 80,
+        "auc": 0.5674,
+        "flat_log_loss": 0.6922,
+        "model_log_loss": 0.6962,
+        "n": 123,
         "test_year": 2023
       },
       {
-        "auc": 0.6359,
-        "flat_log_loss": 0.6929,
-        "model_log_loss": 0.6762,
-        "n": 47,
+        "auc": 0.6698,
+        "flat_log_loss": 0.6939,
+        "model_log_loss": 0.6531,
+        "n": 88,
         "test_year": 2024
+      },
+      {
+        "auc": 0.5779,
+        "flat_log_loss": 0.695,
+        "model_log_loss": 0.6905,
+        "n": 74,
+        "test_year": 2025
       }
     ]
   },
-  "trained_on": "2026-07-31"
+  "trained_on": "2026-08-01"
 }

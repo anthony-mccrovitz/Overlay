@@ -337,27 +337,81 @@ def test_artifact_records_honest_holdout_scores():
     for f in folds:
         assert f["n"] >= 50
         assert 0.0 < f["accuracy"] < 1.0
-    # Every feature must carry a coefficient — a silently dropped feature would
-    # otherwise be imputed to its median forever.
-    assert set(blob["coefficients"]) == set(FEATURES)
+    # Every shipped coefficient must be applied and every applied feature must
+    # ship a coefficient. The artifact declares its own feature set
+    # (feature_order): UFC-only, or +career columns when the trainer's gate
+    # passed them (it did at 78.7% roster coverage, 2026-08-01). A runtime
+    # that scores a different set than the artifact validated is a silently
+    # different model — that is the drift this assertion exists to catch.
+    order = blob.get("feature_order", FEATURES)
+    assert set(blob["coefficients"]) == set(order)
+    assert set(FEATURES) <= set(blob["coefficients"])
+    m = UFCFightModel()
+    assert m.ok
+    assert set(m.order) == set(blob["coefficients"])
 
 
 @needs_model
 def test_age_matters_more_than_rating():
     """Not a style preference — a finding. Age carried the largest standardised
-    weight in every holdout year. If a retrain inverts this, the feature build
-    has probably broken and it should be looked at, not silently accepted."""
+    weight in every holdout year of the UFC-only model. Since the career
+    columns shipped (78.7% coverage retrain), gelo may absorb elo's signal —
+    they measure the same thing on overlapping data — so the rating check is
+    on the STRONGEST rating feature, not on elo alone. If a retrain flips a
+    sign or rating collapses entirely, the feature build has probably broken
+    and it should be looked at, not silently accepted."""
     coef = json.loads(Path("data/models/ufc/fight_model.json").read_text())["coefficients"]
     assert coef["age"] < 0, "older fighter should be less likely to win"
     assert coef["elo"] > 0, "higher-rated fighter should be more likely to win"
-    assert abs(coef["age"]) > 0.15 and abs(coef["elo"]) > 0.15
+    if "gelo" in coef:
+        assert coef["gelo"] > 0, "higher career-wide rating should help, not hurt"
+    rating = max(abs(coef["elo"]), abs(coef.get("gelo", 0.0)))
+    assert abs(coef["age"]) > 0.15 and rating > 0.15
+
+
+@needs_model
+def test_scorer_applies_every_artifact_coefficient(tmp_path):
+    """The trainer's gate decides WHAT ships; this pins that the runtime
+    scores WITH all of it. A scorer that iterates the hardcoded UFC-only list
+    would silently ignore shipped career columns and run a model that was
+    never validated — the exact drift the 78.7%-coverage retrain exposed."""
+    blob = json.loads(Path("data/models/ufc/fight_model.json").read_text())
+    # Synthetic artifact: UFC-only columns plus one career column whose weight
+    # is so large it must dominate any base read — IF the scorer applies it.
+    blob = {
+        **blob,
+        "feature_order": list(FEATURES) + ["gelo"],
+        "coefficients": {**{k: blob["coefficients"].get(k, 0.0) for k in FEATURES},
+                         "gelo": 50.0},
+        "feature_mean": {**blob["feature_mean"], "gelo": 0.0},
+        "feature_sd": {**blob["feature_sd"], "gelo": 1.0},
+        "feature_median": {**blob["feature_median"], "gelo": 0.0},
+    }
+    p = tmp_path / "fight_model.json"
+    p.write_text(json.dumps(blob))
+
+    model = UFCFightModel(artifact=p)
+    assert model.ok
+    # Beta is vastly better by career rating; Alpha is better by UFC record.
+    model._global_diffs = lambda ledger, a, b, on: {"gelo": -3.0}
+
+    led = Ledger({}, {})
+    for i in range(3):
+        led.apply_bout({"date": date(2024, 1, 1 + i), "event": f"E{i}",
+                        "bout": "B", "w": "Alpha Fighter", "l": "Beta Fighter",
+                        "method": "Decision", "secs": 900.0})
+    r = model.predict(led, "Alpha Fighter", "Beta Fighter", date(2026, 8, 1))
+    assert r.basis == "model"
+    assert r.p_a < 0.05, ("a -150-sigma career-rating edge must dominate; "
+                          "the scorer ignored a shipped coefficient")
 
 
 # ── the global fallback tier ─────────────────────────────────────────────────
 def test_global_fallback_artifact_records_the_split_verdict():
     """Both halves of the experiment are recorded, because both are true:
-    career features refused by the main model's gate, decisive on the refused
-    population. The artifact must beat flat on its holdouts to exist at all."""
+    career features gated by the main model (refused below ~75% roster
+    coverage, shipped at 78.7%), decisive on the refused population at every
+    coverage level. The artifact must beat flat on its holdouts to exist."""
     import json
     from pathlib import Path
     p = Path("data/models/ufc/global_fallback.json")
