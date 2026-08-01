@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-31T15:28:51.897306+00:00",
+  "updated_at": "2026-08-01T03:42:47.287163+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -378,8 +378,8 @@
     },
     "totals_coverage": {
       "scored": 341,
-      "scoreable": 627,
-      "pct": 54.4
+      "scoreable": 630,
+      "pct": 54.1
     },
     "spread_coverage": {
       "scored": 299,
@@ -389,15 +389,15 @@
   },
   "summary": {
     "total_picks": 263,
-    "settled": 262,
-    "pending": 1,
-    "wins": 145,
+    "settled": 263,
+    "pending": 0,
+    "wins": 146,
     "losses": 111,
     "pushes": 6,
-    "win_rate": 0.5664,
-    "units_profit": 30.01,
-    "roi": 0.1198,
-    "streak": -2
+    "win_rate": 0.5681,
+    "units_profit": 30.88,
+    "roi": 0.1228,
+    "streak": 1
   },
   "nrfi": {
     "total": 0,
@@ -435,27 +435,27 @@
     },
     "total": {
       "total": 177,
-      "settled": 176,
-      "pending": 1,
-      "wins": 99,
+      "settled": 177,
+      "pending": 0,
+      "wins": 100,
       "losses": 71,
       "pushes": 6,
-      "win_rate": 0.5824,
-      "units_profit": 24.8,
-      "roi": 0.149,
-      "streak": -2
+      "win_rate": 0.5848,
+      "units_profit": 25.67,
+      "roi": 0.1533,
+      "streak": 1
     }
   },
   "by_sport": {
     "mlb": {
       "total": 161,
-      "settled": 160,
-      "pending": 1,
-      "wins": 81,
+      "settled": 161,
+      "pending": 0,
+      "wins": 82,
       "losses": 74,
-      "win_rate": 0.5226,
-      "units_profit": 8.52,
-      "roi": 0.055
+      "win_rate": 0.5256,
+      "units_profit": 9.39,
+      "roi": 0.0602
     },
     "nba": {
       "total": 90,
@@ -495,6 +495,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-07-31",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 7.5",
+      "matchup": "Pittsburgh Pirates @ Cincinnati Reds",
+      "odds": -115,
+      "result": "win",
+      "profit": 0.87,
+      "edge_pct": 1.27
+    },
     {
       "date": "2026-07-29",
       "sport": "mlb",
@@ -593,17 +604,6 @@
       "result": "win",
       "profit": 0.91,
       "edge_pct": 15.51
-    },
-    {
-      "date": "2026-05-27",
-      "sport": "nhl",
-      "market": "moneyline",
-      "team": "Carolina Hurricanes",
-      "matchup": "Carolina Hurricanes @ Montr\u00e9al Canadiens",
-      "odds": -142,
-      "result": "win",
-      "profit": 0.35,
-      "edge_pct": 12.12
     }
   ]
 }
