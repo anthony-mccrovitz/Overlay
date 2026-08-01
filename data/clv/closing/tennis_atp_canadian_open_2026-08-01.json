@@ -300,88 +300,6 @@
     ]
   },
   {
-    "event_id": "6638edcf1951091325eb55a11f0b5b27",
-    "sport": "tennis_atp_canadian_open",
-    "home_team": "Benjamin Bonzi",
-    "away_team": "Hugo Dellien",
-    "commence_time": "2026-08-01T18:30:00Z",
-    "captured_at": "2026-08-01T15:11:20.130174+00:00",
-    "mins_to_commence": 198.7,
-    "closing_final": false,
-    "BestHomeML": -492,
-    "BestAwayML": 385,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "Fanatics",
-    "all_odds": [
-      {
-        "EventID": "6638edcf1951091325eb55a11f0b5b27",
-        "HomeTeam": "Benjamin Bonzi",
-        "AwayTeam": "Hugo Dellien",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Benjamin Bonzi",
-        "Selection": "Benjamin Bonzi",
-        "Odds": -492,
-        "Line": null
-      },
-      {
-        "EventID": "6638edcf1951091325eb55a11f0b5b27",
-        "HomeTeam": "Benjamin Bonzi",
-        "AwayTeam": "Hugo Dellien",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Hugo Dellien",
-        "Selection": "Hugo Dellien",
-        "Odds": 372,
-        "Line": null
-      },
-      {
-        "EventID": "6638edcf1951091325eb55a11f0b5b27",
-        "HomeTeam": "Benjamin Bonzi",
-        "AwayTeam": "Hugo Dellien",
-        "Sportsbook": "Fanatics",
-        "Market": "h2h",
-        "Name": "Benjamin Bonzi",
-        "Selection": "Benjamin Bonzi",
-        "Odds": -525,
-        "Line": null
-      },
-      {
-        "EventID": "6638edcf1951091325eb55a11f0b5b27",
-        "HomeTeam": "Benjamin Bonzi",
-        "AwayTeam": "Hugo Dellien",
-        "Sportsbook": "Fanatics",
-        "Market": "h2h",
-        "Name": "Hugo Dellien",
-        "Selection": "Hugo Dellien",
-        "Odds": 385,
-        "Line": null
-      },
-      {
-        "EventID": "6638edcf1951091325eb55a11f0b5b27",
-        "HomeTeam": "Benjamin Bonzi",
-        "AwayTeam": "Hugo Dellien",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 21.0
-      },
-      {
-        "EventID": "6638edcf1951091325eb55a11f0b5b27",
-        "HomeTeam": "Benjamin Bonzi",
-        "AwayTeam": "Hugo Dellien",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 21.0
-      }
-    ]
-  },
-  {
     "event_id": "3d0d71bc0ef1ece9f2d144b21392c416",
     "sport": "tennis_atp_canadian_open",
     "home_team": "Shintaro Mochizuki",
@@ -952,6 +870,88 @@
         "Selection": "Under",
         "Odds": -115,
         "Line": 22.0
+      }
+    ]
+  },
+  {
+    "event_id": "6638edcf1951091325eb55a11f0b5b27",
+    "sport": "tennis_atp_canadian_open",
+    "home_team": "Benjamin Bonzi",
+    "away_team": "Hugo Dellien",
+    "commence_time": "2026-08-01T18:35:00Z",
+    "captured_at": "2026-08-01T18:33:28.891031+00:00",
+    "mins_to_commence": 1.5,
+    "closing_final": true,
+    "BestHomeML": -476,
+    "BestAwayML": 385,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Fanatics",
+    "all_odds": [
+      {
+        "EventID": "6638edcf1951091325eb55a11f0b5b27",
+        "HomeTeam": "Benjamin Bonzi",
+        "AwayTeam": "Hugo Dellien",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Benjamin Bonzi",
+        "Selection": "Benjamin Bonzi",
+        "Odds": -476,
+        "Line": null
+      },
+      {
+        "EventID": "6638edcf1951091325eb55a11f0b5b27",
+        "HomeTeam": "Benjamin Bonzi",
+        "AwayTeam": "Hugo Dellien",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Hugo Dellien",
+        "Selection": "Hugo Dellien",
+        "Odds": 372,
+        "Line": null
+      },
+      {
+        "EventID": "6638edcf1951091325eb55a11f0b5b27",
+        "HomeTeam": "Benjamin Bonzi",
+        "AwayTeam": "Hugo Dellien",
+        "Sportsbook": "Fanatics",
+        "Market": "h2h",
+        "Name": "Benjamin Bonzi",
+        "Selection": "Benjamin Bonzi",
+        "Odds": -525,
+        "Line": null
+      },
+      {
+        "EventID": "6638edcf1951091325eb55a11f0b5b27",
+        "HomeTeam": "Benjamin Bonzi",
+        "AwayTeam": "Hugo Dellien",
+        "Sportsbook": "Fanatics",
+        "Market": "h2h",
+        "Name": "Hugo Dellien",
+        "Selection": "Hugo Dellien",
+        "Odds": 385,
+        "Line": null
+      },
+      {
+        "EventID": "6638edcf1951091325eb55a11f0b5b27",
+        "HomeTeam": "Benjamin Bonzi",
+        "AwayTeam": "Hugo Dellien",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -117,
+        "Line": 20.5
+      },
+      {
+        "EventID": "6638edcf1951091325eb55a11f0b5b27",
+        "HomeTeam": "Benjamin Bonzi",
+        "AwayTeam": "Hugo Dellien",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -102,
+        "Line": 20.5
       }
     ]
   }
