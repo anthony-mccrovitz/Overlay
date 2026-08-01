@@ -377,7 +377,20 @@ def build_board(scoring_settings: dict | None = None,
     values = project(stats, db, scoring_settings)
     starters = starters_from_settings(roster_positions, teams)
     add_vorp(values, starters)
+
+    # Dynasty ADP covers everyone Sleeper prices; redraft ADP (real mock-draft
+    # rooms in our format) overrides it wherever it exists, because this is a
+    # redraft league and dynasty prices age differently — see redraft_adp.py.
     adp_map = sleeper.adp(season + 1)
+    try:
+        from src.fantasy import redraft_adp
+        adp_map = {**adp_map, **redraft_adp.adp_by_player_id(db, teams=teams,
+                                                             year=season + 1)}
+    except Exception as err:
+        # Degrade loudly: dynasty-only ADP misprices veteran RBs by rounds,
+        # which corrupts survival estimates. Never let this pass silently.
+        print(f"  ⚠ redraft ADP unavailable ({err}) — falling back to dynasty "
+              f"ADP; availability estimates for veteran RBs will be optimistic")
     add_adp(values, adp_map)
     # Impute AFTER real values exist, so the curve is fitted on genuine
     # projections rather than on other imputations.
