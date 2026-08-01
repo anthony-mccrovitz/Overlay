@@ -68,7 +68,16 @@ jobs:
           fi
           git commit -m "capture: line-movement snapshot $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
           for i in 1 2 3; do
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
-            git push origin "HEAD:${GITHUB_REF_NAME}" && break
-            echo "push attempt $i failed, retrying…"; sleep 5
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            echo "push attempt $i failed, retrying…"; sleep $((i * 4))
           done
+          # Falling out of the loop used to leave the trailing `sleep` as the
+          # step status (exit 0): a run that lost its snapshots to the
+          # ephemeral runner reported green. These snapshots are the only
+          # record of how a line moved between open and close.
+          echo "::error::line-movement snapshots could NOT be pushed — this run's odds history is lost"
+          exit 1

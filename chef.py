@@ -1665,11 +1665,17 @@ def cmd_scoreboard(args: argparse.Namespace) -> int:
     from src.config.grid import GRID, cell_state, is_prop
     from src.analytics.market_stats import market_stats, MarketStat
     from src.analytics.clv_gate import clv_gate
-    from src.pipeline.promoter import PROMOTE_BEAT_MIN, PROMOTE_ROI_MIN_N
-    # The EV floor the promotion gate enforces. Imported from the same module
-    # the gate reads so the scoreboard can never advertise a lane as READY that
-    # clears_promotion_gate would reject.
-    from src.config.model_standard import PROMOTE_MIN_EV
+    # The floors the promotion gate enforces. Imported from the same module the
+    # gate reads so the scoreboard can never advertise a lane as READY that
+    # clears_promotion_gate would reject. (These were imported from
+    # src.pipeline.promoter until 2026-08-01, when that module's private copy of
+    # the criterion was deleted — it had drifted to the retired beat-close rule.)
+    from src.config.model_standard import PROMOTE_MIN_EV, PROMOTE_MIN_N
+    PROMOTE_ROI_MIN_N = PROMOTE_MIN_N
+    # DISPLAY ONLY: what counts as a "full" beat-close bar. Beat-close no longer
+    # decides anything (it correlated -0.153 with realised ROI); it is still
+    # shown because it says whether the market agrees with us.
+    PROMOTE_BEAT_MIN = 55.0
 
     stats = market_stats()
 

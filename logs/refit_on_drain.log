@@ -1,0 +1,74 @@
+2026-08-01 08:22:49 crawl drained — refitting
+8639 bouts loaded; 4148 scoreable (2012+, both fighters ≥2 prior UFC bouts)
+
+Walk-forward — each year scored by a model that has not seen it:
+  2021:  n= 328  log-loss=0.6505  acc=62.5%  AUC=0.663
+  2022:  n= 345  log-loss=0.6586  acc=58.6%  AUC=0.639
+  2023:  n= 315  log-loss=0.6450  acc=61.6%  AUC=0.675
+  2024:  n= 358  log-loss=0.6233  acc=66.8%  AUC=0.712
+  2025:  n= 347  log-loss=0.6324  acc=66.3%  AUC=0.700
+  2026:  n= 193  log-loss=0.6182  acc=64.8%  AUC=0.719
+
+Global (career-wide) features — do they help?
+  global graph covers 78.7% of the ufcstats roster (need 55%)
+  2021:  base=0.6505  +global=0.6509  acc 62.5% -> 62.5%
+  2022:  base=0.6586  +global=0.6537  acc 58.6% -> 60.3%
+  2023:  base=0.6450  +global=0.6436  acc 61.6% -> 61.9%
+  2024:  base=0.6233  +global=0.6184  acc 66.8% -> 67.0%
+  2025:  base=0.6324  +global=0.6250  acc 66.3% -> 67.4%
+  2026:  base=0.6182  +global=0.6239  acc 64.8% -> 64.8%
+  mean: base=0.6380  +global=0.6359
+  -> global features EARN their place; shipping them
+
+  mean across 6 holdout years: acc=64.0%  log-loss=0.6359  (coin flip = 0.6931)
+
+Standardised weights (magnitude = influence on the prediction):
+  gelo     +0.407
+  age      -0.390
+  sapm     -0.212
+  pro_exp  -0.187
+  td15     +0.175
+  sdef     +0.141
+  slpm     +0.127
+  pro_layoff -0.125
+  elo      +0.117
+  reach    +0.102
+  sacc     +0.099
+  tddef    +0.088
+  finish   +0.083
+  tdacc    -0.076
+  kd15     -0.074
+  sub15    -0.066
+  layoff   +0.063
+  exp      -0.063
+  pro_form -0.063
+  top_share +0.050
+  ctrl     -0.047
+  form     -0.039
+  height   -0.010
+
+Wrote data/models/ufc/fight_model.json
+
+Debut model — fights where exactly one fighter has a UFC record:
+  debut 2019: n=106  flat=0.6819  model=0.7217  AUC=0.546
+  debut 2020: n= 85  flat=0.6690  model=0.6406  AUC=0.659
+  debut 2021: n= 75  flat=0.6629  model=0.6832  AUC=0.562
+  debut 2022: n= 76  flat=0.6682  model=0.6253  AUC=0.677
+  debut 2023: n=101  flat=0.7048  model=0.6573  AUC=0.657
+  debut 2024: n= 64  flat=0.6856  model=0.6337  AUC=0.680
+  debut 2025: n= 78  flat=0.7116  model=0.6591  AUC=0.670
+  debut 2026: n= 41  flat=0.7319  model=0.6003  AUC=0.772
+  debut mean: flat=0.6895  model=0.6527
+Wrote data/models/ufc/debut_model.json
+
+Global fallback — the fights the main model refuses:
+  global-fallback 2018: n=135  flat=0.6928  model=0.6613  AUC=0.643
+  global-fallback 2019: n=162  flat=0.6915  model=0.6608  AUC=0.644
+  global-fallback 2020: n=136  flat=0.6943  model=0.6685  AUC=0.641
+  global-fallback 2021: n=126  flat=0.6923  model=0.6469  AUC=0.657
+  global-fallback 2022: n=116  flat=0.6942  model=0.6597  AUC=0.631
+  global-fallback 2023: n=123  flat=0.6922  model=0.6962  AUC=0.567
+  global-fallback 2024: n= 88  flat=0.6939  model=0.6531  AUC=0.670
+  global-fallback 2025: n= 74  flat=0.6950  model=0.6905  AUC=0.578
+Wrote data/models/ufc/global_fallback.json
+2026-08-01 08:23:27 refit complete

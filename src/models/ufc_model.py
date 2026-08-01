@@ -376,22 +376,54 @@ class UFCModel:
             )
 
     def _fuzzy_match(self, fighter: str) -> str | None:
+        """Exact name, or an UNAMBIGUOUS surname+initial match. Never a surname alone.
+
+        The previous version matched on surname only and returned the FIRST
+        namesake in dict order. The ratings cache holds 24 Silvas, 19 Santoses
+        and 10 Oliveiras, so "Bruno Silva" could be priced with Erick Silva's
+        Glicko rating and style — and because `_is_known_fighter` delegates
+        here, the read was also stamped data_quality="known", defeating the
+        both-unknown skip in find_edges. It was written to fix the Chandler/Page
+        collision and fixed only the half of it that shares a FIRST name.
+
+        The rule this repo already applies everywhere identity is resolved
+        (sherdog.resolve, ufc_features.normalize_name): fold spelling, never
+        guess. Two candidates means we do not know who this is, and a miss must
+        stay a miss — an unrated fighter falls back to a default rating, which
+        is honest, where somebody else's record is a confident lie.
         """
-        Match last-name only — first-name collisions like "Michael Chandler" vs
-        "Michael Page" silently grabbed the wrong rating before this fix.
-        Two-step: exact, then last-name strict equality.
-        """
+        from src.models.ufc_features import normalize_name
+
         if fighter in self.ratings:
             return fighter
-        parts = fighter.strip().split()
-        if not parts:
+
+        # Spelling-only differences (diacritics, apostrophes, spacing) are the
+        # legitimate reason a name misses an exact match. normalize_name is the
+        # single source for that folding and never fuzzy-matches.
+        target = normalize_name(fighter)
+        if not target:
             return None
-        target_last = parts[-1].lower().strip(".")
+        exact = [n for n in self.ratings if normalize_name(n) == target]
+        if len(exact) == 1:
+            return exact[0]
+        if len(exact) > 1:
+            return None      # genuinely ambiguous even after folding
+
+        parts = target.split()
+        if len(parts) < 2:
+            return None
+        target_last, target_initial = parts[-1].strip("."), parts[0][:1]
+        if len(target_last) <= 3:
+            return None      # too short to identify anybody
+
+        cands = []
         for name in self.ratings:
-            cand_last = name.split()[-1].lower().strip(".")
-            if cand_last == target_last and len(cand_last) > 3:
-                return name
-        return None
+            np = normalize_name(name).split()
+            if len(np) < 2:
+                continue
+            if np[-1].strip(".") == target_last and np[0][:1] == target_initial:
+                cands.append(name)
+        return cands[0] if len(cands) == 1 else None
 
     def _get_rating(self, fighter: str) -> GlickoRating:
         name = self._fuzzy_match(fighter)

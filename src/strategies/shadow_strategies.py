@@ -751,9 +751,12 @@ def log_shadow_strategies(date_str: str | None = None,
                                  if n not in RETIRED_STRATEGIES]
     now_ts = datetime.now(tz=timezone.utc).isoformat()
 
-    blob = _load_picks()
-    all_picks = blob.setdefault("picks", [])
-    existing_ids = {p.get("pick_id") for p in all_picks if isinstance(p, dict)}
+    # Read-only: the ids we already hold, so a re-run is idempotent. The write
+    # itself goes through append_picks_safe (locked + atomic), so this snapshot
+    # is never the basis for rewriting the ledger — see the `fresh` list below.
+    existing_ids = {p.get("pick_id") for p in _load_picks().get("picks", [])
+                    if isinstance(p, dict)}
+    fresh: list[dict] = []
 
     added = 0
     for sport in sports:
@@ -811,12 +814,22 @@ def log_shadow_strategies(date_str: str | None = None,
                 pick["pick_id"] = f"{name}__{pick['pick_id']}"
                 if pick["pick_id"] in existing_ids:
                     continue
-                all_picks.append(pick)
+                fresh.append(pick)
                 existing_ids.add(pick["pick_id"])
-                added += 1
 
-    if added:
-        PICKS_FILE.write_text(json.dumps(blob, indent=2))
+    if fresh:
+        # THE LEDGER IS NEVER REWRITTEN FROM A SNAPSHOT HERE. This used to be
+        # `PICKS_FILE.write_text(blob)`: a lock-free, non-atomic read-modify-
+        # write of the canonical record. Two failure modes, both catastrophic
+        # and both silent — a crash mid-write truncates picks.json, and
+        # `_load_picks()` answers a truncated file with `{"picks": []}`, so the
+        # NEXT run would happily "append" today's shadow picks to nothing and
+        # write the whole history away. A concurrent append_picks_safe writer
+        # (grid_runner, chef) was also simply lost, last-writer-wins.
+        # append_picks_safe holds the exclusive lock, re-reads inside it, and
+        # renames atomically — and it is the normalization choke point.
+        from src.tracking.schema import append_picks_safe
+        added = append_picks_safe(PICKS_FILE, fresh)
         # Snapshot opening lines for the new shadow picks (reuses CLV engine).
         try:
             from src.analytics.clv_tracker import snapshot_from_pnl

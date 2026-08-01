@@ -129,3 +129,60 @@ class TestByLane:
         assert lanes[("mlb", "total")]["profit"] == pytest.approx(0.30)
         assert lanes[("mlb", "total")]["n"] == 2
         assert lanes[("mlb", "moneyline")]["profit"] == pytest.approx(9.0)
+
+
+# ── the game itself must match (found 2026-08-01) ───────────────────────────
+def _game_bet(matchup, line=8.5, direction="OVER"):
+    return {"pick_id": "personal_x", "date": "2026-08-01", "sport": "mlb",
+            "market": "total", "direction": direction, "team": f"{direction} {line}",
+            "line": line, "matchup": matchup, "odds": 105, "stake_dollars": 6.70,
+            "result": None}
+
+
+def _game_lab(matchup, result, line=8.5, direction="OVER"):
+    return {"pick_id": f"mlb_20260801_{direction.lower()}_{line}_{matchup[:6]}",
+            "date": "2026-08-01", "sport": "mlb", "market": "total",
+            "direction": direction, "team": f"{direction} {line}", "line": line,
+            "matchup": matchup, "result": result}
+
+
+def test_real_bet_never_inherits_another_games_result():
+    """A total's `team` is "OVER 8.5" — the same string in every game on the
+    slate that has that number. Date, sport, market, direction, line and team
+    can therefore ALL agree between two different games, and the autograder
+    used to take the first such lab pick it found. That writes a real dollar
+    loss from a game the owner never bet on.
+    """
+    from src.tracking.bankroll import autograde
+
+    bets = [_game_bet("Texas Rangers @ Houston Astros")]
+    lab = [_game_lab("Chicago Cubs @ San Diego Padres", "loss")]  # same line, other game
+    graded, n = autograde(bets, lab)
+
+    assert n == 0, "a bet was graded from a different game's result"
+    assert graded[0]["result"] is None
+    assert graded[0].get("profit_dollars") is None
+
+
+def test_real_bet_still_grades_from_its_own_game():
+    """The fix must not break the thing it protects: the right game still settles."""
+    from src.tracking.bankroll import autograde
+
+    bets = [_game_bet("Texas Rangers @ Houston Astros")]
+    lab = [_game_lab("Chicago Cubs @ San Diego Padres", "loss"),
+           _game_lab("Texas Rangers @ Houston Astros", "win")]
+    graded, n = autograde(bets, lab)
+
+    assert n == 1
+    assert graded[0]["result"] == "win"
+    assert graded[0]["profit_dollars"] > 0
+
+
+def test_bet_without_a_matchup_still_falls_back_to_the_team_test():
+    """Older rows carry no matchup; they must not become ungradable."""
+    from src.tracking.bankroll import autograde
+
+    bet = _game_bet("Texas Rangers @ Houston Astros")
+    bet.pop("matchup")
+    graded, n = autograde([bet], [_game_lab("Texas Rangers @ Houston Astros", "win")])
+    assert n == 1 and graded[0]["result"] == "win"

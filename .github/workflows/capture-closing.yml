@@ -109,7 +109,33 @@ jobs:
           git commit -m "capture: closing lines $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
           # Rebase on any concurrent commits (e.g. laptop cron) before pushing.
           for i in 1 2 3; do
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && \
-            git push origin "HEAD:${GITHUB_REF_NAME}" && break
-            echo "push attempt $i failed, retrying…"; sleep 5
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME}" \
+               && git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              exit 0
+            fi
+            # A conflicted rebase leaves unmerged files that doom every later
+            # attempt. Abort so the next try replays our commit on a clean tree.
+            git rebase --abort 2>/dev/null || true
+            echo "push attempt $i failed, retrying…"; sleep $((i * 4))
           done
+          # The runner is ephemeral: an unpushed archive dies with it, and a
+          # closing line cannot be backfilled. Falling out of this loop used to
+          # leave the step's status as the trailing `sleep` (exit 0) — a run
+          # that lost the window reported success and the alert step above,
+          # being `if: failure()`, never fired. Fail loudly instead.
+          echo "::error::closing-line archives could NOT be pushed — this window's CLV is lost"
+          exit 1
+
+      # The capture alert above is `if: failure()`, which only sees steps that
+      # ran BEFORE it — a push failure in the step above could never reach it.
+      # This one is last, so it covers the whole job.
+      - name: Alert on push failure — open a GitHub issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALERT_ONCE: "1"
+          ALERT_INTRO: "closing-line capture ran but could NOT commit its archives"
+          ALERT_FOOTER: "The capture itself may have succeeded — the archives died with the ephemeral runner because the push failed. Closing lines cannot be backfilled. Usual cause: a deterministic rebase conflict on data/clv/closing with another workflow."
+        run: |
+          echo "Push of captured closing archives failed after 3 retries. See the Actions run log for the git error." > /tmp/push_fail.out
+          bash scripts/alert_issue.sh "🚨 Closing-line capture could not push" /tmp/push_fail.out

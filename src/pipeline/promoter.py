@@ -4,9 +4,11 @@ promoter — the auto-validation engine (the factory's quality control).
 Runs nightly. Scores every registry lane on realized ROI (the ledger) AND
 closing-line value vs the SHARP market (Pinnacle), then:
 
-  • PROMOTES a shadow lane to live only if it clears the full statistical CLV
-    gate AND beats the sharp close AND has positive settled ROI — the honest,
-    conservative bar. Beating the loose book isn't enough; it must beat Pinnacle.
+  • PROMOTES a shadow lane to live only if `model_standard.clears_promotion_gate`
+    says so. That function is the ONLY promote decision in the system; this
+    module asks it and reports the answer. It does not carry its own copy of the
+    criterion — it used to, and the copy went stale when the gate moved from
+    beat-close to EV on 2026-07-30 (see _decide).
   • DEMOTES a live lane back to shadow the moment it goes cold (negative settled
     ROI or negative sharp CLV on a real sample). Demotion only removes risk, so
     it fires more readily than promotion.
@@ -31,9 +33,10 @@ from src.config.models import (
 from src.analytics.clv_gate import clv_gate
 from src.analytics.market_stats import market_stats
 
-# Thresholds. Promotion is strict (real money); demotion is lenient (removes risk).
-PROMOTE_ROI_MIN_N = 30      # settled picks required to trust ROI
-PROMOTE_BEAT_MIN = 55.0     # % of picks that must beat the sharp close
+# DEMOTION thresholds only. Promotion has no thresholds here by design — they
+# live in model_standard, the single source. Demotion keeps its own because it
+# only ever REMOVES risk, so a lane going cold should fall out faster than the
+# promote gate would re-admit it.
 DEMOTE_MIN_N = 30           # sample for a single-signal demotion (ROI or CLV alone)
 DEMOTE_CONFLUENCE_N = 10    # lower bar when ROI AND sharp CLV agree it's cold
 
@@ -71,7 +74,8 @@ def _gate_lookup(min_n: int) -> dict[tuple[str, str], dict]:
     return out
 
 
-def _decide(status: str, row: dict | None, st) -> tuple[str, str]:
+def _decide(status: str, row: dict | None, st,
+            sport: str = "", market: str = "") -> tuple[str, str]:
     """Return (recommended_status, reason) for one lane."""
     roi = st.roi if st else None
     roi_n = st.n if st else 0
@@ -93,17 +97,19 @@ def _decide(status: str, row: dict | None, st) -> tuple[str, str]:
             return "incubating", f"−CLV vs sharp close ({sharp:+.2f})"
         return "live", "holding — still positive"
 
-    # Shadow → promote only past the full sharp gate.
-    if not row or not row.get("is_candidate"):
-        return status, "holding — no CLV edge candidate"
-    if not (row.get("sharp_mean") and row["sharp_mean"] > 0):
-        return status, "holding — doesn't beat the sharp close"
-    if not (row.get("sharp_beat_pct") and row["sharp_beat_pct"] >= PROMOTE_BEAT_MIN):
-        return status, f"holding — sharp beat {row.get('sharp_beat_pct')}% < {PROMOTE_BEAT_MIN}%"
-    if not (roi is not None and roi_n >= PROMOTE_ROI_MIN_N and roi > 0):
-        return status, "holding — settled ROI not yet positive on a real sample"
-    return "live", (f"clears gate: sharp {row['sharp_mean']:+.2f}, "
-                    f"beat {row['sharp_beat_pct']:.0f}%, ROI {roi:+.1f}%")
+    # Shadow → live is NOT this module's decision to make. It delegates to
+    # model_standard.clears_promotion_gate, the single source, for the reason
+    # the invariant exists: this function used to carry its own copy of the
+    # PRE-2026-07-30 criterion (beat-close >= 55%, positive sharp mean, ROI on
+    # n>=30). That copy had no EV floor and no independence check, so with
+    # --apply it could write `status=live` for exactly the lanes the real gate
+    # refuses — mlb/moneyline (+0.09% EV over 1,132 bets, the lane that MOTIVATED
+    # the EV floor) and any lane whose sample is 4 clustered days. A promoted
+    # lane's picks become card_pick=True, so the divergence spends real money.
+    from src.config.model_standard import clears_promotion_gate
+    ok, why = clears_promotion_gate(sport, market)
+    return ("live" if ok else status), ("clears gate: " + why if ok
+                                        else "holding — " + why)
 
 
 def evaluate(min_n: int = 200) -> list[PromotionAction]:
@@ -117,7 +123,7 @@ def evaluate(min_n: int = 200) -> list[PromotionAction]:
             continue
         row = gate.get((sport, market))
         st = stats.get((sport, market))
-        rec, reason = _decide(status, row, st)
+        rec, reason = _decide(status, row, st, sport, market)
         ev = {}
         if st:
             ev.update({"roi": round(st.roi, 2) if st.roi is not None else None,

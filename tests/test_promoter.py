@@ -4,8 +4,10 @@ proven sharp edge and demotes cold live lanes.
 """
 from __future__ import annotations
 
+import pytest
+
 from src.analytics.market_stats import MarketStat
-from src.pipeline.promoter import _decide, PromotionAction, PROMOTE_BEAT_MIN
+from src.pipeline.promoter import _decide, PromotionAction
 
 
 def _stat(roi, n):
@@ -21,29 +23,43 @@ def _gate(is_candidate=True, sharp_mean=1.5, sharp_beat=60.0, sharp_n=200,
 
 
 class TestPromote:
-    def test_promotes_when_all_pass(self):
-        rec, _ = _decide("incubating", _gate(), _stat(roi=5.0, n=60))
-        assert rec == "live"
+    """Promotion is DELEGATED, so these test delegation, not thresholds.
 
-    def test_no_promote_without_candidate(self):
-        rec, _ = _decide("incubating", _gate(is_candidate=False), _stat(5.0, 60))
-        assert rec == "incubating"
+    Until 2026-08-01 this class asserted the promoter's own criterion — sharp
+    beat >= 55%, positive sharp mean, ROI on n>=30. That criterion was retired
+    on 2026-07-30 when the gate moved to EV vs the close (beat-close correlated
+    -0.153 with realised ROI; EV +0.494), and the promoter never followed. So
+    these tests kept passing while asserting the wrong rule — a test suite
+    guarding a copy is how the copy survives.
 
-    def test_no_promote_if_beats_book_but_not_sharp(self):
-        # positive vs best price, negative vs the sharp close → mirage, hold.
-        rec, _ = _decide("incubating", _gate(sharp_mean=-0.5), _stat(5.0, 60))
-        assert rec == "incubating"
+    The thresholds now live in ONE place and are tested there
+    (tests/test_model_standard.py); tests/test_gate_single_source.py pins that
+    every surface, including this one, asks that place.
+    """
 
-    def test_no_promote_if_sharp_beat_too_low(self):
-        rec, _ = _decide("incubating", _gate(sharp_beat=PROMOTE_BEAT_MIN - 5), _stat(5.0, 60))
-        assert rec == "incubating"
+    def _force_gate(self, monkeypatch, ok: bool, why: str = "forced"):
+        monkeypatch.setattr("src.config.model_standard.clears_promotion_gate",
+                            lambda s, m: (ok, why))
 
-    def test_no_promote_if_roi_negative(self):
-        rec, _ = _decide("incubating", _gate(), _stat(roi=-2.0, n=60))
-        assert rec == "incubating"
+    def test_promotes_when_the_gate_passes(self, monkeypatch):
+        self._force_gate(monkeypatch, True, "EV +4.10% on n=216")
+        rec, why = _decide("incubating", _gate(), _stat(roi=5.0, n=60), "mlb", "total")
+        assert rec == "live" and "EV +4.10%" in why
 
-    def test_no_promote_if_sample_too_small(self):
-        rec, _ = _decide("incubating", _gate(), _stat(roi=5.0, n=5))
+    def test_holds_when_the_gate_refuses(self, monkeypatch):
+        self._force_gate(monkeypatch, False, "clustered sample")
+        rec, why = _decide("incubating", _gate(), _stat(roi=5.0, n=60), "usa_mls", "moneyline")
+        assert rec == "incubating" and "clustered sample" in why
+
+    def test_gaudy_local_evidence_cannot_override_the_gate(self, monkeypatch):
+        """The failure this prevents: a lane that beats the close 71% of the
+        time on 500 picks with +25% ROI still does not promote if the gate
+        refuses it — that combination is exactly what a clustered, repriced
+        sample looks like from here."""
+        self._force_gate(monkeypatch, False, "only 4 distinct days")
+        rec, _ = _decide("incubating",
+                         _gate(sharp_beat=71.0, sharp_mean=2.5, n=500),
+                         _stat(roi=25.0, n=500), "usa_mls", "moneyline")
         assert rec == "incubating"
 
 

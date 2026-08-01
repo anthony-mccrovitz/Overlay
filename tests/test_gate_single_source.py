@@ -121,3 +121,60 @@ def test_promote_and_scoreboard_share_one_gate(monkeypatch, capsys):
     assert "READY" not in v
     assert "refused by THE gate" in v
     assert "refused by THE gate" in capsys.readouterr().out
+
+
+# ── the auto-promoter (the surface this test file missed) ────────────────────
+def test_auto_promoter_delegates_to_the_gate(monkeypatch):
+    """The third copy, found 2026-08-01.
+
+    src/pipeline/promoter.py carried the PRE-2026-07-30 criterion — beat-close
+    >= 55%, positive sharp mean, ROI on n>=30 — with no EV floor and no
+    independence check. `--apply` writes status=live to promotions.json, which
+    the registry reads, which makes that lane's picks card_pick=True. So the
+    divergence was not cosmetic like the scoreboard's: it could spend money on
+    a lane `chef.py promote` refuses.
+
+    This file existed and still missed it, because it only knew about the two
+    surfaces that had already bitten. Hence: assert the DELEGATION, not just
+    the agreement of the surfaces we happen to remember.
+    """
+    from src.pipeline import promoter
+
+    calls = _gate(monkeypatch, False, "clustered sample — refused by THE gate")
+    st = SimpleNamespace(roi=25.0, n=500, pnl=125.0)   # gaudy ROI, big sample
+    row = {"is_candidate": True, "sharp_mean": 2.5, "sharp_beat_pct": 71.0,
+           "mean": 2.5, "n": 500}                      # and it beats the close
+
+    rec, why = promoter._decide("incubating", row, st, "usa_mls", "moneyline")
+
+    assert calls == [("usa_mls", "moneyline")], \
+        "the promoter decided without asking the gate"
+    assert rec == "incubating", \
+        "promoter promoted a lane THE gate refuses — the divergence is back"
+    assert "refused by THE gate" in why
+
+
+def test_auto_promoter_promotes_when_the_gate_passes(monkeypatch):
+    """The other direction: delegation must not become a blanket refusal."""
+    from src.pipeline import promoter
+
+    _gate(monkeypatch, True, "EV +4.10% on n=216, ROI +9.0%, t=+3.49 SIGNIFICANT")
+    st = SimpleNamespace(roi=9.0, n=216, pnl=19.4)
+    rec, why = promoter._decide("incubating", {"is_candidate": True}, st,
+                                "mlb", "total")
+    assert rec == "live"
+    assert "EV +4.10%" in why
+
+
+def test_promoter_carries_no_private_promotion_thresholds():
+    """Structural: promotion constants in this module are how the copy grew
+    back last time. Demotion keeps its own (it only removes risk)."""
+    import inspect
+    from src.pipeline import promoter
+
+    code = "\n".join(line.split("#", 1)[0]
+                     for line in inspect.getsource(promoter).splitlines())
+    for banned in ("PROMOTE_BEAT_MIN", "PROMOTE_ROI_MIN_N"):
+        assert banned not in code, (
+            f"{banned} is back in promoter.py — promotion thresholds belong to "
+            "model_standard, which is the only module allowed to decide")

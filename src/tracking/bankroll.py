@@ -126,6 +126,18 @@ def _matches(bet: dict, lab: dict) -> bool:
         if b_line is None or l_line is None or abs(b_line - l_line) > 1e-6:
             return False
 
+    # THE GAME ITSELF. A total's `team` is the packed line label ("OVER 8.5"),
+    # which is identical across every game on the slate carrying that number —
+    # so team+market+line+direction can all agree while the two records describe
+    # different games. Before this check, a real $6.70 bet on Rangers/Astros
+    # OVER 8.5 would inherit whichever OVER 8.5 lab pick came first in the file
+    # and write that game's loss into the money ledger. Match the matchup
+    # whenever both sides carry one; a record without one falls through to the
+    # team test below rather than matching everything.
+    b_match, l_match = _slug(bet.get("matchup")), _slug(lab.get("matchup"))
+    if b_match and l_match and b_match != l_match:
+        return False
+
     b_team = _slug(bet.get("team"))
     if b_team and b_team != _slug(lab.get("team")):
         # Totals often carry a matchup rather than a team; allow a matchup hit.

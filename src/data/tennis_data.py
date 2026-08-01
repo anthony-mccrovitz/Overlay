@@ -285,8 +285,21 @@ def get_ratings(verbose: bool = False) -> dict:
 
 
 def _lookup(ratings_tour: dict[str, dict], odds_name: str) -> dict | None:
-    """Find a player record from an Odds API display name. Exact normalized
-    key first, then unique surname+initial, then unique surname."""
+    """Find a player record from an Odds API display name.
+
+    Exact normalized key, then unique surname+initial. NEVER a bare surname.
+
+    Keys are `surname initial` (norm_odds_name), so the surname+initial tier
+    already absorbs the legitimate variation it was built for — middle names
+    ("Juan Manuel Cerundolo"), compound surnames, accents. A bare-surname tier
+    can therefore only ever fire when the FIRST NAMES DISAGREE, which is the
+    definition of a different person: an unrated "Petros Tsitsipas" would
+    uniquely match "tsitsipas s" and be priced with Stefanos' Elo AND his match
+    count, sailing past the MIN_MATCHES_KNOWN confidence gate and blending up
+    to w=0.5 against the market anchor. Returning None instead yields
+    (1500, 0) → w=0 → pure market: no read, and no phantom edge. Removed
+    2026-08-01.
+    """
     key = norm_odds_name(odds_name)
     rec = ratings_tour.get(key)
     if rec is not None:
@@ -295,11 +308,6 @@ def _lookup(ratings_tour: dict[str, dict], odds_name: str) -> dict | None:
     last, initial = last_name_of(key), key[-1]
     cands = [r for k, r in ratings_tour.items()
              if last_name_of(k).split()[-1] == last.split()[-1] and k[-1] == initial]
-    if len(cands) == 1:
-        return cands[0]
-    # unique bare surname
-    cands = [r for k, r in ratings_tour.items()
-             if last_name_of(k).split()[-1] == last.split()[-1]]
     if len(cands) == 1:
         return cands[0]
     return None

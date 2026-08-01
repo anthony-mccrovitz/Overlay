@@ -7,6 +7,7 @@ win probability model but with a regression target (home_score + away_score).
 """
 from __future__ import annotations
 
+import datetime as _dt
 import pickle
 from pathlib import Path
 
@@ -358,9 +359,47 @@ def find_totals_edges(
         h_elo = 1500 + (h_win_pct - 0.5) * 400
         a_elo = 1500 + (a_win_pct - 0.5) * 400
 
+        # ── Features the model was TRAINED on and was never being SERVED ─────
+        # `has_pitcher_data` and `season_progress` were absent from these dicts,
+        # so predict_total's row builder defaulted both to 0. That told the tree
+        # "no starting-pitcher data, and it is March" on every live game — while
+        # feeding it real SP ERA/WHIP/K9 in the same row. Training defines
+        # has_pitcher_data as "BOTH starters have >=2 starts" and imputes
+        # league-average pitcher stats when it is 0, so the served model was
+        # systematically discounting the pitcher signal it was handed, in a
+        # regime the artifact only ever saw with imputed inputs.
+        # `pyth` was pinned at 0.5 on both sides, making pyth_diff identically 0
+        # for every game; training computes it from runs scored/allowed.
+        # (mlb_xgboost.py:510 / :571 / TeamStats.pyth are the definitions
+        # mirrored here — _pyth is imported rather than re-derived.)
+        from src.models.mlb_xgboost import _pyth
+
+        # Month drives season_progress exactly as in training. Prefer the game's
+        # own timestamp ("2026-08-01T23:10:00Z"); fall back to today only when
+        # the feed omits it — never to 0, which would claim pre-season.
+        gt = str(getattr(matchup, "game_time", "") or "")
+        try:
+            month = int(gt[5:7])
+            if not 1 <= month <= 12:
+                raise ValueError
+        except (ValueError, IndexError):
+            month = _dt.date.today().month
+        season_progress = max(0.0, min(1.0, (month - 3) / 7.0))
+        h_gs = getattr(matchup.home_pitcher, "games_started", 0) or 0
+        a_gs = getattr(matchup.away_pitcher, "games_started", 0) or 0
+        has_pitcher_data = 1.0 if (h_gs >= 2 and a_gs >= 2) else 0.0
+
+        h_rs_g, h_ra_g = ht.rs_per_game or 4.5, ht.ra_per_game or 4.5
+        a_rs_g, a_ra_g = at.rs_per_game or 4.5, at.ra_per_game or 4.5
+
         home_stats = {
-            "rs_g": ht.rs_per_game or 4.5, "ra_g": ht.ra_per_game or 4.5,
-            "pyth": 0.5, "win_pct": h_win_pct,
+            "rs_g": h_rs_g, "ra_g": h_ra_g,
+            "pyth": _pyth(h_rs_g, h_ra_g), "win_pct": h_win_pct,
+            "has_pitcher_data": has_pitcher_data,
+            "season_progress": season_progress,
+            # rs_std 2.5 is not a placeholder: it is exactly what TeamStats.rs_std
+            # returns when fewer than 5 games of run history are available, which
+            # is the only form of this stat the serve path can supply.
             "games": ht.games or 30, "rs_std": 2.5,
             "sp_era": h_sp_era,
             "sp_whip": matchup.home_pitcher.whip if matchup.home_pitcher else 1.3,
@@ -373,8 +412,10 @@ def find_totals_edges(
             "momentum": 0, "run_diff_g": 0, "home_pct": 0.5, "pyth_residual": 0,
         }
         away_stats = {
-            "rs_g": at.rs_per_game or 4.5, "ra_g": at.ra_per_game or 4.5,
-            "pyth": 0.5, "win_pct": a_win_pct,
+            "rs_g": a_rs_g, "ra_g": a_ra_g,
+            "pyth": _pyth(a_rs_g, a_ra_g), "win_pct": a_win_pct,
+            "has_pitcher_data": has_pitcher_data,
+            "season_progress": season_progress,
             "games": at.games or 30, "rs_std": 2.5,
             "sp_era": a_sp_era,
             "sp_whip": matchup.away_pitcher.whip if matchup.away_pitcher else 1.3,
