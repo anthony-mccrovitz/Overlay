@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-07-31T20:10:12.683228+00:00",
+  "generated_at": "2026-08-01T04:06:38.368361+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 103.19,
-  "n_settled": 7,
-  "n_pending": 261,
-  "wins": 2,
-  "losses": 5,
-  "staked": 31.88,
-  "pnl": -8.81,
-  "expected_pnl": 1.68,
-  "roi_pct": -27.63,
-  "max_drawdown": 17.91,
+  "end_bankroll": 104.31,
+  "n_settled": 9,
+  "n_pending": 271,
+  "wins": 3,
+  "losses": 6,
+  "staked": 39.97,
+  "pnl": -7.69,
+  "expected_pnl": 2.39,
+  "roi_pct": -19.24,
+  "max_drawdown": 22.04,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 61,
-    "exposure cap reached for the slate": 174,
-    "not settled yet": 20,
-    "resting order never filled": 6
+    "exposure cap reached for the slate": 184,
+    "not settled yet": 15,
+    "resting order never filled": 11
   },
   "significance": {
-    "mean_edge_per_unit": 0.0528,
-    "sd_per_unit": 1.6347,
-    "n_for_2sigma": 3827
+    "mean_edge_per_unit": 0.0603,
+    "sd_per_unit": 1.69,
+    "n_for_2sigma": 3140
   },
   "rows": [
     {
@@ -134,6 +134,38 @@
       "pnl": -4.3,
       "expected_pnl": 0.382,
       "equity": 103.19
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260731_seattle-storm_moneyline_win",
+      "date": "2026-07-31",
+      "team": "Seattle Storm",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.14,
+      "fair": 0.1588,
+      "stake": 4.13,
+      "shares": 29.5,
+      "result": "loss",
+      "pnl": -4.13,
+      "expected_pnl": 0.555,
+      "equity": 99.06
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260731_chicago-white-sox_moneyline_win",
+      "date": "2026-07-31",
+      "team": "Chicago White Sox",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.43,
+      "fair": 0.4466,
+      "stake": 3.96,
+      "shares": 9.21,
+      "result": "win",
+      "pnl": 5.25,
+      "expected_pnl": 0.153,
+      "equity": 104.31
     }
   ]
 }
