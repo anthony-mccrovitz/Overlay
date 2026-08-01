@@ -5,22 +5,23 @@
       "date": "2026-07-31",
       "sport": "mlb",
       "market": "total",
-      "direction": "WIN",
+      "direction": "over",
       "team": "OVER 7.5",
       "matchup": "Pirates @ Reds",
       "odds": -110,
-      "line": null,
+      "line": 7.5,
       "sportsbook": "Polymarket",
       "stake": 5.78,
       "stake_dollars": 5.78,
       "model_prob": null,
       "edge_pct": null,
       "card_pick": false,
-      "result": null,
-      "profit": null,
-      "profit_dollars": null,
+      "result": "win",
+      "profit": 5.23,
+      "profit_dollars": 5.23,
       "recorded_at": "2026-07-31T15:07:47.197149+00:00",
-      "resulted_at": null
+      "resulted_at": "2026-08-01T06:36:37.638011+00:00",
+      "graded_via": "manual: final PIT 7 @ CIN 8 (15 runs > 7.5)"
     }
   ]
 }
