@@ -1,0 +1,86 @@
+{
+  "pick_id": "mlb_20260801_over-8-5_total_over",
+  "date": "2026-08-01",
+  "sport": "mlb",
+  "market": "total",
+  "direction": "OVER",
+  "team": "OVER 8.5",
+  "matchup": "Texas Rangers @ Houston Astros",
+  "odds": 100,
+  "line": 8.5,
+  "sportsbook": "Hard Rock Bet",
+  "model_prob": 0.7574,
+  "model_prob_raw": NaN,
+  "edge_pct": 1.43,
+  "model_agreement": true,
+  "model_tier": "tier1",
+  "weather_context": null,
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-08-01T04:51:06.766275+00:00",
+  "resulted_at": null,
+  "team_form": {
+    "home": {
+      "team_id": 117,
+      "season_rs_per_g": 4.65,
+      "season_ra_per_g": 4.94,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 6.14,
+        "ra_per_game": 4.29,
+        "wins": 6,
+        "losses": 1,
+        "wl": "6-1"
+      },
+      "form_15d": {
+        "games": 13,
+        "lookback_days": 15,
+        "rs_per_game": 5.15,
+        "ra_per_game": 4.0,
+        "wins": 9,
+        "losses": 4,
+        "wl": "9-4"
+      }
+    },
+    "away": {
+      "team_id": 140,
+      "season_rs_per_g": 4.16,
+      "season_ra_per_g": 4.45,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 4.14,
+        "ra_per_game": 3.0,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 14,
+        "lookback_days": 15,
+        "rs_per_game": 4.21,
+        "ra_per_game": 5.36,
+        "wins": 6,
+        "losses": 8,
+        "wl": "6-8"
+      }
+    },
+    "snapshot_date": "2026-08-01"
+  },
+  "shadow_filter": {
+    "name": null,
+    "matchup_class": "one_hot",
+    "recommendation": "na",
+    "reason": "no shadow filter for market=total"
+  },
+  "raw_edge_pct": 2.0,
+  "model_version": null,
+  "strategy": null,
+  "tainted": null,
+  "clv_status": "heuristic",
+  "home_team": "Houston Astros",
+  "away_team": "Texas Rangers"
+}
