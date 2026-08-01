@@ -1,0 +1,98 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Jordan Hicks",
+      "team": "Jordan Hicks OVER 1.5",
+      "matchup": "Chicago White Sox @ Tampa Bay Rays",
+      "line": 1.5,
+      "odds": 160,
+      "model_prob": 0.9685,
+      "implied_prob": 0.3556,
+      "edge_pct": 61.29,
+      "model_mu": 5.9,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani UNDER 6.5",
+      "matchup": "Boston Red Sox @ Los Angeles Dodgers",
+      "line": 6.5,
+      "odds": -400,
+      "model_prob": 0.9539,
+      "implied_prob": 0.7368,
+      "edge_pct": 21.7,
+      "model_mu": 2.03,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "James Jarvis",
+      "team": "James Jarvis UNDER 0.5",
+      "matchup": "Washington Nationals @ Atlanta Braves",
+      "line": 0.5,
+      "odds": -325,
+      "model_prob": 0.9901,
+      "implied_prob": 0.6855,
+      "edge_pct": 30.46,
+      "model_mu": 0.01,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "James Wood",
+      "team": "James Wood UNDER 0.5",
+      "matchup": "Washington Nationals @ Atlanta Braves",
+      "line": 0.5,
+      "odds": 125,
+      "model_prob": 0.7048,
+      "implied_prob": 0.398,
+      "edge_pct": 30.68,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Jarren Duran",
+      "team": "Jarren Duran UNDER 2.5",
+      "matchup": "Boston Red Sox @ Los Angeles Dodgers",
+      "line": 2.5,
+      "odds": -950,
+      "model_prob": 0.9551,
+      "implied_prob": 0.8261,
+      "edge_pct": 12.9,
+      "model_mu": 0.78,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Kyle Schwarber",
+      "team": "Kyle Schwarber UNDER 0.5",
+      "matchup": "Philadelphia Phillies @ Baltimore Orioles",
+      "line": 0.5,
+      "odds": -340,
+      "model_prob": 0.8651,
+      "implied_prob": 0.6951,
+      "edge_pct": 17.0,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
