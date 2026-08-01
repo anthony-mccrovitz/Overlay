@@ -39,8 +39,14 @@ class TestGate:
         assert p["raw_edge_pct"] == 2.0        # the claimed native run-edge is pinned
         assert p["edge_pct"] <= 2.0            # calibration gate may shrink the stored edge
         assert p["odds"] == 100
-        assert p["pick_id"] == make_pick_id("mlb", DATE, "OVER 7.5", "total", "OVER")
-        assert p["pick_id"] == "mlb_20260726_over-7-5_total_over"
+        # The id carries the GAME. "OVER 7.5" is the same string in every game
+        # on the slate at that number, so an id without the matchup made two
+        # different wagers collide and dedup each other away — 64 totals picks
+        # were lost that way before 2026-08-01. The qualifier is what makes the
+        # key identify a bet rather than a price.
+        assert p["pick_id"] == make_pick_id("mlb", DATE, "OVER 7.5", "total",
+                                            "OVER", game=p["matchup"])
+        assert p["pick_id"] == "mlb_20260726_over-7-5_g-colroc-milbre_total_over"
         assert validate_pick(p) == []          # no missing canonical fields
 
     def test_card_gate_respects_edge_threshold(self):

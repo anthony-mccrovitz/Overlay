@@ -30,7 +30,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from src.data.odds_api import fetch_events_list, fetch_event_odds  # noqa: E402
+from src.data.odds_api import (  # noqa: E402
+    fetch_events_list, fetch_event_odds, OddsAPIUnavailable,
+)
 
 
 CLOSING_DIR = ROOT / "data" / "clv" / "closing"
@@ -257,6 +259,12 @@ def capture_sport(
                 markets=_base_markets_for(odds_api_sport),
                 refresh=True,
             )
+        except OddsAPIUnavailable:
+            # Quota/auth failure is not a per-event problem to skip past: every
+            # remaining event in this window will fail the same way, and
+            # continuing would end the run green having archived nothing. Let it
+            # reach main(), which exits non-zero so the alert fires.
+            raise
         except Exception as e:
             _log(f"  ERROR fetching {sport_key} base markets {ev_id}: {e}")
             continue
@@ -286,6 +294,8 @@ def capture_sport(
                 )
                 if extra_df is not None and not extra_df.empty:
                     all_rows += extra_df.to_dict(orient="records")
+            except OddsAPIUnavailable:
+                raise           # same reasoning as the base-markets call above
             except Exception as e:
                 _log(f"  WARN props fetch failed {sport_key} {ev_id}: {e}")
 
@@ -482,9 +492,19 @@ def main() -> None:
         pairs.append((args.sport, SPORTS[args.sport]))
 
     total = 0
-    for sk, odds_sport in pairs:
-        n = capture_sport(sk, odds_sport, lo, hi, args.force)
-        total += n
+    try:
+        for sk, odds_sport in pairs:
+            n = capture_sport(sk, odds_sport, lo, hi, args.force)
+            total += n
+    except OddsAPIUnavailable as e:
+        # The preflight checks quota once, at startup. A key that dies MID-RUN
+        # used to be invisible: the 401 was swallowed, a stale board came back,
+        # and it was archived as the close. Now the run dies here instead —
+        # loudly, non-zero, so the workflow's alert step opens an issue.
+        _log(f"  FATAL: {e}")
+        _log(f"  Captured {total} event(s) before the API became unavailable; "
+             f"the rest of this window is LOST and cannot be backfilled.")
+        sys.exit(2)
 
     # Golf outrights — separate futures capture (no per-game commence loop).
     if args.sport in ("all", "golf"):

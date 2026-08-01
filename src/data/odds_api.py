@@ -33,6 +33,17 @@ SPREAD_LINE_ABS_MAX = 3.5
 CACHE_DIR = Path("data/cache/odds")
 API_BASE = "https://api.the-odds-api.com/v4"
 
+
+class OddsAPIUnavailable(RuntimeError):
+    """We could not ASK the market — not an answer about the market.
+
+    Raised on 401/429 (key rejected, quota exhausted). The distinction matters
+    because the alternative — returning a cached or empty board — is
+    indistinguishable downstream from "this event has no odds", and that is how
+    a stale pre-game price gets archived as a closing line, or a capture run
+    reports green having archived nothing.
+    """
+
 # ── Anthony's sportsbook accounts ─────────────────────────────────────────────
 # API keys used in all bookmakers= params. Edit here to add/remove a book.
 # espnbet  = ESPN Bet (shows as "theScore Bet" in API — same platform)
@@ -614,10 +625,23 @@ def fetch_event_odds(
 
     try:
         resp = requests.get(url, params=params, timeout=30)
-        if resp.status_code in (401, 404, 429):
-            if cache.exists():
-                with open(cache) as f:
-                    return _parse_event_odds(json.load(f))
+        # 401/429 mean WE COULD NOT ASK — bad key, or quota gone. Serving the
+        # cache here was the bug: capture_closing calls this twice per event
+        # with the same markets string, so both calls share one cache file. The
+        # pre-game call (up to 90 min out) writes it; the closing call (25 min
+        # out, refresh=True) would get a 401, silently receive that same
+        # ~70-minute-old board back, and archive it with closing_final=True.
+        # A pre-game price recorded as the closing line is permanent, invisible,
+        # and poisons every CLV verdict computed from it. "Couldn't check" must
+        # never render as an answer.
+        if resp.status_code in (401, 429):
+            raise OddsAPIUnavailable(
+                f"Odds API returned {resp.status_code} for event {event_id} "
+                f"({sport}). Quota exhausted or key rejected — NOT serving the "
+                f"cached board, which would be archived as a closing line.")
+        # 404 is a real answer: the event is gone from the board (finished,
+        # postponed, or never priced). An empty frame is the truth there.
+        if resp.status_code == 404:
             return pd.DataFrame()
 
         resp.raise_for_status()

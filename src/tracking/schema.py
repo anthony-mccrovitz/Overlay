@@ -117,6 +117,7 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
             existing_by_id = {p.get("pick_id", ""): p for p in data["picks"]
                               if isinstance(p, dict) and p.get("pick_id")}
             added = 0
+            collisions: list[str] = []
             for pick in new_picks:
                 norm = normalize_pick(pick)
                 if norm is None:
@@ -134,6 +135,15 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                     cur = existing_by_id[pid]
                     if _is_ungraded(cur):
                         cur["card_pick"] = merged.get("card_pick", cur.get("card_pick"))
+                    # A COLLISION IS NOT ALWAYS A RE-LOG. Same id + different
+                    # game means two distinct wagers fighting over one key, and
+                    # the loser vanishes. That is how 90 picks were lost before
+                    # the id carried the matchup. Re-logging the identical bet
+                    # (same game) is normal and stays quiet.
+                    if _differs_by_game(cur, merged):
+                        collisions.append(
+                            f"{pid}: kept {cur.get('matchup')!r}, "
+                            f"DROPPED {merged.get('matchup')!r}")
                     continue
                 data["picks"].append(merged)
                 existing_by_id[pid] = merged
@@ -149,9 +159,29 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                 os.unlink(tmp_path)
                 raise
 
+            if collisions:
+                print(f"  [picks] {len(collisions)} pick(s) DROPPED on an id "
+                      f"collision between different games — this is data loss, "
+                      f"not deduplication:")
+                for c in collisions[:5]:
+                    print(f"    {c}")
+                if len(collisions) > 5:
+                    print(f"    … and {len(collisions) - 5} more")
+
             return added
         finally:
             fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def _differs_by_game(a: dict, b: dict) -> bool:
+    """True when two picks sharing an id describe DIFFERENT games.
+
+    Only meaningful when both carry a matchup: an older row without one cannot
+    be shown to be a different game, and guessing would turn every ordinary
+    re-log into a false alarm.
+    """
+    ma, mb = str(a.get("matchup") or "").strip(), str(b.get("matchup") or "").strip()
+    return bool(ma and mb and ma.lower() != mb.lower())
 
 
 def rewrite_picks_safe(path: str | Path, data: dict) -> None:
@@ -298,19 +328,58 @@ _DEFAULT_DIRECTION: dict[str, str] = {
 
 # ─────────────────────────── Public helpers ─────────────────────────────────
 
-def make_pick_id(sport: str, date: str, team: str, market: str, direction: str) -> str:
+def make_pick_id(sport: str, date: str, team: str, market: str,
+                 direction: str, game: str = "") -> str:
     """
     Deterministic pick ID — safe to use as a deduplication key.
 
-    Format: "{sport}_{YYYYMMDD}_{team-slug}_{market}_{direction}"
+    Format: "{sport}_{YYYYMMDD}_{team-slug}[_{game-slug}]_{market}_{direction}"
     Examples:
       mlb_20260418_milwaukee-brewers_moneyline_win
       nba_20260417_orlando-magic_spread_cover
-      mlb_20260418_over-8.5_total_over
+      mlb_20260418_over-8.5_g-tex-hou_total_over
+
+    WHY `game` EXISTS. `team` does not always identify a game. For a total it is
+    the packed line label ("OVER 7.5"), which is the SAME STRING in every game
+    on the slate carrying that number; for a doubleheader it is the same team
+    twice. The id was therefore not unique per wager, and `append_picks_safe`
+    dedups on it — so the second and third OVER 7.5 games of a day were silently
+    discarded. Measured on the source boards: 90 picks lost this way (64 totals,
+    26 moneylines), including on mlb/total, the one lane betting real money,
+    whose record was consequently built from a first-in-file-wins sample.
+
+    `game` is a short slug of the matchup, not the full string: ids get read by
+    humans in logs, and a 60-character id helps nobody.
     """
     date_c = date.replace("-", "")[:8]
     slug   = re.sub(r"[^a-z0-9]+", "-", team.lower()).strip("-")[:40]
-    return f"{sport}_{date_c}_{slug}_{market}_{direction}".lower()
+    parts  = [sport, date_c, slug]
+    if game:
+        parts.append(_game_slug(game))
+    parts += [market, direction]
+    return "_".join(parts).lower()
+
+
+def _game_slug(matchup: str) -> str:
+    """'Texas Rangers @ Houston Astros' -> 'g-texran-houast'.
+
+    CITY + NICKNAME, never the first two words. A city-only slug collapses
+    'New York Yankees' and 'New York Mets' onto each other, which would
+    reintroduce the very collision this qualifier exists to prevent — the
+    nickname is the distinguishing token in every co-located pair (Cubs/White
+    Sox, Angels/Dodgers, Yankees/Mets).
+    """
+    sides = re.split(r"\s+@\s+|\s+vs\.?\s+", str(matchup or "").strip(), maxsplit=1)
+    out = []
+    for side in sides[:2]:
+        words = re.sub(r"[^a-z0-9 ]+", "", side.lower()).split()
+        if not words:
+            out.append("x")
+        elif len(words) == 1:
+            out.append(words[0][:6])
+        else:
+            out.append(words[0][:3] + words[-1][:3])
+    return ("g-" + "-".join(out)) if out else ""
 
 
 def profit_from_odds(odds: int | float, stake: float, won: bool) -> float:
@@ -602,7 +671,10 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
         if raw_sport in _SPORT_ALIASES and pick_id.startswith(raw_sport + "_"):
             pick_id = sport + pick_id[len(raw_sport):]
     else:
-        pick_id = make_pick_id(sport, date_, team, market, direction)
+        # The matchup qualifies the id so two games sharing a line (or a
+        # doubleheader sharing a team) cannot dedup each other away.
+        pick_id = make_pick_id(sport, date_, team, market, direction,
+                               game=str(raw.get("matchup") or ""))
 
     norm = {
         "pick_id":         pick_id,

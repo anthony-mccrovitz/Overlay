@@ -282,6 +282,7 @@ def snapshot_opening_lines(
     now_ts   = datetime.now(tz=timezone.utc).isoformat()
     date_str = effective_date.isoformat()
     added    = 0
+    _skipped_no_price: list[str] = []
 
     try:
         from src.analytics.entry_fair import EntryBoards, attach_entry_fair
@@ -299,6 +300,17 @@ def snapshot_opening_lines(
             continue
 
         odds = float(pick.get("BestOdds") or pick.get("odds") or pick.get("best_odds") or 0)
+        if not odds:
+            # NO ENTRY PRICE, NO SNAPSHOT. `_odds_to_implied(0)` returns 0.5, so
+            # a pick whose price was never captured used to be recorded as
+            # having been taken at even money — a number nobody quoted. 467 such
+            # rows accumulated, 86 of them carrying a fully invented clv_ev_pct
+            # averaging +5.37%, and they were enough to flip mlb/moneyline's
+            # gate reading from −0.36% to +0.07% EV. CLV is the difference
+            # between the price we got and the close; with no price there is no
+            # difference to measure, and silence is the honest answer.
+            _skipped_no_price.append(f"{date_str} {team}")
+            continue
         # opening_line + direction are what the spread/total/f5 scorer needs to
         # compute line CLV (the points you got, not just the price). MLB spread
         # picks store the line in a dedicated `line` field (team is just the team
@@ -330,6 +342,14 @@ def snapshot_opening_lines(
         snapshots.append(snap)
         snap_keys.add(key)
         added += 1
+
+    if _skipped_no_price:
+        # Reported, never silent: a pick we could not price is a GAP in the CLV
+        # record, and a gap that prints nothing is indistinguishable from a
+        # clean run. Naming them is what makes a capture problem findable.
+        print(f"  [CLV] {len(_skipped_no_price)} pick(s) had no entry price and "
+              f"were NOT snapshotted: {', '.join(_skipped_no_price[:5])}"
+              + (" …" if len(_skipped_no_price) > 5 else ""))
 
     if added > 0:
         _save_snapshots(snapshots)
@@ -371,6 +391,7 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
 
     now_ts = datetime.now(tz=timezone.utc).isoformat()
     added = 0
+    _skipped_no_price: list[str] = []
 
     # Entry-side no-vig boards (lazy, one cache read per sport, zero API cost).
     # Devigging the ENTRY is what makes clv_novig honest — see entry_fair.py.
@@ -418,6 +439,9 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
             continue
 
         odds = float(pick.get("odds") or pick.get("best_odds") or 0)
+        if not odds:
+            _skipped_no_price.append(f"{effective_date} {team}")
+            continue        # see snapshot_opening_lines — no price, no evidence
         line = pick.get("line")
         # ── Extract clean player name for prop CLV matching ───────────────────
         # Prop picks store "Player Name OVER 5.5" in `team`. Closing-archive
@@ -477,6 +501,10 @@ def snapshot_from_pnl(date_str: str | None = None) -> int:
         _save_snapshots(snapshots)
     if repaired:
         print(f"  [CLV] repaired entry-fair on {repaired} existing snapshot(s)")
+    if _skipped_no_price:
+        print(f"  [CLV] {len(_skipped_no_price)} pick(s) had no entry price and "
+              f"were NOT snapshotted: {', '.join(_skipped_no_price[:5])}"
+              + (" …" if len(_skipped_no_price) > 5 else ""))
 
     return added
 

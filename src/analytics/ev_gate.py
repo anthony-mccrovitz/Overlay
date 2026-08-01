@@ -118,6 +118,24 @@ def _usable_ev(r: dict) -> float | None:
     """The row's EV if it may count as lane evidence, else None."""
     if r.get("tainted"):
         return None
+    # FABRICATED ENTRY PRICE. Snapshots built before 2026-08-01 coerced a
+    # missing price to 0, and _odds_to_implied(0) returns 0.5 — so the row
+    # claims we entered at even money, a price nobody quoted. 467 such rows
+    # exist and 86 carry an invented clv_ev_pct averaging +5.37%: enough to
+    # flip mlb/moneyline from −0.36% to +0.07% and read as an edge. The
+    # builders now refuse to write these, but the history is on disk forever,
+    # so the READ side has to reject them too.
+    # The signature is a stored ZERO, not an absent field: all 15,636 rows on
+    # disk carry opening_odds, and exactly the 467 poisoned ones carry 0.
+    # Rejecting absence too would discard rows whose price is simply held
+    # elsewhere, which is a different (and unproven) claim.
+    _open_odds = r.get("opening_odds")
+    if _open_odds is not None:
+        try:
+            if float(_open_odds) == 0.0:
+                return None
+        except (TypeError, ValueError):
+            return None
     ev = r.get("clv_ev_pct")
     if ev is None:
         return None
