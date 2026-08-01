@@ -1,0 +1,157 @@
+{
+  "classes": [
+    "ko_tko",
+    "submission",
+    "decision"
+  ],
+  "feature_order": [
+    "ko_offense",
+    "sub_offense",
+    "ko_vuln",
+    "sub_vuln",
+    "dec_tendency",
+    "ko_match",
+    "sub_match",
+    "experience",
+    "min_record"
+  ],
+  "coefficients": {
+    "ko_offense": [
+      0.034992429560498195,
+      -0.20115332267074842,
+      0.1661608931102915
+    ],
+    "sub_offense": [
+      -0.2259010793338302,
+      0.08339119591027157,
+      0.14250988342350243
+    ],
+    "ko_vuln": [
+      0.04221232289651985,
+      0.00045161834186456155,
+      -0.0426639412383823
+    ],
+    "sub_vuln": [
+      -0.10072049103725365,
+      0.11275170119026003,
+      -0.01203121015299239
+    ],
+    "dec_tendency": [
+      -0.164530711607844,
+      -0.29264739788596106,
+      0.4571781094937723
+    ],
+    "ko_match": [
+      0.18446553009927671,
+      -0.05846427005004859,
+      -0.12600126004922022
+    ],
+    "sub_match": [
+      0.12447642542221897,
+      -0.04997741305893162,
+      -0.07449901236318468
+    ],
+    "experience": [
+      0.15891389773840012,
+      -0.09622234126092541,
+      -0.06269155647745253
+    ],
+    "min_record": [
+      -0.15098143692591065,
+      -0.1289170171746105,
+      0.27989845410061315
+    ]
+  },
+  "intercept": [
+    0.14926048248660218,
+    0.13294345320061404,
+    -0.28220393568726426
+  ],
+  "feature_mean": {
+    "ko_offense": 0.6018826400218549,
+    "sub_offense": 0.6936160572968859,
+    "ko_vuln": 0.4895635678431328,
+    "sub_vuln": 0.60234141952495,
+    "dec_tendency": 0.6995038810894768,
+    "ko_match": 0.2965764294060632,
+    "sub_match": 0.4314520685917019,
+    "experience": 3.4192620628883756,
+    "min_record": 1.1946576300777927
+  },
+  "feature_sd": {
+    "ko_offense": 0.16012514858227442,
+    "sub_offense": 0.18872087921625938,
+    "ko_vuln": 0.161882253135414,
+    "sub_vuln": 0.2111499759027294,
+    "dec_tendency": 0.1963197861759253,
+    "ko_match": 0.12477889590450744,
+    "sub_match": 0.2115777616302348,
+    "experience": 1.7307831757830259,
+    "min_record": 1.0298482850894057
+  },
+  "metadata": {
+    "n_train": 247972,
+    "walk_forward": [
+      {
+        "year": 2019,
+        "n": 11081,
+        "log_loss": 1.0199,
+        "base_log_loss": 1.1171,
+        "accuracy": 0.4759,
+        "base_accuracy": 0.2934
+      },
+      {
+        "year": 2020,
+        "n": 4601,
+        "log_loss": 1.0129,
+        "base_log_loss": 1.127,
+        "accuracy": 0.4812,
+        "base_accuracy": 0.2793
+      },
+      {
+        "year": 2021,
+        "n": 7572,
+        "log_loss": 1.0237,
+        "base_log_loss": 1.1261,
+        "accuracy": 0.4715,
+        "base_accuracy": 0.2689
+      },
+      {
+        "year": 2022,
+        "n": 8596,
+        "log_loss": 1.0064,
+        "base_log_loss": 1.1205,
+        "accuracy": 0.4953,
+        "base_accuracy": 0.2663
+      },
+      {
+        "year": 2023,
+        "n": 7694,
+        "log_loss": 1.018,
+        "base_log_loss": 1.117,
+        "accuracy": 0.4819,
+        "base_accuracy": 0.2694
+      },
+      {
+        "year": 2024,
+        "n": 6573,
+        "log_loss": 1.0206,
+        "base_log_loss": 1.1189,
+        "accuracy": 0.4808,
+        "base_accuracy": 0.2667
+      },
+      {
+        "year": 2025,
+        "n": 5653,
+        "log_loss": 1.0058,
+        "base_log_loss": 1.1133,
+        "accuracy": 0.4875,
+        "base_accuracy": 0.2556
+      }
+    ],
+    "mean_holdout_log_loss": 1.0153,
+    "mean_base_log_loss": 1.12,
+    "years_better_than_base": 7,
+    "note": "Fitted by scripts/train_method.py on the Sherdog global bout graph. Predicts HOW a fight ends, not who wins. Ships only while it beats the point-in-time base rate."
+  }
+}

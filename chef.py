@@ -3626,7 +3626,44 @@ def cmd_heartbeat(args: argparse.Namespace) -> int:
 
 
 
-def _print_card_bouts(fights) -> None:
+def _method_reader():
+    """(ledger, model, slug_fn) for method-of-victory, or None if unavailable.
+
+    Built once per card: the ledger replays 268k bouts, so doing it per fight
+    would be the same waste the win model's build_ledger call already avoids.
+    Any failure returns None and the card simply omits the line — a missing
+    method read is not a reason to lose the whole card.
+    """
+    try:
+        from src.models.method_model import build_method_ledger, MethodModel
+        from src.models.global_elo import name_to_slug
+        from src.models.ufc_features import normalize_name, build_ledger
+        model = MethodModel()
+        if not model.ok:
+            return None
+        led = build_method_ledger()
+        n2s = name_to_slug()
+        ufc_led, _ = build_ledger()
+
+        def slug(name: str):
+            nn = normalize_name(name)
+            dob = (ufc_led.tott.get(nn) or {}).get("dob")
+            s = n2s.get((nn, dob.isoformat() if dob else None)) or n2s.get((nn, None))
+            if s is None:
+                try:
+                    from src.data.sherdog import resolve
+                    f = resolve(name, dob=dob)
+                    s = f.slug if f else None
+                except Exception:
+                    s = None
+            return s
+
+        return led, model, slug
+    except Exception:
+        return None
+
+
+def _print_card_bouts(fights, method=None) -> None:
     """One block of bouts, shared by the official-card and fallback paths."""
     for b in fights:
         r = b.read
@@ -3654,6 +3691,17 @@ def _print_card_bouts(fights) -> None:
             print(f"      pro   : {b.fighter_a} — {b.pro_record_a}")
         if b.pro_record_b:
             print(f"      pro   : {b.fighter_b} — {b.pro_record_b}")
+        if method is not None:
+            led_m, mmodel, slug = method
+            sa, sb = slug(b.fighter_a), slug(b.fighter_b)
+            if sa and sb:
+                from src.models.method_model import read_method
+                mr = read_method(led_m, sa, sb, mmodel)
+                if mr.basis == "model":
+                    thin = " *" if mr.note else ""
+                    print(f"      ends  : KO/TKO {mr.ko_tko:.0%} · sub "
+                          f"{mr.submission:.0%} · decision {mr.decision:.0%}"
+                          f"   (inside the distance {mr.finish:.0%}){thin}")
         for d in r.drivers:
             print(f"        · {d}")
         if r.note:
@@ -3730,7 +3778,7 @@ def cmd_card(args: argparse.Namespace) -> int:
             print(f"\n  {line}")
             print(f"  {name} — OFFICIAL CARD, broadcast order")
             print(f"  {line}")
-            _print_card_bouts(obouts)
+            _print_card_bouts(obouts, method=_method_reader())
             _print_card_summary(obouts, line)
             return 0
 
