@@ -1,0 +1,33 @@
+[
+  {
+    "sport": "tennis_wta_washington_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Jessica Pegula",
+    "matchup": "Alexandra Eala vs Jessica Pegula",
+    "odds": -170,
+    "model_prob": 0.7033,
+    "model_prob_raw": 0.7746,
+    "market_fair": 0.6319,
+    "model_weight": 0.5,
+    "implied_prob": 0.5915,
+    "edge_pct": 11.17,
+    "sportsbook": "Caesars",
+    "surface": "clay",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_washington_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Alexandra Eala @ Jessica Pegula",
+    "odds": -130,
+    "best_odds": -130,
+    "line": 21.5,
+    "model_prob": 0.5628,
+    "implied_prob": 0.519,
+    "edge_pct": 4.37,
+    "sportsbook": "Caesars"
+  }
+]
