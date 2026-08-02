@@ -631023,6 +631023,44 @@
       "clv_status": "heuristic",
       "home_team": "Am\u00e9rica",
       "away_team": "Santos Laguna"
+    },
+    {
+      "pick_id": "lineshop_baseball_mlb_20260802_los-angeles-angels_moneyline_hardrockbet",
+      "date": "2026-08-02",
+      "sport": "mlb",
+      "market": "moneyline",
+      "direction": "HOME",
+      "team": "Los Angeles Angels",
+      "matchup": "Milwaukee Brewers @ Los Angeles Angels",
+      "odds": 210,
+      "line": null,
+      "sportsbook": "Hard Rock",
+      "model_prob": 0.3294,
+      "edge_pct": 0.0,
+      "stake": 0.0,
+      "card_pick": false,
+      "strategy": "line_shop",
+      "fair_source": "pinnacle",
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-08-02T14:01:21.589244+00:00",
+      "resulted_at": null,
+      "model_prob_raw": null,
+      "raw_edge_pct": 2.11,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "team_form missing or incomplete"
+      },
+      "tainted": null,
+      "clv_status": "heuristic",
+      "home_team": "Los Angeles Angels",
+      "away_team": "Milwaukee Brewers"
     }
   ]
 }
