@@ -630986,6 +630986,43 @@
       "clv_status": "heuristic",
       "home_team": "Atlanta Dream",
       "away_team": "Las Vegas Aces"
+    },
+    {
+      "pick_id": "soccer_mexico_ligamx_20260802_am-rica_g-sanlag-amrica_moneyline_win",
+      "date": "2026-08-02",
+      "sport": "soccer_mexico_ligamx",
+      "market": "moneyline",
+      "direction": "WIN",
+      "team": "Am\u00e9rica",
+      "matchup": "Santos Laguna @ Am\u00e9rica",
+      "odds": -225,
+      "line": null,
+      "sportsbook": "DraftKings",
+      "model_prob": 0.6968,
+      "model_prob_raw": null,
+      "edge_pct": 4.3,
+      "raw_edge_pct": 4.3,
+      "stake": 0.5,
+      "card_pick": false,
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-08-02T13:52:07.863679+00:00",
+      "resulted_at": null,
+      "model_version": null,
+      "model_tier": "tier1",
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "strategy": null,
+      "tainted": null,
+      "clv_status": "heuristic",
+      "home_team": "Am\u00e9rica",
+      "away_team": "Santos Laguna"
     }
   ]
 }
