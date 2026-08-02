@@ -184,10 +184,16 @@ class TestChokePoint:
                          team="OVER 8.5", line=8.5, model_prob=0.62,
                          edge_pct=edge, card_pick=card, player=None)
 
-    def test_ungraded_card_refreshes_on_relog(self, tmp_path):
+    def test_ungraded_card_refreshes_on_relog(self, tmp_path, monkeypatch):
         # A registry change (retuned totals band) must propagate to an already-
         # logged pick whose line didn't move — its pick_id collides, but as long
         # as it's UNGRADED the refreshed gate decision wins.
+        # Pin the shrink table: these tests exercise REFRESH MECHANICS, and an
+        # un-pinned table re-gates the seeded edges with whatever k last
+        # night's pipeline measured (k drift turned 1.5 → 0.95 → demoted, and
+        # this test started failing on data, not code).
+        import src.analytics.calibration_gate as gate
+        monkeypatch.setattr(gate, "_load_table", lambda: {})
         path = tmp_path / "picks.json"
         assert append_picks_safe(path, [self._totals(0.5, False)]) == 1   # shadow
         assert json.loads(path.read_text())["picks"][0]["card_pick"] is False
@@ -197,8 +203,11 @@ class TestChokePoint:
         assert len(picks) == 1
         assert picks[0]["card_pick"] is True                              # refreshed
 
-    def test_graded_card_never_refreshed_on_relog(self, tmp_path):
+    def test_graded_card_never_refreshed_on_relog(self, tmp_path, monkeypatch):
         # A SETTLED pick is immutable — re-logging must never flip its card_pick.
+        # Table pinned for the same reason as the refresh test above.
+        import src.analytics.calibration_gate as gate
+        monkeypatch.setattr(gate, "_load_table", lambda: {})
         path = tmp_path / "picks.json"
         assert append_picks_safe(path, [self._totals(1.5, True)]) == 1    # in band → card
         data = json.loads(path.read_text())
