@@ -1694,7 +1694,16 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
             is_home = team.lower() == home_team.lower() if home_team else False
             direction = ("HOME" if is_home else "AWAY") if market == "moneyline" else "COVER" if market == "spread" else "OVER"
 
-        pick_id = make_pick_id("mlb", today, team, market, direction)
+        def _clean_field(val):
+            if val is None: return ""
+            s = str(val).strip()
+            return "" if s.lower() in ("nan", "none") else s
+        matchup = _clean_field(pick.get("Matchup")) or _clean_field(pick.get("Opponent")) or ""
+
+        # game=matchup is REQUIRED, not decorative: without it this id and the
+        # one normalize_pick mints for the same wager differ (no g- segment),
+        # so append_picks_safe can't collide them and the card double-counts.
+        pick_id = make_pick_id("mlb", today, team, market, direction, game=matchup)
         if pick_id in existing_ids:
             continue
 
@@ -1714,12 +1723,6 @@ def _auto_log_picks(picks_list: list[dict], game_date: date | None = None) -> in
                 line = float(pick.get("BetLine") or pick.get("MarketLine") or 0) or None
             except (ValueError, TypeError):
                 line = None
-
-        def _clean_field(val):
-            if val is None: return ""
-            s = str(val).strip()
-            return "" if s.lower() in ("nan", "none") else s
-        matchup = _clean_field(pick.get("Matchup")) or _clean_field(pick.get("Opponent")) or ""
         edge_raw = pick.get("Edge")
         try:
             edge_val = float(edge_raw) if edge_raw is not None else None
@@ -1883,11 +1886,13 @@ def _auto_log_props(props_list: list[dict], sport: str = "mlb", game_date: date 
         # Use the SPECIFIC prop type (batter_hits, pitcher_strikeouts, …) as the
         # market so each prop is its own CLV-tracked market, not a generic 'prop'.
         market_key = market if market and market != "prop" else "prop"
-        pick_id = make_pick_id(sport, today, team_label, market_key, direction)
+        matchup = str(prop.get("matchup") or prop.get("opp") or "").strip()
+        # game=matchup: same wager logged by a writer that routes through
+        # normalize_pick gets a g- qualified id — without it here the ids
+        # differ and dedup is blind (see _auto_log_picks).
+        pick_id = make_pick_id(sport, today, team_label, market_key, direction, game=matchup)
         if pick_id in existing_ids:
             continue
-
-        matchup = str(prop.get("matchup") or prop.get("opp") or "").strip()
         # Form lookup via matchup home/away split — prop "team" is player name
         _tf = None
         if _form_by_team and matchup:

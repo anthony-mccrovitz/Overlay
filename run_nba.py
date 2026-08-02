@@ -570,7 +570,11 @@ def _auto_log_nba_picks(edges: list[dict], today: str) -> int:
         if not team:
             continue
 
-        pick_id = make_pick_id("nba", date_str, team, market, direction)
+        # game=matchup keeps this id identical to the one normalize_pick mints
+        # for the same wager — totals share a team label ("OVER 220.5") across
+        # the slate, so an unqualified id either dedups distinct games away or
+        # (via a second writer) double-logs the same one.
+        pick_id = make_pick_id("nba", date_str, team, market, direction, game=matchup)
         if pick_id in existing_ids:
             continue
 

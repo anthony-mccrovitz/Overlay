@@ -808,6 +808,53 @@ def migrate_picks_file(path_in: str, path_out: str | None = None) -> dict:
         deduplicated += 1
         if _quality(p) > _quality(cur):
             best_by_id[pid] = p
+
+    # Collapse game-slug twins: one wager logged under a g- qualified id
+    # (…_over-6-5_g-newyan-chicub_total_over) by one writer and under the
+    # unqualified id (…_over-6-5_total_over) by another. The exact-id dedup
+    # above cannot see the pair, so a card pick counts twice — 3 doubled card
+    # totals were live on 2026-08-02 when this landed. The g- id survives
+    # (every writer mints it now, so the next pipeline run collides against
+    # it); the _quality-better row's fields win and its gaps fill from the
+    # twin. Matchups must MATCH to merge — an unqualified "OVER 7.5" from a
+    # different game on the same slate is a distinct wager, not a twin.
+    _g_seg = re.compile(r"_g-[a-z0-9-]+(?=_)")
+    base_to_g: dict[str, list[str]] = {}
+    for gid in best_by_id:
+        if "_g-" not in gid:
+            continue
+        base = _g_seg.sub("", gid, count=1)
+        if base != gid and base in best_by_id:
+            base_to_g.setdefault(base, []).append(gid)
+
+    def _fill_gaps(dst: dict, src: dict) -> None:
+        for k, v in src.items():
+            cur = dst.get(k)
+            blank = cur is None or cur == "" or (isinstance(cur, float) and cur != cur)
+            if blank and v is not None and v != "":
+                dst[k] = v
+
+    for base, gids in base_to_g.items():
+        b_row = best_by_id[base]
+        same_game = [g for g in gids
+                     if (b_row.get("matchup") or "") == (best_by_id[g].get("matchup") or "")]
+        if len(same_game) != 1:
+            continue  # ambiguous (doubleheader) or different games — keep both
+        gid = same_game[0]
+        g_row = best_by_id[gid]
+        primary, other = (g_row, b_row)
+        if _quality(b_row) > _quality(g_row) or (
+            _quality(b_row) == _quality(g_row)
+            and (b_row.get("recorded_at") or "") > (g_row.get("recorded_at") or "")
+        ):
+            primary, other = b_row, g_row
+        merged = dict(primary)
+        _fill_gaps(merged, other)
+        merged["pick_id"] = gid
+        best_by_id[gid] = merged
+        del best_by_id[base]
+        deduplicated += 1
+
     deduped = list(best_by_id.values())
 
     # Restore chronological order
