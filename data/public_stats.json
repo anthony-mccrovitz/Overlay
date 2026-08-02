@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-02T04:57:47.201596+00:00",
+  "updated_at": "2026-08-02T06:42:45.294859+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -389,15 +389,15 @@
   },
   "summary": {
     "total_picks": 272,
-    "settled": 265,
-    "pending": 7,
+    "settled": 266,
+    "pending": 6,
     "wins": 148,
-    "losses": 111,
+    "losses": 112,
     "pushes": 6,
-    "win_rate": 0.5714,
-    "units_profit": 32.88,
-    "roi": 0.1297,
-    "streak": 3
+    "win_rate": 0.5692,
+    "units_profit": 31.88,
+    "roi": 0.1253,
+    "streak": -1
   },
   "nrfi": {
     "total": 0,
@@ -435,27 +435,27 @@
     },
     "total": {
       "total": 186,
-      "settled": 179,
-      "pending": 7,
+      "settled": 180,
+      "pending": 6,
       "wins": 102,
-      "losses": 71,
+      "losses": 72,
       "pushes": 6,
-      "win_rate": 0.5896,
-      "units_profit": 27.67,
-      "roi": 0.1632,
-      "streak": 3
+      "win_rate": 0.5862,
+      "units_profit": 26.67,
+      "roi": 0.1564,
+      "streak": -1
     }
   },
   "by_sport": {
     "mlb": {
       "total": 170,
-      "settled": 163,
-      "pending": 7,
+      "settled": 164,
+      "pending": 6,
       "wins": 84,
-      "losses": 74,
-      "win_rate": 0.5316,
-      "units_profit": 11.39,
-      "roi": 0.0721
+      "losses": 75,
+      "win_rate": 0.5283,
+      "units_profit": 10.39,
+      "roi": 0.0653
     },
     "nba": {
       "total": 90,
@@ -495,6 +495,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-08-01",
+      "sport": "mlb",
+      "market": "total",
+      "team": "UNDER 10.5",
+      "matchup": "Detroit Tigers @ Athletics",
+      "odds": 105,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.22
+    },
     {
       "date": "2026-08-01",
       "sport": "mlb",
@@ -593,17 +604,6 @@
       "result": "loss",
       "profit": -0.5,
       "edge_pct": 8.99
-    },
-    {
-      "date": "2026-06-05",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 216.5",
-      "matchup": "New York Knicks @ San Antonio Spurs",
-      "odds": -105,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 15.69
     }
   ]
 }
