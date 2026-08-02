@@ -1572,6 +1572,68 @@ def _settle_game_pick(pick: dict, game_info: dict) -> str | None:
     return pick["result"]
 
 
+def _norm_name(s: str) -> str:
+    """Canonical person/team name key: diacritics and apostrophes stripped.
+
+    The ledger writes "Mateusz Rebecki" while ESPN says "Mateusz Rębecki",
+    and "L'udovit Klein" vs "Ludovit Klein" — a .lower() comparison misses
+    both, and every missed name is a pick that silently stays pending.
+    grade_backlog._norm delegates here; don't grow a second copy.
+    """
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s or ""))
+    s = "".join(ch for ch in s if not unicodedata.combining(ch))
+    return s.lower().replace("&", "and").replace("'", "").replace("’", "").strip()
+
+
+def _espn_winner_lookup(winners: dict[str, str], team: str) -> str | None:
+    """'win'|'loss' for a name from an ESPN winner map, or None.
+
+    Diacritic-insensitive exact match first; then a last-name match that must
+    be UNIQUE — two Silvas on one card is a refusal, not a coin flip.
+    """
+    t = _norm_name(team)
+    by_norm = {_norm_name(k): v for k, v in winners.items()}
+    if t in by_norm:
+        return by_norm[t]
+    last = t.split()[-1] if t.split() else ""
+    if last and len(last) > 3:
+        hits = [v for k, v in by_norm.items() if k.split() and k.split()[-1] == last]
+        if len(hits) == 1:
+            return hits[0]
+    return None
+
+
+def _fetch_mma_winners_espn(date_str: str) -> dict[str, str]:
+    """ESPN UFC scoreboard → {normed_fighter_name: 'win'|'loss'} for one date.
+
+    This is the durable MMA results source: the Odds API drops a finished
+    card from /scores/ within hours (the 2026-08-01 Fight Night was gone by
+    the next morning), so it cannot be the only path. grade_backlog's sweep
+    delegates here too.
+    """
+    import requests
+    try:
+        r = requests.get(
+            "https://site.api.espn.com/apis/site/v2/sports/mma/ufc/scoreboard",
+            params={"dates": date_str}, headers={"User-Agent": "Mozilla/5.0"}, timeout=12,
+        )
+        if r.status_code != 200:
+            return {}
+        out: dict[str, str] = {}
+        for ev in r.json().get("events", []):
+            for comp in ev.get("competitions", []):
+                if not comp.get("status", {}).get("type", {}).get("completed"):
+                    continue
+                for c in comp.get("competitors", []):
+                    name = c.get("athlete", {}).get("displayName", "")
+                    if name and c.get("winner") is not None:
+                        out[_norm_name(name)] = "win" if c.get("winner") else "loss"
+        return out
+    except Exception:
+        return {}
+
+
 def _grade_sport_generic(
     sport_key: str,
     sport_name: str,
@@ -1627,6 +1689,21 @@ def _grade_sport_generic(
         else:
             print(f"  No {sport_name} completed games found for {date_str}")
             return
+    elif not games and sport_key == "mma_mixed_martial_arts":
+        # MMA fallback: same winner-map shape as tennis. A card straddles UTC
+        # midnight (prelims one date, main card the next) and pick dates are
+        # ET-anchored, so merge the surrounding days' maps before giving up.
+        print("  Odds API has no MMA scores — falling back to ESPN UFC scoreboard...")
+        base_day = datetime.strptime(date_compact, "%Y%m%d")
+        for off in (-1, 0, 1):
+            day = (base_day + timedelta(days=off)).strftime("%Y%m%d")
+            espn_winners.update(_fetch_mma_winners_espn(day))
+        if espn_winners:
+            n_bouts = sum(1 for v in espn_winners.values() if v == "win")
+            print(f"  ESPN: {n_bouts} completed bout(s) found.")
+        else:
+            print(f"  No {sport_name} completed games found for {date_str}")
+            return
     elif not games:
         print(f"  No {sport_name} completed games found for {date_str}")
         return
@@ -1641,17 +1718,14 @@ def _grade_sport_generic(
         odds   = float(pick["odds"])
         sign   = "+" if odds > 0 else ""
 
-        # ── Tennis: use ESPN winner lookup (no game_info structure) ──────────
+        # ── Tennis/MMA: ESPN winner lookup (no game_info structure) ──────────
         if espn_winners:
-            t_lower = team.lower().strip()
-            result = espn_winners.get(t_lower)
-            if result is None:
-                # last-name fallback
-                last = t_lower.split()[-1] if t_lower.split() else ""
-                for wname, res in espn_winners.items():
-                    if last and len(last) > 3 and wname.split()[-1] == last:
-                        result = res
-                        break
+            if sport_key == "mma_mixed_martial_arts" and market != "moneyline":
+                # A winner map can't settle method/round props — leave them for
+                # a grader that knows the finish, don't guess.
+                print(f"  ⚫ UNGRADED  {team} — {market} not gradeable from a winner map")
+                continue
+            result = _espn_winner_lookup(espn_winners, team)
             if result is None:
                 print(f"  ⚫ UNGRADED  {team} — not found in ESPN results")
                 continue

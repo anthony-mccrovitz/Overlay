@@ -56,10 +56,8 @@ _MANUAL_ONLY_PREFIXES = ("golf", "auto_racing")
 
 
 def _norm(s: str) -> str:
-    import unicodedata
-    s = unicodedata.normalize("NFKD", str(s or ""))
-    s = "".join(ch for ch in s if not unicodedata.combining(ch))
-    return s.lower().replace("&", "and").strip()
+    # Delegates — grade._norm_name is the one name-normalization implementation.
+    return grade._norm_name(s)
 
 
 def _matchup_teams(pick: dict) -> tuple[str, str]:
@@ -199,27 +197,8 @@ def _settle(pick: dict, info: dict) -> str | None:
 
 
 def _fetch_mma_winners(date_str: str) -> dict[str, str]:
-    """ESPN UFC scoreboard → {fighter_name_lower: 'win'|'loss'} for one date."""
-    import requests
-    try:
-        r = requests.get(
-            "https://site.api.espn.com/apis/site/v2/sports/mma/ufc/scoreboard",
-            params={"dates": date_str}, headers={"User-Agent": "Mozilla/5.0"}, timeout=12,
-        )
-        if r.status_code != 200:
-            return {}
-        out: dict[str, str] = {}
-        for ev in r.json().get("events", []):
-            for comp in ev.get("competitions", []):
-                if not comp.get("status", {}).get("type", {}).get("completed"):
-                    continue
-                for c in comp.get("competitors", []):
-                    name = c.get("athlete", {}).get("displayName", "")
-                    if name and c.get("winner") is not None:
-                        out[_norm(name)] = "win" if c.get("winner") else "loss"
-        return out
-    except Exception:
-        return {}
+    """Delegates — grade._fetch_mma_winners_espn is the one ESPN winner map."""
+    return grade._fetch_mma_winners_espn(date_str)
 
 
 def _void_reason(pick: dict) -> str | None:
