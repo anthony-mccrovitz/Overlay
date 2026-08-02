@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-01T14:40:44.923027+00:00",
+  "updated_at": "2026-08-02T03:43:17.912291+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -378,8 +378,8 @@
     },
     "totals_coverage": {
       "scored": 355,
-      "scoreable": 634,
-      "pct": 56.0
+      "scoreable": 636,
+      "pct": 55.8
     },
     "spread_coverage": {
       "scored": 300,
@@ -389,15 +389,15 @@
   },
   "summary": {
     "total_picks": 266,
-    "settled": 263,
-    "pending": 3,
-    "wins": 146,
+    "settled": 265,
+    "pending": 1,
+    "wins": 148,
     "losses": 111,
     "pushes": 6,
-    "win_rate": 0.5681,
-    "units_profit": 30.88,
-    "roi": 0.1228,
-    "streak": 1
+    "win_rate": 0.5714,
+    "units_profit": 32.88,
+    "roi": 0.1297,
+    "streak": 3
   },
   "nrfi": {
     "total": 0,
@@ -435,27 +435,27 @@
     },
     "total": {
       "total": 180,
-      "settled": 177,
-      "pending": 3,
-      "wins": 100,
+      "settled": 179,
+      "pending": 1,
+      "wins": 102,
       "losses": 71,
       "pushes": 6,
-      "win_rate": 0.5848,
-      "units_profit": 25.67,
-      "roi": 0.1533,
-      "streak": 1
+      "win_rate": 0.5896,
+      "units_profit": 27.67,
+      "roi": 0.1632,
+      "streak": 3
     }
   },
   "by_sport": {
     "mlb": {
       "total": 164,
-      "settled": 161,
-      "pending": 3,
-      "wins": 82,
+      "settled": 163,
+      "pending": 1,
+      "wins": 84,
       "losses": 74,
-      "win_rate": 0.5256,
-      "units_profit": 9.39,
-      "roi": 0.0602
+      "win_rate": 0.5316,
+      "units_profit": 11.39,
+      "roi": 0.0721
     },
     "nba": {
       "total": 90,
@@ -495,6 +495,28 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-08-01",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 6.5",
+      "matchup": "New York Yankees @ Chicago Cubs",
+      "odds": 100,
+      "result": "win",
+      "profit": 1.0,
+      "edge_pct": 1.43
+    },
+    {
+      "date": "2026-08-01",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 8.5",
+      "matchup": "Texas Rangers @ Houston Astros",
+      "odds": 100,
+      "result": "win",
+      "profit": 1.0,
+      "edge_pct": 1.43
+    },
     {
       "date": "2026-07-31",
       "sport": "mlb",
@@ -582,28 +604,6 @@
       "result": "loss",
       "profit": -1.0,
       "edge_pct": 15.69
-    },
-    {
-      "date": "2026-06-03",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 219.0",
-      "matchup": "New York Knicks @ San Antonio Spurs",
-      "odds": -109,
-      "result": "loss",
-      "profit": -1.0,
-      "edge_pct": 14.2
-    },
-    {
-      "date": "2026-05-29",
-      "sport": "nba",
-      "market": "total",
-      "team": "OVER 212.5",
-      "matchup": "San Antonio Spurs @ Oklahoma City Thunder",
-      "odds": -110,
-      "result": "win",
-      "profit": 0.91,
-      "edge_pct": 15.51
     }
   ]
 }
