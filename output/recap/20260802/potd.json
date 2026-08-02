@@ -1,0 +1,85 @@
+{
+  "pick_id": "mlb_20260802_over-6-5_g-newyan-chicub_total_over",
+  "date": "2026-08-02",
+  "sport": "mlb",
+  "market": "total",
+  "direction": "OVER",
+  "team": "OVER 6.5",
+  "matchup": "New York Yankees @ Chicago Cubs",
+  "odds": -110,
+  "line": 6.5,
+  "sportsbook": "Hard Rock Bet",
+  "model_prob": 0.7517,
+  "model_prob_raw": NaN,
+  "edge_pct": 1.21,
+  "raw_edge_pct": 1.9,
+  "stake": 1.0,
+  "card_pick": true,
+  "result": null,
+  "profit": null,
+  "recorded_at": "2026-08-02T04:53:52.796189+00:00",
+  "resulted_at": null,
+  "model_version": null,
+  "model_tier": "tier1",
+  "weather_context": "\ud83d\udca8 8mph in \u2192 -0.4 runs",
+  "team_form": {
+    "home": {
+      "team_id": 112,
+      "season_rs_per_g": 5.13,
+      "season_ra_per_g": 4.32,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 6.29,
+        "ra_per_game": 2.86,
+        "wins": 5,
+        "losses": 2,
+        "wl": "5-2"
+      },
+      "form_15d": {
+        "games": 15,
+        "lookback_days": 15,
+        "rs_per_game": 5.67,
+        "ra_per_game": 3.13,
+        "wins": 9,
+        "losses": 6,
+        "wl": "9-6"
+      }
+    },
+    "away": {
+      "team_id": 147,
+      "season_rs_per_g": 4.59,
+      "season_ra_per_g": 3.82,
+      "form_7d": {
+        "games": 7,
+        "lookback_days": 7,
+        "rs_per_game": 3.71,
+        "ra_per_game": 3.86,
+        "wins": 4,
+        "losses": 3,
+        "wl": "4-3"
+      },
+      "form_15d": {
+        "games": 15,
+        "lookback_days": 15,
+        "rs_per_game": 3.2,
+        "ra_per_game": 3.53,
+        "wins": 8,
+        "losses": 7,
+        "wl": "8-7"
+      }
+    },
+    "snapshot_date": "2026-08-02"
+  },
+  "shadow_filter": {
+    "name": null,
+    "matchup_class": "mixed",
+    "recommendation": "na",
+    "reason": "no shadow filter for market=total"
+  },
+  "strategy": null,
+  "tainted": null,
+  "clv_status": "heuristic",
+  "home_team": "Chicago Cubs",
+  "away_team": "New York Yankees"
+}

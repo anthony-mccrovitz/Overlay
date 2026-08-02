@@ -1,66 +1,84 @@
 {
-  "updated_at": "2026-08-01T14:40:44.437642Z",
-  "date": "2026-08-01",
+  "updated_at": "2026-08-02T07:47:39.678876Z",
+  "date": "2026-08-02",
   "record": {
-    "wins": 146,
-    "losses": 111,
+    "wins": 148,
+    "losses": 112,
     "pushes": 6,
-    "units": 30.88,
-    "roi_pct": 12.28,
-    "win_rate_pct": 56.8,
-    "streak": 1,
-    "settled": 263,
-    "avg_odds": "-30",
-    "total_card": 263
+    "units": 31.88,
+    "roi_pct": 12.53,
+    "win_rate_pct": 56.9,
+    "streak": -1,
+    "settled": 266,
+    "avg_odds": "-29",
+    "total_card": 266
   },
   "picks": {
     "mlb": [
       {
-        "matchup": "Texas Rangers @ Houston Astros",
-        "selection": "OVER 8.5",
+        "matchup": "New York Yankees @ Chicago Cubs",
+        "selection": "OVER 6.5",
         "market": "total",
-        "odds": "+100",
+        "odds": "-110",
         "stake": "1u",
         "sportsbook": "Hard Rock Bet",
-        "reasoning": "Model leans over the total in Texas Rangers @ Houston Astros. Pace and matchup signal point that way at +100.",
+        "reasoning": "Model leans over the total in New York Yankees @ Chicago Cubs. Pace and matchup signal point that way at -110.",
         "result": "pending"
       },
       {
         "matchup": "Detroit Tigers @ Athletics",
-        "selection": "UNDER 10.5",
+        "selection": "UNDER 11.0",
         "market": "total",
-        "odds": "+105",
+        "odds": "-110",
         "stake": "1u",
-        "sportsbook": "Hard Rock Bet",
-        "reasoning": "Model leans under the total in Detroit Tigers @ Athletics. Pace and matchup signal point that way at +105.",
+        "sportsbook": "Caesars",
+        "reasoning": "Model leans under the total in Detroit Tigers @ Athletics. Pace and matchup signal point that way at -110.",
         "result": "pending"
       },
       {
-        "matchup": "New York Yankees @ Chicago Cubs",
-        "selection": "OVER 6.5",
+        "matchup": "Philadelphia Phillies @ Baltimore Orioles",
+        "selection": "OVER 8.0",
         "market": "total",
-        "odds": "+100",
+        "odds": "-105",
         "stake": "1u",
         "sportsbook": "DraftKings",
-        "reasoning": "Model leans over the total in New York Yankees @ Chicago Cubs. Pace and matchup signal point that way at +100.",
+        "reasoning": "Model leans over the total in Philadelphia Phillies @ Baltimore Orioles. Pace and matchup signal point that way at -105.",
         "result": "pending"
       }
     ]
   },
   "featured": {
     "pick": {
-      "matchup": "Texas Rangers @ Houston Astros",
-      "selection": "OVER 8.5",
+      "matchup": "New York Yankees @ Chicago Cubs",
+      "selection": "OVER 6.5",
       "market": "total",
-      "odds": "+100",
+      "odds": "-110",
       "stake": "1u",
       "sportsbook": "Hard Rock Bet",
-      "reasoning": "Model leans over the total in Texas Rangers @ Houston Astros. Pace and matchup signal point that way at +100.",
+      "reasoning": "Model leans over the total in New York Yankees @ Chicago Cubs. Pace and matchup signal point that way at -110.",
       "result": "pending"
     },
     "sport": "MLB"
   },
   "ticker": [
+    {
+      "sport": "MLB",
+      "matchup": "TIG @ ATH",
+      "result": "L",
+      "units": -1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "YAN @ CUB",
+      "result": "W",
+      "units": 1.0
+    },
+    {
+      "sport": "MLB",
+      "matchup": "RAN @ AST",
+      "result": "W",
+      "units": 1.0
+    },
     {
       "sport": "MLB",
       "matchup": "PIR @ RED",
@@ -150,27 +168,36 @@
       "matchup": "ROC @ ATH",
       "result": "L",
       "units": -1.0
-    },
-    {
-      "sport": "MLB",
-      "matchup": "ROC @ ATH",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "KNI @ SPU",
-      "result": "L",
-      "units": -1.0
-    },
-    {
-      "sport": "NBA",
-      "matchup": "KNI @ SPU",
-      "result": "L",
-      "units": -1.0
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-08-01",
+      "sport": "MLB",
+      "matchup": "TIG @ ATH",
+      "pick": "U 10.5",
+      "odds": "+105",
+      "result": "LOSS",
+      "pl": -1.0
+    },
+    {
+      "date": "2026-08-01",
+      "sport": "MLB",
+      "matchup": "YAN @ CUB",
+      "pick": "O 6.5",
+      "odds": "+100",
+      "result": "WIN",
+      "pl": 1.0
+    },
+    {
+      "date": "2026-08-01",
+      "sport": "MLB",
+      "matchup": "RAN @ AST",
+      "pick": "O 8.5",
+      "odds": "+100",
+      "result": "WIN",
+      "pl": 1.0
+    },
     {
       "date": "2026-07-31",
       "sport": "MLB",
@@ -233,33 +260,6 @@
       "odds": "+105",
       "result": "WIN",
       "pl": 1.05
-    },
-    {
-      "date": "2026-06-13",
-      "sport": "NBA",
-      "matchup": "KNI @ SPU",
-      "pick": "O 217.0",
-      "odds": "-108",
-      "result": "LOSS",
-      "pl": -1.0
-    },
-    {
-      "date": "2026-06-13",
-      "sport": "NBA",
-      "matchup": "KNI @ SPU",
-      "pick": "O 216.5",
-      "odds": "-110",
-      "result": "LOSS",
-      "pl": -1.0
-    },
-    {
-      "date": "2026-06-12",
-      "sport": "MLB",
-      "matchup": "ROC @ ATH",
-      "pick": "U 13.5",
-      "odds": "-105",
-      "result": "WIN",
-      "pl": 0.95
     }
   ],
   "equity_curve": [
@@ -482,6 +482,10 @@
     {
       "date": "2026-07-31",
       "units": 30.88
+    },
+    {
+      "date": "2026-08-01",
+      "units": 31.88
     }
   ],
   "models": [
@@ -493,14 +497,14 @@
       "market": "total",
       "tier": "t1",
       "status": "live",
-      "wins": 131,
-      "losses": 108,
+      "wins": 133,
+      "losses": 110,
       "pushes": 12,
-      "pending": 4,
-      "settled": 251,
-      "win_rate": 54.8,
-      "roi": 9.9,
-      "profit": 23.68
+      "pending": 6,
+      "settled": 255,
+      "win_rate": 54.7,
+      "roi": 10.2,
+      "profit": 24.68
     },
     {
       "key": "conmebol_copa_libertadores_moneyline",
@@ -632,7 +636,7 @@
       "wins": 0,
       "losses": 0,
       "pushes": 0,
-      "pending": 9,
+      "pending": 10,
       "settled": 0,
       "win_rate": null,
       "roi": null,
@@ -765,14 +769,14 @@
       "market": "f5_total",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 140,
-      "losses": 115,
+      "wins": 141,
+      "losses": 116,
       "pushes": 12,
-      "pending": 5,
-      "settled": 267,
+      "pending": 4,
+      "settled": 269,
       "win_rate": 54.9,
-      "roi": 2.7,
-      "profit": 6.81
+      "roi": 2.5,
+      "profit": 6.55
     },
     {
       "key": "mlb_moneyline",
@@ -782,14 +786,14 @@
       "market": "moneyline",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 376,
-      "losses": 353,
+      "wins": 380,
+      "losses": 367,
       "pushes": 0,
-      "pending": 19,
-      "settled": 729,
-      "win_rate": 51.6,
-      "roi": -0.6,
-      "profit": -4.28
+      "pending": 15,
+      "settled": 747,
+      "win_rate": 50.9,
+      "roi": -0.7,
+      "profit": -5.28
     },
     {
       "key": "mlb_batter_home_runs",
@@ -799,14 +803,14 @@
       "market": "batter_home_runs",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 681,
-      "losses": 214,
-      "pushes": 143,
-      "pending": 66,
-      "settled": 1038,
-      "win_rate": 76.1,
-      "roi": -2.1,
-      "profit": -19.23
+      "wins": 722,
+      "losses": 230,
+      "pushes": 152,
+      "pending": 68,
+      "settled": 1104,
+      "win_rate": 75.8,
+      "roi": -3.1,
+      "profit": -29.77
     },
     {
       "key": "mlb_batter_total_bases",
@@ -867,14 +871,14 @@
       "market": "nrfi",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 170,
-      "losses": 202,
+      "wins": 173,
+      "losses": 204,
       "pushes": 2,
       "pending": 7,
-      "settled": 374,
-      "win_rate": 45.7,
-      "roi": -24.3,
-      "profit": -90.5
+      "settled": 379,
+      "win_rate": 45.9,
+      "roi": -23.7,
+      "profit": -89.16
     },
     {
       "key": "mlb_pitcher_strikeouts",
@@ -884,14 +888,14 @@
       "market": "pitcher_strikeouts",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 487,
-      "losses": 574,
-      "pushes": 115,
-      "pending": 24,
-      "settled": 1176,
-      "win_rate": 45.9,
-      "roi": -11.3,
-      "profit": -120.05
+      "wins": 499,
+      "losses": 579,
+      "pushes": 122,
+      "pending": 25,
+      "settled": 1200,
+      "win_rate": 46.3,
+      "roi": -10.7,
+      "profit": -114.92
     },
     {
       "key": "mlb_batter_walks",
@@ -1411,14 +1415,14 @@
       "market": "moneyline",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 143,
-      "losses": 171,
+      "wins": 147,
+      "losses": 194,
       "pushes": 1,
-      "pending": 71,
-      "settled": 315,
-      "win_rate": 45.5,
-      "roi": -3.4,
-      "profit": -8.81
+      "pending": 35,
+      "settled": 342,
+      "win_rate": 43.1,
+      "roi": -3.2,
+      "profit": -8.94
     },
     {
       "key": "tennis_total",
@@ -1431,7 +1435,7 @@
       "wins": 40,
       "losses": 52,
       "pushes": 3,
-      "pending": 16,
+      "pending": 18,
       "settled": 95,
       "win_rate": 43.5,
       "roi": -18.3,
@@ -1448,7 +1452,7 @@
       "wins": 41,
       "losses": 84,
       "pushes": 27,
-      "pending": 68,
+      "pending": 88,
       "settled": 152,
       "win_rate": 32.8,
       "roi": -14.8,
@@ -1496,14 +1500,14 @@
       "market": "moneyline",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 7,
-      "losses": 24,
+      "wins": 29,
+      "losses": 49,
       "pushes": 1,
-      "pending": 67,
-      "settled": 32,
-      "win_rate": 22.6,
-      "roi": -39.9,
-      "profit": -9.39
+      "pending": 16,
+      "settled": 79,
+      "win_rate": 37.2,
+      "roi": -17.2,
+      "profit": -11.44
     },
     {
       "key": "usa_mls_moneyline",
@@ -1598,13 +1602,13 @@
       "market": "moneyline",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 57,
-      "losses": 58,
+      "wins": 60,
+      "losses": 64,
       "pushes": 0,
-      "pending": 16,
-      "settled": 115,
-      "win_rate": 49.6,
-      "roi": 5.0,
+      "pending": 7,
+      "settled": 124,
+      "win_rate": 48.4,
+      "roi": 4.6,
       "profit": 5.53
     },
     {
@@ -1683,12 +1687,12 @@
       "market": "spread",
       "tier": "paused",
       "status": "paused",
-      "wins": 109,
+      "wins": 110,
       "losses": 82,
       "pushes": 0,
-      "pending": 1,
-      "settled": 191,
-      "win_rate": 57.1,
+      "pending": 0,
+      "settled": 192,
+      "win_rate": 57.3,
       "roi": 2.0,
       "profit": 3.84
     },
