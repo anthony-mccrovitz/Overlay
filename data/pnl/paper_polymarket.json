@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-01T19:56:23.206201+00:00",
+  "generated_at": "2026-08-02T04:17:51.503516+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 104.31,
-  "n_settled": 9,
-  "n_pending": 324,
-  "wins": 3,
-  "losses": 6,
-  "staked": 39.97,
-  "pnl": -7.69,
-  "expected_pnl": 2.39,
-  "roi_pct": -19.24,
+  "end_bankroll": 126.93,
+  "n_settled": 11,
+  "n_pending": 341,
+  "wins": 4,
+  "losses": 7,
+  "staked": 49.43,
+  "pnl": 14.93,
+  "expected_pnl": 3.05,
+  "roi_pct": 30.2,
   "max_drawdown": 22.04,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 61,
-    "exposure cap reached for the slate": 233,
-    "not settled yet": 19,
-    "resting order never filled": 11
+    "exposure cap reached for the slate": 243,
+    "not settled yet": 25,
+    "resting order never filled": 12
   },
   "significance": {
-    "mean_edge_per_unit": 0.0603,
-    "sd_per_unit": 1.69,
-    "n_for_2sigma": 3140
+    "mean_edge_per_unit": 0.0623,
+    "sd_per_unit": 1.8118,
+    "n_for_2sigma": 3378
   },
   "rows": [
     {
@@ -166,6 +166,38 @@
       "pnl": 5.25,
       "expected_pnl": 0.153,
       "equity": 104.31
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260801_bucheon-fc-1995_moneyline_win",
+      "date": "2026-08-01",
+      "team": "Bucheon FC 1995",
+      "sport": "soccer_korea_kleague1",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.13,
+      "fair": 0.1413,
+      "stake": 4.17,
+      "shares": 32.08,
+      "result": "win",
+      "pnl": 27.91,
+      "expected_pnl": 0.362,
+      "equity": 132.22
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_usa_mls_20260801_atlanta-united-fc_moneyline_win",
+      "date": "2026-08-01",
+      "team": "Atlanta United FC",
+      "sport": "soccer_usa_mls",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.2,
+      "fair": 0.2112,
+      "stake": 5.29,
+      "shares": 26.45,
+      "result": "loss",
+      "pnl": -5.29,
+      "expected_pnl": 0.296,
+      "equity": 126.93
     }
   ]
 }
