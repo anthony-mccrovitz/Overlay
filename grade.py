@@ -38,9 +38,15 @@ def _load():
 
 
 def _save(data):
-    # Always persist as a plain list
+    # Overlay, don't snapshot: a plain write_text here was a lock-free
+    # last-writer-wins that erased concurrent appends and could truncate the
+    # ledger mid-write (see schema.overlay_graded_picks for the incident).
+    from src.tracking.schema import overlay_graded_picks
     picks = data["picks"] if isinstance(data, dict) else data
-    DATA_FILE.write_text(json.dumps(picks, indent=2))
+    _, dropped = overlay_graded_picks(DATA_FILE, picks)
+    if dropped:
+        print(f"  [ledger] {dropped} graded row(s) no longer on disk "
+              f"(concurrent migrate?) — they re-grade on the next sweep")
 
 
 def _fetch_scores(date_str: str) -> tuple[dict[str, str], dict[str, dict]]:

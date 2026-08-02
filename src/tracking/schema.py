@@ -110,6 +110,21 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                     raw = json.loads(path.read_text())
                     data = raw if isinstance(raw, dict) and "picks" in raw else {"picks": raw if isinstance(raw, list) else []}
                 except (json.JSONDecodeError, OSError):
+                    # NEVER treat an unreadable ledger as an empty one. On
+                    # 2026-08-02 a reader caught a non-atomic writer mid-write,
+                    # took this branch as {"picks": []}, and its next append
+                    # replaced 14,609 picks with 6. A truly fresh start is a
+                    # missing or zero-byte file; anything else is corruption,
+                    # and appending to corruption erases history. Preserve the
+                    # evidence and refuse — today's picks re-log on the next
+                    # run, the ledger doesn't come back.
+                    if path.stat().st_size > 0:
+                        import shutil
+                        corrupt = path.with_suffix(path.suffix + ".corrupt")
+                        shutil.copy(path, corrupt)
+                        print(f"  [ledger] {path} is non-empty but unparseable — "
+                              f"REFUSING to append (copy kept at {corrupt})")
+                        return 0
                     data = {"picks": []}
             else:
                 data = {"picks": []}
@@ -169,6 +184,86 @@ def append_picks_safe(path: str | Path, new_picks: list[dict]) -> int:
                     print(f"    … and {len(collisions) - 5} more")
 
             return added
+        finally:
+            fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def overlay_graded_picks(path: str | Path, picks: list[dict]) -> tuple[int, int]:
+    """Persist in-place grading mutations WITHOUT rewriting history.
+
+    grade.py's flow is load → fetch scores (minutes pass) → mutate rows →
+    save. Writing that whole snapshot back (the old `_save`) is a lock-free
+    last-writer-wins: every pick a concurrent writer appended in the window
+    was erased, and a crash mid-write truncated the ledger. This helper holds
+    the ledger lock, RE-READS the current file, replaces only the rows the
+    caller has (matched by pick_id, composite-field fallback for id-less
+    rows), and renames atomically. The incumbent on-disk shape (bare list vs
+    {"picks": ...}) is preserved.
+
+    Caller-only rows are DROPPED, not appended: a concurrent migrate
+    legitimately collapsed them, and a lost grade re-runs on the next sweep
+    while a resurrected duplicate never dies.
+
+    Returns (replaced, dropped).
+    """
+    path = Path(path)
+
+    def _row_key(p: dict):
+        pid = p.get("pick_id")
+        if pid:
+            return ("id", pid)
+        return ("row", p.get("date"), p.get("sport"), p.get("team"),
+                p.get("market"), p.get("direction"), p.get("line"),
+                p.get("odds"), p.get("sportsbook"), p.get("strategy"))
+
+    by_key = {_row_key(p): p for p in picks if isinstance(p, dict)}
+
+    _LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(_LOCK_PATH, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        try:
+            bare_list = False
+            disk = None
+            if path.exists():
+                try:
+                    raw = json.loads(path.read_text())
+                except (json.JSONDecodeError, OSError):
+                    raw = None
+                if isinstance(raw, list):
+                    bare_list, disk = True, {"picks": raw}
+                elif isinstance(raw, dict) and "picks" in raw:
+                    disk = raw
+            if disk is None:
+                # Missing/unreadable ledger: grades are replayable, history
+                # is not — refuse rather than write a snapshot over it.
+                print(f"  [ledger] {path} unreadable — grading NOT persisted "
+                      f"(re-runs on the next sweep)")
+                return (0, len(by_key))
+
+            used: set = set()
+            replaced = 0
+            out = []
+            for row in disk["picks"]:
+                k = _row_key(row) if isinstance(row, dict) else None
+                if k is not None and k in by_key:
+                    out.append(by_key[k])
+                    used.add(k)
+                    replaced += 1
+                else:
+                    out.append(row)
+            dropped = len(by_key) - len(used)
+            disk["picks"] = out
+
+            payload = out if bare_list else disk
+            fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+            try:
+                with os.fdopen(fd, "w") as f:
+                    json.dump(payload, f, indent=2)
+                os.replace(tmp, path)
+            except Exception:
+                os.unlink(tmp)
+                raise
+            return (replaced, dropped)
         finally:
             fcntl.flock(lf, fcntl.LOCK_UN)
 
@@ -747,6 +842,22 @@ def normalize_pick(raw: dict[str, Any]) -> dict | None:
 
 
 def migrate_picks_file(path_in: str, path_out: str | None = None) -> dict:
+    """Locked entry point — see _migrate_picks_file_unlocked for the work.
+
+    Migrate's read→normalize→write cycle spans seconds on a 14k-pick ledger;
+    unlocked, an append_picks_safe landing in that window is silently undone
+    by migrate's write (or vice versa, whichever finishes second loses).
+    """
+    _LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(_LOCK_PATH, "w") as lf:
+        fcntl.flock(lf, fcntl.LOCK_EX)
+        try:
+            return _migrate_picks_file_unlocked(path_in, path_out)
+        finally:
+            fcntl.flock(lf, fcntl.LOCK_UN)
+
+
+def _migrate_picks_file_unlocked(path_in: str, path_out: str | None = None) -> dict:
     """
     Migrate a picks.json file to the canonical schema.
 
