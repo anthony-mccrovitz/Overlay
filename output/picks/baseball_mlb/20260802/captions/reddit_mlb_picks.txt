@@ -1,0 +1,31 @@
+**Overlay AI — MLB Picks · 8/2/26 (Sunday)**
+
+XGBoost + Pythagorean ensemble | Walk-forward validated | **Season: 84-74 (53.2% WR, +0.0u)**
+
+All picks timestamped before first pitch. No retroactive edits.
+
+---
+
+**💰 Moneyline Edges**
+
+| Game | Odds | Edge | Book |
+|------|------|------|------|
+| Boston Red Sox vs  | +142 | +10.6% | FanDuel |
+
+**⚡ NRFI Plays**
+
+| Game | Bet | Proj% | Book |
+|------|-----|-------|------|
+| Detroit Tigers @ Athletics NRFI (Keider Montero vs Gage Jump) | NRFI +114 | 66% | FanDuel |
+| Texas Rangers @ Houston Astros NRFI (Kumar Rocker vs Peter Lambert) | NRFI -104 | 67% | FanDuel |
+| Boston Red Sox @ Los Angeles Dodgers NRFI (Jake Bennett vs Emmet Sheehan) | NRFI -106 | 67% | FanDuel |
+| Arizona Diamondbacks @ Cleveland Guardians NRFI (Merrill Kelly vs Gavin Williams) | NRFI -120 | 67% | BetRivers |
+| Miami Marlins @ New York Mets NRFI (Sandy Alcantara vs Robert Stock) | NRFI -120 | 67% | BetRivers |
+
+---
+
+**Model overview:** Ensemble of XGBoost (pitcher ERA, FIP, xFIP, bullpen REST, lineup wRC+) and Pythagorean expectation. Edge = model win prob minus sportsbook implied prob after vig removal. Only plays where both methods agree are posted as card picks.
+
+Drop questions in the comments — happy to explain any pick.
+
+*Not financial advice. Bet responsibly. 21+*
