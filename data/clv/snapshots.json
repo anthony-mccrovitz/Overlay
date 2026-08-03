@@ -185232,18 +185232,18 @@
     "opening_odds": 180.0,
     "opening_implied_prob": 0.357143,
     "snapshot_time": "2026-07-08T04:45:39.101128+00:00",
-    "closing_odds": -250.0,
+    "closing_odds": -300.0,
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
     "closing_line": 0.5,
     "line_clv": 0.0,
-    "price_clv_pct": 35.714,
+    "price_clv_pct": 39.286,
     "beat_close": true,
-    "price_clv_raw_pct": 35.714,
+    "price_clv_raw_pct": 39.286,
     "entry_lead_min": 900.3,
-    "clv_ev_pct": 89.936,
-    "closing_fair_prob_at_entry_line": 0.678342,
+    "clv_ev_pct": 98.333,
+    "closing_fair_prob_at_entry_line": 0.708333,
     "clv_ev_pct_sharp": -36.673,
     "closing_fair_prob_at_entry_line_sharp": 0.226167,
     "closing_line_sharp": 1.5,
@@ -419653,12 +419653,12 @@
     "clv_raw_pct": 27.813,
     "clv_novig_pct": 24.491,
     "clv_ev_pct": 45.401,
+    "clv_novig_sharp_pct": 23.449,
     "closing_odds_sharp": -562.0,
     "closing_imp_sharp": 0.819555,
     "clv_sharp": 0.24874,
     "clv_sharp_pct": 24.874,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 23.449
+    "beat_close_sharp": true
   },
   {
     "date": "2026-07-31",
@@ -424609,12 +424609,12 @@
     "clv_novig_pct": -2.567,
     "clv_ev_pct": -1.763,
     "poly_filled": false,
+    "clv_novig_sharp_pct": -2.406,
     "closing_odds_sharp": -160.0,
     "closing_imp_sharp": 0.600246,
     "clv_sharp": -0.009129,
     "clv_sharp_pct": -0.913,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -2.406
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-01",
@@ -424685,12 +424685,12 @@
     "clv_raw_pct": 1.391,
     "clv_novig_pct": -0.799,
     "clv_ev_pct": 6.267,
+    "clv_novig_sharp_pct": 0.243,
     "closing_odds_sharp": 435.0,
     "closing_imp_sharp": 0.180445,
     "clv_sharp": 0.020445,
     "clv_sharp_pct": 2.045,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.243
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -429673,12 +429673,12 @@
     "clv_raw_pct": 6.952,
     "clv_novig_pct": -1.493,
     "clv_ev_pct": -5.929,
+    "clv_novig_sharp_pct": -1.332,
     "closing_odds_sharp": -160.0,
     "closing_imp_sharp": 0.600246,
     "clv_sharp": -0.036118,
     "clv_sharp_pct": -3.612,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -1.332
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-01",
@@ -430252,12 +430252,12 @@
     "clv_raw_pct": 5.556,
     "clv_novig_pct": 3.116,
     "clv_ev_pct": 9.548,
+    "clv_novig_sharp_pct": 3.176,
     "closing_odds_sharp": -127.0,
     "closing_imp_sharp": 0.54834,
     "clv_sharp": 0.04834,
     "clv_sharp_pct": 4.834,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 3.176
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -430324,12 +430324,12 @@
     "clv_raw_pct": 4.279,
     "clv_novig_pct": 2.818,
     "clv_ev_pct": 9.719,
+    "clv_novig_sharp_pct": 3.21,
     "closing_odds_sharp": 111.0,
     "closing_imp_sharp": 0.46492,
     "clv_sharp": 0.044752,
     "clv_sharp_pct": 4.475,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 3.21
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -430361,12 +430361,12 @@
     "clv_raw_pct": 1.942,
     "clv_novig_pct": -0.345,
     "clv_ev_pct": 2.559,
+    "clv_novig_sharp_pct": 0.12,
     "closing_odds_sharp": -138.0,
     "closing_imp_sharp": 0.568262,
     "clv_sharp": 0.018712,
     "clv_sharp_pct": 1.871,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.12
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -430621,10 +430621,10 @@
     "opening_odds": 270.0,
     "opening_implied_prob": 0.27027,
     "snapshot_time": "2026-08-02T04:17:21.842144+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 248.0,
+    "closing_implied_prob": 0.280567,
+    "clv": 0.010297,
+    "clv_pct": 1.03,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.286896,
     "consensus_n_books": 2,
@@ -430634,7 +430634,17 @@
     "opening_opp_odds": -288.0,
     "entry_overround": 1.0338,
     "entry_board_age_min": 0.2,
-    "entry_lead_min": 2082.6
+    "entry_lead_min": 2082.6,
+    "clv_devigged": true,
+    "clv_raw_pct": 1.709,
+    "clv_novig_pct": -0.144,
+    "clv_ev_pct": 3.81,
+    "closing_odds_sharp": 248.0,
+    "closing_imp_sharp": 0.279269,
+    "clv_sharp": 0.008999,
+    "clv_sharp_pct": 0.9,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": -0.274
   },
   {
     "date": "2026-08-03",
@@ -430759,10 +430769,10 @@
     "opening_odds": 335.0,
     "opening_implied_prob": 0.229885,
     "snapshot_time": "2026-08-02T04:17:21.842144+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 340.0,
+    "closing_implied_prob": 0.221239,
+    "clv": -0.008646,
+    "clv_pct": -0.865,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.23696,
     "consensus_n_books": 2,
@@ -430772,7 +430782,17 @@
     "opening_opp_odds": -373.0,
     "entry_overround": 1.0343,
     "entry_board_age_min": 0.2,
-    "entry_lead_min": 2082.6
+    "entry_lead_min": 2082.6,
+    "clv_devigged": true,
+    "clv_raw_pct": -0.261,
+    "clv_novig_pct": -1.632,
+    "clv_ev_pct": -3.761,
+    "closing_odds_sharp": 340.0,
+    "closing_imp_sharp": 0.220898,
+    "clv_sharp": -0.008987,
+    "clv_sharp_pct": -0.899,
+    "beat_close_sharp": false,
+    "clv_novig_sharp_pct": -1.666
   },
   {
     "date": "2026-08-03",
@@ -430839,10 +430859,10 @@
     "opening_odds": 317.0,
     "opening_implied_prob": 0.239808,
     "snapshot_time": "2026-08-02T04:17:21.842144+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 300.0,
+    "closing_implied_prob": 0.246377,
+    "clv": 0.006569,
+    "clv_pct": 0.657,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.263778,
     "consensus_n_books": 2,
@@ -430850,7 +430870,17 @@
     "opening_opp_odds": -335.0,
     "entry_overround": 1.0479,
     "entry_board_age_min": 0.2,
-    "entry_lead_min": 2082.6
+    "entry_lead_min": 2082.6,
+    "clv_devigged": true,
+    "clv_raw_pct": 1.019,
+    "clv_novig_pct": -1.871,
+    "clv_ev_pct": 2.739,
+    "closing_odds_sharp": 290.0,
+    "closing_imp_sharp": 0.249151,
+    "clv_sharp": 0.009343,
+    "clv_sharp_pct": 0.934,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": -1.593
   },
   {
     "date": "2026-08-03",
@@ -430917,10 +430947,10 @@
     "opening_odds": 456.0,
     "opening_implied_prob": 0.179856,
     "snapshot_time": "2026-08-02T04:17:21.842144+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 254.0,
+    "closing_implied_prob": 0.275841,
+    "clv": 0.095985,
+    "clv_pct": 9.599,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.222284,
     "consensus_n_books": 2,
@@ -430928,7 +430958,17 @@
     "opening_opp_odds": -450.0,
     "entry_overround": 1.0404,
     "entry_board_age_min": 0.2,
-    "entry_lead_min": 2082.6
+    "entry_lead_min": 2082.6,
+    "clv_devigged": true,
+    "clv_raw_pct": 10.263,
+    "clv_novig_pct": 6.225,
+    "clv_ev_pct": 53.368,
+    "closing_odds_sharp": 254.0,
+    "closing_imp_sharp": 0.274439,
+    "clv_sharp": 0.094583,
+    "clv_sharp_pct": 9.458,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": 6.085
   },
   {
     "date": "2026-08-03",
@@ -431210,15 +431250,15 @@
     "price_clv_novig_pct": -1.102,
     "clv_ev_pct": -0.073,
     "closing_fair_prob_at_entry_line": 0.50458,
+    "clv_ev_pct_sharp": -0.073,
+    "closing_fair_prob_at_entry_line_sharp": 0.50458,
     "closing_line_sharp": 8.5,
     "closing_odds_sharp": -108.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.037,
     "beat_close_sharp": false,
     "price_clv_raw_sharp_pct": 1.428,
-    "price_clv_novig_sharp_pct": -1.102,
-    "clv_ev_pct_sharp": -0.073,
-    "closing_fair_prob_at_entry_line_sharp": 0.50458
+    "price_clv_novig_sharp_pct": -1.102
   },
   {
     "date": "2026-08-02",
@@ -431507,14 +431547,14 @@
     "price_clv_raw_pct": 4.599,
     "clv_ev_pct": 2.42,
     "closing_fair_prob_at_entry_line": 0.445303,
+    "clv_ev_pct_sharp": 2.42,
+    "closing_fair_prob_at_entry_line_sharp": 0.445303,
     "closing_line_sharp": 3.5,
     "closing_odds_sharp": 108.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 4.599,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 4.599,
-    "clv_ev_pct_sharp": 2.42,
-    "closing_fair_prob_at_entry_line_sharp": 0.445303
+    "price_clv_raw_sharp_pct": 4.599
   },
   {
     "date": "2026-08-02",
@@ -431541,14 +431581,14 @@
     "price_clv_raw_pct": 3.601,
     "clv_ev_pct": 0.241,
     "closing_fair_prob_at_entry_line": 0.477336,
+    "clv_ev_pct_sharp": 0.241,
+    "closing_fair_prob_at_entry_line_sharp": 0.477336,
     "closing_line_sharp": 6.5,
     "closing_odds_sharp": -105.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 3.601,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 3.601,
-    "clv_ev_pct_sharp": 0.241,
-    "closing_fair_prob_at_entry_line_sharp": 0.477336
+    "price_clv_raw_sharp_pct": 3.601
   },
   {
     "date": "2026-08-02",
@@ -431575,14 +431615,14 @@
     "price_clv_raw_pct": -4.338,
     "clv_ev_pct": -15.728,
     "closing_fair_prob_at_entry_line": 0.421361,
+    "clv_ev_pct_sharp": -15.728,
+    "closing_fair_prob_at_entry_line_sharp": 0.421361,
     "closing_line_sharp": 3.5,
     "closing_odds_sharp": 119.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -4.338,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -4.338,
-    "clv_ev_pct_sharp": -15.728,
-    "closing_fair_prob_at_entry_line_sharp": 0.421361
+    "price_clv_raw_sharp_pct": -4.338
   },
   {
     "date": "2026-08-02",
@@ -431677,14 +431717,14 @@
     "price_clv_raw_pct": 0.249,
     "clv_ev_pct": -6.461,
     "closing_fair_prob_at_entry_line": 0.467694,
+    "clv_ev_pct_sharp": -6.461,
+    "closing_fair_prob_at_entry_line_sharp": 0.467694,
     "closing_line_sharp": 5.5,
     "closing_odds_sharp": -101.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 0.249,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 0.249,
-    "clv_ev_pct_sharp": -6.461,
-    "closing_fair_prob_at_entry_line_sharp": 0.467694
+    "price_clv_raw_sharp_pct": 0.249
   },
   {
     "date": "2026-08-02",
@@ -431737,14 +431777,14 @@
     "price_clv_raw_pct": 0.429,
     "clv_ev_pct": -5.713,
     "closing_fair_prob_at_entry_line": 0.504327,
+    "clv_ev_pct_sharp": -5.713,
+    "closing_fair_prob_at_entry_line_sharp": 0.504327,
     "closing_line_sharp": 6.5,
     "closing_odds_sharp": -117.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 0.429,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 0.429,
-    "clv_ev_pct_sharp": -5.713,
-    "closing_fair_prob_at_entry_line_sharp": 0.504327
+    "price_clv_raw_sharp_pct": 0.429
   },
   {
     "date": "2026-08-02",
@@ -431805,14 +431845,14 @@
     "price_clv_raw_pct": 4.576,
     "clv_ev_pct": 2.133,
     "closing_fair_prob_at_entry_line": 0.54183,
+    "clv_ev_pct_sharp": 2.133,
+    "closing_fair_prob_at_entry_line_sharp": 0.54183,
     "closing_line_sharp": 5.5,
     "closing_odds_sharp": -136.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 4.576,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 4.576,
-    "clv_ev_pct_sharp": 2.133,
-    "closing_fair_prob_at_entry_line_sharp": 0.54183
+    "price_clv_raw_sharp_pct": 4.576
   },
   {
     "date": "2026-08-02",
@@ -431872,14 +431912,14 @@
     "beat_close": true,
     "clv_ev_pct": -6.153,
     "closing_fair_prob_at_entry_line": 0.480681,
+    "clv_ev_pct_sharp": 16.533,
+    "closing_fair_prob_at_entry_line_sharp": 0.596878,
     "closing_line_sharp": 3.5,
     "closing_odds_sharp": -172.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 12.016,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 12.016,
-    "clv_ev_pct_sharp": 16.533,
-    "closing_fair_prob_at_entry_line_sharp": 0.596878
+    "price_clv_raw_sharp_pct": 12.016
   },
   {
     "date": "2026-08-02",
@@ -431906,14 +431946,14 @@
     "price_clv_raw_pct": 3.488,
     "clv_ev_pct": 0.0,
     "closing_fair_prob_at_entry_line": 0.5,
+    "clv_ev_pct_sharp": 0.0,
+    "closing_fair_prob_at_entry_line_sharp": 0.5,
     "closing_line_sharp": 5.5,
     "closing_odds_sharp": -115.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 3.488,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 3.488,
-    "clv_ev_pct_sharp": 0.0,
-    "closing_fair_prob_at_entry_line_sharp": 0.5
+    "price_clv_raw_sharp_pct": 3.488
   },
   {
     "date": "2026-08-02",
@@ -432000,14 +432040,14 @@
     "price_clv_raw_pct": 3.002,
     "clv_ev_pct": -0.848,
     "closing_fair_prob_at_entry_line": 0.546893,
+    "clv_ev_pct_sharp": -0.848,
+    "closing_fair_prob_at_entry_line_sharp": 0.546893,
     "closing_line_sharp": 6.5,
     "closing_odds_sharp": -139.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 3.002,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 3.002,
-    "clv_ev_pct_sharp": -0.848,
-    "closing_fair_prob_at_entry_line_sharp": 0.546893
+    "price_clv_raw_sharp_pct": 3.002
   },
   {
     "date": "2026-08-02",
@@ -432068,14 +432108,14 @@
     "price_clv_raw_pct": 1.815,
     "clv_ev_pct": -3.251,
     "closing_fair_prob_at_entry_line": 0.497837,
+    "clv_ev_pct_sharp": -3.251,
+    "closing_fair_prob_at_entry_line_sharp": 0.497837,
     "closing_line_sharp": 3.5,
     "closing_odds_sharp": -114.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 1.815,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 1.815,
-    "clv_ev_pct_sharp": -3.251,
-    "closing_fair_prob_at_entry_line_sharp": 0.497837
+    "price_clv_raw_sharp_pct": 1.815
   },
   {
     "date": "2026-08-02",
@@ -432102,14 +432142,14 @@
     "price_clv_raw_pct": 4.945,
     "clv_ev_pct": 3.093,
     "closing_fair_prob_at_entry_line": 0.479504,
+    "clv_ev_pct_sharp": 3.093,
+    "closing_fair_prob_at_entry_line_sharp": 0.479504,
     "closing_line_sharp": 4.5,
     "closing_odds_sharp": -106.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 4.945,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 4.945,
-    "clv_ev_pct_sharp": 3.093,
-    "closing_fair_prob_at_entry_line_sharp": 0.479504
+    "price_clv_raw_sharp_pct": 4.945
   },
   {
     "date": "2026-08-02",
@@ -432272,14 +432312,14 @@
     "price_clv_raw_pct": -2.472,
     "clv_ev_pct": -6.935,
     "closing_fair_prob_at_entry_line": 0.799571,
+    "clv_ev_pct_sharp": -6.935,
+    "closing_fair_prob_at_entry_line_sharp": 0.799571,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -504.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -2.472,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -2.472,
-    "clv_ev_pct_sharp": -6.935,
-    "closing_fair_prob_at_entry_line_sharp": 0.799571
+    "price_clv_raw_sharp_pct": -2.472
   },
   {
     "date": "2026-08-02",
@@ -432340,14 +432380,14 @@
     "price_clv_raw_pct": 1.064,
     "clv_ev_pct": -2.824,
     "closing_fair_prob_at_entry_line": 0.834896,
+    "clv_ev_pct_sharp": -2.824,
+    "closing_fair_prob_at_entry_line_sharp": 0.834896,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -668.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 1.064,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 1.064,
-    "clv_ev_pct_sharp": -2.824,
-    "closing_fair_prob_at_entry_line_sharp": 0.834896
+    "price_clv_raw_sharp_pct": 1.064
   },
   {
     "date": "2026-08-02",
@@ -432408,14 +432448,14 @@
     "price_clv_raw_pct": -0.625,
     "clv_ev_pct": -4.733,
     "closing_fair_prob_at_entry_line": 0.826485,
+    "clv_ev_pct_sharp": -4.733,
+    "closing_fair_prob_at_entry_line_sharp": 0.826485,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -621.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.625,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.625,
-    "clv_ev_pct_sharp": -4.733,
-    "closing_fair_prob_at_entry_line_sharp": 0.826485
+    "price_clv_raw_sharp_pct": -0.625
   },
   {
     "date": "2026-08-02",
@@ -432502,14 +432542,14 @@
     "price_clv_raw_pct": -0.423,
     "clv_ev_pct": -4.487,
     "closing_fair_prob_at_entry_line": 0.830274,
+    "clv_ev_pct_sharp": -4.487,
+    "closing_fair_prob_at_entry_line_sharp": 0.830274,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -641.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.423,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.423,
-    "clv_ev_pct_sharp": -4.487,
-    "closing_fair_prob_at_entry_line_sharp": 0.830274
+    "price_clv_raw_sharp_pct": -0.423
   },
   {
     "date": "2026-08-02",
@@ -432570,14 +432610,14 @@
     "price_clv_raw_pct": -0.407,
     "clv_ev_pct": -4.467,
     "closing_fair_prob_at_entry_line": 0.832852,
+    "clv_ev_pct_sharp": -4.467,
+    "closing_fair_prob_at_entry_line_sharp": 0.832852,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -656.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.407,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.407,
-    "clv_ev_pct_sharp": -4.467,
-    "closing_fair_prob_at_entry_line_sharp": 0.832852
+    "price_clv_raw_sharp_pct": -0.407
   },
   {
     "date": "2026-08-02",
@@ -432740,14 +432780,14 @@
     "price_clv_raw_pct": 0.925,
     "clv_ev_pct": -5.461,
     "closing_fair_prob_at_entry_line": 0.450187,
+    "clv_ev_pct_sharp": -5.461,
+    "closing_fair_prob_at_entry_line_sharp": 0.450187,
     "closing_line_sharp": 4.5,
     "closing_odds_sharp": 106.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 0.925,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 0.925,
-    "clv_ev_pct_sharp": -5.461,
-    "closing_fair_prob_at_entry_line_sharp": 0.450187
+    "price_clv_raw_sharp_pct": 0.925
   },
   {
     "date": "2026-08-02",
@@ -432808,14 +432848,14 @@
     "price_clv_raw_pct": -1.544,
     "clv_ev_pct": -5.677,
     "closing_fair_prob_at_entry_line": 0.834811,
+    "clv_ev_pct_sharp": -5.677,
+    "closing_fair_prob_at_entry_line_sharp": 0.834811,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -667.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.544,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.544,
-    "clv_ev_pct_sharp": -5.677,
-    "closing_fair_prob_at_entry_line_sharp": 0.834811
+    "price_clv_raw_sharp_pct": -1.544
   },
   {
     "date": "2026-08-02",
@@ -432842,14 +432882,14 @@
     "price_clv_raw_pct": -1.527,
     "clv_ev_pct": -5.668,
     "closing_fair_prob_at_entry_line": 0.834896,
+    "clv_ev_pct_sharp": -5.668,
+    "closing_fair_prob_at_entry_line_sharp": 0.834896,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -668.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.527,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.527,
-    "clv_ev_pct_sharp": -5.668,
-    "closing_fair_prob_at_entry_line_sharp": 0.834896
+    "price_clv_raw_sharp_pct": -1.527
   },
   {
     "date": "2026-08-02",
@@ -432876,14 +432916,14 @@
     "price_clv_raw_pct": -0.077,
     "clv_ev_pct": -4.017,
     "closing_fair_prob_at_entry_line": 0.851374,
+    "clv_ev_pct_sharp": -4.017,
+    "closing_fair_prob_at_entry_line_sharp": 0.851374,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -779.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.077,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.077,
-    "clv_ev_pct_sharp": -4.017,
-    "closing_fair_prob_at_entry_line_sharp": 0.851374
+    "price_clv_raw_sharp_pct": -0.077
   },
   {
     "date": "2026-08-02",
@@ -432910,14 +432950,14 @@
     "price_clv_raw_pct": -1.326,
     "clv_ev_pct": -5.404,
     "closing_fair_prob_at_entry_line": 0.842572,
+    "clv_ev_pct_sharp": -5.404,
+    "closing_fair_prob_at_entry_line_sharp": 0.842572,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -716.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.326,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.326,
-    "clv_ev_pct_sharp": -5.404,
-    "closing_fair_prob_at_entry_line_sharp": 0.842572
+    "price_clv_raw_sharp_pct": -1.326
   },
   {
     "date": "2026-08-02",
@@ -433030,14 +433070,14 @@
     "price_clv_raw_pct": -1.784,
     "clv_ev_pct": -5.888,
     "closing_fair_prob_at_entry_line": 0.842572,
+    "clv_ev_pct_sharp": -5.888,
+    "closing_fair_prob_at_entry_line_sharp": 0.842572,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -716.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.784,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.784,
-    "clv_ev_pct_sharp": -5.888,
-    "closing_fair_prob_at_entry_line_sharp": 0.842572
+    "price_clv_raw_sharp_pct": -1.784
   },
   {
     "date": "2026-08-02",
@@ -433064,14 +433104,14 @@
     "price_clv_raw_pct": 10.49,
     "clv_ev_pct": 91.052,
     "closing_fair_prob_at_entry_line": 0.146963,
+    "clv_ev_pct_sharp": 91.052,
+    "closing_fair_prob_at_entry_line_sharp": 0.146963,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": 450.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 10.49,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 10.49,
-    "clv_ev_pct_sharp": 91.052,
-    "closing_fair_prob_at_entry_line_sharp": 0.146963
+    "price_clv_raw_sharp_pct": 10.49
   },
   {
     "date": "2026-08-02",
@@ -433098,14 +433138,14 @@
     "price_clv_raw_pct": -1.873,
     "clv_ev_pct": -5.967,
     "closing_fair_prob_at_entry_line": 0.844375,
+    "clv_ev_pct_sharp": -5.967,
+    "closing_fair_prob_at_entry_line_sharp": 0.844375,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -728.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.873,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.873,
-    "clv_ev_pct_sharp": -5.967,
-    "closing_fair_prob_at_entry_line_sharp": 0.844375
+    "price_clv_raw_sharp_pct": -1.873
   },
   {
     "date": "2026-08-02",
@@ -433132,14 +433172,14 @@
     "price_clv_raw_pct": -1.007,
     "clv_ev_pct": -5.003,
     "closing_fair_prob_at_entry_line": 0.853037,
+    "clv_ev_pct_sharp": -5.003,
+    "closing_fair_prob_at_entry_line_sharp": 0.853037,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -792.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.007,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.007,
-    "clv_ev_pct_sharp": -5.003,
-    "closing_fair_prob_at_entry_line_sharp": 0.853037
+    "price_clv_raw_sharp_pct": -1.007
   },
   {
     "date": "2026-08-02",
@@ -433166,14 +433206,14 @@
     "price_clv_raw_pct": 0.462,
     "clv_ev_pct": -3.368,
     "closing_fair_prob_at_entry_line": 0.868217,
+    "clv_ev_pct_sharp": -3.368,
+    "closing_fair_prob_at_entry_line_sharp": 0.868217,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -932.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 0.462,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 0.462,
-    "clv_ev_pct_sharp": -3.368,
-    "closing_fair_prob_at_entry_line_sharp": 0.868217
+    "price_clv_raw_sharp_pct": 0.462
   },
   {
     "date": "2026-08-02",
@@ -433200,14 +433240,14 @@
     "price_clv_raw_pct": -0.954,
     "clv_ev_pct": -4.947,
     "closing_fair_prob_at_entry_line": 0.853037,
+    "clv_ev_pct_sharp": -4.947,
+    "closing_fair_prob_at_entry_line_sharp": 0.853037,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -792.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.954,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.954,
-    "clv_ev_pct_sharp": -4.947,
-    "closing_fair_prob_at_entry_line_sharp": 0.853037
+    "price_clv_raw_sharp_pct": -0.954
   },
   {
     "date": "2026-08-02",
@@ -433268,14 +433308,14 @@
     "price_clv_raw_pct": 1.64,
     "clv_ev_pct": -2.054,
     "closing_fair_prob_at_entry_line": 0.881025,
+    "clv_ev_pct_sharp": -2.054,
+    "closing_fair_prob_at_entry_line_sharp": 0.881025,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -1089.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 1.64,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 1.64,
-    "clv_ev_pct_sharp": -2.054,
-    "closing_fair_prob_at_entry_line_sharp": 0.881025
+    "price_clv_raw_sharp_pct": 1.64
   },
   {
     "date": "2026-08-02",
@@ -433354,14 +433394,14 @@
     "price_clv_raw_pct": 5.784,
     "clv_ev_pct": 3.855,
     "closing_fair_prob_at_entry_line": 0.626427,
+    "clv_ev_pct_sharp": 3.855,
+    "closing_fair_prob_at_entry_line_sharp": 0.626427,
     "closing_line_sharp": 5.5,
     "closing_odds_sharp": -195.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 5.784,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 5.784,
-    "clv_ev_pct_sharp": 3.855,
-    "closing_fair_prob_at_entry_line_sharp": 0.626427
+    "price_clv_raw_sharp_pct": 5.784
   },
   {
     "date": "2026-08-02",
@@ -433422,14 +433462,14 @@
     "price_clv_raw_pct": 0.019,
     "clv_ev_pct": -3.843,
     "closing_fair_prob_at_entry_line": 0.868217,
+    "clv_ev_pct_sharp": -3.843,
+    "closing_fair_prob_at_entry_line_sharp": 0.868217,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -932.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": 0.019,
     "beat_close_sharp": true,
-    "price_clv_raw_sharp_pct": 0.019,
-    "clv_ev_pct_sharp": -3.843,
-    "closing_fair_prob_at_entry_line_sharp": 0.868217
+    "price_clv_raw_sharp_pct": 0.019
   },
   {
     "date": "2026-08-02",
@@ -433456,14 +433496,14 @@
     "price_clv_raw_pct": -1.502,
     "clv_ev_pct": -5.524,
     "closing_fair_prob_at_entry_line": 0.853037,
+    "clv_ev_pct_sharp": -5.524,
+    "closing_fair_prob_at_entry_line_sharp": 0.853037,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -792.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.502,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.502,
-    "clv_ev_pct_sharp": -5.524,
-    "closing_fair_prob_at_entry_line_sharp": 0.853037
+    "price_clv_raw_sharp_pct": -1.502
   },
   {
     "date": "2026-08-02",
@@ -433490,14 +433530,14 @@
     "price_clv_raw_pct": -1.687,
     "clv_ev_pct": -5.717,
     "closing_fair_prob_at_entry_line": 0.853037,
+    "clv_ev_pct_sharp": -5.717,
+    "closing_fair_prob_at_entry_line_sharp": 0.853037,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -792.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.687,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.687,
-    "clv_ev_pct_sharp": -5.717,
-    "closing_fair_prob_at_entry_line_sharp": 0.853037
+    "price_clv_raw_sharp_pct": -1.687
   },
   {
     "date": "2026-08-02",
@@ -433550,14 +433590,14 @@
     "price_clv_raw_pct": -0.833,
     "clv_ev_pct": -4.77,
     "closing_fair_prob_at_entry_line": 0.862458,
+    "clv_ev_pct_sharp": -4.77,
+    "closing_fair_prob_at_entry_line_sharp": 0.862458,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -874.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.833,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.833,
-    "clv_ev_pct_sharp": -4.77,
-    "closing_fair_prob_at_entry_line_sharp": 0.862458
+    "price_clv_raw_sharp_pct": -0.833
   },
   {
     "date": "2026-08-02",
@@ -433748,14 +433788,14 @@
     "price_clv_raw_pct": -0.058,
     "clv_ev_pct": -3.903,
     "closing_fair_prob_at_entry_line": 0.873609,
+    "clv_ev_pct_sharp": -3.903,
+    "closing_fair_prob_at_entry_line_sharp": 0.873609,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -993.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.058,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.058,
-    "clv_ev_pct_sharp": -3.903,
-    "closing_fair_prob_at_entry_line_sharp": 0.873609
+    "price_clv_raw_sharp_pct": -0.058
   },
   {
     "date": "2026-08-02",
@@ -433850,14 +433890,14 @@
     "price_clv_raw_pct": -1.908,
     "clv_ev_pct": -5.947,
     "closing_fair_prob_at_entry_line": 0.853037,
+    "clv_ev_pct_sharp": -5.947,
+    "closing_fair_prob_at_entry_line_sharp": 0.853037,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -792.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.908,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.908,
-    "clv_ev_pct_sharp": -5.947,
-    "closing_fair_prob_at_entry_line_sharp": 0.853037
+    "price_clv_raw_sharp_pct": -1.908
   },
   {
     "date": "2026-08-02",
@@ -433884,14 +433924,14 @@
     "price_clv_raw_pct": -0.008,
     "clv_ev_pct": -3.837,
     "closing_fair_prob_at_entry_line": 0.876151,
+    "clv_ev_pct_sharp": -3.837,
+    "closing_fair_prob_at_entry_line_sharp": 0.876151,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -1024.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.008,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.008,
-    "clv_ev_pct_sharp": -3.837,
-    "closing_fair_prob_at_entry_line_sharp": 0.876151
+    "price_clv_raw_sharp_pct": -0.008
   },
   {
     "date": "2026-08-02",
@@ -433970,14 +434010,14 @@
     "price_clv_raw_pct": -1.069,
     "clv_ev_pct": -4.988,
     "closing_fair_prob_at_entry_line": 0.868217,
+    "clv_ev_pct_sharp": -4.988,
+    "closing_fair_prob_at_entry_line_sharp": 0.868217,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -932.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.069,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.069,
-    "clv_ev_pct_sharp": -4.988,
-    "closing_fair_prob_at_entry_line_sharp": 0.868217
+    "price_clv_raw_sharp_pct": -1.069
   },
   {
     "date": "2026-08-02",
@@ -434030,14 +434070,14 @@
     "price_clv_raw_pct": -0.879,
     "clv_ev_pct": -4.79,
     "closing_fair_prob_at_entry_line": 0.868217,
+    "clv_ev_pct_sharp": -4.79,
+    "closing_fair_prob_at_entry_line_sharp": 0.868217,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -932.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.879,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.879,
-    "clv_ev_pct_sharp": -4.79,
-    "closing_fair_prob_at_entry_line_sharp": 0.868217
+    "price_clv_raw_sharp_pct": -0.879
   },
   {
     "date": "2026-08-02",
@@ -434098,14 +434138,14 @@
     "price_clv_raw_pct": -4.408,
     "clv_ev_pct": -8.612,
     "closing_fair_prob_at_entry_line": 0.838042,
+    "clv_ev_pct_sharp": -8.612,
+    "closing_fair_prob_at_entry_line_sharp": 0.838042,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -687.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -4.408,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -4.408,
-    "clv_ev_pct_sharp": -8.612,
-    "closing_fair_prob_at_entry_line_sharp": 0.838042
+    "price_clv_raw_sharp_pct": -4.408
   },
   {
     "date": "2026-08-02",
@@ -434270,14 +434310,14 @@
     "price_clv_raw_pct": -0.928,
     "clv_ev_pct": -4.804,
     "closing_fair_prob_at_entry_line": 0.874874,
+    "clv_ev_pct_sharp": -4.804,
+    "closing_fair_prob_at_entry_line_sharp": 0.874874,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -1008.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.928,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.928,
-    "clv_ev_pct_sharp": -4.804,
-    "closing_fair_prob_at_entry_line_sharp": 0.874874
+    "price_clv_raw_sharp_pct": -0.928
   },
   {
     "date": "2026-08-02",
@@ -434360,12 +434400,12 @@
     "clv_raw_pct": 0.0,
     "clv_novig_pct": 0.101,
     "clv_ev_pct": -2.234,
+    "clv_novig_sharp_pct": 1.143,
     "closing_odds_sharp": 435.0,
     "closing_imp_sharp": 0.180445,
     "clv_sharp": 0.006532,
     "clv_sharp_pct": 0.653,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.143
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434427,12 +434467,12 @@
     "clv_raw_pct": 3.032,
     "clv_novig_pct": 1.676,
     "clv_ev_pct": 6.053,
+    "clv_novig_sharp_pct": 2.614,
     "closing_odds_sharp": -133.0,
     "closing_imp_sharp": 0.560037,
     "clv_sharp": 0.040806,
     "clv_sharp_pct": 4.081,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 2.614
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434466,12 +434506,12 @@
     "clv_raw_pct": -3.39,
     "clv_novig_pct": -4.742,
     "clv_ev_pct": -8.4,
+    "clv_novig_sharp_pct": -5.474,
     "closing_odds_sharp": 166.0,
     "closing_imp_sharp": 0.368089,
     "clv_sharp": -0.041747,
     "clv_sharp_pct": -4.175,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -5.474
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -434505,12 +434545,12 @@
     "clv_raw_pct": 0.902,
     "clv_novig_pct": -1.129,
     "clv_ev_pct": 0.117,
+    "clv_novig_sharp_pct": -1.343,
     "closing_odds_sharp": -138.0,
     "closing_imp_sharp": 0.56934,
     "clv_sharp": -0.001475,
     "clv_sharp_pct": -0.148,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -1.343
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -434544,12 +434584,12 @@
     "clv_raw_pct": -0.402,
     "clv_novig_pct": -1.687,
     "clv_ev_pct": -2.034,
+    "clv_novig_sharp_pct": -1.629,
     "closing_odds_sharp": 122.0,
     "closing_imp_sharp": 0.441871,
     "clv_sharp": -0.008579,
     "clv_sharp_pct": -0.858,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -1.629
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -434583,12 +434623,12 @@
     "clv_raw_pct": 1.536,
     "clv_novig_pct": -1.029,
     "clv_ev_pct": -0.775,
+    "clv_novig_sharp_pct": 32.839,
     "closing_odds_sharp": -476.0,
     "closing_imp_sharp": 0.795942,
     "clv_sharp": 0.335113,
     "clv_sharp_pct": 33.511,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 32.839
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434622,12 +434662,12 @@
     "clv_raw_pct": 0.902,
     "clv_novig_pct": -1.399,
     "clv_ev_pct": 0.373,
+    "clv_novig_sharp_pct": -1.872,
     "closing_odds_sharp": 133.0,
     "closing_imp_sharp": 0.417014,
     "clv_sharp": -0.003154,
     "clv_sharp_pct": -0.315,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -1.872
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -434659,12 +434699,12 @@
     "clv_raw_pct": -1.607,
     "clv_novig_pct": -6.059,
     "clv_ev_pct": -5.442,
+    "clv_novig_sharp_pct": -6.683,
     "closing_odds_sharp": 191.0,
     "closing_imp_sharp": 0.3339,
     "clv_sharp": -0.025812,
     "clv_sharp_pct": -2.581,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -6.683
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -434696,12 +434736,12 @@
     "clv_raw_pct": -2.121,
     "clv_novig_pct": -3.241,
     "clv_ev_pct": -6.093,
+    "clv_novig_sharp_pct": -3.997,
     "closing_odds_sharp": 164.0,
     "closing_imp_sharp": 0.368063,
     "clv_sharp": -0.031937,
     "clv_sharp_pct": -3.194,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -3.997
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -434764,12 +434804,12 @@
     "clv_raw_pct": 4.308,
     "clv_novig_pct": -0.562,
     "clv_ev_pct": 4.533,
+    "clv_novig_sharp_pct": -0.562,
     "closing_odds_sharp": -159.0,
     "closing_imp_sharp": 0.596693,
     "clv_sharp": 0.025878,
     "clv_sharp_pct": 2.588,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": -0.562
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -434826,12 +434866,12 @@
     "clv_raw_pct": 2.679,
     "clv_novig_pct": 8.655,
     "clv_ev_pct": 0.419,
+    "clv_novig_sharp_pct": 8.412,
     "closing_odds_sharp": -256.0,
     "closing_imp_sharp": 0.692782,
     "clv_sharp": 0.000474,
     "clv_sharp_pct": 0.047,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 8.412
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434864,12 +434904,12 @@
     "clv_raw_pct": -0.0,
     "clv_novig_pct": 0.0,
     "clv_ev_pct": -0.51,
+    "clv_novig_sharp_pct": 0.983,
     "closing_odds_sharp": 196.0,
     "closing_imp_sharp": 0.330765,
     "clv_sharp": 0.008184,
     "clv_sharp_pct": 0.818,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.983
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434903,12 +434943,12 @@
     "clv_raw_pct": 1.425,
     "clv_novig_pct": 0.18,
     "clv_ev_pct": 2.388,
+    "clv_novig_sharp_pct": 0.07,
     "closing_odds_sharp": 159.0,
     "closing_imp_sharp": 0.378108,
     "clv_sharp": 0.007738,
     "clv_sharp_pct": 0.774,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.07
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434942,12 +434982,12 @@
     "clv_raw_pct": 2.228,
     "clv_novig_pct": 0.637,
     "clv_ev_pct": 4.359,
+    "clv_novig_sharp_pct": 0.637,
     "closing_odds_sharp": 210.0,
     "closing_imp_sharp": 0.31339,
     "clv_sharp": 0.01309,
     "clv_sharp_pct": 1.309,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.637
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -434981,12 +435021,12 @@
     "clv_raw_pct": 3.134,
     "clv_novig_pct": 0.0,
     "clv_ev_pct": 3.648,
+    "clv_novig_sharp_pct": -0.356,
     "closing_odds_sharp": -109.0,
     "closing_imp_sharp": 0.504516,
     "clv_sharp": 0.01432,
     "clv_sharp_pct": 1.432,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": -0.356
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435020,12 +435060,12 @@
     "clv_raw_pct": 3.565,
     "clv_novig_pct": 0.0,
     "clv_ev_pct": 4.259,
+    "clv_novig_sharp_pct": 0.186,
     "closing_odds_sharp": -122.0,
     "closing_imp_sharp": 0.533378,
     "clv_sharp": 0.023574,
     "clv_sharp_pct": 2.357,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.186
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435059,12 +435099,12 @@
     "clv_raw_pct": 2.428,
     "clv_novig_pct": 0.109,
     "clv_ev_pct": 2.919,
+    "clv_novig_sharp_pct": 0.036,
     "closing_odds_sharp": 125.0,
     "closing_imp_sharp": 0.431706,
     "clv_sharp": 0.011538,
     "clv_sharp_pct": 1.154,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.036
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435164,12 +435204,12 @@
     "clv_raw_pct": 1.494,
     "clv_novig_pct": -0.932,
     "clv_ev_pct": 0.827,
+    "clv_novig_sharp_pct": -0.932,
     "closing_odds_sharp": 141.0,
     "closing_imp_sharp": 0.403307,
     "clv_sharp": 0.003307,
     "clv_sharp_pct": 0.331,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": -0.932
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435203,12 +435243,12 @@
     "clv_raw_pct": -1.04,
     "clv_novig_pct": -2.128,
     "clv_ev_pct": -3.612,
+    "clv_novig_sharp_pct": -2.661,
     "closing_odds_sharp": 163.0,
     "closing_imp_sharp": 0.371187,
     "clv_sharp": -0.019438,
     "clv_sharp_pct": -1.944,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -2.661
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-03",
@@ -435271,12 +435311,12 @@
     "clv_raw_pct": -0.0,
     "clv_novig_pct": 0.0,
     "clv_ev_pct": -0.51,
+    "clv_novig_sharp_pct": 0.983,
     "closing_odds_sharp": 196.0,
     "closing_imp_sharp": 0.330765,
     "clv_sharp": 0.008184,
     "clv_sharp_pct": 0.818,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.983
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435309,12 +435349,12 @@
     "clv_raw_pct": -0.0,
     "clv_novig_pct": 0.0,
     "clv_ev_pct": -0.51,
+    "clv_novig_sharp_pct": 0.983,
     "closing_odds_sharp": 196.0,
     "closing_imp_sharp": 0.330765,
     "clv_sharp": 0.008184,
     "clv_sharp_pct": 0.818,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.983
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435409,12 +435449,12 @@
     "clv_raw_pct": 2.102,
     "clv_novig_pct": 1.086,
     "clv_ev_pct": 2.169,
+    "clv_novig_sharp_pct": 1.086,
     "closing_odds_sharp": 133.0,
     "closing_imp_sharp": 0.417014,
     "clv_sharp": 0.008851,
     "clv_sharp_pct": 0.885,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.086
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435447,12 +435487,12 @@
     "clv_raw_pct": -0.185,
     "clv_novig_pct": -0.617,
     "clv_ev_pct": -2.157,
+    "clv_novig_sharp_pct": -1.089,
     "closing_odds_sharp": 133.0,
     "closing_imp_sharp": 0.417014,
     "clv_sharp": -0.01402,
     "clv_sharp_pct": -1.402,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -1.089
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435485,12 +435525,12 @@
     "clv_raw_pct": -1.35,
     "clv_novig_pct": -0.985,
     "clv_ev_pct": -4.762,
+    "clv_novig_sharp_pct": -1.609,
     "closing_odds_sharp": 191.0,
     "closing_imp_sharp": 0.3339,
     "clv_sharp": -0.023243,
     "clv_sharp_pct": -2.324,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -1.609
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435523,12 +435563,12 @@
     "clv_raw_pct": 24.812,
     "clv_novig_pct": 26.069,
     "clv_ev_pct": 123.826,
+    "clv_novig_sharp_pct": 26.069,
     "closing_odds_sharp": 128.0,
     "closing_imp_sharp": 0.426335,
     "clv_sharp": 0.235859,
     "clv_sharp_pct": 23.586,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 26.069
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435561,12 +435601,12 @@
     "clv_raw_pct": 0.0,
     "clv_novig_pct": -0.885,
     "clv_ev_pct": -3.976,
+    "clv_novig_sharp_pct": 32.984,
     "closing_odds_sharp": -476.0,
     "closing_imp_sharp": 0.795942,
     "clv_sharp": 0.319752,
     "clv_sharp_pct": 31.975,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 32.984
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435599,12 +435639,12 @@
     "clv_raw_pct": -26.984,
     "clv_novig_pct": -31.726,
     "clv_ev_pct": -39.859,
+    "clv_novig_sharp_pct": -31.726,
     "closing_odds_sharp": 125.0,
     "closing_imp_sharp": 0.429577,
     "clv_sharp": -0.284709,
     "clv_sharp_pct": -28.471,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -31.726
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435637,12 +435677,12 @@
     "clv_raw_pct": -0.476,
     "clv_novig_pct": -0.636,
     "clv_ev_pct": -3.745,
+    "clv_novig_sharp_pct": -0.636,
     "closing_odds_sharp": 106.0,
     "closing_imp_sharp": 0.47184,
     "clv_sharp": -0.018356,
     "clv_sharp_pct": -1.836,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -0.636
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435675,12 +435715,12 @@
     "clv_raw_pct": 9.566,
     "clv_novig_pct": -0.45,
     "clv_ev_pct": -2.293,
+    "clv_novig_sharp_pct": 0.022,
     "closing_odds_sharp": -150.0,
     "closing_imp_sharp": 0.582986,
     "clv_sharp": -0.008851,
     "clv_sharp_pct": -0.885,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": 0.022
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435713,12 +435753,12 @@
     "clv_raw_pct": 46.801,
     "clv_novig_pct": 31.726,
     "clv_ev_pct": 135.584,
+    "clv_novig_sharp_pct": 31.726,
     "closing_odds_sharp": -144.0,
     "closing_imp_sharp": 0.570423,
     "clv_sharp": 0.328292,
     "clv_sharp_pct": 32.829,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 31.726
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435753,15 +435793,15 @@
     "price_clv_novig_pct": -0.0,
     "clv_ev_pct": -7.506,
     "closing_fair_prob_at_entry_line": 0.504516,
+    "clv_ev_pct_sharp": -7.506,
+    "closing_fair_prob_at_entry_line_sharp": 0.504516,
     "closing_line_sharp": 22.5,
     "closing_odds_sharp": -109.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -4.094,
     "beat_close_sharp": false,
     "price_clv_raw_sharp_pct": -2.392,
-    "price_clv_novig_sharp_pct": -0.0,
-    "clv_ev_pct_sharp": -7.506,
-    "closing_fair_prob_at_entry_line_sharp": 0.504516
+    "price_clv_novig_sharp_pct": -0.0
   },
   {
     "date": "2026-08-02",
@@ -435791,12 +435831,12 @@
     "price_clv_pct": null,
     "beat_close": false,
     "clv_ev_pct": null,
+    "clv_ev_pct_sharp": null,
     "closing_line_sharp": 22.5,
     "closing_odds_sharp": -104.0,
     "line_clv_sharp": -1.0,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": false,
-    "clv_ev_pct_sharp": null
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435861,12 +435901,12 @@
     "clv_raw_pct": -1.341,
     "clv_novig_pct": -0.0,
     "clv_ev_pct": -5.79,
+    "clv_novig_sharp_pct": -0.0,
     "closing_odds_sharp": 132.0,
     "closing_imp_sharp": 0.418713,
     "clv_sharp": -0.025731,
     "clv_sharp_pct": -2.573,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -0.0
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -435931,12 +435971,12 @@
     "clv_raw_pct": -0.0,
     "clv_novig_pct": 0.178,
     "clv_ev_pct": -0.835,
+    "clv_novig_sharp_pct": 0.935,
     "closing_odds_sharp": -186.0,
     "closing_imp_sharp": 0.631937,
     "clv_sharp": 0.002307,
     "clv_sharp_pct": 0.231,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.935
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -435998,12 +436038,12 @@
     "price_clv_pct": null,
     "beat_close": false,
     "clv_ev_pct": null,
+    "clv_ev_pct_sharp": null,
     "closing_line_sharp": 20.0,
     "closing_odds_sharp": -104.0,
     "line_clv_sharp": -0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": false,
-    "clv_ev_pct_sharp": null
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -436033,12 +436073,12 @@
     "price_clv_pct": null,
     "beat_close": true,
     "clv_ev_pct": null,
+    "clv_ev_pct_sharp": null,
     "closing_line_sharp": 20.0,
     "closing_odds_sharp": -104.0,
     "line_clv_sharp": 0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true,
-    "clv_ev_pct_sharp": null
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -436068,12 +436108,12 @@
     "price_clv_pct": null,
     "beat_close": true,
     "clv_ev_pct": null,
+    "clv_ev_pct_sharp": null,
     "closing_line_sharp": 22.0,
     "closing_odds_sharp": -101.0,
     "line_clv_sharp": 0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true,
-    "clv_ev_pct_sharp": null
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -436106,12 +436146,12 @@
     "clv_raw_pct": 15.851,
     "clv_novig_pct": -0.178,
     "clv_ev_pct": -0.976,
+    "clv_novig_sharp_pct": 0.355,
     "closing_odds_sharp": -181.0,
     "closing_imp_sharp": 0.628813,
     "clv_sharp": -0.000817,
     "clv_sharp_pct": -0.082,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": 0.355
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-02",
@@ -436160,12 +436200,12 @@
     "clv_raw_pct": 9.64,
     "clv_novig_pct": 9.042,
     "clv_ev_pct": 24.824,
+    "clv_novig_sharp_pct": 8.782,
     "closing_odds_sharp": 118.0,
     "closing_imp_sharp": 0.449669,
     "clv_sharp": 0.08735,
     "clv_sharp_pct": 8.735,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 8.782
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -436229,12 +436269,12 @@
     "clv_raw_pct": 1.348,
     "clv_novig_pct": -0.0,
     "clv_ev_pct": 1.691,
+    "clv_novig_sharp_pct": 0.494,
     "closing_odds_sharp": -119.0,
     "closing_imp_sharp": 0.532949,
     "clv_sharp": 0.013718,
     "clv_sharp_pct": 1.372,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.494
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -436268,12 +436308,12 @@
     "clv_raw_pct": 2.036,
     "clv_novig_pct": -0.0,
     "clv_ev_pct": 3.86,
+    "clv_novig_sharp_pct": -0.465,
     "closing_odds_sharp": 127.0,
     "closing_imp_sharp": 0.431738,
     "clv_sharp": 0.01157,
     "clv_sharp_pct": 1.157,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": -0.465
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-02",
@@ -436307,12 +436347,12 @@
     "clv_raw_pct": 1.716,
     "clv_novig_pct": -0.0,
     "clv_ev_pct": 3.303,
+    "clv_novig_sharp_pct": 0.007,
     "closing_odds_sharp": 213.0,
     "closing_imp_sharp": 0.310294,
     "clv_sharp": 0.009994,
     "clv_sharp_pct": 0.999,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.007
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436344,12 +436384,12 @@
     "clv_raw_pct": 9.9,
     "clv_novig_pct": 9.042,
     "clv_ev_pct": 25.729,
+    "clv_novig_sharp_pct": 8.782,
     "closing_odds_sharp": 118.0,
     "closing_imp_sharp": 0.449669,
     "clv_sharp": 0.089957,
     "clv_sharp_pct": 8.996,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 8.782
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436381,12 +436421,12 @@
     "clv_raw_pct": 2.428,
     "clv_novig_pct": 0.79,
     "clv_ev_pct": 4.378,
+    "clv_novig_sharp_pct": 1.232,
     "closing_odds_sharp": 121.0,
     "closing_imp_sharp": 0.442985,
     "clv_sharp": 0.022817,
     "clv_sharp_pct": 2.282,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.232
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436473,13 +436513,13 @@
     "clv_raw_pct": 3.859,
     "clv_novig_pct": 2.898,
     "clv_ev_pct": 9.639,
+    "clv_novig_sharp_pct": 1.96,
+    "poly_filled": false,
     "closing_odds_sharp": 123.0,
     "closing_imp_sharp": 0.439963,
     "clv_sharp": 0.030127,
     "clv_sharp_pct": 3.013,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.96,
-    "poly_filled": false
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436512,13 +436552,13 @@
     "clv_raw_pct": -8.625,
     "clv_novig_pct": -10.647,
     "clv_ev_pct": -14.981,
+    "clv_novig_sharp_pct": -10.883,
+    "poly_filled": false,
     "closing_odds_sharp": -119.0,
     "closing_imp_sharp": 0.532949,
     "clv_sharp": -0.096681,
     "clv_sharp_pct": -9.668,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -10.883,
-    "poly_filled": false
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-03",
@@ -436533,10 +436573,10 @@
     "opening_odds": 178.0,
     "opening_implied_prob": 0.359712,
     "snapshot_time": "2026-08-03T04:21:38.181048+00:00",
-    "closing_odds": 155.0,
-    "closing_implied_prob": 0.384836,
-    "clv": 0.025124,
-    "clv_pct": 2.512,
+    "closing_odds": 180.0,
+    "closing_implied_prob": 0.354487,
+    "clv": -0.005225,
+    "clv_pct": -0.523,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.381271,
     "consensus_n_books": 9,
@@ -436548,16 +436588,16 @@
     "entry_board_age_min": 0.2,
     "entry_lead_min": 638.4,
     "clv_devigged": true,
-    "clv_raw_pct": 3.244,
-    "clv_novig_pct": 1.407,
-    "clv_ev_pct": 6.985,
-    "closing_odds_sharp": 149.0,
-    "closing_imp_sharp": 0.390488,
-    "clv_sharp": 0.030776,
-    "clv_sharp_pct": 3.078,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.973,
-    "poly_filled": false
+    "clv_raw_pct": -0.257,
+    "clv_novig_pct": -1.628,
+    "clv_ev_pct": -1.453,
+    "clv_novig_sharp_pct": -0.27,
+    "poly_filled": false,
+    "closing_odds_sharp": 164.0,
+    "closing_imp_sharp": 0.368063,
+    "clv_sharp": 0.008351,
+    "clv_sharp_pct": 0.835,
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436572,10 +436612,10 @@
     "opening_odds": -178.0,
     "opening_implied_prob": 0.640288,
     "snapshot_time": "2026-08-03T04:21:38.181048+00:00",
-    "closing_odds": -190.0,
-    "closing_implied_prob": 0.643077,
-    "clv": 0.002789,
-    "clv_pct": 0.279,
+    "closing_odds": -210.0,
+    "closing_implied_prob": 0.661128,
+    "clv": 0.02084,
+    "clv_pct": 2.084,
     "commence_time": "2026-08-03T17:40:00Z",
     "consensus_fair_prob": 0.649891,
     "consensus_n_books": 10,
@@ -436587,10 +436627,16 @@
     "entry_board_age_min": 0.1,
     "entry_lead_min": 798.4,
     "clv_devigged": true,
-    "clv_raw_pct": 1.488,
-    "clv_novig_pct": -1.342,
-    "clv_ev_pct": 0.436,
-    "poly_filled": false
+    "clv_raw_pct": 3.713,
+    "clv_novig_pct": 0.463,
+    "clv_ev_pct": 3.255,
+    "poly_filled": false,
+    "closing_odds_sharp": -214.0,
+    "closing_imp_sharp": 0.662482,
+    "clv_sharp": 0.022194,
+    "clv_sharp_pct": 2.219,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": 0.599
   },
   {
     "date": "2026-08-03",
@@ -436605,10 +436651,10 @@
     "opening_odds": 144.0,
     "opening_implied_prob": 0.409836,
     "snapshot_time": "2026-08-03T04:21:38.181048+00:00",
-    "closing_odds": 132.0,
-    "closing_implied_prob": 0.418713,
-    "clv": 0.008877,
-    "clv_pct": 0.888,
+    "closing_odds": 143.0,
+    "closing_implied_prob": 0.406835,
+    "clv": -0.003001,
+    "clv_pct": -0.3,
     "commence_time": "2026-08-03T16:30:00Z",
     "consensus_fair_prob": 0.425972,
     "consensus_n_books": 9,
@@ -436620,16 +436666,16 @@
     "entry_board_age_min": 0.1,
     "entry_lead_min": 728.4,
     "clv_devigged": true,
-    "clv_raw_pct": 2.12,
-    "clv_novig_pct": -0.0,
-    "clv_ev_pct": 2.166,
-    "closing_odds_sharp": 132.0,
-    "closing_imp_sharp": 0.418713,
-    "clv_sharp": 0.008877,
-    "clv_sharp_pct": 0.888,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": -0.0,
-    "poly_filled": false
+    "clv_raw_pct": 0.169,
+    "clv_novig_pct": -1.188,
+    "clv_ev_pct": -0.732,
+    "clv_novig_sharp_pct": -1.855,
+    "poly_filled": false,
+    "closing_odds_sharp": 143.0,
+    "closing_imp_sharp": 0.400166,
+    "clv_sharp": -0.00967,
+    "clv_sharp_pct": -0.967,
+    "beat_close_sharp": false
   },
   {
     "date": "2026-08-03",
@@ -436644,10 +436690,10 @@
     "opening_odds": 144.0,
     "opening_implied_prob": 0.409836,
     "snapshot_time": "2026-08-03T04:21:38.181048+00:00",
-    "closing_odds": 136.0,
-    "closing_implied_prob": 0.41076,
-    "clv": 0.000924,
-    "clv_pct": 0.092,
+    "closing_odds": 138.0,
+    "closing_implied_prob": 0.411219,
+    "clv": 0.001383,
+    "clv_pct": 0.138,
     "commence_time": "2026-08-03T17:40:00Z",
     "consensus_fair_prob": 0.414013,
     "consensus_n_books": 7,
@@ -436659,10 +436705,16 @@
     "entry_board_age_min": 0.1,
     "entry_lead_min": 798.4,
     "clv_devigged": true,
-    "clv_raw_pct": 1.389,
-    "clv_novig_pct": -0.38,
-    "clv_ev_pct": 0.226,
-    "poly_filled": false
+    "clv_raw_pct": 1.033,
+    "clv_novig_pct": -0.334,
+    "clv_ev_pct": 0.338,
+    "poly_filled": false,
+    "closing_odds_sharp": 138.0,
+    "closing_imp_sharp": 0.408111,
+    "clv_sharp": -0.001725,
+    "clv_sharp_pct": -0.172,
+    "beat_close_sharp": false,
+    "clv_novig_sharp_pct": -0.645
   },
   {
     "date": "2026-08-04",
@@ -436735,7 +436787,8 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-08-04T00:41:00Z"
+    "commence_time": "2026-08-04T00:41:00Z",
+    "entry_lead_min": 1178.7
   },
   {
     "date": "2026-08-03",
@@ -436752,7 +436805,8 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-08-03T23:06:00Z"
+    "commence_time": "2026-08-03T23:06:00Z",
+    "entry_lead_min": 1083.7
   },
   {
     "date": "2026-08-03",
@@ -436769,7 +436823,8 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null,
-    "commence_time": "2026-08-04T01:41:00Z"
+    "commence_time": "2026-08-04T01:41:00Z",
+    "entry_lead_min": 1238.7
   },
   {
     "date": "2026-08-03",
@@ -436801,12 +436856,12 @@
     "clv_raw_pct": 2.29,
     "clv_novig_pct": 2.898,
     "clv_ev_pct": 5.594,
+    "clv_novig_sharp_pct": 1.96,
     "closing_odds_sharp": 123.0,
     "closing_imp_sharp": 0.439963,
     "clv_sharp": 0.014431,
     "clv_sharp_pct": 1.443,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.96
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436983,14 +437038,14 @@
     "price_clv_raw_pct": -1.489,
     "clv_ev_pct": -5.966,
     "closing_fair_prob_at_entry_line": 0.78491,
+    "clv_ev_pct_sharp": -5.966,
+    "closing_fair_prob_at_entry_line_sharp": 0.78491,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -455.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.489,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.489,
-    "clv_ev_pct_sharp": -5.966,
-    "closing_fair_prob_at_entry_line_sharp": 0.78491
+    "price_clv_raw_sharp_pct": -1.489
   },
   {
     "date": "2026-08-03",
@@ -437084,14 +437139,14 @@
     "price_clv_raw_pct": -4.16,
     "clv_ev_pct": -8.877,
     "closing_fair_prob_at_entry_line": 0.785545,
+    "clv_ev_pct_sharp": -8.877,
+    "closing_fair_prob_at_entry_line_sharp": 0.785545,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -457.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -4.16,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -4.16,
-    "clv_ev_pct_sharp": -8.877,
-    "closing_fair_prob_at_entry_line_sharp": 0.785545
+    "price_clv_raw_sharp_pct": -4.16
   },
   {
     "date": "2026-08-03",
@@ -437171,14 +437226,14 @@
     "price_clv_raw_pct": -4.803,
     "clv_ev_pct": -9.418,
     "closing_fair_prob_at_entry_line": 0.797343,
+    "clv_ev_pct_sharp": -9.418,
+    "closing_fair_prob_at_entry_line_sharp": 0.797343,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -496.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -4.803,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -4.803,
-    "clv_ev_pct_sharp": -9.418,
-    "closing_fair_prob_at_entry_line_sharp": 0.797343
+    "price_clv_raw_sharp_pct": -4.803
   },
   {
     "date": "2026-08-03",
@@ -437204,14 +437259,14 @@
     "price_clv_raw_pct": -3.41,
     "clv_ev_pct": -7.825,
     "closing_fair_prob_at_entry_line": 0.812669,
+    "clv_ev_pct_sharp": -7.825,
+    "closing_fair_prob_at_entry_line_sharp": 0.812669,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -556.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -3.41,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -3.41,
-    "clv_ev_pct_sharp": -7.825,
-    "closing_fair_prob_at_entry_line_sharp": 0.812669
+    "price_clv_raw_sharp_pct": -3.41
   },
   {
     "date": "2026-08-03",
@@ -437280,14 +437335,14 @@
     "price_clv_raw_pct": -5.599,
     "clv_ev_pct": -10.334,
     "closing_fair_prob_at_entry_line": 0.789276,
+    "clv_ev_pct_sharp": -10.334,
+    "closing_fair_prob_at_entry_line_sharp": 0.789276,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -469.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -5.599,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -5.599,
-    "clv_ev_pct_sharp": -10.334,
-    "closing_fair_prob_at_entry_line_sharp": 0.789276
+    "price_clv_raw_sharp_pct": -5.599
   },
   {
     "date": "2026-08-03",
@@ -437363,14 +437418,14 @@
     "price_clv_raw_pct": -2.842,
     "clv_ev_pct": -7.102,
     "closing_fair_prob_at_entry_line": 0.826894,
+    "clv_ev_pct_sharp": -7.102,
+    "closing_fair_prob_at_entry_line_sharp": 0.826894,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -623.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -2.842,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -2.842,
-    "clv_ev_pct_sharp": -7.102,
-    "closing_fair_prob_at_entry_line_sharp": 0.826894
+    "price_clv_raw_sharp_pct": -2.842
   },
   {
     "date": "2026-08-03",
@@ -437396,14 +437451,14 @@
     "price_clv_raw_pct": -0.919,
     "clv_ev_pct": -4.933,
     "closing_fair_prob_at_entry_line": 0.848991,
+    "clv_ev_pct_sharp": -4.933,
+    "closing_fair_prob_at_entry_line_sharp": 0.848991,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -761.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -0.919,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -0.919,
-    "clv_ev_pct_sharp": -4.933,
-    "closing_fair_prob_at_entry_line_sharp": 0.848991
+    "price_clv_raw_sharp_pct": -0.919
   },
   {
     "date": "2026-08-03",
@@ -437644,14 +437699,14 @@
     "price_clv_raw_pct": -1.994,
     "clv_ev_pct": -6.036,
     "closing_fair_prob_at_entry_line": 0.853037,
+    "clv_ev_pct_sharp": -6.036,
+    "closing_fair_prob_at_entry_line_sharp": 0.853037,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -792.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.994,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -1.994,
-    "clv_ev_pct_sharp": -6.036,
-    "closing_fair_prob_at_entry_line_sharp": 0.853037
+    "price_clv_raw_sharp_pct": -1.994
   },
   {
     "date": "2026-08-03",
@@ -437727,14 +437782,14 @@
     "price_clv_raw_pct": -4.832,
     "clv_ev_pct": -9.033,
     "closing_fair_prob_at_entry_line": 0.838042,
+    "clv_ev_pct_sharp": -9.033,
+    "closing_fair_prob_at_entry_line_sharp": 0.838042,
     "closing_line_sharp": 0.5,
     "closing_odds_sharp": -687.0,
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -4.832,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": -4.832,
-    "clv_ev_pct_sharp": -9.033,
-    "closing_fair_prob_at_entry_line_sharp": 0.838042
+    "price_clv_raw_sharp_pct": -4.832
   },
   {
     "date": "2026-08-03",
@@ -437761,7 +437816,8 @@
     "entry_ev_vs_fair_pct": 2.945,
     "opening_opp_odds": -345.0,
     "entry_overround": 1.0253,
-    "entry_board_age_min": 0.2
+    "entry_board_age_min": 0.2,
+    "entry_lead_min": 751.8
   },
   {
     "date": "2026-08-03",
@@ -437789,7 +437845,8 @@
     "opening_opp_odds": 100.0,
     "entry_overround": 1.0122,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 871.8
   },
   {
     "date": "2026-08-03",
@@ -437804,10 +437861,10 @@
     "opening_odds": 113.0,
     "opening_implied_prob": 0.469484,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 100.0,
+    "closing_implied_prob": 0.486239,
+    "clv": 0.016755,
+    "clv_pct": 1.675,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.474576,
     "consensus_n_books": 9,
@@ -437817,7 +437874,18 @@
     "opening_opp_odds": -112.0,
     "entry_overround": 1.0283,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 271.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 3.052,
+    "clv_novig_pct": -0.0,
+    "clv_ev_pct": 3.569,
+    "closing_odds_sharp": 100.0,
+    "closing_imp_sharp": 0.486239,
+    "clv_sharp": 0.016755,
+    "clv_sharp_pct": 1.675,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": -0.0
   },
   {
     "date": "2026-08-03",
@@ -437832,10 +437900,10 @@
     "opening_odds": -100.0,
     "opening_implied_prob": 0.5,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": -110.0,
+    "closing_implied_prob": 0.511628,
+    "clv": 0.011628,
+    "clv_pct": 1.163,
     "commence_time": "2026-08-03T16:50:00Z",
     "consensus_fair_prob": 0.515888,
     "consensus_n_books": 10,
@@ -437845,7 +437913,18 @@
     "opening_opp_odds": 101.0,
     "entry_overround": 1.028,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 381.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 2.381,
+    "clv_novig_pct": -0.442,
+    "clv_ev_pct": 2.326,
+    "closing_odds_sharp": -110.0,
+    "closing_imp_sharp": 0.509166,
+    "clv_sharp": 0.009166,
+    "clv_sharp_pct": 0.917,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": -0.689
   },
   {
     "date": "2026-08-03",
@@ -437860,10 +437939,10 @@
     "opening_odds": -213.0,
     "opening_implied_prob": 0.680511,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": -250.0,
+    "closing_implied_prob": 0.694323,
+    "clv": 0.013812,
+    "clv_pct": 1.381,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.685345,
     "consensus_n_books": 8,
@@ -437873,7 +437952,18 @@
     "opening_opp_odds": 218.0,
     "entry_overround": 1.0288,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 271.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 3.377,
+    "clv_novig_pct": 0.0,
+    "clv_ev_pct": 2.03,
+    "closing_odds_sharp": -250.0,
+    "closing_imp_sharp": 0.694323,
+    "clv_sharp": 0.013812,
+    "clv_sharp_pct": 1.381,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": 0.0
   },
   {
     "date": "2026-08-03",
@@ -437888,10 +437978,10 @@
     "opening_odds": 203.0,
     "opening_implied_prob": 0.330033,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 188.0,
+    "closing_implied_prob": 0.338872,
+    "clv": 0.008839,
+    "clv_pct": 0.884,
     "commence_time": "2026-08-03T17:40:00Z",
     "consensus_fair_prob": 0.350262,
     "consensus_n_books": 10,
@@ -437901,7 +437991,18 @@
     "opening_opp_odds": -210.0,
     "entry_overround": 1.0246,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 431.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 1.719,
+    "clv_novig_pct": -0.0,
+    "clv_ev_pct": 2.678,
+    "closing_odds_sharp": 188.0,
+    "closing_imp_sharp": 0.337518,
+    "clv_sharp": 0.007485,
+    "clv_sharp_pct": 0.749,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": -0.135
   },
   {
     "date": "2026-08-03",
@@ -437916,10 +438017,10 @@
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": -150.0,
+    "closing_implied_prob": 0.593165,
+    "clv": 0.013333,
+    "clv_pct": 1.333,
     "commence_time": "2026-08-03T16:30:00Z",
     "consensus_fair_prob": 0.583316,
     "consensus_n_books": 10,
@@ -437929,7 +438030,18 @@
     "opening_opp_odds": 138.0,
     "entry_overround": 1.0202,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 361.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 2.017,
+    "clv_novig_pct": 0.503,
+    "clv_ev_pct": 2.299,
+    "closing_odds_sharp": -161.0,
+    "closing_imp_sharp": 0.599834,
+    "clv_sharp": 0.020002,
+    "clv_sharp_pct": 2.0,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": 1.17
   },
   {
     "date": "2026-08-03",
@@ -437944,10 +438056,10 @@
     "opening_odds": -138.0,
     "opening_implied_prob": 0.579832,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": -151.0,
+    "closing_implied_prob": 0.588781,
+    "clv": 0.008949,
+    "clv_pct": 0.895,
     "commence_time": "2026-08-03T17:40:00Z",
     "consensus_fair_prob": 0.588829,
     "consensus_n_books": 7,
@@ -437957,7 +438069,18 @@
     "opening_opp_odds": 138.0,
     "entry_overround": 1.0218,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 431.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 2.176,
+    "clv_novig_pct": -0.0,
+    "clv_ev_pct": 1.543,
+    "closing_odds_sharp": -156.0,
+    "closing_imp_sharp": 0.591889,
+    "clv_sharp": 0.012057,
+    "clv_sharp_pct": 1.206,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": 0.311
   },
   {
     "date": "2026-08-03",
@@ -437972,10 +438095,10 @@
     "opening_odds": 567.0,
     "opening_implied_prob": 0.149925,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 511.0,
+    "closing_implied_prob": 0.15956,
+    "clv": 0.009635,
+    "clv_pct": 0.963,
     "commence_time": "2026-08-03T16:30:00Z",
     "consensus_fair_prob": 0.174444,
     "consensus_n_books": 10,
@@ -437985,7 +438108,18 @@
     "opening_opp_odds": -596.0,
     "entry_overround": 1.02,
     "entry_board_age_min": 0.1,
-    "poly_filled": false
+    "poly_filled": false,
+    "entry_lead_min": 361.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 1.374,
+    "clv_novig_pct": -0.09,
+    "clv_ev_pct": 6.426,
+    "closing_odds_sharp": 511.0,
+    "closing_imp_sharp": 0.158525,
+    "clv_sharp": 0.0086,
+    "clv_sharp_pct": 0.86,
+    "beat_close_sharp": true,
+    "clv_novig_sharp_pct": -0.193
   },
   {
     "date": "2026-08-03",
@@ -438000,16 +438134,21 @@
     "opening_odds": 212.0,
     "opening_implied_prob": 0.320513,
     "snapshot_time": "2026-08-03T10:28:11.653012+00:00",
-    "closing_odds": null,
-    "closing_implied_prob": null,
-    "clv": null,
-    "clv_pct": null,
+    "closing_odds": 195.0,
+    "closing_implied_prob": 0.326359,
+    "clv": 0.005846,
+    "clv_pct": 0.585,
     "commence_time": "2026-08-03T15:00:00Z",
     "consensus_fair_prob": 0.329412,
     "consensus_n_books": 7,
     "opening_fair_prob": 0.326359,
     "opening_opp_odds": -233.0,
     "entry_overround": 1.0387,
-    "entry_board_age_min": 0.1
+    "entry_board_age_min": 0.1,
+    "entry_lead_min": 271.8,
+    "clv_devigged": true,
+    "clv_raw_pct": 1.847,
+    "clv_novig_pct": -0.0,
+    "clv_ev_pct": 1.824
   }
 ]
