@@ -1,0 +1,98 @@
+{
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "OVER",
+      "player": "Osleivis Basabe",
+      "team": "Osleivis Basabe OVER 0.5",
+      "matchup": "San Francisco Giants @ Texas Rangers",
+      "line": 0.5,
+      "odds": 205,
+      "model_prob": 0.669,
+      "implied_prob": 0.294,
+      "edge_pct": 37.5,
+      "model_mu": 2.02,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "James Wood",
+      "team": "James Wood UNDER 0.5",
+      "matchup": "Washington Nationals @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": 100,
+      "model_prob": 0.7046,
+      "implied_prob": 0.4454,
+      "edge_pct": 25.93,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Cam Schlittler",
+      "team": "Cam Schlittler UNDER 7.5",
+      "matchup": "St. Louis Cardinals @ New York Yankees",
+      "line": 7.5,
+      "odds": -154,
+      "model_prob": 0.7791,
+      "implied_prob": 0.5726,
+      "edge_pct": 20.65,
+      "model_mu": 5.58,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Osleivis Basabe",
+      "team": "Osleivis Basabe OVER 0.5",
+      "matchup": "San Francisco Giants @ Texas Rangers",
+      "line": 0.5,
+      "odds": -165,
+      "model_prob": 0.7961,
+      "implied_prob": 0.5546,
+      "edge_pct": 24.15,
+      "model_mu": 2.83,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Victor Mesa Jr.",
+      "team": "Victor Mesa Jr. UNDER 1.5",
+      "matchup": "Tampa Bay Rays @ Colorado Rockies",
+      "line": 1.5,
+      "odds": -270,
+      "model_prob": 0.8558,
+      "implied_prob": 0.6549,
+      "edge_pct": 20.09,
+      "model_mu": 0.67,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Ben Rice",
+      "team": "Ben Rice UNDER 0.5",
+      "matchup": "St. Louis Cardinals @ New York Yankees",
+      "line": 0.5,
+      "odds": -485,
+      "model_prob": 0.8649,
+      "implied_prob": 0.7464,
+      "edge_pct": 11.85,
+      "model_mu": 0.15,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
