@@ -436514,14 +436514,12 @@
     "clv_novig_pct": 2.898,
     "clv_ev_pct": 9.639,
     "clv_novig_sharp_pct": 1.96,
-    "poly_filled": false,
+    "poly_filled": true,
     "closing_odds_sharp": 123.0,
     "closing_imp_sharp": 0.439963,
     "clv_sharp": 0.030127,
     "clv_sharp_pct": 3.013,
-    "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 1.96,
-    "poly_filled": true
+    "beat_close_sharp": true
   },
   {
     "date": "2026-08-03",
@@ -436790,7 +436788,13 @@
     "clv": null,
     "clv_pct": null,
     "commence_time": "2026-08-04T00:41:00Z",
-    "entry_lead_min": 1178.7
+    "entry_lead_min": 1178.7,
+    "opening_fair_prob": 0.509434,
+    "opening_fair_sharp": 0.51024,
+    "entry_ev_vs_fair_pct": -2.591,
+    "opening_opp_odds": 100.0,
+    "entry_overround": 1.0192,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-08-03",
@@ -436808,7 +436812,13 @@
     "clv": null,
     "clv_pct": null,
     "commence_time": "2026-08-03T23:06:00Z",
-    "entry_lead_min": 1083.7
+    "entry_lead_min": 1083.7,
+    "opening_fair_prob": 0.477999,
+    "opening_fair_sharp": 0.480662,
+    "entry_ev_vs_fair_pct": -6.156,
+    "opening_opp_odds": -114.0,
+    "entry_overround": 1.0205,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-08-03",
@@ -436826,7 +436836,13 @@
     "clv": null,
     "clv_pct": null,
     "commence_time": "2026-08-04T01:41:00Z",
-    "entry_lead_min": 1238.7
+    "entry_lead_min": 1238.7,
+    "opening_fair_prob": 0.516247,
+    "opening_fair_sharp": 0.519338,
+    "entry_ev_vs_fair_pct": 9.061,
+    "opening_opp_odds": 102.0,
+    "entry_overround": 1.0234,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-08-03",
@@ -438337,5 +438353,59 @@
     "opening_opp_odds": -176.0,
     "entry_overround": 1.0298,
     "entry_board_age_min": 0.1
+  },
+  {
+    "date": "2026-08-03",
+    "team": "Camilo Ugo Carabelli",
+    "player": null,
+    "opponent": "Cameron Norrie @ Camilo Ugo Carabelli",
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "strategy": "consensus_ev",
+    "opening_line": null,
+    "direction": "HOME",
+    "opening_odds": 340.0,
+    "opening_implied_prob": 0.227273,
+    "snapshot_time": "2026-08-03T15:51:27.232218+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-03T18:50:00Z",
+    "consensus_fair_prob": 0.232209,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.220898,
+    "opening_fair_sharp": 0.220898,
+    "entry_ev_vs_fair_pct": -2.805,
+    "opening_opp_odds": -404.0,
+    "entry_overround": 1.0289,
+    "entry_board_age_min": 0.0
+  },
+  {
+    "date": "2026-08-03",
+    "team": "Mariano Navone",
+    "player": null,
+    "opponent": "Mariano Navone @ Matteo Berrettini",
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "strategy": "consensus_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 180.0,
+    "opening_implied_prob": 0.357143,
+    "snapshot_time": "2026-08-03T15:51:27.232218+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-03T16:30:00Z",
+    "consensus_fair_prob": 0.361807,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.349154,
+    "opening_fair_sharp": 0.344303,
+    "entry_ev_vs_fair_pct": -3.595,
+    "opening_opp_odds": -195.0,
+    "entry_overround": 1.0156,
+    "entry_board_age_min": 0.0
   }
 ]
