@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-02T14:44:11.042947+00:00",
+  "updated_at": "2026-08-03T03:46:14.740279+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -378,8 +378,8 @@
     },
     "totals_coverage": {
       "scored": 363,
-      "scoreable": 642,
-      "pct": 56.5
+      "scoreable": 647,
+      "pct": 56.1
     },
     "spread_coverage": {
       "scored": 300,
@@ -389,15 +389,15 @@
   },
   "summary": {
     "total_picks": 269,
-    "settled": 266,
-    "pending": 3,
+    "settled": 269,
+    "pending": 0,
     "wins": 148,
-    "losses": 112,
-    "pushes": 6,
-    "win_rate": 0.5692,
-    "units_profit": 31.88,
-    "roi": 0.1253,
-    "streak": -1
+    "losses": 113,
+    "pushes": 8,
+    "win_rate": 0.567,
+    "units_profit": 30.88,
+    "roi": 0.1209,
+    "streak": -2
   },
   "nrfi": {
     "total": 0,
@@ -435,27 +435,27 @@
     },
     "total": {
       "total": 183,
-      "settled": 180,
-      "pending": 3,
+      "settled": 183,
+      "pending": 0,
       "wins": 102,
-      "losses": 72,
-      "pushes": 6,
-      "win_rate": 0.5862,
-      "units_profit": 26.67,
-      "roi": 0.1564,
-      "streak": -1
+      "losses": 73,
+      "pushes": 8,
+      "win_rate": 0.5829,
+      "units_profit": 25.67,
+      "roi": 0.1497,
+      "streak": -2
     }
   },
   "by_sport": {
     "mlb": {
       "total": 167,
-      "settled": 164,
-      "pending": 3,
+      "settled": 167,
+      "pending": 0,
       "wins": 84,
-      "losses": 75,
-      "win_rate": 0.5283,
-      "units_profit": 10.39,
-      "roi": 0.0653
+      "losses": 76,
+      "win_rate": 0.525,
+      "units_profit": 9.39,
+      "roi": 0.0587
     },
     "nba": {
       "total": 90,
@@ -495,6 +495,17 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-08-02",
+      "sport": "mlb",
+      "market": "total",
+      "team": "OVER 6.5",
+      "matchup": "New York Yankees @ Chicago Cubs",
+      "odds": -110,
+      "result": "loss",
+      "profit": -1.0,
+      "edge_pct": 1.21
+    },
     {
       "date": "2026-08-01",
       "sport": "mlb",
@@ -593,17 +604,6 @@
       "result": "win",
       "profit": 0.95,
       "edge_pct": 4.76
-    },
-    {
-      "date": "2026-05-31",
-      "sport": "nhl",
-      "market": "total",
-      "team": "Under 5.5",
-      "matchup": "Vegas Golden Knights @ Carolina Hurricanes",
-      "odds": 102,
-      "result": "loss",
-      "profit": -0.5,
-      "edge_pct": 8.99
     }
   ]
 }
