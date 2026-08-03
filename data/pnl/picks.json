@@ -635989,6 +635989,44 @@
       "clv_status": "heuristic",
       "home_team": "New York Yankees",
       "away_team": "St. Louis Cardinals"
+    },
+    {
+      "pick_id": "lineshop_basketball_wnba_20260803_seattle-storm_moneyline_betmgm",
+      "date": "2026-08-03",
+      "sport": "wnba",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Seattle Storm",
+      "matchup": "Seattle Storm @ New York Liberty",
+      "odds": 300,
+      "line": null,
+      "sportsbook": "BetMGM",
+      "model_prob": 0.2574,
+      "edge_pct": 0.0,
+      "stake": 0.0,
+      "card_pick": false,
+      "strategy": "line_shop",
+      "fair_source": "pinnacle",
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-08-03T10:10:00.170598+00:00",
+      "resulted_at": null,
+      "model_prob_raw": null,
+      "raw_edge_pct": 2.95,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "tainted": null,
+      "clv_status": "heuristic",
+      "home_team": "New York Liberty",
+      "away_team": "Seattle Storm"
     }
   ]
 }
