@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03T20:19:53.095456+00:00",
+  "generated_at": "2026-08-04T03:56:18.371738+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -22,21 +22,21 @@
       "have": 137,
       "need": 300,
       "pass": false,
-      "detail": "137 scored of 62 logged (protocol v1)"
+      "detail": "137 scored of 75 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
-      "have": 409,
+      "have": 412,
       "need": 200,
       "pass": false,
-      "detail": "409 graded sharp-fair picks; worst bucket gap 0.083 vs max 0.05"
+      "detail": "412 graded sharp-fair picks; worst bucket gap 0.087 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 19,
+      "have": 22,
       "need": 100,
       "pass": false,
-      "detail": "19 filled of 51 checked"
+      "detail": "22 filled of 73 checked"
     },
     {
       "gate": "CLV",
@@ -54,14 +54,14 @@
     }
   ],
   "anchor": {
-    "n": 409,
+    "n": 412,
     "buckets": [
       {
         "bucket": 0.2,
-        "n": 42,
+        "n": 43,
         "predicted": 0.25,
-        "actual": 0.167,
-        "gap": -0.083
+        "actual": 0.163,
+        "gap": -0.087
       },
       {
         "bucket": 0.3,
@@ -79,14 +79,14 @@
       },
       {
         "bucket": 0.5,
-        "n": 142,
+        "n": 143,
         "predicted": 0.55,
-        "actual": 0.57,
-        "gap": 0.02
+        "actual": 0.573,
+        "gap": 0.023
       }
     ],
-    "worst_gap": 0.083
+    "worst_gap": 0.087
   },
-  "n_logged": 62,
+  "n_logged": 75,
   "n_scored": 137
 }
