@@ -440606,7 +440606,7 @@
     "opening_opp_odds": -295.0,
     "entry_overround": 1.0285,
     "entry_board_age_min": 0.3,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 1390.5,
     "clv_devigged": true,
     "clv_raw_pct": 1.881,
@@ -440717,7 +440717,7 @@
     "opening_opp_odds": -160.0,
     "entry_overround": 1.0075,
     "entry_board_age_min": 0.3,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 1150.2,
     "clv_devigged": true,
     "clv_raw_pct": -3.893,
@@ -440884,7 +440884,7 @@
     "opening_opp_odds": -164.0,
     "entry_overround": 1.0294,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 804.2,
     "clv_devigged": true,
     "clv_raw_pct": 1.977,
@@ -440923,7 +440923,7 @@
     "opening_opp_odds": -159.0,
     "entry_overround": 1.0237,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 734.2,
     "clv_devigged": true,
     "clv_raw_pct": 2.779,
@@ -440956,7 +440956,7 @@
     "opening_opp_odds": -166.0,
     "entry_overround": 1.0117,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 664.2,
     "clv_devigged": true,
     "clv_raw_pct": 0.737,
@@ -442483,7 +442483,7 @@
     "opening_opp_odds": -111.0,
     "entry_overround": 1.0211,
     "entry_board_age_min": 0.1,
-    "poly_filled": false,
+    "poly_filled": true,
     "entry_lead_min": 330.0,
     "clv_devigged": true,
     "clv_raw_pct": 0.671,
@@ -442565,7 +442565,8 @@
     "clv_sharp": 0.010912,
     "clv_sharp_pct": 1.091,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": 0.457
+    "clv_novig_sharp_pct": 0.457,
+    "poly_filled": false
   },
   {
     "date": "2026-08-04",
@@ -442642,7 +442643,8 @@
     "clv_sharp": 0.003485,
     "clv_sharp_pct": 0.348,
     "beat_close_sharp": true,
-    "clv_novig_sharp_pct": -1.365
+    "clv_novig_sharp_pct": -1.365,
+    "poly_filled": false
   },
   {
     "date": "2026-08-05",
@@ -442694,7 +442696,7 @@
     "opening_opp_odds": -140.0,
     "entry_overround": 1.0278,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-08-06",
@@ -442719,7 +442721,8 @@
     "opening_fair_prob": 0.519338,
     "opening_opp_odds": 102.0,
     "entry_overround": 1.0299,
-    "entry_board_age_min": 0.3
+    "entry_board_age_min": 0.3,
+    "poly_filled": true
   },
   {
     "date": "2026-08-04",
@@ -442767,7 +442770,8 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-08-04T22:40:00Z"
   },
   {
     "date": "2026-08-04",
@@ -442785,6 +442789,42 @@
     "closing_odds": null,
     "closing_implied_prob": null,
     "clv": null,
-    "clv_pct": null
+    "clv_pct": null,
+    "commence_time": "2026-08-05T02:00:00Z",
+    "consensus_fair_prob": 0.14965,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.14445,
+    "opening_fair_sharp": 0.15176,
+    "entry_ev_vs_fair_pct": 6.232,
+    "opening_opp_odds": -716.0,
+    "entry_overround": 1.0256,
+    "entry_board_age_min": 0.1
+  },
+  {
+    "date": "2026-08-04",
+    "team": "Lorenzo Sonego",
+    "player": null,
+    "opponent": "Tallon Griekspoor @ Lorenzo Sonego",
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 108.0,
+    "opening_implied_prob": 0.480769,
+    "snapshot_time": "2026-08-04T15:11:28.323044+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-04T17:20:00Z",
+    "consensus_fair_prob": 0.494101,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.49542,
+    "opening_fair_sharp": 0.49542,
+    "entry_ev_vs_fair_pct": 3.047,
+    "opening_opp_odds": -108.0,
+    "entry_overround": 1.029,
+    "entry_board_age_min": 0.1
   }
 ]
