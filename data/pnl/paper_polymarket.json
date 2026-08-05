@@ -1,21 +1,75 @@
 {
-  "generated_at": "2026-08-04T20:14:48.124474+00:00",
+  "generated_at": "2026-08-05T03:51:16.116172+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 112.0,
-  "n_settled": 0,
-  "n_pending": 428,
-  "wins": 0,
-  "losses": 0,
-  "staked": 0,
-  "pnl": 0,
-  "expected_pnl": 0,
-  "roi_pct": null,
-  "max_drawdown": 0.0,
+  "end_bankroll": 108.69,
+  "n_settled": 3,
+  "n_pending": 427,
+  "wins": 1,
+  "losses": 2,
+  "staked": 13.73,
+  "pnl": -3.31,
+  "expected_pnl": 0.46,
+  "roi_pct": -24.11,
+  "max_drawdown": 9.25,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 303,
-    "not settled yet": 26
+    "exposure cap reached for the slate": 305,
+    "not settled yet": 21,
+    "resting order never filled": 2
   },
-  "significance": {},
-  "rows": []
+  "significance": {
+    "mean_edge_per_unit": 0.0336,
+    "sd_per_unit": 1.2948,
+    "n_for_2sigma": 5936
+  },
+  "rows": [
+    {
+      "pick_id": "polymarket_ev__mlb_20260804_new-york-mets_g-newmet-clegua_moneyline_win",
+      "date": "2026-08-04",
+      "team": "New York Mets",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.43,
+      "fair": 0.4459,
+      "stake": 4.48,
+      "shares": 10.42,
+      "result": "win",
+      "pnl": 5.94,
+      "expected_pnl": 0.166,
+      "equity": 117.94
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260804_washington-nationals_g-wasnat-phiphi_moneyline_win",
+      "date": "2026-08-04",
+      "team": "Washington Nationals",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.32,
+      "fair": 0.3328,
+      "stake": 4.72,
+      "shares": 14.75,
+      "result": "loss",
+      "pnl": -4.72,
+      "expected_pnl": 0.189,
+      "equity": 113.22
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260804_pittsburgh-pirates_g-pitpir-milbre_moneyline_win",
+      "date": "2026-08-04",
+      "team": "Pittsburgh Pirates",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.39,
+      "fair": 0.3993,
+      "stake": 4.53,
+      "shares": 11.62,
+      "result": "loss",
+      "pnl": -4.53,
+      "expected_pnl": 0.108,
+      "equity": 108.69
+    }
+  ]
 }
