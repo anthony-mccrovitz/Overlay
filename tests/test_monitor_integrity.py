@@ -192,3 +192,71 @@ def test_monitor_run_and_cmd_monitor_agree(monkeypatch):
     monkeypatch.setattr("builtins.print", lambda *a, **k: None)
     code = chef.cmd_monitor(argparse.Namespace(soft=False))
     assert (code != 0) == bool(issues or unknown)
+
+
+def _dark_lines(text: str) -> list[str]:
+    return [ln for ln in text.splitlines() if "Dark capture" in ln]
+
+
+def test_per_sport_capture_catches_one_lane_going_dark(monkeypatch):
+    """A single dark lane must be loud even while every other sport captures.
+
+    The pooled check counts archives across all sports at once, so WNBA missing
+    2026-07-28/29 stayed green for over a week on the strength of MLB's files.
+    It only surfaced later as a CLV coverage floor failure — the shape that hides
+    the cause, because it reads as a WNBA model problem when in fact five lanes
+    had gone dark together in one capture outage.
+    """
+    monkeypatch.delenv("ODDS_API_KEY", raising=False)
+    monkeypatch.setattr("src.analytics.clv_tracker._load_closing_records",
+                        lambda date_str, sport: [])
+    sink: list[str] = []
+    issues, _ = chef._monitor_run(sink.append)
+    text = "\n".join(sink)
+
+    assert _dark_lines(text), "every archive is missing and the monitor said nothing"
+    # Acknowledged lanes are printed but not counted; anything else must be a gap.
+    unacked = [ln for ln in _dark_lines(text) if "ACKNOWLEDGED" not in ln]
+    assert unacked, "no un-acknowledged lane reported despite all archives missing"
+    assert issues > 0, "dark lanes were printed but the run was not red"
+
+
+def test_per_sport_capture_is_silent_when_every_lane_captures(monkeypatch):
+    """...and silent when there is nothing wrong.
+
+    A guard that fires on healthy days trains you to skim past the real one.
+    """
+    monkeypatch.delenv("ODDS_API_KEY", raising=False)
+    monkeypatch.setattr("src.analytics.clv_tracker._load_closing_records",
+                        lambda date_str, sport: [{"closing": True}])
+    sink: list[str] = []
+    chef._monitor_run(sink.append)
+    text = "\n".join(sink)
+
+    assert not _dark_lines(text), f"false alarm with all archives present: {_dark_lines(text)}"
+    assert any("Per-sport capture" in ln and "✓" in ln for ln in sink.copy()), (
+        "the healthy case must still report that the check RAN — a check that "
+        "prints nothing when it passes is indistinguishable from one that "
+        "silently did not run"
+    )
+
+
+def test_per_sport_capture_unreadable_is_unknown_not_green(monkeypatch):
+    """If the check cannot run it must report BLIND, never all-clear.
+
+    This is the bug class the whole monitor exists to prevent: 'couldn't check'
+    rendering as 'nothing wrong'.
+    """
+    def boom(date_str, sport):
+        raise OSError("archive unreadable")
+    monkeypatch.delenv("ODDS_API_KEY", raising=False)
+    monkeypatch.setattr("src.analytics.clv_tracker._load_closing_records", boom)
+    sink: list[str] = []
+    issues, unknown = chef._monitor_run(sink.append)
+
+    assert any("per-sport capture" in u for u in unknown), (
+        f"unreadable archives did not register as UNKNOWN: {unknown}"
+    )
+    assert not any("✓ Per-sport capture" in ln for ln in sink), (
+        "reported a clean per-sport capture while it could not actually read the archives"
+    )

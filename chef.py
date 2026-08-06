@@ -3059,6 +3059,40 @@ ACKNOWLEDGED_GAPS: dict[tuple[str, str], dict] = {
         "why": "downstream of the UFC capture gap above — the join has nothing to "
                "join against for cards that were never captured. Clears with it",
     },
+    # The 2026-07-28..31 capture outage. The UFC/brazil/korea entries above were
+    # written for it on 2026-07-30, but only for the lanes noticed that day —
+    # wnba, usa_mls and mexico_ligamx went dark in the same window and were
+    # missed, so wnba kept failing the coverage floor a week later while looking
+    # like a WNBA-specific bug. It never was: MLB captured throughout, and every
+    # affected lane resumed on its own. Closings are point-in-time, so these days
+    # cannot be backfilled — they can only be declared and allowed to age out.
+    ("capture", "wnba"): {
+        "since": "2026-08-06", "expires": "2026-08-16",
+        "why": "capture produced no archive on 2026-07-28/29 (see capture_day "
+               "below); 64 snapshots — one of them a 58-row full-board day — can "
+               "never be scored. Game lines outside those two days sit at 87%, so "
+               "the lane is healthy and the 14d settled window clears it by 08-15",
+    },
+    ("capture_day", "wnba"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-28/29 of the capture outage; leaves the 9d window 08-09",
+    },
+    ("capture_day", "soccer_usa_mls"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-30/31 of the same outage; lane still passes its floor at 79%",
+    },
+    ("capture_day", "mma_mixed_martial_arts"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29/30 of the same outage; already acknowledged as ('capture','ufc')",
+    },
+    ("capture_day", "soccer_brazil_campeonato"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29 of the same outage; lane also has a ('capture',…) ack",
+    },
+    ("capture_day", "soccer_mexico_ligamx"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29/30/31 of the same outage; 3 snapshots total",
+    },
 }
 
 
@@ -3310,6 +3344,53 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
     else:
         emit(f"  ✗ Closing capture   NONE in last 2 days  ← CLV can't score (capture-closing.yml)")
         issues += 1
+
+    # 4b. The same question asked PER SPORT. Check 4 pools every sport into one
+    #     count, so a single lane going dark reads green for as long as MLB keeps
+    #     capturing — which is exactly how the 2026-07-28..31 outage hid. It was
+    #     invisible for over a week and then surfaced in the shape that hides a
+    #     cause: a WNBA coverage floor failure, looking like a WNBA model problem
+    #     when five lanes had gone dark together.
+    #
+    #     The invariant is narrow on purpose, so this cannot become the alarm
+    #     nobody reads: if a sport logged snapshots on a date, that sport must
+    #     have a closing archive for that same date. A sport with no games logs
+    #     no snapshots and is never asked for one. The window ends at the same
+    #     2-day cutoff as check 4 so tonight's games — whose closings are
+    #     captured after they commence — are never counted as missing.
+    try:
+        from src.analytics.clv_tracker import _load_closing_records
+        _s = json.loads(Path("data/clv/snapshots.json").read_text())
+        _s = _s.get("snapshots", _s) if isinstance(_s, dict) else _s
+        floor_day = (today - timedelta(days=9)).isoformat()
+        logged: dict[tuple, int] = {}
+        for snap in _s:
+            if not isinstance(snap, dict):
+                continue
+            d, sp = str(snap.get("date") or "")[:10], snap.get("sport")
+            if sp and floor_day <= d <= cutoff:
+                logged[(sp, d)] = logged.get((sp, d), 0) + 1
+        dark: dict[str, list] = {}
+        for (sp, d), n in logged.items():
+            if not _load_closing_records(d, sp):
+                dark.setdefault(sp, []).append((d, n))
+        if not dark:
+            emit(f"  ✓ Per-sport capture every sport logging snapshots has its archives")
+        for sp in sorted(dark, key=lambda k: -sum(n for _, n in dark[k])):
+            days = sorted(dark[sp])
+            ack  = _ack("capture_day", sp, today)
+            mark = "≈" if ack else "✗"
+            note = (f"  ← ACKNOWLEDGED until {ack['expires']}: {ack['why'][:58]}…"
+                    if ack else
+                    "  ← lane dark: these snapshots can never be scored")
+            emit(f"  {mark} Dark capture      {sp} — {sum(n for _, n in days)} snapshot(s), "
+                 f"no archive on {', '.join(d for d, _ in days)}{note}")
+            if not ack:
+                issues += 1
+    except (json.JSONDecodeError, ValueError, OSError, ImportError) as err:
+        # Blind is not clear — same contract as the Odds API check above.
+        unknown.append(f"per-sport capture check could not run ({type(err).__name__}) "
+                       f"— a lane could be dark without this run saying so")
 
     # 5. CLV scoring fresh
     try:
