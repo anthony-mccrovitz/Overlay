@@ -92,6 +92,13 @@ python3 chef.py stats                      # refresh public_stats.json
 - **Prop CLV is an artifact.** Prop models echo the book's line (r≈0.97), so
   beat-close measures line-following, not skill. Judge props on ROI alone.
 
+## Coding behavior — always apply
+
+Follow `.claude/skills/karpathy-guidelines/SKILL.md` on every code change in this
+repo: surface assumptions instead of guessing, write the minimum that solves the
+problem, keep diffs surgical, and state a verifiable success criterion before
+starting. Load the skill for the full text.
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
