@@ -29,6 +29,18 @@ jobs:
         # missed their one-night grading window (pipeline failures, wrong
         # slate dates). Without this they rot as pending forever.
         python scripts/grade_backlog.py        || fail=1
+        # Outrights (golf/nascar/f1/indycar) need --winner and are deliberately
+        # SKIPPED by grade_completed.py, which defers to this script. It was
+        # never scheduled anywhere: its own docstring claims "runs daily at 9 AM"
+        # and its log last moved 2026-05-25, so every outright pick since has sat
+        # pending — 90 of them by 2026-08-06. A grader nothing invokes is the
+        # same as no grader, and the delegating comment upstream made it look
+        # handled. Nothing alarmed either: the stale-pending watchdog exempts
+        # market "outright" (UNGRADEABLE_MARKETS) and the three racing sports
+        # (KNOWN_MANUAL_ONLY), so this backlog was invisible BY DESIGN — the
+        # exemptions outlived the reason for them. Once the backlog is cleared,
+        # both exemptions should be dropped so the alarm covers outrights too.
+        python scripts/grade_outrights.py      || fail=1
         python scripts/nightly_recap.py --deploy || fail=1
         # After grading, rebuild the web data so the live site reflects last
         # night's results/record (the customer feed + slate carry graded picks).

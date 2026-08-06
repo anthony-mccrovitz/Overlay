@@ -2058,6 +2058,99 @@ def cmd_draft(args: argparse.Namespace) -> int:
         _t.sleep(8)
 
 
+def cmd_lineup(args: argparse.Namespace) -> int:
+    """Weekly start/sit for my roster, with team context priced by the market.
+
+    The board projects every player from his own 2025 box score and has no
+    team-level features, so it cannot see roster turnover — a defence still
+    carries the franchise's last-season stat line even after its best pass
+    rusher is traded. The betting market prices exactly that, so this view joins
+    the two: projection for the player, market for the situation.
+
+    Where the market has not posted a line the row says UNKNOWN rather than
+    quietly showing the unadjusted number, which would look identical to a
+    priced average matchup.
+    """
+    from src.fantasy import market as _mkt
+    from src.fantasy import sleeper as _sl
+    from src.fantasy.league import load as _load_league
+    from src.fantasy.valuation import build_board, starters_from_settings
+
+    cfg = _load_league()
+    board = build_board(cfg.scoring_settings, cfg.roster_positions, cfg.teams)
+    by_id = {p.player_id: p for p in board}
+    starters = {k: int(round(v / cfg.teams))
+                for k, v in starters_from_settings(cfg.roster_positions, cfg.teams).items()}
+
+    me = _sl.user(args.user).get("user_id")
+    rosters = _sl.league_rosters(cfg.league_id)
+    mine = next((r for r in rosters if r.get("owner_id") == me), None)
+    if not mine:
+        print(f"\n  No roster for {args.user} in this league.\n")
+        return 1
+    taken = {pid for r in rosters for pid in (r.get("players") or [])}
+
+    mkt = _mkt.week_market(args.week)
+    line = "═" * 96
+    print(f"\n  {line}")
+    print(f"  Week {args.week} lineup — {cfg.name}")
+    print(f"  {line}")
+    if not mkt:
+        # The whole point of this view is the market. Without it, say so — do
+        # not print an unadjusted board that looks adjusted.
+        print(f"\n  ✗ No NFL lines posted for week {args.week}. Nothing here is "
+              f"market-adjusted, so this view has nothing to add — use "
+              f"`chef.py draft` for the raw board.\n")
+        return 1
+    print(f"  {len(mkt)} teams priced · league average implied total "
+          f"{_mkt.league_average(mkt):.1f}")
+
+    rows = []
+    for pid in (mine.get("players") or []):
+        p = by_id.get(pid)
+        if not p:
+            continue
+        mult = _mkt.context_multiplier(p.position, p.team, mkt)
+        tw = mkt.get(p.team)
+        adj = p.vorp * mult if mult is not None else p.vorp
+        rows.append((p, tw, mult, adj))
+
+    rows.sort(key=lambda r: -r[3])
+    need = dict(starters)
+    print(f"\n  {'PLAYER':<24}{'POS':<5}{'TM':<5}{'MATCHUP':<10}{'ITT':>6}"
+          f"{'VORP':>7}{'CTX':>7}{'ADJ':>7}  VERDICT")
+    print(f"  {'─'*94}")
+    for p, tw, mult, adj in rows:
+        if mult is None:
+            matchup, itt, ctx = "UNKNOWN", "—", "—"
+            verdict = "no line — cannot judge"
+        else:
+            matchup = tw.note
+            # A defence's driver is the points it will FACE, not the points its
+            # own offence will score — showing the latter next to a DEF row
+            # reads as a good matchup when it means the opposite.
+            itt = f"{(tw.opp_implied_total if p.position in _mkt.OPPONENT_DRIVEN else tw.implied_total):.1f}"
+            ctx = f"{(mult - 1) * 100:+.0f}%"
+            slot = need.get(p.position, 0)
+            verdict = "START" if slot > 0 else "bench"
+            if slot > 0:
+                need[p.position] = slot - 1
+        print(f"  {p.name:<24}{p.position:<5}{p.team or '—':<5}{matchup:<10}{itt:>6}"
+              f"{p.vorp:>7.0f}{ctx:>7}{adj:>7.0f}  {verdict}")
+
+    # A DST's Sleeper player id IS its team code, so the rostered defences are
+    # exactly the roster entries that name a priced team.
+    free = _mkt.rank_defenses(mkt, exclude=taken & set(mkt))
+    print(f"\n  FREE-AGENT DEFENCES — ranked purely by opponent implied total")
+    print(f"  {'─'*94}")
+    for i, tw in enumerate(free[:8], 1):
+        print(f"  {i:>2}. {tw.team:<5}{tw.note:<10}opponent implied {tw.opp_implied_total:5.1f}"
+              f"   game total {tw.game_total:5.1f}   ({tw.books} books)")
+    print(f"\n  Defence carries no 2025 term at all — a DST's player id IS its team"
+          f"\n  code, so last season's stat line describes a roster that may be gone.\n")
+    return 0
+
+
 def cmd_filters(args: argparse.Namespace) -> int:
     """Report every registered subgroup filter, in-sample vs out-of-sample.
 
@@ -3059,6 +3152,40 @@ ACKNOWLEDGED_GAPS: dict[tuple[str, str], dict] = {
         "why": "downstream of the UFC capture gap above — the join has nothing to "
                "join against for cards that were never captured. Clears with it",
     },
+    # The 2026-07-28..31 capture outage. The UFC/brazil/korea entries above were
+    # written for it on 2026-07-30, but only for the lanes noticed that day —
+    # wnba, usa_mls and mexico_ligamx went dark in the same window and were
+    # missed, so wnba kept failing the coverage floor a week later while looking
+    # like a WNBA-specific bug. It never was: MLB captured throughout, and every
+    # affected lane resumed on its own. Closings are point-in-time, so these days
+    # cannot be backfilled — they can only be declared and allowed to age out.
+    ("capture", "wnba"): {
+        "since": "2026-08-06", "expires": "2026-08-16",
+        "why": "capture produced no archive on 2026-07-28/29 (see capture_day "
+               "below); 64 snapshots — one of them a 58-row full-board day — can "
+               "never be scored. Game lines outside those two days sit at 87%, so "
+               "the lane is healthy and the 14d settled window clears it by 08-15",
+    },
+    ("capture_day", "wnba"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-28/29 of the capture outage; leaves the 9d window 08-09",
+    },
+    ("capture_day", "soccer_usa_mls"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-30/31 of the same outage; lane still passes its floor at 79%",
+    },
+    ("capture_day", "mma_mixed_martial_arts"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29/30 of the same outage; already acknowledged as ('capture','ufc')",
+    },
+    ("capture_day", "soccer_brazil_campeonato"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29 of the same outage; lane also has a ('capture',…) ack",
+    },
+    ("capture_day", "soccer_mexico_ligamx"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29/30/31 of the same outage; 3 snapshots total",
+    },
 }
 
 
@@ -3310,6 +3437,53 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
     else:
         emit(f"  ✗ Closing capture   NONE in last 2 days  ← CLV can't score (capture-closing.yml)")
         issues += 1
+
+    # 4b. The same question asked PER SPORT. Check 4 pools every sport into one
+    #     count, so a single lane going dark reads green for as long as MLB keeps
+    #     capturing — which is exactly how the 2026-07-28..31 outage hid. It was
+    #     invisible for over a week and then surfaced in the shape that hides a
+    #     cause: a WNBA coverage floor failure, looking like a WNBA model problem
+    #     when five lanes had gone dark together.
+    #
+    #     The invariant is narrow on purpose, so this cannot become the alarm
+    #     nobody reads: if a sport logged snapshots on a date, that sport must
+    #     have a closing archive for that same date. A sport with no games logs
+    #     no snapshots and is never asked for one. The window ends at the same
+    #     2-day cutoff as check 4 so tonight's games — whose closings are
+    #     captured after they commence — are never counted as missing.
+    try:
+        from src.analytics.clv_tracker import _load_closing_records
+        _s = json.loads(Path("data/clv/snapshots.json").read_text())
+        _s = _s.get("snapshots", _s) if isinstance(_s, dict) else _s
+        floor_day = (today - timedelta(days=9)).isoformat()
+        logged: dict[tuple, int] = {}
+        for snap in _s:
+            if not isinstance(snap, dict):
+                continue
+            d, sp = str(snap.get("date") or "")[:10], snap.get("sport")
+            if sp and floor_day <= d <= cutoff:
+                logged[(sp, d)] = logged.get((sp, d), 0) + 1
+        dark: dict[str, list] = {}
+        for (sp, d), n in logged.items():
+            if not _load_closing_records(d, sp):
+                dark.setdefault(sp, []).append((d, n))
+        if not dark:
+            emit(f"  ✓ Per-sport capture every sport logging snapshots has its archives")
+        for sp in sorted(dark, key=lambda k: -sum(n for _, n in dark[k])):
+            days = sorted(dark[sp])
+            ack  = _ack("capture_day", sp, today)
+            mark = "≈" if ack else "✗"
+            note = (f"  ← ACKNOWLEDGED until {ack['expires']}: {ack['why'][:58]}…"
+                    if ack else
+                    "  ← lane dark: these snapshots can never be scored")
+            emit(f"  {mark} Dark capture      {sp} — {sum(n for _, n in days)} snapshot(s), "
+                 f"no archive on {', '.join(d for d, _ in days)}{note}")
+            if not ack:
+                issues += 1
+    except (json.JSONDecodeError, ValueError, OSError, ImportError) as err:
+        # Blind is not clear — same contract as the Odds API check above.
+        unknown.append(f"per-sport capture check could not run ({type(err).__name__}) "
+                       f"— a lane could be dark without this run saying so")
 
     # 5. CLV scoring fresh
     try:
@@ -5126,6 +5300,12 @@ def main() -> int:
     p_draft.add_argument("--trials", type=int, default=250, help="Simulation trials")
     p_draft.add_argument("--slot", type=int, default=None,
                          help="Simulate a different draft slot (e.g. after a pick swap)")
+    # lineup — in-season weekly view, market-adjusted
+    p_lineup = sub.add_parser("lineup",
+        help="★ Weekly start/sit + free-agent defence board (market-adjusted)")
+    p_lineup.add_argument("--week", type=int, required=True, help="NFL week number")
+    p_lineup.add_argument("--user", default="amccrovitz", help="Your Sleeper username")
+
     p_draft.add_argument("--handcuffs", action="store_true",
                          help="Show the RB2 behind each starter")
 
@@ -5448,6 +5628,7 @@ def main() -> int:
         "coverage": cmd_coverage,
         "filters":  cmd_filters,
         "draft":    cmd_draft,
+        "lineup":   cmd_lineup,
         "retire":   cmd_retire,
         "arb":      cmd_arb,
         "clv":      cmd_clv,

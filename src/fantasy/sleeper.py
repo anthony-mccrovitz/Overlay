@@ -112,6 +112,11 @@ def league_drafts(league_id: str) -> list[dict]:
     return _fetch(f"{BASE}/v1/league/{league_id}/drafts")
 
 
+def league_rosters(league_id: str) -> list[dict]:
+    """Post-draft rosters. Uncached — waiver moves land between requests."""
+    return _fetch(f"{BASE}/v1/league/{league_id}/rosters")
+
+
 def draft(draft_id: str) -> dict:
     return _fetch(f"{BASE}/v1/draft/{draft_id}")
 
