@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-05T20:16:28.787313+00:00",
+  "generated_at": "2026-08-06T03:56:26.481971+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 108.69,
-  "n_settled": 3,
-  "n_pending": 450,
+  "end_bankroll": 92.31,
+  "n_settled": 7,
+  "n_pending": 465,
   "wins": 1,
-  "losses": 2,
-  "staked": 13.73,
-  "pnl": -3.31,
-  "expected_pnl": 0.46,
-  "roi_pct": -24.11,
-  "max_drawdown": 9.25,
+  "losses": 6,
+  "staked": 30.11,
+  "pnl": -19.69,
+  "expected_pnl": 1.24,
+  "roi_pct": -65.39,
+  "max_drawdown": 25.63,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 321,
+    "exposure cap reached for the slate": 332,
     "not settled yet": 28,
-    "resting order never filled": 2
+    "resting order never filled": 6
   },
   "significance": {
-    "mean_edge_per_unit": 0.0336,
-    "sd_per_unit": 1.2948,
-    "n_for_2sigma": 5936
+    "mean_edge_per_unit": 0.041,
+    "sd_per_unit": 1.3931,
+    "n_for_2sigma": 4612
   },
   "rows": [
     {
@@ -70,6 +70,70 @@
       "pnl": -4.53,
       "expected_pnl": 0.108,
       "equity": 108.69
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260805_seattle-storm_g-seasto-newlib_moneyline_win",
+      "date": "2026-08-05",
+      "team": "Seattle Storm",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.2,
+      "fair": 0.2148,
+      "stake": 4.35,
+      "shares": 21.75,
+      "result": "loss",
+      "pnl": -4.35,
+      "expected_pnl": 0.322,
+      "equity": 104.34
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260805_phoenix-mercury_g-phomer-atldre_moneyline_win",
+      "date": "2026-08-05",
+      "team": "Phoenix Mercury",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.34,
+      "fair": 0.3471,
+      "stake": 4.17,
+      "shares": 12.26,
+      "result": "loss",
+      "pnl": -4.17,
+      "expected_pnl": 0.087,
+      "equity": 100.17
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260805_los-angeles-sparks_g-losspa-chisky_moneyline_win",
+      "date": "2026-08-05",
+      "team": "Los Angeles Sparks",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.41,
+      "fair": 0.4373,
+      "stake": 4.01,
+      "shares": 9.78,
+      "result": "loss",
+      "pnl": -4.01,
+      "expected_pnl": 0.267,
+      "equity": 96.16
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260805_colorado-rockies_g-tamray-colroc_moneyline_win",
+      "date": "2026-08-05",
+      "team": "Colorado Rockies",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.41,
+      "fair": 0.4202,
+      "stake": 3.85,
+      "shares": 9.39,
+      "result": "loss",
+      "pnl": -3.85,
+      "expected_pnl": 0.096,
+      "equity": 92.31
     }
   ]
 }
