@@ -1,87 +1,5 @@
 [
   {
-    "event_id": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-    "sport": "mma_mixed_martial_arts",
-    "home_team": "Lewis McGrillen",
-    "away_team": "Brandon Lewis",
-    "commence_time": "2026-08-07T14:35:00Z",
-    "captured_at": "2026-08-07T11:11:48.855599+00:00",
-    "mins_to_commence": 203.2,
-    "closing_final": false,
-    "BestHomeML": -770,
-    "BestAwayML": 610,
-    "HomeBook": "Bally Bet",
-    "AwayBook": "FanDuel",
-    "all_odds": [
-      {
-        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-        "HomeTeam": "Lewis McGrillen",
-        "AwayTeam": "Brandon Lewis",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Brandon Lewis",
-        "Selection": "Brandon Lewis",
-        "Odds": 610,
-        "Line": null
-      },
-      {
-        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-        "HomeTeam": "Lewis McGrillen",
-        "AwayTeam": "Brandon Lewis",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Lewis McGrillen",
-        "Selection": "Lewis McGrillen",
-        "Odds": -900,
-        "Line": null
-      },
-      {
-        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-        "HomeTeam": "Lewis McGrillen",
-        "AwayTeam": "Brandon Lewis",
-        "Sportsbook": "Bally Bet",
-        "Market": "h2h",
-        "Name": "Brandon Lewis",
-        "Selection": "Brandon Lewis",
-        "Odds": 460,
-        "Line": null
-      },
-      {
-        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-        "HomeTeam": "Lewis McGrillen",
-        "AwayTeam": "Brandon Lewis",
-        "Sportsbook": "Bally Bet",
-        "Market": "h2h",
-        "Name": "Lewis McGrillen",
-        "Selection": "Lewis McGrillen",
-        "Odds": -770,
-        "Line": null
-      },
-      {
-        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-        "HomeTeam": "Lewis McGrillen",
-        "AwayTeam": "Brandon Lewis",
-        "Sportsbook": "BetMGM",
-        "Market": "h2h",
-        "Name": "Brandon Lewis",
-        "Selection": "Brandon Lewis",
-        "Odds": 550,
-        "Line": null
-      },
-      {
-        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
-        "HomeTeam": "Lewis McGrillen",
-        "AwayTeam": "Brandon Lewis",
-        "Sportsbook": "BetMGM",
-        "Market": "h2h",
-        "Name": "Lewis McGrillen",
-        "Selection": "Lewis McGrillen",
-        "Odds": -800,
-        "Line": null
-      }
-    ]
-  },
-  {
     "event_id": "cc644e55f557abdcea5b26bc222b696a",
     "sport": "mma_mixed_martial_arts",
     "home_team": "Denis Goltsov",
@@ -159,6 +77,88 @@
         "Name": "Hasan Mezhiev",
         "Selection": "Hasan Mezhiev",
         "Odds": 310,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Lewis McGrillen",
+    "away_team": "Brandon Lewis",
+    "commence_time": "2026-08-07T14:35:00Z",
+    "captured_at": "2026-08-07T14:34:44.527841+00:00",
+    "mins_to_commence": 0.3,
+    "closing_final": true,
+    "BestHomeML": -900,
+    "BestAwayML": 700,
+    "HomeBook": "FanDuel",
+    "AwayBook": "BetMGM",
+    "all_odds": [
+      {
+        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+        "HomeTeam": "Lewis McGrillen",
+        "AwayTeam": "Brandon Lewis",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Brandon Lewis",
+        "Selection": "Brandon Lewis",
+        "Odds": 610,
+        "Line": null
+      },
+      {
+        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+        "HomeTeam": "Lewis McGrillen",
+        "AwayTeam": "Brandon Lewis",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Lewis McGrillen",
+        "Selection": "Lewis McGrillen",
+        "Odds": -900,
+        "Line": null
+      },
+      {
+        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+        "HomeTeam": "Lewis McGrillen",
+        "AwayTeam": "Brandon Lewis",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Brandon Lewis",
+        "Selection": "Brandon Lewis",
+        "Odds": 540,
+        "Line": null
+      },
+      {
+        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+        "HomeTeam": "Lewis McGrillen",
+        "AwayTeam": "Brandon Lewis",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Lewis McGrillen",
+        "Selection": "Lewis McGrillen",
+        "Odds": -910,
+        "Line": null
+      },
+      {
+        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+        "HomeTeam": "Lewis McGrillen",
+        "AwayTeam": "Brandon Lewis",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Brandon Lewis",
+        "Selection": "Brandon Lewis",
+        "Odds": 700,
+        "Line": null
+      },
+      {
+        "EventID": "3c9d10776cf633c7ab4025a8d7c1ca2b",
+        "HomeTeam": "Lewis McGrillen",
+        "AwayTeam": "Brandon Lewis",
+        "Sportsbook": "BetMGM",
+        "Market": "h2h",
+        "Name": "Lewis McGrillen",
+        "Selection": "Lewis McGrillen",
+        "Odds": -1100,
         "Line": null
       }
     ]
