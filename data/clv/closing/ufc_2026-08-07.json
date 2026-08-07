@@ -522,5 +522,65 @@
         "Line": null
       }
     ]
+  },
+  {
+    "event_id": "69a797a4c0fc7fde145bfa3470eeeaeb",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Cheyden Leialoha",
+    "away_team": "Robbie Ring",
+    "commence_time": "2026-08-08T01:10:00Z",
+    "captured_at": "2026-08-07T21:51:24.695151+00:00",
+    "mins_to_commence": 198.6,
+    "closing_final": false,
+    "BestHomeML": -295,
+    "BestAwayML": 250,
+    "HomeBook": "Bally Bet",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "69a797a4c0fc7fde145bfa3470eeeaeb",
+        "HomeTeam": "Cheyden Leialoha",
+        "AwayTeam": "Robbie Ring",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Cheyden Leialoha",
+        "Selection": "Cheyden Leialoha",
+        "Odds": -310,
+        "Line": null
+      },
+      {
+        "EventID": "69a797a4c0fc7fde145bfa3470eeeaeb",
+        "HomeTeam": "Cheyden Leialoha",
+        "AwayTeam": "Robbie Ring",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Robbie Ring",
+        "Selection": "Robbie Ring",
+        "Odds": 250,
+        "Line": null
+      },
+      {
+        "EventID": "69a797a4c0fc7fde145bfa3470eeeaeb",
+        "HomeTeam": "Cheyden Leialoha",
+        "AwayTeam": "Robbie Ring",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Cheyden Leialoha",
+        "Selection": "Cheyden Leialoha",
+        "Odds": -295,
+        "Line": null
+      },
+      {
+        "EventID": "69a797a4c0fc7fde145bfa3470eeeaeb",
+        "HomeTeam": "Cheyden Leialoha",
+        "AwayTeam": "Robbie Ring",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Robbie Ring",
+        "Selection": "Robbie Ring",
+        "Odds": 205,
+        "Line": null
+      }
+    ]
   }
 ]
