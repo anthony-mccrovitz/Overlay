@@ -402,5 +402,125 @@
         "Line": null
       }
     ]
+  },
+  {
+    "event_id": "cc5d0b6029768e5bc1dae1b91702c8f6",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Michael Boylan",
+    "away_team": "Landry Ward",
+    "commence_time": "2026-08-08T00:20:00Z",
+    "captured_at": "2026-08-07T21:04:14.993403+00:00",
+    "mins_to_commence": 195.8,
+    "closing_final": false,
+    "BestHomeML": 250,
+    "BestAwayML": -310,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "cc5d0b6029768e5bc1dae1b91702c8f6",
+        "HomeTeam": "Michael Boylan",
+        "AwayTeam": "Landry Ward",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Landry Ward",
+        "Selection": "Landry Ward",
+        "Odds": -310,
+        "Line": null
+      },
+      {
+        "EventID": "cc5d0b6029768e5bc1dae1b91702c8f6",
+        "HomeTeam": "Michael Boylan",
+        "AwayTeam": "Landry Ward",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Michael Boylan",
+        "Selection": "Michael Boylan",
+        "Odds": 250,
+        "Line": null
+      },
+      {
+        "EventID": "cc5d0b6029768e5bc1dae1b91702c8f6",
+        "HomeTeam": "Michael Boylan",
+        "AwayTeam": "Landry Ward",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Landry Ward",
+        "Selection": "Landry Ward",
+        "Odds": -345,
+        "Line": null
+      },
+      {
+        "EventID": "cc5d0b6029768e5bc1dae1b91702c8f6",
+        "HomeTeam": "Michael Boylan",
+        "AwayTeam": "Landry Ward",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Michael Boylan",
+        "Selection": "Michael Boylan",
+        "Odds": 235,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "375a53a4af11caed4c854c74fac70c28",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Cheyanne Bowers",
+    "away_team": "Elora Dana",
+    "commence_time": "2026-08-08T00:45:00Z",
+    "captured_at": "2026-08-07T21:04:15.266269+00:00",
+    "mins_to_commence": 220.8,
+    "closing_final": false,
+    "BestHomeML": -385,
+    "BestAwayML": 320,
+    "HomeBook": "Bally Bet",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "375a53a4af11caed4c854c74fac70c28",
+        "HomeTeam": "Cheyanne Bowers",
+        "AwayTeam": "Elora Dana",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Cheyanne Bowers",
+        "Selection": "Cheyanne Bowers",
+        "Odds": -405,
+        "Line": null
+      },
+      {
+        "EventID": "375a53a4af11caed4c854c74fac70c28",
+        "HomeTeam": "Cheyanne Bowers",
+        "AwayTeam": "Elora Dana",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Elora Dana",
+        "Selection": "Elora Dana",
+        "Odds": 320,
+        "Line": null
+      },
+      {
+        "EventID": "375a53a4af11caed4c854c74fac70c28",
+        "HomeTeam": "Cheyanne Bowers",
+        "AwayTeam": "Elora Dana",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Cheyanne Bowers",
+        "Selection": "Cheyanne Bowers",
+        "Odds": -385,
+        "Line": null
+      },
+      {
+        "EventID": "375a53a4af11caed4c854c74fac70c28",
+        "HomeTeam": "Cheyanne Bowers",
+        "AwayTeam": "Elora Dana",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Elora Dana",
+        "Selection": "Elora Dana",
+        "Odds": 265,
+        "Line": null
+      }
+    ]
   }
 ]
