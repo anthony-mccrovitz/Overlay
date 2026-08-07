@@ -164,66 +164,6 @@
     ]
   },
   {
-    "event_id": "e32b739de3f5b1eb40f19d666fe3855e",
-    "sport": "mma_mixed_martial_arts",
-    "home_team": "Trukon Carson",
-    "away_team": "Trey Waters",
-    "commence_time": "2026-08-07T22:40:00Z",
-    "captured_at": "2026-08-07T19:35:44.393594+00:00",
-    "mins_to_commence": 184.3,
-    "closing_final": false,
-    "BestHomeML": 230,
-    "BestAwayML": -275,
-    "HomeBook": "FanDuel",
-    "AwayBook": "Bally Bet",
-    "all_odds": [
-      {
-        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
-        "HomeTeam": "Trukon Carson",
-        "AwayTeam": "Trey Waters",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Trey Waters",
-        "Selection": "Trey Waters",
-        "Odds": -280,
-        "Line": null
-      },
-      {
-        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
-        "HomeTeam": "Trukon Carson",
-        "AwayTeam": "Trey Waters",
-        "Sportsbook": "FanDuel",
-        "Market": "h2h",
-        "Name": "Trukon Carson",
-        "Selection": "Trukon Carson",
-        "Odds": 230,
-        "Line": null
-      },
-      {
-        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
-        "HomeTeam": "Trukon Carson",
-        "AwayTeam": "Trey Waters",
-        "Sportsbook": "Bally Bet",
-        "Market": "h2h",
-        "Name": "Trey Waters",
-        "Selection": "Trey Waters",
-        "Odds": -275,
-        "Line": null
-      },
-      {
-        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
-        "HomeTeam": "Trukon Carson",
-        "AwayTeam": "Trey Waters",
-        "Sportsbook": "Bally Bet",
-        "Market": "h2h",
-        "Name": "Trukon Carson",
-        "Selection": "Trukon Carson",
-        "Odds": 190,
-        "Line": null
-      }
-    ]
-  },
-  {
     "event_id": "bc5225972a507a932bdfc1912665f8b2",
     "sport": "mma_mixed_martial_arts",
     "home_team": "Eduardo Neves",
@@ -579,6 +519,126 @@
         "Name": "Robbie Ring",
         "Selection": "Robbie Ring",
         "Odds": 205,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "e32b739de3f5b1eb40f19d666fe3855e",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Trukon Carson",
+    "away_team": "Trey Waters",
+    "commence_time": "2026-08-07T22:40:00Z",
+    "captured_at": "2026-08-07T22:21:50.848241+00:00",
+    "mins_to_commence": 18.2,
+    "closing_final": true,
+    "BestHomeML": 250,
+    "BestAwayML": -275,
+    "HomeBook": "FanDuel",
+    "AwayBook": "Bally Bet",
+    "all_odds": [
+      {
+        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
+        "HomeTeam": "Trukon Carson",
+        "AwayTeam": "Trey Waters",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Trey Waters",
+        "Selection": "Trey Waters",
+        "Odds": -310,
+        "Line": null
+      },
+      {
+        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
+        "HomeTeam": "Trukon Carson",
+        "AwayTeam": "Trey Waters",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Trukon Carson",
+        "Selection": "Trukon Carson",
+        "Odds": 250,
+        "Line": null
+      },
+      {
+        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
+        "HomeTeam": "Trukon Carson",
+        "AwayTeam": "Trey Waters",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Trey Waters",
+        "Selection": "Trey Waters",
+        "Odds": -275,
+        "Line": null
+      },
+      {
+        "EventID": "e32b739de3f5b1eb40f19d666fe3855e",
+        "HomeTeam": "Trukon Carson",
+        "AwayTeam": "Trey Waters",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Trukon Carson",
+        "Selection": "Trukon Carson",
+        "Odds": 190,
+        "Line": null
+      }
+    ]
+  },
+  {
+    "event_id": "e67d0202a56d80f80e891c83c5bbe4d7",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Josh Fremd",
+    "away_team": "Jhony Gregory",
+    "commence_time": "2026-08-08T02:10:00Z",
+    "captured_at": "2026-08-07T22:21:51.044891+00:00",
+    "mins_to_commence": 228.2,
+    "closing_final": false,
+    "BestHomeML": -400,
+    "BestAwayML": 315,
+    "HomeBook": "FanDuel",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "e67d0202a56d80f80e891c83c5bbe4d7",
+        "HomeTeam": "Josh Fremd",
+        "AwayTeam": "Jhony Gregory",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Jhony Gregory",
+        "Selection": "Jhony Gregory",
+        "Odds": 315,
+        "Line": null
+      },
+      {
+        "EventID": "e67d0202a56d80f80e891c83c5bbe4d7",
+        "HomeTeam": "Josh Fremd",
+        "AwayTeam": "Jhony Gregory",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Josh Fremd",
+        "Selection": "Josh Fremd",
+        "Odds": -400,
+        "Line": null
+      },
+      {
+        "EventID": "e67d0202a56d80f80e891c83c5bbe4d7",
+        "HomeTeam": "Josh Fremd",
+        "AwayTeam": "Jhony Gregory",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Jhony Gregory",
+        "Selection": "Jhony Gregory",
+        "Odds": 275,
+        "Line": null
+      },
+      {
+        "EventID": "e67d0202a56d80f80e891c83c5bbe4d7",
+        "HomeTeam": "Josh Fremd",
+        "AwayTeam": "Jhony Gregory",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Josh Fremd",
+        "Selection": "Josh Fremd",
+        "Odds": -420,
         "Line": null
       }
     ]
