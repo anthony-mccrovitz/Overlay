@@ -342,5 +342,65 @@
         "Line": null
       }
     ]
+  },
+  {
+    "event_id": "a410a67522edc875bb87fde6119bc659",
+    "sport": "mma_mixed_martial_arts",
+    "home_team": "Valentin Moldavsky",
+    "away_team": "Bruno Cappelozza",
+    "commence_time": "2026-08-07T23:55:00Z",
+    "captured_at": "2026-08-07T20:18:59.756444+00:00",
+    "mins_to_commence": 216.0,
+    "closing_final": false,
+    "BestHomeML": -480,
+    "BestAwayML": 410,
+    "HomeBook": "Bally Bet",
+    "AwayBook": "FanDuel",
+    "all_odds": [
+      {
+        "EventID": "a410a67522edc875bb87fde6119bc659",
+        "HomeTeam": "Valentin Moldavsky",
+        "AwayTeam": "Bruno Cappelozza",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Bruno Cappelozza",
+        "Selection": "Bruno Cappelozza",
+        "Odds": 410,
+        "Line": null
+      },
+      {
+        "EventID": "a410a67522edc875bb87fde6119bc659",
+        "HomeTeam": "Valentin Moldavsky",
+        "AwayTeam": "Bruno Cappelozza",
+        "Sportsbook": "FanDuel",
+        "Market": "h2h",
+        "Name": "Valentin Moldavsky",
+        "Selection": "Valentin Moldavsky",
+        "Odds": -550,
+        "Line": null
+      },
+      {
+        "EventID": "a410a67522edc875bb87fde6119bc659",
+        "HomeTeam": "Valentin Moldavsky",
+        "AwayTeam": "Bruno Cappelozza",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Bruno Cappelozza",
+        "Selection": "Bruno Cappelozza",
+        "Odds": 310,
+        "Line": null
+      },
+      {
+        "EventID": "a410a67522edc875bb87fde6119bc659",
+        "HomeTeam": "Valentin Moldavsky",
+        "AwayTeam": "Bruno Cappelozza",
+        "Sportsbook": "Bally Bet",
+        "Market": "h2h",
+        "Name": "Valentin Moldavsky",
+        "Selection": "Valentin Moldavsky",
+        "Odds": -480,
+        "Line": null
+      }
+    ]
   }
 ]
