@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Manny Machado",
+      "team": "Manny Machado OVER 0.5",
+      "matchup": "San Diego Padres @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": 275,
+      "model_prob": 0.657,
+      "implied_prob": 0.2458,
+      "edge_pct": 41.12,
+      "model_mu": 1.56,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Christian Franklin",
+      "team": "Christian Franklin UNDER 0.5",
+      "matchup": "Baltimore Orioles @ Texas Rangers",
+      "line": 0.5,
+      "odds": -120,
+      "model_prob": 0.7881,
+      "implied_prob": 0.487,
+      "edge_pct": 30.1,
+      "model_mu": 0.24,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Carmen Mlodzinski",
+      "team": "Carmen Mlodzinski OVER 3.5",
+      "matchup": "New York Mets @ Pittsburgh Pirates",
+      "line": 3.5,
+      "odds": 125,
+      "model_prob": 0.6762,
+      "implied_prob": 0.4165,
+      "edge_pct": 25.97,
+      "model_mu": 4.8,
+      "sportsbook": "Bovada"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "OVER",
+      "player": "Nolan Arenado",
+      "team": "Nolan Arenado OVER 0.5",
+      "matchup": "San Diego Padres @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": 1400,
+      "model_prob": 0.3214,
+      "implied_prob": 0.0644,
+      "edge_pct": 25.7,
+      "model_mu": 0.47,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Kyle Schwarber",
+      "team": "Kyle Schwarber UNDER 0.5",
+      "matchup": "Toronto Blue Jays @ Philadelphia Phillies",
+      "line": 0.5,
+      "odds": -105,
+      "model_prob": 0.703,
+      "implied_prob": 0.4713,
+      "edge_pct": 23.17,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "OVER",
+      "player": "Nolan Arenado",
+      "team": "Nolan Arenado OVER 0.5",
+      "matchup": "San Diego Padres @ Arizona Diamondbacks",
+      "line": 0.5,
+      "odds": 2000,
+      "model_prob": 0.1295,
+      "implied_prob": 0.0456,
+      "edge_pct": 8.39,
+      "model_mu": 0.14,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}
