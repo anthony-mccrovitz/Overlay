@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-08T02:36:59.101719+00:00",
+  "generated_at": "2026-08-08T07:38:16.526480+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 103.02,
-  "n_settled": 14,
-  "n_pending": 521,
+  "end_bankroll": 94.94,
+  "n_settled": 16,
+  "n_pending": 527,
   "wins": 5,
-  "losses": 9,
-  "staked": 56.29,
-  "pnl": -8.98,
-  "expected_pnl": 2.37,
-  "roi_pct": -15.95,
+  "losses": 11,
+  "staked": 64.37,
+  "pnl": -17.06,
+  "expected_pnl": 2.63,
+  "roi_pct": -26.5,
   "max_drawdown": 32.86,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 379,
-    "not settled yet": 32,
-    "resting order never filled": 11
+    "exposure cap reached for the slate": 386,
+    "not settled yet": 30,
+    "resting order never filled": 12
   },
   "significance": {
-    "mean_edge_per_unit": 0.0416,
-    "sd_per_unit": 1.2897,
-    "n_for_2sigma": 3842
+    "mean_edge_per_unit": 0.0404,
+    "sd_per_unit": 1.2475,
+    "n_for_2sigma": 3806
   },
   "rows": [
     {
@@ -232,6 +232,38 @@
       "equity": 107.31
     },
     {
+      "pick_id": "polymarket_ev__wnba_20260807_dallas-wings_g-golval-dalwin_moneyline_win",
+      "date": "2026-08-07",
+      "team": "Dallas Wings",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.49,
+      "fair": 0.5108,
+      "stake": 4.29,
+      "shares": 8.76,
+      "result": "loss",
+      "pnl": -4.29,
+      "expected_pnl": 0.182,
+      "equity": 103.02
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260807_pittsburgh-pirates_g-newmet-pitpir_moneyline_win",
+      "date": "2026-08-07",
+      "team": "Pittsburgh Pirates",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.56,
+      "fair": 0.5723,
+      "stake": 4.12,
+      "shares": 7.36,
+      "result": "loss",
+      "pnl": -4.12,
+      "expected_pnl": 0.09,
+      "equity": 98.9
+    },
+    {
       "pick_id": "polymarket_ev__mlb_20260807_athletics_g-athlet-bossox_moneyline_win",
       "date": "2026-08-07",
       "team": "Athletics",
@@ -240,12 +272,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.29,
       "fair": 0.3048,
-      "stake": 4.29,
-      "shares": 14.79,
+      "stake": 3.96,
+      "shares": 13.66,
       "result": "loss",
-      "pnl": -4.29,
-      "expected_pnl": 0.219,
-      "equity": 103.02
+      "pnl": -3.96,
+      "expected_pnl": 0.202,
+      "equity": 94.94
     }
   ]
 }
