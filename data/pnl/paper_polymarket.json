@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-07T19:41:34.794433+00:00",
+  "generated_at": "2026-08-08T02:36:59.101719+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 92.61,
-  "n_settled": 11,
-  "n_pending": 518,
-  "wins": 3,
-  "losses": 8,
-  "staked": 44.28,
-  "pnl": -19.39,
-  "expected_pnl": 1.58,
-  "roi_pct": -43.79,
+  "end_bankroll": 103.02,
+  "n_settled": 14,
+  "n_pending": 521,
+  "wins": 5,
+  "losses": 9,
+  "staked": 56.29,
+  "pnl": -8.98,
+  "expected_pnl": 2.37,
+  "roi_pct": -15.95,
   "max_drawdown": 32.86,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 373,
-    "not settled yet": 36,
-    "resting order never filled": 10
+    "exposure cap reached for the slate": 379,
+    "not settled yet": 32,
+    "resting order never filled": 11
   },
   "significance": {
-    "mean_edge_per_unit": 0.035,
-    "sd_per_unit": 1.2422,
-    "n_for_2sigma": 5048
+    "mean_edge_per_unit": 0.0416,
+    "sd_per_unit": 1.2897,
+    "n_for_2sigma": 3842
   },
   "rows": [
     {
@@ -198,6 +198,54 @@
       "pnl": 3.99,
       "expected_pnl": 0.077,
       "equity": 92.61
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260807_connecticut-sun_g-phomer-consun_moneyline_win",
+      "date": "2026-08-07",
+      "team": "Connecticut Sun",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.32,
+      "fair": 0.3403,
+      "stake": 3.7,
+      "shares": 11.56,
+      "result": "win",
+      "pnl": 7.86,
+      "expected_pnl": 0.235,
+      "equity": 100.47
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260807_washington-mystics_g-atldre-wasmys_moneyline_win",
+      "date": "2026-08-07",
+      "team": "Washington Mystics",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.37,
+      "fair": 0.4009,
+      "stake": 4.02,
+      "shares": 10.86,
+      "result": "win",
+      "pnl": 6.84,
+      "expected_pnl": 0.336,
+      "equity": 107.31
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260807_athletics_g-athlet-bossox_moneyline_win",
+      "date": "2026-08-07",
+      "team": "Athletics",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.29,
+      "fair": 0.3048,
+      "stake": 4.29,
+      "shares": 14.79,
+      "result": "loss",
+      "pnl": -4.29,
+      "expected_pnl": 0.219,
+      "equity": 103.02
     }
   ]
 }
