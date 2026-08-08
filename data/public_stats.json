@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-08T13:11:47.290011+00:00",
+  "updated_at": "2026-08-08T13:54:52.637455+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -299,9 +299,9 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.325,
+      "avg_clv_pct": -0.333,
       "positive_pct": 38.5,
-      "n": 2649,
+      "n": 2655,
       "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
     },
     "spread_total": {
@@ -328,38 +328,38 @@
       },
       "pitcher_strikeouts": {
         "count": 892,
-        "avg_line_clv": 0.026,
+        "avg_line_clv": 0.025,
         "beat_close_pct": 59.1,
         "avg_price_clv_pct": 1.059,
         "matched_price_n": 638
       },
       "batter_walks": {
         "count": 1429,
-        "avg_line_clv": 0.01,
-        "beat_close_pct": 55.6,
-        "avg_price_clv_pct": 1.194,
-        "matched_price_n": 1418
+        "avg_line_clv": 0.007,
+        "beat_close_pct": 55.3,
+        "avg_price_clv_pct": 1.133,
+        "matched_price_n": 1416
       },
       "batter_rbis": {
         "count": 1200,
-        "avg_line_clv": 0.007,
-        "beat_close_pct": 46.0,
-        "avg_price_clv_pct": 0.828,
-        "matched_price_n": 1191
+        "avg_line_clv": 0.006,
+        "beat_close_pct": 45.9,
+        "avg_price_clv_pct": 0.807,
+        "matched_price_n": 1190
       },
       "batter_hits": {
         "count": 1984,
-        "avg_line_clv": 0.017,
-        "beat_close_pct": 55.6,
-        "avg_price_clv_pct": 1.496,
+        "avg_line_clv": 0.016,
+        "beat_close_pct": 55.5,
+        "avg_price_clv_pct": 1.466,
         "matched_price_n": 1776
       },
       "batter_home_runs": {
         "count": 1353,
-        "avg_line_clv": 0.006,
+        "avg_line_clv": 0.009,
         "beat_close_pct": 29.5,
-        "avg_price_clv_pct": -0.727,
-        "matched_price_n": 1345
+        "avg_price_clv_pct": -0.981,
+        "matched_price_n": 1341
       },
       "batter_total_bases": {
         "count": 1470,
