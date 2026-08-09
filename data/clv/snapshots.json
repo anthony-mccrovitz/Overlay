@@ -461321,7 +461321,11 @@
     "closing_odds_sharp": -111.0,
     "line_clv_sharp": 0.5,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "opening_fair_prob": 0.466102,
+    "opening_opp_odds": -120.0,
+    "entry_overround": 1.0216,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-08-09",
@@ -461352,7 +461356,11 @@
     "closing_odds_sharp": 100.0,
     "line_clv_sharp": 1.0,
     "price_clv_sharp_pct": null,
-    "beat_close_sharp": true
+    "beat_close_sharp": true,
+    "opening_fair_prob": 0.48681,
+    "opening_opp_odds": -115.0,
+    "entry_overround": 1.0423,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-08-09",
@@ -461385,7 +461393,13 @@
     "line_clv_sharp": 0.0,
     "price_clv_sharp_pct": -1.448,
     "beat_close_sharp": false,
-    "price_clv_raw_sharp_pct": 0.239
+    "price_clv_raw_sharp_pct": 0.239,
+    "opening_fair_prob": 0.476983,
+    "opening_fair_sharp": 0.474016,
+    "entry_ev_vs_fair_pct": -2.827,
+    "opening_opp_odds": -115.0,
+    "entry_overround": 1.0227,
+    "entry_board_age_min": 0.1
   },
   {
     "date": "2026-08-09",
@@ -463186,6 +463200,41 @@
     "closing_imp_sharp": 0.45166,
     "clv_sharp": -0.033777,
     "clv_sharp_pct": -3.378,
-    "beat_close_sharp": false
+    "beat_close_sharp": false,
+    "commence_time": "2026-08-09T20:11:00Z",
+    "consensus_fair_prob": 0.49532,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.495146,
+    "opening_fair_sharp": 0.495353,
+    "entry_ev_vs_fair_pct": 2.043,
+    "opening_opp_odds": -104.0,
+    "entry_overround": 1.0098,
+    "entry_board_age_min": 0.1
+  },
+  {
+    "date": "2026-08-09",
+    "team": "OVER 7.5",
+    "player": null,
+    "opponent": "Tampa Bay Rays @ Seattle Mariners",
+    "sport": "mlb",
+    "market": "total",
+    "strategy": "devig_ev_totals",
+    "opening_line": 7.5,
+    "direction": "OVER",
+    "opening_odds": 105.0,
+    "opening_implied_prob": 0.487805,
+    "snapshot_time": "2026-08-09T13:56:33.875648+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "catalyst": "stale_opener",
+    "commence_time": "2026-08-09T20:11:00Z",
+    "opening_fair_prob": 0.487805,
+    "opening_fair_sharp": 0.504516,
+    "entry_ev_vs_fair_pct": 3.426,
+    "opening_opp_odds": -105.0,
+    "entry_overround": 1.0,
+    "entry_board_age_min": 0.1
   }
 ]
