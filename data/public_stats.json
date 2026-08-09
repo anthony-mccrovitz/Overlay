@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-09T12:01:02.727364+00:00",
+  "updated_at": "2026-08-09T13:57:22.061609+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -299,25 +299,25 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.288,
+      "avg_clv_pct": -0.298,
       "positive_pct": 38.8,
-      "n": 2716,
+      "n": 2724,
       "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
     },
     "spread_total": {
       "spread": {
         "count": 327,
-        "avg_line_clv": -0.159,
-        "beat_close_pct": 37.6,
+        "avg_line_clv": -0.121,
+        "beat_close_pct": 37.9,
         "avg_price_clv_pct": -2.15,
         "matched_price_n": 235
       },
       "total": {
         "count": 420,
-        "avg_line_clv": 0.099,
+        "avg_line_clv": 0.101,
         "beat_close_pct": 49.8,
-        "avg_price_clv_pct": -0.061,
-        "matched_price_n": 148
+        "avg_price_clv_pct": -0.07,
+        "matched_price_n": 149
       },
       "f5_total": {
         "count": 306,
@@ -365,7 +365,7 @@
         "count": 1470,
         "avg_line_clv": 0.225,
         "beat_close_pct": 64.4,
-        "avg_price_clv_pct": 0.979,
+        "avg_price_clv_pct": 0.994,
         "matched_price_n": 1066
       },
       "prop": {
@@ -378,8 +378,8 @@
     },
     "totals_coverage": {
       "scored": 420,
-      "scoreable": 701,
-      "pct": 59.9
+      "scoreable": 702,
+      "pct": 59.8
     },
     "spread_coverage": {
       "scored": 327,
