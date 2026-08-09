@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-09T07:42:31.202276+00:00",
+  "generated_at": "2026-08-09T13:41:51.092721+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 87.49,
-  "n_settled": 18,
-  "n_pending": 561,
-  "wins": 5,
-  "losses": 13,
-  "staked": 71.82,
-  "pnl": -24.51,
-  "expected_pnl": 2.9,
-  "roi_pct": -34.13,
-  "max_drawdown": 32.86,
+  "end_bankroll": 76.45,
+  "n_settled": 23,
+  "n_pending": 559,
+  "wins": 6,
+  "losses": 17,
+  "staked": 88.65,
+  "pnl": -35.55,
+  "expected_pnl": 3.6,
+  "roi_pct": -40.1,
+  "max_drawdown": 41.49,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 419,
-    "not settled yet": 31,
-    "resting order never filled": 12
+    "exposure cap reached for the slate": 420,
+    "not settled yet": 27,
+    "resting order never filled": 13
   },
   "significance": {
-    "mean_edge_per_unit": 0.0401,
-    "sd_per_unit": 1.3395,
-    "n_for_2sigma": 4473
+    "mean_edge_per_unit": 0.0403,
+    "sd_per_unit": 1.3622,
+    "n_for_2sigma": 4578
   },
   "rows": [
     {
@@ -280,6 +280,86 @@
       "equity": 94.94
     },
     {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_bruno-lopes_g-brulop-diynur_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Bruno Lopes",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.4,
+      "fair": 0.4206,
+      "stake": 3.8,
+      "shares": 9.5,
+      "result": "loss",
+      "pnl": -3.8,
+      "expected_pnl": 0.196,
+      "equity": 91.14
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_guilherme-pat_g-guipat-steasp_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Guilherme Pat",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.27,
+      "fair": 0.2823,
+      "stake": 3.65,
+      "shares": 13.52,
+      "result": "loss",
+      "pnl": -3.65,
+      "expected_pnl": 0.166,
+      "equity": 87.49
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_billy-goff_g-bilgof-tymil_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Billy Goff",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.23,
+      "fair": 0.2348,
+      "stake": 3.5,
+      "shares": 15.22,
+      "result": "loss",
+      "pnl": -3.5,
+      "expected_pnl": 0.073,
+      "equity": 83.99
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_miles-johns_g-jesros-miljoh_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Miles Johns",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.58,
+      "fair": 0.597,
+      "stake": 3.36,
+      "shares": 5.79,
+      "result": "win",
+      "pnl": 2.43,
+      "expected_pnl": 0.098,
+      "equity": 86.42
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_richie-miranda_g-ricmir-mansou_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Richie Miranda",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.28,
+      "fair": 0.2962,
+      "stake": 3.46,
+      "shares": 12.36,
+      "result": "loss",
+      "pnl": -3.46,
+      "expected_pnl": 0.2,
+      "equity": 82.96
+    },
+    {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260808_chapecoense_g-chapec-coriti_moneyline_win",
       "date": "2026-08-08",
       "team": "Chapecoense",
@@ -288,12 +368,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.17,
       "fair": 0.1781,
-      "stake": 3.8,
-      "shares": 22.35,
+      "stake": 3.32,
+      "shares": 19.53,
       "result": "loss",
-      "pnl": -3.8,
-      "expected_pnl": 0.181,
-      "equity": 91.14
+      "pnl": -3.32,
+      "expected_pnl": 0.158,
+      "equity": 79.64
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260808_gwangju-fc_g-gwafc-buc199_moneyline_win",
@@ -304,12 +384,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.22,
       "fair": 0.2258,
-      "stake": 3.65,
-      "shares": 16.59,
+      "stake": 3.19,
+      "shares": 14.5,
       "result": "loss",
-      "pnl": -3.65,
-      "expected_pnl": 0.096,
-      "equity": 87.49
+      "pnl": -3.19,
+      "expected_pnl": 0.084,
+      "equity": 76.45
     }
   ]
 }
