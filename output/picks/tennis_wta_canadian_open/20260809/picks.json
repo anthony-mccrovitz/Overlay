@@ -1,0 +1,50 @@
+[
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Elena Rybakina",
+    "matchup": "Elena Rybakina vs Liudmila Samsonova",
+    "odds": -300,
+    "model_prob": 0.8225,
+    "model_prob_raw": 0.9058,
+    "market_fair": 0.7391,
+    "model_weight": 0.5,
+    "implied_prob": 0.7122,
+    "edge_pct": 11.02,
+    "sportsbook": "DraftKings",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Coco Gauff",
+    "matchup": "Coco Gauff vs Alina Korneeva",
+    "odds": -335,
+    "model_prob": 0.7716,
+    "model_prob_raw": 0.8477,
+    "market_fair": 0.7354,
+    "model_weight": 0.322,
+    "implied_prob": 0.7265,
+    "edge_pct": 4.5,
+    "sportsbook": "BetRivers",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Belinda Bencic @ Alexandra Eala",
+    "odds": -130,
+    "best_odds": -130,
+    "line": 21.5,
+    "model_prob": 0.6054,
+    "implied_prob": 0.519,
+    "edge_pct": 8.63,
+    "sportsbook": "Caesars"
+  }
+]
