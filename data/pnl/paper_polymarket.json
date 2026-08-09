@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-08T19:18:38.296547+00:00",
+  "generated_at": "2026-08-09T02:53:27.188181+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 94.94,
-  "n_settled": 16,
-  "n_pending": 549,
+  "end_bankroll": 87.49,
+  "n_settled": 18,
+  "n_pending": 553,
   "wins": 5,
-  "losses": 11,
-  "staked": 64.37,
-  "pnl": -17.06,
-  "expected_pnl": 2.63,
-  "roi_pct": -26.5,
+  "losses": 13,
+  "staked": 71.82,
+  "pnl": -24.51,
+  "expected_pnl": 2.9,
+  "roi_pct": -34.13,
   "max_drawdown": 32.86,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 408,
-    "not settled yet": 30,
+    "exposure cap reached for the slate": 414,
+    "not settled yet": 28,
     "resting order never filled": 12
   },
   "significance": {
-    "mean_edge_per_unit": 0.0404,
-    "sd_per_unit": 1.2475,
-    "n_for_2sigma": 3806
+    "mean_edge_per_unit": 0.0401,
+    "sd_per_unit": 1.3395,
+    "n_for_2sigma": 4473
   },
   "rows": [
     {
@@ -278,6 +278,38 @@
       "pnl": -3.96,
       "expected_pnl": 0.202,
       "equity": 94.94
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260808_chapecoense_g-chapec-coriti_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Chapecoense",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.17,
+      "fair": 0.1781,
+      "stake": 3.8,
+      "shares": 22.35,
+      "result": "loss",
+      "pnl": -3.8,
+      "expected_pnl": 0.181,
+      "equity": 91.14
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260808_gwangju-fc_g-gwafc-buc199_moneyline_win",
+      "date": "2026-08-08",
+      "team": "Gwangju FC",
+      "sport": "soccer_korea_kleague1",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.22,
+      "fair": 0.2258,
+      "stake": 3.65,
+      "shares": 16.59,
+      "result": "loss",
+      "pnl": -3.65,
+      "expected_pnl": 0.096,
+      "equity": 87.49
     }
   ]
 }
