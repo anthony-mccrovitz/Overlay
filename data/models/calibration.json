@@ -1,9 +1,9 @@
 {
   "brazil_campeonato::moneyline": {
-    "claimed_pp": 1.004,
-    "k": 0.9874,
-    "n": 15,
-    "realized_pp": 0.992
+    "claimed_pp": 1.021,
+    "k": 0.0,
+    "n": 19,
+    "realized_pp": -0.378
   },
   "conmebol_copa_libertadores::moneyline": {
     "claimed_pp": 18.676,
@@ -36,10 +36,10 @@
     "realized_pp": -48.544
   },
   "korea_kleague1::moneyline": {
-    "claimed_pp": 1.041,
+    "claimed_pp": 1.027,
     "k": 0.0,
-    "n": 16,
-    "realized_pp": -1.809
+    "n": 22,
+    "realized_pp": -6.87
   },
   "mexico_ligamx::moneyline": {
     "claimed_pp": 2.114,
@@ -54,10 +54,10 @@
     "realized_pp": -0.105
   },
   "mlb::batter_home_runs": {
-    "claimed_pp": -0.697,
+    "claimed_pp": -0.422,
     "k": 1.0,
-    "n": 1092,
-    "realized_pp": -3.305
+    "n": 1143,
+    "realized_pp": -2.889
   },
   "mlb::batter_rbis": {
     "claimed_pp": 1.953,
@@ -84,22 +84,22 @@
     "realized_pp": 0.128
   },
   "mlb::moneyline": {
-    "claimed_pp": 6.631,
-    "k": 0.0,
-    "n": 500,
-    "realized_pp": -0.003
+    "claimed_pp": 6.458,
+    "k": 0.0547,
+    "n": 517,
+    "realized_pp": 0.353
   },
   "mlb::nrfi": {
-    "claimed_pp": 11.747,
+    "claimed_pp": 11.788,
     "k": 0.0,
-    "n": 223,
-    "realized_pp": -6.164
+    "n": 227,
+    "realized_pp": -6.096
   },
   "mlb::pitcher_strikeouts": {
-    "claimed_pp": 12.247,
+    "claimed_pp": 12.207,
     "k": 0.0,
-    "n": 1141,
-    "realized_pp": -4.829
+    "n": 1154,
+    "realized_pp": -4.874
   },
   "mlb::prop": {
     "claimed_pp": 11.5,
@@ -108,16 +108,16 @@
     "realized_pp": -3.746
   },
   "mlb::spread": {
-    "claimed_pp": -2.707,
+    "claimed_pp": -2.73,
     "k": 1.0,
-    "n": 218,
-    "realized_pp": 2.406
+    "n": 220,
+    "realized_pp": 2.865
   },
   "mlb::total": {
-    "claimed_pp": 7.381,
-    "k": 0.4105,
-    "n": 261,
-    "realized_pp": 3.03
+    "claimed_pp": 7.531,
+    "k": 0.3707,
+    "n": 264,
+    "realized_pp": 2.792
   },
   "nba::moneyline": {
     "claimed_pp": 6.952,
@@ -222,16 +222,16 @@
     "realized_pp": -9.705
   },
   "ufc::moneyline": {
-    "claimed_pp": 2.33,
-    "k": 0.9308,
-    "n": 80,
-    "realized_pp": 2.169
+    "claimed_pp": 2.43,
+    "k": 0.9587,
+    "n": 84,
+    "realized_pp": 2.33
   },
   "usa_mls::moneyline": {
-    "claimed_pp": 2.089,
+    "claimed_pp": 2.067,
     "k": 0.0,
-    "n": 93,
-    "realized_pp": -5.469
+    "n": 95,
+    "realized_pp": -5.039
   },
   "usa_mls::total": {
     "claimed_pp": 20.56,
@@ -264,10 +264,10 @@
     "realized_pp": 31.16
   },
   "wnba::moneyline": {
-    "claimed_pp": 2.081,
+    "claimed_pp": 2.001,
     "k": 0.0,
-    "n": 103,
-    "realized_pp": -3.068
+    "n": 112,
+    "realized_pp": -4.212
   },
   "wnba::spread": {
     "claimed_pp": 29.142,
