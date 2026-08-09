@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Josh Naylor",
+      "team": "Josh Naylor UNDER 6.5",
+      "matchup": "Tampa Bay Rays @ Seattle Mariners",
+      "line": 6.5,
+      "odds": -175,
+      "model_prob": 0.9848,
+      "implied_prob": 0.5833,
+      "edge_pct": 40.15,
+      "model_mu": 1.42,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Josh Naylor",
+      "team": "Josh Naylor UNDER 2.5",
+      "matchup": "Tampa Bay Rays @ Seattle Mariners",
+      "line": 2.5,
+      "odds": -175,
+      "model_prob": 0.9177,
+      "implied_prob": 0.5833,
+      "edge_pct": 33.43,
+      "model_mu": 1.01,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Brad Lord",
+      "team": "Brad Lord OVER 2.5",
+      "matchup": "Cincinnati Reds @ Washington Nationals",
+      "line": 2.5,
+      "odds": -140,
+      "model_prob": 0.8605,
+      "implied_prob": 0.5446,
+      "edge_pct": 31.59,
+      "model_mu": 5.18,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "James Jarvis",
+      "team": "James Jarvis UNDER 0.5",
+      "matchup": "Atlanta Braves @ New York Yankees",
+      "line": 0.5,
+      "odds": -600,
+      "model_prob": 0.9901,
+      "implied_prob": 0.8028,
+      "edge_pct": 18.73,
+      "model_mu": 0.01,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Cal Raleigh",
+      "team": "Cal Raleigh UNDER 1.5",
+      "matchup": "Tampa Bay Rays @ Seattle Mariners",
+      "line": 1.5,
+      "odds": -525,
+      "model_prob": 0.9486,
+      "implied_prob": 0.7706,
+      "edge_pct": 17.79,
+      "model_mu": 0.36,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Josh Naylor",
+      "team": "Josh Naylor UNDER 1.5",
+      "matchup": "Tampa Bay Rays @ Seattle Mariners",
+      "line": 1.5,
+      "odds": -20000,
+      "model_prob": 0.9917,
+      "implied_prob": 0.9442,
+      "edge_pct": 4.75,
+      "model_mu": 0.13,
+      "sportsbook": "theScore Bet"
+    }
+  ]
+}
