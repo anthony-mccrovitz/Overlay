@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-10T07:59:05.002170+00:00",
+  "updated_at": "2026-08-10T09:02:33.964597+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -299,74 +299,74 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.298,
-      "positive_pct": 38.8,
-      "n": 2724,
+      "avg_clv_pct": -0.31,
+      "positive_pct": 38.9,
+      "n": 2754,
       "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
     },
     "spread_total": {
       "spread": {
-        "count": 327,
-        "avg_line_clv": -0.121,
-        "beat_close_pct": 37.9,
-        "avg_price_clv_pct": -2.15,
-        "matched_price_n": 235
+        "count": 331,
+        "avg_line_clv": -0.119,
+        "beat_close_pct": 37.5,
+        "avg_price_clv_pct": -2.047,
+        "matched_price_n": 239
       },
       "total": {
-        "count": 420,
-        "avg_line_clv": 0.101,
-        "beat_close_pct": 49.8,
-        "avg_price_clv_pct": -0.07,
-        "matched_price_n": 149
+        "count": 422,
+        "avg_line_clv": 0.094,
+        "beat_close_pct": 49.1,
+        "avg_price_clv_pct": -0.121,
+        "matched_price_n": 150
       },
       "f5_total": {
         "count": 306,
-        "avg_line_clv": 0.003,
-        "beat_close_pct": 30.4,
-        "avg_price_clv_pct": -3.331,
-        "matched_price_n": 157
+        "avg_line_clv": 0.007,
+        "beat_close_pct": 30.1,
+        "avg_price_clv_pct": -3.32,
+        "matched_price_n": 159
       },
       "pitcher_strikeouts": {
-        "count": 912,
+        "count": 925,
         "avg_line_clv": 0.026,
-        "beat_close_pct": 58.8,
-        "avg_price_clv_pct": 1.046,
-        "matched_price_n": 653
+        "beat_close_pct": 58.7,
+        "avg_price_clv_pct": 1.028,
+        "matched_price_n": 663
       },
       "batter_walks": {
         "count": 1429,
-        "avg_line_clv": 0.007,
-        "beat_close_pct": 53.2,
-        "avg_price_clv_pct": 0.98,
-        "matched_price_n": 1416
+        "avg_line_clv": 0.008,
+        "beat_close_pct": 53.0,
+        "avg_price_clv_pct": 0.947,
+        "matched_price_n": 1417
       },
       "batter_rbis": {
         "count": 1200,
         "avg_line_clv": 0.006,
-        "beat_close_pct": 45.3,
-        "avg_price_clv_pct": 0.755,
-        "matched_price_n": 1190
+        "beat_close_pct": 44.8,
+        "avg_price_clv_pct": 0.682,
+        "matched_price_n": 1192
       },
       "batter_hits": {
         "count": 1984,
-        "avg_line_clv": 0.015,
-        "beat_close_pct": 55.1,
-        "avg_price_clv_pct": 1.393,
-        "matched_price_n": 1780
+        "avg_line_clv": 0.012,
+        "beat_close_pct": 54.8,
+        "avg_price_clv_pct": 1.371,
+        "matched_price_n": 1787
       },
       "batter_home_runs": {
-        "count": 1371,
+        "count": 1403,
         "avg_line_clv": 0.01,
-        "beat_close_pct": 29.9,
-        "avg_price_clv_pct": -0.806,
-        "matched_price_n": 1355
+        "beat_close_pct": 29.8,
+        "avg_price_clv_pct": -0.782,
+        "matched_price_n": 1387
       },
       "batter_total_bases": {
         "count": 1470,
-        "avg_line_clv": 0.225,
-        "beat_close_pct": 64.4,
-        "avg_price_clv_pct": 0.994,
-        "matched_price_n": 1066
+        "avg_line_clv": 0.221,
+        "beat_close_pct": 64.1,
+        "avg_price_clv_pct": 0.927,
+        "matched_price_n": 1072
       },
       "prop": {
         "count": 27,
@@ -377,14 +377,14 @@
       }
     },
     "totals_coverage": {
-      "scored": 420,
-      "scoreable": 703,
+      "scored": 422,
+      "scoreable": 707,
       "pct": 59.7
     },
     "spread_coverage": {
-      "scored": 327,
-      "scoreable": 537,
-      "pct": 60.9
+      "scored": 331,
+      "scoreable": 538,
+      "pct": 61.5
     }
   },
   "summary": {
