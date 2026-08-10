@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-09T19:22:30.251848+00:00",
+  "generated_at": "2026-08-10T03:00:46.352893+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 76.45,
-  "n_settled": 23,
+  "end_bankroll": 75.75,
+  "n_settled": 27,
   "n_pending": 563,
-  "wins": 6,
-  "losses": 17,
-  "staked": 88.65,
-  "pnl": -35.55,
-  "expected_pnl": 3.6,
-  "roi_pct": -40.1,
-  "max_drawdown": 41.49,
+  "wins": 7,
+  "losses": 20,
+  "staked": 100.63,
+  "pnl": -36.25,
+  "expected_pnl": 4.13,
+  "roi_pct": -36.02,
+  "max_drawdown": 47.49,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
     "exposure cap reached for the slate": 420,
-    "not settled yet": 31,
-    "resting order never filled": 13
+    "not settled yet": 30,
+    "resting order never filled": 14
   },
   "significance": {
-    "mean_edge_per_unit": 0.0403,
-    "sd_per_unit": 1.3622,
-    "n_for_2sigma": 4578
+    "mean_edge_per_unit": 0.0408,
+    "sd_per_unit": 1.4376,
+    "n_for_2sigma": 4963
   },
   "rows": [
     {
@@ -390,6 +390,70 @@
       "pnl": -3.19,
       "expected_pnl": 0.084,
       "equity": 76.45
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260809_mirassol_g-mirass-cruzei_moneyline_win",
+      "date": "2026-08-09",
+      "team": "Mirassol",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.17,
+      "fair": 0.1815,
+      "stake": 3.06,
+      "shares": 18.0,
+      "result": "loss",
+      "pnl": -3.06,
+      "expected_pnl": 0.207,
+      "equity": 73.39
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260809_internacional_g-intern-palmei_moneyline_win",
+      "date": "2026-08-09",
+      "team": "Internacional",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.15,
+      "fair": 0.1571,
+      "stake": 2.94,
+      "shares": 19.6,
+      "result": "loss",
+      "pnl": -2.94,
+      "expected_pnl": 0.139,
+      "equity": 70.45
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260809_corinthians_g-corint-bragan_moneyline_win",
+      "date": "2026-08-09",
+      "team": "Corinthians",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.25,
+      "fair": 0.2576,
+      "stake": 2.82,
+      "shares": 11.28,
+      "result": "win",
+      "pnl": 8.46,
+      "expected_pnl": 0.086,
+      "equity": 78.91
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260809_phoenix-mercury_g-phomer-wasmys_moneyline_win",
+      "date": "2026-08-09",
+      "team": "Phoenix Mercury",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.48,
+      "fair": 0.4946,
+      "stake": 3.16,
+      "shares": 6.58,
+      "result": "loss",
+      "pnl": -3.16,
+      "expected_pnl": 0.096,
+      "equity": 75.75
     }
   ]
 }
