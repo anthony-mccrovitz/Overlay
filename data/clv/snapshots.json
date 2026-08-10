@@ -464413,18 +464413,7 @@
     "opening_opp_odds": -154.0,
     "entry_overround": 1.0063,
     "entry_board_age_min": 0.3,
-    "poly_filled": false,
-    "entry_lead_min": 1665.5,
-    "clv_devigged": true,
-    "clv_raw_pct": -11.285,
-    "clv_novig_pct": -11.435,
-    "clv_ev_pct": -27.515,
-    "closing_odds_sharp": 213.0,
-    "closing_imp_sharp": 0.312381,
-    "clv_sharp": -0.078244,
-    "clv_sharp_pct": -7.824,
-    "beat_close_sharp": false,
-    "clv_novig_sharp_pct": -8.511
+    "poly_filled": true
   },
   {
     "date": "2026-08-10",
@@ -464589,7 +464578,7 @@
     "opening_opp_odds": -170.0,
     "entry_overround": 1.0296,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-08-11",
@@ -464613,7 +464602,7 @@
     "opening_opp_odds": -118.0,
     "entry_overround": 1.0511,
     "entry_board_age_min": 0.2,
-    "poly_filled": false
+    "poly_filled": true
   },
   {
     "date": "2026-08-11",
@@ -465917,5 +465906,61 @@
     "closing_implied_prob": null,
     "clv": null,
     "clv_pct": null
+  },
+  {
+    "date": "2026-08-10",
+    "team": "Minnesota Twins",
+    "player": null,
+    "opponent": "Baltimore Orioles @ Minnesota Twins",
+    "sport": "mlb",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 113.0,
+    "opening_implied_prob": 0.469484,
+    "snapshot_time": "2026-08-10T08:19:42.431504+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-10T23:40:00Z",
+    "consensus_fair_prob": 0.489166,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.484653,
+    "opening_fair_sharp": 0.482709,
+    "entry_ev_vs_fair_pct": 2.817,
+    "opening_opp_odds": -110.0,
+    "entry_overround": 1.0164,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
+  },
+  {
+    "date": "2026-08-11",
+    "team": "Daniel Merida Aguilar",
+    "player": null,
+    "opponent": "Learner Tien @ Daniel Merida Aguilar",
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "strategy": "polymarket_ev",
+    "opening_line": null,
+    "direction": "WIN",
+    "opening_odds": 203.0,
+    "opening_implied_prob": 0.330033,
+    "snapshot_time": "2026-08-10T08:19:49.295153+00:00",
+    "closing_odds": null,
+    "closing_implied_prob": null,
+    "clv": null,
+    "clv_pct": null,
+    "commence_time": "2026-08-11T20:00:00Z",
+    "consensus_fair_prob": 0.343849,
+    "consensus_n_books": 10,
+    "opening_fair_prob": 0.33872,
+    "opening_fair_sharp": 0.345817,
+    "entry_ev_vs_fair_pct": 4.783,
+    "opening_opp_odds": -206.0,
+    "entry_overround": 1.018,
+    "entry_board_age_min": 0.1,
+    "poly_filled": false
   }
 ]
