@@ -1,0 +1,98 @@
+{
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "OVER",
+      "player": "Hunter Dobbins",
+      "team": "Hunter Dobbins OVER 3.5",
+      "matchup": "Philadelphia Phillies @ St. Louis Cardinals",
+      "line": 3.5,
+      "odds": 140,
+      "model_prob": 0.8535,
+      "implied_prob": 0.3933,
+      "edge_pct": 46.02,
+      "model_mu": 6.53,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Kaelen Culpepper",
+      "team": "Kaelen Culpepper OVER 0.5",
+      "matchup": "Baltimore Orioles @ Minnesota Twins",
+      "line": 0.5,
+      "odds": -165,
+      "model_prob": 1.0,
+      "implied_prob": 0.5546,
+      "edge_pct": 44.54,
+      "model_mu": 6.240490366005748e+38,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Kyle Schwarber",
+      "team": "Kyle Schwarber UNDER 0.5",
+      "matchup": "Philadelphia Phillies @ St. Louis Cardinals",
+      "line": 0.5,
+      "odds": -125,
+      "model_prob": 0.7034,
+      "implied_prob": 0.5,
+      "edge_pct": 20.34,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Carson Williams",
+      "team": "Carson Williams UNDER 1.5",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "line": 1.5,
+      "odds": -212,
+      "model_prob": 0.8197,
+      "implied_prob": 0.6228,
+      "edge_pct": 19.69,
+      "model_mu": 0.74,
+      "sportsbook": "ReBet"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Junior Caminero",
+      "team": "Junior Caminero UNDER 0.5",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "line": 0.5,
+      "odds": -385,
+      "model_prob": 0.8663,
+      "implied_prob": 0.7143,
+      "edge_pct": 15.2,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Junior Caminero",
+      "team": "Junior Caminero UNDER 0.5",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "line": 0.5,
+      "odds": -140,
+      "model_prob": 0.6273,
+      "implied_prob": 0.5168,
+      "edge_pct": 11.06,
+      "model_mu": 0.59,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
