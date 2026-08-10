@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-08-10T14:07:47.803453+00:00",
+  "generated_at": "2026-08-10T19:44:00.675689+00:00",
   "summary": {
-    "n": 241,
-    "n_filled": 115,
-    "fill_rate_pct": 47.7,
-    "claimed_ev_filled": 3.64,
-    "claimed_ev_unfilled": 3.85,
-    "mean_post_fill_drift": 0.0023,
-    "median_minutes_to_fill": 388.6
+    "n": 231,
+    "n_filled": 112,
+    "fill_rate_pct": 48.5,
+    "claimed_ev_filled": 3.7,
+    "claimed_ev_unfilled": 3.91,
+    "mean_post_fill_drift": 0.0024,
+    "median_minutes_to_fill": 374.1
   },
   "rows": [
     {
@@ -19,10 +19,10 @@
       "fair_at_entry": 0.5085,
       "claimed_ev_pct": 3.78,
       "filled": true,
-      "minutes_to_fill": 1749.5,
+      "minutes_to_fill": 2089.8,
       "price_at_kickoff": 0.475,
       "post_fill_drift": -0.015,
-      "n_ticks": 56
+      "n_ticks": 22
     },
     {
       "pick_id": "polymarket_ev__mlb_20260803_st-louis-cardinals_g-stcar-newyan_moneyline_win",
@@ -33,10 +33,10 @@
       "fair_at_entry": 0.3704,
       "claimed_ev_pct": 2.88,
       "filled": true,
-      "minutes_to_fill": 1095.8,
+      "minutes_to_fill": 1436.1,
       "price_at_kickoff": 0.315,
       "post_fill_drift": -0.045,
-      "n_ticks": 54
+      "n_ticks": 20
     },
     {
       "pick_id": "polymarket_ev__mlb_20260803_pittsburgh-pirates_g-pitpir-milbre_moneyline_win",
@@ -50,7 +50,7 @@
       "minutes_to_fill": 1575.9,
       "price_at_kickoff": 0.425,
       "post_fill_drift": 0.005,
-      "n_ticks": 57
+      "n_ticks": 23
     },
     {
       "pick_id": "polymarket_ev__wnba_20260803_atlanta-dream_g-lasace-atldre_moneyline_win",
@@ -64,7 +64,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.525,
       "post_fill_drift": null,
-      "n_ticks": 56
+      "n_ticks": 22
     },
     {
       "pick_id": "polymarket_ev__mlb_20260803_washington-nationals_g-wasnat-phiphi_moneyline_win",
@@ -74,11 +74,11 @@
       "limit": 0.41,
       "fair_at_entry": 0.4212,
       "claimed_ev_pct": 2.74,
-      "filled": true,
-      "minutes_to_fill": 588.5,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.415,
-      "post_fill_drift": 0.005,
-      "n_ticks": 51
+      "post_fill_drift": null,
+      "n_ticks": 17
     },
     {
       "pick_id": "polymarket_ev__mlb_20260803_new-york-yankees_g-stcar-newyan_moneyline_win",
@@ -92,63 +92,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.685,
       "post_fill_drift": null,
-      "n_ticks": 54
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_mariano-navone_g-marnav-matber_moneyline_win",
-      "team": "Mariano Navone",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.36,
-      "fair_at_entry": 0.3681,
-      "claimed_ev_pct": 2.24,
-      "filled": true,
-      "minutes_to_fill": 608.5,
-      "price_at_kickoff": 0.355,
-      "post_fill_drift": -0.005,
-      "n_ticks": 5
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_yulia-putintseva_g-shuzha-yulput_moneyline_win",
-      "team": "Yulia Putintseva",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.64,
-      "fair_at_entry": 0.6565,
-      "claimed_ev_pct": 2.58,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.665,
-      "post_fill_drift": null,
-      "n_ticks": 23
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_talia-gibson_g-elicoc-talgib_moneyline_win",
-      "team": "Talia Gibson",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.41,
-      "fair_at_entry": 0.4187,
-      "claimed_ev_pct": 2.13,
-      "filled": true,
-      "minutes_to_fill": 588.5,
-      "price_at_kickoff": 0.395,
-      "post_fill_drift": -0.015,
-      "n_ticks": 14
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_bianca-andreescu_g-biaand-nikbar_moneyline_win",
-      "team": "Bianca Andreescu",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.41,
-      "fair_at_entry": 0.4187,
-      "claimed_ev_pct": 2.13,
-      "filled": true,
-      "minutes_to_fill": 688.5,
-      "price_at_kickoff": 0.405,
-      "post_fill_drift": -0.005,
-      "n_ticks": 23
+      "n_ticks": 20
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260804_zachary-svajda_g-densha-zacsva_moneyline_win",
@@ -162,7 +106,7 @@
       "minutes_to_fill": 1628.4,
       "price_at_kickoff": 0.415,
       "post_fill_drift": -0.015,
-      "n_ticks": 143
+      "n_ticks": 109
     },
     {
       "pick_id": "polymarket_ev__wnba_20260803_phoenix-mercury_g-phomer-chisky_moneyline_win",
@@ -176,119 +120,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.535,
       "post_fill_drift": null,
-      "n_ticks": 65
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_vit-kopriva_g-vitkop-alegal_moneyline_win",
-      "team": "Vit Kopriva",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.47,
-      "fair_at_entry": 0.4862,
-      "claimed_ev_pct": 3.46,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.485,
-      "post_fill_drift": null,
-      "n_ticks": 5
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_corentin-moutet_g-cormou-marfuc_moneyline_win",
-      "team": "Corentin Moutet",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.5,
-      "fair_at_entry": 0.5161,
-      "claimed_ev_pct": 3.21,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.535,
-      "post_fill_drift": null,
-      "n_ticks": 19
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_martin-landaluce_g-marlan-nicmej_moneyline_win",
-      "team": "Martin Landaluce",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.68,
-      "fair_at_entry": 0.6943,
-      "claimed_ev_pct": 2.11,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.695,
-      "post_fill_drift": null,
-      "n_ticks": 5
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_shuai-zhang_g-shuzha-yulput_moneyline_win",
-      "team": "Shuai Zhang",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.33,
-      "fair_at_entry": 0.3375,
-      "claimed_ev_pct": 2.28,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.335,
-      "post_fill_drift": null,
-      "n_ticks": 23
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_elisabetta-cocciaretto_g-elicoc-talgib_moneyline_win",
-      "team": "Elisabetta Cocciaretto",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.58,
-      "fair_at_entry": 0.5919,
-      "claimed_ev_pct": 2.05,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.605,
-      "post_fill_drift": null,
-      "n_ticks": 14
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_nikola-bartunkova_g-biaand-nikbar_moneyline_win",
-      "team": "Nikola Bartunkova",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.58,
-      "fair_at_entry": 0.5919,
-      "claimed_ev_pct": 2.05,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.595,
-      "post_fill_drift": null,
-      "n_ticks": 23
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_cadence-brace_g-cadbra-mcckes_moneyline_win",
-      "team": "Cadence Brace",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.15,
-      "fair_at_entry": 0.1585,
-      "claimed_ev_pct": 5.68,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.165,
-      "post_fill_drift": null,
-      "n_ticks": 14
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_emerson-jones_g-lantar-emejon_moneyline_win",
-      "team": "Emerson Jones",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.32,
-      "fair_at_entry": 0.3294,
-      "claimed_ev_pct": 2.94,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.325,
-      "post_fill_drift": null,
-      "n_ticks": 23
+      "n_ticks": 31
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_juan-manuel-cerundolo_g-hammed-juacer_moneyline_win",
@@ -302,91 +134,7 @@
       "minutes_to_fill": 255.0,
       "price_at_kickoff": 0.385,
       "post_fill_drift": -0.005,
-      "n_ticks": 32
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_marton-fucsovics_g-cormou-marfuc_moneyline_win",
-      "team": "Marton Fucsovics",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.48,
-      "fair_at_entry": 0.4908,
-      "claimed_ev_pct": 2.26,
-      "filled": true,
-      "minutes_to_fill": 94.7,
-      "price_at_kickoff": 0.465,
-      "post_fill_drift": -0.015,
-      "n_ticks": 16
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_nicolas-mejia_g-marlan-nicmej_moneyline_win",
-      "team": "Nicolas Mejia",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.29,
-      "fair_at_entry": 0.3057,
-      "claimed_ev_pct": 5.41,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.295,
-      "post_fill_drift": null,
-      "n_ticks": 3
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_daniel-altmaier_g-danalt-alevuk_moneyline_win",
-      "team": "Daniel Altmaier",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.4,
-      "fair_at_entry": 0.4246,
-      "claimed_ev_pct": 6.14,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.405,
-      "post_fill_drift": null,
-      "n_ticks": 11
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_titouan-droguet_g-titdro-lucass_moneyline_win",
-      "team": "Titouan Droguet",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.47,
-      "fair_at_entry": 0.4829,
-      "claimed_ev_pct": 2.75,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.475,
-      "post_fill_drift": null,
-      "n_ticks": 3
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_sho-shimabukuro_g-marcil-shoshi_moneyline_win",
-      "team": "Sho Shimabukuro",
-      "sport": "tennis_atp_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.45,
-      "fair_at_entry": 0.4604,
-      "claimed_ev_pct": 2.3,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.455,
-      "post_fill_drift": null,
-      "n_ticks": 11
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260803_janice-tjen_g-liusam-jantje_moneyline_win",
-      "team": "Janice Tjen",
-      "sport": "tennis_wta_canadian_open",
-      "date": "2026-08-03",
-      "limit": 0.37,
-      "fair_at_entry": 0.3808,
-      "claimed_ev_pct": 2.92,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.375,
-      "post_fill_drift": null,
-      "n_ticks": 23
+      "n_ticks": 7
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260803_daniel-merida-aguilar_g-liadra-danagu_moneyline_win",
@@ -3130,7 +2878,7 @@
       "minutes_to_fill": 1148.4,
       "price_at_kickoff": 0.315,
       "post_fill_drift": 0.005,
-      "n_ticks": 183
+      "n_ticks": 217
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260811_diana-shnaider_g-igaswi-diashn_moneyline_win",
@@ -3142,9 +2890,9 @@
       "claimed_ev_pct": 4.07,
       "filled": true,
       "minutes_to_fill": 8.4,
-      "price_at_kickoff": 0.265,
-      "post_fill_drift": -0.005,
-      "n_ticks": 183
+      "price_at_kickoff": 0.285,
+      "post_fill_drift": 0.015,
+      "n_ticks": 217
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260811_ekaterina-alexandrova_g-elisvi-ekaale_moneyline_win",
@@ -3156,9 +2904,9 @@
       "claimed_ev_pct": 3.4,
       "filled": true,
       "minutes_to_fill": 158.4,
-      "price_at_kickoff": 0.295,
-      "post_fill_drift": 0.005,
-      "n_ticks": 183
+      "price_at_kickoff": 0.285,
+      "post_fill_drift": -0.005,
+      "n_ticks": 217
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260809_leylah-fernandez_g-naoosa-leyfer_moneyline_win",
@@ -3184,9 +2932,9 @@
       "claimed_ev_pct": 2.53,
       "filled": true,
       "minutes_to_fill": 209.3,
-      "price_at_kickoff": 0.135,
-      "post_fill_drift": -0.025,
-      "n_ticks": 147
+      "price_at_kickoff": 0.105,
+      "post_fill_drift": -0.055,
+      "n_ticks": 181
     },
     {
       "pick_id": "polymarket_ev__wnba_20260810_seattle-storm_g-chisky-seasto_moneyline_win",
@@ -3198,9 +2946,9 @@
       "claimed_ev_pct": 2.4,
       "filled": true,
       "minutes_to_fill": 779.4,
-      "price_at_kickoff": 0.505,
-      "post_fill_drift": -0.015,
-      "n_ticks": 147
+      "price_at_kickoff": 0.445,
+      "post_fill_drift": -0.075,
+      "n_ticks": 181
     },
     {
       "pick_id": "polymarket_ev__mlb_20260810_toronto-blue-jays_g-bossox-torjay_moneyline_win",
@@ -3214,7 +2962,7 @@
       "minutes_to_fill": 538.7,
       "price_at_kickoff": 0.405,
       "post_fill_drift": 0.015,
-      "n_ticks": 113
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__mlb_20260810_new-york-mets_g-newmet-atlbra_moneyline_win",
@@ -3228,7 +2976,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.425,
       "post_fill_drift": null,
-      "n_ticks": 113
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__mlb_20260810_baltimore-orioles_g-balori-mintwi_moneyline_win",
@@ -3240,9 +2988,9 @@
       "claimed_ev_pct": 2.48,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.525,
+      "price_at_kickoff": 0.495,
       "post_fill_drift": null,
-      "n_ticks": 113
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__wnba_20260811_indiana-fever_g-newlib-indfev_moneyline_win",
@@ -3254,9 +3002,9 @@
       "claimed_ev_pct": 3.26,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.615,
+      "price_at_kickoff": 0.605,
       "post_fill_drift": null,
-      "n_ticks": 113
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__mlb_20260810_st-louis-cardinals_g-phiphi-stcar_moneyline_win",
@@ -3270,7 +3018,7 @@
       "minutes_to_fill": 620.3,
       "price_at_kickoff": 0.475,
       "post_fill_drift": -0.015,
-      "n_ticks": 68
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__wnba_20260811_new-york-liberty_g-newlib-indfev_moneyline_win",
@@ -3282,9 +3030,9 @@
       "claimed_ev_pct": 3.35,
       "filled": true,
       "minutes_to_fill": 130.2,
-      "price_at_kickoff": 0.385,
-      "post_fill_drift": 0.005,
-      "n_ticks": 68
+      "price_at_kickoff": 0.395,
+      "post_fill_drift": 0.015,
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260811_abe-alsaghir_g-fabesc-abeals_moneyline_win",
@@ -3296,9 +3044,9 @@
       "claimed_ev_pct": 5.44,
       "filled": true,
       "minutes_to_fill": 30.1,
-      "price_at_kickoff": 0.42,
-      "post_fill_drift": -0.04,
-      "n_ticks": 68
+      "price_at_kickoff": 0.455,
+      "post_fill_drift": -0.005,
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260811_tom-pagliarulo_g-anamul-tompag_moneyline_win",
@@ -3310,9 +3058,9 @@
       "claimed_ev_pct": 3.74,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.42,
+      "price_at_kickoff": 0.45,
       "post_fill_drift": null,
-      "n_ticks": 68
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__mlb_20260810_minnesota-twins_g-balori-mintwi_moneyline_win",
@@ -3324,9 +3072,9 @@
       "claimed_ev_pct": 2.7,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.475,
+      "price_at_kickoff": 0.505,
       "post_fill_drift": null,
-      "n_ticks": 36
+      "n_ticks": 70
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_canadian_open_20260811_daniel-merida-aguilar_g-leatie-danagu_moneyline_win",
@@ -3340,7 +3088,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.335,
       "post_fill_drift": null,
-      "n_ticks": 36
+      "n_ticks": 70
     },
     {
       "pick_id": "polymarket_ev__wnba_20260810_chicago-sky_g-chisky-seasto_moneyline_win",
@@ -3352,9 +3100,9 @@
       "claimed_ev_pct": 2.04,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.495,
+      "price_at_kickoff": 0.555,
       "post_fill_drift": null,
-      "n_ticks": 1
+      "n_ticks": 35
     },
     {
       "pick_id": "polymarket_ev__wnba_20260811_washington-mystics_g-wasmys-lasace_moneyline_win",
@@ -3368,7 +3116,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.255,
       "post_fill_drift": null,
-      "n_ticks": 1
+      "n_ticks": 35
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260811_elena-rybakina_g-eleryb-naoosa_moneyline_win",
@@ -3381,6 +3129,118 @@
       "filled": false,
       "minutes_to_fill": null,
       "price_at_kickoff": 0.495,
+      "post_fill_drift": null,
+      "n_ticks": 35
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260811_pittsburgh-pirates_g-pitpir-miamar_moneyline_win",
+      "team": "Pittsburgh Pirates",
+      "sport": "mlb",
+      "date": "2026-08-11",
+      "limit": 0.49,
+      "fair_at_entry": 0.5198,
+      "claimed_ev_pct": 6.09,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.495,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260811_toronto-blue-jays_g-bossox-torjay_moneyline_win",
+      "team": "Toronto Blue Jays",
+      "sport": "mlb",
+      "date": "2026-08-11",
+      "limit": 0.55,
+      "fair_at_entry": 0.5772,
+      "claimed_ev_pct": 4.94,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.555,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260811_new-york-mets_g-newmet-atlbra_moneyline_win",
+      "team": "New York Mets",
+      "sport": "mlb",
+      "date": "2026-08-11",
+      "limit": 0.45,
+      "fair_at_entry": 0.4618,
+      "claimed_ev_pct": 2.63,
+      "filled": true,
+      "minutes_to_fill": 0.1,
+      "price_at_kickoff": 0.45,
+      "post_fill_drift": 0.0,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260811_chicago-white-sox_g-cinred-chisox_moneyline_win",
+      "team": "Chicago White Sox",
+      "sport": "mlb",
+      "date": "2026-08-11",
+      "limit": 0.56,
+      "fair_at_entry": 0.5879,
+      "claimed_ev_pct": 4.99,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.565,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260811_philadelphia-phillies_g-phiphi-stcar_moneyline_win",
+      "team": "Philadelphia Phillies",
+      "sport": "mlb",
+      "date": "2026-08-11",
+      "limit": 0.58,
+      "fair_at_entry": 0.5975,
+      "claimed_ev_pct": 3.02,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.585,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260811_phoenix-mercury_g-phomer-losspa_moneyline_win",
+      "team": "Phoenix Mercury",
+      "sport": "wnba",
+      "date": "2026-08-11",
+      "limit": 0.51,
+      "fair_at_entry": 0.5217,
+      "claimed_ev_pct": 2.3,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.515,
+      "post_fill_drift": null,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260811_ananias-mulumba_g-anamul-tompag_moneyline_win",
+      "team": "Ananias Mulumba",
+      "sport": "mma_mixed_martial_arts",
+      "date": "2026-08-11",
+      "limit": 0.55,
+      "fair_at_entry": 0.5747,
+      "claimed_ev_pct": 4.49,
+      "filled": true,
+      "minutes_to_fill": 0.1,
+      "price_at_kickoff": 0.55,
+      "post_fill_drift": 0.0,
+      "n_ticks": 1
+    },
+    {
+      "pick_id": "polymarket_ev__tennis_wta_canadian_open_20260811_belinda-bencic_g-cocgau-belben_moneyline_win",
+      "team": "Belinda Bencic",
+      "sport": "tennis_wta_canadian_open",
+      "date": "2026-08-11",
+      "limit": 0.39,
+      "fair_at_entry": 0.3986,
+      "claimed_ev_pct": 2.21,
+      "filled": false,
+      "minutes_to_fill": null,
+      "price_at_kickoff": 0.395,
       "post_fill_drift": null,
       "n_ticks": 1
     }
