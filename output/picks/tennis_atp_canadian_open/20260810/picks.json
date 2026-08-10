@@ -1,0 +1,33 @@
+[
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Arthur Fils",
+    "matchup": "Arthur Fils vs Rafael Jodar",
+    "odds": 115,
+    "model_prob": 0.5027,
+    "model_prob_raw": 0.5411,
+    "market_fair": 0.4642,
+    "model_weight": 0.5,
+    "implied_prob": 0.4436,
+    "edge_pct": 5.91,
+    "sportsbook": "DraftKings",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 22.5",
+    "matchup": "Arthur Fils @ Rafael Jodar",
+    "odds": -115,
+    "best_odds": -115,
+    "line": 22.5,
+    "model_prob": 0.5503,
+    "implied_prob": 0.4905,
+    "edge_pct": 5.97,
+    "sportsbook": "Caesars"
+  }
+]
