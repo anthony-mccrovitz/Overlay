@@ -164,88 +164,6 @@
     ]
   },
   {
-    "event_id": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-    "sport": "tennis_atp_cincinnati_open",
-    "home_team": "Kei Nishikori",
-    "away_team": "Francisco Comesana",
-    "commence_time": "2026-08-11T17:30:00Z",
-    "captured_at": "2026-08-11T14:02:23.391897+00:00",
-    "mins_to_commence": 207.6,
-    "closing_final": false,
-    "BestHomeML": 100,
-    "BestAwayML": -116,
-    "HomeBook": "theScore Bet",
-    "AwayBook": "Pinnacle",
-    "all_odds": [
-      {
-        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-        "HomeTeam": "Kei Nishikori",
-        "AwayTeam": "Francisco Comesana",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Francisco Comesana",
-        "Selection": "Francisco Comesana",
-        "Odds": -116,
-        "Line": null
-      },
-      {
-        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-        "HomeTeam": "Kei Nishikori",
-        "AwayTeam": "Francisco Comesana",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Kei Nishikori",
-        "Selection": "Kei Nishikori",
-        "Odds": -102,
-        "Line": null
-      },
-      {
-        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-        "HomeTeam": "Kei Nishikori",
-        "AwayTeam": "Francisco Comesana",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Francisco Comesana",
-        "Selection": "Francisco Comesana",
-        "Odds": -130,
-        "Line": null
-      },
-      {
-        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-        "HomeTeam": "Kei Nishikori",
-        "AwayTeam": "Francisco Comesana",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Kei Nishikori",
-        "Selection": "Kei Nishikori",
-        "Odds": 100,
-        "Line": null
-      },
-      {
-        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-        "HomeTeam": "Kei Nishikori",
-        "AwayTeam": "Francisco Comesana",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -103,
-        "Line": 22.5
-      },
-      {
-        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
-        "HomeTeam": "Kei Nishikori",
-        "AwayTeam": "Francisco Comesana",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -117,
-        "Line": 22.5
-      }
-    ]
-  },
-  {
     "event_id": "5e0670500517324c26122ec75540fdb8",
     "sport": "tennis_atp_cincinnati_open",
     "home_team": "Jaime Faria",
@@ -1324,6 +1242,498 @@
         "Selection": "Under",
         "Odds": -117,
         "Line": 23.0
+      }
+    ]
+  },
+  {
+    "event_id": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Kei Nishikori",
+    "away_team": "Francisco Comesana",
+    "commence_time": "2026-08-11T19:29:49Z",
+    "captured_at": "2026-08-11T19:30:38.228245+00:00",
+    "mins_to_commence": -0.8,
+    "closing_final": true,
+    "BestHomeML": 103,
+    "BestAwayML": -120,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+        "HomeTeam": "Kei Nishikori",
+        "AwayTeam": "Francisco Comesana",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Francisco Comesana",
+        "Selection": "Francisco Comesana",
+        "Odds": -120,
+        "Line": null
+      },
+      {
+        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+        "HomeTeam": "Kei Nishikori",
+        "AwayTeam": "Francisco Comesana",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Kei Nishikori",
+        "Selection": "Kei Nishikori",
+        "Odds": 103,
+        "Line": null
+      },
+      {
+        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+        "HomeTeam": "Kei Nishikori",
+        "AwayTeam": "Francisco Comesana",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Francisco Comesana",
+        "Selection": "Francisco Comesana",
+        "Odds": -130,
+        "Line": null
+      },
+      {
+        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+        "HomeTeam": "Kei Nishikori",
+        "AwayTeam": "Francisco Comesana",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Kei Nishikori",
+        "Selection": "Kei Nishikori",
+        "Odds": 100,
+        "Line": null
+      },
+      {
+        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+        "HomeTeam": "Kei Nishikori",
+        "AwayTeam": "Francisco Comesana",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -101,
+        "Line": 22.5
+      },
+      {
+        "EventID": "e7ad0e57ad3918d0ae3059f6e02b92b1",
+        "HomeTeam": "Kei Nishikori",
+        "AwayTeam": "Francisco Comesana",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -118,
+        "Line": 22.5
+      }
+    ]
+  },
+  {
+    "event_id": "5be7706779ccf641f13f3edba5699e53",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "JJ Wolf",
+    "away_team": "Shintaro Mochizuki",
+    "commence_time": "2026-08-11T20:30:00Z",
+    "captured_at": "2026-08-11T19:30:38.575236+00:00",
+    "mins_to_commence": 59.4,
+    "closing_final": false,
+    "BestHomeML": -161,
+    "BestAwayML": 135,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "5be7706779ccf641f13f3edba5699e53",
+        "HomeTeam": "JJ Wolf",
+        "AwayTeam": "Shintaro Mochizuki",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "JJ Wolf",
+        "Selection": "JJ Wolf",
+        "Odds": -161,
+        "Line": null
+      },
+      {
+        "EventID": "5be7706779ccf641f13f3edba5699e53",
+        "HomeTeam": "JJ Wolf",
+        "AwayTeam": "Shintaro Mochizuki",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Shintaro Mochizuki",
+        "Selection": "Shintaro Mochizuki",
+        "Odds": 135,
+        "Line": null
+      },
+      {
+        "EventID": "5be7706779ccf641f13f3edba5699e53",
+        "HomeTeam": "JJ Wolf",
+        "AwayTeam": "Shintaro Mochizuki",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "JJ Wolf",
+        "Selection": "JJ Wolf",
+        "Odds": -165,
+        "Line": null
+      },
+      {
+        "EventID": "5be7706779ccf641f13f3edba5699e53",
+        "HomeTeam": "JJ Wolf",
+        "AwayTeam": "Shintaro Mochizuki",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Shintaro Mochizuki",
+        "Selection": "Shintaro Mochizuki",
+        "Odds": 125,
+        "Line": null
+      },
+      {
+        "EventID": "5be7706779ccf641f13f3edba5699e53",
+        "HomeTeam": "JJ Wolf",
+        "AwayTeam": "Shintaro Mochizuki",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -112,
+        "Line": 22.0
+      },
+      {
+        "EventID": "5be7706779ccf641f13f3edba5699e53",
+        "HomeTeam": "JJ Wolf",
+        "AwayTeam": "Shintaro Mochizuki",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": 100,
+        "Line": 22.0
+      }
+    ]
+  },
+  {
+    "event_id": "96d04e74c6877e5d4e6da85d8350c728",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Aleksandar Vukic",
+    "away_team": "Darwin Blanch",
+    "commence_time": "2026-08-11T23:00:00Z",
+    "captured_at": "2026-08-11T19:30:38.923493+00:00",
+    "mins_to_commence": 209.4,
+    "closing_final": false,
+    "BestHomeML": -152,
+    "BestAwayML": 127,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "96d04e74c6877e5d4e6da85d8350c728",
+        "HomeTeam": "Aleksandar Vukic",
+        "AwayTeam": "Darwin Blanch",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Aleksandar Vukic",
+        "Selection": "Aleksandar Vukic",
+        "Odds": -152,
+        "Line": null
+      },
+      {
+        "EventID": "96d04e74c6877e5d4e6da85d8350c728",
+        "HomeTeam": "Aleksandar Vukic",
+        "AwayTeam": "Darwin Blanch",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Darwin Blanch",
+        "Selection": "Darwin Blanch",
+        "Odds": 127,
+        "Line": null
+      },
+      {
+        "EventID": "96d04e74c6877e5d4e6da85d8350c728",
+        "HomeTeam": "Aleksandar Vukic",
+        "AwayTeam": "Darwin Blanch",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Aleksandar Vukic",
+        "Selection": "Aleksandar Vukic",
+        "Odds": -155,
+        "Line": null
+      },
+      {
+        "EventID": "96d04e74c6877e5d4e6da85d8350c728",
+        "HomeTeam": "Aleksandar Vukic",
+        "AwayTeam": "Darwin Blanch",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Darwin Blanch",
+        "Selection": "Darwin Blanch",
+        "Odds": 115,
+        "Line": null
+      },
+      {
+        "EventID": "96d04e74c6877e5d4e6da85d8350c728",
+        "HomeTeam": "Aleksandar Vukic",
+        "AwayTeam": "Darwin Blanch",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -116,
+        "Line": 22.5
+      },
+      {
+        "EventID": "96d04e74c6877e5d4e6da85d8350c728",
+        "HomeTeam": "Aleksandar Vukic",
+        "AwayTeam": "Darwin Blanch",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -104,
+        "Line": 22.5
+      }
+    ]
+  },
+  {
+    "event_id": "1deabebdcfbbdf50f921bfd02608ba4d",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Mark Lajal",
+    "away_team": "Dalibor Svrcina",
+    "commence_time": "2026-08-11T23:00:00Z",
+    "captured_at": "2026-08-11T19:30:39.292765+00:00",
+    "mins_to_commence": 209.4,
+    "closing_final": false,
+    "BestHomeML": -105,
+    "BestAwayML": -110,
+    "HomeBook": "theScore Bet",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "1deabebdcfbbdf50f921bfd02608ba4d",
+        "HomeTeam": "Mark Lajal",
+        "AwayTeam": "Dalibor Svrcina",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Dalibor Svrcina",
+        "Selection": "Dalibor Svrcina",
+        "Odds": -110,
+        "Line": null
+      },
+      {
+        "EventID": "1deabebdcfbbdf50f921bfd02608ba4d",
+        "HomeTeam": "Mark Lajal",
+        "AwayTeam": "Dalibor Svrcina",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Mark Lajal",
+        "Selection": "Mark Lajal",
+        "Odds": -108,
+        "Line": null
+      },
+      {
+        "EventID": "1deabebdcfbbdf50f921bfd02608ba4d",
+        "HomeTeam": "Mark Lajal",
+        "AwayTeam": "Dalibor Svrcina",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Dalibor Svrcina",
+        "Selection": "Dalibor Svrcina",
+        "Odds": -125,
+        "Line": null
+      },
+      {
+        "EventID": "1deabebdcfbbdf50f921bfd02608ba4d",
+        "HomeTeam": "Mark Lajal",
+        "AwayTeam": "Dalibor Svrcina",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Mark Lajal",
+        "Selection": "Mark Lajal",
+        "Odds": -105,
+        "Line": null
+      },
+      {
+        "EventID": "1deabebdcfbbdf50f921bfd02608ba4d",
+        "HomeTeam": "Mark Lajal",
+        "AwayTeam": "Dalibor Svrcina",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -103,
+        "Line": 22.5
+      },
+      {
+        "EventID": "1deabebdcfbbdf50f921bfd02608ba4d",
+        "HomeTeam": "Mark Lajal",
+        "AwayTeam": "Dalibor Svrcina",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -118,
+        "Line": 22.5
+      }
+    ]
+  },
+  {
+    "event_id": "e84fd7b49e7d37b8c96c030856eafffe",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Marcos Giron",
+    "away_team": "Henrique Rocha",
+    "commence_time": "2026-08-11T23:00:00Z",
+    "captured_at": "2026-08-11T19:30:39.592064+00:00",
+    "mins_to_commence": 209.3,
+    "closing_final": false,
+    "BestHomeML": -225,
+    "BestAwayML": 185,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "e84fd7b49e7d37b8c96c030856eafffe",
+        "HomeTeam": "Marcos Giron",
+        "AwayTeam": "Henrique Rocha",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Henrique Rocha",
+        "Selection": "Henrique Rocha",
+        "Odds": 185,
+        "Line": null
+      },
+      {
+        "EventID": "e84fd7b49e7d37b8c96c030856eafffe",
+        "HomeTeam": "Marcos Giron",
+        "AwayTeam": "Henrique Rocha",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Marcos Giron",
+        "Selection": "Marcos Giron",
+        "Odds": -225,
+        "Line": null
+      },
+      {
+        "EventID": "e84fd7b49e7d37b8c96c030856eafffe",
+        "HomeTeam": "Marcos Giron",
+        "AwayTeam": "Henrique Rocha",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Henrique Rocha",
+        "Selection": "Henrique Rocha",
+        "Odds": 175,
+        "Line": null
+      },
+      {
+        "EventID": "e84fd7b49e7d37b8c96c030856eafffe",
+        "HomeTeam": "Marcos Giron",
+        "AwayTeam": "Henrique Rocha",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Marcos Giron",
+        "Selection": "Marcos Giron",
+        "Odds": -240,
+        "Line": null
+      },
+      {
+        "EventID": "e84fd7b49e7d37b8c96c030856eafffe",
+        "HomeTeam": "Marcos Giron",
+        "AwayTeam": "Henrique Rocha",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -111,
+        "Line": 22.0
+      },
+      {
+        "EventID": "e84fd7b49e7d37b8c96c030856eafffe",
+        "HomeTeam": "Marcos Giron",
+        "AwayTeam": "Henrique Rocha",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -109,
+        "Line": 22.0
+      }
+    ]
+  },
+  {
+    "event_id": "f24b0f912e143f49c0b9880cc3d226d5",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Nicolas Mejia",
+    "away_team": "Jacob Fearnley",
+    "commence_time": "2026-08-11T23:00:00Z",
+    "captured_at": "2026-08-11T19:30:39.883927+00:00",
+    "mins_to_commence": 209.3,
+    "closing_final": false,
+    "BestHomeML": 279,
+    "BestAwayML": -353,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "f24b0f912e143f49c0b9880cc3d226d5",
+        "HomeTeam": "Nicolas Mejia",
+        "AwayTeam": "Jacob Fearnley",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Jacob Fearnley",
+        "Selection": "Jacob Fearnley",
+        "Odds": -353,
+        "Line": null
+      },
+      {
+        "EventID": "f24b0f912e143f49c0b9880cc3d226d5",
+        "HomeTeam": "Nicolas Mejia",
+        "AwayTeam": "Jacob Fearnley",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Nicolas Mejia",
+        "Selection": "Nicolas Mejia",
+        "Odds": 279,
+        "Line": null
+      },
+      {
+        "EventID": "f24b0f912e143f49c0b9880cc3d226d5",
+        "HomeTeam": "Nicolas Mejia",
+        "AwayTeam": "Jacob Fearnley",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Jacob Fearnley",
+        "Selection": "Jacob Fearnley",
+        "Odds": -380,
+        "Line": null
+      },
+      {
+        "EventID": "f24b0f912e143f49c0b9880cc3d226d5",
+        "HomeTeam": "Nicolas Mejia",
+        "AwayTeam": "Jacob Fearnley",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Nicolas Mejia",
+        "Selection": "Nicolas Mejia",
+        "Odds": 260,
+        "Line": null
+      },
+      {
+        "EventID": "f24b0f912e143f49c0b9880cc3d226d5",
+        "HomeTeam": "Nicolas Mejia",
+        "AwayTeam": "Jacob Fearnley",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -116,
+        "Line": 21.5
+      },
+      {
+        "EventID": "f24b0f912e143f49c0b9880cc3d226d5",
+        "HomeTeam": "Nicolas Mejia",
+        "AwayTeam": "Jacob Fearnley",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -104,
+        "Line": 21.5
       }
     ]
   }
