@@ -328,88 +328,6 @@
     ]
   },
   {
-    "event_id": "961acb4705be0ba96b4124a7975a9720",
-    "sport": "tennis_atp_cincinnati_open",
-    "home_team": "Marco Trungelliti",
-    "away_team": "Sebastian Ofner",
-    "commence_time": "2026-08-11T17:30:00Z",
-    "captured_at": "2026-08-11T14:02:23.995859+00:00",
-    "mins_to_commence": 207.6,
-    "closing_final": false,
-    "BestHomeML": 125,
-    "BestAwayML": -149,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "Pinnacle",
-    "all_odds": [
-      {
-        "EventID": "961acb4705be0ba96b4124a7975a9720",
-        "HomeTeam": "Marco Trungelliti",
-        "AwayTeam": "Sebastian Ofner",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Marco Trungelliti",
-        "Selection": "Marco Trungelliti",
-        "Odds": 125,
-        "Line": null
-      },
-      {
-        "EventID": "961acb4705be0ba96b4124a7975a9720",
-        "HomeTeam": "Marco Trungelliti",
-        "AwayTeam": "Sebastian Ofner",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Sebastian Ofner",
-        "Selection": "Sebastian Ofner",
-        "Odds": -149,
-        "Line": null
-      },
-      {
-        "EventID": "961acb4705be0ba96b4124a7975a9720",
-        "HomeTeam": "Marco Trungelliti",
-        "AwayTeam": "Sebastian Ofner",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Marco Trungelliti",
-        "Selection": "Marco Trungelliti",
-        "Odds": 120,
-        "Line": null
-      },
-      {
-        "EventID": "961acb4705be0ba96b4124a7975a9720",
-        "HomeTeam": "Marco Trungelliti",
-        "AwayTeam": "Sebastian Ofner",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Sebastian Ofner",
-        "Selection": "Sebastian Ofner",
-        "Odds": -160,
-        "Line": null
-      },
-      {
-        "EventID": "961acb4705be0ba96b4124a7975a9720",
-        "HomeTeam": "Marco Trungelliti",
-        "AwayTeam": "Sebastian Ofner",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -113,
-        "Line": 23.0
-      },
-      {
-        "EventID": "961acb4705be0ba96b4124a7975a9720",
-        "HomeTeam": "Marco Trungelliti",
-        "AwayTeam": "Sebastian Ofner",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -107,
-        "Line": 23.0
-      }
-    ]
-  },
-  {
     "event_id": "d5f595af46c1f8fe5d44bef1ae5810a1",
     "sport": "tennis_atp_cincinnati_open",
     "home_team": "Moez Echargui",
@@ -1734,6 +1652,88 @@
         "Selection": "Under",
         "Odds": -104,
         "Line": 21.5
+      }
+    ]
+  },
+  {
+    "event_id": "961acb4705be0ba96b4124a7975a9720",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Marco Trungelliti",
+    "away_team": "Sebastian Ofner",
+    "commence_time": "2026-08-11T20:30:00Z",
+    "captured_at": "2026-08-11T20:20:02.763225+00:00",
+    "mins_to_commence": 10.0,
+    "closing_final": true,
+    "BestHomeML": 139,
+    "BestAwayML": -163,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "961acb4705be0ba96b4124a7975a9720",
+        "HomeTeam": "Marco Trungelliti",
+        "AwayTeam": "Sebastian Ofner",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Marco Trungelliti",
+        "Selection": "Marco Trungelliti",
+        "Odds": 139,
+        "Line": null
+      },
+      {
+        "EventID": "961acb4705be0ba96b4124a7975a9720",
+        "HomeTeam": "Marco Trungelliti",
+        "AwayTeam": "Sebastian Ofner",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Sebastian Ofner",
+        "Selection": "Sebastian Ofner",
+        "Odds": -163,
+        "Line": null
+      },
+      {
+        "EventID": "961acb4705be0ba96b4124a7975a9720",
+        "HomeTeam": "Marco Trungelliti",
+        "AwayTeam": "Sebastian Ofner",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Marco Trungelliti",
+        "Selection": "Marco Trungelliti",
+        "Odds": 130,
+        "Line": null
+      },
+      {
+        "EventID": "961acb4705be0ba96b4124a7975a9720",
+        "HomeTeam": "Marco Trungelliti",
+        "AwayTeam": "Sebastian Ofner",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Sebastian Ofner",
+        "Selection": "Sebastian Ofner",
+        "Odds": -175,
+        "Line": null
+      },
+      {
+        "EventID": "961acb4705be0ba96b4124a7975a9720",
+        "HomeTeam": "Marco Trungelliti",
+        "AwayTeam": "Sebastian Ofner",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -109,
+        "Line": 23.0
+      },
+      {
+        "EventID": "961acb4705be0ba96b4124a7975a9720",
+        "HomeTeam": "Marco Trungelliti",
+        "AwayTeam": "Sebastian Ofner",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -109,
+        "Line": 23.0
       }
     ]
   }

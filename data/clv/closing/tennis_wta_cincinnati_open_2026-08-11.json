@@ -1148,88 +1148,6 @@
     ]
   },
   {
-    "event_id": "90c55cea580da1505425bb9d6f75eb3a",
-    "sport": "tennis_wta_cincinnati_open",
-    "home_team": "Eva Lys",
-    "away_team": "Katarzyna Kawa",
-    "commence_time": "2026-08-11T20:30:00Z",
-    "captured_at": "2026-08-11T17:16:42.719761+00:00",
-    "mins_to_commence": 193.3,
-    "closing_final": false,
-    "BestHomeML": -246,
-    "BestAwayML": 205,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "Pinnacle",
-    "all_odds": [
-      {
-        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Katarzyna Kawa",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Eva Lys",
-        "Selection": "Eva Lys",
-        "Odds": -246,
-        "Line": null
-      },
-      {
-        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Katarzyna Kawa",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Katarzyna Kawa",
-        "Selection": "Katarzyna Kawa",
-        "Odds": 205,
-        "Line": null
-      },
-      {
-        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Katarzyna Kawa",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Eva Lys",
-        "Selection": "Eva Lys",
-        "Odds": -260,
-        "Line": null
-      },
-      {
-        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Katarzyna Kawa",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Katarzyna Kawa",
-        "Selection": "Katarzyna Kawa",
-        "Odds": 190,
-        "Line": null
-      },
-      {
-        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Katarzyna Kawa",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -103,
-        "Line": 20.5
-      },
-      {
-        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Katarzyna Kawa",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -115,
-        "Line": 20.5
-      }
-    ]
-  },
-  {
     "event_id": "ee55e3f16ff06941a92d69744fa308da",
     "sport": "tennis_wta_cincinnati_open",
     "home_team": "Harriet Dart",
@@ -1964,6 +1882,88 @@
         "Selection": "Under",
         "Odds": -114,
         "Line": 21.5
+      }
+    ]
+  },
+  {
+    "event_id": "90c55cea580da1505425bb9d6f75eb3a",
+    "sport": "tennis_wta_cincinnati_open",
+    "home_team": "Eva Lys",
+    "away_team": "Katarzyna Kawa",
+    "commence_time": "2026-08-11T20:45:00Z",
+    "captured_at": "2026-08-11T20:20:03.418173+00:00",
+    "mins_to_commence": 24.9,
+    "closing_final": true,
+    "BestHomeML": -249,
+    "BestAwayML": 207,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Katarzyna Kawa",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Eva Lys",
+        "Selection": "Eva Lys",
+        "Odds": -249,
+        "Line": null
+      },
+      {
+        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Katarzyna Kawa",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Katarzyna Kawa",
+        "Selection": "Katarzyna Kawa",
+        "Odds": 207,
+        "Line": null
+      },
+      {
+        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Katarzyna Kawa",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Eva Lys",
+        "Selection": "Eva Lys",
+        "Odds": -260,
+        "Line": null
+      },
+      {
+        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Katarzyna Kawa",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Katarzyna Kawa",
+        "Selection": "Katarzyna Kawa",
+        "Odds": 190,
+        "Line": null
+      },
+      {
+        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Katarzyna Kawa",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -103,
+        "Line": 20.5
+      },
+      {
+        "EventID": "90c55cea580da1505425bb9d6f75eb3a",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Katarzyna Kawa",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -115,
+        "Line": 20.5
       }
     ]
   }
