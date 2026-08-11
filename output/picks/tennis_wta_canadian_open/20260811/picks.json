@@ -1,0 +1,33 @@
+[
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Elena Rybakina",
+    "matchup": "Elena Rybakina vs Naomi Osaka",
+    "odds": -110,
+    "model_prob": 0.597,
+    "model_prob_raw": 0.6894,
+    "market_fair": 0.5046,
+    "model_weight": 0.5,
+    "implied_prob": 0.4968,
+    "edge_pct": 10.02,
+    "sportsbook": "BetRivers",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Coco Gauff @ Belinda Bencic",
+    "odds": -118,
+    "best_odds": -118,
+    "line": 21.5,
+    "model_prob": 0.5845,
+    "implied_prob": 0.505,
+    "edge_pct": 7.95,
+    "sportsbook": "BetRivers"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Arthur Fils",
+    "matchup": "Arthur Fils vs Rafael Jodar",
+    "odds": 125,
+    "model_prob": 0.4884,
+    "model_prob_raw": 0.5411,
+    "market_fair": 0.4358,
+    "model_weight": 0.5,
+    "implied_prob": 0.4224,
+    "edge_pct": 6.61,
+    "sportsbook": "BetMGM",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 22.5",
+    "matchup": "Arthur Fils @ Rafael Jodar",
+    "odds": -115,
+    "best_odds": -115,
+    "line": 22.5,
+    "model_prob": 0.5503,
+    "implied_prob": 0.4905,
+    "edge_pct": 5.97,
+    "sportsbook": "Caesars"
+  },
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Learner Tien @ Daniel Merida Aguilar",
+    "odds": -130,
+    "best_odds": -130,
+    "line": 21.5,
+    "model_prob": 0.5602,
+    "implied_prob": 0.519,
+    "edge_pct": 4.12,
+    "sportsbook": "Caesars"
+  }
+]
