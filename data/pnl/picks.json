@@ -686960,6 +686960,44 @@
       "away_team": "Ben Shelton",
       "poly_filled": false,
       "poly_fill_checked_at": "2026-08-11T07:57:51.261287+00:00"
+    },
+    {
+      "pick_id": "lineshop_basketball_wnba_20260811_washington-mystics_moneyline_betmgm",
+      "date": "2026-08-11",
+      "sport": "wnba",
+      "market": "moneyline",
+      "direction": "AWAY",
+      "team": "Washington Mystics",
+      "matchup": "Washington Mystics @ Las Vegas Aces",
+      "odds": 260,
+      "line": null,
+      "sportsbook": "BetMGM",
+      "model_prob": 0.2842,
+      "edge_pct": 0.0,
+      "stake": 0.0,
+      "card_pick": false,
+      "strategy": "line_shop",
+      "fair_source": "pinnacle",
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-08-11T13:47:10.567468+00:00",
+      "resulted_at": null,
+      "model_prob_raw": null,
+      "raw_edge_pct": 2.32,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "tainted": null,
+      "clv_status": "heuristic",
+      "home_team": "Las Vegas Aces",
+      "away_team": "Washington Mystics"
     }
   ]
 }
