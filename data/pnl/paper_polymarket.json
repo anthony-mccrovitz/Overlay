@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-11T02:54:46.444763+00:00",
+  "generated_at": "2026-08-11T07:57:53.795155+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 80.51,
-  "n_settled": 28,
-  "n_pending": 577,
-  "wins": 8,
-  "losses": 20,
-  "staked": 105.92,
-  "pnl": -31.49,
-  "expected_pnl": 4.37,
-  "roi_pct": -29.73,
+  "end_bankroll": 80.14,
+  "n_settled": 30,
+  "n_pending": 580,
+  "wins": 9,
+  "losses": 21,
+  "staked": 112.4,
+  "pnl": -31.86,
+  "expected_pnl": 4.57,
+  "roi_pct": -28.35,
   "max_drawdown": 44.54,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 431,
-    "not settled yet": 32,
-    "resting order never filled": 15
+    "exposure cap reached for the slate": 436,
+    "not settled yet": 26,
+    "resting order never filled": 19
   },
   "significance": {
-    "mean_edge_per_unit": 0.0408,
-    "sd_per_unit": 1.469,
-    "n_for_2sigma": 5186
+    "mean_edge_per_unit": 0.04,
+    "sd_per_unit": 1.4371,
+    "n_for_2sigma": 5154
   },
   "rows": [
     {
@@ -456,6 +456,22 @@
       "equity": 75.77
     },
     {
+      "pick_id": "polymarket_ev__wnba_20260810_seattle-storm_g-chisky-seasto_moneyline_win",
+      "date": "2026-08-10",
+      "team": "Seattle Storm",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.52,
+      "fair": 0.5325,
+      "stake": 3.03,
+      "shares": 5.83,
+      "result": "win",
+      "pnl": 2.8,
+      "expected_pnl": 0.073,
+      "equity": 78.57
+    },
+    {
       "pick_id": "polymarket_ev__mlb_20260810_toronto-blue-jays_g-bossox-torjay_moneyline_win",
       "date": "2026-08-10",
       "team": "Toronto Blue Jays",
@@ -464,12 +480,28 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.39,
       "fair": 0.4053,
-      "stake": 3.03,
-      "shares": 7.77,
+      "stake": 3.14,
+      "shares": 8.05,
       "result": "win",
-      "pnl": 4.74,
-      "expected_pnl": 0.119,
-      "equity": 80.51
+      "pnl": 4.91,
+      "expected_pnl": 0.123,
+      "equity": 83.48
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260810_st-louis-cardinals_g-phiphi-stcar_moneyline_win",
+      "date": "2026-08-10",
+      "team": "St. Louis Cardinals",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.49,
+      "fair": 0.507,
+      "stake": 3.34,
+      "shares": 6.82,
+      "result": "loss",
+      "pnl": -3.34,
+      "expected_pnl": 0.116,
+      "equity": 80.14
     }
   ]
 }
