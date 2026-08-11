@@ -1,0 +1,98 @@
+{
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Andrew Pinckney",
+      "team": "Andrew Pinckney OVER 0.5",
+      "matchup": "Chicago Cubs @ Washington Nationals",
+      "line": 0.5,
+      "odds": -160,
+      "model_prob": 1.0,
+      "implied_prob": 0.5458,
+      "edge_pct": 45.42,
+      "model_mu": 3.5621712019848e+97,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Yandy Diaz",
+      "team": "Yandy Diaz UNDER 6.5",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "line": 6.5,
+      "odds": -190,
+      "model_prob": 0.9682,
+      "implied_prob": 0.6011,
+      "edge_pct": 36.71,
+      "model_mu": 1.79,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Jacob Lopez",
+      "team": "Jacob Lopez UNDER 6.5",
+      "matchup": "Tampa Bay Rays @ Athletics",
+      "line": 6.5,
+      "odds": -180,
+      "model_prob": 0.883,
+      "implied_prob": 0.5965,
+      "edge_pct": 28.65,
+      "model_mu": 3.88,
+      "sportsbook": "theScore Bet"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Jac Caglianone",
+      "team": "Jac Caglianone UNDER 3.5",
+      "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+      "line": 3.5,
+      "odds": -450,
+      "model_prob": 0.9904,
+      "implied_prob": 0.766,
+      "edge_pct": 22.44,
+      "model_mu": 0.46,
+      "sportsbook": "BetMGM"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Mike Trout",
+      "team": "Mike Trout UNDER 1.5",
+      "matchup": "Texas Rangers @ Los Angeles Angels",
+      "line": 1.5,
+      "odds": -425,
+      "model_prob": 0.9507,
+      "implied_prob": 0.7391,
+      "edge_pct": 21.15,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Jung Hoo Lee",
+      "team": "Jung Hoo Lee UNDER 1.5",
+      "matchup": "Houston Astros @ San Francisco Giants",
+      "line": 1.5,
+      "odds": -71330,
+      "model_prob": 0.9914,
+      "implied_prob": 0.9602,
+      "edge_pct": 3.12,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
