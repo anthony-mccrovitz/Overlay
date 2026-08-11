@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-10T19:44:03.227472+00:00",
+  "generated_at": "2026-08-11T02:54:46.444763+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 75.75,
-  "n_settled": 27,
-  "n_pending": 576,
-  "wins": 7,
+  "end_bankroll": 80.51,
+  "n_settled": 28,
+  "n_pending": 577,
+  "wins": 8,
   "losses": 20,
-  "staked": 100.63,
-  "pnl": -36.25,
-  "expected_pnl": 4.13,
-  "roi_pct": -36.02,
-  "max_drawdown": 47.49,
+  "staked": 105.92,
+  "pnl": -31.49,
+  "expected_pnl": 4.37,
+  "roi_pct": -29.73,
+  "max_drawdown": 44.54,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 430,
-    "not settled yet": 33,
-    "resting order never filled": 14
+    "exposure cap reached for the slate": 431,
+    "not settled yet": 32,
+    "resting order never filled": 15
   },
   "significance": {
     "mean_edge_per_unit": 0.0408,
-    "sd_per_unit": 1.4376,
-    "n_for_2sigma": 4963
+    "sd_per_unit": 1.469,
+    "n_for_2sigma": 5186
   },
   "rows": [
     {
@@ -56,22 +56,6 @@
       "equity": 113.22
     },
     {
-      "pick_id": "polymarket_ev__mlb_20260804_pittsburgh-pirates_g-pitpir-milbre_moneyline_win",
-      "date": "2026-08-04",
-      "team": "Pittsburgh Pirates",
-      "sport": "mlb",
-      "mode": "make",
-      "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.39,
-      "fair": 0.3993,
-      "stake": 4.53,
-      "shares": 11.62,
-      "result": "loss",
-      "pnl": -4.53,
-      "expected_pnl": 0.108,
-      "equity": 108.69
-    },
-    {
       "pick_id": "polymarket_ev__wnba_20260805_seattle-storm_g-seasto-newlib_moneyline_win",
       "date": "2026-08-05",
       "team": "Seattle Storm",
@@ -80,12 +64,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.2,
       "fair": 0.2148,
-      "stake": 4.35,
-      "shares": 21.75,
+      "stake": 4.53,
+      "shares": 22.65,
       "result": "loss",
-      "pnl": -4.35,
-      "expected_pnl": 0.322,
-      "equity": 104.34
+      "pnl": -4.53,
+      "expected_pnl": 0.335,
+      "equity": 108.69
     },
     {
       "pick_id": "polymarket_ev__wnba_20260805_phoenix-mercury_g-phomer-atldre_moneyline_win",
@@ -96,12 +80,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.34,
       "fair": 0.3471,
-      "stake": 4.17,
-      "shares": 12.26,
+      "stake": 4.35,
+      "shares": 12.79,
       "result": "loss",
-      "pnl": -4.17,
-      "expected_pnl": 0.087,
-      "equity": 100.17
+      "pnl": -4.35,
+      "expected_pnl": 0.091,
+      "equity": 104.34
     },
     {
       "pick_id": "polymarket_ev__wnba_20260805_los-angeles-sparks_g-losspa-chisky_moneyline_win",
@@ -112,12 +96,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.41,
       "fair": 0.4373,
-      "stake": 4.01,
-      "shares": 9.78,
+      "stake": 4.17,
+      "shares": 10.17,
       "result": "loss",
-      "pnl": -4.01,
-      "expected_pnl": 0.267,
-      "equity": 96.16
+      "pnl": -4.17,
+      "expected_pnl": 0.278,
+      "equity": 100.17
     },
     {
       "pick_id": "polymarket_ev__mlb_20260805_colorado-rockies_g-tamray-colroc_moneyline_win",
@@ -128,12 +112,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.41,
       "fair": 0.4202,
-      "stake": 3.85,
-      "shares": 9.39,
+      "stake": 4.01,
+      "shares": 9.78,
       "result": "loss",
-      "pnl": -3.85,
-      "expected_pnl": 0.096,
-      "equity": 92.31
+      "pnl": -4.01,
+      "expected_pnl": 0.1,
+      "equity": 96.16
     },
     {
       "pick_id": "polymarket_ev__wnba_20260806_indiana-fever_g-lasace-indfev_moneyline_win",
@@ -144,12 +128,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.5,
       "fair": 0.5169,
-      "stake": 3.69,
-      "shares": 7.38,
+      "stake": 3.85,
+      "shares": 7.7,
       "result": "loss",
-      "pnl": -3.69,
-      "expected_pnl": 0.125,
-      "equity": 88.62
+      "pnl": -3.85,
+      "expected_pnl": 0.13,
+      "equity": 92.31
     },
     {
       "pick_id": "polymarket_ev__mlb_20260806_baltimore-orioles_g-losang-balori_moneyline_win",
@@ -160,12 +144,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.59,
       "fair": 0.6027,
-      "stake": 3.54,
-      "shares": 6.0,
+      "stake": 3.69,
+      "shares": 6.25,
       "result": "loss",
-      "pnl": -3.54,
-      "expected_pnl": 0.076,
-      "equity": 85.08
+      "pnl": -3.69,
+      "expected_pnl": 0.079,
+      "equity": 88.62
     },
     {
       "pick_id": "polymarket_ev__mlb_20260806_new-york-mets_g-newmet-clegua_moneyline_win",
@@ -176,12 +160,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.49,
       "fair": 0.5,
-      "stake": 3.4,
-      "shares": 6.94,
+      "stake": 3.54,
+      "shares": 7.22,
       "result": "win",
-      "pnl": 3.54,
-      "expected_pnl": 0.069,
-      "equity": 88.62
+      "pnl": 3.68,
+      "expected_pnl": 0.072,
+      "equity": 92.3
     },
     {
       "pick_id": "polymarket_ev__mlb_20260806_minnesota-twins_g-mintwi-kanroy_moneyline_win",
@@ -192,12 +176,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.47,
       "fair": 0.4802,
-      "stake": 3.54,
-      "shares": 7.53,
+      "stake": 3.69,
+      "shares": 7.85,
       "result": "win",
-      "pnl": 3.99,
-      "expected_pnl": 0.077,
-      "equity": 92.61
+      "pnl": 4.16,
+      "expected_pnl": 0.08,
+      "equity": 96.46
     },
     {
       "pick_id": "polymarket_ev__wnba_20260807_connecticut-sun_g-phomer-consun_moneyline_win",
@@ -208,12 +192,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.32,
       "fair": 0.3403,
-      "stake": 3.7,
-      "shares": 11.56,
+      "stake": 3.86,
+      "shares": 12.06,
       "result": "win",
-      "pnl": 7.86,
-      "expected_pnl": 0.235,
-      "equity": 100.47
+      "pnl": 8.2,
+      "expected_pnl": 0.245,
+      "equity": 104.66
     },
     {
       "pick_id": "polymarket_ev__wnba_20260807_washington-mystics_g-atldre-wasmys_moneyline_win",
@@ -224,12 +208,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.37,
       "fair": 0.4009,
-      "stake": 4.02,
-      "shares": 10.86,
+      "stake": 4.19,
+      "shares": 11.32,
       "result": "win",
-      "pnl": 6.84,
-      "expected_pnl": 0.336,
-      "equity": 107.31
+      "pnl": 7.13,
+      "expected_pnl": 0.35,
+      "equity": 111.79
     },
     {
       "pick_id": "polymarket_ev__wnba_20260807_dallas-wings_g-golval-dalwin_moneyline_win",
@@ -240,12 +224,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.49,
       "fair": 0.5108,
-      "stake": 4.29,
-      "shares": 8.76,
+      "stake": 4.47,
+      "shares": 9.12,
       "result": "loss",
-      "pnl": -4.29,
-      "expected_pnl": 0.182,
-      "equity": 103.02
+      "pnl": -4.47,
+      "expected_pnl": 0.19,
+      "equity": 107.32
     },
     {
       "pick_id": "polymarket_ev__mlb_20260807_pittsburgh-pirates_g-newmet-pitpir_moneyline_win",
@@ -256,12 +240,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.56,
       "fair": 0.5723,
-      "stake": 4.12,
-      "shares": 7.36,
+      "stake": 4.29,
+      "shares": 7.66,
       "result": "loss",
-      "pnl": -4.12,
-      "expected_pnl": 0.09,
-      "equity": 98.9
+      "pnl": -4.29,
+      "expected_pnl": 0.094,
+      "equity": 103.03
     },
     {
       "pick_id": "polymarket_ev__mlb_20260807_athletics_g-athlet-bossox_moneyline_win",
@@ -272,12 +256,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.29,
       "fair": 0.3048,
-      "stake": 3.96,
-      "shares": 13.66,
+      "stake": 4.12,
+      "shares": 14.21,
       "result": "loss",
-      "pnl": -3.96,
-      "expected_pnl": 0.202,
-      "equity": 94.94
+      "pnl": -4.12,
+      "expected_pnl": 0.21,
+      "equity": 98.91
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_bruno-lopes_g-brulop-diynur_moneyline_win",
@@ -288,12 +272,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.4,
       "fair": 0.4206,
-      "stake": 3.8,
-      "shares": 9.5,
+      "stake": 3.96,
+      "shares": 9.9,
       "result": "loss",
-      "pnl": -3.8,
-      "expected_pnl": 0.196,
-      "equity": 91.14
+      "pnl": -3.96,
+      "expected_pnl": 0.204,
+      "equity": 94.95
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_guilherme-pat_g-guipat-steasp_moneyline_win",
@@ -304,12 +288,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.27,
       "fair": 0.2823,
-      "stake": 3.65,
-      "shares": 13.52,
+      "stake": 3.8,
+      "shares": 14.07,
       "result": "loss",
-      "pnl": -3.65,
-      "expected_pnl": 0.166,
-      "equity": 87.49
+      "pnl": -3.8,
+      "expected_pnl": 0.173,
+      "equity": 91.15
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_billy-goff_g-bilgof-tymil_moneyline_win",
@@ -320,12 +304,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.23,
       "fair": 0.2348,
-      "stake": 3.5,
-      "shares": 15.22,
+      "stake": 3.65,
+      "shares": 15.87,
       "result": "loss",
-      "pnl": -3.5,
-      "expected_pnl": 0.073,
-      "equity": 83.99
+      "pnl": -3.65,
+      "expected_pnl": 0.076,
+      "equity": 87.5
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_miles-johns_g-jesros-miljoh_moneyline_win",
@@ -336,12 +320,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.58,
       "fair": 0.597,
-      "stake": 3.36,
-      "shares": 5.79,
+      "stake": 3.5,
+      "shares": 6.03,
       "result": "win",
-      "pnl": 2.43,
-      "expected_pnl": 0.098,
-      "equity": 86.42
+      "pnl": 2.53,
+      "expected_pnl": 0.103,
+      "equity": 90.03
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260808_richie-miranda_g-ricmir-mansou_moneyline_win",
@@ -352,12 +336,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.28,
       "fair": 0.2962,
-      "stake": 3.46,
-      "shares": 12.36,
+      "stake": 3.6,
+      "shares": 12.86,
       "result": "loss",
-      "pnl": -3.46,
-      "expected_pnl": 0.2,
-      "equity": 82.96
+      "pnl": -3.6,
+      "expected_pnl": 0.208,
+      "equity": 86.43
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260808_chapecoense_g-chapec-coriti_moneyline_win",
@@ -368,12 +352,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.17,
       "fair": 0.1781,
-      "stake": 3.32,
-      "shares": 19.53,
+      "stake": 3.46,
+      "shares": 20.35,
       "result": "loss",
-      "pnl": -3.32,
-      "expected_pnl": 0.158,
-      "equity": 79.64
+      "pnl": -3.46,
+      "expected_pnl": 0.165,
+      "equity": 82.97
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260808_gwangju-fc_g-gwafc-buc199_moneyline_win",
@@ -384,12 +368,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.22,
       "fair": 0.2258,
-      "stake": 3.19,
-      "shares": 14.5,
+      "stake": 3.32,
+      "shares": 15.09,
       "result": "loss",
-      "pnl": -3.19,
-      "expected_pnl": 0.084,
-      "equity": 76.45
+      "pnl": -3.32,
+      "expected_pnl": 0.088,
+      "equity": 79.65
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260809_mirassol_g-mirass-cruzei_moneyline_win",
@@ -400,12 +384,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.17,
       "fair": 0.1815,
-      "stake": 3.06,
-      "shares": 18.0,
+      "stake": 3.19,
+      "shares": 18.76,
       "result": "loss",
-      "pnl": -3.06,
-      "expected_pnl": 0.207,
-      "equity": 73.39
+      "pnl": -3.19,
+      "expected_pnl": 0.216,
+      "equity": 76.46
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260809_internacional_g-intern-palmei_moneyline_win",
@@ -416,12 +400,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.15,
       "fair": 0.1571,
-      "stake": 2.94,
-      "shares": 19.6,
+      "stake": 3.06,
+      "shares": 20.4,
       "result": "loss",
-      "pnl": -2.94,
-      "expected_pnl": 0.139,
-      "equity": 70.45
+      "pnl": -3.06,
+      "expected_pnl": 0.145,
+      "equity": 73.4
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260809_corinthians_g-corint-bragan_moneyline_win",
@@ -432,12 +416,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.25,
       "fair": 0.2576,
-      "stake": 2.82,
-      "shares": 11.28,
+      "stake": 2.94,
+      "shares": 11.76,
       "result": "win",
-      "pnl": 8.46,
-      "expected_pnl": 0.086,
-      "equity": 78.91
+      "pnl": 8.82,
+      "expected_pnl": 0.089,
+      "equity": 82.22
     },
     {
       "pick_id": "polymarket_ev__wnba_20260809_phoenix-mercury_g-phomer-wasmys_moneyline_win",
@@ -448,12 +432,44 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.48,
       "fair": 0.4946,
+      "stake": 3.29,
+      "shares": 6.85,
+      "result": "loss",
+      "pnl": -3.29,
+      "expected_pnl": 0.1,
+      "equity": 78.93
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260810_toronto-tempo_g-tortem-atldre_moneyline_win",
+      "date": "2026-08-10",
+      "team": "Toronto Tempo",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.16,
+      "fair": 0.164,
       "stake": 3.16,
-      "shares": 6.58,
+      "shares": 19.75,
       "result": "loss",
       "pnl": -3.16,
-      "expected_pnl": 0.096,
-      "equity": 75.75
+      "expected_pnl": 0.079,
+      "equity": 75.77
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260810_toronto-blue-jays_g-bossox-torjay_moneyline_win",
+      "date": "2026-08-10",
+      "team": "Toronto Blue Jays",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.39,
+      "fair": 0.4053,
+      "stake": 3.03,
+      "shares": 7.77,
+      "result": "win",
+      "pnl": 4.74,
+      "expected_pnl": 0.119,
+      "equity": 80.51
     }
   ]
 }
