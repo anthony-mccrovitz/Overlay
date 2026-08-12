@@ -820,88 +820,6 @@
     ]
   },
   {
-    "event_id": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-    "sport": "tennis_wta_cincinnati_open",
-    "home_team": "Aoi Ito",
-    "away_team": "Harriet Dart",
-    "commence_time": "2026-08-12T18:00:00Z",
-    "captured_at": "2026-08-12T14:41:34.988221+00:00",
-    "mins_to_commence": 198.4,
-    "closing_final": false,
-    "BestHomeML": 128,
-    "BestAwayML": -152,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "Pinnacle",
-    "all_odds": [
-      {
-        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-        "HomeTeam": "Aoi Ito",
-        "AwayTeam": "Harriet Dart",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Aoi Ito",
-        "Selection": "Aoi Ito",
-        "Odds": 128,
-        "Line": null
-      },
-      {
-        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-        "HomeTeam": "Aoi Ito",
-        "AwayTeam": "Harriet Dart",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Harriet Dart",
-        "Selection": "Harriet Dart",
-        "Odds": -152,
-        "Line": null
-      },
-      {
-        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-        "HomeTeam": "Aoi Ito",
-        "AwayTeam": "Harriet Dart",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Aoi Ito",
-        "Selection": "Aoi Ito",
-        "Odds": 120,
-        "Line": null
-      },
-      {
-        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-        "HomeTeam": "Aoi Ito",
-        "AwayTeam": "Harriet Dart",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Harriet Dart",
-        "Selection": "Harriet Dart",
-        "Odds": -160,
-        "Line": null
-      },
-      {
-        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-        "HomeTeam": "Aoi Ito",
-        "AwayTeam": "Harriet Dart",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -111,
-        "Line": 21.5
-      },
-      {
-        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
-        "HomeTeam": "Aoi Ito",
-        "AwayTeam": "Harriet Dart",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -109,
-        "Line": 21.5
-      }
-    ]
-  },
-  {
     "event_id": "9857ae8f6dc716a43ceb68d504d0cba4",
     "sport": "tennis_wta_cincinnati_open",
     "home_team": "Alina Korneeva",
@@ -1061,6 +979,88 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -113,
+        "Line": 21.5
+      }
+    ]
+  },
+  {
+    "event_id": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+    "sport": "tennis_wta_cincinnati_open",
+    "home_team": "Aoi Ito",
+    "away_team": "Harriet Dart",
+    "commence_time": "2026-08-12T19:00:00Z",
+    "captured_at": "2026-08-12T18:41:19.788451+00:00",
+    "mins_to_commence": 18.7,
+    "closing_final": true,
+    "BestHomeML": 129,
+    "BestAwayML": -151,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+        "HomeTeam": "Aoi Ito",
+        "AwayTeam": "Harriet Dart",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Aoi Ito",
+        "Selection": "Aoi Ito",
+        "Odds": 129,
+        "Line": null
+      },
+      {
+        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+        "HomeTeam": "Aoi Ito",
+        "AwayTeam": "Harriet Dart",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Harriet Dart",
+        "Selection": "Harriet Dart",
+        "Odds": -151,
+        "Line": null
+      },
+      {
+        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+        "HomeTeam": "Aoi Ito",
+        "AwayTeam": "Harriet Dart",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Aoi Ito",
+        "Selection": "Aoi Ito",
+        "Odds": 120,
+        "Line": null
+      },
+      {
+        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+        "HomeTeam": "Aoi Ito",
+        "AwayTeam": "Harriet Dart",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Harriet Dart",
+        "Selection": "Harriet Dart",
+        "Odds": -160,
+        "Line": null
+      },
+      {
+        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+        "HomeTeam": "Aoi Ito",
+        "AwayTeam": "Harriet Dart",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -110,
+        "Line": 21.5
+      },
+      {
+        "EventID": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
+        "HomeTeam": "Aoi Ito",
+        "AwayTeam": "Harriet Dart",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -108,
         "Line": 21.5
       }
     ]
