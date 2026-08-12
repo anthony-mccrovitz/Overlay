@@ -1146,5 +1146,87 @@
         "Line": 22.5
       }
     ]
+  },
+  {
+    "event_id": "077772dbe01dea0fea4586fbedc7a483",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Sho Shimabukuro",
+    "away_team": "JJ Wolf",
+    "commence_time": "2026-08-12T18:30:00Z",
+    "captured_at": "2026-08-12T14:41:34.237382+00:00",
+    "mins_to_commence": 228.4,
+    "closing_final": false,
+    "BestHomeML": 106,
+    "BestAwayML": -126,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "JJ Wolf",
+        "Selection": "JJ Wolf",
+        "Odds": -126,
+        "Line": null
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Sho Shimabukuro",
+        "Selection": "Sho Shimabukuro",
+        "Odds": 106,
+        "Line": null
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "JJ Wolf",
+        "Selection": "JJ Wolf",
+        "Odds": -135,
+        "Line": null
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Sho Shimabukuro",
+        "Selection": "Sho Shimabukuro",
+        "Odds": 105,
+        "Line": null
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -106,
+        "Line": 22.5
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -114,
+        "Line": 22.5
+      }
+    ]
   }
 ]
