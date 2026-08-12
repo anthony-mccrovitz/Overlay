@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-12T11:55:45.071344+00:00",
+  "updated_at": "2026-08-12T14:25:22.298796+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -299,9 +299,9 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.283,
+      "avg_clv_pct": -0.292,
       "positive_pct": 39.1,
-      "n": 2864,
+      "n": 2869,
       "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
     },
     "spread_total": {
@@ -335,31 +335,31 @@
       },
       "batter_walks": {
         "count": 1429,
-        "avg_line_clv": 0.008,
-        "beat_close_pct": 53.0,
-        "avg_price_clv_pct": 0.95,
-        "matched_price_n": 1417
+        "avg_line_clv": 0.01,
+        "beat_close_pct": 53.2,
+        "avg_price_clv_pct": 1.0,
+        "matched_price_n": 1418
       },
       "batter_rbis": {
         "count": 1200,
-        "avg_line_clv": 0.006,
+        "avg_line_clv": 0.007,
         "beat_close_pct": 44.8,
-        "avg_price_clv_pct": 0.679,
-        "matched_price_n": 1190
+        "avg_price_clv_pct": 0.701,
+        "matched_price_n": 1191
       },
       "batter_hits": {
         "count": 1984,
         "avg_line_clv": 0.012,
         "beat_close_pct": 54.8,
-        "avg_price_clv_pct": 1.386,
-        "matched_price_n": 1789
+        "avg_price_clv_pct": 1.397,
+        "matched_price_n": 1788
       },
       "batter_home_runs": {
-        "count": 1648,
+        "count": 1649,
         "avg_line_clv": 0.015,
         "beat_close_pct": 35.6,
-        "avg_price_clv_pct": 0.291,
-        "matched_price_n": 1623
+        "avg_price_clv_pct": 0.289,
+        "matched_price_n": 1624
       },
       "batter_total_bases": {
         "count": 1470,
@@ -378,8 +378,8 @@
     },
     "totals_coverage": {
       "scored": 435,
-      "scoreable": 716,
-      "pct": 60.8
+      "scoreable": 717,
+      "pct": 60.7
     },
     "spread_coverage": {
       "scored": 335,
