@@ -902,88 +902,6 @@
     ]
   },
   {
-    "event_id": "4b9c08cb63b13362bc2a865f837d93ea",
-    "sport": "tennis_wta_cincinnati_open",
-    "home_team": "Eva Lys",
-    "away_team": "Anna Blinkova",
-    "commence_time": "2026-08-12T20:00:00Z",
-    "captured_at": "2026-08-12T16:40:56.565380+00:00",
-    "mins_to_commence": 199.1,
-    "closing_final": false,
-    "BestHomeML": -127,
-    "BestAwayML": 109,
-    "HomeBook": "Pinnacle",
-    "AwayBook": "Pinnacle",
-    "all_odds": [
-      {
-        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Anna Blinkova",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Anna Blinkova",
-        "Selection": "Anna Blinkova",
-        "Odds": 109,
-        "Line": null
-      },
-      {
-        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Anna Blinkova",
-        "Sportsbook": "Pinnacle",
-        "Market": "h2h",
-        "Name": "Eva Lys",
-        "Selection": "Eva Lys",
-        "Odds": -127,
-        "Line": null
-      },
-      {
-        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Anna Blinkova",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Anna Blinkova",
-        "Selection": "Anna Blinkova",
-        "Odds": 105,
-        "Line": null
-      },
-      {
-        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Anna Blinkova",
-        "Sportsbook": "theScore Bet",
-        "Market": "h2h",
-        "Name": "Eva Lys",
-        "Selection": "Eva Lys",
-        "Odds": -140,
-        "Line": null
-      },
-      {
-        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Anna Blinkova",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Over",
-        "Selection": "Over",
-        "Odds": -105,
-        "Line": 21.5
-      },
-      {
-        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
-        "HomeTeam": "Eva Lys",
-        "AwayTeam": "Anna Blinkova",
-        "Sportsbook": "Pinnacle",
-        "Market": "totals",
-        "Name": "Under",
-        "Selection": "Under",
-        "Odds": -113,
-        "Line": 21.5
-      }
-    ]
-  },
-  {
     "event_id": "e3f9b79c6ffad0f8a6a8b7e02faf584a",
     "sport": "tennis_wta_cincinnati_open",
     "home_team": "Aoi Ito",
@@ -1061,6 +979,88 @@
         "Name": "Under",
         "Selection": "Under",
         "Odds": -108,
+        "Line": 21.5
+      }
+    ]
+  },
+  {
+    "event_id": "4b9c08cb63b13362bc2a865f837d93ea",
+    "sport": "tennis_wta_cincinnati_open",
+    "home_team": "Eva Lys",
+    "away_team": "Anna Blinkova",
+    "commence_time": "2026-08-12T20:00:00Z",
+    "captured_at": "2026-08-12T19:52:38.022733+00:00",
+    "mins_to_commence": 7.4,
+    "closing_final": true,
+    "BestHomeML": -124,
+    "BestAwayML": 107,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Anna Blinkova",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Anna Blinkova",
+        "Selection": "Anna Blinkova",
+        "Odds": 107,
+        "Line": null
+      },
+      {
+        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Anna Blinkova",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Eva Lys",
+        "Selection": "Eva Lys",
+        "Odds": -124,
+        "Line": null
+      },
+      {
+        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Anna Blinkova",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Anna Blinkova",
+        "Selection": "Anna Blinkova",
+        "Odds": 105,
+        "Line": null
+      },
+      {
+        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Anna Blinkova",
+        "Sportsbook": "theScore Bet",
+        "Market": "h2h",
+        "Name": "Eva Lys",
+        "Selection": "Eva Lys",
+        "Odds": -140,
+        "Line": null
+      },
+      {
+        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Anna Blinkova",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 21.5
+      },
+      {
+        "EventID": "4b9c08cb63b13362bc2a865f837d93ea",
+        "HomeTeam": "Eva Lys",
+        "AwayTeam": "Anna Blinkova",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -113,
         "Line": 21.5
       }
     ]
