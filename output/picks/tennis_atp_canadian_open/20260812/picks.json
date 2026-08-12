@@ -1,0 +1,47 @@
+[
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Learner Tien",
+    "matchup": "Ben Shelton vs Learner Tien",
+    "odds": 170,
+    "model_prob": 0.4087,
+    "model_prob_raw": 0.4653,
+    "market_fair": 0.3521,
+    "model_weight": 0.5,
+    "implied_prob": 0.3501,
+    "edge_pct": 5.86,
+    "sportsbook": "BetMGM",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Brandon Nakashima @ Rafael Jodar",
+    "odds": -140,
+    "best_odds": -140,
+    "line": 21.5,
+    "model_prob": 0.6163,
+    "implied_prob": 0.5385,
+    "edge_pct": 7.79,
+    "sportsbook": "Caesars"
+  },
+  {
+    "sport": "tennis_atp_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 22.5",
+    "matchup": "Brandon Nakashima @ Rafael Jodar",
+    "odds": -115,
+    "best_odds": -115,
+    "line": 22.5,
+    "model_prob": 0.5553,
+    "implied_prob": 0.5,
+    "edge_pct": 5.53,
+    "sportsbook": "BetRivers"
+  }
+]
