@@ -108,22 +108,51 @@ def compute_table(picks_path: Path | str = PICKS_FILE,
         except (TypeError, ValueError):
             continue
         k = _key(p.get("sport", ""), p.get("market", ""))
-        a = agg.setdefault(k, {"n": 0.0, "claimed": 0.0, "realized": 0.0})
+        a = agg.setdefault(k, {"n": 0.0, "claimed": 0.0, "realized": 0.0,
+                               "card_n": 0.0, "card_claimed": 0.0,
+                               "card_realized": 0.0})
+        claimed_pp = (mp - imp) * 100.0
+        realized_pp = ((1.0 if p["result"] == "win" else 0.0) - imp) * 100.0
         a["n"] += 1
-        a["claimed"] += (mp - imp) * 100.0                       # pp
-        a["realized"] += ((1.0 if p["result"] == "win" else 0.0) - imp) * 100.0
+        a["claimed"] += claimed_pp                               # pp
+        a["realized"] += realized_pp
+        # Same numbers over CARD picks only — the subset that actually took
+        # money. Reported alongside, never instead of, the lane-wide figure:
+        # the two answer different questions and mlb/total is the case that
+        # shows why. Lane-wide it reads k=0.18 (claimed 7.90pp → realized
+        # 1.44pp, n=277) and fails the build standard; over the 76 picks the
+        # card band let through it reads k=0.82 (2.84pp → 2.32pp, ROI +4.7%).
+        # The gap is 201 shadow picks the gate itself refused to bet. Which of
+        # those is "the lane's edge" is a judgement for whoever reads the
+        # standard — but making the decision without both numbers in front of
+        # you is how a healthy lane gets demoted, or a broken one kept.
+        if p.get("card_pick"):
+            a["card_n"] += 1
+            a["card_claimed"] += claimed_pp
+            a["card_realized"] += realized_pp
 
     table: dict[str, dict] = {}
     for k, a in agg.items():
         n = int(a["n"])
         claimed = a["claimed"] / n
         realized = a["realized"] / n
-        table[k] = {
+        row = {
             "n": n,
             "claimed_pp": round(claimed, 3),
             "realized_pp": round(realized, 3),
             "k": round(_k_from(n, claimed, realized), 4),
         }
+        card_n = int(a["card_n"])
+        if card_n:
+            c_claimed = a["card_claimed"] / card_n
+            c_realized = a["card_realized"] / card_n
+            row.update({
+                "card_n": card_n,
+                "card_claimed_pp": round(c_claimed, 3),
+                "card_realized_pp": round(c_realized, 3),
+                "card_k": round(_k_from(card_n, c_claimed, c_realized), 4),
+            })
+        table[k] = row
 
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)

@@ -123,12 +123,27 @@ def _td_cache_path(tour: str, year: int) -> Path:
     return CACHE_DIR / f"td_{tour}_{year}.xlsx"
 
 
+class TennisSourceUnavailable(RuntimeError):
+    """The results source could not be read — so we know nothing, either way.
+
+    This exists because "the download failed" and "the match hasn't been
+    published yet" used to produce the identical empty DataFrame. The grader
+    then reported the second, reassuring story every time the first one
+    happened, and 350 picks sat pending for weeks while the nightly run went
+    green. A source outage must be loud.
+    """
+
+
 def load_matches(tour: str, years: list[int] | None = None,
-                 refresh_current: bool = True, verbose: bool = False):
+                 refresh_current: bool = True, verbose: bool = False,
+                 strict: bool = False):
     """Load tennis-data.co.uk matches for one tour as a DataFrame sorted by
     date. Past years cache forever; the current year re-downloads when the
     cache is older than 12h (the site updates daily during tournaments).
-    Returns an empty DataFrame when nothing could be loaded.
+
+    Returns an empty DataFrame when nothing could be loaded — unless `strict`,
+    in which case a year that could be neither downloaded nor read from cache
+    raises TennisSourceUnavailable. Callers that grade money should use strict.
     """
     import pandas as pd
     import requests
@@ -136,6 +151,7 @@ def load_matches(tour: str, years: list[int] | None = None,
     years = years or DEFAULT_YEARS
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     frames = []
+    unavailable: list[str] = []
     from datetime import date as _date
     cur_year = _date.today().year
 
@@ -152,9 +168,11 @@ def load_matches(tour: str, years: list[int] | None = None,
                     print(f"  [tennis-data] downloaded {tour} {year} "
                           f"({len(resp.content)//1024} KB)")
             except Exception as e:
-                if verbose:
-                    print(f"  [tennis-data] {tour} {year} fetch failed: {e}")
+                # Never silent: a failed fetch is the one event most likely to
+                # be misread downstream as "there are no results".
+                print(f"  [tennis-data] ⚠ {tour} {year} fetch failed: {e}")
                 if not path.exists():
+                    unavailable.append(f"{tour} {year}: {e}")
                     continue
         try:
             df = pd.read_excel(path)
@@ -162,10 +180,14 @@ def load_matches(tour: str, years: list[int] | None = None,
             df["SrcYear"] = year
             frames.append(df)
         except Exception as e:
-            if verbose:
-                print(f"  [tennis-data] {tour} {year} parse failed: {e}")
+            print(f"  [tennis-data] ⚠ {tour} {year} parse failed: {e}")
+            unavailable.append(f"{tour} {year}: unreadable ({e})")
 
+    if strict and unavailable:
+        raise TennisSourceUnavailable("; ".join(unavailable))
     if not frames:
+        if strict:
+            raise TennisSourceUnavailable(f"{tour}: no data for years {years}")
         return pd.DataFrame()
     out = pd.concat(frames, ignore_index=True)
     out["Date"] = pd.to_datetime(out["Date"], errors="coerce")

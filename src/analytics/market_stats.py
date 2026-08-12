@@ -28,9 +28,15 @@ class MarketStat:
     roi: float | None = None      # flat-unit ROI %
     pnl: float = 0.0              # flat-unit P&L
     avg_odds: str = "—"
-    clv: float | None = None      # mean clv_pct where available
+    # CLV comes from the snapshot ledger via clv_gate, NOT from the pick.
+    # `clv` is in `clv_unit`: "%" for probability markets (moneyline/nrfi),
+    # "pt" for line markets (spread/total/props). The two are NOT comparable
+    # and must never be averaged or thresholded together — +0.23pt on
+    # batter_total_bases coexists with a -2.9% ROI.
+    clv: float | None = None      # mean CLV in clv_unit, or None if un-scored
+    clv_unit: str | None = None   # "%" | "pt" | None
     clv_n: int = 0
-    beat: float | None = None     # % of clv samples > 0
+    beat: float | None = None     # % of NON-FLAT clv samples > 0
     total_logged: int = 0         # includes still-pending
 
     @property
@@ -114,10 +120,60 @@ def market_stats(pnl_file: Path = _PNL_FILE,
             st.roi = pnl / len(graded) * 100
             st.avg_odds = _amer_from_imp(
                 statistics.mean([_imp(p["odds"]) for p in graded]))
-        clvs = [p.get("clv_pct") for p in ps if isinstance(p.get("clv_pct"), (int, float))]
-        if clvs:
-            st.clv = statistics.mean(clvs)
-            st.clv_n = len(clvs)
-            st.beat = sum(1 for c in clvs if c > 0) / len(clvs) * 100
         stats[(sport, market)] = st
+
+    # CLV snapshots describe the REAL ledger only. Attaching them to a caller's
+    # synthetic ledger would inject production numbers into unrelated picks —
+    # a two-row fixture came back reporting clv_n=802.
+    if pnl_file == _PNL_FILE:
+        _attach_clv(stats)
     return stats
+
+
+def _attach_clv(stats: dict[tuple[str, str], MarketStat]) -> None:
+    """Fill clv/clv_unit/clv_n/beat from the snapshot ledger, in place.
+
+    This used to read `p["clv_pct"]` off each pick — a field NO pick has ever
+    carried. `clv_pct` is written onto CLV *snapshots*
+    (src/analytics/clv_tracker.py), never back onto the pick, so the
+    comprehension matched zero rows for all 16,111 picks and every lane
+    reported clv=None, clv_n=0.
+
+    That silence was not inert. `experiment_log._triage_call` computes
+    `beats_close = clv is not None and clv > 0.5`, so the flag was
+    unconditionally False and the triage screen printed verdicts of the form
+    "CUT/REBUILD — no signal, losing on ROI + CLV" for lanes whose CLV it had
+    never actually looked at. mlb/moneyline holds 802 scored snapshots at
+    +0.51%; it was being judged as though it held none.
+
+    The fix is to DELEGATE to src.analytics.clv_gate, which is already the one
+    per-lane CLV implementation (shared by `chef.py edge` and `chef.py
+    promote`). It keys lanes by src.config.models._key exactly as this function
+    does — the two agree on 38 of 39 lanes — filters TAINTED snapshots, and
+    picks the vig-consistent metric (novig → raw → legacy clv_pct). Computing
+    CLV a second time here is precisely the duplication CLAUDE.md forbids.
+
+    Note the unit split: clv_gate reports probability markets in % and line
+    markets in points, so `clv_unit` travels with the number. Callers that
+    threshold CLV must branch on it.
+
+    Snapshots unreadable → clv_gate returns None → every lane keeps clv=None.
+    That is the honest answer ("not measured"), and the closing-capture section
+    of `chef.py monitor` is what alarms on it.
+    """
+    try:
+        from src.analytics.clv_gate import clv_gate
+        result = clv_gate()
+    except Exception:
+        return
+    if not result:
+        return
+    rows, _meta = result
+    for r in rows:
+        st = stats.get((r["sport"], r["market"]))
+        if st is None:
+            continue
+        st.clv = r["mean"]
+        st.clv_unit = r["unit"]
+        st.clv_n = r["n"]
+        st.beat = r["beat_pct"]

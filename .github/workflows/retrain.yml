@@ -1,0 +1,52 @@
+name: Weekly model retrain
+
+# Sundays 06:20 UTC. Refits the Negative-Binomial MLB prop models.
+#
+# WHY THIS IS ITS OWN WORKFLOW. It used to be a `date -u +%u = 7` branch inside
+# night.yml. That job runs ~6 minutes on a weekday, but the retrain pushed it
+# past _pipeline's 20-minute cap: the only two Sundays it was ever scheduled —
+# 2026-08-02 (20m23s) and 2026-08-09 (20m24s) — were both CANCELLED at the
+# timeout. So the retrain never completed once, the prop artifacts stayed frozen
+# at the 2026-07-08 fit that the branch was added to fix, and the deploy steps
+# that followed it in night.yml were killed mid-run on both Sundays.
+#
+# Two lessons baked in here:
+#   - a weekly training job inside a daily pipeline inherits the daily job's
+#     timeout, which is never the right budget for training;
+#   - a cancelled job is not a failed job. It reports as "cancelled", which
+#     reads like someone pressed stop, so nothing alarmed for six weeks.
+#
+# Runs AFTER the nightly grade (07:47 UTC is nightly; this is deliberately
+# before it is irrelevant — training reads settled history, and Sunday 06:20
+# sits clear of the night (01:33) and capture windows).
+
+on:
+  schedule:
+    - cron: "20 6 * * 0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+concurrency:
+  group: retrain
+  cancel-in-progress: false
+
+jobs:
+  retrain:
+    uses: ./.github/workflows/_pipeline.yml
+    secrets: inherit
+    with:
+      level: full
+      # Generous: fitting every prop type over full history is the whole job,
+      # and truncating it is exactly the failure this workflow exists to undo.
+      timeout_minutes: 60
+      command: |
+        set +e
+        fail=0
+        # Prop models (Negative Binomial GLM per prop type).
+        python -c "from src.models.mlb_props_nb import train_all_prop_models; train_all_prop_models()" || fail=1
+        # Refit calibrators off the freshly graded history in the same pass, so
+        # the calibration table and the prop models never describe different
+        # weeks of data.
+        python chef.py calibrate || fail=1
+        exit $fail

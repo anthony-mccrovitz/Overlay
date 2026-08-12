@@ -32,18 +32,23 @@ def _games_total(row) -> float | None:
     return total if found else None
 
 
-def build_results_index(tour: str, verbose: bool = False) -> dict:
+def build_results_index(tour: str, verbose: bool = False,
+                        strict: bool = False) -> dict:
     """{frozenset({winner_key, loser_key}): {"date", "winner_key", "games",
     "completed"}} for the current year's matches of one tour.
 
     A later entry for the same pair overwrites an earlier one — for grading a
     dated pick the caller checks the date window, and rematches within ±1 day
     of each other don't happen at tour level.
+
+    With `strict`, an unreadable source raises TennisSourceUnavailable rather
+    than returning {}, which is indistinguishable from "no matches played".
     """
     import pandas as pd
 
     year = _date.today().year
-    matches = load_matches(tour, years=[year - 1, year], verbose=verbose)
+    matches = load_matches(tour, years=[year - 1, year], verbose=verbose,
+                           strict=strict)
     if len(matches) == 0:
         return {}
 

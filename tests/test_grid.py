@@ -70,7 +70,18 @@ class TestMarketStats:
         assert ("mlb", "total") in stats
         assert stats[("mlb", "total")].n == 2
 
-    def test_clv_summary(self, tmp_path):
+    def test_clv_is_not_read_off_the_pick(self, tmp_path):
+        """CLV comes from the snapshot ledger, never from a field on the pick.
+
+        This test previously fed picks carrying `clv_pct` and asserted they were
+        summarised. That contract was fiction: `clv_pct` is written onto CLV
+        *snapshots*, and no pick in the real ledger has ever carried it — so the
+        code path under test never fired in production, and every lane reported
+        clv=None while the test went green. See tests/test_market_stats_clv.py.
+
+        A custom pnl_file also must NOT pick up the global snapshot ledger:
+        those snapshots describe the real ledger, not this fixture.
+        """
         pnl = tmp_path / "picks.json"
         picks = [
             {"sport": "mlb", "market": "moneyline", "odds": -110, "result": "win", "clv_pct": 2.0},
@@ -78,6 +89,8 @@ class TestMarketStats:
         ]
         pnl.write_text(json.dumps({"picks": picks}))
         st = market_stats(pnl)[("mlb", "moneyline")]
-        assert st.clv_n == 2
-        assert round(st.clv, 2) == 0.5
-        assert st.beat == 50.0
+        assert st.n == 2                     # the ROI half still reads the fixture
+        assert st.clv is None and st.clv_n == 0, (
+            "a synthetic ledger reported CLV — either clv_pct is being read off "
+            "the pick again, or the real snapshot file leaked into this fixture"
+        )

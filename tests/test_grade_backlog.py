@@ -228,9 +228,25 @@ class TestTerminalVoid:
         p = self._old(market="prop", prop_market="points", backlog_attempts=0)
         assert _void_reason(p) is None
 
-    def test_tennis_outside_source_coverage(self):
-        # tennis-data.co.uk carries main draw only; qualifying never lands.
+    def test_tennis_outside_source_coverage_requires_a_proven_read(self):
+        """tennis-data.co.uk carries main draw only; qualifying never lands —
+        but that conclusion is only available once the source has been READ.
+
+        Tightened 2026-08-12. This previously voided on age alone, which is
+        sound only while the source is reachable. From 2026-07-12 to 2026-08-12
+        it was not: openpyxl was missing from the light dependency set, so
+        pd.read_excel raised and load_matches returned an empty frame for every
+        lookup. Under the old rule all 362 stuck tennis picks would have been
+        settled at 0 profit and stamped "source_coverage_gap" — a package bug
+        recorded permanently as a fact about the tournament draw.
+
+        _grade_tennis_backlog now stamps tennis_source_read on picks it actually
+        looked up, and only those may be voided for coverage.
+        """
         p = self._old(sport="tennis_atp_french_open", matchup="A Player vs B Player")
+        assert _void_reason(p) is None, "voided tennis without ever reading the source"
+
+        p["tennis_source_read"] = True
         assert _void_reason(p) == "source_coverage_gap"
 
     def test_exhausted_search_is_terminal(self):

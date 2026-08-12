@@ -90,6 +90,12 @@ PROMOTE_MIN_DAYS = 15
 # mostly fiction, and any Kelly sizing built on them is oversized.
 MIN_EDGE_SHRINK_K = 0.25
 
+# Card picks needed before edge_shrink judges a lane on its CARD population
+# instead of every pick it logged. 30 mirrors PROMOTE_MIN_N: a data-sufficiency
+# floor, not a significance test. Below it the card sample says too little and
+# the lane-wide number — noisier in a different way, but larger — decides.
+EDGE_SHRINK_MIN_CARD_N = 30
+
 
 @dataclass
 class Check:
@@ -129,11 +135,33 @@ def _calibration_records() -> dict:
 
 
 def edge_shrink(sport: str, market: str) -> tuple[bool, str]:
-    """Does the edge the model claims actually materialise?
+    """Does the edge the model claims actually materialise ON THE MONEY?
 
     k = realized_pp / claimed_pp, measured on settled results. k≈1 means the
     model's stated edge is real. k≈0 means it is inventing the entire number —
     which is survivable in shadow and disqualifying live.
+
+    WHICH PICKS COUNT (decided 2026-08-12). This used to average every pick the
+    lane ever logged, card and shadow together. That answers "is the raw model
+    well calibrated?", but the build standard's question is narrower: is this
+    lane fit to be LIVE — fit to put money on the card?
+
+    Those came apart badly on mlb/total. Lane-wide it read k=0.18 (claimed
+    7.90pp → realized 1.44pp, n=277) and failed a NON_EXEMPTIBLE check. Over
+    the 76 picks the card band actually let through it read k=0.82 (2.84pp →
+    2.32pp, ROI +4.7%). The 201-pick gap is shadow picks with edges above
+    _CARD_EDGE_MAX — picks the gate examined and REFUSED to bet. Failing the
+    lane on them penalises the card band for doing its job, and the remedy on
+    offer (demote) would have emptied the board: mlb/total is the only live
+    lane in the registry.
+
+    So the verdict now uses the card population once it is large enough to
+    judge (EDGE_SHRINK_MIN_CARD_N), and the lane-wide figure otherwise. This
+    is deliberately NOT a weakened threshold — MIN_EDGE_SHRINK_K is unchanged,
+    and a lane that cards fewer than 30 picks still answers for everything it
+    logged. Both numbers are always printed, so a model overclaiming wildly on
+    shadow stays visible even when its card is healthy; that overclaim is the
+    reason never to widen the band, and it must not disappear from the report.
     """
     rec = _calibration_records().get(f"{sport}::{market}")
     if not rec:
@@ -142,8 +170,28 @@ def edge_shrink(sport: str, market: str) -> tuple[bool, str]:
     if k is None:
         return False, "record present but k missing"
     claimed, realized = rec.get("claimed_pp"), rec.get("realized_pp")
-    detail = f"k={k:.2f} (claimed {claimed}pp → realized {realized}pp, n={rec.get('n')})"
-    return (k >= MIN_EDGE_SHRINK_K), detail
+    card_k, card_n = rec.get("card_k"), rec.get("card_n")
+
+    # Pick the population the verdict rests on, then report BOTH regardless.
+    use_card = card_k is not None and (card_n or 0) >= EDGE_SHRINK_MIN_CARD_N
+    verdict_k = card_k if use_card else k
+    basis = f"CARD n={card_n}" if use_card else f"lane-wide n={rec.get('n')}"
+
+    detail = (f"k={verdict_k:.2f} on {basis} · "
+              f"lane-wide k={k:.2f} (claimed {claimed}pp → realized {realized}pp, "
+              f"n={rec.get('n')})")
+    if card_k is not None and card_n:
+        detail += (f" · card k={card_k:.2f} "
+                   f"(claimed {rec.get('card_claimed_pp')}pp → "
+                   f"realized {rec.get('card_realized_pp')}pp, n={card_n})")
+        if (card_k >= MIN_EDGE_SHRINK_K) != (k >= MIN_EDGE_SHRINK_K):
+            # Never silent. The card can be healthy while the raw model
+            # overclaims badly on the picks the band rejected — that is the
+            # standing argument against widening the band, and it would vanish
+            # from the report if only the deciding number were printed.
+            detail += ("  ⚠ card and lane-wide disagree — the band is carrying "
+                       "this lane; do not widen it")
+    return (verdict_k >= MIN_EDGE_SHRINK_K), detail
 
 
 def has_backtest(sport: str, market: str) -> tuple[bool, str]:

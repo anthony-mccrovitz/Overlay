@@ -51,11 +51,14 @@ jobs:
         # pinned date ranges — see scripts/taint_bad_picks.py). Keeps stats,
         # the record, and gate/calibrator fits honest.
         python scripts/taint_bad_picks.py || fail=1
-        # Weekly NB prop-model retrain (Sundays UTC) — artifacts froze at
-        # 2026-07-08 because no job ever refit them; the pipeline only loads.
-        if [ "$(date -u +%u)" = "7" ]; then
-          python -c "from src.models.mlb_props_nb import train_all_prop_models; train_all_prop_models()" || fail=1
-        fi
+        # The weekly NB prop-model retrain used to live here, guarded by
+        # `date -u +%u = 7`. It never once completed: a normal night run takes
+        # ~6 minutes, the retrain pushed it past _pipeline's 20-minute job
+        # timeout, and BOTH scheduled Sundays (2026-08-02 at 20m23s, 2026-08-09
+        # at 20m24s) were cancelled at the cap — taking the deploy steps below
+        # down with them. A weekly job hidden inside a daily one also inherits
+        # the daily one's budget, which is the wrong shape for training.
+        # It now lives in retrain.yml with its own schedule and timeout.
         python scripts/deploy_picks.py --sport mlb || fail=1
         python scripts/deploy_picks.py --sport nba || fail=1
         exit $fail

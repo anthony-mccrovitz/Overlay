@@ -1554,6 +1554,11 @@ def cmd_grid(args: argparse.Namespace) -> int:
     def _agg(sport: str, keys: list[str]) -> MarketStat:
         agg = MarketStat(sport=sport, market="+".join(keys))
         clv_sum = 0.0
+        # A lane cell can span markets with DIFFERENT CLV units — "spread+total"
+        # is points while "moneyline" is percent. Averaging those together
+        # produces a number that is neither. Pool only within one unit; if a
+        # cell mixes them, report no CLV rather than an invented figure.
+        units: set[str] = set()
         for k in keys:
             s = stats.get((sport, k))
             if not s:
@@ -1564,13 +1569,17 @@ def cmd_grid(args: argparse.Namespace) -> int:
             agg.pushes += s.pushes
             agg.pnl += s.pnl
             agg.total_logged += s.total_logged
-            if s.clv is not None:
+            if s.clv is not None and s.clv_unit:
                 clv_sum += s.clv * s.clv_n
                 agg.clv_n += s.clv_n
+                units.add(s.clv_unit)
         if agg.n:
             agg.roi = agg.pnl / agg.n * 100
-        if agg.clv_n:
+        if agg.clv_n and len(units) == 1:
             agg.clv = clv_sum / agg.clv_n
+            agg.clv_unit = units.pop()
+        else:
+            agg.clv_n = 0
         return agg
 
     counts = grid_counts()
@@ -1597,7 +1606,8 @@ def cmd_grid(args: argparse.Namespace) -> int:
             if a.n:
                 roi = f"{a.roi:+.1f}%".rjust(7)
                 rec = a.record.rjust(9)
-                clv = (f"CLV {a.clv:+.1f}%({a.clv_n})" if a.clv is not None else "").ljust(16)
+                clv = (f"CLV {a.clv:+.2f}{a.clv_unit}({a.clv_n})"
+                       if a.clv is not None else "").ljust(18)
                 body = f"n={a.n:<4} {rec}  {roi}  {clv}"
             elif state == "planned":
                 body = "— not built —"
@@ -1833,7 +1843,11 @@ def cmd_experiment(args: argparse.Namespace) -> int:
         for t in rows:
             lane = f"{t.sport}/{t.market}"
             roi = f"{t.roi:+.1f}%" if t.roi is not None else "—"
-            clv = f"{t.clv:+.1f}%" if t.clv is not None else "—"
+            # Print the unit CLV was measured in. "%" is a probability edge vs
+            # the close; "pt" is line movement in points and is NOT the same
+            # quantity — rendering both as "%" implied a price edge that line
+            # markets never measured.
+            clv = (f"{t.clv:+.2f}{t.clv_unit or ''}" if t.clv is not None else "—")
             sig = t.signal + (f"({t.spread:+.0f})" if t.spread is not None else "")
             print(f"  {lane:28s} {t.n:>4} {roi:>7} {clv:>7} {sig:>18}  {t.call}")
         print(f"  {line}")
@@ -2056,6 +2070,514 @@ def cmd_draft(args: argparse.Namespace) -> int:
             print("\n  Draft complete.\n")
             return 0
         _t.sleep(8)
+
+
+def cmd_lineup(args: argparse.Namespace) -> int:
+    """Weekly start/sit for my roster, with team context priced by the market.
+
+    The board projects every player from his own 2025 box score and has no
+    team-level features, so it cannot see roster turnover — a defence still
+    carries the franchise's last-season stat line even after its best pass
+    rusher is traded. The betting market prices exactly that, so this view joins
+    the two: projection for the player, market for the situation.
+
+    Where the market has not posted a line the row says UNKNOWN rather than
+    quietly showing the unadjusted number, which would look identical to a
+    priced average matchup.
+    """
+    from src.fantasy import market as _mkt
+    from src.fantasy import sleeper as _sl
+    from src.fantasy.league import load as _load_league
+    from src.fantasy.valuation import build_board, starters_from_settings
+
+    cfg = _load_league()
+    board = build_board(cfg.scoring_settings, cfg.roster_positions, cfg.teams)
+    by_id = {p.player_id: p for p in board}
+    starters = {k: int(round(v / cfg.teams))
+                for k, v in starters_from_settings(cfg.roster_positions, cfg.teams).items()}
+
+    me = _sl.user(args.user).get("user_id")
+    rosters = _sl.league_rosters(cfg.league_id)
+    mine = next((r for r in rosters if r.get("owner_id") == me), None)
+    if not mine:
+        print(f"\n  No roster for {args.user} in this league.\n")
+        return 1
+    taken = {pid for r in rosters for pid in (r.get("players") or [])}
+
+    mkt = _mkt.week_market(args.week)
+    line = "═" * 96
+    print(f"\n  {line}")
+    print(f"  Week {args.week} lineup — {cfg.name}")
+    print(f"  {line}")
+    if not mkt:
+        # The whole point of this view is the market. Without it, say so — do
+        # not print an unadjusted board that looks adjusted.
+        print(f"\n  ✗ No NFL lines posted for week {args.week}. Nothing here is "
+              f"market-adjusted, so this view has nothing to add — use "
+              f"`chef.py draft` for the raw board.\n")
+        return 1
+    print(f"  {len(mkt)} teams priced · league average implied total "
+          f"{_mkt.league_average(mkt):.1f}")
+
+    rows = []
+    for pid in (mine.get("players") or []):
+        p = by_id.get(pid)
+        if not p:
+            continue
+        mult = _mkt.context_multiplier(p.position, p.team, mkt)
+        tw = mkt.get(p.team)
+        adj = p.vorp * mult if mult is not None else p.vorp
+        rows.append((p, tw, mult, adj))
+
+    rows.sort(key=lambda r: -r[3])
+    need = dict(starters)
+    print(f"\n  {'PLAYER':<24}{'POS':<5}{'TM':<5}{'MATCHUP':<10}{'ITT':>6}"
+          f"{'VORP':>7}{'CTX':>7}{'ADJ':>7}  VERDICT")
+    print(f"  {'─'*94}")
+    for p, tw, mult, adj in rows:
+        if mult is None:
+            matchup, itt, ctx = "UNKNOWN", "—", "—"
+            verdict = "no line — cannot judge"
+        else:
+            matchup = tw.note
+            # A defence's driver is the points it will FACE, not the points its
+            # own offence will score — showing the latter next to a DEF row
+            # reads as a good matchup when it means the opposite.
+            itt = f"{(tw.opp_implied_total if p.position in _mkt.OPPONENT_DRIVEN else tw.implied_total):.1f}"
+            ctx = f"{(mult - 1) * 100:+.0f}%"
+            slot = need.get(p.position, 0)
+            verdict = "START" if slot > 0 else "bench"
+            if slot > 0:
+                need[p.position] = slot - 1
+        print(f"  {p.name:<24}{p.position:<5}{p.team or '—':<5}{matchup:<10}{itt:>6}"
+              f"{p.vorp:>7.0f}{ctx:>7}{adj:>7.0f}  {verdict}")
+
+    # A DST's Sleeper player id IS its team code, so the rostered defences are
+    # exactly the roster entries that name a priced team.
+    free = _mkt.rank_defenses(mkt, exclude=taken & set(mkt))
+    print(f"\n  FREE-AGENT DEFENCES — ranked purely by opponent implied total")
+    print(f"  {'─'*94}")
+    for i, tw in enumerate(free[:8], 1):
+        print(f"  {i:>2}. {tw.team:<5}{tw.note:<10}opponent implied {tw.opp_implied_total:5.1f}"
+              f"   game total {tw.game_total:5.1f}   ({tw.books} books)")
+    print(f"\n  Defence carries no 2025 term at all — a DST's player id IS its team"
+          f"\n  code, so last season's stat line describes a roster that may be gone.\n")
+    return 0
+
+
+def cmd_waivers(args: argparse.Namespace) -> int:
+    """Free agents whose ROLE just changed — the week before the box score says so.
+
+    Ranked on change in opportunity (snaps, target share, touches), never on
+    points scored. A player who put up 20 on four touches without his usage
+    moving is deliberately absent; a player who quietly took over a backfield
+    is at the top. That is the whole trade this tool makes.
+    """
+    from src.fantasy import sleeper as _sl
+    from src.fantasy import usage as _usage
+    from src.fantasy import waivers as _wv
+    from src.fantasy.league import load as _load_league
+
+    season = args.season or int(_sl.state().get("season", 2025))
+    week = args.week or int(_sl.state().get("week", 1))
+    line = "═" * 96
+
+    print(f"\n  {line}")
+    print(f"  WAIVER TARGETS — {season} week {week}, usage over the last "
+          f"{args.window} week(s)")
+    print(f"  {line}")
+
+    try:
+        trends = _usage.trends(season, week, window=args.window,
+                               force=args.refresh,
+                               include_red_zone=not args.no_red_zone)
+    except RuntimeError as exc:
+        print(f"\n  ✗ Could not read nflverse usage data: {exc}")
+        print(f"    No ranking is possible — this is a source failure, NOT an "
+              f"empty wire.\n")
+        return 1
+
+    if not trends:
+        print(f"\n  No usage data for {season} week {week} yet. In the preseason "
+              f"there\n  is nothing to trend; come back after week "
+              f"{_usage.MIN_GAMES_FOR_TREND}.\n")
+        return 0
+
+    rostered: set[str] = set()
+    if not args.all:
+        try:
+            cfg = _load_league()
+            rostered = _wv.rostered_names(_sl.league_rosters(cfg.league_id),
+                                          _sl.players())
+        except Exception as exc:
+            print(f"\n  ⚠ Could not read league rosters ({exc}) — showing ALL "
+                  f"players,\n    including ones already owned.")
+
+    targets = _wv.rank(trends, rostered, top=args.top)
+    if not targets:
+        print(f"\n  Nobody on the wire has a materially bigger role than they had.")
+        print(f"  That is a real answer: most weeks the wire is empty, and the")
+        print(f"  discipline is not claiming someone anyway.\n")
+        return 0
+
+    print(f"\n  {'#':<3}{'PLAYER':<24}{'POS':<5}{'TM':<5}{'BID':>6}{'PPG':>7}  WHY")
+    print(f"  {'─'*94}")
+    for i, t in enumerate(targets, 1):
+        print(f"  {i:<3}{t.player[:23]:<24}{t.trend.position:<5}"
+              f"{t.trend.team:<5}{t.bid_pct:>5.0f}%{t.trend.recent.ppr_per_game:>7.1f}"
+              f"  {t.reason}")
+
+    print(f"\n  BID is a percentage of your ORIGINAL FAAB budget, scaled by how")
+    print(f"  much the role grew and how good it now is. It cannot see your bench")
+    print(f"  depth, your record, or what budget your rivals still hold — all")
+    print(f"  three should move your number.")
+    print(f"\n  Usage says WHAT changed, never WHY. An injury ahead of him, a")
+    print(f"  scheme change and one blowout look identical here, so check the")
+    print(f"  depth chart before you spend.\n")
+    return 0
+
+
+def cmd_fpl(args: argparse.Namespace) -> int:
+    """Fantasy Premier League (classic): squad build, weekly XI, transfers, mini-league.
+
+    Every number here is a projection over a horizon of gameweeks, built from
+    each player's own points-per-90 with goals and assists regressed to xG and
+    xA, shrunk toward what his price implies, then scaled by expected minutes
+    and fixture difficulty. Flags in the tables: ! unavailable, + projected
+    from price (too little Premier League history), > changed clubs so his
+    record describes another team, ? thin sample, * manually overridden.
+    """
+    from src.fpl import api as _api
+    from src.fpl import projections as _proj
+    from src.fpl import optimize as _opt
+    from src.fpl import squad as _sq
+
+    action = args.action
+    line = "═" * 84
+
+    players, gws, boot = _proj.load(horizon=args.horizon, force=args.refresh)
+    teams = {t["id"]: t["short_name"] for t in boot["teams"]}
+    fx = _api.fixtures()
+    gw_label = f"GW{gws[0]}" if len(gws) == 1 else f"GW{gws[0]}-{gws[-1]}"
+    dl = _api.deadline(gws[0], boot)
+
+    print(f"\n  {line}")
+    print(f"  FANTASY PREMIER LEAGUE — {action.upper()}   horizon {gw_label}"
+          f"   deadline {dl[:16].replace('T', ' ')} UTC")
+    print(f"  {line}")
+
+    def _row(p, extra: str = "") -> str:
+        return (f"  {p.flag}{p.position:<4}{p.name:<18}{p.team_short:<5}"
+                f"{p.price:>5.1f}{p.points(gws):>7.1f}{p.selected_by:>7.1f}%  {extra}")
+
+    def _head(label: str) -> None:
+        print(f"\n  {label}")
+        print(f"   {'POS':<4}{'PLAYER':<18}{'TEAM':<5}{'£m':>5}{'PROJ':>7}{'OWN':>8}  FIXTURES")
+        print(f"  {'─'*82}")
+
+    # ---- squad: build the optimal 15 from scratch -----------------------
+    if action == "squad":
+        sol = _opt.solve(players, gws, budget=args.budget,
+                         bench_weight=args.bench_weight,
+                         min_bench_minutes=args.min_bench_minutes)
+        errs = _opt.validate(sol, budget=args.budget)
+        if errs:
+            print("\n  ✗ ILLEGAL SQUAD — this is a bug, do not enter it:")
+            for e in errs:
+                print(f"    {e}")
+            return 1
+
+        _head(f"STARTING XI — {sol.formation}")
+        for p in sol.xi:
+            tag = "(C)" if p.id == sol.captain.id else "(V)" if p.id == sol.vice.id else "   "
+            print(_row(p, f"{tag} {_proj.fixture_run(fx, p.team, gws, teams)}"))
+        _head("BENCH — in substitution order")
+        for p in sol.bench:
+            print(_row(p, f"    {_proj.fixture_run(fx, p.team, gws, teams)}"))
+
+        print(f"\n  {'─'*82}")
+        print(f"  Cost £{sol.cost:.1f}m of £{args.budget:.1f}m"
+              f"   ·   bank £{args.budget - sol.cost:.1f}m"
+              f"   ·   projected {sol.xi_points:.0f} pts over {len(gws)} GW"
+              f"   ·   captain {sol.captain.name}")
+        if args.save:
+            path = _sq.save([p.id for p in sol.squad],
+                            bank=args.budget - sol.cost, entry_id=args.entry)
+            print(f"  Saved to {path}")
+        else:
+            print(f"  Re-run with --save to keep this squad for `fpl lineup` and `fpl transfers`.")
+        priced = [p for p in sol.squad if p.priced_in]
+        moved = [p for p in sol.squad if p.moved and not p.priced_in]
+        if priced:
+            print(f"\n  + PROJECTED FROM PRICE — no Premier League record to go on, so"
+                  f"\n    these are the market's opinion, not evidence:")
+            for p in priced:
+                print(f"    {p.name:<18}{p.team_short:<5}£{p.price:.1f}m")
+        if moved:
+            print(f"\n  > CHANGED CLUBS — the projection is built on his output at his"
+                  f"\n    OLD team; nothing in the data says how the new one will use him:")
+            for p in moved:
+                print(f"    {p.name:<18}now {p.team_short}")
+        print(f"\n  The optimiser is exact — this is the highest-projecting legal 15,")
+        print(f"  not a good-enough one. It trusts the projections completely, so the")
+        print(f"  flagged rows above are where your own judgement is worth more than")
+        print(f"  the model's. Override a call in data/fpl/overrides.json.\n")
+        return 0
+
+    # ---- everything below needs to know what you already own ------------
+    state = None
+    last_done = next((e["id"] for e in reversed(boot["events"]) if e.get("finished")), None)
+    if args.entry and last_done is not None:
+        state = _sq.from_entry(args.entry, last_done)
+    else:
+        state = _sq.load()
+        if args.entry and state is None:
+            print("\n  No gameweek has finished yet, so the API will not serve your")
+            print("  team. Build one with `chef.py fpl squad --save` for now.")
+
+    if not state and action != "league":
+        print("\n  No squad on file. Run `python3 chef.py fpl squad --save` first,")
+        print("  or pass --entry <your FPL team id> once the season is under way.\n")
+        return 1
+
+    # The league table is worth showing even with no squad of your own on file.
+    mine = _sq.resolve(players, state["player_ids"]) if state else []
+    bank = args.bank if args.bank is not None else float(state.get("bank", 0.0))
+    free = args.free_transfers if args.free_transfers is not None \
+        else int(state.get("free_transfers", 1))
+
+    # ---- lineup: best XI + captain from the squad you own ---------------
+    if action == "lineup":
+        lu = _sq.pick_xi(mine, gws)
+        _head(f"START — {lu.formation}")
+        for p in lu.xi:
+            tag = "(C)" if p.id == lu.captain.id else "(V)" if p.id == lu.vice.id else "   "
+            print(_row(p, f"{tag} {_proj.fixture_run(fx, p.team, gws, teams)}"))
+        _head("BENCH")
+        for p in lu.bench:
+            print(_row(p, f"    {_proj.fixture_run(fx, p.team, gws, teams)}"))
+
+        flagged = [p for p in mine if p.status != "a"]
+        if flagged:
+            print(f"\n  ⚠ NEWS")
+            for p in flagged:
+                print(f"    {p.name:<18}{p.news[:60]}")
+        print(f"\n  {'─'*82}")
+        print(f"  Projected {lu.points:.0f} pts with {lu.captain.name} captained.")
+        print(f"\n  Captaincy here is just the highest projection, which is the right")
+        print(f"  default and the wrong answer when you need variance — if you are")
+        print(f"  chasing in the mini-league, `fpl league` shows who your rivals own.\n")
+        return 0
+
+    # ---- transfers: what one (or n) moves are worth ---------------------
+    if action == "transfers":
+        lu = _sq.pick_xi(mine, gws)
+        print(f"\n  Holding: {lu.points:.1f} pts projected over {gw_label}"
+              f"   ·   bank £{bank:.1f}m   ·   {free} free transfer(s)")
+
+        best = None
+        print(f"\n  {'MOVES':<7}{'HITS':>5}{'PROJ':>8}{'NET':>8}{'GAIN':>7}  TRANSFERS")
+        print(f"  {'─'*82}")
+        for k in range(1, args.max_transfers + 1):
+            sol = _opt.solve(players, gws, bench_weight=args.bench_weight,
+                             current=[p.id for p in mine], free_transfers=free,
+                             max_transfers=k, bank=bank,
+                             min_bench_minutes=args.min_bench_minutes)
+            gain = sol.net_points - lu.points
+            moves = " · ".join(
+                f"{o.name}→{i.name}" for o, i in zip(sol.transfers_out, sol.transfers_in)
+            ) or "no change"
+            print(f"  {len(sol.transfers_out):<7}{sol.hits:>5}{sol.xi_points:>8.1f}"
+                  f"{sol.net_points:>8.1f}{gain:>+7.1f}  {moves}")
+            if best is None or sol.net_points > best.net_points:
+                best = sol
+
+        print(f"\n  {'─'*82}")
+        if best and best.net_points > lu.points + args.min_gain:
+            print(f"  → Take {len(best.transfers_out)} transfer(s)"
+                  f"{f' and a -{best.hits * 4} hit' if best.hits else ''}"
+                  f", worth {best.net_points - lu.points:+.1f} pts over {gw_label}.")
+        else:
+            print(f"  → Hold. Nothing clears the {args.min_gain:.1f} pt bar over {gw_label}.")
+        print(f"\n  NET is after the 4-point hits, so it is the number that matters.")
+        print(f"  Two caveats the model cannot price: it values a transfer only over")
+        print(f"  these {len(gws)} gameweeks, and it uses current prices, not your")
+        print(f"  selling prices — a player you bought cheap is worth more than this.\n")
+        return 0
+
+    # ---- chips: which week to burn each one on --------------------------
+    if action == "chips":
+        from src.fpl import chips as _chips
+
+        print(f"\n  Scored against the squad you own today, over {gw_label}.")
+        print(f"\n  {'CHIP':<16}{'BEST GW':>8}{'GAIN':>8}   WHY")
+        print(f"  {'─'*82}")
+        for cw in _chips.plan(mine, players, fx, gws, bank=bank):
+            verdict = "" if cw.worth_it else "  (hold)"
+            print(f"  {cw.chip:<16}{'GW' + str(cw.gw):>8}{cw.gain:>+8.1f}{verdict}")
+            print(f"  {'':16}{'':8}{'':8}   {cw.detail}")
+
+        counts = _chips.squad_fixture_counts(mine, fx, gws)
+        print(f"\n  YOUR SQUAD'S FIXTURE COUNT BY GAMEWEEK (15 = everyone plays once)")
+        print(f"  {'─'*82}")
+        print("   " + "".join(f"GW{g:<5}" for g in gws))
+        print("   " + "".join(f"{counts[g]:<7}" for g in gws))
+        print(f"\n  A chip is worth what it adds OVER not playing it, which is why")
+        print(f"  Bench Boost wants a week your bench actually has fixtures and")
+        print(f"  Triple Captain counts only the THIRD helping of your captain.")
+        print(f"  Chip interactions are not modelled: playing one changes what the")
+        print(f"  others are worth, and this scores each against today's squad.\n")
+        return 0
+
+    # ---- captain: EV when ahead, variance when chasing -------------------
+    if action == "captain":
+        from src.fpl import captain as _cap
+        from src.fpl import minileague as _ml
+
+        lu = _sq.pick_xi(mine, gws)
+        rival_scores, ownership, captains, n_rivals = None, {}, {}, 0
+
+        if args.league:
+            name, rivals = _ml.standings(args.league)
+            gw_done = _ml.last_finished_gw(boot)
+            if gw_done:
+                _, failures = _ml.load_picks(rivals, gw_done)
+                if failures:
+                    print(f"\n  ⚠ {len(failures)} rival squad(s) could not be read; "
+                          f"the numbers below cover the rest.")
+                loaded = [r for r in rivals if r.entry != args.entry and r.picks]
+                n_rivals = len(loaded)
+                own = _ml.ownership(loaded)
+                ownership = {pid: o.owners for pid, o in own.items()}
+                captains = {pid: o.captains for pid, o in own.items()}
+                # To finish ABOVE a rival you must out-score him this week by
+                # whatever he currently leads you by. So the bar for rival i is
+                # his expected gameweek plus that gap — which is what makes a
+                # differential the right call only when you are actually behind.
+                # His expected gameweek is unknown, so your own XI stands in.
+                me = next((r for r in rivals if r.entry == args.entry), None)
+                if me:
+                    rival_scores = [lu.points + (r.total - me.total) for r in loaded]
+                    behind = sum(1 for r in loaded if r.total > me.total)
+                    print(f"\n  {name}: you are {me.rank} of {len(rivals)}, "
+                          f"behind {behind} rival(s).")
+                else:
+                    print(f"\n  --entry {args.entry} is not in league {args.league}; "
+                          f"ranking on expected points only.")
+            else:
+                print(f"\n  No gameweek has finished, so rival squads are not public")
+                print(f"  yet — ranking by expected points until they are.")
+
+        options = _cap.rank(lu.xi, gws, rival_scores=rival_scores,
+                            rival_ownership=ownership, rival_captains=captains,
+                            n_rivals=n_rivals)
+
+        print(f"\n  CAPTAIN OPTIONS — {gw_label}")
+        print(f"   {'PLAYER':<18}{'TEAM':<6}{'EV':>7}{'OWNED':>8}{'EO':>8}{'P(WIN)':>9}")
+        print(f"  {'─'*70}")
+        for o in options:
+            owned = f"{o.owned_by}/{n_rivals}" if n_rivals else "—"
+            eo = f"{o.effective_ownership:.0f}%" if n_rivals else "—"
+            wp = f"{o.win_prob*100:.1f}%" if rival_scores else "—"
+            tag = " ◀ differential" if (n_rivals and o.is_differential) else ""
+            print(f"   {o.player.name:<18}{o.player.team_short:<6}{o.ev:>7.1f}"
+                  f"{owned:>8}{eo:>8}{wp:>9}{tag}")
+
+        print(f"\n  {'─'*70}")
+        best = options[0]
+        if rival_scores:
+            ev_best = max(options, key=lambda o: o.ev)
+            if best.player.id != ev_best.player.id:
+                print(f"  → {best.player.name} over {ev_best.player.name}: "
+                      f"{best.ev - ev_best.ev:+.1f} expected points, but a better")
+                print(f"    chance of finishing above your rivals, because "
+                      f"{ev_best.player.name} is")
+                print(f"    owned by {ev_best.owned_by}/{n_rivals} of them and cannot "
+                      f"move you past anyone.")
+            else:
+                print(f"  → {best.player.name} — highest expected points AND the best "
+                      f"chance of\n    finishing above your rivals. No trade-off this week.")
+        else:
+            print(f"  → {best.player.name}, on expected points alone. Pass --league "
+                  f"<id> to\n    weigh this against what your rivals own.")
+        print(f"\n  P(WIN) simulates the week with lumpy, gamma-distributed returns")
+        print(f"  rather than fixed projections. It is a crude model of a genuinely")
+        print(f"  fat-tailed quantity — read it as a lean, not a measurement.\n")
+        return 0
+
+    # ---- league: the table and where the gaps are -----------------------
+    if action == "league":
+        from src.fpl import minileague as _ml
+
+        if not args.league:
+            print("\n  Pass --league <id> — it is the number in the mini-league URL.\n")
+            return 1
+        name, rivals = _ml.standings(args.league)
+        print(f"\n  {name} — {len(rivals)} managers")
+        print(f"\n  {'#':<4}{'MANAGER':<24}{'TEAM':<26}{'GW':>6}{'TOTAL':>8}")
+        print(f"  {'─'*70}")
+        for r in rivals:
+            marker = "◀" if args.entry and r.entry == args.entry else " "
+            print(f"  {r.rank:<4}{r.manager[:23]:<24}{r.team[:25]:<26}"
+                  f"{r.gw_points:>6}{r.total:>8} {marker}")
+
+        gw = _ml.last_finished_gw(boot)
+        if gw is None:
+            print(f"\n  No gameweek has finished, so nobody's squad is public yet.")
+            print(f"  Ownership and differentials appear here after GW1.\n")
+            return 0
+
+        _, failures = _ml.load_picks(rivals, gw)
+        by_id = {p.id: p for p in players}
+        loaded = [r for r in rivals if r.entry != args.entry and r.picks]
+        own = _ml.ownership(loaded)
+        n_rivals = len(loaded)
+        if failures:
+            print(f"\n  ⚠ Could not read {len(failures)} of "
+                  f"{len(rivals) - (1 if args.entry else 0)} rival squads — the")
+            print(f"    ownership numbers below are over the {n_rivals} that loaded,")
+            print(f"    NOT the whole league:")
+            for f in failures[:5]:
+                print(f"      {f}")
+        if not n_rivals:
+            print(f"\n  No rival squads loaded, so there is nothing to compare against.\n")
+            return 1
+
+        print(f"\n  MOST-OWNED IN THE LEAGUE (GW{gw} squads) — these cannot win you rank")
+        print(f"  {'─'*70}")
+        for pid, o in sorted(own.items(), key=lambda kv: -kv[1].owners)[:10]:
+            p = by_id.get(pid)
+            if not p:
+                continue
+            print(f"  {p.name:<18}{p.team_short:<5}{p.price:>5.1f}"
+                  f"{o.owners:>4}/{n_rivals} owners   EO {o.effective(n_rivals):>5.1f}%"
+                  f"   proj {p.points(gws):>5.1f}")
+
+        mine_ids = [p.id for p in mine]
+        # `loaded` only — a rival whose squad failed to load would otherwise
+        # count as not owning anyone, inventing differentials that aren't real.
+        diffs, theirs = _ml.differentials(mine_ids, loaded, me=args.entry)
+        print(f"\n  YOUR DIFFERENTIALS — owned by half the league or fewer")
+        print(f"  {'─'*70}")
+        for pid, cnt in diffs[:8]:
+            p = by_id.get(pid)
+            if p:
+                print(f"  {p.name:<18}{p.team_short:<5}{cnt:>3}/{n_rivals} rivals"
+                      f"   proj {p.points(gws):>5.1f}")
+        print(f"\n  THE GAPS — widely owned, and you do not have them")
+        print(f"  {'─'*70}")
+        for pid, cnt in theirs[:8]:
+            p = by_id.get(pid)
+            if p:
+                print(f"  {p.name:<18}{p.team_short:<5}{cnt:>3}/{n_rivals} rivals"
+                      f"   proj {p.points(gws):>5.1f}   £{p.price:.1f}m")
+        print(f"\n  Effective ownership counts captains twice, because that is how the")
+        print(f"  points actually land. A 90% EO player scoring 15 moves nobody; the")
+        print(f"  rank swings live in the rows above and below.\n")
+        return 0
+
+    print(f"\n  Unknown action: {action}\n")
+    return 1
 
 
 def cmd_filters(args: argparse.Namespace) -> int:
@@ -3059,6 +3581,40 @@ ACKNOWLEDGED_GAPS: dict[tuple[str, str], dict] = {
         "why": "downstream of the UFC capture gap above — the join has nothing to "
                "join against for cards that were never captured. Clears with it",
     },
+    # The 2026-07-28..31 capture outage. The UFC/brazil/korea entries above were
+    # written for it on 2026-07-30, but only for the lanes noticed that day —
+    # wnba, usa_mls and mexico_ligamx went dark in the same window and were
+    # missed, so wnba kept failing the coverage floor a week later while looking
+    # like a WNBA-specific bug. It never was: MLB captured throughout, and every
+    # affected lane resumed on its own. Closings are point-in-time, so these days
+    # cannot be backfilled — they can only be declared and allowed to age out.
+    ("capture", "wnba"): {
+        "since": "2026-08-06", "expires": "2026-08-16",
+        "why": "capture produced no archive on 2026-07-28/29 (see capture_day "
+               "below); 64 snapshots — one of them a 58-row full-board day — can "
+               "never be scored. Game lines outside those two days sit at 87%, so "
+               "the lane is healthy and the 14d settled window clears it by 08-15",
+    },
+    ("capture_day", "wnba"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-28/29 of the capture outage; leaves the 9d window 08-09",
+    },
+    ("capture_day", "soccer_usa_mls"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-30/31 of the same outage; lane still passes its floor at 79%",
+    },
+    ("capture_day", "mma_mixed_martial_arts"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29/30 of the same outage; already acknowledged as ('capture','ufc')",
+    },
+    ("capture_day", "soccer_brazil_campeonato"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29 of the same outage; lane also has a ('capture',…) ack",
+    },
+    ("capture_day", "soccer_mexico_ligamx"): {
+        "since": "2026-08-06", "expires": "2026-08-10",
+        "why": "2026-07-29/30/31 of the same outage; 3 snapshots total",
+    },
 }
 
 
@@ -3181,9 +3737,10 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
     #    unbuilt, not broken — `chef.py grid` is where "to build" belongs, and
     #    dumping them into the daily alarm is how the alarm loses its meaning.
     try:
-        from src.config.models import MODELS as _REG, model_status as _rstatus
+        from src.config.models import (MODELS as _REG, model_status as _rstatus,
+                                       is_paused as _rpaused)
     except Exception as _e:                       # registry unreadable → say so,
-        _REG, _rstatus = {}, None                 # rather than silently expecting
+        _REG, _rstatus, _rpaused = {}, None, None  # rather than silently expecting
         unknown.append(f"model registry unreadable ({_e}) — cannot tell which "  # nothing
                        f"lanes are supposed to be producing")
 
@@ -3193,6 +3750,17 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
         out = []
         for (s, m) in sorted(_REG):
             if s not in reg_sports or _rstatus(s, m) == "retired":
+                continue
+            # A PAUSED lane is switched off on purpose — is_paused is the flag
+            # the pick writers themselves obey ("don't log to PNL"). Demanding
+            # output from it and printing DARK when none arrives reports the
+            # system doing exactly what it was told as an integrity gap.
+            # wnba/spread carries tier="paused" with the label
+            # "WNBA Spread (0-8 -6u, paused)" — someone deliberately stopped it
+            # after eight straight losses, and the monitor then flagged that
+            # decision as a fault every night. An alarm that fires on your own
+            # switch-off is one you learn to skip past.
+            if _rpaused is not None and _rpaused(s, m):
                 continue
             if not _last_for(sport_test, m):
                 continue                          # never wired — not a regression
@@ -3310,6 +3878,53 @@ def _monitor_run(emit=print) -> tuple[int, list[str]]:
     else:
         emit(f"  ✗ Closing capture   NONE in last 2 days  ← CLV can't score (capture-closing.yml)")
         issues += 1
+
+    # 4b. The same question asked PER SPORT. Check 4 pools every sport into one
+    #     count, so a single lane going dark reads green for as long as MLB keeps
+    #     capturing — which is exactly how the 2026-07-28..31 outage hid. It was
+    #     invisible for over a week and then surfaced in the shape that hides a
+    #     cause: a WNBA coverage floor failure, looking like a WNBA model problem
+    #     when five lanes had gone dark together.
+    #
+    #     The invariant is narrow on purpose, so this cannot become the alarm
+    #     nobody reads: if a sport logged snapshots on a date, that sport must
+    #     have a closing archive for that same date. A sport with no games logs
+    #     no snapshots and is never asked for one. The window ends at the same
+    #     2-day cutoff as check 4 so tonight's games — whose closings are
+    #     captured after they commence — are never counted as missing.
+    try:
+        from src.analytics.clv_tracker import _load_closing_records
+        _s = json.loads(Path("data/clv/snapshots.json").read_text())
+        _s = _s.get("snapshots", _s) if isinstance(_s, dict) else _s
+        floor_day = (today - timedelta(days=9)).isoformat()
+        logged: dict[tuple, int] = {}
+        for snap in _s:
+            if not isinstance(snap, dict):
+                continue
+            d, sp = str(snap.get("date") or "")[:10], snap.get("sport")
+            if sp and floor_day <= d <= cutoff:
+                logged[(sp, d)] = logged.get((sp, d), 0) + 1
+        dark: dict[str, list] = {}
+        for (sp, d), n in logged.items():
+            if not _load_closing_records(d, sp):
+                dark.setdefault(sp, []).append((d, n))
+        if not dark:
+            emit(f"  ✓ Per-sport capture every sport logging snapshots has its archives")
+        for sp in sorted(dark, key=lambda k: -sum(n for _, n in dark[k])):
+            days = sorted(dark[sp])
+            ack  = _ack("capture_day", sp, today)
+            mark = "≈" if ack else "✗"
+            note = (f"  ← ACKNOWLEDGED until {ack['expires']}: {ack['why'][:58]}…"
+                    if ack else
+                    "  ← lane dark: these snapshots can never be scored")
+            emit(f"  {mark} Dark capture      {sp} — {sum(n for _, n in days)} snapshot(s), "
+                 f"no archive on {', '.join(d for d, _ in days)}{note}")
+            if not ack:
+                issues += 1
+    except (json.JSONDecodeError, ValueError, OSError, ImportError) as err:
+        # Blind is not clear — same contract as the Odds API check above.
+        unknown.append(f"per-sport capture check could not run ({type(err).__name__}) "
+                       f"— a lane could be dark without this run saying so")
 
     # 5. CLV scoring fresh
     try:
@@ -5126,8 +5741,62 @@ def main() -> int:
     p_draft.add_argument("--trials", type=int, default=250, help="Simulation trials")
     p_draft.add_argument("--slot", type=int, default=None,
                          help="Simulate a different draft slot (e.g. after a pick swap)")
+    # lineup — in-season weekly view, market-adjusted
+    p_lineup = sub.add_parser("lineup",
+        help="★ Weekly start/sit + free-agent defence board (market-adjusted)")
+    p_lineup.add_argument("--week", type=int, required=True, help="NFL week number")
+    p_lineup.add_argument("--user", default="amccrovitz", help="Your Sleeper username")
+
     p_draft.add_argument("--handcuffs", action="store_true",
                          help="Show the RB2 behind each starter")
+
+    # waivers — NFL free agents by change in role, not points scored
+    p_wv = sub.add_parser("waivers",
+        help="★ NFL waiver targets ranked by USAGE trend (snaps/targets), not last week's points")
+    p_wv.add_argument("--week", type=int, default=None,
+                      help="Week to trend through (default: current)")
+    p_wv.add_argument("--season", type=int, default=None, help="Season (default: current)")
+    p_wv.add_argument("--window", type=int, default=3,
+                      help="Weeks in the recent sample (default 3)")
+    p_wv.add_argument("--top", type=int, default=15, help="Rows to show")
+    p_wv.add_argument("--all", action="store_true",
+                      help="Include rostered players (don't filter to free agents)")
+    p_wv.add_argument("--no-red-zone", action="store_true",
+                      help="Skip the play-by-play download (faster, no RZ column)")
+    p_wv.add_argument("--refresh", action="store_true", help="Bypass the nflverse cache")
+
+    # fpl — Fantasy Premier League (classic) assistant
+    p_fpl = sub.add_parser("fpl",
+        help="★ Fantasy Premier League: optimal squad, weekly XI, transfers, mini-league")
+    p_fpl.add_argument("action",
+                       choices=["squad", "lineup", "transfers", "league",
+                                "chips", "captain"],
+                       help="squad=build the best 15 | lineup=XI+captain | "
+                            "transfers=what to move | league=mini-league + "
+                            "differentials | chips=when to play each chip | "
+                            "captain=EV vs differential captaincy")
+    p_fpl.add_argument("--horizon", type=int, default=5,
+                       help="Gameweeks to project over (default 5)")
+    p_fpl.add_argument("--budget", type=float, default=100.0,
+                       help="Squad budget in £m (default 100.0)")
+    p_fpl.add_argument("--bench-weight", type=float, default=0.25,
+                       help="How much bench points count, 0-1 (default 0.25)")
+    p_fpl.add_argument("--min-bench-minutes", type=float, default=45.0,
+                       help="A squad player under this many expected minutes must "
+                            "start to be picked (default 45; 0 allows £4.0m fodder)")
+    p_fpl.add_argument("--entry", type=int, default=None,
+                       help="Your FPL team id (from your team's URL) — reads the real squad")
+    p_fpl.add_argument("--league", type=int, default=None, help="Mini-league id")
+    p_fpl.add_argument("--save", action="store_true",
+                       help="With `squad`: save it for lineup/transfers")
+    p_fpl.add_argument("--bank", type=float, default=None, help="Money in the bank, £m")
+    p_fpl.add_argument("--free-transfers", type=int, default=None,
+                       help="Free transfers available (default: from saved squad)")
+    p_fpl.add_argument("--max-transfers", type=int, default=3,
+                       help="Deepest transfer plan to evaluate (default 3)")
+    p_fpl.add_argument("--min-gain", type=float, default=2.0,
+                       help="Points gain needed before a transfer is advised (default 2.0)")
+    p_fpl.add_argument("--refresh", action="store_true", help="Bypass the API cache")
 
     # filters — prove a subgroup finding forward
     sub.add_parser("filters",
@@ -5448,6 +6117,9 @@ def main() -> int:
         "coverage": cmd_coverage,
         "filters":  cmd_filters,
         "draft":    cmd_draft,
+        "fpl":      cmd_fpl,
+        "waivers":  cmd_waivers,
+        "lineup":   cmd_lineup,
         "retire":   cmd_retire,
         "arb":      cmd_arb,
         "clv":      cmd_clv,

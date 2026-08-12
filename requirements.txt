@@ -15,3 +15,26 @@ pytest==8.3.5
 fastapi==0.115.12
 uvicorn==0.34.2
 openpyxl>=3.1
+# Added 2026-08-12. Was never declared, only ever installed on the dev machine,
+# so EVERY CI job — including level "full" — ran without it and swallowed the
+# ImportError. Consequences, all silent: WNBA team ratings fell back to
+# league-average defaults, so wnba_model skipped every game it could not rate
+# and logged 0 full-board picks a night (wnba/total and wnba/spread read DARK
+# in the integrity monitor for weeks); and NBA prop grading died at
+# "[nba props] fetch error: No module named 'nba_api'".
+nba_api>=1.11
+# statsmodels — NegBinPropModel.fit() imports statsmodels.api. Inference loads
+# fitted artifacts and never needed it, so the gap stayed invisible: the only
+# code path that touches it is the weekly retrain, which was itself never
+# completing (see retrain.yml). Declared so the retrain can actually run.
+statsmodels>=0.14
+# playwright — scripts/nightly_recap.py screenshots the recap card to PNG. The
+# package was never declared and the Chromium binary was never installed in CI,
+# so every nightly hit the except branch, printed "Playwright unavailable" and
+# shipped the HTML fallback. The recap PNG has therefore never existed in CI.
+# The browser binary is installed only by jobs that pass browsers: true.
+playwright>=1.44
+# pydantic — imported directly by api/routes/sizing.py. Satisfied transitively
+# by fastapi today, but a direct import should be a declared dependency: the
+# transitive guarantee disappears the moment fastapi is pinned differently.
+pydantic>=2.0

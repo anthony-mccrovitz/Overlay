@@ -40,6 +40,43 @@ python3 chef.py test                       # run grading unit tests (pytest)
 python3 chef.py stats                      # refresh public_stats.json
 ```
 
+**Fantasy Premier League (classic — the FPL app):**
+```
+python3 chef.py fpl squad --save           # optimal legal 15 under £100m, saved to file
+python3 chef.py fpl lineup                 # this week's XI, captain, bench order
+python3 chef.py fpl transfers              # 1-3 transfer plans, net of -4 hits
+python3 chef.py fpl league --league <id>   # mini-league table, EO, differentials
+python3 chef.py fpl chips                  # best week for WC/FH/BB/TC
+python3 chef.py fpl captain --league <id>  # EV when ahead, differential when chasing
+```
+
+**NFL in-season (role, not box score):**
+```
+python3 chef.py waivers --week 8           # free agents by USAGE trend, with FAAB bid
+python3 chef.py waivers --all              # include rostered players
+```
+- `src/fantasy/usage.py` — snaps, target share, air-yards share, red-zone touches
+  from nflverse; fixes the "right team, wrong role" gap `market.py` flags
+- `src/fantasy/waivers.py` — ranks on CHANGE IN OPPORTUNITY, never points scored;
+  a 20-point week on 4 touches with flat usage is deliberately absent
+- `src/fantasy/recency.py` — blends the 2025 prior with current-season usage at
+  `games / (games + 6)`, so 3 games barely moves it and 14 games mostly does
+- Snap counts join on NAME (nflverse uses PFR ids for snaps, GSIS for stats);
+  an unmatched player reports `snap_pct=None`, never 0
+- `src/fpl/optimize.py` is an **exact** MILP (scipy/HiGHS), not a heuristic — every
+  solution is checked by `optimize.validate` against all FPL legality rules
+- Projections regress goals/assists to xG/xA, shrink over 900 minutes toward a
+  **price-implied prior** (fitted per position from players who do have a
+  record), then scale by expected minutes and fixture difficulty
+- **Pre-season the API serves LAST season's stats.** A player new to the league
+  is projected from price alone (flagged `+`); a player who changed clubs is
+  projected on his OLD club's output (flagged `>`) and the data cannot fix that
+  — override in `data/fpl/overrides.json` when your judgement beats the model
+- The bench is real cover by default: `--min-bench-minutes 45` refuses to spend
+  a squad slot on someone who will not play. Pass `0` for classic £4.0m fodder
+- Table flags: `!` unavailable, `+` priced-in (no PL history), `>` changed
+  clubs, `?` under 900 minutes of evidence, `*` overridden
+
 ## Data & Schema
 
 - **`data/pnl/picks.json`** — canonical pick record. All picks use the same schema:
@@ -91,6 +128,13 @@ python3 chef.py stats                      # refresh public_stats.json
 
 - **Prop CLV is an artifact.** Prop models echo the book's line (r≈0.97), so
   beat-close measures line-following, not skill. Judge props on ROI alone.
+
+## Coding behavior — always apply
+
+Follow `.claude/skills/karpathy-guidelines/SKILL.md` on every code change in this
+repo: surface assumptions instead of guessing, write the minimum that solves the
+problem, keep diffs surgical, and state a verifiable success criterion before
+starting. Load the skill for the full text.
 
 ## Skill routing
 

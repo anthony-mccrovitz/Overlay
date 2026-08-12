@@ -20,6 +20,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from src.tracking.schema import profit_from_odds as _profit_from_odds
 
+# Data-source failures collected during a run. A sport that could not be graded
+# because its source was unreadable must not finish green — "couldn't check"
+# and "nothing to grade" are different outcomes and only one of them is fine.
+_FAILURES: list[str] = []
+
 
 def _profit(stake: float, odds: float, won: bool) -> float:
     """Thin wrapper — delegates to canonical schema.profit_from_odds."""
@@ -1226,6 +1231,21 @@ _ESPN_SCOREBOARD_PATHS = {
     "soccer_italy_serie_a":             "soccer/ita.1",
     "soccer_germany_bundesliga":        "soccer/ger.1",
     "soccer_conmebol_copa_libertadores": "soccer/conmebol.libertadores",
+    # Added 2026-08-12. These three leagues were logging picks with NO grading
+    # path anywhere — absent from this map AND from _GENERIC_SPORT_MAP — so
+    # scripts/grade_backlog.py fell through to its `else` branch, which marks a
+    # pick unresolved WITHOUT incrementing backlog_attempts. That left them
+    # doubly stuck: never gradeable, and never reaching the terminal-void path
+    # either (it reads backlog_attempts to decide the search is exhausted).
+    # 10 picks had been pending since 2026-07-24.
+    #
+    # Slugs follow ESPN's <country>.<tier> convention, same as usa.1/esp.1
+    # above. They could NOT be verified from a dev machine — ESPN 403s every
+    # request from this IP, including the known-good usa.1 — so the first
+    # nightly run in CI is what confirms them.
+    "soccer_mexico_ligamx":             "soccer/mex.1",
+    "soccer_brazil_campeonato":         "soccer/bra.1",
+    "soccer_korea_kleague1":            "soccer/kor.1",
 }
 
 
@@ -1807,10 +1827,21 @@ def _grade_tennis_backlog() -> None:
         print("  No pending tennis picks.")
         return
 
-    indexes = {
-        "atp": build_results_index("atp"),
-        "wta": build_results_index("wta"),
-    }
+    # strict=True: if tennis-data.co.uk cannot be read, say so and stop. The
+    # old behaviour returned an empty index, which the summary line below then
+    # reported as "match not in source yet" — a source outage and a match that
+    # simply hasn't been played yet produced the same reassuring sentence.
+    from src.data.tennis_data import TennisSourceUnavailable
+    try:
+        indexes = {
+            "atp": build_results_index("atp", strict=True),
+            "wta": build_results_index("wta", strict=True),
+        }
+    except TennisSourceUnavailable as exc:
+        print(f"  ✗ TENNIS SOURCE UNAVAILABLE — graded nothing: {exc}")
+        print(f"    {len(pending)} pick(s) stay pending because the results source "
+              f"could not be read, NOT because the matches are unplayed.")
+        raise
     graded = voided = 0
 
     for pick in pending:
@@ -1826,6 +1857,15 @@ def _grade_tennis_backlog() -> None:
             pick_date = _dt_date.fromisoformat(str(pick.get("date")))
         except (ValueError, TypeError):
             continue
+
+        # Reaching here means the index for this tour was built from a source
+        # that actually loaded (strict=True above would have raised otherwise),
+        # so a miss is real evidence of absence rather than an unread file.
+        # grade_backlog._void_reason requires this stamp before it will ever
+        # void a tennis pick for coverage — without it, the month-long openpyxl
+        # outage would have settled 362 live picks at 0 profit and called them
+        # "outside source coverage".
+        pick["tennis_source_read"] = True
 
         rec = find_result(indexes[tour], a, b, pick_date)
         if rec is None:
@@ -1972,6 +2012,166 @@ def _grade_nba_props_v2(date_str: str) -> None:
     _save(data)
     if graded:
         print(f"  Graded {graded}/{len(pending)} NBA props (new schema).")
+
+
+# ── WNBA player props ────────────────────────────────────────────────────────
+# Added 2026-08-12. WNBA prop picks had NO grading path at all: the only prop
+# grader for basketball, _grade_nba_props_v2, filters sport == "basketball_nba"
+# and sources stats from nba_api's leaguegamelog, which does not serve the WNBA.
+# 45 picks were emitted on 2026-07-29 and not one was ever settled — the lane
+# shipped picks with no way to score them, which is the "live by omission" case
+# CLAUDE.md warns about.
+#
+# Source is ESPN's boxscore rather than a stats API because ESPN is the only
+# free WNBA per-game player feed the repo already reaches (same summary
+# endpoint scripts/backfill_nba_props.py uses).
+_WNBA_PROP_CACHE: dict[str, dict] = {}
+
+# ESPN boxscore column label → the stat key used by _PROP_MARKET_TO_STAT.
+# "3PT" arrives as "made-attempted" ("3-7"), so it needs a parser, not a cast.
+_WNBA_BOX_LABELS: dict[str, tuple[str, "callable"]] = {
+    "PTS": ("pts", int),
+    "REB": ("reb", int),
+    "AST": ("ast", int),
+    "STL": ("stl", int),
+    "BLK": ("blk", int),
+    "3PT": ("fg3m", lambda v: int(str(v).split("-")[0])),
+}
+
+
+def _fetch_wnba_player_stats(date_compact: str) -> dict:
+    """{player_full_name: {'pts','reb','ast',...}} for one WNBA date, or {}.
+
+    Returns {} on ANY fetch failure. The caller must treat empty as "could not
+    check" and leave picks pending — never as "nobody scored", which would void
+    a full slate of real props.
+    """
+    if date_compact in _WNBA_PROP_CACHE:
+        return _WNBA_PROP_CACHE[date_compact]
+
+    import requests
+    base = "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba"
+    hdrs = {"User-Agent": "Mozilla/5.0"}
+    try:
+        r = requests.get(f"{base}/scoreboard", params={"dates": date_compact},
+                         headers=hdrs, timeout=15)
+        if r.status_code != 200:
+            print(f"  [wnba props] scoreboard HTTP {r.status_code} for {date_compact}")
+            return {}
+        events = r.json().get("events", [])
+    except Exception as e:
+        print(f"  [wnba props] scoreboard fetch failed for {date_compact}: {e}")
+        return {}
+
+    stats: dict[str, dict] = {}
+    for ev in events:
+        # Only completed games carry final stat lines; an in-progress game
+        # would settle a prop on a partial box score.
+        if not any(c.get("status", {}).get("type", {}).get("completed")
+                   for c in ev.get("competitions", [])):
+            continue
+        try:
+            s = requests.get(f"{base}/summary", params={"event": ev.get("id")},
+                             headers=hdrs, timeout=15)
+            if s.status_code != 200:
+                continue
+            box = s.json().get("boxscore", {})
+        except Exception:
+            continue
+        for team_block in box.get("players", []):
+            for grp in team_block.get("statistics", []):
+                labels = grp.get("labels", [])
+                for ath in grp.get("athletes", []):
+                    name = ath.get("athlete", {}).get("displayName", "")
+                    row_vals = ath.get("stats", [])
+                    # DNP rows carry an empty stats list — skipping them means
+                    # the pick VOIDS as "no stat line" rather than grading a 0.
+                    if not name or len(row_vals) != len(labels):
+                        continue
+                    row = dict(zip(labels, row_vals))
+                    entry = stats.setdefault(name, {})
+                    for label, (key, parse) in _WNBA_BOX_LABELS.items():
+                        if label in row:
+                            try:
+                                entry[key] = parse(row[label])
+                            except (ValueError, IndexError, TypeError):
+                                pass
+                    # Combos, same definitions as the NBA path.
+                    if {"pts", "reb", "ast"} <= entry.keys():
+                        entry["pra"] = entry["pts"] + entry["reb"] + entry["ast"]
+                        entry["pr"] = entry["pts"] + entry["reb"]
+                        entry["pa"] = entry["pts"] + entry["ast"]
+                        entry["ra"] = entry["reb"] + entry["ast"]
+
+    if stats:
+        _WNBA_PROP_CACHE[date_compact] = stats
+    return stats
+
+
+def _grade_wnba_props(date_str: str) -> None:
+    """Grade WNBA player props for one date off ESPN boxscores."""
+    date_compact = _norm_date(date_str)
+    data = _load()
+    pending = [
+        p for p in data["picks"]
+        if _norm_date(p.get("date", "")) == date_compact
+        and p.get("sport") in ("wnba", "basketball_wnba")
+        and p.get("market") in _PROP_MARKET_TO_STAT
+        and p.get("result") in (None, "pending")
+        and p.get("odds") is not None
+    ]
+    if not pending:
+        return
+
+    stats = _fetch_wnba_player_stats(date_compact)
+    if not stats:
+        # "Could not check" ≠ "no results". Leave them pending and say which.
+        print(f"  [wnba props] no WNBA box scores for {date_str} — "
+              f"{len(pending)} pick(s) stay pending (source unread, not settled)")
+        return
+
+    print(f"\n  ── WNBA props ──")
+    graded = 0
+    for pick in pending:
+        player = (pick.get("player")
+                  or pick.get("team", "").split(" OVER")[0].split(" UNDER")[0].strip())
+        stat_key = _PROP_MARKET_TO_STAT.get(pick.get("market", ""))
+        if not stat_key:
+            continue
+
+        actual = None
+        for name, s in stats.items():
+            if (name == player or player.lower() in name.lower()
+                    or name.lower() in player.lower()):
+                actual = s.get(stat_key)
+                break
+
+        if actual is None:
+            pick["result"] = "void"; pick["profit"] = 0.0
+            pick["void_reason"] = "no_stat_line"
+            pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+            print(f"  ⚫ VOID  {player} {pick.get('market')} (DNP / not in box score)")
+            graded += 1
+            continue
+
+        line = float(pick.get("line") or 0)
+        direction = (pick.get("direction") or "OVER").upper()
+        odds = float(pick.get("odds") or 0)
+        if actual == line:
+            pick["result"] = "push"; pick["profit"] = 0.0
+        else:
+            won = (actual > line) if direction == "OVER" else (actual < line)
+            pick["result"] = "win" if won else "loss"
+            pick["profit"] = round(_profit(pick.get("stake", 1.0), odds, won), 4)
+        pick["resulted_at"] = datetime.now(timezone.utc).isoformat()
+        graded += 1
+        icon = {"win": "🟢 WIN ", "loss": "🔴 LOSS", "push": "⬜ PUSH"}.get(pick["result"], "?")
+        print(f"  {icon}  {player:<25} {direction} {line:<5}  ({int(odds):+d})  →  "
+              f"{pick['profit']:+.2f}u  ({stat_key}: {actual})")
+
+    _save(data)
+    if graded:
+        print(f"  Graded {graded}/{len(pending)} WNBA props.")
 
 
 def _grade_nhl(date_str: str) -> None:
@@ -2294,6 +2494,12 @@ def main():
                 print(f"\n  ── Grading {label} picks for {grade_date} ──")
                 _grade_sport_generic(api_key, label, grade_date, sport_field=field)
 
+        # WNBA player props. _grade_sport_generic above settles game lines only;
+        # props need per-player box scores, and until 2026-08-12 nothing called
+        # anything that could settle them.
+        if sport in ("all", "wnba"):
+            _grade_wnba_props(grade_date)
+
         # ── Soccer — grade each league that has pending picks ─────────────
         if sport in ("all", "soccer"):
             date_compact = _norm_date(grade_date)
@@ -2321,7 +2527,13 @@ def main():
         # moneylines and left every total pending forever.
         if sport in ("all", "tennis"):
             print(f"\n  ── Grading TENNIS picks (full backlog) ──")
-            _grade_tennis_backlog()
+            try:
+                _grade_tennis_backlog()
+            except Exception as exc:
+                # Keep grading the other sports — but remember the failure so
+                # the run exits non-zero instead of finishing green with a
+                # whole sport silently ungraded.
+                _FAILURES.append(f"tennis backlog: {exc}")
 
         # ── Outright winner markets (PGA only) ────────────────────────────
         for short, field in _OUTRIGHT_SPORT_MAP.items():
@@ -2349,6 +2561,13 @@ def main():
             compute_table()
         except Exception as e:
             print(f"  [calibration] {e}")
+
+    if _FAILURES:
+        print("\n  ✗ GRADING INCOMPLETE — a data source failed, so picks that "
+              "look 'still pending' were never actually checked:")
+        for f in _FAILURES:
+            print(f"    {f}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

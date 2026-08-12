@@ -243,9 +243,12 @@ class Triage:
     signal: str            # confidence verdict
     spread: float | None   # WR(top) − WR(bottom) confidence buckets
     call: str              # what to do about it
+    # "%" for probability markets, "pt" for line markets, None if un-scored.
+    # Travels with `clv` because the two units are not interchangeable.
+    clv_unit: str | None = None
 
 
-def _triage_call(roi, clv, signal, ev=None) -> str:
+def _triage_call(roi, clv, signal, ev=None, clv_unit="%") -> str:
     """The action a lane's numbers imply — the honest keep/tune/cut recommendation.
 
     Money comes first: a profitable or +CLV lane is never a 'cut', whatever the
@@ -264,7 +267,18 @@ def _triage_call(roi, clv, signal, ev=None) -> str:
     endorsed: the profit is real and belongs on the record, but it is variance
     sitting on top of a negative edge, and scaling it is the mistake."""
     profitable = roi is not None and roi > 1.0
-    beats_close = clv is not None and clv > 0.5
+    # Only probability-market CLV is a percentage, so only it can be compared to
+    # a 0.5% bar. Line markets (spread/total/props) report POINTS: mlb/
+    # batter_total_bases means +0.231pt, which would clear a naive `> 0.5`
+    # never, and a `> 0` bar always — while the lane loses 2.9% of stake. Per
+    # CLAUDE.md prop CLV is an artifact of the model echoing the book's line
+    # (r≈0.97), so those lanes are judged on ROI alone.
+    #
+    # Until 2026-08-12 this read a `clv_pct` field that no pick has ever had, so
+    # `beats_close` was unconditionally False and the last line of this function
+    # asserted "losing on ROI + CLV" about lanes whose CLV was never consulted.
+    clv_comparable = clv is not None and clv_unit == "%"
+    beats_close = clv_comparable and clv > 0.5
     ev_negative = ev is not None and ev < 0
     if signal == "insufficient-data":
         return "WAIT — need ≥30 graded picks"
@@ -275,12 +289,18 @@ def _triage_call(roi, clv, signal, ev=None) -> str:
         return "KEEP — profitable (verify edge is real, don't scale on variance)"
     if beats_close:
         return "TUNE — beats the close, fix conversion to ROI"
-    # Losing on both ROI and CLV from here down.
+    # Losing on ROI from here down (and on CLV too, where CLV is comparable).
     if signal in ("real-signal", "noisy-but-present"):
         return "TUNE — has signal but losing; recalibrate / fix side-selection"
     if signal == "inverted":
         return "CUT/REBUILD — confidence is backwards (broken)"
-    return "CUT/REBUILD — no signal, losing on ROI + CLV"
+    # Name only the evidence actually in hand. Claiming CLV on a lane with no
+    # comparable CLV is what made this screen sound certain while flying blind.
+    if clv_comparable:
+        return "CUT/REBUILD — no signal, losing on ROI + CLV"
+    if clv is not None and clv_unit == "pt":
+        return "CUT/REBUILD — no signal, losing on ROI (CLV in pts, not comparable)"
+    return "CUT/REBUILD — no signal, losing on ROI (CLV unmeasured)"
 
 
 def triage(pnl_file: Path = _PNL_FILE, min_n: int = 30) -> list[Triage]:
@@ -312,13 +332,15 @@ def triage(pnl_file: Path = _PNL_FILE, min_n: int = 30) -> list[Triage]:
         sig = _confidence_signal(graded)
         roi = round(st.roi, 1) if st and st.roi is not None else None
         clv = round(st.clv, 2) if st and st.clv is not None else None
+        clv_unit = st.clv_unit if st else None
         out.append(Triage(
             sport=sport, market=market, n=len(graded), roi=roi,
-            clv=clv, clv_n=st.clv_n if st else 0,
+            clv=clv, clv_n=st.clv_n if st else 0, clv_unit=clv_unit,
             signal=sig.verdict, spread=sig.spread,
             call=_triage_call(roi, clv, sig.verdict,
                               ev=(_ev.get((sport, market)).mean_ev_pct
-                                  if _ev.get((sport, market)) else None)),
+                                  if _ev.get((sport, market)) else None),
+                              clv_unit=clv_unit),
         ))
     # Real signal first, then by ROI — the tunable, promising lanes on top.
     _rank = {"real-signal": 0, "noisy-but-present": 1, "flat": 2, "inverted": 3,

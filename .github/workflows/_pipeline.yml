@@ -20,11 +20,33 @@ on:
         required: false
         type: string
         default: light
+      browsers:
+        description: >
+          Install the Chromium binary Playwright needs. Off by default because
+          it is a ~300MB download; only jobs that render a page to an image
+          should pay it. nightly.yml does: scripts/nightly_recap.py screenshots
+          the recap card, and without a browser it caught the failure and fell
+          back to the HTML, so the PNG was simply never produced in CI.
+        required: false
+        type: boolean
+        default: false
+      timeout_minutes:
+        description: >
+          Job timeout. Default 20 suits the daily jobs (a normal night run is
+          ~6 min). Training jobs need far more: the weekly NB prop retrain
+          pushed night.yml to 20m23s and 20m24s on 2026-08-02 and 2026-08-09,
+          the only two Sundays it was scheduled, and BOTH were cancelled at the
+          cap — so the retrain never once completed and the deploy steps after
+          it were cut off too. Give long jobs their own budget instead of
+          silently truncating a daily one.
+        required: false
+        type: number
+        default: 20
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: ${{ inputs.timeout_minutes }}
     # Serialize every pipeline that commits to the repo so two runs never race
     # to push to the same branch (which conflicts on shared files like
     # picks.json). Queue rather than cancel — each job's work must happen.
@@ -60,9 +82,30 @@ jobs:
           if [ "${{ inputs.level }}" = "full" ]; then
             pip install --quiet -r requirements.txt
           else
+            # openpyxl is NOT optional here despite being a pandas "extra":
+            # tennis grading reads tennis-data.co.uk .xlsx workbooks, and
+            # pd.read_excel raises ImportError without it. That exception was
+            # swallowed by load_matches, so the empty frame surfaced as the
+            # reassuring "match not in source yet" — tennis graded nothing in
+            # any light-level job from 2026-07-12 to 2026-08-12 while picks
+            # kept accruing (362 stuck pending). Picks generation never
+            # noticed: tennis.yml runs at level "full", which installs
+            # requirements.txt where openpyxl>=3.1 already lives. Any dep the
+            # grading path needs belongs here, not only in requirements.txt.
+            # nba_api is needed by the light path too: nightly.yml runs
+            # `chef.py grade`, which reaches _grade_nba_props_v2 →
+            # _fetch_nba_player_stats. Without it NBA props grade nothing.
             pip install --quiet pandas numpy requests python-dotenv pillow \
-              beautifulsoup4 lxml scipy
+              beautifulsoup4 lxml scipy openpyxl nba_api playwright
           fi
+
+      - name: Install Chromium for Playwright
+        if: ${{ inputs.browsers }}
+        # --with-deps pulls the shared libraries headless Chromium needs on a
+        # bare runner. Without it the launch fails at run time with a missing
+        # .so, which nightly_recap catches and reports as "Playwright
+        # unavailable" — indistinguishable from the package being absent.
+        run: python -m playwright install --with-deps chromium
 
       - name: Write .env from secrets
         # Mirrors the local .env so load_dotenv() and os.environ.get() both work.

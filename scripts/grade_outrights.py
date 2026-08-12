@@ -31,11 +31,15 @@ sys.path.insert(0, str(ROOT))
 
 PICKS_FILE = ROOT / "data" / "pnl" / "picks.json"
 
-# ESPN API endpoints per sport
+# ESPN API endpoints per sport. The two racing paths below were 400ing — ESPN
+# names these leagues "nascar-premier" and "irl", not "nascar-cup"/"indycar" —
+# and the 400 was caught and printed as "no completed event", which is the same
+# thing this script says on a day with no race. A dead endpoint and an idle day
+# were indistinguishable in the log. Verified 2026-08-06: these four return 200.
 ESPN_ENDPOINTS: dict[str, str] = {
-    "nascar":  "https://site.api.espn.com/apis/site/v2/sports/racing/nascar-cup/scoreboard",
+    "nascar":  "https://site.api.espn.com/apis/site/v2/sports/racing/nascar-premier/scoreboard",
     "f1":      "https://site.api.espn.com/apis/site/v2/sports/racing/f1/scoreboard",
-    "indycar": "https://site.api.espn.com/apis/site/v2/sports/racing/indycar/scoreboard",
+    "indycar": "https://site.api.espn.com/apis/site/v2/sports/racing/irl/scoreboard",
     "pga":     "https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard",
 }
 
@@ -66,7 +70,13 @@ def _ungraded_outright_picks(picks: list[dict], sport: str, since_date: str) -> 
         if p.get("sport") in fields
         and p.get("result") is None
         and (p.get("date") or "") >= since_date
-        and p.get("market") in ("outrights", "winner", None, "")
+        # These are the market names the ledger actually writes: golf logs
+        # "outright", racing logs "win". The original list guessed "outrights"
+        # and "winner" and matched NEITHER — 0 of 115 rows — so this grader
+        # printed "No ungraded outright picks" while 94 sat pending for months.
+        # A filter written from a guessed vocabulary fails silently and looks
+        # exactly like having nothing to do. Legacy spellings stay for old rows.
+        and p.get("market") in ("outright", "win", "outrights", "winner", None, "")
     ]
 
 

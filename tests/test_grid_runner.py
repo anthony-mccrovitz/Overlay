@@ -4,11 +4,38 @@ Tests for grid_runner — the factory's assembly line (Step 2).
 Deterministic: a fake adapter + synthetic context, so no odds/network needed.
 Proves the loop runs registered models through the gate, skips retired markets,
 filters by sport, and honors dry-run.
+
+DETERMINISM CAVEAT (fixed 2026-08-12). "No odds/network" was true; "no external
+state" was not. schema.normalize_pick applies a "card demotion on calibrated
+edge" step that multiplies the raw edge by the lane's live k from
+data/models/calibration.json. When mlb/total's k fell 0.636 → 0.182 in
+production, this file's card/shadow assertions started failing in CI for a
+reason that has nothing to do with grid_runner: the fake adapter's 2.0 and 3.5
+edges shrank to ~0.36/0.63, under the 1.0 card floor, so both picks demoted to
+shadow and `result.card` read 0.
+
+A unit test over synthetic picks must not move when a production model's
+calibration moves, or it reports someone else's outage as its own failure. The
+`fixed_calibration` fixture below pins that factor, so these tests measure the
+registry + edge-band gate they are actually about. The real k regression is
+caught by tests/test_model_standard.py, which is where it belongs.
 """
 from __future__ import annotations
 
 import pandas as pd
 import pytest
+
+
+@pytest.fixture(autouse=True)
+def fixed_calibration(monkeypatch):
+    """Neutralise the calibrated-edge demotion so raw edges reach the gate.
+
+    Identity (k=1) is the honest choice here: these tests assert what the gate
+    does with a GIVEN edge, and the shrink factor is a separate lane-health
+    concern with its own test.
+    """
+    monkeypatch.setattr("src.analytics.calibration_gate.calibrate_edge",
+                        lambda sport, market, raw: raw)
 
 from src.models.pick_model import PickModel, RawPick, SportContext
 from src.pipeline import grid_runner

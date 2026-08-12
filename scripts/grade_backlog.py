@@ -51,6 +51,11 @@ _GAME_LINE_MARKETS = ("moneyline", "spread", "total", "runline", "puck_line", "r
 # Past this age an unresolvable pick is voided with a reason so it stops
 # masquerading as an open position. See _terminal_void.
 _TERMINAL_AGE_DAYS = 30
+# Shortened horizon for picks whose search is PROVABLY exhausted: this many
+# sweeps that each read every board in the pick's window successfully and still
+# found nothing. See _terminal_void._age_floor for why two tiers exist.
+_PROVEN_SEARCHES = 5
+_PROVEN_AGE_DAYS = 14
 # Sports the sweep never grades (need --winner / a human); leave them alone.
 _MANUAL_ONLY_PREFIXES = ("golf", "auto_racing")
 
@@ -201,6 +206,27 @@ def _fetch_mma_winners(date_str: str) -> dict[str, str]:
     return grade._fetch_mma_winners_espn(date_str)
 
 
+def _searched_count(pick: dict) -> int:
+    """How many times this pick was searched against a source that ANSWERED.
+
+    `backlog_attempts` counts sweeps that failed to settle the pick — including
+    sweeps where the scoreboard fetch itself failed and there was nothing to
+    search. Voiding on that number means an outage looks exactly like a phantom
+    game, which is how a source failure turns into settled rows at 0 profit.
+
+    `backlog_searched` is the honest counter: incremented only when every board
+    in the pick's date window came back. Legacy picks predate it, so they fall
+    back to backlog_attempts — acceptable because the sports that use this path
+    (MLB Stats API, ESPN) were demonstrably answering daily through the window
+    those picks were logged in. Tennis, the one source that WAS down, no longer
+    reaches an age-based void at all (see _void_reason).
+    """
+    n = pick.get("backlog_searched")
+    if isinstance(n, int):
+        return n
+    return int(pick.get("backlog_attempts") or 0)
+
+
 def _void_reason(pick: dict) -> str | None:
     """Why this pick can never be graded, or None if it might still resolve.
 
@@ -216,22 +242,39 @@ def _void_reason(pick: dict) -> str | None:
         # would fabricate a result, so this is unrecoverable by construction.
         return "prop_market_missing"
     if sport.startswith("tennis_"):
-        # _grade_tennis_backlog re-reads tennis-data.co.uk on every run. A match
-        # still absent a month on is outside the source's coverage — it only
-        # carries main-draw results, not qualifying.
-        return "source_coverage_gap"
+        # NEVER void tennis on age alone. This used to return
+        # "source_coverage_gap" unconditionally, on the theory that a match
+        # still absent a month on must be outside tennis-data.co.uk's coverage
+        # (it carries main draws, not qualifying).
+        #
+        # That theory assumes the source was READ. From 2026-07-12 to
+        # 2026-08-12 it was not: openpyxl was missing from the light dependency
+        # set, pd.read_excel raised, and load_matches returned an empty frame.
+        # Every tennis pick was therefore heading for a silent void labelled
+        # "outside source coverage" when the real cause was a missing package —
+        # settling 362 real picks at 0 profit and calling it housekeeping.
+        #
+        # A pick can only be voided for coverage once something has PROVEN it
+        # read the source and did not find the match. `_grade_tennis_backlog`
+        # stamps tennis_source_read on picks it looked up successfully; absent
+        # that stamp we know nothing and must keep waiting.
+        if pick.get("tennis_source_read"):
+            return "source_coverage_gap"
+        return None
+    searched = _searched_count(pick)
     if sport in ("mma_mixed_martial_arts", "ufc", "mma"):
         # Graded off ESPN's UFC scoreboard by fighter name, not by matchup.
-        # A fighter still missing a month on was on a card ESPN never carried
-        # (regional/prelim), so there is no winner to look up.
-        if pick.get("backlog_attempts", 0) >= 3:
+        # A fighter still missing after several SUCCESSFUL board reads was on a
+        # card ESPN never carried (regional/prelim promotions — Oktagon, PFL —
+        # are the bulk of this bucket), so there is no winner to look up.
+        if searched >= 3:
             return "source_coverage_gap"
         return None
     if _matchup_teams(pick) == ("", ""):
         # Every remaining sport locates its game by "Away @ Home". Without a
         # pair there is nothing to search boards for.
         return "matchup_incomplete"
-    if pick.get("backlog_attempts", 0) >= 3:
+    if searched >= 3:
         # Three separate sweeps searched successfully-fetched boards around this
         # date and never landed a unique match. Either the game never happened
         # (phantom slate date) or the pairing stays ambiguous (doubleheader).
@@ -247,9 +290,34 @@ def _terminal_void(picks: list[dict], dry_run: bool) -> dict[str, int]:
     open-position count, trips the stale-pending watchdog every night, and
     makes the sweep refetch boards for a game that never existed.
     """
-    cutoff = datetime.now() - timedelta(days=_TERMINAL_AGE_DAYS)
+    now = datetime.now()
     voided: dict[str, int] = defaultdict(int)
     now_iso = datetime.now(timezone.utc).isoformat()
+
+    def _age_floor(pick: dict) -> int:
+        """Days a pick must sit before a void is allowed.
+
+        Two tiers, because "provably unresolvable" arrives at different
+        strengths. The flat 30 days was tuned for the weak case — a couple of
+        failed sweeps — and applying it to the strong case leaves picks the
+        system has already given up on trapped for another fortnight, tripping
+        the stale-pending watchdog every night. The watchdog complains from day
+        5; the cleanup ran on day 30; nothing lived in between.
+
+        A pick searched _PROVEN_SEARCHES times against sources that ANSWERED
+        (see _searched_count) has had its window read repeatedly and completely.
+        MLB Stats API and ESPN are complete within days, so more waiting adds no
+        information — the docstring above already says these "neither resolve by
+        waiting longer".
+
+        Tennis is deliberately excluded: its source publishes weekly, so a
+        two-week-old absence there is normal, not proof of anything.
+        """
+        if _norm(pick.get("sport")).startswith("tennis_"):
+            return _TERMINAL_AGE_DAYS
+        if _searched_count(pick) >= _PROVEN_SEARCHES:
+            return _PROVEN_AGE_DAYS
+        return _TERMINAL_AGE_DAYS
 
     for p in picks:
         if p.get("result") not in (None, "pending") or p.get("odds") is None:
@@ -258,7 +326,7 @@ def _terminal_void(picks: list[dict], dry_run: bool) -> dict[str, int]:
             d = datetime.strptime((p.get("date") or "").replace("-", ""), "%Y%m%d")
         except ValueError:
             continue
-        if d >= cutoff:
+        if d >= now - timedelta(days=_age_floor(p)):
             continue
         reason = _void_reason(p)
         if reason is None:
@@ -291,6 +359,7 @@ def main() -> None:
     board_cache: dict[tuple[str, str], dict] = {}
     mma_cache: dict[str, dict[str, str]] = {}
     mlb_prop_dates: set[str] = set()
+    wnba_prop_dates: set[str] = set()
     scorer_dates: set[str] = set()
 
     def _board(source: str, day: str) -> dict | None:
@@ -331,6 +400,14 @@ def main() -> None:
                 continue
             boards = [(day, _board("mlb", day)) for day in days]
         elif sport in _SPORT_TO_ESPN:
+            if (sport in ("wnba", "basketball_wnba")
+                    and market in grade._PROP_MARKET_TO_STAT):
+                # WNBA props need per-player box scores, not the scoreboard.
+                # Batched by date below, exactly like the MLB prop path — the
+                # game-line branch that follows would otherwise drop them into
+                # `unresolved` forever (it did, for all 45 of them).
+                wnba_prop_dates.add(p["date"].replace("-", ""))
+                continue
             espn_key = _SPORT_TO_ESPN[sport]
             boards = [(day, _board(espn_key, day)) for day in days]
         elif sport.startswith("soccer_") and sport in grade._ESPN_SCOREBOARD_PATHS:
@@ -358,6 +435,10 @@ def main() -> None:
                     break
             if won is None:
                 p["backlog_attempts"] = p.get("backlog_attempts", 0) + 1
+                # A non-empty winner map on any day proves ESPN answered, so a
+                # missing fighter is a real coverage gap and not an outage.
+                if any(mma_cache.get(day) for day in days):
+                    p["backlog_searched"] = p.get("backlog_searched", 0) + 1
                 unresolved[tag] += 1
                 continue
             p["result"] = "win" if won else "loss"
@@ -404,6 +485,11 @@ def main() -> None:
             # search is exhausted, and it has to mean the same thing for every
             # sport (MLB never runs the wide search at all).
             p["backlog_attempts"] = p.get("backlog_attempts", 0) + 1
+            # Only a window where EVERY board came back is evidence that the
+            # game isn't there. A None board is "couldn't look", and voiding on
+            # that is how an outage becomes a settled row.
+            if all(b is not None for _, b in boards):
+                p["backlog_searched"] = p.get("backlog_searched", 0) + 1
             unresolved[tag] += 1
             continue
         graded[tag] += 1
@@ -422,6 +508,8 @@ def main() -> None:
             print(f"  {tag:60} {n}")
     if mlb_prop_dates:
         print(f"── MLB prop dates to grade: {sorted(mlb_prop_dates)}")
+    if wnba_prop_dates:
+        print(f"── WNBA prop dates to grade: {sorted(wnba_prop_dates)}")
     if scorer_dates:
         print(f"── Soccer scorer dates to grade: {sorted(scorer_dates)}")
 
@@ -432,6 +520,8 @@ def main() -> None:
     grade._save(data)
     for day in sorted(mlb_prop_dates):
         grade._grade_mlb_props(day)
+    for day in sorted(wnba_prop_dates):
+        grade._grade_wnba_props(day)
     for day in sorted(scorer_dates):
         grade._grade_soccer_scorers(day)
     try:
