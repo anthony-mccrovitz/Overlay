@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T19:48:45.695903+00:00",
+  "generated_at": "2026-08-12T03:13:33.957761+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -19,42 +19,42 @@
   "gates": [
     {
       "gate": "SAMPLE",
-      "have": 254,
+      "have": 253,
       "need": 300,
       "pass": false,
-      "detail": "254 scored of 306 logged (protocol v1)"
+      "detail": "253 scored of 317 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
-      "have": 500,
+      "have": 505,
       "need": 200,
       "pass": false,
-      "detail": "500 graded sharp-fair picks; worst bucket gap 0.127 vs max 0.05"
+      "detail": "505 graded sharp-fair picks; worst bucket gap 0.127 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 132,
+      "have": 135,
       "need": 100,
       "pass": true,
-      "detail": "132 filled of 305 checked"
+      "detail": "135 filled of 312 checked"
     },
     {
       "gate": "CLV",
-      "have": 0.095,
+      "have": 0.078,
       "need": "> 0",
       "pass": true,
-      "detail": "avg +0.095% over 254 scored"
+      "detail": "avg +0.078% over 253 scored"
     },
     {
       "gate": "DRAWDOWN",
-      "have": 0.351,
+      "have": 0.353,
       "need": "< 0.25",
       "pass": false,
-      "detail": "paper max drawdown 35.1% of bankroll"
+      "detail": "paper max drawdown 35.3% of bankroll"
     }
   ],
   "anchor": {
-    "n": 500,
+    "n": 505,
     "buckets": [
       {
         "bucket": 0.2,
@@ -72,21 +72,21 @@
       },
       {
         "bucket": 0.4,
-        "n": 180,
+        "n": 183,
         "predicted": 0.45,
-        "actual": 0.5,
-        "gap": 0.05
+        "actual": 0.492,
+        "gap": 0.042
       },
       {
         "bucket": 0.5,
-        "n": 161,
+        "n": 163,
         "predicted": 0.55,
-        "actual": 0.559,
-        "gap": 0.009
+        "actual": 0.558,
+        "gap": 0.008
       }
     ],
     "worst_gap": 0.127
   },
-  "n_logged": 306,
-  "n_scored": 254
+  "n_logged": 317,
+  "n_scored": 253
 }
