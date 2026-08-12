@@ -697056,6 +697056,44 @@
       "clv_status": "heuristic",
       "home_team": null,
       "away_team": null
+    },
+    {
+      "pick_id": "lineshop_basketball_wnba_20260812_portland-fire_moneyline_fanduel",
+      "date": "2026-08-12",
+      "sport": "wnba",
+      "market": "moneyline",
+      "direction": "HOME",
+      "team": "Portland Fire",
+      "matchup": "Minnesota Lynx @ Portland Fire",
+      "odds": 590,
+      "line": null,
+      "sportsbook": "FanDuel",
+      "model_prob": 0.1552,
+      "edge_pct": 0.0,
+      "stake": 0.0,
+      "card_pick": false,
+      "strategy": "line_shop",
+      "fair_source": "pinnacle",
+      "result": null,
+      "profit": null,
+      "recorded_at": "2026-08-12T19:31:07.927428+00:00",
+      "resulted_at": null,
+      "model_prob_raw": null,
+      "raw_edge_pct": 7.05,
+      "model_version": null,
+      "model_tier": null,
+      "weather_context": null,
+      "team_form": null,
+      "shadow_filter": {
+        "name": null,
+        "matchup_class": "unknown",
+        "recommendation": "na",
+        "reason": "no MLB shadow filter for this sport"
+      },
+      "tainted": null,
+      "clv_status": "heuristic",
+      "home_team": "Portland Fire",
+      "away_team": "Minnesota Lynx"
     }
   ]
 }
