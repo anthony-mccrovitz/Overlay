@@ -1,0 +1,62 @@
+[
+  {
+    "event_id": "077772dbe01dea0fea4586fbedc7a483",
+    "sport": "tennis_atp_cincinnati_open",
+    "home_team": "Sho Shimabukuro",
+    "away_team": "JJ Wolf",
+    "commence_time": "2026-08-13T03:30:00Z",
+    "captured_at": "2026-08-13T02:39:27.861980+00:00",
+    "mins_to_commence": 50.5,
+    "closing_final": false,
+    "BestHomeML": 114,
+    "BestAwayML": -133,
+    "HomeBook": "Pinnacle",
+    "AwayBook": "Pinnacle",
+    "all_odds": [
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "JJ Wolf",
+        "Selection": "JJ Wolf",
+        "Odds": -133,
+        "Line": null
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "h2h",
+        "Name": "Sho Shimabukuro",
+        "Selection": "Sho Shimabukuro",
+        "Odds": 114,
+        "Line": null
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Over",
+        "Selection": "Over",
+        "Odds": -105,
+        "Line": 22.5
+      },
+      {
+        "EventID": "077772dbe01dea0fea4586fbedc7a483",
+        "HomeTeam": "Sho Shimabukuro",
+        "AwayTeam": "JJ Wolf",
+        "Sportsbook": "Pinnacle",
+        "Market": "totals",
+        "Name": "Under",
+        "Selection": "Under",
+        "Odds": -113,
+        "Line": 22.5
+      }
+    ]
+  }
+]
