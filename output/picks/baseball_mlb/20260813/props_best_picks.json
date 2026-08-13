@@ -1,0 +1,98 @@
+{
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Mookie Betts",
+      "team": "Mookie Betts UNDER 5.5",
+      "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+      "line": 5.5,
+      "odds": -190,
+      "model_prob": 0.9585,
+      "implied_prob": 0.6011,
+      "edge_pct": 35.74,
+      "model_mu": 1.6,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "UNDER",
+      "player": "Mookie Betts",
+      "team": "Mookie Betts UNDER 2.5",
+      "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+      "line": 2.5,
+      "odds": -190,
+      "model_prob": 0.9299,
+      "implied_prob": 0.6011,
+      "edge_pct": 32.88,
+      "model_mu": 0.94,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Cal Quantrill",
+      "team": "Cal Quantrill UNDER 5.5",
+      "matchup": "Texas Rangers @ Los Angeles Angels",
+      "line": 5.5,
+      "odds": 110,
+      "model_prob": 0.7477,
+      "implied_prob": 0.4393,
+      "edge_pct": 30.84,
+      "model_mu": 4.16,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Shohei Ohtani",
+      "team": "Shohei Ohtani UNDER 2.5",
+      "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+      "line": 2.5,
+      "odds": -600,
+      "model_prob": 0.9412,
+      "implied_prob": 0.8045,
+      "edge_pct": 13.67,
+      "model_mu": 0.64,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Freddie Freeman",
+      "team": "Freddie Freeman UNDER 1.5",
+      "matchup": "Kansas City Royals @ Los Angeles Dodgers",
+      "line": 1.5,
+      "odds": -475,
+      "model_prob": 0.9506,
+      "implied_prob": 0.7677,
+      "edge_pct": 18.29,
+      "model_mu": 0.35,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Corey Seager",
+      "team": "Corey Seager UNDER 1.5",
+      "matchup": "Texas Rangers @ Los Angeles Angels",
+      "line": 1.5,
+      "odds": -3750,
+      "model_prob": 0.9911,
+      "implied_prob": 0.9157,
+      "edge_pct": 7.54,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
