@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T19:51:02.535115+00:00",
+  "generated_at": "2026-08-13T03:16:56.495393+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -19,74 +19,74 @@
   "gates": [
     {
       "gate": "SAMPLE",
-      "have": 271,
+      "have": 272,
       "need": 300,
       "pass": false,
-      "detail": "271 scored of 337 logged (protocol v1)"
+      "detail": "272 scored of 371 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
-      "have": 511,
+      "have": 521,
       "need": 200,
       "pass": false,
-      "detail": "511 graded sharp-fair picks; worst bucket gap 0.131 vs max 0.05"
+      "detail": "521 graded sharp-fair picks; worst bucket gap 0.137 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 142,
+      "have": 147,
       "need": 100,
       "pass": true,
-      "detail": "142 filled of 330 checked"
+      "detail": "147 filled of 364 checked"
     },
     {
       "gate": "CLV",
-      "have": 0.146,
+      "have": 0.244,
       "need": "> 0",
       "pass": true,
-      "detail": "avg +0.146% over 271 scored"
+      "detail": "avg +0.244% over 272 scored"
     },
     {
       "gate": "DRAWDOWN",
-      "have": 0.353,
+      "have": 0.368,
       "need": "< 0.25",
       "pass": false,
-      "detail": "paper max drawdown 35.3% of bankroll"
+      "detail": "paper max drawdown 36.8% of bankroll"
     }
   ],
   "anchor": {
-    "n": 511,
+    "n": 521,
     "buckets": [
       {
         "bucket": 0.2,
-        "n": 59,
+        "n": 62,
         "predicted": 0.25,
-        "actual": 0.119,
-        "gap": -0.131
+        "actual": 0.113,
+        "gap": -0.137
       },
       {
         "bucket": 0.3,
-        "n": 52,
+        "n": 53,
         "predicted": 0.35,
-        "actual": 0.365,
-        "gap": 0.015
+        "actual": 0.377,
+        "gap": 0.027
       },
       {
         "bucket": 0.4,
-        "n": 184,
+        "n": 188,
         "predicted": 0.45,
         "actual": 0.495,
         "gap": 0.045
       },
       {
         "bucket": 0.5,
-        "n": 165,
+        "n": 167,
         "predicted": 0.55,
-        "actual": 0.552,
-        "gap": 0.002
+        "actual": 0.551,
+        "gap": 0.001
       }
     ],
-    "worst_gap": 0.131
+    "worst_gap": 0.137
   },
-  "n_logged": 337,
-  "n_scored": 271
+  "n_logged": 371,
+  "n_scored": 272
 }
