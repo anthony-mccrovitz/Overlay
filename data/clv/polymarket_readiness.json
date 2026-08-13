@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T14:10:31.223782+00:00",
+  "generated_at": "2026-08-13T19:47:06.448633+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -19,10 +19,10 @@
   "gates": [
     {
       "gate": "SAMPLE",
-      "have": 284,
+      "have": 286,
       "need": 300,
       "pass": false,
-      "detail": "284 scored of 409 logged (protocol v1)"
+      "detail": "286 scored of 417 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
@@ -33,24 +33,24 @@
     },
     {
       "gate": "FILLS",
-      "have": 159,
+      "have": 169,
       "need": 100,
       "pass": true,
-      "detail": "159 filled of 402 checked"
+      "detail": "169 filled of 409 checked"
     },
     {
       "gate": "CLV",
-      "have": 0.267,
+      "have": 0.141,
       "need": "> 0",
       "pass": true,
-      "detail": "avg +0.267% over 284 scored"
+      "detail": "avg +0.141% over 286 scored"
     },
     {
       "gate": "DRAWDOWN",
-      "have": 0.373,
+      "have": 0.389,
       "need": "< 0.25",
       "pass": false,
-      "detail": "paper max drawdown 37.3% of bankroll"
+      "detail": "paper max drawdown 38.9% of bankroll"
     }
   ],
   "anchor": {
@@ -94,6 +94,6 @@
     ],
     "worst_gap": 0.13
   },
-  "n_logged": 409,
-  "n_scored": 284
+  "n_logged": 417,
+  "n_scored": 286
 }
