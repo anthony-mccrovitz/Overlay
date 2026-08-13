@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-13T03:16:56.493398+00:00",
+  "generated_at": "2026-08-13T08:13:57.634564+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 83.34,
-  "n_settled": 31,
-  "n_pending": 669,
+  "end_bankroll": 80.01,
+  "n_settled": 32,
+  "n_pending": 689,
   "wins": 10,
-  "losses": 21,
-  "staked": 118.33,
-  "pnl": -28.66,
-  "expected_pnl": 4.77,
-  "roi_pct": -24.22,
-  "max_drawdown": 41.19,
+  "losses": 22,
+  "staked": 121.32,
+  "pnl": -31.99,
+  "expected_pnl": 4.92,
+  "roi_pct": -26.37,
+  "max_drawdown": 41.79,
   "skipped": {
-    "high \u2014 taker fills at the quoted ask within depth": 99,
-    "exposure cap reached for the slate": 501,
-    "not settled yet": 42,
+    "high \u2014 taker fills at the quoted ask within depth": 101,
+    "exposure cap reached for the slate": 516,
+    "not settled yet": 45,
     "resting order never filled": 27
   },
   "significance": {
-    "mean_edge_per_unit": 0.0402,
-    "sd_per_unit": 1.4361,
-    "n_for_2sigma": 5117
+    "mean_edge_per_unit": 0.0404,
+    "sd_per_unit": 1.4548,
+    "n_for_2sigma": 5176
   },
   "rows": [
     {
@@ -488,6 +488,22 @@
       "equity": 81.49
     },
     {
+      "pick_id": "polymarket_ev__wnba_20260812_chicago-sky_g-chisky-golval_moneyline_win",
+      "date": "2026-08-12",
+      "team": "Chicago Sky",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.2,
+      "fair": 0.2099,
+      "stake": 3.26,
+      "shares": 16.3,
+      "result": "loss",
+      "pnl": -3.26,
+      "expected_pnl": 0.161,
+      "equity": 78.23
+    },
+    {
       "pick_id": "polymarket_ev__mlb_20260812_colorado-rockies_g-colroc-aridia_moneyline_win",
       "date": "2026-08-12",
       "team": "Colorado Rockies",
@@ -496,12 +512,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.38,
       "fair": 0.3884,
-      "stake": 3.26,
-      "shares": 8.58,
+      "stake": 3.13,
+      "shares": 8.24,
       "result": "win",
-      "pnl": 5.32,
-      "expected_pnl": 0.072,
-      "equity": 86.81
+      "pnl": 5.11,
+      "expected_pnl": 0.069,
+      "equity": 83.34
     },
     {
       "pick_id": "polymarket_ev__mlb_20260812_seattle-mariners_g-seamar-newyan_moneyline_win",
@@ -512,12 +528,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.45,
       "fair": 0.4675,
-      "stake": 3.47,
-      "shares": 7.71,
+      "stake": 3.33,
+      "shares": 7.4,
       "result": "loss",
-      "pnl": -3.47,
-      "expected_pnl": 0.135,
-      "equity": 83.34
+      "pnl": -3.33,
+      "expected_pnl": 0.13,
+      "equity": 80.01
     }
   ]
 }
