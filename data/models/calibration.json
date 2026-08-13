@@ -54,10 +54,10 @@
     "realized_pp": -0.105
   },
   "mlb::batter_home_runs": {
-    "claimed_pp": -0.379,
+    "claimed_pp": -0.163,
     "k": 1.0,
-    "n": 1209,
-    "realized_pp": -2.962
+    "n": 1273,
+    "realized_pp": -2.783
   },
   "mlb::batter_rbis": {
     "claimed_pp": 1.953,
@@ -78,28 +78,32 @@
     "realized_pp": -4.679
   },
   "mlb::f5_total": {
-    "claimed_pp": 17.033,
+    "claimed_pp": 17.016,
     "k": 0.0,
-    "n": 268,
-    "realized_pp": -0.27
+    "n": 269,
+    "realized_pp": -0.462
   },
   "mlb::moneyline": {
-    "claimed_pp": 6.04,
-    "k": 0.0545,
-    "n": 570,
-    "realized_pp": 0.329
+    "card_claimed_pp": 12.684,
+    "card_k": 0.279,
+    "card_n": 66,
+    "card_realized_pp": 3.538,
+    "claimed_pp": 5.898,
+    "k": 0.0824,
+    "n": 590,
+    "realized_pp": 0.486
   },
   "mlb::nrfi": {
-    "claimed_pp": 11.957,
+    "claimed_pp": 11.978,
     "k": 0.0,
-    "n": 243,
-    "realized_pp": -6.235
+    "n": 247,
+    "realized_pp": -5.388
   },
   "mlb::pitcher_strikeouts": {
-    "claimed_pp": 12.156,
+    "claimed_pp": 12.065,
     "k": 0.0,
-    "n": 1179,
-    "realized_pp": -4.436
+    "n": 1192,
+    "realized_pp": -4.304
   },
   "mlb::prop": {
     "claimed_pp": 11.5,
@@ -108,16 +112,20 @@
     "realized_pp": -3.746
   },
   "mlb::spread": {
-    "claimed_pp": -2.772,
+    "claimed_pp": -2.764,
     "k": 1.0,
-    "n": 229,
-    "realized_pp": 3.385
+    "n": 230,
+    "realized_pp": 3.568
   },
   "mlb::total": {
-    "claimed_pp": 7.897,
-    "k": 0.182,
-    "n": 277,
-    "realized_pp": 1.438
+    "card_claimed_pp": 2.842,
+    "card_k": 0.8156,
+    "card_n": 76,
+    "card_realized_pp": 2.318,
+    "claimed_pp": 7.965,
+    "k": 0.1783,
+    "n": 279,
+    "realized_pp": 1.42
   },
   "nba::moneyline": {
     "claimed_pp": 6.952,
@@ -138,18 +146,30 @@
     "realized_pp": -2.813
   },
   "nba::spread": {
+    "card_claimed_pp": 14.259,
+    "card_k": 0.0,
+    "card_n": 2,
+    "card_realized_pp": -2.381,
     "claimed_pp": -1.647,
     "k": 1.0,
     "n": 102,
     "realized_pp": -3.618
   },
   "nba::total": {
+    "card_claimed_pp": 21.404,
+    "card_k": 0.6068,
+    "card_n": 88,
+    "card_realized_pp": 12.988,
     "claimed_pp": 19.835,
     "k": 0.6301,
     "n": 98,
     "realized_pp": 12.499
   },
   "nhl::moneyline": {
+    "card_claimed_pp": 10.819,
+    "card_k": 1.0,
+    "card_n": 2,
+    "card_realized_pp": 42.029,
     "claimed_pp": 10.197,
     "k": 0.0,
     "n": 11,
@@ -180,12 +200,20 @@
     "realized_pp": 3.873
   },
   "nhl::spread": {
+    "card_claimed_pp": 7.121,
+    "card_k": 1.0,
+    "card_n": 2,
+    "card_realized_pp": 33.741,
     "claimed_pp": 6.25,
     "k": 1.0,
     "n": 8,
     "realized_pp": 24.513
   },
   "nhl::total": {
+    "card_claimed_pp": 7.694,
+    "card_k": 0.0,
+    "card_n": 7,
+    "card_realized_pp": -22.288,
     "claimed_pp": 9.253,
     "k": 0.0,
     "n": 14,
@@ -264,10 +292,10 @@
     "realized_pp": 31.16
   },
   "wnba::moneyline": {
-    "claimed_pp": 1.907,
+    "claimed_pp": 1.88,
     "k": 0.0,
-    "n": 128,
-    "realized_pp": -4.933
+    "n": 134,
+    "realized_pp": -5.637
   },
   "wnba::spread": {
     "claimed_pp": 29.142,
