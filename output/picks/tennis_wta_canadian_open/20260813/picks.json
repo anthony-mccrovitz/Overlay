@@ -1,0 +1,47 @@
+[
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "moneyline",
+    "direction": "WIN",
+    "team": "Elena Rybakina",
+    "matchup": "Elena Rybakina vs Iga Swiatek",
+    "odds": 120,
+    "model_prob": 0.5509,
+    "model_prob_raw": 0.6581,
+    "market_fair": 0.4436,
+    "model_weight": 0.5,
+    "implied_prob": 0.4344,
+    "edge_pct": 11.65,
+    "sportsbook": "BetMGM",
+    "surface": "hard",
+    "best_of": 3
+  },
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 21.5",
+    "matchup": "Elena Rybakina @ Iga Swiatek",
+    "odds": -137,
+    "best_odds": -137,
+    "line": 21.5,
+    "model_prob": 0.5944,
+    "implied_prob": 0.5435,
+    "edge_pct": 5.08,
+    "sportsbook": "Bally Bet"
+  },
+  {
+    "sport": "tennis_wta_canadian_open",
+    "market": "total",
+    "direction": "OVER",
+    "team": "OVER 22.5",
+    "matchup": "Elena Rybakina @ Iga Swiatek",
+    "odds": -110,
+    "best_odds": -110,
+    "line": 22.5,
+    "model_prob": 0.5213,
+    "implied_prob": 0.481,
+    "edge_pct": 4.04,
+    "sportsbook": "Caesars"
+  }
+]
