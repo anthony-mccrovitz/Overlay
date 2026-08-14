@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-14T12:26:11.912577+00:00",
+  "updated_at": "2026-08-14T14:21:03.430021+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -299,9 +299,9 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.256,
-      "positive_pct": 39.7,
-      "n": 2977,
+      "avg_clv_pct": -0.241,
+      "positive_pct": 39.9,
+      "n": 2995,
       "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
     },
     "spread_total": {
@@ -328,44 +328,44 @@
       },
       "pitcher_strikeouts": {
         "count": 1006,
-        "avg_line_clv": 0.033,
+        "avg_line_clv": 0.034,
         "beat_close_pct": 59.2,
         "avg_price_clv_pct": 1.048,
         "matched_price_n": 729
       },
       "batter_walks": {
         "count": 1429,
-        "avg_line_clv": 0.008,
-        "beat_close_pct": 52.9,
-        "avg_price_clv_pct": 0.925,
-        "matched_price_n": 1417
+        "avg_line_clv": 0.01,
+        "beat_close_pct": 53.2,
+        "avg_price_clv_pct": 1.0,
+        "matched_price_n": 1418
       },
       "batter_rbis": {
         "count": 1200,
-        "avg_line_clv": 0.006,
+        "avg_line_clv": 0.007,
         "beat_close_pct": 44.8,
-        "avg_price_clv_pct": 0.679,
-        "matched_price_n": 1190
+        "avg_price_clv_pct": 0.701,
+        "matched_price_n": 1191
       },
       "batter_hits": {
         "count": 1984,
         "avg_line_clv": 0.009,
-        "beat_close_pct": 54.4,
-        "avg_price_clv_pct": 1.327,
-        "matched_price_n": 1793
+        "beat_close_pct": 54.5,
+        "avg_price_clv_pct": 1.337,
+        "matched_price_n": 1792
       },
       "batter_home_runs": {
         "count": 1768,
         "avg_line_clv": 0.016,
         "beat_close_pct": 36.9,
-        "avg_price_clv_pct": 0.514,
-        "matched_price_n": 1738
+        "avg_price_clv_pct": 0.499,
+        "matched_price_n": 1739
       },
       "batter_total_bases": {
         "count": 1470,
         "avg_line_clv": 0.221,
         "beat_close_pct": 64.1,
-        "avg_price_clv_pct": 0.958,
+        "avg_price_clv_pct": 0.942,
         "matched_price_n": 1072
       },
       "prop": {
