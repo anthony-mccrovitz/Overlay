@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14T08:10:49.933127+00:00",
+  "generated_at": "2026-08-14T14:06:34.156379+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -19,81 +19,95 @@
   "gates": [
     {
       "gate": "SAMPLE",
-      "have": 285,
+      "have": 300,
       "need": 300,
-      "pass": false,
-      "detail": "285 scored of 471 logged (protocol v1)"
+      "pass": true,
+      "detail": "300 scored of 486 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
-      "have": 592,
+      "have": 783,
       "need": 200,
       "pass": false,
-      "detail": "592 graded sharp-fair picks; worst bucket gap 0.133 vs max 0.05"
+      "detail": "783 graded sharp-fair picks; worst bucket gap 0.116 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 178,
+      "have": 191,
       "need": 100,
       "pass": true,
-      "detail": "178 filled of 462 checked"
+      "detail": "191 filled of 478 checked"
     },
     {
       "gate": "CLV",
-      "have": 0.112,
+      "have": 0.149,
       "need": "> 0",
       "pass": true,
-      "detail": "avg +0.112% over 285 scored"
+      "detail": "avg +0.149% over 300 scored"
     },
     {
       "gate": "DRAWDOWN",
-      "have": 0.402,
+      "have": 0.46,
       "need": "< 0.25",
       "pass": false,
-      "detail": "paper max drawdown 40.2% of bankroll"
+      "detail": "paper max drawdown 46.0% of bankroll"
     }
   ],
   "anchor": {
-    "n": 592,
+    "n": 783,
     "buckets": [
       {
         "bucket": 0.1,
-        "n": 33,
+        "n": 43,
         "predicted": 0.15,
-        "actual": 0.061,
-        "gap": -0.089
+        "actual": 0.116,
+        "gap": -0.034
       },
       {
         "bucket": 0.2,
-        "n": 77,
+        "n": 97,
         "predicted": 0.25,
-        "actual": 0.117,
-        "gap": -0.133
+        "actual": 0.134,
+        "gap": -0.116
       },
       {
         "bucket": 0.3,
-        "n": 66,
+        "n": 123,
         "predicted": 0.35,
-        "actual": 0.364,
-        "gap": 0.014
+        "actual": 0.382,
+        "gap": 0.032
       },
       {
         "bucket": 0.4,
-        "n": 202,
+        "n": 250,
         "predicted": 0.45,
-        "actual": 0.51,
-        "gap": 0.06
+        "actual": 0.484,
+        "gap": 0.034
       },
       {
         "bucket": 0.5,
-        "n": 175,
+        "n": 200,
         "predicted": 0.55,
-        "actual": 0.554,
-        "gap": 0.004
+        "actual": 0.555,
+        "gap": 0.005
+      },
+      {
+        "bucket": 0.6,
+        "n": 41,
+        "predicted": 0.65,
+        "actual": 0.537,
+        "gap": -0.113
+      },
+      {
+        "bucket": 0.7,
+        "n": 26,
+        "predicted": 0.75,
+        "actual": 0.769,
+        "gap": 0.019
       }
     ],
-    "worst_gap": 0.133
+    "worst_gap": 0.116
   },
-  "n_logged": 471,
-  "n_scored": 285
+  "n_logged": 486,
+  "n_scored": 300
 }
