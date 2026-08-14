@@ -1,0 +1,98 @@
+{
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "OVER",
+      "player": "Zac Veen",
+      "team": "Zac Veen OVER 0.5",
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "line": 0.5,
+      "odds": 220,
+      "model_prob": 0.8946,
+      "implied_prob": 0.2804,
+      "edge_pct": 61.42,
+      "model_mu": 8.49,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "OVER",
+      "player": "Zac Veen",
+      "team": "Zac Veen OVER 1.5",
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "line": 1.5,
+      "odds": 195,
+      "model_prob": 0.8225,
+      "implied_prob": 0.3161,
+      "edge_pct": 50.64,
+      "model_mu": 6.58,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Zac Veen",
+      "team": "Zac Veen OVER 0.5",
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "line": 0.5,
+      "odds": -155,
+      "model_prob": 1.0,
+      "implied_prob": 0.5427,
+      "edge_pct": 45.73,
+      "model_mu": 1.1905578256226154e+65,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Grayson Rodriguez",
+      "team": "Grayson Rodriguez UNDER 5.5",
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "line": 5.5,
+      "odds": -165,
+      "model_prob": 0.7736,
+      "implied_prob": 0.5546,
+      "edge_pct": 21.89,
+      "model_mu": 3.99,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Brandon Nimmo",
+      "team": "Brandon Nimmo UNDER 1.5",
+      "matchup": "Texas Rangers @ Los Angeles Angels",
+      "line": 1.5,
+      "odds": -575,
+      "model_prob": 0.9499,
+      "implied_prob": 0.7836,
+      "edge_pct": 16.64,
+      "model_mu": 0.35,
+      "sportsbook": "Fanatics"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Ben Rice",
+      "team": "Ben Rice UNDER 0.5",
+      "matchup": "New York Yankees @ Toronto Blue Jays",
+      "line": 0.5,
+      "odds": -625,
+      "model_prob": 0.8655,
+      "implied_prob": 0.7795,
+      "edge_pct": 8.6,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
