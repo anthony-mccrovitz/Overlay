@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-13T19:47:06.446027+00:00",
+  "generated_at": "2026-08-14T03:14:54.539986+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 83.33,
-  "n_settled": 31,
-  "n_pending": 715,
-  "wins": 10,
-  "losses": 21,
-  "staked": 121.69,
-  "pnl": -28.67,
-  "expected_pnl": 4.97,
-  "roi_pct": -23.56,
-  "max_drawdown": 43.52,
+  "end_bankroll": 88.9,
+  "n_settled": 34,
+  "n_pending": 730,
+  "wins": 12,
+  "losses": 22,
+  "staked": 131.6,
+  "pnl": -23.1,
+  "expected_pnl": 5.35,
+  "roi_pct": -17.55,
+  "max_drawdown": 45.0,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 101,
-    "exposure cap reached for the slate": 541,
+    "exposure cap reached for the slate": 550,
     "not settled yet": 45,
-    "resting order never filled": 28
+    "resting order never filled": 34
   },
   "significance": {
-    "mean_edge_per_unit": 0.0407,
-    "sd_per_unit": 1.4695,
-    "n_for_2sigma": 5225
+    "mean_edge_per_unit": 0.0404,
+    "sd_per_unit": 1.4616,
+    "n_for_2sigma": 5229
   },
   "rows": [
     {
@@ -518,6 +518,54 @@
       "pnl": -3.47,
       "expected_pnl": 0.135,
       "equity": 83.33
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260813_los-angeles-sparks_g-losspa-newlib_moneyline_win",
+      "date": "2026-08-13",
+      "team": "Los Angeles Sparks",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.24,
+      "fair": 0.2488,
+      "stake": 3.33,
+      "shares": 13.88,
+      "result": "loss",
+      "pnl": -3.33,
+      "expected_pnl": 0.122,
+      "equity": 80.0
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260813_seattle-mariners_g-seamar-newyan_moneyline_win",
+      "date": "2026-08-13",
+      "team": "Seattle Mariners",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.42,
+      "fair": 0.4395,
+      "stake": 3.2,
+      "shares": 7.62,
+      "result": "win",
+      "pnl": 4.42,
+      "expected_pnl": 0.149,
+      "equity": 84.42
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260813_cincinnati-reds_g-cinred-chisox_moneyline_win",
+      "date": "2026-08-13",
+      "team": "Cincinnati Reds",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.43,
+      "fair": 0.4433,
+      "stake": 3.38,
+      "shares": 7.86,
+      "result": "win",
+      "pnl": 4.48,
+      "expected_pnl": 0.105,
+      "equity": 88.9
     }
   ]
 }
