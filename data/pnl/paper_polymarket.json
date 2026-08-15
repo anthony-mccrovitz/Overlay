@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-15T02:08:24.571775+00:00",
+  "generated_at": "2026-08-15T07:20:07.145107+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 79.8,
-  "n_settled": 44,
-  "n_pending": 796,
-  "wins": 14,
+  "end_bankroll": 84.21,
+  "n_settled": 45,
+  "n_pending": 829,
+  "wins": 15,
   "losses": 30,
-  "staked": 168.77,
-  "pnl": -32.2,
-  "expected_pnl": 6.97,
-  "roi_pct": -19.08,
+  "staked": 171.96,
+  "pnl": -27.79,
+  "expected_pnl": 7.21,
+  "roi_pct": -16.16,
   "max_drawdown": 51.56,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 107,
-    "exposure cap reached for the slate": 624,
-    "not settled yet": 27,
+    "exposure cap reached for the slate": 658,
+    "not settled yet": 26,
     "resting order never filled": 38
   },
   "significance": {
-    "mean_edge_per_unit": 0.0413,
-    "sd_per_unit": 1.4707,
-    "n_for_2sigma": 5078
+    "mean_edge_per_unit": 0.042,
+    "sd_per_unit": 1.4643,
+    "n_for_2sigma": 4858
   },
   "rows": [
     {
@@ -726,6 +726,22 @@
       "pnl": -3.32,
       "expected_pnl": 0.102,
       "equity": 79.8
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260814_portland-fire_g-porfir-seasto_moneyline_win",
+      "date": "2026-08-14",
+      "team": "Portland Fire",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.42,
+      "fair": 0.4513,
+      "stake": 3.19,
+      "shares": 7.6,
+      "result": "win",
+      "pnl": 4.41,
+      "expected_pnl": 0.238,
+      "equity": 84.21
     }
   ]
 }
