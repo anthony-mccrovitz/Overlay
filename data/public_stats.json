@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-15T12:59:15.127216+00:00",
+  "updated_at": "2026-08-15T13:40:07.142789+00:00",
   "algo_status": {
     "nba_total": {
       "status": "live",
@@ -299,18 +299,18 @@
   },
   "clv": {
     "moneyline": {
-      "avg_clv_pct": -0.12,
-      "positive_pct": 41.4,
-      "n": 3081,
+      "avg_clv_pct": -0.123,
+      "positive_pct": 41.5,
+      "n": 3098,
       "verdict": "NEUTRAL \u2014 moneyline roughly matches closing line efficiency"
     },
     "spread_total": {
       "spread": {
-        "count": 341,
+        "count": 342,
         "avg_line_clv": -0.117,
-        "beat_close_pct": 38.1,
-        "avg_price_clv_pct": -1.745,
-        "matched_price_n": 248
+        "beat_close_pct": 38.3,
+        "avg_price_clv_pct": -1.722,
+        "matched_price_n": 249
       },
       "total": {
         "count": 457,
@@ -335,10 +335,10 @@
       },
       "batter_walks": {
         "count": 1429,
-        "avg_line_clv": 0.007,
+        "avg_line_clv": 0.008,
         "beat_close_pct": 52.9,
-        "avg_price_clv_pct": 0.939,
-        "matched_price_n": 1416
+        "avg_price_clv_pct": 0.925,
+        "matched_price_n": 1417
       },
       "batter_rbis": {
         "count": 1200,
@@ -349,23 +349,23 @@
       },
       "batter_hits": {
         "count": 1984,
-        "avg_line_clv": 0.008,
+        "avg_line_clv": 0.009,
         "beat_close_pct": 54.4,
-        "avg_price_clv_pct": 1.308,
-        "matched_price_n": 1792
+        "avg_price_clv_pct": 1.327,
+        "matched_price_n": 1793
       },
       "batter_home_runs": {
         "count": 1833,
-        "avg_line_clv": 0.019,
+        "avg_line_clv": 0.016,
         "beat_close_pct": 38.6,
-        "avg_price_clv_pct": 0.438,
-        "matched_price_n": 1797
+        "avg_price_clv_pct": 0.51,
+        "matched_price_n": 1803
       },
       "batter_total_bases": {
         "count": 1470,
         "avg_line_clv": 0.221,
         "beat_close_pct": 64.1,
-        "avg_price_clv_pct": 0.942,
+        "avg_price_clv_pct": 0.958,
         "matched_price_n": 1072
       },
       "prop": {
@@ -382,9 +382,9 @@
       "pct": 61.8
     },
     "spread_coverage": {
-      "scored": 341,
-      "scoreable": 549,
-      "pct": 62.1
+      "scored": 342,
+      "scoreable": 550,
+      "pct": 62.2
     }
   },
   "summary": {
