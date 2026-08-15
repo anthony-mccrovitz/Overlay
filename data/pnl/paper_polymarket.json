@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-14T19:40:37.115758+00:00",
+  "generated_at": "2026-08-15T02:08:24.571775+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 83.12,
-  "n_settled": 43,
-  "n_pending": 787,
+  "end_bankroll": 79.8,
+  "n_settled": 44,
+  "n_pending": 796,
   "wins": 14,
-  "losses": 29,
-  "staked": 165.45,
-  "pnl": -28.88,
-  "expected_pnl": 6.87,
-  "roi_pct": -17.46,
+  "losses": 30,
+  "staked": 168.77,
+  "pnl": -32.2,
+  "expected_pnl": 6.97,
+  "roi_pct": -19.08,
   "max_drawdown": 51.56,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 107,
-    "exposure cap reached for the slate": 615,
+    "exposure cap reached for the slate": 624,
     "not settled yet": 27,
     "resting order never filled": 38
   },
   "significance": {
-    "mean_edge_per_unit": 0.0415,
-    "sd_per_unit": 1.4699,
-    "n_for_2sigma": 5012
+    "mean_edge_per_unit": 0.0413,
+    "sd_per_unit": 1.4707,
+    "n_for_2sigma": 5078
   },
   "rows": [
     {
@@ -710,6 +710,22 @@
       "pnl": 4.19,
       "expected_pnl": 0.098,
       "equity": 83.12
+    },
+    {
+      "pick_id": "polymarket_ev__wnba_20260814_dallas-wings_g-dalwin-indfev_moneyline_win",
+      "date": "2026-08-14",
+      "team": "Dallas Wings",
+      "sport": "wnba",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.31,
+      "fair": 0.3195,
+      "stake": 3.32,
+      "shares": 10.71,
+      "result": "loss",
+      "pnl": -3.32,
+      "expected_pnl": 0.102,
+      "equity": 79.8
     }
   ]
 }
