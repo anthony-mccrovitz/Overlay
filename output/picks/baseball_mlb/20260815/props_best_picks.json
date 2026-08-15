@@ -1,0 +1,98 @@
+{
+  "batter_hits": [
+    {
+      "market": "batter_hits",
+      "direction": "OVER",
+      "player": "Zac Veen",
+      "team": "Zac Veen OVER 0.5",
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "line": 0.5,
+      "odds": -120,
+      "model_prob": 1.0,
+      "implied_prob": 0.4954,
+      "edge_pct": 50.46,
+      "model_mu": 7.477882609101074e+64,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "batter_total_bases": [
+    {
+      "market": "batter_total_bases",
+      "direction": "UNDER",
+      "player": "Michael Massey",
+      "team": "Michael Massey UNDER 4.5",
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "line": 4.5,
+      "odds": -180,
+      "model_prob": 0.9505,
+      "implied_prob": 0.5912,
+      "edge_pct": 35.93,
+      "model_mu": 1.34,
+      "sportsbook": "Hard Rock Bet (OH)"
+    }
+  ],
+  "batter_rbis": [
+    {
+      "market": "batter_rbis",
+      "direction": "UNDER",
+      "player": "Jac Caglianone",
+      "team": "Jac Caglianone UNDER 2.5",
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "line": 2.5,
+      "odds": -300,
+      "model_prob": 0.9675,
+      "implied_prob": 0.6992,
+      "edge_pct": 26.83,
+      "model_mu": 0.47,
+      "sportsbook": "Hard Rock Bet"
+    }
+  ],
+  "batter_walks": [
+    {
+      "market": "batter_walks",
+      "direction": "UNDER",
+      "player": "Jake Bauers",
+      "team": "Jake Bauers UNDER 1.5",
+      "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+      "line": 1.5,
+      "odds": -220,
+      "model_prob": 0.9506,
+      "implied_prob": 0.6275,
+      "edge_pct": 32.31,
+      "model_mu": 0.35,
+      "sportsbook": "Fliff"
+    }
+  ],
+  "pitcher_strikeouts": [
+    {
+      "market": "pitcher_strikeouts",
+      "direction": "UNDER",
+      "player": "Yoshinobu Yamamoto",
+      "team": "Yoshinobu Yamamoto UNDER 7.5",
+      "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+      "line": 7.5,
+      "odds": -135,
+      "model_prob": 0.8215,
+      "implied_prob": 0.5347,
+      "edge_pct": 28.68,
+      "model_mu": 5.21,
+      "sportsbook": "DraftKings"
+    }
+  ],
+  "batter_home_runs": [
+    {
+      "market": "batter_home_runs",
+      "direction": "UNDER",
+      "player": "Michael Massey",
+      "team": "Michael Massey UNDER 1.5",
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "line": 1.5,
+      "odds": -3260,
+      "model_prob": 0.9913,
+      "implied_prob": 0.911,
+      "edge_pct": 8.03,
+      "model_mu": 0.14,
+      "sportsbook": "Fliff"
+    }
+  ]
+}
