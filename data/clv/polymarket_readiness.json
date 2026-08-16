@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-15T19:05:50.240538+00:00",
+  "generated_at": "2026-08-16T02:14:02.945992+00:00",
   "protocol": {
     "protocol_version": "v1",
     "min_ev_pct": 2.0,
@@ -19,31 +19,31 @@
   "gates": [
     {
       "gate": "SAMPLE",
-      "have": 324,
+      "have": 322,
       "need": 300,
       "pass": true,
-      "detail": "324 scored of 587 logged (protocol v1)"
+      "detail": "322 scored of 587 logged (protocol v1)"
     },
     {
       "gate": "ANCHOR",
-      "have": 793,
+      "have": 802,
       "need": 200,
       "pass": false,
-      "detail": "793 graded sharp-fair picks; worst bucket gap 0.126 vs max 0.05"
+      "detail": "802 graded sharp-fair picks; worst bucket gap 0.126 vs max 0.05"
     },
     {
       "gate": "FILLS",
-      "have": 223,
+      "have": 224,
       "need": 100,
       "pass": true,
-      "detail": "223 filled of 578 checked"
+      "detail": "224 filled of 579 checked"
     },
     {
       "gate": "CLV",
-      "have": 0.497,
+      "have": 0.508,
       "need": "> 0",
       "pass": true,
-      "detail": "avg +0.497% over 324 scored"
+      "detail": "avg +0.508% over 322 scored"
     },
     {
       "gate": "DRAWDOWN",
@@ -54,7 +54,7 @@
     }
   ],
   "anchor": {
-    "n": 793,
+    "n": 802,
     "buckets": [
       {
         "bucket": 0.1,
@@ -72,24 +72,24 @@
       },
       {
         "bucket": 0.3,
-        "n": 123,
+        "n": 127,
         "predicted": 0.35,
-        "actual": 0.382,
-        "gap": 0.032
+        "actual": 0.37,
+        "gap": 0.02
       },
       {
         "bucket": 0.4,
-        "n": 255,
+        "n": 259,
         "predicted": 0.45,
-        "actual": 0.49,
-        "gap": 0.04
+        "actual": 0.494,
+        "gap": 0.044
       },
       {
         "bucket": 0.5,
-        "n": 204,
+        "n": 205,
         "predicted": 0.55,
-        "actual": 0.549,
-        "gap": -0.001
+        "actual": 0.546,
+        "gap": -0.004
       },
       {
         "bucket": 0.6,
@@ -109,5 +109,5 @@
     "worst_gap": 0.126
   },
   "n_logged": 587,
-  "n_scored": 324
+  "n_scored": 322
 }
