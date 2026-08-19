@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-19T13:33:36.876897+00:00",
+  "generated_at": "2026-08-19T19:10:58.312817+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 85.98,
-  "n_settled": 42,
-  "n_pending": 874,
+  "end_bankroll": 89.55,
+  "n_settled": 41,
+  "n_pending": 875,
   "wins": 14,
-  "losses": 28,
-  "staked": 160.96,
-  "pnl": -26.02,
-  "expected_pnl": 6.55,
-  "roi_pct": -16.17,
-  "max_drawdown": 49.98,
+  "losses": 27,
+  "staked": 158.65,
+  "pnl": -22.45,
+  "expected_pnl": 6.42,
+  "roi_pct": -14.15,
+  "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 700,
-    "resting order never filled": 41,
+    "resting order never filled": 42,
     "not settled yet": 25
   },
   "significance": {
-    "mean_edge_per_unit": 0.0405,
-    "sd_per_unit": 1.4572,
-    "n_for_2sigma": 5170
+    "mean_edge_per_unit": 0.0403,
+    "sd_per_unit": 1.443,
+    "n_for_2sigma": 5125
   },
   "rows": [
     {
@@ -568,22 +568,6 @@
       "equity": 81.05
     },
     {
-      "pick_id": "polymarket_ev__wnba_20260812_chicago-sky_g-chisky-golval_moneyline_win",
-      "date": "2026-08-12",
-      "team": "Chicago Sky",
-      "sport": "wnba",
-      "mode": "make",
-      "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.2,
-      "fair": 0.2099,
-      "stake": 3.24,
-      "shares": 16.2,
-      "result": "loss",
-      "pnl": -3.24,
-      "expected_pnl": 0.16,
-      "equity": 77.81
-    },
-    {
       "pick_id": "polymarket_ev__mlb_20260812_colorado-rockies_g-colroc-aridia_moneyline_win",
       "date": "2026-08-12",
       "team": "Colorado Rockies",
@@ -592,12 +576,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.38,
       "fair": 0.3884,
-      "stake": 3.11,
-      "shares": 8.18,
+      "stake": 3.24,
+      "shares": 8.53,
       "result": "win",
-      "pnl": 5.07,
-      "expected_pnl": 0.069,
-      "equity": 82.88
+      "pnl": 5.29,
+      "expected_pnl": 0.072,
+      "equity": 86.34
     },
     {
       "pick_id": "polymarket_ev__mlb_20260812_seattle-mariners_g-seamar-newyan_moneyline_win",
@@ -608,12 +592,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.45,
       "fair": 0.4675,
-      "stake": 3.32,
-      "shares": 7.38,
+      "stake": 3.45,
+      "shares": 7.67,
       "result": "loss",
-      "pnl": -3.32,
-      "expected_pnl": 0.129,
-      "equity": 79.56
+      "pnl": -3.45,
+      "expected_pnl": 0.134,
+      "equity": 82.89
     },
     {
       "pick_id": "polymarket_ev__wnba_20260813_los-angeles-sparks_g-losspa-newlib_moneyline_win",
@@ -624,12 +608,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.24,
       "fair": 0.2488,
-      "stake": 3.18,
-      "shares": 13.25,
+      "stake": 3.32,
+      "shares": 13.83,
       "result": "loss",
-      "pnl": -3.18,
-      "expected_pnl": 0.117,
-      "equity": 76.38
+      "pnl": -3.32,
+      "expected_pnl": 0.122,
+      "equity": 79.57
     },
     {
       "pick_id": "polymarket_ev__mlb_20260813_seattle-mariners_g-seamar-newyan_moneyline_win",
@@ -640,12 +624,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.42,
       "fair": 0.4395,
-      "stake": 3.06,
-      "shares": 7.29,
+      "stake": 3.18,
+      "shares": 7.57,
       "result": "win",
-      "pnl": 4.23,
-      "expected_pnl": 0.142,
-      "equity": 80.61
+      "pnl": 4.39,
+      "expected_pnl": 0.148,
+      "equity": 83.96
     },
     {
       "pick_id": "polymarket_ev__mlb_20260813_cincinnati-reds_g-cinred-chisox_moneyline_win",
@@ -656,12 +640,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.43,
       "fair": 0.4433,
-      "stake": 3.22,
-      "shares": 7.49,
+      "stake": 3.36,
+      "shares": 7.81,
       "result": "win",
-      "pnl": 4.27,
-      "expected_pnl": 0.1,
-      "equity": 84.88
+      "pnl": 4.45,
+      "expected_pnl": 0.104,
+      "equity": 88.41
     },
     {
       "pick_id": "polymarket_ev__wnba_20260814_dallas-wings_g-dalwin-indfev_moneyline_win",
@@ -672,12 +656,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.31,
       "fair": 0.3195,
-      "stake": 3.4,
-      "shares": 10.97,
+      "stake": 3.54,
+      "shares": 11.42,
       "result": "loss",
-      "pnl": -3.4,
-      "expected_pnl": 0.104,
-      "equity": 81.48
+      "pnl": -3.54,
+      "expected_pnl": 0.108,
+      "equity": 84.87
     },
     {
       "pick_id": "polymarket_ev__wnba_20260814_portland-fire_g-porfir-seasto_moneyline_win",
@@ -688,12 +672,12 @@
       "confidence": "low \u2014 maker fill is an upper-bound estimate",
       "cost": 0.42,
       "fair": 0.4513,
-      "stake": 3.26,
-      "shares": 7.76,
+      "stake": 3.39,
+      "shares": 8.07,
       "result": "win",
-      "pnl": 4.5,
-      "expected_pnl": 0.243,
-      "equity": 85.98
+      "pnl": 4.68,
+      "expected_pnl": 0.253,
+      "equity": 89.55
     }
   ]
 }
