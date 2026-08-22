@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-08-22T07:22:13.060415+00:00",
+  "generated_at": "2026-08-22T13:23:06.891159+00:00",
   "summary": {
-    "n": 154,
-    "n_filled": 60,
-    "fill_rate_pct": 39.0,
-    "claimed_ev_filled": 5.66,
-    "claimed_ev_unfilled": 5.02,
-    "mean_post_fill_drift": -0.0086,
-    "median_minutes_to_fill": 1400.7
+    "n": 150,
+    "n_filled": 53,
+    "fill_rate_pct": 35.3,
+    "claimed_ev_filled": 5.82,
+    "claimed_ev_unfilled": 5.03,
+    "mean_post_fill_drift": -0.0096,
+    "median_minutes_to_fill": 1760.8
   },
   "rows": [
     {
@@ -19,10 +19,10 @@
       "fair_at_entry": 0.2507,
       "claimed_ev_pct": 4.47,
       "filled": true,
-      "minutes_to_fill": 3264.7,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.255,
       "post_fill_drift": 0.015,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_kau-fernandes_g-kaufer-jaltur_moneyline_win",
@@ -36,7 +36,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.485,
       "post_fill_drift": null,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_tresean-gore_g-tregor-vicluq_moneyline_win",
@@ -47,10 +47,10 @@
       "fair_at_entry": 0.5378,
       "claimed_ev_pct": 5.46,
       "filled": true,
-      "minutes_to_fill": 3134.6,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.495,
       "post_fill_drift": -0.015,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_neil-magny_g-rambra-neimag_moneyline_win",
@@ -61,10 +61,10 @@
       "fair_at_entry": 0.4521,
       "claimed_ev_pct": 2.75,
       "filled": true,
-      "minutes_to_fill": 3134.6,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.415,
       "post_fill_drift": -0.025,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_eric-mcconico_g-erimcc-donjoh_moneyline_win",
@@ -75,10 +75,10 @@
       "fair_at_entry": 0.3047,
       "claimed_ev_pct": 8.81,
       "filled": true,
-      "minutes_to_fill": 3134.6,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.245,
       "post_fill_drift": -0.035,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260815_fluminense_g-palmei-flumin_moneyline_win",
@@ -89,10 +89,10 @@
       "fair_at_entry": 0.3398,
       "claimed_ev_pct": 2.97,
       "filled": true,
-      "minutes_to_fill": 3134.6,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.315,
       "post_fill_drift": -0.015,
-      "n_ticks": 72
+      "n_ticks": 36
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260815_palmeiras_g-palmei-flumin_moneyline_win",
@@ -106,7 +106,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.375,
       "post_fill_drift": null,
-      "n_ticks": 72
+      "n_ticks": 36
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260815_coritiba_g-coriti-saopau_moneyline_win",
@@ -117,52 +117,10 @@
       "fair_at_entry": 0.2005,
       "claimed_ev_pct": 11.36,
       "filled": true,
-      "minutes_to_fill": 3134.6,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.165,
       "post_fill_drift": -0.015,
-      "n_ticks": 99
-    },
-    {
-      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260815_fc-anyang_g-fcany-jejfc_moneyline_win",
-      "team": "FC Anyang",
-      "sport": "soccer_korea_kleague1",
-      "date": "2026-08-15",
-      "limit": 0.29,
-      "fair_at_entry": 0.2996,
-      "claimed_ev_pct": 3.33,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.335,
-      "post_fill_drift": null,
-      "n_ticks": 18
-    },
-    {
-      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260815_daejeon-citizen_g-daecit-fcseo_moneyline_win",
-      "team": "Daejeon Citizen",
-      "sport": "soccer_korea_kleague1",
-      "date": "2026-08-15",
-      "limit": 0.24,
-      "fair_at_entry": 0.2476,
-      "claimed_ev_pct": 3.15,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.315,
-      "post_fill_drift": null,
-      "n_ticks": 18
-    },
-    {
-      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260815_gwangju-fc_g-pohste-gwafc_moneyline_win",
-      "team": "Gwangju FC",
-      "sport": "soccer_korea_kleague1",
-      "date": "2026-08-15",
-      "limit": 0.21,
-      "fair_at_entry": 0.2222,
-      "claimed_ev_pct": 5.8,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.275,
-      "post_fill_drift": null,
-      "n_ticks": 18
+      "n_ticks": 63
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_d-c-united_g-dcuni-cfmon_moneyline_win",
@@ -176,7 +134,7 @@
       "minutes_to_fill": 3624.7,
       "price_at_kickoff": 0.305,
       "post_fill_drift": 0.005,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_toronto-fc_g-newrev-torfc_moneyline_win",
@@ -190,7 +148,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.435,
       "post_fill_drift": null,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_new-england-revolution_g-newrev-torfc_moneyline_win",
@@ -201,10 +159,10 @@
       "fair_at_entry": 0.2978,
       "claimed_ev_pct": 2.68,
       "filled": true,
-      "minutes_to_fill": 3134.7,
+      "minutes_to_fill": 3494.7,
       "price_at_kickoff": 0.305,
       "post_fill_drift": 0.015,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_orlando-city-sc_g-fccin-orlsc_moneyline_win",
@@ -218,7 +176,7 @@
       "minutes_to_fill": 3624.7,
       "price_at_kickoff": 0.375,
       "post_fill_drift": -0.055,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_inter-miami-cf_g-intcf-nassc_moneyline_win",
@@ -232,7 +190,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.365,
       "post_fill_drift": null,
-      "n_ticks": 102
+      "n_ticks": 66
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_houston-dynamo_g-lagal-houdyn_moneyline_win",
@@ -246,7 +204,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.585,
       "post_fill_drift": null,
-      "n_ticks": 102
+      "n_ticks": 66
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_sporting-kansas-city_g-spocit-colrap_moneyline_win",
@@ -260,7 +218,7 @@
       "minutes_to_fill": 3504.6,
       "price_at_kickoff": 0.145,
       "post_fill_drift": -0.005,
-      "n_ticks": 108
+      "n_ticks": 72
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_st-louis-city-sc_g-stsc-sanear_moneyline_win",
@@ -274,7 +232,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.305,
       "post_fill_drift": null,
-      "n_ticks": 114
+      "n_ticks": 78
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_san-diego-fc_g-sanfc-losfc_moneyline_win",
@@ -288,7 +246,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.195,
       "post_fill_drift": null,
-      "n_ticks": 114
+      "n_ticks": 78
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_dustin-stoltzfus_g-dussto-manabd_moneyline_win",
@@ -299,24 +257,10 @@
       "fair_at_entry": 0.1655,
       "claimed_ev_pct": 3.41,
       "filled": true,
-      "minutes_to_fill": 2837.2,
+      "minutes_to_fill": 3197.3,
       "price_at_kickoff": 0.155,
       "post_fill_drift": -0.005,
-      "n_ticks": 81
-    },
-    {
-      "pick_id": "polymarket_ev__soccer_korea_kleague1_20260815_pohang-steelers_g-pohste-gwafc_moneyline_win",
-      "team": "Pohang Steelers",
-      "sport": "soccer_korea_kleague1",
-      "date": "2026-08-15",
-      "limit": 0.5,
-      "fair_at_entry": 0.5143,
-      "claimed_ev_pct": 2.85,
-      "filled": true,
-      "minutes_to_fill": 2837.2,
-      "price_at_kickoff": 0.415,
-      "post_fill_drift": -0.085,
-      "n_ticks": 18
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_mackenzie-dern_g-gilrob-macder_moneyline_win",
@@ -330,7 +274,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.645,
       "post_fill_drift": null,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_lucas-fernando_g-lucfer-raftob_moneyline_win",
@@ -344,7 +288,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.705,
       "post_fill_drift": null,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_ramiz-brahimaj_g-rambra-neimag_moneyline_win",
@@ -358,7 +302,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.585,
       "post_fill_drift": null,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__wnba_20260815_connecticut-sun_g-newlib-consun_moneyline_win",
@@ -372,7 +316,7 @@
       "minutes_to_fill": 2096.5,
       "price_at_kickoff": 0.215,
       "post_fill_drift": 0.005,
-      "n_ticks": 57
+      "n_ticks": 21
     },
     {
       "pick_id": "polymarket_ev__wnba_20260815_los-angeles-sparks_g-losspa-wasmys_moneyline_win",
@@ -386,7 +330,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.275,
       "post_fill_drift": null,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__wnba_20260815_las-vegas-aces_g-minlyn-lasace_moneyline_win",
@@ -397,10 +341,10 @@
       "fair_at_entry": 0.4837,
       "claimed_ev_pct": 2.92,
       "filled": true,
-      "minutes_to_fill": 1696.5,
+      "minutes_to_fill": 2056.6,
       "price_at_kickoff": 0.445,
       "post_fill_drift": -0.025,
-      "n_ticks": 99
+      "n_ticks": 63
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_atlanta-united-fc_g-newbul-atlfc_moneyline_win",
@@ -411,10 +355,10 @@
       "fair_at_entry": 0.4939,
       "claimed_ev_pct": 2.9,
       "filled": true,
-      "minutes_to_fill": 1696.5,
+      "minutes_to_fill": 2056.5,
       "price_at_kickoff": 0.455,
       "post_fill_drift": -0.025,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260816_gr-mio_g-grmio-atlmin_moneyline_win",
@@ -425,10 +369,10 @@
       "fair_at_entry": 0.2164,
       "claimed_ev_pct": 8.22,
       "filled": true,
-      "minutes_to_fill": 1696.4,
+      "minutes_to_fill": 3786.4,
       "price_at_kickoff": 0.185,
       "post_fill_drift": -0.015,
-      "n_ticks": 213
+      "n_ticks": 177
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260816_bahia_g-bahia-chapec_moneyline_win",
@@ -442,7 +386,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.455,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260816_santos_g-santos-vasgam_moneyline_win",
@@ -456,7 +400,7 @@
       "minutes_to_fill": 3716.4,
       "price_at_kickoff": 0.225,
       "post_fill_drift": -0.005,
-      "n_ticks": 213
+      "n_ticks": 177
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260816_mirassol_g-flamen-mirass_moneyline_win",
@@ -470,7 +414,7 @@
       "minutes_to_fill": 3936.4,
       "price_at_kickoff": 0.205,
       "post_fill_drift": -0.005,
-      "n_ticks": 228
+      "n_ticks": 192
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260816_botafogo_g-botafo-vitori_moneyline_win",
@@ -484,7 +428,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.285,
       "post_fill_drift": null,
-      "n_ticks": 228
+      "n_ticks": 192
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260816_bucheon-fc-1995_g-jeomot-buc199_moneyline_win",
@@ -495,10 +439,10 @@
       "fair_at_entry": 0.209,
       "claimed_ev_pct": 4.52,
       "filled": true,
-      "minutes_to_fill": 1696.3,
+      "minutes_to_fill": 2986.4,
       "price_at_kickoff": 0.205,
       "post_fill_drift": 0.005,
-      "n_ticks": 162
+      "n_ticks": 126
     },
     {
       "pick_id": "polymarket_ev__soccer_korea_kleague1_20260816_gangwon-fc_g-ganfc-ulsfc_moneyline_win",
@@ -512,7 +456,7 @@
       "minutes_to_fill": 2156.4,
       "price_at_kickoff": 0.315,
       "post_fill_drift": -0.035,
-      "n_ticks": 162
+      "n_ticks": 126
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260816_philadelphia-union_g-phiuni-newfc_moneyline_win",
@@ -526,7 +470,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.415,
       "post_fill_drift": null,
-      "n_ticks": 231
+      "n_ticks": 195
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260816_portland-timbers_g-portim-chifir_moneyline_win",
@@ -540,7 +484,7 @@
       "minutes_to_fill": 2666.4,
       "price_at_kickoff": 0.195,
       "post_fill_drift": 0.025,
-      "n_ticks": 231
+      "n_ticks": 195
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260816_austin-fc_g-fcdal-ausfc_moneyline_win",
@@ -551,10 +495,10 @@
       "fair_at_entry": 0.3404,
       "claimed_ev_pct": 3.14,
       "filled": true,
-      "minutes_to_fill": 1696.3,
+      "minutes_to_fill": 2056.4,
       "price_at_kickoff": 0.325,
       "post_fill_drift": -0.005,
-      "n_ticks": 246
+      "n_ticks": 210
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_kamilla-rakhimova_g-marsak-kamrak_moneyline_win",
@@ -568,7 +512,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.355,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_maria-sakkari_g-marsak-kamrak_moneyline_win",
@@ -582,7 +526,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.645,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_elena-rybakina_g-eleryb-taytow_moneyline_win",
@@ -596,7 +540,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.745,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_zeynep-sonmez_g-amaani-zeyson_moneyline_win",
@@ -607,10 +551,10 @@
       "fair_at_entry": 0.2697,
       "claimed_ev_pct": 17.26,
       "filled": true,
-      "minutes_to_fill": 1400.7,
+      "minutes_to_fill": 1760.8,
       "price_at_kickoff": 0.205,
       "post_fill_drift": -0.025,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_emma-navarro_g-anhkal-emmnav_moneyline_win",
@@ -624,7 +568,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.625,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_lois-boisson_g-belben-loiboi_moneyline_win",
@@ -635,10 +579,10 @@
       "fair_at_entry": 0.2702,
       "claimed_ev_pct": 8.08,
       "filled": true,
-      "minutes_to_fill": 1400.7,
+      "minutes_to_fill": 1760.8,
       "price_at_kickoff": 0.225,
       "post_fill_drift": -0.025,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_belinda-bencic_g-belben-loiboi_moneyline_win",
@@ -652,7 +596,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.775,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_elena-gabriela-ruse_g-elerus-aleeal_moneyline_win",
@@ -663,10 +607,10 @@
       "fair_at_entry": 0.3388,
       "claimed_ev_pct": 5.88,
       "filled": true,
-      "minutes_to_fill": 1600.8,
+      "minutes_to_fill": 1760.8,
       "price_at_kickoff": 0.315,
       "post_fill_drift": -0.005,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_jelena-ostapenko_g-magfre-jelost_moneyline_win",
@@ -676,11 +620,11 @@
       "limit": 0.5,
       "fair_at_entry": 0.5288,
       "claimed_ev_pct": 5.76,
-      "filled": true,
-      "minutes_to_fill": 1400.7,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.505,
-      "post_fill_drift": 0.005,
-      "n_ticks": 39
+      "post_fill_drift": null,
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_tatjana-maria_g-tatmar-diashn_moneyline_win",
@@ -691,10 +635,10 @@
       "fair_at_entry": 0.2678,
       "claimed_ev_pct": 7.13,
       "filled": true,
-      "minutes_to_fill": 1400.7,
+      "minutes_to_fill": 1760.8,
       "price_at_kickoff": 0.245,
       "post_fill_drift": -0.005,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_shuai-zhang_g-kayday-shuzha_moneyline_win",
@@ -708,7 +652,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_matteo-arnaldi_g-matarn-marlan_moneyline_win",
@@ -718,11 +662,11 @@
       "limit": 0.45,
       "fair_at_entry": 0.4657,
       "claimed_ev_pct": 3.49,
-      "filled": true,
-      "minutes_to_fill": 1285.8,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.455,
-      "post_fill_drift": 0.005,
-      "n_ticks": 39
+      "post_fill_drift": null,
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_cameron-norrie_g-camnor-alezve_moneyline_win",
@@ -733,10 +677,10 @@
       "fair_at_entry": 0.2418,
       "claimed_ev_pct": 5.12,
       "filled": true,
-      "minutes_to_fill": 1045.8,
+      "minutes_to_fill": 1405.8,
       "price_at_kickoff": 0.225,
       "post_fill_drift": -0.005,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_denis-shapovalov_g-densha-rafjod_moneyline_win",
@@ -747,10 +691,10 @@
       "fair_at_entry": 0.3172,
       "claimed_ev_pct": 2.31,
       "filled": true,
-      "minutes_to_fill": 1065.8,
+      "minutes_to_fill": 1405.8,
       "price_at_kickoff": 0.305,
       "post_fill_drift": -0.005,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_jan-lennard-struff_g-aletab-janstr_moneyline_win",
@@ -764,7 +708,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.375,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_mariano-navone_g-marnav-aleblo_moneyline_win",
@@ -774,11 +718,11 @@
       "limit": 0.43,
       "fair_at_entry": 0.4394,
       "claimed_ev_pct": 2.2,
-      "filled": true,
-      "minutes_to_fill": 1045.8,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.435,
-      "post_fill_drift": 0.005,
-      "n_ticks": 39
+      "post_fill_drift": null,
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260816_fc-dallas_g-fcdal-ausfc_moneyline_win",
@@ -792,7 +736,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.415,
       "post_fill_drift": null,
-      "n_ticks": 246
+      "n_ticks": 210
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_chicago-white-sox_g-chisox-dettig_moneyline_win",
@@ -806,7 +750,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.425,
       "post_fill_drift": null,
-      "n_ticks": 58
+      "n_ticks": 22
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_st-louis-cardinals_g-stcar-chicub_moneyline_win",
@@ -820,7 +764,7 @@
       "minutes_to_fill": 1231.6,
       "price_at_kickoff": 0.365,
       "post_fill_drift": -0.005,
-      "n_ticks": 65
+      "n_ticks": 29
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_miami-marlins_g-miamar-cinred_moneyline_win",
@@ -834,7 +778,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.495,
       "post_fill_drift": null,
-      "n_ticks": 91
+      "n_ticks": 55
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_seattle-mariners_g-seamar-houast_moneyline_win",
@@ -848,7 +792,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 94
+      "n_ticks": 58
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_arizona-diamondbacks_g-aridia-atlbra_moneyline_win",
@@ -862,7 +806,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.445,
       "post_fill_drift": null,
-      "n_ticks": 95
+      "n_ticks": 59
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_milwaukee-brewers_g-milbre-losdod_moneyline_win",
@@ -873,10 +817,10 @@
       "fair_at_entry": 0.5678,
       "claimed_ev_pct": 5.15,
       "filled": true,
-      "minutes_to_fill": 711.5,
+      "minutes_to_fill": 1071.6,
       "price_at_kickoff": 0.535,
       "post_fill_drift": -0.005,
-      "n_ticks": 95
+      "n_ticks": 59
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_new-york-red-bulls_g-newbul-atlfc_moneyline_win",
@@ -890,7 +834,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.305,
       "post_fill_drift": null,
-      "n_ticks": 96
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_thiago-agustin-tirante_g-thitir-novdjo_moneyline_win",
@@ -904,7 +848,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.235,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_mattia-bellucci_g-jakmen-matbel_moneyline_win",
@@ -918,7 +862,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.255,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_diane-parry_g-diapar-elimer_moneyline_win",
@@ -932,7 +876,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.255,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_katie-boulter_g-katbou-linnos_moneyline_win",
@@ -946,7 +890,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.235,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_caty-mcnally_g-annkal-catmcn_moneyline_win",
@@ -960,7 +904,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.435,
       "post_fill_drift": null,
-      "n_ticks": 39
+      "n_ticks": 3
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260816_seattle-sounders-fc_g-vanfc-seafc_moneyline_win",
@@ -971,10 +915,10 @@
       "fair_at_entry": 0.2457,
       "claimed_ev_pct": 2.38,
       "filled": true,
-      "minutes_to_fill": 711.4,
+      "minutes_to_fill": 1071.4,
       "price_at_kickoff": 0.245,
       "post_fill_drift": 0.005,
-      "n_ticks": 258
+      "n_ticks": 222
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_tampa-bay-rays_g-balori-tamray_moneyline_win",
@@ -988,7 +932,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.585,
       "post_fill_drift": null,
-      "n_ticks": 88
+      "n_ticks": 52
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_pittsburgh-pirates_g-bossox-pitpir_moneyline_win",
@@ -1002,7 +946,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 95
+      "n_ticks": 59
     },
     {
       "pick_id": "polymarket_ev__wnba_20260815_minnesota-lynx_g-minlyn-lasace_moneyline_win",
@@ -1016,7 +960,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.555,
       "post_fill_drift": null,
-      "n_ticks": 99
+      "n_ticks": 63
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_rafael-tobias_g-lucfer-raftob_moneyline_win",
@@ -1030,7 +974,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.295,
       "post_fill_drift": null,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_nashville-sc_g-intcf-nassc_moneyline_win",
@@ -1041,10 +985,10 @@
       "fair_at_entry": 0.3883,
       "claimed_ev_pct": 2.18,
       "filled": true,
-      "minutes_to_fill": 324.4,
+      "minutes_to_fill": 684.5,
       "price_at_kickoff": 0.385,
       "post_fill_drift": 0.005,
-      "n_ticks": 102
+      "n_ticks": 66
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_rinky-hijikata_g-rinhij-lucdar_moneyline_win",
@@ -1058,7 +1002,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.395,
       "post_fill_drift": null,
-      "n_ticks": 63
+      "n_ticks": 27
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_cristina-bucsa_g-majchw-cribuc_moneyline_win",
@@ -1072,7 +1016,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.515,
       "post_fill_drift": null,
-      "n_ticks": 45
+      "n_ticks": 9
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260816_vancouver-whitecaps-fc_g-vanfc-seafc_moneyline_win",
@@ -1086,7 +1030,7 @@
       "minutes_to_fill": 2244.2,
       "price_at_kickoff": 0.525,
       "post_fill_drift": 0.015,
-      "n_ticks": 258
+      "n_ticks": 222
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260816_elena-rybakina_g-eleryb-taytow_moneyline_win",
@@ -1100,7 +1044,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.755,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260817_remo_g-remo-intern_moneyline_win",
@@ -1114,7 +1058,7 @@
       "minutes_to_fill": 2744.0,
       "price_at_kickoff": 0.125,
       "post_fill_drift": -0.025,
-      "n_ticks": 381
+      "n_ticks": 345
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_new-york-mets_g-wasnat-newmet_moneyline_win",
@@ -1128,7 +1072,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.565,
       "post_fill_drift": null,
-      "n_ticks": 76
+      "n_ticks": 40
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_boston-red-sox_g-bossox-pitpir_moneyline_win",
@@ -1142,7 +1086,7 @@
       "minutes_to_fill": 622.4,
       "price_at_kickoff": 0.525,
       "post_fill_drift": -0.005,
-      "n_ticks": 95
+      "n_ticks": 59
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_jalin-turner_g-kaufer-jaltur_moneyline_win",
@@ -1156,7 +1100,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.515,
       "post_fill_drift": null,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_edson-barboza_g-estrib-edsbar_moneyline_win",
@@ -1170,7 +1114,7 @@
       "minutes_to_fill": 512.3,
       "price_at_kickoff": 0.145,
       "post_fill_drift": -0.005,
-      "n_ticks": 81
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_san-jose-earthquakes_g-stsc-sanear_moneyline_win",
@@ -1184,7 +1128,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.455,
       "post_fill_drift": null,
-      "n_ticks": 114
+      "n_ticks": 78
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_martin-landaluce_g-matarn-marlan_moneyline_win",
@@ -1198,7 +1142,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.555,
       "post_fill_drift": null,
-      "n_ticks": 45
+      "n_ticks": 9
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_miomir-kecmanovic_g-flacob-miokec_moneyline_win",
@@ -1212,7 +1156,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.465,
       "post_fill_drift": null,
-      "n_ticks": 45
+      "n_ticks": 9
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_tommy-paul_g-hubhur-tompau_moneyline_win",
@@ -1223,10 +1167,10 @@
       "fair_at_entry": 0.5843,
       "claimed_ev_pct": 6.24,
       "filled": true,
-      "minutes_to_fill": 72.4,
+      "minutes_to_fill": 372.4,
       "price_at_kickoff": 0.525,
       "post_fill_drift": -0.025,
-      "n_ticks": 63
+      "n_ticks": 27
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_arthur-fils_g-artfil-yanhan_moneyline_win",
@@ -1240,7 +1184,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.765,
       "post_fill_drift": null,
-      "n_ticks": 72
+      "n_ticks": 36
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_matteo-berrettini_g-matber-jirleh_moneyline_win",
@@ -1251,10 +1195,10 @@
       "fair_at_entry": 0.4002,
       "claimed_ev_pct": 5.33,
       "filled": true,
-      "minutes_to_fill": 312.4,
+      "minutes_to_fill": 372.4,
       "price_at_kickoff": 0.355,
       "post_fill_drift": -0.025,
-      "n_ticks": 72
+      "n_ticks": 36
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_arthur-fery_g-jamduc-artfer_moneyline_win",
@@ -1265,10 +1209,10 @@
       "fair_at_entry": 0.5746,
       "claimed_ev_pct": 2.6,
       "filled": true,
-      "minutes_to_fill": 92.4,
+      "minutes_to_fill": 372.4,
       "price_at_kickoff": 0.515,
       "post_fill_drift": -0.045,
-      "n_ticks": 63
+      "n_ticks": 27
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_anhelina-kalinina_g-anhkal-emmnav_moneyline_win",
@@ -1282,7 +1226,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.375,
       "post_fill_drift": null,
-      "n_ticks": 63
+      "n_ticks": 27
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_nikola-bartunkova_g-nikbar-sorcir_moneyline_win",
@@ -1292,11 +1236,11 @@
       "limit": 0.4,
       "fair_at_entry": 0.4112,
       "claimed_ev_pct": 2.79,
-      "filled": true,
-      "minutes_to_fill": 92.5,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.405,
-      "post_fill_drift": 0.005,
-      "n_ticks": 54
+      "post_fill_drift": null,
+      "n_ticks": 18
     },
     {
       "pick_id": "polymarket_ev__wnba_20260816_seattle-storm_g-chisky-seasto_moneyline_win",
@@ -1310,7 +1254,7 @@
       "minutes_to_fill": 1142.1,
       "price_at_kickoff": 0.445,
       "post_fill_drift": -0.025,
-      "n_ticks": 225
+      "n_ticks": 189
     },
     {
       "pick_id": "polymarket_ev__wnba_20260816_portland-fire_g-porfir-phomer_moneyline_win",
@@ -1324,7 +1268,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.345,
       "post_fill_drift": null,
-      "n_ticks": 237
+      "n_ticks": 201
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260816_cruzeiro_g-cruzei-corint_moneyline_win",
@@ -1338,7 +1282,7 @@
       "minutes_to_fill": 2302.1,
       "price_at_kickoff": 0.205,
       "post_fill_drift": -0.055,
-      "n_ticks": 234
+      "n_ticks": 198
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_marco-trungelliti_g-danmed-martru_moneyline_win",
@@ -1348,11 +1292,11 @@
       "limit": 0.14,
       "fair_at_entry": 0.1527,
       "claimed_ev_pct": 9.09,
-      "filled": true,
-      "minutes_to_fill": 142.1,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.155,
-      "post_fill_drift": 0.015,
-      "n_ticks": 183
+      "post_fill_drift": null,
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_daniil-medvedev_g-danmed-martru_moneyline_win",
@@ -1366,7 +1310,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.845,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_stefanos-tsitsipas_g-felaug-stetsi_moneyline_win",
@@ -1380,7 +1324,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.455,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_sebastian-baez_g-sebbae-leatie_moneyline_win",
@@ -1391,10 +1335,10 @@
       "fair_at_entry": 0.2749,
       "claimed_ev_pct": 5.71,
       "filled": true,
-      "minutes_to_fill": 12.1,
+      "minutes_to_fill": 372.1,
       "price_at_kickoff": 0.255,
       "post_fill_drift": -0.005,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_pablo-carreno-busta_g-pabbus-andrub_moneyline_win",
@@ -1405,10 +1349,10 @@
       "fair_at_entry": 0.3666,
       "claimed_ev_pct": 11.11,
       "filled": true,
-      "minutes_to_fill": 142.1,
+      "minutes_to_fill": 692.1,
       "price_at_kickoff": 0.335,
       "post_fill_drift": 0.005,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_alex-michelsen_g-alemic-tayfri_moneyline_win",
@@ -1422,7 +1366,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.385,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_juan-manuel-cerundolo_g-juacer-artrin_moneyline_win",
@@ -1436,7 +1380,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.395,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_christopher-o-connell_g-casruu-chroco_moneyline_win",
@@ -1450,7 +1394,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.255,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_casper-ruud_g-casruu-chroco_moneyline_win",
@@ -1464,7 +1408,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.745,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_joao-fonseca_g-botzan-joafon_moneyline_win",
@@ -1478,7 +1422,7 @@
       "minutes_to_fill": 1532.1,
       "price_at_kickoff": 0.7,
       "post_fill_drift": -0.01,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_botic-van-de-zandschulp_g-botzan-joafon_moneyline_win",
@@ -1492,7 +1436,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.3,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_frances-tiafoe_g-fratia-lorson_moneyline_win",
@@ -1502,11 +1446,11 @@
       "limit": 0.56,
       "fair_at_entry": 0.5871,
       "claimed_ev_pct": 4.85,
-      "filled": true,
-      "minutes_to_fill": 102.1,
+      "filled": false,
+      "minutes_to_fill": null,
       "price_at_kickoff": 0.605,
-      "post_fill_drift": 0.045,
-      "n_ticks": 183
+      "post_fill_drift": null,
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_nuno-borges_g-fracer-nunbor_moneyline_win",
@@ -1517,10 +1461,10 @@
       "fair_at_entry": 0.5833,
       "claimed_ev_pct": 10.05,
       "filled": true,
-      "minutes_to_fill": 252.1,
+      "minutes_to_fill": 372.1,
       "price_at_kickoff": 0.555,
       "post_fill_drift": 0.025,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_adam-walton_g-ignbus-adawal_moneyline_win",
@@ -1534,7 +1478,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.605,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_ugo-humbert_g-miczhe-ugohum_moneyline_win",
@@ -1548,7 +1492,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.515,
       "post_fill_drift": null,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260816_michael-zheng_g-miczhe-ugohum_moneyline_win",
@@ -1559,10 +1503,10 @@
       "fair_at_entry": 0.4968,
       "claimed_ev_pct": 3.5,
       "filled": true,
-      "minutes_to_fill": 82.1,
+      "minutes_to_fill": 1422.1,
       "price_at_kickoff": 0.485,
       "post_fill_drift": 0.005,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260816_taylor-townsend_g-eleryb-taytow_moneyline_win",
@@ -1576,7 +1520,7 @@
       "minutes_to_fill": 1472.1,
       "price_at_kickoff": 0.245,
       "post_fill_drift": -0.005,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260816_lucrezia-stefanini_g-lucste-marbou_moneyline_win",
@@ -1587,10 +1531,10 @@
       "fair_at_entry": 0.2749,
       "claimed_ev_pct": 19.5,
       "filled": true,
-      "minutes_to_fill": 212.0,
+      "minutes_to_fill": 372.1,
       "price_at_kickoff": 0.205,
       "post_fill_drift": -0.025,
-      "n_ticks": 183
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_colorado-rockies_g-colroc-sangia_moneyline_win",
@@ -1604,7 +1548,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.385,
       "post_fill_drift": null,
-      "n_ticks": 41
+      "n_ticks": 40
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_baltimore-orioles_g-balori-tamray_moneyline_win",
@@ -1618,7 +1562,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.415,
       "post_fill_drift": null,
-      "n_ticks": 53
+      "n_ticks": 52
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_san-diego-padres_g-sanpad-clegua_moneyline_win",
@@ -1632,7 +1576,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.495,
       "post_fill_drift": null,
-      "n_ticks": 59
+      "n_ticks": 58
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_los-angeles-dodgers_g-milbre-losdod_moneyline_win",
@@ -1646,7 +1590,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.465,
       "post_fill_drift": null,
-      "n_ticks": 60
+      "n_ticks": 59
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260815_gillian-robertson_g-gilrob-macder_moneyline_win",
@@ -1660,7 +1604,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.355,
       "post_fill_drift": null,
-      "n_ticks": 46
+      "n_ticks": 45
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_fc-cincinnati_g-fccin-orlsc_moneyline_win",
@@ -1674,7 +1618,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.395,
       "post_fill_drift": null,
-      "n_ticks": 61
+      "n_ticks": 60
     },
     {
       "pick_id": "polymarket_ev__soccer_usa_mls_20260815_minnesota-united-fc_g-minfc-realak_moneyline_win",
@@ -1688,7 +1632,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.235,
       "post_fill_drift": null,
-      "n_ticks": 73
+      "n_ticks": 72
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_adolfo-daniel-vallejo_g-valvac-adoval_moneyline_win",
@@ -1702,7 +1646,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.345,
       "post_fill_drift": null,
-      "n_ticks": 22
+      "n_ticks": 21
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_hubert-hurkacz_g-hubhur-tompau_moneyline_win",
@@ -1716,7 +1660,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 28
+      "n_ticks": 27
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260815_quentin-halys_g-alemin-quehal_moneyline_win",
@@ -1730,7 +1674,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.295,
       "post_fill_drift": null,
-      "n_ticks": 28
+      "n_ticks": 27
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_maja-chwalinska_g-majchw-cribuc_moneyline_win",
@@ -1744,7 +1688,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.485,
       "post_fill_drift": null,
-      "n_ticks": 10
+      "n_ticks": 9
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260815_peyton-stearns_g-clatau-peyste_moneyline_win",
@@ -1758,7 +1702,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.485,
       "post_fill_drift": null,
-      "n_ticks": 58
+      "n_ticks": 57
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260816_sara-bejlek_g-sarbej-barkre_moneyline_win",
@@ -1772,7 +1716,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.395,
       "post_fill_drift": null,
-      "n_ticks": 148
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260816_daria-snigur_g-madkey-darsni_moneyline_win",
@@ -1786,7 +1730,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.295,
       "post_fill_drift": null,
-      "n_ticks": 148
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_cincinnati_open_20260816_anna-blinkova_g-ekaale-annbli_moneyline_win",
@@ -1800,7 +1744,7 @@
       "minutes_to_fill": 431.3,
       "price_at_kickoff": 0.275,
       "post_fill_drift": 0.005,
-      "n_ticks": 148
+      "n_ticks": 147
     },
     {
       "pick_id": "polymarket_ev__mlb_20260815_washington-nationals_g-wasnat-newmet_moneyline_win",
