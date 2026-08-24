@@ -1,43 +1,15 @@
 {
-  "generated_at": "2026-08-24T02:15:51.006133+00:00",
+  "generated_at": "2026-08-24T07:49:18.203800+00:00",
   "summary": {
-    "n": 3,
+    "n": 1,
     "n_filled": 1,
-    "fill_rate_pct": 33.3,
+    "fill_rate_pct": 100.0,
     "claimed_ev_filled": 12.36,
-    "claimed_ev_unfilled": 2.91,
+    "claimed_ev_unfilled": null,
     "mean_post_fill_drift": -0.025,
-    "median_minutes_to_fill": 2894.0
+    "median_minutes_to_fill": 3224.1
   },
   "rows": [
-    {
-      "pick_id": "polymarket_ev__soccer_usa_mls_20260816_seattle-sounders-fc_g-vanfc-seafc_moneyline_win",
-      "team": "Seattle Sounders FC",
-      "sport": "soccer_usa_mls",
-      "date": "2026-08-16",
-      "limit": 0.24,
-      "fair_at_entry": 0.2457,
-      "claimed_ev_pct": 2.38,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.245,
-      "post_fill_drift": null,
-      "n_ticks": 1
-    },
-    {
-      "pick_id": "polymarket_ev__soccer_usa_mls_20260816_vancouver-whitecaps-fc_g-vanfc-seafc_moneyline_win",
-      "team": "Vancouver Whitecaps FC",
-      "sport": "soccer_usa_mls",
-      "date": "2026-08-16",
-      "limit": 0.51,
-      "fair_at_entry": 0.5275,
-      "claimed_ev_pct": 3.43,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.525,
-      "post_fill_drift": null,
-      "n_ticks": 1
-    },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260817_remo_g-remo-intern_moneyline_win",
       "team": "Remo",
@@ -47,10 +19,10 @@
       "fair_at_entry": 0.1685,
       "claimed_ev_pct": 12.36,
       "filled": true,
-      "minutes_to_fill": 2894.0,
+      "minutes_to_fill": 3224.1,
       "price_at_kickoff": 0.125,
       "post_fill_drift": -0.025,
-      "n_ticks": 124
+      "n_ticks": 91
     }
   ]
 }
