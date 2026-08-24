@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24T13:44:45.173974+00:00",
+  "generated_at": "2026-08-24T19:21:13.135859+00:00",
   "summary": {
     "n": 1,
     "n_filled": 1,
@@ -7,7 +7,7 @@
     "claimed_ev_filled": 12.36,
     "claimed_ev_unfilled": null,
     "mean_post_fill_drift": -0.025,
-    "median_minutes_to_fill": 3584.1
+    "median_minutes_to_fill": 3924.0
   },
   "rows": [
     {
@@ -19,10 +19,10 @@
       "fair_at_entry": 0.1685,
       "claimed_ev_pct": 12.36,
       "filled": true,
-      "minutes_to_fill": 3584.1,
+      "minutes_to_fill": 3924.0,
       "price_at_kickoff": 0.125,
       "post_fill_drift": -0.025,
-      "n_ticks": 55
+      "n_ticks": 21
     }
   ]
 }
