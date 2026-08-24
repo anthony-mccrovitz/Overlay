@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-08-23T13:43:57.944198Z",
-  "date": "2026-08-23",
+  "updated_at": "2026-08-24T08:31:15.687976Z",
+  "date": "2026-08-24",
   "record": {
     "wins": 148,
     "losses": 113,
@@ -1384,23 +1384,6 @@
       "profit": -8.71
     },
     {
-      "key": "tennis_moneyline",
-      "sport": "Tennis",
-      "sport_key": "tennis",
-      "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u \u2014 stay shadow until v2 proves out)",
-      "market": "moneyline",
-      "tier": "shadow",
-      "status": "shadow",
-      "wins": 152,
-      "losses": 244,
-      "pushes": 27,
-      "pending": 263,
-      "settled": 423,
-      "win_rate": 38.4,
-      "roi": -0.4,
-      "profit": -1.03
-    },
-    {
       "key": "tennis_total",
       "sport": "Tennis",
       "sport_key": "tennis",
@@ -1408,14 +1391,31 @@
       "market": "total",
       "tier": "shadow",
       "status": "shadow",
-      "wins": 116,
-      "losses": 126,
-      "pushes": 10,
-      "pending": 55,
-      "settled": 252,
-      "win_rate": 47.9,
-      "roi": -10.0,
-      "profit": -12.19
+      "wins": 145,
+      "losses": 146,
+      "pushes": 12,
+      "pending": 4,
+      "settled": 303,
+      "win_rate": 49.8,
+      "roi": -6.7,
+      "profit": -9.76
+    },
+    {
+      "key": "tennis_moneyline",
+      "sport": "Tennis",
+      "sport_key": "tennis",
+      "label": "Tennis Elo v2 (rebuilt 2026-07-13: dual-tour 538-Elo, market-anchored; v1 shadow record was 39-77 -13u \u2014 stay shadow until v2 proves out)",
+      "market": "moneyline",
+      "tier": "shadow",
+      "status": "shadow",
+      "wins": 226,
+      "losses": 355,
+      "pushes": 27,
+      "pending": 78,
+      "settled": 608,
+      "win_rate": 38.9,
+      "roi": -4.3,
+      "profit": -19.41
     },
     {
       "key": "uefa_champs_league_moneyline",
