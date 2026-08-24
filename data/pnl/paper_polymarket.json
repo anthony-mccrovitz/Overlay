@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-23T19:06:47.278738+00:00",
+  "generated_at": "2026-08-24T02:15:53.925395+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 89.55,
-  "n_settled": 41,
-  "n_pending": 875,
+  "end_bankroll": 82.53,
+  "n_settled": 43,
+  "n_pending": 873,
   "wins": 14,
-  "losses": 27,
-  "staked": 158.65,
-  "pnl": -22.45,
-  "expected_pnl": 6.42,
-  "roi_pct": -14.15,
+  "losses": 29,
+  "staked": 165.67,
+  "pnl": -29.47,
+  "expected_pnl": 6.72,
+  "roi_pct": -17.79,
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 700,
-    "resting order never filled": 42,
-    "not settled yet": 25
+    "resting order never filled": 46,
+    "not settled yet": 19
   },
   "significance": {
-    "mean_edge_per_unit": 0.0403,
-    "sd_per_unit": 1.443,
-    "n_for_2sigma": 5125
+    "mean_edge_per_unit": 0.0404,
+    "sd_per_unit": 1.456,
+    "n_for_2sigma": 5186
   },
   "rows": [
     {
@@ -678,6 +678,38 @@
       "pnl": 4.68,
       "expected_pnl": 0.253,
       "equity": 89.55
+    },
+    {
+      "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260814_jesper-de-jong_g-jesjon-alemic_moneyline_win",
+      "date": "2026-08-14",
+      "team": "Jesper De Jong",
+      "sport": "tennis_atp_cincinnati_open",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.19,
+      "fair": 0.1983,
+      "stake": 3.58,
+      "shares": 18.84,
+      "result": "loss",
+      "pnl": -3.58,
+      "expected_pnl": 0.156,
+      "equity": 85.97
+    },
+    {
+      "pick_id": "polymarket_ev__tennis_atp_cincinnati_open_20260814_thanasi-kokkinakis_g-thakok-nunbor_moneyline_win",
+      "date": "2026-08-14",
+      "team": "Thanasi Kokkinakis",
+      "sport": "tennis_atp_cincinnati_open",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.36,
+      "fair": 0.3752,
+      "stake": 3.44,
+      "shares": 9.56,
+      "result": "loss",
+      "pnl": -3.44,
+      "expected_pnl": 0.145,
+      "equity": 82.53
     }
   ]
 }
