@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-08-25T07:34:05.712843+00:00",
+  "generated_at": "2026-08-25T13:38:00.827587+00:00",
   "start_bankroll": 112.0,
   "end_bankroll": 82.53,
-  "n_settled": 43,
-  "n_pending": 873,
+  "n_settled": 44,
+  "n_pending": 872,
   "wins": 14,
   "losses": 29,
-  "staked": 165.67,
+  "staked": 168.91,
   "pnl": -29.47,
-  "expected_pnl": 6.72,
-  "roi_pct": -17.79,
+  "expected_pnl": 6.9,
+  "roi_pct": -17.45,
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 700,
-    "resting order never filled": 46,
-    "not settled yet": 19
+    "resting order never filled": 47,
+    "not settled yet": 17
   },
   "significance": {
-    "mean_edge_per_unit": 0.0404,
-    "sd_per_unit": 1.456,
-    "n_for_2sigma": 5186
+    "mean_edge_per_unit": 0.0407,
+    "sd_per_unit": 1.4476,
+    "n_for_2sigma": 5047
   },
   "rows": [
     {
@@ -565,6 +565,22 @@
       "result": "win",
       "pnl": 2.19,
       "expected_pnl": 0.103,
+      "equity": 81.05
+    },
+    {
+      "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260811_abe-alsaghir_g-fabesc-abeals_moneyline_win",
+      "date": "2026-08-11",
+      "team": "Abe Alsaghir",
+      "sport": "mma_mixed_martial_arts",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.46,
+      "fair": 0.485,
+      "stake": 3.24,
+      "shares": 7.04,
+      "result": "void",
+      "pnl": 0.0,
+      "expected_pnl": 0.176,
       "equity": 81.05
     },
     {
