@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-01T17:03:06.187901+00:00",
+  "generated_at": "2026-09-01T21:23:17.923928+00:00",
   "summary": {
     "n": 24,
     "n_filled": 14,
     "fill_rate_pct": 58.3,
     "claimed_ev_filled": 5.83,
     "claimed_ev_unfilled": 5.53,
-    "mean_post_fill_drift": -0.0011,
+    "mean_post_fill_drift": -0.0007,
     "median_minutes_to_fill": 348.2
   },
   "rows": [
@@ -20,9 +20,9 @@
       "claimed_ev_pct": 2.24,
       "filled": true,
       "minutes_to_fill": 348.2,
-      "price_at_kickoff": 0.445,
-      "post_fill_drift": -0.005,
-      "n_ticks": 69
+      "price_at_kickoff": 0.435,
+      "post_fill_drift": -0.015,
+      "n_ticks": 95
     },
     {
       "pick_id": "polymarket_ev__mlb_20260901_seattle-mariners_g-seamar-bossox_moneyline_win",
@@ -36,7 +36,7 @@
       "minutes_to_fill": 518.2,
       "price_at_kickoff": 0.475,
       "post_fill_drift": 0.015,
-      "n_ticks": 69
+      "n_ticks": 95
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260901_brandon-holmes_g-brahol-modrod_moneyline_win",
@@ -48,9 +48,9 @@
       "claimed_ev_pct": 3.17,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.605,
+      "price_at_kickoff": 0.62,
       "post_fill_drift": null,
-      "n_ticks": 69
+      "n_ticks": 95
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_dane-sweeny_g-cormou-danswe_moneyline_win",
@@ -92,7 +92,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.595,
       "post_fill_drift": null,
-      "n_ticks": 69
+      "n_ticks": 76
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_jan-choinski_g-botzan-jancho_moneyline_win",
@@ -106,7 +106,7 @@
       "minutes_to_fill": 8.2,
       "price_at_kickoff": 0.235,
       "post_fill_drift": 0.005,
-      "n_ticks": 70
+      "n_ticks": 86
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_alex-molcan_g-benbon-alemol_moneyline_win",
@@ -120,7 +120,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.345,
       "post_fill_drift": null,
-      "n_ticks": 70
+      "n_ticks": 77
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_marcos-giron_g-ignbus-margir_moneyline_win",
@@ -132,9 +132,9 @@
       "claimed_ev_pct": 3.83,
       "filled": true,
       "minutes_to_fill": 338.2,
-      "price_at_kickoff": 0.385,
-      "post_fill_drift": -0.015,
-      "n_ticks": 69
+      "price_at_kickoff": 0.405,
+      "post_fill_drift": 0.005,
+      "n_ticks": 88
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_gael-monfils_g-gaemon-adoval_moneyline_win",
@@ -148,7 +148,7 @@
       "minutes_to_fill": 498.4,
       "price_at_kickoff": 0.435,
       "post_fill_drift": -0.005,
-      "n_ticks": 69
+      "n_ticks": 95
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_camilo-ugo-carabelli_g-janstr-camcar_moneyline_win",
@@ -246,7 +246,7 @@
       "minutes_to_fill": 378.4,
       "price_at_kickoff": 0.175,
       "post_fill_drift": -0.025,
-      "n_ticks": 69
+      "n_ticks": 79
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_us_open_20260901_reese-brantmeier_g-reebra-oleoli_moneyline_win",
@@ -258,9 +258,9 @@
       "claimed_ev_pct": 3.69,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.485,
+      "price_at_kickoff": 0.505,
       "post_fill_drift": null,
-      "n_ticks": 69
+      "n_ticks": 88
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_us_open_20260901_alina-korneeva_g-alikor-madkey_moneyline_win",
@@ -288,7 +288,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.815,
       "post_fill_drift": null,
-      "n_ticks": 69
+      "n_ticks": 76
     },
     {
       "pick_id": "polymarket_ev__tennis_wta_us_open_20260901_jessica-bouzas-maneiro_g-jesman-darvid_moneyline_win",
@@ -328,9 +328,9 @@
       "claimed_ev_pct": 7.83,
       "filled": true,
       "minutes_to_fill": 38.2,
-      "price_at_kickoff": 0.2,
-      "post_fill_drift": -0.01,
-      "n_ticks": 69
+      "price_at_kickoff": 0.205,
+      "post_fill_drift": -0.005,
+      "n_ticks": 95
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260902_mirassol_g-mirass-flamen_moneyline_win",
@@ -342,9 +342,9 @@
       "claimed_ev_pct": 29.26,
       "filled": true,
       "minutes_to_fill": 8.2,
-      "price_at_kickoff": 0.075,
-      "post_fill_drift": -0.005,
-      "n_ticks": 69
+      "price_at_kickoff": 0.065,
+      "post_fill_drift": -0.015,
+      "n_ticks": 95
     }
   ]
 }
