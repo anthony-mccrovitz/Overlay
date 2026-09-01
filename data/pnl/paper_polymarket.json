@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-31T23:05:59.322107+00:00",
+  "generated_at": "2026-09-01T05:43:47.881903+00:00",
   "start_bankroll": 112.0,
   "end_bankroll": 82.53,
   "n_settled": 55,
-  "n_pending": 861,
+  "n_pending": 885,
   "wins": 14,
   "losses": 29,
   "staked": 205.21,
@@ -13,8 +13,9 @@
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
-    "exposure cap reached for the slate": 700,
-    "resting order never filled": 53
+    "exposure cap reached for the slate": 715,
+    "resting order never filled": 53,
+    "not settled yet": 9
   },
   "significance": {
     "mean_edge_per_unit": 0.0461,
