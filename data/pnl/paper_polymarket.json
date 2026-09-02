@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-01T21:23:20.694498+00:00",
+  "generated_at": "2026-09-02T05:08:15.375788+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 82.53,
-  "n_settled": 55,
-  "n_pending": 885,
-  "wins": 14,
-  "losses": 29,
-  "staked": 205.21,
-  "pnl": -29.47,
-  "expected_pnl": 9.35,
-  "roi_pct": -14.36,
+  "end_bankroll": 82.95,
+  "n_settled": 57,
+  "n_pending": 883,
+  "wins": 15,
+  "losses": 30,
+  "staked": 211.68,
+  "pnl": -29.05,
+  "expected_pnl": 9.5,
+  "roi_pct": -13.72,
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 715,
     "resting order never filled": 53,
-    "not settled yet": 9
+    "not settled yet": 7
   },
   "significance": {
-    "mean_edge_per_unit": 0.0461,
-    "sd_per_unit": 1.5079,
-    "n_for_2sigma": 4283
+    "mean_edge_per_unit": 0.0453,
+    "sd_per_unit": 1.4935,
+    "n_for_2sigma": 4344
   },
   "rows": [
     {
@@ -902,6 +902,38 @@
       "pnl": 0.0,
       "expected_pnl": 0.407,
       "equity": 82.53
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260901_new-york-mets_g-newmet-tamray_moneyline_win",
+      "date": "2026-09-01",
+      "team": "New York Mets",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.45,
+      "fair": 0.4601,
+      "stake": 3.3,
+      "shares": 7.33,
+      "result": "loss",
+      "pnl": -3.3,
+      "expected_pnl": 0.074,
+      "equity": 79.23
+    },
+    {
+      "pick_id": "polymarket_ev__mlb_20260901_seattle-mariners_g-seamar-bossox_moneyline_win",
+      "date": "2026-09-01",
+      "team": "Seattle Mariners",
+      "sport": "mlb",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.46,
+      "fair": 0.4721,
+      "stake": 3.17,
+      "shares": 6.89,
+      "result": "win",
+      "pnl": 3.72,
+      "expected_pnl": 0.083,
+      "equity": 82.95
     }
   ]
 }

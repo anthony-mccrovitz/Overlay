@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-01T21:23:17.923928+00:00",
+  "generated_at": "2026-09-02T05:08:12.663238+00:00",
   "summary": {
     "n": 24,
     "n_filled": 14,
     "fill_rate_pct": 58.3,
     "claimed_ev_filled": 5.83,
     "claimed_ev_unfilled": 5.53,
-    "mean_post_fill_drift": -0.0007,
+    "mean_post_fill_drift": -0.0014,
     "median_minutes_to_fill": 348.2
   },
   "rows": [
@@ -22,7 +22,7 @@
       "minutes_to_fill": 348.2,
       "price_at_kickoff": 0.435,
       "post_fill_drift": -0.015,
-      "n_ticks": 95
+      "n_ticks": 101
     },
     {
       "pick_id": "polymarket_ev__mlb_20260901_seattle-mariners_g-seamar-bossox_moneyline_win",
@@ -36,7 +36,7 @@
       "minutes_to_fill": 518.2,
       "price_at_kickoff": 0.475,
       "post_fill_drift": 0.015,
-      "n_ticks": 95
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260901_brandon-holmes_g-brahol-modrod_moneyline_win",
@@ -48,9 +48,9 @@
       "claimed_ev_pct": 3.17,
       "filled": false,
       "minutes_to_fill": null,
-      "price_at_kickoff": 0.62,
+      "price_at_kickoff": 0.615,
       "post_fill_drift": null,
-      "n_ticks": 95
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_dane-sweeny_g-cormou-danswe_moneyline_win",
@@ -148,7 +148,7 @@
       "minutes_to_fill": 498.4,
       "price_at_kickoff": 0.435,
       "post_fill_drift": -0.005,
-      "n_ticks": 95
+      "n_ticks": 102
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_camilo-ugo-carabelli_g-janstr-camcar_moneyline_win",
@@ -328,9 +328,9 @@
       "claimed_ev_pct": 7.83,
       "filled": true,
       "minutes_to_fill": 38.2,
-      "price_at_kickoff": 0.205,
-      "post_fill_drift": -0.005,
-      "n_ticks": 95
+      "price_at_kickoff": 0.185,
+      "post_fill_drift": -0.025,
+      "n_ticks": 110
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260902_mirassol_g-mirass-flamen_moneyline_win",
@@ -342,9 +342,9 @@
       "claimed_ev_pct": 29.26,
       "filled": true,
       "minutes_to_fill": 8.2,
-      "price_at_kickoff": 0.065,
-      "post_fill_drift": -0.015,
-      "n_ticks": 95
+      "price_at_kickoff": 0.075,
+      "post_fill_drift": -0.005,
+      "n_ticks": 136
     }
   ]
 }
