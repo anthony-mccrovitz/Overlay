@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-08T17:01:39.690992+00:00",
+  "generated_at": "2026-09-08T21:28:36.874890+00:00",
   "summary": {
-    "n": 13,
-    "n_filled": 6,
-    "fill_rate_pct": 46.2,
-    "claimed_ev_filled": 8.44,
-    "claimed_ev_unfilled": 3.55,
-    "mean_post_fill_drift": -0.0133,
-    "median_minutes_to_fill": 688.2
+    "n": 6,
+    "n_filled": 4,
+    "fill_rate_pct": 66.7,
+    "claimed_ev_filled": 10.42,
+    "claimed_ev_unfilled": 2.9,
+    "mean_post_fill_drift": -0.015,
+    "median_minutes_to_fill": 948.3
   },
   "rows": [
     {
@@ -19,10 +19,10 @@
       "fair_at_entry": 0.4601,
       "claimed_ev_pct": 2.24,
       "filled": true,
-      "minutes_to_fill": 688.2,
+      "minutes_to_fill": 948.3,
       "price_at_kickoff": 0.435,
       "post_fill_drift": -0.015,
-      "n_ticks": 33
+      "n_ticks": 7
     },
     {
       "pick_id": "polymarket_ev__mlb_20260901_seattle-mariners_g-seamar-bossox_moneyline_win",
@@ -36,7 +36,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.475,
       "post_fill_drift": null,
-      "n_ticks": 34
+      "n_ticks": 8
     },
     {
       "pick_id": "polymarket_ev__mma_mixed_martial_arts_20260901_brandon-holmes_g-brahol-modrod_moneyline_win",
@@ -50,63 +50,7 @@
       "minutes_to_fill": null,
       "price_at_kickoff": 0.615,
       "post_fill_drift": null,
-      "n_ticks": 34
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_zachary-svajda_g-danalt-zacsva_moneyline_win",
-      "team": "Zachary Svajda",
-      "sport": "tennis_atp_us_open",
-      "date": "2026-09-01",
-      "limit": 0.57,
-      "fair_at_entry": 0.583,
-      "claimed_ev_pct": 2.28,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.595,
-      "post_fill_drift": null,
       "n_ticks": 8
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_jan-choinski_g-botzan-jancho_moneyline_win",
-      "team": "Jan Choinski",
-      "sport": "tennis_atp_us_open",
-      "date": "2026-09-01",
-      "limit": 0.23,
-      "fair_at_entry": 0.2453,
-      "claimed_ev_pct": 6.67,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.235,
-      "post_fill_drift": null,
-      "n_ticks": 17
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_alex-molcan_g-benbon-alemol_moneyline_win",
-      "team": "Alex Molcan",
-      "sport": "tennis_atp_us_open",
-      "date": "2026-09-01",
-      "limit": 0.33,
-      "fair_at_entry": 0.3432,
-      "claimed_ev_pct": 3.99,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.345,
-      "post_fill_drift": null,
-      "n_ticks": 8
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_marcos-giron_g-ignbus-margir_moneyline_win",
-      "team": "Marcos Giron",
-      "sport": "tennis_atp_us_open",
-      "date": "2026-09-01",
-      "limit": 0.4,
-      "fair_at_entry": 0.4153,
-      "claimed_ev_pct": 3.83,
-      "filled": true,
-      "minutes_to_fill": 688.2,
-      "price_at_kickoff": 0.405,
-      "post_fill_drift": 0.005,
-      "n_ticks": 20
     },
     {
       "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_gael-monfils_g-gaemon-adoval_moneyline_win",
@@ -117,51 +61,9 @@
       "fair_at_entry": 0.4503,
       "claimed_ev_pct": 2.34,
       "filled": true,
-      "minutes_to_fill": 688.2,
+      "minutes_to_fill": 948.3,
       "price_at_kickoff": 0.435,
       "post_fill_drift": -0.005,
-      "n_ticks": 34
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_us_open_20260901_mayar-sherif_g-mayshe-nikbar_moneyline_win",
-      "team": "Mayar Sherif",
-      "sport": "tennis_wta_us_open",
-      "date": "2026-09-01",
-      "limit": 0.2,
-      "fair_at_entry": 0.2103,
-      "claimed_ev_pct": 5.16,
-      "filled": true,
-      "minutes_to_fill": 688.2,
-      "price_at_kickoff": 0.175,
-      "post_fill_drift": -0.025,
-      "n_ticks": 11
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_us_open_20260901_reese-brantmeier_g-reebra-oleoli_moneyline_win",
-      "team": "Reese Brantmeier",
-      "sport": "tennis_wta_us_open",
-      "date": "2026-09-01",
-      "limit": 0.48,
-      "fair_at_entry": 0.4977,
-      "claimed_ev_pct": 3.69,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.505,
-      "post_fill_drift": null,
-      "n_ticks": 20
-    },
-    {
-      "pick_id": "polymarket_ev__tennis_wta_us_open_20260901_elise-mertens_g-elimer-kaique_moneyline_win",
-      "team": "Elise Mertens",
-      "sport": "tennis_wta_us_open",
-      "date": "2026-09-01",
-      "limit": 0.81,
-      "fair_at_entry": 0.8294,
-      "claimed_ev_pct": 2.39,
-      "filled": false,
-      "minutes_to_fill": null,
-      "price_at_kickoff": 0.815,
-      "post_fill_drift": null,
       "n_ticks": 8
     },
     {
@@ -173,10 +75,10 @@
       "fair_at_entry": 0.2264,
       "claimed_ev_pct": 7.83,
       "filled": true,
-      "minutes_to_fill": 688.2,
+      "minutes_to_fill": 948.3,
       "price_at_kickoff": 0.185,
       "post_fill_drift": -0.025,
-      "n_ticks": 42
+      "n_ticks": 16
     },
     {
       "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260902_mirassol_g-mirass-flamen_moneyline_win",
@@ -187,10 +89,10 @@
       "fair_at_entry": 0.1034,
       "claimed_ev_pct": 29.26,
       "filled": true,
-      "minutes_to_fill": 688.1,
+      "minutes_to_fill": 948.2,
       "price_at_kickoff": 0.065,
       "post_fill_drift": -0.015,
-      "n_ticks": 171
+      "n_ticks": 145
     }
   ]
 }
