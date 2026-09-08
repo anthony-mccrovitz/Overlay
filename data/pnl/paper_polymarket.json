@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-08T11:48:46.322056+00:00",
+  "generated_at": "2026-09-08T17:01:42.406782+00:00",
   "start_bankroll": 112.0,
-  "end_bankroll": 82.95,
-  "n_settled": 57,
-  "n_pending": 883,
-  "wins": 15,
+  "end_bankroll": 79.23,
+  "n_settled": 56,
+  "n_pending": 884,
+  "wins": 14,
   "losses": 30,
-  "staked": 211.68,
-  "pnl": -29.05,
-  "expected_pnl": 9.5,
-  "roi_pct": -13.72,
+  "staked": 208.51,
+  "pnl": -32.77,
+  "expected_pnl": 9.42,
+  "roi_pct": -15.72,
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 715,
-    "resting order never filled": 53,
+    "resting order never filled": 54,
     "not settled yet": 7
   },
   "significance": {
-    "mean_edge_per_unit": 0.0453,
-    "sd_per_unit": 1.4935,
-    "n_for_2sigma": 4344
+    "mean_edge_per_unit": 0.0457,
+    "sd_per_unit": 1.5007,
+    "n_for_2sigma": 4322
   },
   "rows": [
     {
@@ -918,22 +918,6 @@
       "pnl": -3.3,
       "expected_pnl": 0.074,
       "equity": 79.23
-    },
-    {
-      "pick_id": "polymarket_ev__mlb_20260901_seattle-mariners_g-seamar-bossox_moneyline_win",
-      "date": "2026-09-01",
-      "team": "Seattle Mariners",
-      "sport": "mlb",
-      "mode": "make",
-      "confidence": "low \u2014 maker fill is an upper-bound estimate",
-      "cost": 0.46,
-      "fair": 0.4721,
-      "stake": 3.17,
-      "shares": 6.89,
-      "result": "win",
-      "pnl": 3.72,
-      "expected_pnl": 0.083,
-      "equity": 82.95
     }
   ]
 }
