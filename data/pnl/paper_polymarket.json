@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-16T12:07:08.097796+00:00",
+  "generated_at": "2026-09-16T17:25:06.946510+00:00",
   "start_bankroll": 112.0,
   "end_bankroll": 79.23,
-  "n_settled": 56,
-  "n_pending": 884,
+  "n_settled": 57,
+  "n_pending": 883,
   "wins": 14,
   "losses": 30,
-  "staked": 208.51,
+  "staked": 211.68,
   "pnl": -32.77,
-  "expected_pnl": 9.42,
-  "roi_pct": -15.72,
+  "expected_pnl": 10.35,
+  "roi_pct": -15.48,
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 715,
     "resting order never filled": 55,
-    "not settled yet": 6
+    "not settled yet": 5
   },
   "significance": {
-    "mean_edge_per_unit": 0.0457,
-    "sd_per_unit": 1.5007,
-    "n_for_2sigma": 4322
+    "mean_edge_per_unit": 0.05,
+    "sd_per_unit": 1.5412,
+    "n_for_2sigma": 3802
   },
   "rows": [
     {
@@ -917,6 +917,22 @@
       "result": "loss",
       "pnl": -3.3,
       "expected_pnl": 0.074,
+      "equity": 79.23
+    },
+    {
+      "pick_id": "polymarket_ev__soccer_brazil_campeonato_20260902_mirassol_g-mirass-flamen_moneyline_win",
+      "date": "2026-09-02",
+      "team": "Mirassol",
+      "sport": "soccer_brazil_campeonato",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.08,
+      "fair": 0.1034,
+      "stake": 3.17,
+      "shares": 39.62,
+      "result": "void",
+      "pnl": 0.0,
+      "expected_pnl": 0.927,
       "equity": 79.23
     }
   ]
