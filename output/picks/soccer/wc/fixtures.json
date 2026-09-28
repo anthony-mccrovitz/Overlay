@@ -181,35 +181,35 @@
     "home": "South Korea",
     "away": "Czech Republic",
     "model": {
-      "home_win": 0.4923,
-      "draw": 0.2623,
-      "away_win": 0.2454,
-      "btts": 0.5483,
-      "over_2_5": 0.5081,
-      "exp_home": 1.582,
-      "exp_away": 1.125,
-      "exp_total": 2.707
+      "home_win": 0.4676,
+      "draw": 0.267,
+      "away_win": 0.2654,
+      "btts": 0.5505,
+      "over_2_5": 0.5048,
+      "exp_home": 1.533,
+      "exp_away": 1.161,
+      "exp_total": 2.694
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1307
+        "prob": 0.1324
       },
       {
         "score": "2-1",
-        "prob": 0.094
+        "prob": 0.0922
       },
       {
         "score": "1-0",
-        "prob": 0.0937
-      },
-      {
-        "score": "2-0",
-        "prob": 0.0835
+        "prob": 0.0916
       },
       {
         "score": "0-0",
-        "prob": 0.0786
+        "prob": 0.0797
+      },
+      {
+        "score": "2-0",
+        "prob": 0.0795
       }
     ],
     "context": {
@@ -226,7 +226,7 @@
       ]
     },
     "elo": {
-      "home": 1743,
+      "home": 1725,
       "away": 1666
     },
     "scorers": {
@@ -234,54 +234,54 @@
         {
           "player": "Son Heung-min",
           "share": 0.2456,
-          "exp_goals": 0.389,
-          "anytime_prob": 0.322,
-          "anytime_prob_raw": 0.322,
+          "exp_goals": 0.377,
+          "anytime_prob": 0.3138,
+          "anytime_prob_raw": 0.3138,
           "career_goals": 32,
           "pen_rate": 0.22
         },
         {
           "player": "Lee Kang-in",
           "share": 0.1241,
-          "exp_goals": 0.196,
-          "anytime_prob": 0.1783,
-          "anytime_prob_raw": 0.1783,
+          "exp_goals": 0.19,
+          "anytime_prob": 0.1733,
+          "anytime_prob_raw": 0.1733,
           "career_goals": 8,
           "pen_rate": 0.0
         },
         {
           "player": "Oh Hyeon-gyu",
           "share": 0.1119,
-          "exp_goals": 0.177,
-          "anytime_prob": 0.1622,
-          "anytime_prob_raw": 0.1622,
+          "exp_goals": 0.172,
+          "anytime_prob": 0.1576,
+          "anytime_prob_raw": 0.1576,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Hwang Hee-chan",
           "share": 0.1091,
-          "exp_goals": 0.173,
-          "anytime_prob": 0.1585,
-          "anytime_prob_raw": 0.1585,
+          "exp_goals": 0.167,
+          "anytime_prob": 0.154,
+          "anytime_prob_raw": 0.154,
           "career_goals": 11,
           "pen_rate": 0.18
         },
         {
           "player": "Lee Jae-sung",
           "share": 0.1023,
-          "exp_goals": 0.162,
-          "anytime_prob": 0.1494,
-          "anytime_prob_raw": 0.1494,
+          "exp_goals": 0.157,
+          "anytime_prob": 0.1451,
+          "anytime_prob_raw": 0.1451,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Cho Gue-sung",
           "share": 0.0525,
-          "exp_goals": 0.083,
-          "anytime_prob": 0.0797,
-          "anytime_prob_raw": 0.0797,
+          "exp_goals": 0.081,
+          "anytime_prob": 0.0774,
+          "anytime_prob_raw": 0.0774,
           "career_goals": 5,
           "pen_rate": 0.0
         }
@@ -290,54 +290,54 @@
         {
           "player": "Patrik Schick",
           "share": 0.1895,
-          "exp_goals": 0.213,
-          "anytime_prob": 0.192,
-          "anytime_prob_raw": 0.192,
+          "exp_goals": 0.22,
+          "anytime_prob": 0.1975,
+          "anytime_prob_raw": 0.1975,
           "career_goals": 21,
           "pen_rate": 0.14
         },
         {
           "player": "Tom\u00e1\u0161 Sou\u010dek",
           "share": 0.1385,
-          "exp_goals": 0.156,
-          "anytime_prob": 0.1443,
-          "anytime_prob_raw": 0.1443,
+          "exp_goals": 0.161,
+          "anytime_prob": 0.1485,
+          "anytime_prob_raw": 0.1485,
           "career_goals": 12,
           "pen_rate": 0.17
         },
         {
           "player": "Ladislav Krej\u010d\u00ed",
           "share": 0.1083,
-          "exp_goals": 0.122,
-          "anytime_prob": 0.1147,
-          "anytime_prob_raw": 0.1147,
+          "exp_goals": 0.126,
+          "anytime_prob": 0.1181,
+          "anytime_prob_raw": 0.1181,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Pavel \u0160ulc",
           "share": 0.0996,
-          "exp_goals": 0.112,
-          "anytime_prob": 0.106,
-          "anytime_prob_raw": 0.106,
+          "exp_goals": 0.116,
+          "anytime_prob": 0.1092,
+          "anytime_prob_raw": 0.1092,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "V\u00e1clav \u010cern\u00fd",
           "share": 0.0769,
-          "exp_goals": 0.087,
-          "anytime_prob": 0.0829,
-          "anytime_prob_raw": 0.0829,
+          "exp_goals": 0.089,
+          "anytime_prob": 0.0854,
+          "anytime_prob_raw": 0.0854,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Tom\u00e1\u0161 Chor\u00fd",
           "share": 0.072,
-          "exp_goals": 0.081,
-          "anytime_prob": 0.0778,
-          "anytime_prob_raw": 0.0778,
+          "exp_goals": 0.084,
+          "anytime_prob": 0.0802,
+          "anytime_prob_raw": 0.0802,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -522,35 +522,35 @@
     "home": "United States",
     "away": "Paraguay",
     "model": {
-      "home_win": 0.304,
-      "draw": 0.2775,
-      "away_win": 0.4185,
-      "btts": 0.5428,
-      "over_2_5": 0.4867,
-      "exp_home": 1.207,
-      "exp_away": 1.414,
-      "exp_total": 2.62
+      "home_win": 0.2957,
+      "draw": 0.2765,
+      "away_win": 0.4278,
+      "btts": 0.5423,
+      "over_2_5": 0.4874,
+      "exp_home": 1.192,
+      "exp_away": 1.431,
+      "exp_total": 2.623
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1366
+        "prob": 0.1362
       },
       {
         "score": "0-1",
-        "prob": 0.0905
+        "prob": 0.0915
       },
       {
         "score": "1-2",
-        "prob": 0.0878
+        "prob": 0.0886
       },
       {
         "score": "0-0",
-        "prob": 0.0852
+        "prob": 0.0849
       },
       {
-        "score": "1-0",
-        "prob": 0.0754
+        "score": "0-2",
+        "prob": 0.0743
       }
     ],
     "context": {
@@ -563,61 +563,61 @@
     },
     "elo": {
       "home": 1757,
-      "away": 1814
+      "away": 1821
     },
     "scorers": {
       "home": [
         {
           "player": "Malik Tillman",
           "share": 0.185,
-          "exp_goals": 0.223,
-          "anytime_prob": 0.2001,
-          "anytime_prob_raw": 0.2001,
+          "exp_goals": 0.221,
+          "anytime_prob": 0.1979,
+          "anytime_prob_raw": 0.1979,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Folarin Balogun",
           "share": 0.1787,
-          "exp_goals": 0.216,
-          "anytime_prob": 0.194,
-          "anytime_prob_raw": 0.194,
+          "exp_goals": 0.213,
+          "anytime_prob": 0.1918,
+          "anytime_prob_raw": 0.1918,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Christian Pulisic",
           "share": 0.1102,
-          "exp_goals": 0.133,
-          "anytime_prob": 0.1246,
-          "anytime_prob_raw": 0.1246,
+          "exp_goals": 0.131,
+          "anytime_prob": 0.1231,
+          "anytime_prob_raw": 0.1231,
           "career_goals": 17,
           "pen_rate": 0.12
         },
         {
           "player": "Diego Luna",
           "share": 0.0958,
-          "exp_goals": 0.116,
-          "anytime_prob": 0.1092,
-          "anytime_prob_raw": 0.1092,
+          "exp_goals": 0.114,
+          "anytime_prob": 0.1079,
+          "anytime_prob_raw": 0.1079,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Chris Richards",
           "share": 0.0636,
-          "exp_goals": 0.077,
-          "anytime_prob": 0.0739,
-          "anytime_prob_raw": 0.0739,
+          "exp_goals": 0.076,
+          "anytime_prob": 0.073,
+          "anytime_prob_raw": 0.073,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Patrick Agyemang",
           "share": 0.0631,
-          "exp_goals": 0.076,
-          "anytime_prob": 0.0733,
-          "anytime_prob_raw": 0.0733,
+          "exp_goals": 0.075,
+          "anytime_prob": 0.0724,
+          "anytime_prob_raw": 0.0724,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -626,54 +626,54 @@
         {
           "player": "Julio Enciso",
           "share": 0.2482,
-          "exp_goals": 0.351,
-          "anytime_prob": 0.296,
-          "anytime_prob_raw": 0.296,
+          "exp_goals": 0.355,
+          "anytime_prob": 0.299,
+          "anytime_prob_raw": 0.299,
           "career_goals": 5,
           "pen_rate": 0.2
         },
         {
           "player": "Mat\u00edas Galarza",
           "share": 0.1777,
-          "exp_goals": 0.251,
-          "anytime_prob": 0.2221,
-          "anytime_prob_raw": 0.2221,
+          "exp_goals": 0.254,
+          "anytime_prob": 0.2245,
+          "anytime_prob_raw": 0.2245,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Antonio Sanabria",
           "share": 0.1681,
-          "exp_goals": 0.238,
-          "anytime_prob": 0.2116,
-          "anytime_prob_raw": 0.2116,
+          "exp_goals": 0.241,
+          "anytime_prob": 0.2138,
+          "anytime_prob_raw": 0.2138,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Omar Alderete",
           "share": 0.1247,
-          "exp_goals": 0.176,
-          "anytime_prob": 0.1617,
-          "anytime_prob_raw": 0.1617,
+          "exp_goals": 0.178,
+          "anytime_prob": 0.1635,
+          "anytime_prob_raw": 0.1635,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Maur\u00edcio",
           "share": 0.0717,
-          "exp_goals": 0.101,
-          "anytime_prob": 0.0964,
-          "anytime_prob_raw": 0.0964,
+          "exp_goals": 0.103,
+          "anytime_prob": 0.0975,
+          "anytime_prob_raw": 0.0975,
           "career_goals": 1,
           "pen_rate": 0.0
         },
         {
           "player": "Miguel Almir\u00f3n",
           "share": 0.0712,
-          "exp_goals": 0.101,
-          "anytime_prob": 0.0957,
-          "anytime_prob_raw": 0.0957,
+          "exp_goals": 0.102,
+          "anytime_prob": 0.0968,
+          "anytime_prob_raw": 0.0968,
           "career_goals": 3,
           "pen_rate": 0.33
         }
@@ -689,35 +689,35 @@
     "home": "Qatar",
     "away": "Switzerland",
     "model": {
-      "home_win": 0.0138,
-      "draw": 0.0544,
-      "away_win": 0.9318,
-      "btts": 0.4068,
-      "over_2_5": 0.7589,
-      "exp_home": 0.539,
-      "exp_away": 3.4,
-      "exp_total": 3.939
+      "home_win": 0.0148,
+      "draw": 0.0571,
+      "away_win": 0.928,
+      "btts": 0.4106,
+      "over_2_5": 0.753,
+      "exp_home": 0.547,
+      "exp_away": 3.356,
+      "exp_total": 3.903
     },
     "top_scores": [
       {
         "score": "0-3",
-        "prob": 0.1278
+        "prob": 0.1275
       },
       {
         "score": "0-2",
-        "prob": 0.111
+        "prob": 0.1123
       },
       {
         "score": "0-4",
-        "prob": 0.1104
+        "prob": 0.1086
       },
       {
         "score": "0-5",
-        "prob": 0.0763
+        "prob": 0.074
       },
       {
         "score": "1-3",
-        "prob": 0.0689
+        "prob": 0.0697
       }
     ],
     "context": {
@@ -729,7 +729,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1441,
+      "home": 1449,
       "away": 1942
     },
     "scorers": {
@@ -737,36 +737,36 @@
         {
           "player": "Almoez Ali",
           "share": 0.2877,
-          "exp_goals": 0.155,
-          "anytime_prob": 0.1436,
-          "anytime_prob_raw": 0.1436,
+          "exp_goals": 0.157,
+          "anytime_prob": 0.1456,
+          "anytime_prob_raw": 0.1456,
           "career_goals": 34,
           "pen_rate": 0.12
         },
         {
           "player": "Akram Afif",
           "share": 0.217,
-          "exp_goals": 0.117,
-          "anytime_prob": 0.1104,
-          "anytime_prob_raw": 0.1104,
+          "exp_goals": 0.119,
+          "anytime_prob": 0.1119,
+          "anytime_prob_raw": 0.1119,
           "career_goals": 22,
           "pen_rate": 0.32
         },
         {
           "player": "Hassan Al-Haydos",
           "share": 0.1159,
-          "exp_goals": 0.062,
-          "anytime_prob": 0.0606,
-          "anytime_prob_raw": 0.0606,
+          "exp_goals": 0.063,
+          "anytime_prob": 0.0614,
+          "anytime_prob_raw": 0.0614,
           "career_goals": 19,
           "pen_rate": 0.21
         },
         {
           "player": "Ahmed Al-Rawi",
           "share": 0.0523,
-          "exp_goals": 0.028,
-          "anytime_prob": 0.0278,
-          "anytime_prob_raw": 0.0278,
+          "exp_goals": 0.029,
+          "anytime_prob": 0.0282,
+          "anytime_prob_raw": 0.0282,
           "career_goals": 3,
           "pen_rate": 0.0
         },
@@ -774,8 +774,8 @@
           "player": "Lucas Mendes",
           "share": 0.04,
           "exp_goals": 0.022,
-          "anytime_prob": 0.0213,
-          "anytime_prob_raw": 0.0213,
+          "anytime_prob": 0.0217,
+          "anytime_prob_raw": 0.0217,
           "career_goals": 2,
           "pen_rate": 0.0
         },
@@ -783,8 +783,8 @@
           "player": "Boualem Khoukhi",
           "share": 0.037,
           "exp_goals": 0.02,
-          "anytime_prob": 0.0198,
-          "anytime_prob_raw": 0.0198,
+          "anytime_prob": 0.02,
+          "anytime_prob_raw": 0.02,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -793,54 +793,54 @@
         {
           "player": "Breel Embolo",
           "share": 0.1998,
-          "exp_goals": 0.679,
-          "anytime_prob": 0.4931,
-          "anytime_prob_raw": 0.4931,
+          "exp_goals": 0.671,
+          "anytime_prob": 0.4886,
+          "anytime_prob_raw": 0.4886,
           "career_goals": 19,
           "pen_rate": 0.11
         },
         {
           "player": "Rub\u00e9n Vargas",
           "share": 0.1175,
-          "exp_goals": 0.399,
-          "anytime_prob": 0.3293,
-          "anytime_prob_raw": 0.3293,
+          "exp_goals": 0.394,
+          "anytime_prob": 0.3258,
+          "anytime_prob_raw": 0.3258,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Johan Manzambi",
           "share": 0.1133,
-          "exp_goals": 0.385,
-          "anytime_prob": 0.3198,
-          "anytime_prob_raw": 0.3198,
+          "exp_goals": 0.38,
+          "anytime_prob": 0.3163,
+          "anytime_prob_raw": 0.3163,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Dan Ndoye",
           "share": 0.1012,
-          "exp_goals": 0.344,
-          "anytime_prob": 0.2912,
-          "anytime_prob_raw": 0.2912,
+          "exp_goals": 0.34,
+          "anytime_prob": 0.2881,
+          "anytime_prob_raw": 0.2881,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Zeki Amdouni",
           "share": 0.0931,
-          "exp_goals": 0.317,
-          "anytime_prob": 0.2713,
-          "anytime_prob_raw": 0.2713,
+          "exp_goals": 0.312,
+          "anytime_prob": 0.2683,
+          "anytime_prob_raw": 0.2683,
           "career_goals": 9,
           "pen_rate": 0.11
         },
         {
           "player": "Granit Xhaka",
           "share": 0.0903,
-          "exp_goals": 0.307,
-          "anytime_prob": 0.2644,
-          "anytime_prob_raw": 0.2644,
+          "exp_goals": 0.303,
+          "anytime_prob": 0.2614,
+          "anytime_prob_raw": 0.2614,
           "career_goals": 11,
           "pen_rate": 0.27
         }
@@ -1357,35 +1357,35 @@
     "home": "Germany",
     "away": "Cura\u00e7ao",
     "model": {
-      "home_win": 0.8129,
-      "draw": 0.1316,
-      "away_win": 0.0556,
-      "btts": 0.4853,
-      "over_2_5": 0.6372,
-      "exp_home": 2.546,
-      "exp_away": 0.731,
-      "exp_total": 3.277
+      "home_win": 0.7816,
+      "draw": 0.1491,
+      "away_win": 0.0693,
+      "btts": 0.4981,
+      "over_2_5": 0.6173,
+      "exp_home": 2.409,
+      "exp_away": 0.773,
+      "exp_total": 3.182
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.1222
+        "prob": 0.1204
       },
       {
         "score": "3-0",
-        "prob": 0.1041
+        "prob": 0.0969
       },
       {
         "score": "2-1",
-        "prob": 0.0894
+        "prob": 0.0931
       },
       {
         "score": "1-0",
-        "prob": 0.0887
+        "prob": 0.092
       },
       {
         "score": "1-1",
-        "prob": 0.077
+        "prob": 0.0848
       }
     ],
     "context": {
@@ -1397,7 +1397,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1916,
+      "home": 1884,
       "away": 1580
     },
     "scorers": {
@@ -1405,54 +1405,54 @@
         {
           "player": "Kai Havertz",
           "share": 0.1356,
-          "exp_goals": 0.345,
-          "anytime_prob": 0.2919,
-          "anytime_prob_raw": 0.2919,
+          "exp_goals": 0.327,
+          "anytime_prob": 0.2786,
+          "anytime_prob_raw": 0.2786,
           "career_goals": 17,
           "pen_rate": 0.24
         },
         {
           "player": "Deniz Undav",
           "share": 0.0863,
-          "exp_goals": 0.22,
-          "anytime_prob": 0.1973,
-          "anytime_prob_raw": 0.1973,
+          "exp_goals": 0.208,
+          "anytime_prob": 0.1877,
+          "anytime_prob_raw": 0.1877,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Serge Gnabry",
           "share": 0.0852,
-          "exp_goals": 0.217,
-          "anytime_prob": 0.1949,
-          "anytime_prob_raw": 0.1949,
+          "exp_goals": 0.205,
+          "anytime_prob": 0.1855,
+          "anytime_prob_raw": 0.1855,
           "career_goals": 21,
           "pen_rate": 0.0
         },
         {
           "player": "Leroy San\u00e9",
           "share": 0.083,
-          "exp_goals": 0.211,
-          "anytime_prob": 0.1904,
-          "anytime_prob_raw": 0.1904,
+          "exp_goals": 0.2,
+          "anytime_prob": 0.1812,
+          "anytime_prob_raw": 0.1812,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Jamal Musiala",
           "share": 0.0828,
-          "exp_goals": 0.211,
-          "anytime_prob": 0.19,
-          "anytime_prob_raw": 0.19,
+          "exp_goals": 0.199,
+          "anytime_prob": 0.1808,
+          "anytime_prob_raw": 0.1808,
           "career_goals": 8,
           "pen_rate": 0.0
         },
         {
           "player": "Florian Wirtz",
           "share": 0.0771,
-          "exp_goals": 0.196,
-          "anytime_prob": 0.1783,
-          "anytime_prob_raw": 0.1783,
+          "exp_goals": 0.186,
+          "anytime_prob": 0.1696,
+          "anytime_prob_raw": 0.1696,
           "career_goals": 7,
           "pen_rate": 0.0
         }
@@ -1461,54 +1461,54 @@
         {
           "player": "Gervane Kastaneer",
           "share": 0.1456,
-          "exp_goals": 0.106,
-          "anytime_prob": 0.101,
-          "anytime_prob_raw": 0.101,
+          "exp_goals": 0.113,
+          "anytime_prob": 0.1065,
+          "anytime_prob_raw": 0.1065,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Kenji Gorr\u00e9",
           "share": 0.1163,
-          "exp_goals": 0.085,
-          "anytime_prob": 0.0815,
-          "anytime_prob_raw": 0.0815,
+          "exp_goals": 0.09,
+          "anytime_prob": 0.086,
+          "anytime_prob_raw": 0.086,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Juninho Bacuna",
           "share": 0.1032,
-          "exp_goals": 0.075,
-          "anytime_prob": 0.0727,
-          "anytime_prob_raw": 0.0727,
+          "exp_goals": 0.08,
+          "anytime_prob": 0.0767,
+          "anytime_prob_raw": 0.0767,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Livano Comenencia",
           "share": 0.0789,
-          "exp_goals": 0.058,
-          "anytime_prob": 0.056,
-          "anytime_prob_raw": 0.056,
+          "exp_goals": 0.061,
+          "anytime_prob": 0.0592,
+          "anytime_prob_raw": 0.0592,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Rangelo Janga",
           "share": 0.0733,
-          "exp_goals": 0.054,
-          "anytime_prob": 0.0522,
-          "anytime_prob_raw": 0.0522,
+          "exp_goals": 0.057,
+          "anytime_prob": 0.0551,
+          "anytime_prob_raw": 0.0551,
           "career_goals": 4,
           "pen_rate": 0.25
         },
         {
           "player": "Jordi Paulina",
           "share": 0.072,
-          "exp_goals": 0.053,
-          "anytime_prob": 0.0512,
-          "anytime_prob_raw": 0.0512,
+          "exp_goals": 0.056,
+          "anytime_prob": 0.0541,
+          "anytime_prob_raw": 0.0541,
           "career_goals": 2,
           "pen_rate": 0.5
         }
@@ -1524,35 +1524,35 @@
     "home": "Netherlands",
     "away": "Japan",
     "model": {
-      "home_win": 0.4462,
-      "draw": 0.2671,
-      "away_win": 0.2867,
-      "btts": 0.5618,
-      "over_2_5": 0.5148,
-      "exp_home": 1.514,
-      "exp_away": 1.22,
-      "exp_total": 2.734
+      "home_win": 0.4572,
+      "draw": 0.2655,
+      "away_win": 0.2772,
+      "btts": 0.561,
+      "over_2_5": 0.5159,
+      "exp_home": 1.536,
+      "exp_away": 1.203,
+      "exp_total": 2.739
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.132
+        "prob": 0.1314
       },
       {
         "score": "2-1",
-        "prob": 0.0908
+        "prob": 0.0917
       },
       {
         "score": "1-0",
-        "prob": 0.0863
+        "prob": 0.0873
       },
       {
         "score": "0-0",
-        "prob": 0.0769
+        "prob": 0.0766
       },
       {
         "score": "2-0",
-        "prob": 0.0745
+        "prob": 0.0762
       }
     ],
     "context": {
@@ -1564,62 +1564,62 @@
       "notes": []
     },
     "elo": {
-      "home": 1962,
-      "away": 1897
+      "home": 1974,
+      "away": 1901
     },
     "scorers": {
       "home": [
         {
           "player": "Memphis Depay",
           "share": 0.197,
-          "exp_goals": 0.298,
-          "anytime_prob": 0.2579,
-          "anytime_prob_raw": 0.2579,
+          "exp_goals": 0.303,
+          "anytime_prob": 0.2611,
+          "anytime_prob_raw": 0.2611,
           "career_goals": 42,
           "pen_rate": 0.26
         },
         {
           "player": "Cody Gakpo",
           "share": 0.1964,
-          "exp_goals": 0.297,
-          "anytime_prob": 0.2573,
-          "anytime_prob_raw": 0.2573,
+          "exp_goals": 0.302,
+          "anytime_prob": 0.2605,
+          "anytime_prob_raw": 0.2605,
           "career_goals": 22,
           "pen_rate": 0.23
         },
         {
           "player": "Donyell Malen",
           "share": 0.0807,
-          "exp_goals": 0.122,
-          "anytime_prob": 0.115,
-          "anytime_prob_raw": 0.115,
+          "exp_goals": 0.124,
+          "anytime_prob": 0.1165,
+          "anytime_prob_raw": 0.1165,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Denzel Dumfries",
           "share": 0.0719,
-          "exp_goals": 0.109,
-          "anytime_prob": 0.1031,
-          "anytime_prob_raw": 0.1031,
+          "exp_goals": 0.11,
+          "anytime_prob": 0.1045,
+          "anytime_prob_raw": 0.1045,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Wout Weghorst",
           "share": 0.0611,
-          "exp_goals": 0.092,
-          "anytime_prob": 0.0883,
-          "anytime_prob_raw": 0.0883,
+          "exp_goals": 0.094,
+          "anytime_prob": 0.0895,
+          "anytime_prob_raw": 0.0895,
           "career_goals": 10,
           "pen_rate": 0.1
         },
         {
           "player": "Brian Brobbey",
           "share": 0.0576,
-          "exp_goals": 0.087,
-          "anytime_prob": 0.0836,
-          "anytime_prob_raw": 0.0836,
+          "exp_goals": 0.089,
+          "anytime_prob": 0.0847,
+          "anytime_prob_raw": 0.0847,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -1628,54 +1628,54 @@
         {
           "player": "Ayase Ueda",
           "share": 0.1672,
-          "exp_goals": 0.204,
-          "anytime_prob": 0.1846,
-          "anytime_prob_raw": 0.1846,
+          "exp_goals": 0.201,
+          "anytime_prob": 0.1822,
+          "anytime_prob_raw": 0.1822,
           "career_goals": 14,
           "pen_rate": 0.14
         },
         {
           "player": "Daichi Kamada",
           "share": 0.1237,
-          "exp_goals": 0.151,
-          "anytime_prob": 0.1401,
-          "anytime_prob_raw": 0.1401,
+          "exp_goals": 0.149,
+          "anytime_prob": 0.1383,
+          "anytime_prob_raw": 0.1383,
           "career_goals": 10,
           "pen_rate": 0.0
         },
         {
           "player": "Takumi Minamino",
           "share": 0.1019,
-          "exp_goals": 0.124,
-          "anytime_prob": 0.1169,
-          "anytime_prob_raw": 0.1169,
+          "exp_goals": 0.123,
+          "anytime_prob": 0.1154,
+          "anytime_prob_raw": 0.1154,
           "career_goals": 17,
           "pen_rate": 0.06
         },
         {
           "player": "K\u014dki Ogawa",
           "share": 0.0737,
-          "exp_goals": 0.09,
-          "anytime_prob": 0.086,
-          "anytime_prob_raw": 0.086,
+          "exp_goals": 0.089,
+          "anytime_prob": 0.0848,
+          "anytime_prob_raw": 0.0848,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Takefusa Kubo",
           "share": 0.0622,
-          "exp_goals": 0.076,
-          "anytime_prob": 0.073,
-          "anytime_prob_raw": 0.073,
+          "exp_goals": 0.075,
+          "anytime_prob": 0.072,
+          "anytime_prob_raw": 0.072,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Junya It\u014d",
           "share": 0.0616,
-          "exp_goals": 0.075,
-          "anytime_prob": 0.0724,
-          "anytime_prob_raw": 0.0724,
+          "exp_goals": 0.074,
+          "anytime_prob": 0.0714,
+          "anytime_prob_raw": 0.0714,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -2359,35 +2359,35 @@
     "home": "Saudi Arabia",
     "away": "Uruguay",
     "model": {
-      "home_win": 0.1241,
-      "draw": 0.2179,
-      "away_win": 0.6581,
-      "btts": 0.4859,
-      "over_2_5": 0.507,
-      "exp_home": 0.824,
-      "exp_away": 1.878,
-      "exp_total": 2.702
+      "home_win": 0.1122,
+      "draw": 0.2081,
+      "away_win": 0.6797,
+      "btts": 0.4808,
+      "over_2_5": 0.5154,
+      "exp_home": 0.798,
+      "exp_away": 1.938,
+      "exp_total": 2.736
     },
     "top_scores": [
       {
         "score": "0-2",
-        "prob": 0.1183
+        "prob": 0.1217
       },
       {
         "score": "0-1",
-        "prob": 0.1156
+        "prob": 0.1155
       },
       {
         "score": "1-1",
-        "prob": 0.1141
+        "prob": 0.1102
       },
       {
         "score": "1-2",
-        "prob": 0.0975
+        "prob": 0.0972
       },
       {
-        "score": "0-0",
-        "prob": 0.0774
+        "score": "0-3",
+        "prob": 0.0787
       }
     ],
     "context": {
@@ -2400,61 +2400,61 @@
     },
     "elo": {
       "home": 1616,
-      "away": 1832
+      "away": 1850
     },
     "scorers": {
       "home": [
         {
           "player": "Firas Al-Buraikan",
           "share": 0.2091,
-          "exp_goals": 0.172,
-          "anytime_prob": 0.1583,
-          "anytime_prob_raw": 0.1583,
+          "exp_goals": 0.167,
+          "anytime_prob": 0.1537,
+          "anytime_prob_raw": 0.1537,
           "career_goals": 9,
           "pen_rate": 0.11
         },
         {
           "player": "Saleh Al-Shehri",
           "share": 0.19,
-          "exp_goals": 0.157,
-          "anytime_prob": 0.1449,
-          "anytime_prob_raw": 0.1449,
+          "exp_goals": 0.152,
+          "anytime_prob": 0.1407,
+          "anytime_prob_raw": 0.1407,
           "career_goals": 13,
           "pen_rate": 0.23
         },
         {
           "player": "Salem Al-Dawsari",
           "share": 0.1447,
-          "exp_goals": 0.119,
-          "anytime_prob": 0.1124,
-          "anytime_prob_raw": 0.1124,
+          "exp_goals": 0.115,
+          "anytime_prob": 0.109,
+          "anytime_prob_raw": 0.109,
           "career_goals": 14,
           "pen_rate": 0.21
         },
         {
           "player": "Musab Al-Juwayr",
           "share": 0.0833,
-          "exp_goals": 0.069,
-          "anytime_prob": 0.0664,
-          "anytime_prob_raw": 0.0664,
+          "exp_goals": 0.067,
+          "anytime_prob": 0.0643,
+          "anytime_prob_raw": 0.0643,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Abdulrahman Al-Aboud",
           "share": 0.0674,
-          "exp_goals": 0.056,
-          "anytime_prob": 0.054,
-          "anytime_prob_raw": 0.054,
+          "exp_goals": 0.054,
+          "anytime_prob": 0.0523,
+          "anytime_prob_raw": 0.0523,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Hassan Kadesh",
           "share": 0.0521,
-          "exp_goals": 0.043,
-          "anytime_prob": 0.042,
-          "anytime_prob_raw": 0.042,
+          "exp_goals": 0.042,
+          "anytime_prob": 0.0407,
+          "anytime_prob_raw": 0.0407,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -2463,54 +2463,54 @@
         {
           "player": "Darwin N\u00fa\u00f1ez",
           "share": 0.1362,
-          "exp_goals": 0.256,
-          "anytime_prob": 0.2256,
-          "anytime_prob_raw": 0.2256,
+          "exp_goals": 0.264,
+          "anytime_prob": 0.2319,
+          "anytime_prob_raw": 0.2319,
           "career_goals": 8,
           "pen_rate": 0.12
         },
         {
           "player": "Giorgian de Arrascaeta",
           "share": 0.1319,
-          "exp_goals": 0.248,
-          "anytime_prob": 0.2194,
-          "anytime_prob_raw": 0.2194,
+          "exp_goals": 0.256,
+          "anytime_prob": 0.2256,
+          "anytime_prob_raw": 0.2256,
           "career_goals": 9,
           "pen_rate": 0.11
         },
         {
           "player": "Maximiliano Ara\u00fajo",
           "share": 0.1292,
-          "exp_goals": 0.243,
-          "anytime_prob": 0.2154,
-          "anytime_prob_raw": 0.2154,
+          "exp_goals": 0.25,
+          "anytime_prob": 0.2215,
+          "anytime_prob_raw": 0.2215,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Luis Su\u00e1rez",
           "share": 0.1124,
-          "exp_goals": 0.211,
-          "anytime_prob": 0.1904,
-          "anytime_prob_raw": 0.1904,
+          "exp_goals": 0.218,
+          "anytime_prob": 0.1958,
+          "anytime_prob_raw": 0.1958,
           "career_goals": 19,
           "pen_rate": 0.37
         },
         {
           "player": "Rodrigo Aguirre",
           "share": 0.0876,
-          "exp_goals": 0.165,
-          "anytime_prob": 0.1518,
-          "anytime_prob_raw": 0.1518,
+          "exp_goals": 0.17,
+          "anytime_prob": 0.1562,
+          "anytime_prob_raw": 0.1562,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Federico Valverde",
           "share": 0.0831,
-          "exp_goals": 0.156,
-          "anytime_prob": 0.1446,
-          "anytime_prob_raw": 0.1446,
+          "exp_goals": 0.161,
+          "anytime_prob": 0.1488,
+          "anytime_prob_raw": 0.1488,
           "career_goals": 6,
           "pen_rate": 0.0
         }
@@ -2860,35 +2860,35 @@
     "home": "Iraq",
     "away": "Norway",
     "model": {
-      "home_win": 0.0304,
-      "draw": 0.0897,
-      "away_win": 0.8799,
-      "btts": 0.4579,
-      "over_2_5": 0.7008,
-      "exp_home": 0.648,
-      "exp_away": 2.954,
-      "exp_total": 3.603
+      "home_win": 0.0371,
+      "draw": 0.1015,
+      "away_win": 0.8615,
+      "btts": 0.4692,
+      "over_2_5": 0.6833,
+      "exp_home": 0.677,
+      "exp_away": 2.832,
+      "exp_total": 3.509
     },
     "top_scores": [
       {
         "score": "0-2",
-        "prob": 0.1185
+        "prob": 0.1197
       },
       {
         "score": "0-3",
-        "prob": 0.1176
-      },
-      {
-        "score": "0-4",
-        "prob": 0.0875
+        "prob": 0.1137
       },
       {
         "score": "1-2",
-        "prob": 0.0768
+        "prob": 0.0811
       },
       {
-        "score": "1-3",
-        "prob": 0.0762
+        "score": "0-4",
+        "prob": 0.081
+      },
+      {
+        "score": "0-1",
+        "prob": 0.0783
       }
     ],
     "context": {
@@ -2901,61 +2901,61 @@
     },
     "elo": {
       "home": 1564,
-      "away": 1962
+      "away": 1937
     },
     "scorers": {
       "home": [
         {
           "player": "Aymen Hussein",
           "share": 0.376,
-          "exp_goals": 0.244,
-          "anytime_prob": 0.2162,
-          "anytime_prob_raw": 0.2162,
+          "exp_goals": 0.255,
+          "anytime_prob": 0.2247,
+          "anytime_prob_raw": 0.2247,
           "career_goals": 20,
           "pen_rate": 0.15
         },
         {
           "player": "Mohanad Ali",
           "share": 0.113,
-          "exp_goals": 0.073,
-          "anytime_prob": 0.0706,
-          "anytime_prob_raw": 0.0706,
+          "exp_goals": 0.076,
+          "anytime_prob": 0.0736,
+          "anytime_prob_raw": 0.0736,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Ali Al-Hamadi",
           "share": 0.0855,
-          "exp_goals": 0.055,
-          "anytime_prob": 0.0539,
-          "anytime_prob_raw": 0.0539,
+          "exp_goals": 0.058,
+          "anytime_prob": 0.0562,
+          "anytime_prob_raw": 0.0562,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Amir Al-Ammari",
           "share": 0.059,
-          "exp_goals": 0.038,
-          "anytime_prob": 0.0375,
-          "anytime_prob_raw": 0.0375,
+          "exp_goals": 0.04,
+          "anytime_prob": 0.0391,
+          "anytime_prob_raw": 0.0391,
           "career_goals": 3,
           "pen_rate": 0.67
         },
         {
           "player": "Ibrahim Bayesh",
           "share": 0.052,
-          "exp_goals": 0.034,
-          "anytime_prob": 0.0332,
-          "anytime_prob_raw": 0.0332,
+          "exp_goals": 0.035,
+          "anytime_prob": 0.0346,
+          "anytime_prob_raw": 0.0346,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Zidane Iqbal",
           "share": 0.0497,
-          "exp_goals": 0.032,
-          "anytime_prob": 0.0317,
-          "anytime_prob_raw": 0.0317,
+          "exp_goals": 0.034,
+          "anytime_prob": 0.0331,
+          "anytime_prob_raw": 0.0331,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -2964,54 +2964,54 @@
         {
           "player": "Erling Haaland",
           "share": 0.4997,
-          "exp_goals": 1.476,
-          "anytime_prob": 0.7715,
-          "anytime_prob_raw": 0.7715,
+          "exp_goals": 1.415,
+          "anytime_prob": 0.7571,
+          "anytime_prob_raw": 0.7571,
           "career_goals": 53,
           "pen_rate": 0.09
         },
         {
           "player": "Alexander S\u00f8rloth",
           "share": 0.1328,
-          "exp_goals": 0.392,
-          "anytime_prob": 0.3245,
-          "anytime_prob_raw": 0.3245,
+          "exp_goals": 0.376,
+          "anytime_prob": 0.3135,
+          "anytime_prob_raw": 0.3135,
           "career_goals": 21,
           "pen_rate": 0.0
         },
         {
           "player": "Thelo Aasgaard",
           "share": 0.0822,
-          "exp_goals": 0.243,
-          "anytime_prob": 0.2156,
-          "anytime_prob_raw": 0.2156,
+          "exp_goals": 0.233,
+          "anytime_prob": 0.2077,
+          "anytime_prob_raw": 0.2077,
           "career_goals": 6,
           "pen_rate": 0.17
         },
         {
           "player": "Antonio Nusa",
           "share": 0.0741,
-          "exp_goals": 0.219,
-          "anytime_prob": 0.1967,
-          "anytime_prob_raw": 0.1967,
+          "exp_goals": 0.21,
+          "anytime_prob": 0.1894,
+          "anytime_prob_raw": 0.1894,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Mohamed Elyounoussi",
           "share": 0.0234,
-          "exp_goals": 0.069,
-          "anytime_prob": 0.0669,
-          "anytime_prob_raw": 0.0669,
+          "exp_goals": 0.066,
+          "anytime_prob": 0.0642,
+          "anytime_prob_raw": 0.0642,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Felix Horn Myhre",
           "share": 0.0228,
-          "exp_goals": 0.067,
-          "anytime_prob": 0.065,
-          "anytime_prob_raw": 0.065,
+          "exp_goals": 0.064,
+          "anytime_prob": 0.0624,
+          "anytime_prob_raw": 0.0624,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -3194,35 +3194,35 @@
     "home": "Austria",
     "away": "Jordan",
     "model": {
-      "home_win": 0.6476,
-      "draw": 0.2113,
-      "away_win": 0.1411,
-      "btts": 0.5395,
-      "over_2_5": 0.5613,
-      "exp_home": 1.978,
-      "exp_away": 0.953,
-      "exp_total": 2.93
+      "home_win": 0.673,
+      "draw": 0.2009,
+      "away_win": 0.126,
+      "btts": 0.5337,
+      "over_2_5": 0.5699,
+      "exp_home": 2.048,
+      "exp_away": 0.92,
+      "exp_total": 2.968
     },
     "top_scores": [
       {
-        "score": "1-1",
-        "prob": 0.1106
+        "score": "2-0",
+        "prob": 0.1078
       },
       {
-        "score": "2-0",
-        "prob": 0.1044
+        "score": "1-1",
+        "prob": 0.1065
       },
       {
         "score": "2-1",
-        "prob": 0.0995
+        "prob": 0.0992
       },
       {
         "score": "1-0",
-        "prob": 0.0954
+        "prob": 0.0955
       },
       {
         "score": "3-0",
-        "prob": 0.0689
+        "prob": 0.0737
       }
     ],
     "context": {
@@ -3234,62 +3234,62 @@
       "notes": []
     },
     "elo": {
-      "home": 1831,
-      "away": 1628
+      "home": 1845,
+      "away": 1622
     },
     "scorers": {
       "home": [
         {
           "player": "Marko Arnautovi\u0107",
           "share": 0.2828,
-          "exp_goals": 0.559,
-          "anytime_prob": 0.4284,
-          "anytime_prob_raw": 0.4284,
+          "exp_goals": 0.579,
+          "anytime_prob": 0.4396,
+          "anytime_prob_raw": 0.4396,
           "career_goals": 36,
           "pen_rate": 0.25
         },
         {
           "player": "Marcel Sabitzer",
           "share": 0.1665,
-          "exp_goals": 0.329,
-          "anytime_prob": 0.2806,
-          "anytime_prob_raw": 0.2806,
+          "exp_goals": 0.341,
+          "anytime_prob": 0.2889,
+          "anytime_prob_raw": 0.2889,
           "career_goals": 20,
           "pen_rate": 0.2
         },
         {
           "player": "Michael Gregoritsch",
           "share": 0.1572,
-          "exp_goals": 0.311,
-          "anytime_prob": 0.2673,
-          "anytime_prob_raw": 0.2673,
+          "exp_goals": 0.322,
+          "anytime_prob": 0.2753,
+          "anytime_prob_raw": 0.2753,
           "career_goals": 16,
           "pen_rate": 0.0
         },
         {
           "player": "Christoph Baumgartner",
           "share": 0.0993,
-          "exp_goals": 0.196,
-          "anytime_prob": 0.1784,
-          "anytime_prob_raw": 0.1784,
+          "exp_goals": 0.203,
+          "anytime_prob": 0.1841,
+          "anytime_prob_raw": 0.1841,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Konrad Laimer",
           "share": 0.0703,
-          "exp_goals": 0.139,
-          "anytime_prob": 0.1298,
-          "anytime_prob_raw": 0.1298,
+          "exp_goals": 0.144,
+          "anytime_prob": 0.1341,
+          "anytime_prob_raw": 0.1341,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Romano Schmid",
           "share": 0.0632,
-          "exp_goals": 0.125,
-          "anytime_prob": 0.1176,
-          "anytime_prob_raw": 0.1176,
+          "exp_goals": 0.13,
+          "anytime_prob": 0.1215,
+          "anytime_prob_raw": 0.1215,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -3298,54 +3298,54 @@
         {
           "player": "Ali Olwan",
           "share": 0.2492,
-          "exp_goals": 0.238,
-          "anytime_prob": 0.2114,
-          "anytime_prob_raw": 0.2114,
+          "exp_goals": 0.229,
+          "anytime_prob": 0.2049,
+          "anytime_prob_raw": 0.2049,
           "career_goals": 10,
           "pen_rate": 0.3
         },
         {
           "player": "Yazan Al-Naimat",
           "share": 0.2401,
-          "exp_goals": 0.229,
-          "anytime_prob": 0.2045,
-          "anytime_prob_raw": 0.2045,
+          "exp_goals": 0.221,
+          "anytime_prob": 0.1982,
+          "anytime_prob_raw": 0.1982,
           "career_goals": 12,
           "pen_rate": 0.08
         },
         {
           "player": "Musa Al-Taamari",
           "share": 0.2393,
-          "exp_goals": 0.228,
-          "anytime_prob": 0.2039,
-          "anytime_prob_raw": 0.2039,
+          "exp_goals": 0.22,
+          "anytime_prob": 0.1976,
+          "anytime_prob_raw": 0.1976,
           "career_goals": 12,
           "pen_rate": 0.08
         },
         {
           "player": "Nizar Al-Rashdan",
           "share": 0.0586,
-          "exp_goals": 0.056,
-          "anytime_prob": 0.0543,
-          "anytime_prob_raw": 0.0543,
+          "exp_goals": 0.054,
+          "anytime_prob": 0.0525,
+          "anytime_prob_raw": 0.0525,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Yazan Al-Arab",
           "share": 0.0513,
-          "exp_goals": 0.049,
-          "anytime_prob": 0.0477,
-          "anytime_prob_raw": 0.0477,
+          "exp_goals": 0.047,
+          "anytime_prob": 0.0461,
+          "anytime_prob_raw": 0.0461,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Noor Al-Rawabdeh",
           "share": 0.0422,
-          "exp_goals": 0.04,
-          "anytime_prob": 0.0395,
-          "anytime_prob_raw": 0.0395,
+          "exp_goals": 0.039,
+          "anytime_prob": 0.0381,
+          "anytime_prob_raw": 0.0381,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -3361,35 +3361,35 @@
     "home": "Portugal",
     "away": "DR Congo",
     "model": {
-      "home_win": 0.8003,
-      "draw": 0.141,
-      "away_win": 0.0587,
-      "btts": 0.471,
-      "over_2_5": 0.6092,
-      "exp_home": 2.434,
-      "exp_away": 0.709,
-      "exp_total": 3.143
+      "home_win": 0.8224,
+      "draw": 0.128,
+      "away_win": 0.0496,
+      "btts": 0.4614,
+      "over_2_5": 0.625,
+      "exp_home": 2.537,
+      "exp_away": 0.68,
+      "exp_total": 3.217
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.1278
+        "prob": 0.1289
       },
       {
         "score": "3-0",
-        "prob": 0.104
+        "prob": 0.1094
       },
       {
         "score": "1-0",
-        "prob": 0.0973
+        "prob": 0.0944
       },
       {
         "score": "2-1",
-        "prob": 0.0906
+        "prob": 0.0876
       },
       {
         "score": "1-1",
-        "prob": 0.0816
+        "prob": 0.0757
       }
     ],
     "context": {
@@ -3401,7 +3401,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1998,
+      "home": 2022,
       "away": 1659
     },
     "scorers": {
@@ -3409,54 +3409,54 @@
         {
           "player": "Cristiano Ronaldo",
           "share": 0.3504,
-          "exp_goals": 0.853,
-          "anytime_prob": 0.5738,
-          "anytime_prob_raw": 0.5738,
+          "exp_goals": 0.889,
+          "anytime_prob": 0.589,
+          "anytime_prob_raw": 0.589,
           "career_goals": 83,
           "pen_rate": 0.24
         },
         {
           "player": "Bruno Fernandes",
           "share": 0.1335,
-          "exp_goals": 0.325,
-          "anytime_prob": 0.2774,
-          "anytime_prob_raw": 0.2774,
+          "exp_goals": 0.339,
+          "anytime_prob": 0.2873,
+          "anytime_prob_raw": 0.2873,
           "career_goals": 19,
           "pen_rate": 0.16
         },
         {
           "player": "Gon\u00e7alo Ramos",
           "share": 0.0758,
-          "exp_goals": 0.185,
-          "anytime_prob": 0.1685,
-          "anytime_prob_raw": 0.1685,
+          "exp_goals": 0.192,
+          "anytime_prob": 0.175,
+          "anytime_prob_raw": 0.175,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Jo\u00e3o F\u00e9lix",
           "share": 0.0633,
-          "exp_goals": 0.154,
-          "anytime_prob": 0.1429,
-          "anytime_prob_raw": 0.1429,
+          "exp_goals": 0.161,
+          "anytime_prob": 0.1485,
+          "anytime_prob_raw": 0.1485,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Bernardo Silva",
           "share": 0.0599,
-          "exp_goals": 0.146,
-          "anytime_prob": 0.1356,
-          "anytime_prob_raw": 0.1356,
+          "exp_goals": 0.152,
+          "anytime_prob": 0.1409,
+          "anytime_prob_raw": 0.1409,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Jo\u00e3o Neves",
           "share": 0.0578,
-          "exp_goals": 0.141,
-          "anytime_prob": 0.1312,
-          "anytime_prob_raw": 0.1312,
+          "exp_goals": 0.147,
+          "anytime_prob": 0.1363,
+          "anytime_prob_raw": 0.1363,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -3465,54 +3465,54 @@
         {
           "player": "Yoane Wissa",
           "share": 0.2391,
-          "exp_goals": 0.17,
-          "anytime_prob": 0.1559,
-          "anytime_prob_raw": 0.1559,
+          "exp_goals": 0.163,
+          "anytime_prob": 0.1501,
+          "anytime_prob_raw": 0.1501,
           "career_goals": 9,
           "pen_rate": 0.22
         },
         {
           "player": "C\u00e9dric Bakambu",
           "share": 0.1695,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.1132,
-          "anytime_prob_raw": 0.1132,
+          "exp_goals": 0.115,
+          "anytime_prob": 0.1089,
+          "anytime_prob_raw": 0.1089,
           "career_goals": 10,
           "pen_rate": 0.1
         },
         {
           "player": "Th\u00e9o Bongonda",
           "share": 0.1064,
-          "exp_goals": 0.075,
-          "anytime_prob": 0.0727,
-          "anytime_prob_raw": 0.0727,
+          "exp_goals": 0.072,
+          "anytime_prob": 0.0698,
+          "anytime_prob_raw": 0.0698,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Fiston Mayele",
           "share": 0.0851,
-          "exp_goals": 0.06,
-          "anytime_prob": 0.0586,
-          "anytime_prob_raw": 0.0586,
+          "exp_goals": 0.058,
+          "anytime_prob": 0.0562,
+          "anytime_prob_raw": 0.0562,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Ga\u00ebl Kakuta",
           "share": 0.0752,
-          "exp_goals": 0.053,
-          "anytime_prob": 0.0519,
-          "anytime_prob_raw": 0.0519,
+          "exp_goals": 0.051,
+          "anytime_prob": 0.0499,
+          "anytime_prob_raw": 0.0499,
           "career_goals": 3,
           "pen_rate": 0.33
         },
         {
           "player": "Meschak Elia",
           "share": 0.0691,
-          "exp_goals": 0.049,
-          "anytime_prob": 0.0478,
-          "anytime_prob_raw": 0.0478,
+          "exp_goals": 0.047,
+          "anytime_prob": 0.0459,
+          "anytime_prob_raw": 0.0459,
           "career_goals": 3,
           "pen_rate": 0.0
         }
@@ -4368,31 +4368,31 @@
     "home": "Canada",
     "away": "Qatar",
     "model": {
-      "home_win": 0.8364,
-      "draw": 0.1176,
-      "away_win": 0.046,
-      "btts": 0.4746,
-      "over_2_5": 0.6548,
-      "exp_home": 2.664,
-      "exp_away": 0.699,
-      "exp_total": 3.363
+      "home_win": 0.8295,
+      "draw": 0.1218,
+      "away_win": 0.0488,
+      "btts": 0.478,
+      "over_2_5": 0.6495,
+      "exp_home": 2.628,
+      "exp_away": 0.709,
+      "exp_total": 3.337
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.1228
+        "prob": 0.1227
       },
       {
         "score": "3-0",
-        "prob": 0.1095
+        "prob": 0.1079
       },
       {
         "score": "2-1",
-        "prob": 0.0858
+        "prob": 0.0869
       },
       {
         "score": "1-0",
-        "prob": 0.0853
+        "prob": 0.0864
       },
       {
         "score": "3-1",
@@ -4411,61 +4411,61 @@
     },
     "elo": {
       "home": 1736,
-      "away": 1441
+      "away": 1449
     },
     "scorers": {
       "home": [
         {
           "player": "Jonathan David",
           "share": 0.307,
-          "exp_goals": 0.818,
-          "anytime_prob": 0.5587,
-          "anytime_prob_raw": 0.5587,
+          "exp_goals": 0.807,
+          "anytime_prob": 0.5538,
+          "anytime_prob_raw": 0.5538,
           "career_goals": 22,
           "pen_rate": 0.09
         },
         {
           "player": "Cyle Larin",
           "share": 0.22,
-          "exp_goals": 0.586,
-          "anytime_prob": 0.4435,
-          "anytime_prob_raw": 0.4435,
+          "exp_goals": 0.578,
+          "anytime_prob": 0.4391,
+          "anytime_prob_raw": 0.4391,
           "career_goals": 23,
           "pen_rate": 0.09
         },
         {
           "player": "Tajon Buchanan",
           "share": 0.1167,
-          "exp_goals": 0.311,
-          "anytime_prob": 0.2672,
-          "anytime_prob_raw": 0.2672,
+          "exp_goals": 0.307,
+          "anytime_prob": 0.2641,
+          "anytime_prob_raw": 0.2641,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Nathan Saliba",
           "share": 0.0963,
-          "exp_goals": 0.257,
-          "anytime_prob": 0.2263,
-          "anytime_prob_raw": 0.2263,
+          "exp_goals": 0.253,
+          "anytime_prob": 0.2236,
+          "anytime_prob_raw": 0.2236,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Promise David",
           "share": 0.0682,
-          "exp_goals": 0.182,
-          "anytime_prob": 0.1662,
-          "anytime_prob_raw": 0.1662,
+          "exp_goals": 0.179,
+          "anytime_prob": 0.1642,
+          "anytime_prob_raw": 0.1642,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Stephen Eust\u00e1quio",
           "share": 0.062,
-          "exp_goals": 0.165,
-          "anytime_prob": 0.1522,
-          "anytime_prob_raw": 0.1522,
+          "exp_goals": 0.163,
+          "anytime_prob": 0.1503,
+          "anytime_prob_raw": 0.1503,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -4474,27 +4474,27 @@
         {
           "player": "Almoez Ali",
           "share": 0.2877,
-          "exp_goals": 0.201,
-          "anytime_prob": 0.1822,
-          "anytime_prob_raw": 0.1822,
+          "exp_goals": 0.204,
+          "anytime_prob": 0.1845,
+          "anytime_prob_raw": 0.1845,
           "career_goals": 34,
           "pen_rate": 0.12
         },
         {
           "player": "Akram Afif",
           "share": 0.217,
-          "exp_goals": 0.152,
-          "anytime_prob": 0.1407,
-          "anytime_prob_raw": 0.1407,
+          "exp_goals": 0.154,
+          "anytime_prob": 0.1426,
+          "anytime_prob_raw": 0.1426,
           "career_goals": 22,
           "pen_rate": 0.32
         },
         {
           "player": "Hassan Al-Haydos",
           "share": 0.1159,
-          "exp_goals": 0.081,
-          "anytime_prob": 0.0778,
-          "anytime_prob_raw": 0.0778,
+          "exp_goals": 0.082,
+          "anytime_prob": 0.0789,
+          "anytime_prob_raw": 0.0789,
           "career_goals": 19,
           "pen_rate": 0.21
         },
@@ -4502,8 +4502,8 @@
           "player": "Ahmed Al-Rawi",
           "share": 0.0523,
           "exp_goals": 0.037,
-          "anytime_prob": 0.0359,
-          "anytime_prob_raw": 0.0359,
+          "anytime_prob": 0.0364,
+          "anytime_prob_raw": 0.0364,
           "career_goals": 3,
           "pen_rate": 0.0
         },
@@ -4511,8 +4511,8 @@
           "player": "Lucas Mendes",
           "share": 0.04,
           "exp_goals": 0.028,
-          "anytime_prob": 0.0276,
-          "anytime_prob_raw": 0.0276,
+          "anytime_prob": 0.028,
+          "anytime_prob_raw": 0.028,
           "career_goals": 2,
           "pen_rate": 0.0
         },
@@ -4520,8 +4520,8 @@
           "player": "Boualem Khoukhi",
           "share": 0.037,
           "exp_goals": 0.026,
-          "anytime_prob": 0.0255,
-          "anytime_prob_raw": 0.0255,
+          "anytime_prob": 0.0259,
+          "anytime_prob_raw": 0.0259,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -4537,35 +4537,35 @@
     "home": "Mexico",
     "away": "South Korea",
     "model": {
-      "home_win": 0.6788,
-      "draw": 0.2052,
-      "away_win": 0.116,
-      "btts": 0.498,
-      "over_2_5": 0.5338,
-      "exp_home": 1.977,
-      "exp_away": 0.836,
-      "exp_total": 2.813
+      "home_win": 0.7002,
+      "draw": 0.1953,
+      "away_win": 0.1045,
+      "btts": 0.4925,
+      "over_2_5": 0.5426,
+      "exp_home": 2.04,
+      "exp_away": 0.81,
+      "exp_total": 2.85
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.1174
-      },
-      {
-        "score": "1-1",
-        "prob": 0.1091
+        "prob": 0.1204
       },
       {
         "score": "1-0",
-        "prob": 0.1087
+        "prob": 0.1084
+      },
+      {
+        "score": "1-1",
+        "prob": 0.105
       },
       {
         "score": "2-1",
-        "prob": 0.0981
+        "prob": 0.0975
       },
       {
         "score": "3-0",
-        "prob": 0.0774
+        "prob": 0.082
       }
     ],
     "context": {
@@ -4584,61 +4584,61 @@
     },
     "elo": {
       "home": 1916,
-      "away": 1743
+      "away": 1725
     },
     "scorers": {
       "home": [
         {
           "player": "Ra\u00fal Jim\u00e9nez",
           "share": 0.3259,
-          "exp_goals": 0.644,
-          "anytime_prob": 0.4749,
-          "anytime_prob_raw": 0.4749,
+          "exp_goals": 0.665,
+          "anytime_prob": 0.4856,
+          "anytime_prob_raw": 0.4856,
           "career_goals": 19,
           "pen_rate": 0.37
         },
         {
           "player": "Juli\u00e1n Qui\u00f1ones",
           "share": 0.2044,
-          "exp_goals": 0.404,
-          "anytime_prob": 0.3324,
-          "anytime_prob_raw": 0.3324,
+          "exp_goals": 0.417,
+          "anytime_prob": 0.3409,
+          "anytime_prob_raw": 0.3409,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "C\u00e9sar Montes",
           "share": 0.1076,
-          "exp_goals": 0.213,
-          "anytime_prob": 0.1915,
-          "anytime_prob_raw": 0.1915,
+          "exp_goals": 0.219,
+          "anytime_prob": 0.197,
+          "anytime_prob_raw": 0.197,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Luis Romo",
           "share": 0.0869,
-          "exp_goals": 0.172,
-          "anytime_prob": 0.1578,
-          "anytime_prob_raw": 0.1578,
+          "exp_goals": 0.177,
+          "anytime_prob": 0.1624,
+          "anytime_prob_raw": 0.1624,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Edson \u00c1lvarez",
           "share": 0.0863,
-          "exp_goals": 0.171,
-          "anytime_prob": 0.1569,
-          "anytime_prob_raw": 0.1569,
+          "exp_goals": 0.176,
+          "anytime_prob": 0.1614,
+          "anytime_prob_raw": 0.1614,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Alexis Vega",
           "share": 0.0614,
-          "exp_goals": 0.121,
-          "anytime_prob": 0.1144,
-          "anytime_prob_raw": 0.1144,
+          "exp_goals": 0.125,
+          "anytime_prob": 0.1178,
+          "anytime_prob_raw": 0.1178,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -4647,54 +4647,54 @@
         {
           "player": "Son Heung-min",
           "share": 0.2456,
-          "exp_goals": 0.205,
-          "anytime_prob": 0.1856,
-          "anytime_prob_raw": 0.1856,
+          "exp_goals": 0.199,
+          "anytime_prob": 0.1804,
+          "anytime_prob_raw": 0.1804,
           "career_goals": 32,
           "pen_rate": 0.22
         },
         {
           "player": "Lee Kang-in",
           "share": 0.1241,
-          "exp_goals": 0.104,
-          "anytime_prob": 0.0986,
-          "anytime_prob_raw": 0.0986,
+          "exp_goals": 0.101,
+          "anytime_prob": 0.0957,
+          "anytime_prob_raw": 0.0957,
           "career_goals": 8,
           "pen_rate": 0.0
         },
         {
           "player": "Oh Hyeon-gyu",
           "share": 0.1119,
-          "exp_goals": 0.094,
-          "anytime_prob": 0.0893,
-          "anytime_prob_raw": 0.0893,
+          "exp_goals": 0.091,
+          "anytime_prob": 0.0866,
+          "anytime_prob_raw": 0.0866,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Hwang Hee-chan",
           "share": 0.1091,
-          "exp_goals": 0.091,
-          "anytime_prob": 0.0872,
-          "anytime_prob_raw": 0.0872,
+          "exp_goals": 0.088,
+          "anytime_prob": 0.0846,
+          "anytime_prob_raw": 0.0846,
           "career_goals": 11,
           "pen_rate": 0.18
         },
         {
           "player": "Lee Jae-sung",
           "share": 0.1023,
-          "exp_goals": 0.085,
-          "anytime_prob": 0.0819,
-          "anytime_prob_raw": 0.0819,
+          "exp_goals": 0.083,
+          "anytime_prob": 0.0795,
+          "anytime_prob_raw": 0.0795,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Cho Gue-sung",
           "share": 0.0525,
-          "exp_goals": 0.044,
-          "anytime_prob": 0.043,
-          "anytime_prob_raw": 0.043,
+          "exp_goals": 0.043,
+          "anytime_prob": 0.0416,
+          "anytime_prob_raw": 0.0416,
           "career_goals": 5,
           "pen_rate": 0.0
         }
@@ -5046,35 +5046,35 @@
     "home": "Turkey",
     "away": "Paraguay",
     "model": {
-      "home_win": 0.4064,
-      "draw": 0.2802,
-      "away_win": 0.3134,
-      "btts": 0.5391,
-      "over_2_5": 0.4807,
-      "exp_home": 1.382,
-      "exp_away": 1.214,
-      "exp_total": 2.596
+      "home_win": 0.3972,
+      "draw": 0.2809,
+      "away_win": 0.3219,
+      "btts": 0.5394,
+      "over_2_5": 0.4802,
+      "exp_home": 1.365,
+      "exp_away": 1.23,
+      "exp_total": 2.594
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1376
+        "prob": 0.1379
       },
       {
         "score": "1-0",
-        "prob": 0.0905
+        "prob": 0.0894
       },
       {
         "score": "0-0",
-        "prob": 0.0871
+        "prob": 0.0872
       },
       {
         "score": "2-1",
-        "prob": 0.0864
+        "prob": 0.0855
       },
       {
         "score": "0-1",
-        "prob": 0.078
+        "prob": 0.0793
       }
     ],
     "context": {
@@ -5087,49 +5087,40 @@
     },
     "elo": {
       "home": 1839,
-      "away": 1814
+      "away": 1821
     },
     "scorers": {
       "home": [
         {
           "player": "Kerem Akt\u00fcrko\u011flu",
           "share": 0.1839,
-          "exp_goals": 0.254,
-          "anytime_prob": 0.2244,
-          "anytime_prob_raw": 0.2244,
+          "exp_goals": 0.251,
+          "anytime_prob": 0.222,
+          "anytime_prob_raw": 0.222,
           "career_goals": 14,
           "pen_rate": 0.0
         },
         {
           "player": "Hakan \u00c7alhano\u011flu",
           "share": 0.1016,
-          "exp_goals": 0.14,
-          "anytime_prob": 0.131,
-          "anytime_prob_raw": 0.131,
+          "exp_goals": 0.139,
+          "anytime_prob": 0.1295,
+          "anytime_prob_raw": 0.1295,
           "career_goals": 15,
           "pen_rate": 0.4
         },
         {
           "player": "Arda G\u00fcler",
           "share": 0.0999,
-          "exp_goals": 0.138,
-          "anytime_prob": 0.1289,
-          "anytime_prob_raw": 0.1289,
+          "exp_goals": 0.136,
+          "anytime_prob": 0.1274,
+          "anytime_prob_raw": 0.1274,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "\u0130rfan Can Kahveci",
           "share": 0.0798,
-          "exp_goals": 0.11,
-          "anytime_prob": 0.1044,
-          "anytime_prob_raw": 0.1044,
-          "career_goals": 6,
-          "pen_rate": 0.0
-        },
-        {
-          "player": "Merih Demiral",
-          "share": 0.0788,
           "exp_goals": 0.109,
           "anytime_prob": 0.1032,
           "anytime_prob_raw": 0.1032,
@@ -5137,11 +5128,20 @@
           "pen_rate": 0.0
         },
         {
+          "player": "Merih Demiral",
+          "share": 0.0788,
+          "exp_goals": 0.108,
+          "anytime_prob": 0.102,
+          "anytime_prob_raw": 0.102,
+          "career_goals": 6,
+          "pen_rate": 0.0
+        },
+        {
           "player": "Kenan Y\u0131ld\u0131z",
           "share": 0.0763,
-          "exp_goals": 0.105,
-          "anytime_prob": 0.1,
-          "anytime_prob_raw": 0.1,
+          "exp_goals": 0.104,
+          "anytime_prob": 0.0989,
+          "anytime_prob_raw": 0.0989,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -5150,54 +5150,54 @@
         {
           "player": "Julio Enciso",
           "share": 0.2482,
-          "exp_goals": 0.301,
-          "anytime_prob": 0.2602,
-          "anytime_prob_raw": 0.2602,
+          "exp_goals": 0.305,
+          "anytime_prob": 0.2631,
+          "anytime_prob_raw": 0.2631,
           "career_goals": 5,
           "pen_rate": 0.2
         },
         {
           "player": "Mat\u00edas Galarza",
           "share": 0.1777,
-          "exp_goals": 0.216,
-          "anytime_prob": 0.194,
-          "anytime_prob_raw": 0.194,
+          "exp_goals": 0.219,
+          "anytime_prob": 0.1963,
+          "anytime_prob_raw": 0.1963,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Antonio Sanabria",
           "share": 0.1681,
-          "exp_goals": 0.204,
-          "anytime_prob": 0.1846,
-          "anytime_prob_raw": 0.1846,
+          "exp_goals": 0.207,
+          "anytime_prob": 0.1868,
+          "anytime_prob_raw": 0.1868,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Omar Alderete",
           "share": 0.1247,
-          "exp_goals": 0.151,
-          "anytime_prob": 0.1405,
-          "anytime_prob_raw": 0.1405,
+          "exp_goals": 0.153,
+          "anytime_prob": 0.1422,
+          "anytime_prob_raw": 0.1422,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Maur\u00edcio",
           "share": 0.0717,
-          "exp_goals": 0.087,
-          "anytime_prob": 0.0833,
-          "anytime_prob_raw": 0.0833,
+          "exp_goals": 0.088,
+          "anytime_prob": 0.0844,
+          "anytime_prob_raw": 0.0844,
           "career_goals": 1,
           "pen_rate": 0.0
         },
         {
           "player": "Miguel Almir\u00f3n",
           "share": 0.0712,
-          "exp_goals": 0.086,
-          "anytime_prob": 0.0828,
-          "anytime_prob_raw": 0.0828,
+          "exp_goals": 0.088,
+          "anytime_prob": 0.0838,
+          "anytime_prob_raw": 0.0838,
           "career_goals": 3,
           "pen_rate": 0.33
         }
@@ -5380,35 +5380,35 @@
     "home": "Netherlands",
     "away": "Sweden",
     "model": {
-      "home_win": 0.7087,
-      "draw": 0.1833,
-      "away_win": 0.108,
-      "btts": 0.5354,
-      "over_2_5": 0.5957,
-      "exp_home": 2.184,
-      "exp_away": 0.899,
-      "exp_total": 3.083
+      "home_win": 0.723,
+      "draw": 0.1767,
+      "away_win": 0.1003,
+      "btts": 0.5313,
+      "over_2_5": 0.6017,
+      "exp_home": 2.231,
+      "exp_away": 0.88,
+      "exp_total": 3.111
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.1093
-      },
-      {
-        "score": "1-1",
-        "prob": 0.0988
+        "prob": 0.1109
       },
       {
         "score": "2-1",
-        "prob": 0.0983
+        "prob": 0.0976
+      },
+      {
+        "score": "1-1",
+        "prob": 0.0961
       },
       {
         "score": "1-0",
-        "prob": 0.091
+        "prob": 0.0905
       },
       {
         "score": "3-0",
-        "prob": 0.0797
+        "prob": 0.0826
       }
     ],
     "context": {
@@ -5420,7 +5420,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1962,
+      "home": 1974,
       "away": 1741
     },
     "scorers": {
@@ -5428,54 +5428,54 @@
         {
           "player": "Memphis Depay",
           "share": 0.197,
-          "exp_goals": 0.43,
-          "anytime_prob": 0.3497,
-          "anytime_prob_raw": 0.3497,
+          "exp_goals": 0.44,
+          "anytime_prob": 0.3557,
+          "anytime_prob_raw": 0.3557,
           "career_goals": 42,
           "pen_rate": 0.26
         },
         {
           "player": "Cody Gakpo",
           "share": 0.1964,
-          "exp_goals": 0.429,
-          "anytime_prob": 0.3489,
-          "anytime_prob_raw": 0.3489,
+          "exp_goals": 0.438,
+          "anytime_prob": 0.3548,
+          "anytime_prob_raw": 0.3548,
           "career_goals": 22,
           "pen_rate": 0.23
         },
         {
           "player": "Donyell Malen",
           "share": 0.0807,
-          "exp_goals": 0.176,
-          "anytime_prob": 0.1615,
-          "anytime_prob_raw": 0.1615,
+          "exp_goals": 0.18,
+          "anytime_prob": 0.1647,
+          "anytime_prob_raw": 0.1647,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Denzel Dumfries",
           "share": 0.0719,
-          "exp_goals": 0.157,
-          "anytime_prob": 0.1453,
-          "anytime_prob_raw": 0.1453,
+          "exp_goals": 0.16,
+          "anytime_prob": 0.1482,
+          "anytime_prob_raw": 0.1482,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Wout Weghorst",
           "share": 0.0611,
-          "exp_goals": 0.133,
-          "anytime_prob": 0.1249,
-          "anytime_prob_raw": 0.1249,
+          "exp_goals": 0.136,
+          "anytime_prob": 0.1274,
+          "anytime_prob_raw": 0.1274,
           "career_goals": 10,
           "pen_rate": 0.1
         },
         {
           "player": "Brian Brobbey",
           "share": 0.0576,
-          "exp_goals": 0.126,
-          "anytime_prob": 0.1183,
-          "anytime_prob_raw": 0.1183,
+          "exp_goals": 0.129,
+          "anytime_prob": 0.1207,
+          "anytime_prob_raw": 0.1207,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -5484,54 +5484,54 @@
         {
           "player": "Viktor Gy\u00f6keres",
           "share": 0.3125,
-          "exp_goals": 0.281,
-          "anytime_prob": 0.2449,
-          "anytime_prob_raw": 0.2449,
+          "exp_goals": 0.275,
+          "anytime_prob": 0.2404,
+          "anytime_prob_raw": 0.2404,
           "career_goals": 18,
           "pen_rate": 0.11
         },
         {
           "player": "Alexander Isak",
           "share": 0.1293,
-          "exp_goals": 0.116,
-          "anytime_prob": 0.1097,
-          "anytime_prob_raw": 0.1097,
+          "exp_goals": 0.114,
+          "anytime_prob": 0.1075,
+          "anytime_prob_raw": 0.1075,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Anthony Elanga",
           "share": 0.12,
-          "exp_goals": 0.108,
-          "anytime_prob": 0.1023,
-          "anytime_prob_raw": 0.1023,
+          "exp_goals": 0.106,
+          "anytime_prob": 0.1002,
+          "anytime_prob_raw": 0.1002,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Yasin Ayari",
           "share": 0.0931,
-          "exp_goals": 0.084,
-          "anytime_prob": 0.0803,
-          "anytime_prob_raw": 0.0803,
+          "exp_goals": 0.082,
+          "anytime_prob": 0.0786,
+          "anytime_prob_raw": 0.0786,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Emil Forsberg",
           "share": 0.0832,
-          "exp_goals": 0.075,
-          "anytime_prob": 0.072,
-          "anytime_prob_raw": 0.072,
+          "exp_goals": 0.073,
+          "anytime_prob": 0.0706,
+          "anytime_prob_raw": 0.0706,
           "career_goals": 18,
           "pen_rate": 0.28
         },
         {
           "player": "Viktor Claesson",
           "share": 0.0579,
-          "exp_goals": 0.052,
-          "anytime_prob": 0.0507,
-          "anytime_prob_raw": 0.0507,
+          "exp_goals": 0.051,
+          "anytime_prob": 0.0496,
+          "anytime_prob_raw": 0.0496,
           "career_goals": 11,
           "pen_rate": 0.0
         }
@@ -5547,35 +5547,35 @@
     "home": "Germany",
     "away": "Ivory Coast",
     "model": {
-      "home_win": 0.5852,
-      "draw": 0.2392,
-      "away_win": 0.1756,
-      "btts": 0.5289,
-      "over_2_5": 0.5175,
-      "exp_home": 1.765,
-      "exp_away": 0.98,
-      "exp_total": 2.745
+      "home_win": 0.5423,
+      "draw": 0.2524,
+      "away_win": 0.2054,
+      "btts": 0.5353,
+      "over_2_5": 0.5078,
+      "exp_home": 1.669,
+      "exp_away": 1.036,
+      "exp_total": 2.705
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1222
+        "prob": 0.1272
       },
       {
         "score": "1-0",
-        "prob": 0.1023
-      },
-      {
-        "score": "2-0",
-        "prob": 0.1001
+        "prob": 0.1
       },
       {
         "score": "2-1",
-        "prob": 0.0981
+        "prob": 0.0965
+      },
+      {
+        "score": "2-0",
+        "prob": 0.0931
       },
       {
         "score": "0-0",
-        "prob": 0.0753
+        "prob": 0.0784
       }
     ],
     "context": {
@@ -5587,7 +5587,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1916,
+      "home": 1884,
       "away": 1739
     },
     "scorers": {
@@ -5595,54 +5595,54 @@
         {
           "player": "Kai Havertz",
           "share": 0.1356,
-          "exp_goals": 0.239,
-          "anytime_prob": 0.2128,
-          "anytime_prob_raw": 0.2128,
+          "exp_goals": 0.226,
+          "anytime_prob": 0.2025,
+          "anytime_prob_raw": 0.2025,
           "career_goals": 17,
           "pen_rate": 0.24
         },
         {
           "player": "Deniz Undav",
           "share": 0.0863,
-          "exp_goals": 0.152,
-          "anytime_prob": 0.1413,
-          "anytime_prob_raw": 0.1413,
+          "exp_goals": 0.144,
+          "anytime_prob": 0.1341,
+          "anytime_prob_raw": 0.1341,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Serge Gnabry",
           "share": 0.0852,
-          "exp_goals": 0.15,
-          "anytime_prob": 0.1396,
-          "anytime_prob_raw": 0.1396,
+          "exp_goals": 0.142,
+          "anytime_prob": 0.1325,
+          "anytime_prob_raw": 0.1325,
           "career_goals": 21,
           "pen_rate": 0.0
         },
         {
           "player": "Leroy San\u00e9",
           "share": 0.083,
-          "exp_goals": 0.146,
-          "anytime_prob": 0.1362,
-          "anytime_prob_raw": 0.1362,
+          "exp_goals": 0.138,
+          "anytime_prob": 0.1293,
+          "anytime_prob_raw": 0.1293,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Jamal Musiala",
           "share": 0.0828,
-          "exp_goals": 0.146,
-          "anytime_prob": 0.1359,
-          "anytime_prob_raw": 0.1359,
+          "exp_goals": 0.138,
+          "anytime_prob": 0.129,
+          "anytime_prob_raw": 0.129,
           "career_goals": 8,
           "pen_rate": 0.0
         },
         {
           "player": "Florian Wirtz",
           "share": 0.0771,
-          "exp_goals": 0.136,
-          "anytime_prob": 0.1273,
-          "anytime_prob_raw": 0.1273,
+          "exp_goals": 0.129,
+          "anytime_prob": 0.1208,
+          "anytime_prob_raw": 0.1208,
           "career_goals": 7,
           "pen_rate": 0.0
         }
@@ -5651,54 +5651,54 @@
         {
           "player": "Amad Diallo",
           "share": 0.1611,
-          "exp_goals": 0.158,
-          "anytime_prob": 0.1461,
-          "anytime_prob_raw": 0.1461,
+          "exp_goals": 0.167,
+          "anytime_prob": 0.1537,
+          "anytime_prob_raw": 0.1537,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Franck Kessi\u00e9",
           "share": 0.1167,
-          "exp_goals": 0.114,
-          "anytime_prob": 0.1081,
-          "anytime_prob_raw": 0.1081,
+          "exp_goals": 0.121,
+          "anytime_prob": 0.1139,
+          "anytime_prob_raw": 0.1139,
           "career_goals": 7,
           "pen_rate": 0.29
         },
         {
           "player": "Nicolas P\u00e9p\u00e9",
           "share": 0.0796,
-          "exp_goals": 0.078,
-          "anytime_prob": 0.0751,
-          "anytime_prob_raw": 0.0751,
+          "exp_goals": 0.082,
+          "anytime_prob": 0.0792,
+          "anytime_prob_raw": 0.0792,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "S\u00e9bastien Haller",
           "share": 0.0766,
-          "exp_goals": 0.075,
-          "anytime_prob": 0.0723,
-          "anytime_prob_raw": 0.0723,
+          "exp_goals": 0.079,
+          "anytime_prob": 0.0762,
+          "anytime_prob_raw": 0.0762,
           "career_goals": 7,
           "pen_rate": 0.29
         },
         {
           "player": "Yan Diomande",
           "share": 0.0733,
-          "exp_goals": 0.072,
-          "anytime_prob": 0.0694,
-          "anytime_prob_raw": 0.0694,
+          "exp_goals": 0.076,
+          "anytime_prob": 0.0732,
+          "anytime_prob_raw": 0.0732,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Evann Guessand",
           "share": 0.069,
-          "exp_goals": 0.068,
-          "anytime_prob": 0.0653,
-          "anytime_prob_raw": 0.0653,
+          "exp_goals": 0.071,
+          "anytime_prob": 0.0689,
+          "anytime_prob_raw": 0.0689,
           "career_goals": 3,
           "pen_rate": 0.0
         }
@@ -5881,14 +5881,14 @@
     "home": "Tunisia",
     "away": "Japan",
     "model": {
-      "home_win": 0.0492,
-      "draw": 0.124,
-      "away_win": 0.8269,
-      "btts": 0.4726,
-      "over_2_5": 0.6412,
-      "exp_home": 0.699,
-      "exp_away": 2.596,
-      "exp_total": 3.295
+      "home_win": 0.0478,
+      "draw": 0.1219,
+      "away_win": 0.8304,
+      "btts": 0.4709,
+      "over_2_5": 0.6438,
+      "exp_home": 0.694,
+      "exp_away": 2.614,
+      "exp_total": 3.308
     },
     "top_scores": [
       {
@@ -5897,15 +5897,15 @@
       },
       {
         "score": "0-3",
-        "prob": 0.1084
+        "prob": 0.1092
       },
       {
         "score": "0-1",
-        "prob": 0.089
+        "prob": 0.0885
       },
       {
         "score": "1-2",
-        "prob": 0.0872
+        "prob": 0.0867
       },
       {
         "score": "1-3",
@@ -5922,34 +5922,34 @@
     },
     "elo": {
       "home": 1549,
-      "away": 1897
+      "away": 1901
     },
     "scorers": {
       "home": [
         {
           "player": "Mohamed Ali Ben Romdhane",
           "share": 0.1153,
-          "exp_goals": 0.081,
-          "anytime_prob": 0.0774,
-          "anytime_prob_raw": 0.0774,
+          "exp_goals": 0.08,
+          "anytime_prob": 0.0769,
+          "anytime_prob_raw": 0.0769,
           "career_goals": 4,
           "pen_rate": 0.5
         },
         {
           "player": "Hazem Mastouri",
           "share": 0.0983,
-          "exp_goals": 0.069,
-          "anytime_prob": 0.0664,
-          "anytime_prob_raw": 0.0664,
+          "exp_goals": 0.068,
+          "anytime_prob": 0.0659,
+          "anytime_prob_raw": 0.0659,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Elias Achouri",
           "share": 0.0952,
-          "exp_goals": 0.067,
-          "anytime_prob": 0.0644,
-          "anytime_prob_raw": 0.0644,
+          "exp_goals": 0.066,
+          "anytime_prob": 0.064,
+          "anytime_prob_raw": 0.064,
           "career_goals": 3,
           "pen_rate": 0.33
         },
@@ -5957,8 +5957,8 @@
           "player": "Elias Saad",
           "share": 0.095,
           "exp_goals": 0.066,
-          "anytime_prob": 0.0643,
-          "anytime_prob_raw": 0.0643,
+          "anytime_prob": 0.0638,
+          "anytime_prob_raw": 0.0638,
           "career_goals": 3,
           "pen_rate": 0.0
         },
@@ -5966,17 +5966,17 @@
           "player": "Ferjani Sassi",
           "share": 0.0693,
           "exp_goals": 0.048,
-          "anytime_prob": 0.0473,
-          "anytime_prob_raw": 0.0473,
+          "anytime_prob": 0.047,
+          "anytime_prob_raw": 0.047,
           "career_goals": 4,
           "pen_rate": 0.25
         },
         {
           "player": "Firas Chaouat",
           "share": 0.0668,
-          "exp_goals": 0.047,
-          "anytime_prob": 0.0456,
-          "anytime_prob_raw": 0.0456,
+          "exp_goals": 0.046,
+          "anytime_prob": 0.0453,
+          "anytime_prob_raw": 0.0453,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -5985,54 +5985,54 @@
         {
           "player": "Ayase Ueda",
           "share": 0.1672,
-          "exp_goals": 0.434,
-          "anytime_prob": 0.3522,
-          "anytime_prob_raw": 0.3522,
+          "exp_goals": 0.437,
+          "anytime_prob": 0.3541,
+          "anytime_prob_raw": 0.3541,
           "career_goals": 14,
           "pen_rate": 0.14
         },
         {
           "player": "Daichi Kamada",
           "share": 0.1237,
-          "exp_goals": 0.321,
-          "anytime_prob": 0.2748,
-          "anytime_prob_raw": 0.2748,
+          "exp_goals": 0.323,
+          "anytime_prob": 0.2764,
+          "anytime_prob_raw": 0.2764,
           "career_goals": 10,
           "pen_rate": 0.0
         },
         {
           "player": "Takumi Minamino",
           "share": 0.1019,
-          "exp_goals": 0.265,
-          "anytime_prob": 0.2325,
-          "anytime_prob_raw": 0.2325,
+          "exp_goals": 0.266,
+          "anytime_prob": 0.2339,
+          "anytime_prob_raw": 0.2339,
           "career_goals": 17,
           "pen_rate": 0.06
         },
         {
           "player": "K\u014dki Ogawa",
           "share": 0.0737,
-          "exp_goals": 0.191,
-          "anytime_prob": 0.1741,
-          "anytime_prob_raw": 0.1741,
+          "exp_goals": 0.193,
+          "anytime_prob": 0.1752,
+          "anytime_prob_raw": 0.1752,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Takefusa Kubo",
           "share": 0.0622,
-          "exp_goals": 0.161,
-          "anytime_prob": 0.149,
-          "anytime_prob_raw": 0.149,
+          "exp_goals": 0.162,
+          "anytime_prob": 0.15,
+          "anytime_prob_raw": 0.15,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Junya It\u014d",
           "share": 0.0616,
-          "exp_goals": 0.16,
-          "anytime_prob": 0.1478,
-          "anytime_prob_raw": 0.1478,
+          "exp_goals": 0.161,
+          "anytime_prob": 0.1487,
+          "anytime_prob_raw": 0.1487,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -6382,35 +6382,35 @@
     "home": "Uruguay",
     "away": "Cape Verde",
     "model": {
-      "home_win": 0.6354,
-      "draw": 0.224,
-      "away_win": 0.1406,
-      "btts": 0.5063,
-      "over_2_5": 0.5166,
-      "exp_home": 1.856,
-      "exp_away": 0.886,
-      "exp_total": 2.741
+      "home_win": 0.6579,
+      "draw": 0.2147,
+      "away_win": 0.1274,
+      "btts": 0.5015,
+      "over_2_5": 0.5243,
+      "exp_home": 1.915,
+      "exp_away": 0.858,
+      "exp_total": 2.773
     },
     "top_scores": [
       {
-        "score": "1-1",
-        "prob": 0.1165
+        "score": "2-0",
+        "prob": 0.1146
       },
       {
-        "score": "2-0",
-        "prob": 0.1111
+        "score": "1-1",
+        "prob": 0.1129
       },
       {
         "score": "1-0",
-        "prob": 0.109
+        "prob": 0.1093
       },
       {
         "score": "2-1",
-        "prob": 0.0984
+        "prob": 0.0983
       },
       {
-        "score": "0-0",
-        "prob": 0.075
+        "score": "3-0",
+        "prob": 0.0732
       }
     ],
     "context": {
@@ -6422,7 +6422,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1832,
+      "home": 1850,
       "away": 1622
     },
     "scorers": {
@@ -6430,54 +6430,54 @@
         {
           "player": "Darwin N\u00fa\u00f1ez",
           "share": 0.1362,
-          "exp_goals": 0.253,
-          "anytime_prob": 0.2233,
-          "anytime_prob_raw": 0.2233,
+          "exp_goals": 0.261,
+          "anytime_prob": 0.2295,
+          "anytime_prob_raw": 0.2295,
           "career_goals": 8,
           "pen_rate": 0.12
         },
         {
           "player": "Giorgian de Arrascaeta",
           "share": 0.1319,
-          "exp_goals": 0.245,
-          "anytime_prob": 0.2172,
-          "anytime_prob_raw": 0.2172,
+          "exp_goals": 0.253,
+          "anytime_prob": 0.2232,
+          "anytime_prob_raw": 0.2232,
           "career_goals": 9,
           "pen_rate": 0.11
         },
         {
           "player": "Maximiliano Ara\u00fajo",
           "share": 0.1292,
-          "exp_goals": 0.24,
-          "anytime_prob": 0.2132,
-          "anytime_prob_raw": 0.2132,
+          "exp_goals": 0.247,
+          "anytime_prob": 0.2192,
+          "anytime_prob_raw": 0.2192,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Luis Su\u00e1rez",
           "share": 0.1124,
-          "exp_goals": 0.209,
-          "anytime_prob": 0.1884,
-          "anytime_prob_raw": 0.1884,
+          "exp_goals": 0.215,
+          "anytime_prob": 0.1937,
+          "anytime_prob_raw": 0.1937,
           "career_goals": 19,
           "pen_rate": 0.37
         },
         {
           "player": "Rodrigo Aguirre",
           "share": 0.0876,
-          "exp_goals": 0.163,
-          "anytime_prob": 0.1501,
-          "anytime_prob_raw": 0.1501,
+          "exp_goals": 0.168,
+          "anytime_prob": 0.1545,
+          "anytime_prob_raw": 0.1545,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Federico Valverde",
           "share": 0.0831,
-          "exp_goals": 0.154,
-          "anytime_prob": 0.143,
-          "anytime_prob_raw": 0.143,
+          "exp_goals": 0.159,
+          "anytime_prob": 0.1472,
+          "anytime_prob_raw": 0.1472,
           "career_goals": 6,
           "pen_rate": 0.0
         }
@@ -6486,54 +6486,54 @@
         {
           "player": "Dailon Livramento",
           "share": 0.1459,
-          "exp_goals": 0.129,
-          "anytime_prob": 0.1213,
-          "anytime_prob_raw": 0.1213,
+          "exp_goals": 0.125,
+          "anytime_prob": 0.1177,
+          "anytime_prob_raw": 0.1177,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Sidny Lopes Cabral",
           "share": 0.0919,
-          "exp_goals": 0.081,
-          "anytime_prob": 0.0782,
-          "anytime_prob_raw": 0.0782,
+          "exp_goals": 0.079,
+          "anytime_prob": 0.0758,
+          "anytime_prob_raw": 0.0758,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Willy Semedo",
           "share": 0.0805,
-          "exp_goals": 0.071,
-          "anytime_prob": 0.0688,
-          "anytime_prob_raw": 0.0688,
+          "exp_goals": 0.069,
+          "anytime_prob": 0.0667,
+          "anytime_prob_raw": 0.0667,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Jamiro Monteiro",
           "share": 0.0782,
-          "exp_goals": 0.069,
-          "anytime_prob": 0.067,
-          "anytime_prob_raw": 0.067,
+          "exp_goals": 0.067,
+          "anytime_prob": 0.0649,
+          "anytime_prob_raw": 0.0649,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Ryan Mendes",
           "share": 0.0754,
-          "exp_goals": 0.067,
-          "anytime_prob": 0.0646,
-          "anytime_prob_raw": 0.0646,
+          "exp_goals": 0.065,
+          "anytime_prob": 0.0627,
+          "anytime_prob_raw": 0.0627,
           "career_goals": 4,
           "pen_rate": 0.25
         },
         {
           "player": "Kevin Pina",
           "share": 0.0733,
-          "exp_goals": 0.065,
-          "anytime_prob": 0.0629,
-          "anytime_prob_raw": 0.0629,
+          "exp_goals": 0.063,
+          "anytime_prob": 0.0609,
+          "anytime_prob_raw": 0.0609,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -6716,35 +6716,35 @@
     "home": "Argentina",
     "away": "Austria",
     "model": {
-      "home_win": 0.8114,
-      "draw": 0.1326,
-      "away_win": 0.056,
-      "btts": 0.4837,
-      "over_2_5": 0.634,
-      "exp_home": 2.533,
-      "exp_away": 0.729,
-      "exp_total": 3.261
+      "home_win": 0.798,
+      "draw": 0.1403,
+      "away_win": 0.0617,
+      "btts": 0.4894,
+      "over_2_5": 0.6252,
+      "exp_home": 2.472,
+      "exp_away": 0.747,
+      "exp_total": 3.219
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.1229
+        "prob": 0.1222
       },
       {
         "score": "3-0",
-        "prob": 0.1041
-      },
-      {
-        "score": "1-0",
-        "prob": 0.0897
+        "prob": 0.101
       },
       {
         "score": "2-1",
-        "prob": 0.0895
+        "prob": 0.0912
+      },
+      {
+        "score": "1-0",
+        "prob": 0.0912
       },
       {
         "score": "1-1",
-        "prob": 0.0775
+        "prob": 0.081
       }
     ],
     "context": {
@@ -6757,61 +6757,61 @@
     },
     "elo": {
       "home": 2173,
-      "away": 1831
+      "away": 1845
     },
     "scorers": {
       "home": [
         {
           "player": "Lionel Messi",
           "share": 0.3537,
-          "exp_goals": 0.896,
-          "anytime_prob": 0.5918,
-          "anytime_prob_raw": 0.5918,
+          "exp_goals": 0.874,
+          "anytime_prob": 0.5829,
+          "anytime_prob_raw": 0.5829,
           "career_goals": 50,
           "pen_rate": 0.22
         },
         {
           "player": "Lautaro Mart\u00ednez",
           "share": 0.2072,
-          "exp_goals": 0.525,
-          "anytime_prob": 0.4083,
-          "anytime_prob_raw": 0.4083,
+          "exp_goals": 0.512,
+          "anytime_prob": 0.4008,
+          "anytime_prob_raw": 0.4008,
           "career_goals": 25,
           "pen_rate": 0.04
         },
         {
           "player": "Juli\u00e1n \u00c1lvarez",
           "share": 0.1182,
-          "exp_goals": 0.299,
-          "anytime_prob": 0.2587,
-          "anytime_prob_raw": 0.2587,
+          "exp_goals": 0.292,
+          "anytime_prob": 0.2534,
+          "anytime_prob_raw": 0.2534,
           "career_goals": 12,
           "pen_rate": 0.0
         },
         {
           "player": "Enzo Fern\u00e1ndez",
           "share": 0.0676,
-          "exp_goals": 0.171,
-          "anytime_prob": 0.1574,
-          "anytime_prob_raw": 0.1574,
+          "exp_goals": 0.167,
+          "anytime_prob": 0.1539,
+          "anytime_prob_raw": 0.1539,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Alexis Mac Allister",
           "share": 0.0503,
-          "exp_goals": 0.127,
-          "anytime_prob": 0.1195,
-          "anytime_prob_raw": 0.1195,
+          "exp_goals": 0.124,
+          "anytime_prob": 0.1168,
+          "anytime_prob_raw": 0.1168,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Thiago Almada",
           "share": 0.0383,
-          "exp_goals": 0.097,
-          "anytime_prob": 0.0926,
-          "anytime_prob_raw": 0.0926,
+          "exp_goals": 0.095,
+          "anytime_prob": 0.0904,
+          "anytime_prob_raw": 0.0904,
           "career_goals": 3,
           "pen_rate": 0.0
         }
@@ -6820,54 +6820,54 @@
         {
           "player": "Marko Arnautovi\u0107",
           "share": 0.2828,
-          "exp_goals": 0.206,
-          "anytime_prob": 0.1863,
-          "anytime_prob_raw": 0.1863,
+          "exp_goals": 0.211,
+          "anytime_prob": 0.1904,
+          "anytime_prob_raw": 0.1904,
           "career_goals": 36,
           "pen_rate": 0.25
         },
         {
           "player": "Marcel Sabitzer",
           "share": 0.1665,
-          "exp_goals": 0.121,
-          "anytime_prob": 0.1143,
-          "anytime_prob_raw": 0.1143,
+          "exp_goals": 0.124,
+          "anytime_prob": 0.1169,
+          "anytime_prob_raw": 0.1169,
           "career_goals": 20,
           "pen_rate": 0.2
         },
         {
           "player": "Michael Gregoritsch",
           "share": 0.1572,
-          "exp_goals": 0.115,
-          "anytime_prob": 0.1083,
-          "anytime_prob_raw": 0.1083,
+          "exp_goals": 0.117,
+          "anytime_prob": 0.1108,
+          "anytime_prob_raw": 0.1108,
           "career_goals": 16,
           "pen_rate": 0.0
         },
         {
           "player": "Christoph Baumgartner",
           "share": 0.0993,
-          "exp_goals": 0.072,
-          "anytime_prob": 0.0698,
-          "anytime_prob_raw": 0.0698,
+          "exp_goals": 0.074,
+          "anytime_prob": 0.0715,
+          "anytime_prob_raw": 0.0715,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Konrad Laimer",
           "share": 0.0703,
-          "exp_goals": 0.051,
-          "anytime_prob": 0.05,
-          "anytime_prob_raw": 0.05,
+          "exp_goals": 0.053,
+          "anytime_prob": 0.0512,
+          "anytime_prob_raw": 0.0512,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Romano Schmid",
           "share": 0.0632,
-          "exp_goals": 0.046,
-          "anytime_prob": 0.0451,
-          "anytime_prob_raw": 0.0451,
+          "exp_goals": 0.047,
+          "anytime_prob": 0.0461,
+          "anytime_prob_raw": 0.0461,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -7050,35 +7050,35 @@
     "home": "Norway",
     "away": "Senegal",
     "model": {
-      "home_win": 0.594,
-      "draw": 0.2265,
-      "away_win": 0.1795,
-      "btts": 0.5661,
-      "over_2_5": 0.5654,
-      "exp_home": 1.884,
-      "exp_away": 1.064,
-      "exp_total": 2.949
+      "home_win": 0.5595,
+      "draw": 0.2368,
+      "away_win": 0.2037,
+      "btts": 0.5716,
+      "over_2_5": 0.5578,
+      "exp_home": 1.804,
+      "exp_away": 1.112,
+      "exp_total": 2.916
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1156
+        "prob": 0.1195
       },
       {
         "score": "2-1",
-        "prob": 0.0991
+        "prob": 0.098
       },
       {
         "score": "2-0",
-        "prob": 0.0931
+        "prob": 0.0881
       },
       {
         "score": "1-0",
-        "prob": 0.0882
+        "prob": 0.0868
       },
       {
         "score": "0-0",
-        "prob": 0.0629
+        "prob": 0.065
       }
     ],
     "context": {
@@ -7090,7 +7090,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1962,
+      "home": 1937,
       "away": 1800
     },
     "scorers": {
@@ -7098,54 +7098,54 @@
         {
           "player": "Erling Haaland",
           "share": 0.4997,
-          "exp_goals": 0.941,
-          "anytime_prob": 0.6099,
-          "anytime_prob_raw": 0.6099,
+          "exp_goals": 0.901,
+          "anytime_prob": 0.594,
+          "anytime_prob_raw": 0.594,
           "career_goals": 53,
           "pen_rate": 0.09
         },
         {
           "player": "Alexander S\u00f8rloth",
           "share": 0.1328,
-          "exp_goals": 0.25,
-          "anytime_prob": 0.2214,
-          "anytime_prob_raw": 0.2214,
+          "exp_goals": 0.24,
+          "anytime_prob": 0.2131,
+          "anytime_prob_raw": 0.2131,
           "career_goals": 21,
           "pen_rate": 0.0
         },
         {
           "player": "Thelo Aasgaard",
           "share": 0.0822,
-          "exp_goals": 0.155,
-          "anytime_prob": 0.1434,
-          "anytime_prob_raw": 0.1434,
+          "exp_goals": 0.148,
+          "anytime_prob": 0.1378,
+          "anytime_prob_raw": 0.1378,
           "career_goals": 6,
           "pen_rate": 0.17
         },
         {
           "player": "Antonio Nusa",
           "share": 0.0741,
-          "exp_goals": 0.14,
-          "anytime_prob": 0.1304,
-          "anytime_prob_raw": 0.1304,
+          "exp_goals": 0.134,
+          "anytime_prob": 0.1252,
+          "anytime_prob_raw": 0.1252,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Mohamed Elyounoussi",
           "share": 0.0234,
-          "exp_goals": 0.044,
-          "anytime_prob": 0.0432,
-          "anytime_prob_raw": 0.0432,
+          "exp_goals": 0.042,
+          "anytime_prob": 0.0414,
+          "anytime_prob_raw": 0.0414,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Felix Horn Myhre",
           "share": 0.0228,
-          "exp_goals": 0.043,
-          "anytime_prob": 0.042,
-          "anytime_prob_raw": 0.042,
+          "exp_goals": 0.041,
+          "anytime_prob": 0.0402,
+          "anytime_prob_raw": 0.0402,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -7154,54 +7154,54 @@
         {
           "player": "Isma\u00efla Sarr",
           "share": 0.1859,
-          "exp_goals": 0.198,
-          "anytime_prob": 0.1794,
-          "anytime_prob_raw": 0.1794,
+          "exp_goals": 0.207,
+          "anytime_prob": 0.1867,
+          "anytime_prob_raw": 0.1867,
           "career_goals": 15,
           "pen_rate": 0.07
         },
         {
           "player": "Sadio Man\u00e9",
           "share": 0.1683,
-          "exp_goals": 0.179,
-          "anytime_prob": 0.164,
-          "anytime_prob_raw": 0.164,
+          "exp_goals": 0.187,
+          "anytime_prob": 0.1707,
+          "anytime_prob_raw": 0.1707,
           "career_goals": 22,
           "pen_rate": 0.23
         },
         {
           "player": "Pape Gueye",
           "share": 0.1176,
-          "exp_goals": 0.125,
-          "anytime_prob": 0.1176,
-          "anytime_prob_raw": 0.1176,
+          "exp_goals": 0.131,
+          "anytime_prob": 0.1226,
+          "anytime_prob_raw": 0.1226,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Nicolas Jackson",
           "share": 0.0775,
-          "exp_goals": 0.082,
-          "anytime_prob": 0.0792,
-          "anytime_prob_raw": 0.0792,
+          "exp_goals": 0.086,
+          "anytime_prob": 0.0826,
+          "anytime_prob_raw": 0.0826,
           "career_goals": 4,
           "pen_rate": 0.25
         },
         {
           "player": "Habib Diallo",
           "share": 0.0768,
-          "exp_goals": 0.082,
-          "anytime_prob": 0.0784,
-          "anytime_prob_raw": 0.0784,
+          "exp_goals": 0.085,
+          "anytime_prob": 0.0818,
+          "anytime_prob_raw": 0.0818,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Iliman Ndiaye",
           "share": 0.0739,
-          "exp_goals": 0.079,
-          "anytime_prob": 0.0756,
-          "anytime_prob_raw": 0.0756,
+          "exp_goals": 0.082,
+          "anytime_prob": 0.0789,
+          "anytime_prob_raw": 0.0789,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -7217,35 +7217,35 @@
     "home": "Jordan",
     "away": "Algeria",
     "model": {
-      "home_win": 0.338,
-      "draw": 0.2703,
-      "away_win": 0.3916,
-      "btts": 0.5693,
-      "over_2_5": 0.5181,
-      "exp_home": 1.325,
-      "exp_away": 1.423,
-      "exp_total": 2.748
+      "home_win": 0.3304,
+      "draw": 0.2699,
+      "away_win": 0.3997,
+      "btts": 0.5691,
+      "over_2_5": 0.5184,
+      "exp_home": 1.311,
+      "exp_away": 1.438,
+      "exp_total": 2.749
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1329
+        "prob": 0.1327
       },
       {
         "score": "1-2",
-        "prob": 0.086
-      },
-      {
-        "score": "2-1",
-        "prob": 0.08
+        "prob": 0.0868
       },
       {
         "score": "0-1",
+        "prob": 0.08
+      },
+      {
+        "score": "2-1",
         "prob": 0.0791
       },
       {
         "score": "0-0",
-        "prob": 0.0761
+        "prob": 0.076
       }
     ],
     "context": {
@@ -7257,7 +7257,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1628,
+      "home": 1622,
       "away": 1643
     },
     "scorers": {
@@ -7265,54 +7265,54 @@
         {
           "player": "Ali Olwan",
           "share": 0.2492,
-          "exp_goals": 0.33,
-          "anytime_prob": 0.2812,
-          "anytime_prob_raw": 0.2812,
+          "exp_goals": 0.327,
+          "anytime_prob": 0.2787,
+          "anytime_prob_raw": 0.2787,
           "career_goals": 10,
           "pen_rate": 0.3
         },
         {
           "player": "Yazan Al-Naimat",
           "share": 0.2401,
-          "exp_goals": 0.318,
-          "anytime_prob": 0.2725,
-          "anytime_prob_raw": 0.2725,
+          "exp_goals": 0.315,
+          "anytime_prob": 0.27,
+          "anytime_prob_raw": 0.27,
           "career_goals": 12,
           "pen_rate": 0.08
         },
         {
           "player": "Musa Al-Taamari",
           "share": 0.2393,
-          "exp_goals": 0.317,
-          "anytime_prob": 0.2717,
-          "anytime_prob_raw": 0.2717,
+          "exp_goals": 0.314,
+          "anytime_prob": 0.2693,
+          "anytime_prob_raw": 0.2693,
           "career_goals": 12,
           "pen_rate": 0.08
         },
         {
           "player": "Nizar Al-Rashdan",
           "share": 0.0586,
-          "exp_goals": 0.078,
-          "anytime_prob": 0.0747,
-          "anytime_prob_raw": 0.0747,
+          "exp_goals": 0.077,
+          "anytime_prob": 0.074,
+          "anytime_prob_raw": 0.074,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Yazan Al-Arab",
           "share": 0.0513,
-          "exp_goals": 0.068,
-          "anytime_prob": 0.0658,
-          "anytime_prob_raw": 0.0658,
+          "exp_goals": 0.067,
+          "anytime_prob": 0.0651,
+          "anytime_prob_raw": 0.0651,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Noor Al-Rawabdeh",
           "share": 0.0422,
-          "exp_goals": 0.056,
-          "anytime_prob": 0.0544,
-          "anytime_prob_raw": 0.0544,
+          "exp_goals": 0.055,
+          "anytime_prob": 0.0539,
+          "anytime_prob_raw": 0.0539,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -7321,54 +7321,54 @@
         {
           "player": "Riyad Mahrez",
           "share": 0.2126,
-          "exp_goals": 0.303,
-          "anytime_prob": 0.2611,
-          "anytime_prob_raw": 0.2611,
+          "exp_goals": 0.306,
+          "anytime_prob": 0.2635,
+          "anytime_prob_raw": 0.2635,
           "career_goals": 18,
           "pen_rate": 0.11
         },
         {
           "player": "Mohamed Amoura",
           "share": 0.1859,
-          "exp_goals": 0.265,
-          "anytime_prob": 0.2324,
-          "anytime_prob_raw": 0.2324,
+          "exp_goals": 0.267,
+          "anytime_prob": 0.2346,
+          "anytime_prob_raw": 0.2346,
           "career_goals": 8,
           "pen_rate": 0.25
         },
         {
           "player": "Baghdad Bounedjah",
           "share": 0.1202,
-          "exp_goals": 0.171,
-          "anytime_prob": 0.1572,
-          "anytime_prob_raw": 0.1572,
+          "exp_goals": 0.173,
+          "anytime_prob": 0.1587,
+          "anytime_prob_raw": 0.1587,
           "career_goals": 10,
           "pen_rate": 0.2
         },
         {
           "player": "Islam Slimani",
           "share": 0.0722,
-          "exp_goals": 0.103,
-          "anytime_prob": 0.0977,
-          "anytime_prob_raw": 0.0977,
+          "exp_goals": 0.104,
+          "anytime_prob": 0.0986,
+          "anytime_prob_raw": 0.0986,
           "career_goals": 17,
           "pen_rate": 0.12
         },
         {
           "player": "Ibrahim Maza",
           "share": 0.0537,
-          "exp_goals": 0.076,
-          "anytime_prob": 0.0736,
-          "anytime_prob_raw": 0.0736,
+          "exp_goals": 0.077,
+          "anytime_prob": 0.0743,
+          "anytime_prob_raw": 0.0743,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Amine Gouiri",
           "share": 0.0523,
-          "exp_goals": 0.074,
-          "anytime_prob": 0.0717,
-          "anytime_prob_raw": 0.0717,
+          "exp_goals": 0.075,
+          "anytime_prob": 0.0725,
+          "anytime_prob_raw": 0.0725,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -7384,35 +7384,35 @@
     "home": "Portugal",
     "away": "Uzbekistan",
     "model": {
-      "home_win": 0.8096,
-      "draw": 0.1341,
-      "away_win": 0.0563,
-      "btts": 0.4807,
-      "over_2_5": 0.6291,
-      "exp_home": 2.514,
-      "exp_away": 0.724,
-      "exp_total": 3.237
+      "home_win": 0.8313,
+      "draw": 0.1213,
+      "away_win": 0.0474,
+      "btts": 0.4708,
+      "over_2_5": 0.6449,
+      "exp_home": 2.62,
+      "exp_away": 0.694,
+      "exp_total": 3.313
     },
     "top_scores": [
       {
         "score": "2-0",
-        "prob": 0.124
+        "prob": 0.1247
       },
       {
         "score": "3-0",
-        "prob": 0.1042
+        "prob": 0.1094
       },
       {
         "score": "1-0",
-        "prob": 0.0912
+        "prob": 0.0883
       },
       {
         "score": "2-1",
-        "prob": 0.0897
+        "prob": 0.0865
       },
       {
-        "score": "1-1",
-        "prob": 0.0783
+        "score": "3-1",
+        "prob": 0.0759
       }
     ],
     "context": {
@@ -7424,7 +7424,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1998,
+      "home": 2022,
       "away": 1673
     },
     "scorers": {
@@ -7432,54 +7432,54 @@
         {
           "player": "Cristiano Ronaldo",
           "share": 0.3504,
-          "exp_goals": 0.881,
-          "anytime_prob": 0.5856,
-          "anytime_prob_raw": 0.5856,
+          "exp_goals": 0.918,
+          "anytime_prob": 0.6007,
+          "anytime_prob_raw": 0.6007,
           "career_goals": 83,
           "pen_rate": 0.24
         },
         {
           "player": "Bruno Fernandes",
           "share": 0.1335,
-          "exp_goals": 0.336,
-          "anytime_prob": 0.2851,
-          "anytime_prob_raw": 0.2851,
+          "exp_goals": 0.35,
+          "anytime_prob": 0.2951,
+          "anytime_prob_raw": 0.2951,
           "career_goals": 19,
           "pen_rate": 0.16
         },
         {
           "player": "Gon\u00e7alo Ramos",
           "share": 0.0758,
-          "exp_goals": 0.191,
-          "anytime_prob": 0.1735,
-          "anytime_prob_raw": 0.1735,
+          "exp_goals": 0.199,
+          "anytime_prob": 0.1802,
+          "anytime_prob_raw": 0.1802,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Jo\u00e3o F\u00e9lix",
           "share": 0.0633,
-          "exp_goals": 0.159,
-          "anytime_prob": 0.1472,
-          "anytime_prob_raw": 0.1472,
+          "exp_goals": 0.166,
+          "anytime_prob": 0.1529,
+          "anytime_prob_raw": 0.1529,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Bernardo Silva",
           "share": 0.0599,
-          "exp_goals": 0.15,
-          "anytime_prob": 0.1397,
-          "anytime_prob_raw": 0.1397,
+          "exp_goals": 0.157,
+          "anytime_prob": 0.1451,
+          "anytime_prob_raw": 0.1451,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Jo\u00e3o Neves",
           "share": 0.0578,
-          "exp_goals": 0.145,
-          "anytime_prob": 0.1352,
-          "anytime_prob_raw": 0.1352,
+          "exp_goals": 0.151,
+          "anytime_prob": 0.1405,
+          "anytime_prob_raw": 0.1405,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -7488,54 +7488,54 @@
         {
           "player": "Eldor Shomurodov",
           "share": 0.2184,
-          "exp_goals": 0.158,
-          "anytime_prob": 0.1463,
-          "anytime_prob_raw": 0.1463,
+          "exp_goals": 0.152,
+          "anytime_prob": 0.1407,
+          "anytime_prob_raw": 0.1407,
           "career_goals": 18,
           "pen_rate": 0.0
         },
         {
           "player": "Abbosbek Fayzullaev",
           "share": 0.1982,
-          "exp_goals": 0.143,
-          "anytime_prob": 0.1337,
-          "anytime_prob_raw": 0.1337,
+          "exp_goals": 0.138,
+          "anytime_prob": 0.1285,
+          "anytime_prob_raw": 0.1285,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Oston Urunov",
           "share": 0.0889,
-          "exp_goals": 0.064,
-          "anytime_prob": 0.0623,
-          "anytime_prob_raw": 0.0623,
+          "exp_goals": 0.062,
+          "anytime_prob": 0.0598,
+          "anytime_prob_raw": 0.0598,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Igor Sergeev",
           "share": 0.082,
-          "exp_goals": 0.059,
-          "anytime_prob": 0.0576,
-          "anytime_prob_raw": 0.0576,
+          "exp_goals": 0.057,
+          "anytime_prob": 0.0553,
+          "anytime_prob_raw": 0.0553,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Azizbek Turgunboev",
           "share": 0.0734,
-          "exp_goals": 0.053,
-          "anytime_prob": 0.0517,
-          "anytime_prob_raw": 0.0517,
+          "exp_goals": 0.051,
+          "anytime_prob": 0.0496,
+          "anytime_prob_raw": 0.0496,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Otabek Shukurov",
           "share": 0.0705,
-          "exp_goals": 0.051,
-          "anytime_prob": 0.0497,
-          "anytime_prob_raw": 0.0497,
+          "exp_goals": 0.049,
+          "anytime_prob": 0.0477,
+          "anytime_prob_raw": 0.0477,
           "career_goals": 5,
           "pen_rate": 0.4
         }
@@ -8226,35 +8226,35 @@
     "home": "Bosnia and Herzegovina",
     "away": "Qatar",
     "model": {
-      "home_win": 0.4988,
-      "draw": 0.255,
-      "away_win": 0.2462,
-      "btts": 0.567,
-      "over_2_5": 0.5328,
-      "exp_home": 1.642,
-      "exp_away": 1.167,
-      "exp_total": 2.809
+      "home_win": 0.4876,
+      "draw": 0.2572,
+      "away_win": 0.2552,
+      "btts": 0.5681,
+      "over_2_5": 0.5313,
+      "exp_home": 1.619,
+      "exp_away": 1.183,
+      "exp_total": 2.803
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.127
+        "prob": 0.1278
       },
       {
         "score": "2-1",
-        "prob": 0.0948
+        "prob": 0.0941
       },
       {
         "score": "1-0",
-        "prob": 0.0874
+        "prob": 0.0866
       },
       {
         "score": "2-0",
-        "prob": 0.0813
+        "prob": 0.0795
       },
       {
         "score": "0-0",
-        "prob": 0.0718
+        "prob": 0.0722
       }
     ],
     "context": {
@@ -8267,61 +8267,61 @@
     },
     "elo": {
       "home": 1528,
-      "away": 1441
+      "away": 1449
     },
     "scorers": {
       "home": [
         {
           "player": "Edin D\u017eeko",
           "share": 0.3365,
-          "exp_goals": 0.553,
-          "anytime_prob": 0.4246,
-          "anytime_prob_raw": 0.4246,
+          "exp_goals": 0.545,
+          "anytime_prob": 0.4201,
+          "anytime_prob_raw": 0.4201,
           "career_goals": 32,
           "pen_rate": 0.06
         },
         {
           "player": "Haris Tabakovi\u0107",
           "share": 0.1058,
-          "exp_goals": 0.174,
-          "anytime_prob": 0.1594,
-          "anytime_prob_raw": 0.1594,
+          "exp_goals": 0.171,
+          "anytime_prob": 0.1574,
+          "anytime_prob_raw": 0.1574,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Ermedin Demirovi\u0107",
           "share": 0.0845,
-          "exp_goals": 0.139,
-          "anytime_prob": 0.1295,
-          "anytime_prob_raw": 0.1295,
+          "exp_goals": 0.137,
+          "anytime_prob": 0.1278,
+          "anytime_prob_raw": 0.1278,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Ermin Mahmi\u0107",
           "share": 0.0828,
-          "exp_goals": 0.136,
-          "anytime_prob": 0.1272,
-          "anytime_prob_raw": 0.1272,
+          "exp_goals": 0.134,
+          "anytime_prob": 0.1255,
+          "anytime_prob_raw": 0.1255,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Kerim Alajbegovi\u0107",
           "share": 0.073,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.113,
-          "anytime_prob_raw": 0.113,
+          "exp_goals": 0.118,
+          "anytime_prob": 0.1115,
+          "anytime_prob_raw": 0.1115,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Jovo Luki\u0107",
           "share": 0.0411,
-          "exp_goals": 0.067,
-          "anytime_prob": 0.0652,
-          "anytime_prob_raw": 0.0652,
+          "exp_goals": 0.066,
+          "anytime_prob": 0.0643,
+          "anytime_prob_raw": 0.0643,
           "career_goals": 1,
           "pen_rate": 0.0
         }
@@ -8330,36 +8330,36 @@
         {
           "player": "Almoez Ali",
           "share": 0.2877,
-          "exp_goals": 0.336,
-          "anytime_prob": 0.2852,
-          "anytime_prob_raw": 0.2852,
+          "exp_goals": 0.34,
+          "anytime_prob": 0.2885,
+          "anytime_prob_raw": 0.2885,
           "career_goals": 34,
           "pen_rate": 0.12
         },
         {
           "player": "Akram Afif",
           "share": 0.217,
-          "exp_goals": 0.253,
-          "anytime_prob": 0.2237,
-          "anytime_prob_raw": 0.2237,
+          "exp_goals": 0.257,
+          "anytime_prob": 0.2264,
+          "anytime_prob_raw": 0.2264,
           "career_goals": 22,
           "pen_rate": 0.32
         },
         {
           "player": "Hassan Al-Haydos",
           "share": 0.1159,
-          "exp_goals": 0.135,
-          "anytime_prob": 0.1265,
-          "anytime_prob_raw": 0.1265,
+          "exp_goals": 0.137,
+          "anytime_prob": 0.1281,
+          "anytime_prob_raw": 0.1281,
           "career_goals": 19,
           "pen_rate": 0.21
         },
         {
           "player": "Ahmed Al-Rawi",
           "share": 0.0523,
-          "exp_goals": 0.061,
-          "anytime_prob": 0.0592,
-          "anytime_prob_raw": 0.0592,
+          "exp_goals": 0.062,
+          "anytime_prob": 0.06,
+          "anytime_prob_raw": 0.06,
           "career_goals": 3,
           "pen_rate": 0.0
         },
@@ -8367,17 +8367,17 @@
           "player": "Lucas Mendes",
           "share": 0.04,
           "exp_goals": 0.047,
-          "anytime_prob": 0.0456,
-          "anytime_prob_raw": 0.0456,
+          "anytime_prob": 0.0462,
+          "anytime_prob_raw": 0.0462,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Boualem Khoukhi",
           "share": 0.037,
-          "exp_goals": 0.043,
-          "anytime_prob": 0.0423,
-          "anytime_prob_raw": 0.0423,
+          "exp_goals": 0.044,
+          "anytime_prob": 0.0429,
+          "anytime_prob_raw": 0.0429,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -8900,35 +8900,35 @@
     "home": "South Africa",
     "away": "South Korea",
     "model": {
-      "home_win": 0.1611,
-      "draw": 0.2382,
-      "away_win": 0.6007,
-      "btts": 0.509,
-      "over_2_5": 0.5015,
-      "exp_home": 0.92,
-      "exp_away": 1.76,
-      "exp_total": 2.68
+      "home_win": 0.1764,
+      "draw": 0.2464,
+      "away_win": 0.5772,
+      "btts": 0.513,
+      "over_2_5": 0.4953,
+      "exp_home": 0.949,
+      "exp_away": 1.706,
+      "exp_total": 2.655
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1221
+        "prob": 0.1252
       },
       {
         "score": "0-1",
-        "prob": 0.1096
+        "prob": 0.1085
       },
       {
         "score": "0-2",
-        "prob": 0.1063
+        "prob": 0.1023
       },
       {
         "score": "1-2",
-        "prob": 0.0977
+        "prob": 0.0971
       },
       {
         "score": "0-0",
-        "prob": 0.0796
+        "prob": 0.0817
       }
     ],
     "context": {
@@ -8941,61 +8941,61 @@
     },
     "elo": {
       "home": 1570,
-      "away": 1743
+      "away": 1725
     },
     "scorers": {
       "home": [
         {
           "player": "Oswin Appollis",
           "share": 0.1651,
-          "exp_goals": 0.152,
-          "anytime_prob": 0.141,
-          "anytime_prob_raw": 0.141,
+          "exp_goals": 0.157,
+          "anytime_prob": 0.1451,
+          "anytime_prob_raw": 0.1451,
           "career_goals": 4,
           "pen_rate": 0.25
         },
         {
           "player": "Lyle Foster",
           "share": 0.1581,
-          "exp_goals": 0.145,
-          "anytime_prob": 0.1354,
-          "anytime_prob_raw": 0.1354,
+          "exp_goals": 0.15,
+          "anytime_prob": 0.1393,
+          "anytime_prob_raw": 0.1393,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Evidence Makgopa",
           "share": 0.116,
-          "exp_goals": 0.107,
-          "anytime_prob": 0.1012,
-          "anytime_prob_raw": 0.1012,
+          "exp_goals": 0.11,
+          "anytime_prob": 0.1042,
+          "anytime_prob_raw": 0.1042,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Teboho Mokoena",
           "share": 0.1159,
-          "exp_goals": 0.107,
-          "anytime_prob": 0.1011,
-          "anytime_prob_raw": 0.1011,
+          "exp_goals": 0.11,
+          "anytime_prob": 0.1041,
+          "anytime_prob_raw": 0.1041,
           "career_goals": 5,
           "pen_rate": 0.4
         },
         {
           "player": "Thapelo Maseko",
           "share": 0.0732,
-          "exp_goals": 0.067,
-          "anytime_prob": 0.0651,
-          "anytime_prob_raw": 0.0651,
+          "exp_goals": 0.069,
+          "anytime_prob": 0.0671,
+          "anytime_prob_raw": 0.0671,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Themba Zwane",
           "share": 0.0718,
-          "exp_goals": 0.066,
-          "anytime_prob": 0.0639,
-          "anytime_prob_raw": 0.0639,
+          "exp_goals": 0.068,
+          "anytime_prob": 0.0659,
+          "anytime_prob_raw": 0.0659,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -9004,54 +9004,54 @@
         {
           "player": "Son Heung-min",
           "share": 0.2456,
-          "exp_goals": 0.432,
-          "anytime_prob": 0.351,
-          "anytime_prob_raw": 0.351,
+          "exp_goals": 0.419,
+          "anytime_prob": 0.3423,
+          "anytime_prob_raw": 0.3423,
           "career_goals": 32,
           "pen_rate": 0.22
         },
         {
           "player": "Lee Kang-in",
           "share": 0.1241,
-          "exp_goals": 0.218,
-          "anytime_prob": 0.1963,
-          "anytime_prob_raw": 0.1963,
+          "exp_goals": 0.212,
+          "anytime_prob": 0.1909,
+          "anytime_prob_raw": 0.1909,
           "career_goals": 8,
           "pen_rate": 0.0
         },
         {
           "player": "Oh Hyeon-gyu",
           "share": 0.1119,
-          "exp_goals": 0.197,
-          "anytime_prob": 0.1788,
-          "anytime_prob_raw": 0.1788,
+          "exp_goals": 0.191,
+          "anytime_prob": 0.1738,
+          "anytime_prob_raw": 0.1738,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Hwang Hee-chan",
           "share": 0.1091,
-          "exp_goals": 0.192,
-          "anytime_prob": 0.1747,
-          "anytime_prob_raw": 0.1747,
+          "exp_goals": 0.186,
+          "anytime_prob": 0.1698,
+          "anytime_prob_raw": 0.1698,
           "career_goals": 11,
           "pen_rate": 0.18
         },
         {
           "player": "Lee Jae-sung",
           "share": 0.1023,
-          "exp_goals": 0.18,
-          "anytime_prob": 0.1647,
-          "anytime_prob_raw": 0.1647,
+          "exp_goals": 0.174,
+          "anytime_prob": 0.1601,
+          "anytime_prob_raw": 0.1601,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Cho Gue-sung",
           "share": 0.0525,
-          "exp_goals": 0.092,
-          "anytime_prob": 0.0883,
-          "anytime_prob_raw": 0.0883,
+          "exp_goals": 0.09,
+          "anytime_prob": 0.0857,
+          "anytime_prob_raw": 0.0857,
           "career_goals": 5,
           "pen_rate": 0.0
         }
@@ -9234,35 +9234,35 @@
     "home": "Ecuador",
     "away": "Germany",
     "model": {
-      "home_win": 0.2582,
-      "draw": 0.277,
-      "away_win": 0.4647,
-      "btts": 0.5221,
-      "over_2_5": 0.4692,
-      "exp_home": 1.09,
-      "exp_away": 1.461,
-      "exp_total": 2.551
+      "home_win": 0.2941,
+      "draw": 0.2834,
+      "away_win": 0.4225,
+      "btts": 0.5249,
+      "over_2_5": 0.4649,
+      "exp_home": 1.152,
+      "exp_away": 1.381,
+      "exp_total": 2.534
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1366
+        "prob": 0.139
       },
       {
         "score": "0-1",
-        "prob": 0.1016
-      },
-      {
-        "score": "1-2",
-        "prob": 0.0908
+        "prob": 0.097
       },
       {
         "score": "0-0",
-        "prob": 0.0904
+        "prob": 0.092
       },
       {
-        "score": "0-2",
-        "prob": 0.0833
+        "score": "1-2",
+        "prob": 0.0873
+      },
+      {
+        "score": "1-0",
+        "prob": 0.0788
       }
     ],
     "context": {
@@ -9275,61 +9275,61 @@
     },
     "elo": {
       "home": 1851,
-      "away": 1916
+      "away": 1884
     },
     "scorers": {
       "home": [
         {
           "player": "Enner Valencia",
           "share": 0.4162,
-          "exp_goals": 0.454,
-          "anytime_prob": 0.3647,
-          "anytime_prob_raw": 0.3647,
+          "exp_goals": 0.479,
+          "anytime_prob": 0.3809,
+          "anytime_prob_raw": 0.3809,
           "career_goals": 23,
           "pen_rate": 0.26
         },
         {
           "player": "Gonzalo Plata",
           "share": 0.1995,
-          "exp_goals": 0.217,
-          "anytime_prob": 0.1955,
-          "anytime_prob_raw": 0.1955,
+          "exp_goals": 0.23,
+          "anytime_prob": 0.2054,
+          "anytime_prob_raw": 0.2054,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Alan Minda",
           "share": 0.0771,
-          "exp_goals": 0.084,
-          "anytime_prob": 0.0806,
-          "anytime_prob_raw": 0.0806,
+          "exp_goals": 0.089,
+          "anytime_prob": 0.085,
+          "anytime_prob_raw": 0.085,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Nilson Angulo",
           "share": 0.0718,
-          "exp_goals": 0.078,
-          "anytime_prob": 0.0753,
-          "anytime_prob_raw": 0.0753,
+          "exp_goals": 0.083,
+          "anytime_prob": 0.0794,
+          "anytime_prob_raw": 0.0794,
           "career_goals": 1,
           "pen_rate": 0.0
         },
         {
           "player": "\u00c1ngel Mena",
           "share": 0.071,
-          "exp_goals": 0.077,
-          "anytime_prob": 0.0744,
-          "anytime_prob_raw": 0.0744,
+          "exp_goals": 0.082,
+          "anytime_prob": 0.0785,
+          "anytime_prob_raw": 0.0785,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Kevin Rodr\u00edguez",
           "share": 0.0644,
-          "exp_goals": 0.07,
-          "anytime_prob": 0.0678,
-          "anytime_prob_raw": 0.0678,
+          "exp_goals": 0.074,
+          "anytime_prob": 0.0715,
+          "anytime_prob_raw": 0.0715,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -9338,54 +9338,54 @@
         {
           "player": "Kai Havertz",
           "share": 0.1356,
-          "exp_goals": 0.198,
-          "anytime_prob": 0.1797,
-          "anytime_prob_raw": 0.1797,
+          "exp_goals": 0.187,
+          "anytime_prob": 0.1708,
+          "anytime_prob_raw": 0.1708,
           "career_goals": 17,
           "pen_rate": 0.24
         },
         {
           "player": "Deniz Undav",
           "share": 0.0863,
-          "exp_goals": 0.126,
-          "anytime_prob": 0.1185,
-          "anytime_prob_raw": 0.1185,
+          "exp_goals": 0.119,
+          "anytime_prob": 0.1124,
+          "anytime_prob_raw": 0.1124,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Serge Gnabry",
           "share": 0.0852,
-          "exp_goals": 0.124,
-          "anytime_prob": 0.117,
-          "anytime_prob_raw": 0.117,
+          "exp_goals": 0.118,
+          "anytime_prob": 0.111,
+          "anytime_prob_raw": 0.111,
           "career_goals": 21,
           "pen_rate": 0.0
         },
         {
           "player": "Leroy San\u00e9",
           "share": 0.083,
-          "exp_goals": 0.121,
-          "anytime_prob": 0.1142,
-          "anytime_prob_raw": 0.1142,
+          "exp_goals": 0.115,
+          "anytime_prob": 0.1083,
+          "anytime_prob_raw": 0.1083,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Jamal Musiala",
           "share": 0.0828,
-          "exp_goals": 0.121,
-          "anytime_prob": 0.1139,
-          "anytime_prob_raw": 0.1139,
+          "exp_goals": 0.114,
+          "anytime_prob": 0.108,
+          "anytime_prob_raw": 0.108,
           "career_goals": 8,
           "pen_rate": 0.0
         },
         {
           "player": "Florian Wirtz",
           "share": 0.0771,
-          "exp_goals": 0.113,
-          "anytime_prob": 0.1066,
-          "anytime_prob_raw": 0.1066,
+          "exp_goals": 0.107,
+          "anytime_prob": 0.1011,
+          "anytime_prob_raw": 0.1011,
           "career_goals": 7,
           "pen_rate": 0.0
         }
@@ -9401,35 +9401,35 @@
     "home": "Japan",
     "away": "Sweden",
     "model": {
-      "home_win": 0.6268,
-      "draw": 0.2188,
-      "away_win": 0.1543,
-      "btts": 0.5452,
-      "over_2_5": 0.5566,
-      "exp_home": 1.927,
-      "exp_away": 0.983,
-      "exp_total": 2.91
+      "home_win": 0.6321,
+      "draw": 0.2169,
+      "away_win": 0.151,
+      "btts": 0.5441,
+      "over_2_5": 0.5581,
+      "exp_home": 1.94,
+      "exp_away": 0.976,
+      "exp_total": 2.917
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1135
+        "prob": 0.1127
       },
       {
         "score": "2-0",
-        "prob": 0.1011
+        "prob": 0.1019
       },
       {
         "score": "2-1",
-        "prob": 0.0994
+        "prob": 0.0995
       },
       {
         "score": "1-0",
-        "prob": 0.0946
+        "prob": 0.0947
       },
       {
         "score": "3-0",
-        "prob": 0.065
+        "prob": 0.0659
       }
     ],
     "context": {
@@ -9441,7 +9441,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1897,
+      "home": 1901,
       "away": 1741
     },
     "scorers": {
@@ -9449,45 +9449,45 @@
         {
           "player": "Ayase Ueda",
           "share": 0.1672,
-          "exp_goals": 0.322,
-          "anytime_prob": 0.2755,
-          "anytime_prob_raw": 0.2755,
+          "exp_goals": 0.324,
+          "anytime_prob": 0.2771,
+          "anytime_prob_raw": 0.2771,
           "career_goals": 14,
           "pen_rate": 0.14
         },
         {
           "player": "Daichi Kamada",
           "share": 0.1237,
-          "exp_goals": 0.238,
-          "anytime_prob": 0.2122,
-          "anytime_prob_raw": 0.2122,
+          "exp_goals": 0.24,
+          "anytime_prob": 0.2134,
+          "anytime_prob_raw": 0.2134,
           "career_goals": 10,
           "pen_rate": 0.0
         },
         {
           "player": "Takumi Minamino",
           "share": 0.1019,
-          "exp_goals": 0.196,
-          "anytime_prob": 0.1783,
-          "anytime_prob_raw": 0.1783,
+          "exp_goals": 0.198,
+          "anytime_prob": 0.1794,
+          "anytime_prob_raw": 0.1794,
           "career_goals": 17,
           "pen_rate": 0.06
         },
         {
           "player": "K\u014dki Ogawa",
           "share": 0.0737,
-          "exp_goals": 0.142,
-          "anytime_prob": 0.1324,
-          "anytime_prob_raw": 0.1324,
+          "exp_goals": 0.143,
+          "anytime_prob": 0.1332,
+          "anytime_prob_raw": 0.1332,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Takefusa Kubo",
           "share": 0.0622,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.1129,
-          "anytime_prob_raw": 0.1129,
+          "exp_goals": 0.121,
+          "anytime_prob": 0.1136,
+          "anytime_prob_raw": 0.1136,
           "career_goals": 5,
           "pen_rate": 0.0
         },
@@ -9495,8 +9495,8 @@
           "player": "Junya It\u014d",
           "share": 0.0616,
           "exp_goals": 0.119,
-          "anytime_prob": 0.1119,
-          "anytime_prob_raw": 0.1119,
+          "anytime_prob": 0.1126,
+          "anytime_prob_raw": 0.1126,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -9505,27 +9505,27 @@
         {
           "player": "Viktor Gy\u00f6keres",
           "share": 0.3125,
-          "exp_goals": 0.307,
-          "anytime_prob": 0.2645,
-          "anytime_prob_raw": 0.2645,
+          "exp_goals": 0.305,
+          "anytime_prob": 0.2628,
+          "anytime_prob_raw": 0.2628,
           "career_goals": 18,
           "pen_rate": 0.11
         },
         {
           "player": "Alexander Isak",
           "share": 0.1293,
-          "exp_goals": 0.127,
-          "anytime_prob": 0.1193,
-          "anytime_prob_raw": 0.1193,
+          "exp_goals": 0.126,
+          "anytime_prob": 0.1185,
+          "anytime_prob_raw": 0.1185,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Anthony Elanga",
           "share": 0.12,
-          "exp_goals": 0.118,
-          "anytime_prob": 0.1113,
-          "anytime_prob_raw": 0.1113,
+          "exp_goals": 0.117,
+          "anytime_prob": 0.1105,
+          "anytime_prob_raw": 0.1105,
           "career_goals": 6,
           "pen_rate": 0.0
         },
@@ -9533,26 +9533,26 @@
           "player": "Yasin Ayari",
           "share": 0.0931,
           "exp_goals": 0.091,
-          "anytime_prob": 0.0874,
-          "anytime_prob_raw": 0.0874,
+          "anytime_prob": 0.0868,
+          "anytime_prob_raw": 0.0868,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Emil Forsberg",
           "share": 0.0832,
-          "exp_goals": 0.082,
-          "anytime_prob": 0.0785,
-          "anytime_prob_raw": 0.0785,
+          "exp_goals": 0.081,
+          "anytime_prob": 0.078,
+          "anytime_prob_raw": 0.078,
           "career_goals": 18,
           "pen_rate": 0.28
         },
         {
           "player": "Viktor Claesson",
           "share": 0.0579,
-          "exp_goals": 0.057,
-          "anytime_prob": 0.0553,
-          "anytime_prob_raw": 0.0553,
+          "exp_goals": 0.056,
+          "anytime_prob": 0.0549,
+          "anytime_prob_raw": 0.0549,
           "career_goals": 11,
           "pen_rate": 0.0
         }
@@ -9568,35 +9568,35 @@
     "home": "Tunisia",
     "away": "Netherlands",
     "model": {
-      "home_win": 0.0303,
-      "draw": 0.0904,
-      "away_win": 0.8794,
-      "btts": 0.4529,
-      "over_2_5": 0.6956,
-      "exp_home": 0.639,
-      "exp_away": 2.935,
-      "exp_total": 3.574
+      "home_win": 0.0275,
+      "draw": 0.085,
+      "away_win": 0.8876,
+      "btts": 0.4474,
+      "over_2_5": 0.7041,
+      "exp_home": 0.626,
+      "exp_away": 2.995,
+      "exp_total": 3.621
     },
     "top_scores": [
       {
-        "score": "0-2",
+        "score": "0-3",
         "prob": 0.1203
       },
       {
-        "score": "0-3",
-        "prob": 0.1186
+        "score": "0-2",
+        "prob": 0.1195
       },
       {
         "score": "0-4",
-        "prob": 0.0877
+        "prob": 0.0908
+      },
+      {
+        "score": "1-3",
+        "prob": 0.0753
       },
       {
         "score": "1-2",
-        "prob": 0.0769
-      },
-      {
-        "score": "0-1",
-        "prob": 0.0762
+        "prob": 0.0748
       }
     ],
     "context": {
@@ -9609,61 +9609,61 @@
     },
     "elo": {
       "home": 1549,
-      "away": 1962
+      "away": 1974
     },
     "scorers": {
       "home": [
         {
           "player": "Mohamed Ali Ben Romdhane",
           "share": 0.1153,
-          "exp_goals": 0.074,
-          "anytime_prob": 0.071,
-          "anytime_prob_raw": 0.071,
+          "exp_goals": 0.072,
+          "anytime_prob": 0.0696,
+          "anytime_prob_raw": 0.0696,
           "career_goals": 4,
           "pen_rate": 0.5
         },
         {
           "player": "Hazem Mastouri",
           "share": 0.0983,
-          "exp_goals": 0.063,
-          "anytime_prob": 0.0609,
-          "anytime_prob_raw": 0.0609,
+          "exp_goals": 0.062,
+          "anytime_prob": 0.0597,
+          "anytime_prob_raw": 0.0597,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Elias Achouri",
           "share": 0.0952,
-          "exp_goals": 0.061,
-          "anytime_prob": 0.059,
-          "anytime_prob_raw": 0.059,
+          "exp_goals": 0.06,
+          "anytime_prob": 0.0579,
+          "anytime_prob_raw": 0.0579,
           "career_goals": 3,
           "pen_rate": 0.33
         },
         {
           "player": "Elias Saad",
           "share": 0.095,
-          "exp_goals": 0.061,
-          "anytime_prob": 0.0589,
-          "anytime_prob_raw": 0.0589,
+          "exp_goals": 0.059,
+          "anytime_prob": 0.0578,
+          "anytime_prob_raw": 0.0578,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Ferjani Sassi",
           "share": 0.0693,
-          "exp_goals": 0.044,
-          "anytime_prob": 0.0433,
-          "anytime_prob_raw": 0.0433,
+          "exp_goals": 0.043,
+          "anytime_prob": 0.0425,
+          "anytime_prob_raw": 0.0425,
           "career_goals": 4,
           "pen_rate": 0.25
         },
         {
           "player": "Firas Chaouat",
           "share": 0.0668,
-          "exp_goals": 0.043,
-          "anytime_prob": 0.0418,
-          "anytime_prob_raw": 0.0418,
+          "exp_goals": 0.042,
+          "anytime_prob": 0.0409,
+          "anytime_prob_raw": 0.0409,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -9672,54 +9672,54 @@
         {
           "player": "Memphis Depay",
           "share": 0.197,
-          "exp_goals": 0.578,
-          "anytime_prob": 0.4391,
-          "anytime_prob_raw": 0.4391,
+          "exp_goals": 0.59,
+          "anytime_prob": 0.4457,
+          "anytime_prob_raw": 0.4457,
           "career_goals": 42,
           "pen_rate": 0.26
         },
         {
           "player": "Cody Gakpo",
           "share": 0.1964,
-          "exp_goals": 0.577,
-          "anytime_prob": 0.4382,
-          "anytime_prob_raw": 0.4382,
+          "exp_goals": 0.588,
+          "anytime_prob": 0.4447,
+          "anytime_prob_raw": 0.4447,
           "career_goals": 22,
           "pen_rate": 0.23
         },
         {
           "player": "Donyell Malen",
           "share": 0.0807,
-          "exp_goals": 0.237,
-          "anytime_prob": 0.2108,
-          "anytime_prob_raw": 0.2108,
+          "exp_goals": 0.242,
+          "anytime_prob": 0.2146,
+          "anytime_prob_raw": 0.2146,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Denzel Dumfries",
           "share": 0.0719,
-          "exp_goals": 0.211,
-          "anytime_prob": 0.1902,
-          "anytime_prob_raw": 0.1902,
+          "exp_goals": 0.215,
+          "anytime_prob": 0.1937,
+          "anytime_prob_raw": 0.1937,
           "career_goals": 11,
           "pen_rate": 0.0
         },
         {
           "player": "Wout Weghorst",
           "share": 0.0611,
-          "exp_goals": 0.179,
-          "anytime_prob": 0.1641,
-          "anytime_prob_raw": 0.1641,
+          "exp_goals": 0.183,
+          "anytime_prob": 0.1672,
+          "anytime_prob_raw": 0.1672,
           "career_goals": 10,
           "pen_rate": 0.1
         },
         {
           "player": "Brian Brobbey",
           "share": 0.0576,
-          "exp_goals": 0.169,
-          "anytime_prob": 0.1556,
-          "anytime_prob_raw": 0.1556,
+          "exp_goals": 0.173,
+          "anytime_prob": 0.1586,
+          "anytime_prob_raw": 0.1586,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -9902,19 +9902,19 @@
     "home": "Paraguay",
     "away": "Australia",
     "model": {
-      "home_win": 0.3438,
-      "draw": 0.2903,
-      "away_win": 0.3659,
+      "home_win": 0.3524,
+      "draw": 0.2904,
+      "away_win": 0.3571,
       "btts": 0.519,
       "over_2_5": 0.4526,
-      "exp_home": 1.224,
-      "exp_away": 1.263,
+      "exp_home": 1.239,
+      "exp_away": 1.247,
       "exp_total": 2.486
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1414
+        "prob": 0.1415
       },
       {
         "score": "0-0",
@@ -9922,15 +9922,15 @@
       },
       {
         "score": "0-1",
-        "prob": 0.0922
+        "prob": 0.091
       },
       {
         "score": "1-0",
-        "prob": 0.089
+        "prob": 0.0903
       },
       {
         "score": "1-2",
-        "prob": 0.0812
+        "prob": 0.0802
       }
     ],
     "context": {
@@ -9942,7 +9942,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1814,
+      "home": 1821,
       "away": 1797
     },
     "scorers": {
@@ -9950,54 +9950,54 @@
         {
           "player": "Julio Enciso",
           "share": 0.2482,
-          "exp_goals": 0.304,
-          "anytime_prob": 0.262,
-          "anytime_prob_raw": 0.262,
+          "exp_goals": 0.308,
+          "anytime_prob": 0.2647,
+          "anytime_prob_raw": 0.2647,
           "career_goals": 5,
           "pen_rate": 0.2
         },
         {
           "player": "Mat\u00edas Galarza",
           "share": 0.1777,
-          "exp_goals": 0.217,
-          "anytime_prob": 0.1954,
-          "anytime_prob_raw": 0.1954,
+          "exp_goals": 0.22,
+          "anytime_prob": 0.1976,
+          "anytime_prob_raw": 0.1976,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Antonio Sanabria",
           "share": 0.1681,
-          "exp_goals": 0.206,
-          "anytime_prob": 0.186,
-          "anytime_prob_raw": 0.186,
+          "exp_goals": 0.208,
+          "anytime_prob": 0.188,
+          "anytime_prob_raw": 0.188,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Omar Alderete",
           "share": 0.1247,
-          "exp_goals": 0.153,
-          "anytime_prob": 0.1416,
-          "anytime_prob_raw": 0.1416,
+          "exp_goals": 0.155,
+          "anytime_prob": 0.1432,
+          "anytime_prob_raw": 0.1432,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Maur\u00edcio",
           "share": 0.0717,
-          "exp_goals": 0.088,
-          "anytime_prob": 0.084,
-          "anytime_prob_raw": 0.084,
+          "exp_goals": 0.089,
+          "anytime_prob": 0.085,
+          "anytime_prob_raw": 0.085,
           "career_goals": 1,
           "pen_rate": 0.0
         },
         {
           "player": "Miguel Almir\u00f3n",
           "share": 0.0712,
-          "exp_goals": 0.087,
-          "anytime_prob": 0.0834,
-          "anytime_prob_raw": 0.0834,
+          "exp_goals": 0.088,
+          "anytime_prob": 0.0844,
+          "anytime_prob_raw": 0.0844,
           "career_goals": 3,
           "pen_rate": 0.33
         }
@@ -10006,54 +10006,54 @@
         {
           "player": "Jackson Irvine",
           "share": 0.1152,
-          "exp_goals": 0.145,
-          "anytime_prob": 0.1354,
-          "anytime_prob_raw": 0.1354,
+          "exp_goals": 0.144,
+          "anytime_prob": 0.1338,
+          "anytime_prob_raw": 0.1338,
           "career_goals": 10,
           "pen_rate": 0.0
         },
         {
           "player": "Kusini Yengi",
           "share": 0.103,
-          "exp_goals": 0.13,
-          "anytime_prob": 0.122,
-          "anytime_prob_raw": 0.122,
+          "exp_goals": 0.128,
+          "anytime_prob": 0.1205,
+          "anytime_prob_raw": 0.1205,
           "career_goals": 6,
           "pen_rate": 0.17
         },
         {
           "player": "Craig Goodwin",
           "share": 0.095,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.1131,
-          "anytime_prob_raw": 0.1131,
+          "exp_goals": 0.118,
+          "anytime_prob": 0.1117,
+          "anytime_prob_raw": 0.1117,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Martin Boyle",
           "share": 0.0855,
-          "exp_goals": 0.108,
-          "anytime_prob": 0.1024,
-          "anytime_prob_raw": 0.1024,
+          "exp_goals": 0.107,
+          "anytime_prob": 0.1012,
+          "anytime_prob_raw": 0.1012,
           "career_goals": 7,
           "pen_rate": 0.29
         },
         {
           "player": "Jamie Maclaren",
           "share": 0.0765,
-          "exp_goals": 0.097,
-          "anytime_prob": 0.0921,
-          "anytime_prob_raw": 0.0921,
+          "exp_goals": 0.095,
+          "anytime_prob": 0.0909,
+          "anytime_prob_raw": 0.0909,
           "career_goals": 11,
           "pen_rate": 0.18
         },
         {
           "player": "Mitchell Duke",
           "share": 0.0679,
-          "exp_goals": 0.086,
-          "anytime_prob": 0.0821,
-          "anytime_prob_raw": 0.0821,
+          "exp_goals": 0.085,
+          "anytime_prob": 0.0811,
+          "anytime_prob_raw": 0.0811,
           "career_goals": 8,
           "pen_rate": 0.0
         }
@@ -10069,35 +10069,35 @@
     "home": "Norway",
     "away": "France",
     "model": {
-      "home_win": 0.2255,
-      "draw": 0.2432,
-      "away_win": 0.5312,
-      "btts": 0.5786,
-      "over_2_5": 0.5566,
-      "exp_home": 1.161,
-      "exp_away": 1.749,
-      "exp_total": 2.911
+      "home_win": 0.1997,
+      "draw": 0.234,
+      "away_win": 0.5663,
+      "btts": 0.5738,
+      "over_2_5": 0.5632,
+      "exp_home": 1.111,
+      "exp_away": 1.828,
+      "exp_total": 2.939
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1216
+        "prob": 0.1182
       },
       {
         "score": "1-2",
-        "prob": 0.0968
-      },
-      {
-        "score": "0-1",
-        "prob": 0.0842
+        "prob": 0.0982
       },
       {
         "score": "0-2",
-        "prob": 0.0833
+        "prob": 0.0884
+      },
+      {
+        "score": "0-1",
+        "prob": 0.086
       },
       {
         "score": "0-0",
-        "prob": 0.0655
+        "prob": 0.0636
       }
     ],
     "context": {
@@ -10109,7 +10109,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1962,
+      "home": 1937,
       "away": 2083
     },
     "scorers": {
@@ -10117,54 +10117,54 @@
         {
           "player": "Erling Haaland",
           "share": 0.4997,
-          "exp_goals": 0.58,
-          "anytime_prob": 0.4402,
-          "anytime_prob_raw": 0.4402,
+          "exp_goals": 0.555,
+          "anytime_prob": 0.426,
+          "anytime_prob_raw": 0.426,
           "career_goals": 53,
           "pen_rate": 0.09
         },
         {
           "player": "Alexander S\u00f8rloth",
           "share": 0.1328,
-          "exp_goals": 0.154,
-          "anytime_prob": 0.1429,
-          "anytime_prob_raw": 0.1429,
+          "exp_goals": 0.148,
+          "anytime_prob": 0.1372,
+          "anytime_prob_raw": 0.1372,
           "career_goals": 21,
           "pen_rate": 0.0
         },
         {
           "player": "Thelo Aasgaard",
           "share": 0.0822,
-          "exp_goals": 0.095,
-          "anytime_prob": 0.091,
-          "anytime_prob_raw": 0.091,
+          "exp_goals": 0.091,
+          "anytime_prob": 0.0873,
+          "anytime_prob_raw": 0.0873,
           "career_goals": 6,
           "pen_rate": 0.17
         },
         {
           "player": "Antonio Nusa",
           "share": 0.0741,
-          "exp_goals": 0.086,
-          "anytime_prob": 0.0825,
-          "anytime_prob_raw": 0.0825,
+          "exp_goals": 0.082,
+          "anytime_prob": 0.0791,
+          "anytime_prob_raw": 0.0791,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Mohamed Elyounoussi",
           "share": 0.0234,
-          "exp_goals": 0.027,
-          "anytime_prob": 0.0268,
-          "anytime_prob_raw": 0.0268,
+          "exp_goals": 0.026,
+          "anytime_prob": 0.0257,
+          "anytime_prob_raw": 0.0257,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Felix Horn Myhre",
           "share": 0.0228,
-          "exp_goals": 0.026,
-          "anytime_prob": 0.0261,
-          "anytime_prob_raw": 0.0261,
+          "exp_goals": 0.025,
+          "anytime_prob": 0.025,
+          "anytime_prob_raw": 0.025,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -10173,54 +10173,54 @@
         {
           "player": "Kylian Mbapp\u00e9",
           "share": 0.3908,
-          "exp_goals": 0.683,
-          "anytime_prob": 0.4951,
-          "anytime_prob_raw": 0.4951,
+          "exp_goals": 0.714,
+          "anytime_prob": 0.5105,
+          "anytime_prob_raw": 0.5105,
           "career_goals": 55,
           "pen_rate": 0.2
         },
         {
           "player": "Ousmane Demb\u00e9l\u00e9",
           "share": 0.125,
-          "exp_goals": 0.219,
-          "anytime_prob": 0.1963,
-          "anytime_prob_raw": 0.1963,
+          "exp_goals": 0.228,
+          "anytime_prob": 0.2042,
+          "anytime_prob_raw": 0.2042,
           "career_goals": 10,
           "pen_rate": 0.0
         },
         {
           "player": "Bradley Barcola",
           "share": 0.0781,
-          "exp_goals": 0.137,
-          "anytime_prob": 0.1277,
-          "anytime_prob_raw": 0.1277,
+          "exp_goals": 0.143,
+          "anytime_prob": 0.1331,
+          "anytime_prob_raw": 0.1331,
           "career_goals": 6,
           "pen_rate": 0.0
         },
         {
           "player": "Olivier Giroud",
           "share": 0.0627,
-          "exp_goals": 0.11,
-          "anytime_prob": 0.1038,
-          "anytime_prob_raw": 0.1038,
+          "exp_goals": 0.115,
+          "anytime_prob": 0.1082,
+          "anytime_prob_raw": 0.1082,
           "career_goals": 25,
           "pen_rate": 0.12
         },
         {
           "player": "Randal Kolo Muani",
           "share": 0.057,
-          "exp_goals": 0.1,
-          "anytime_prob": 0.0949,
-          "anytime_prob_raw": 0.0949,
+          "exp_goals": 0.104,
+          "anytime_prob": 0.0989,
+          "anytime_prob_raw": 0.0989,
           "career_goals": 7,
           "pen_rate": 0.14
         },
         {
           "player": "Adrien Rabiot",
           "share": 0.0493,
-          "exp_goals": 0.086,
-          "anytime_prob": 0.0826,
-          "anytime_prob_raw": 0.0826,
+          "exp_goals": 0.09,
+          "anytime_prob": 0.0862,
+          "anytime_prob_raw": 0.0862,
           "career_goals": 7,
           "pen_rate": 0.0
         }
@@ -10403,35 +10403,35 @@
     "home": "Uruguay",
     "away": "Spain",
     "model": {
-      "home_win": 0.0233,
-      "draw": 0.085,
-      "away_win": 0.8917,
-      "btts": 0.3963,
-      "over_2_5": 0.6676,
-      "exp_home": 0.534,
-      "exp_away": 2.889,
-      "exp_total": 3.424
+      "home_win": 0.0269,
+      "draw": 0.0931,
+      "away_win": 0.88,
+      "btts": 0.404,
+      "over_2_5": 0.6537,
+      "exp_home": 0.552,
+      "exp_away": 2.802,
+      "exp_total": 3.354
     },
     "top_scores": [
       {
         "score": "0-2",
-        "prob": 0.1356
+        "prob": 0.1369
       },
       {
         "score": "0-3",
-        "prob": 0.1315
-      },
-      {
-        "score": "0-4",
-        "prob": 0.0957
+        "prob": 0.1286
       },
       {
         "score": "0-1",
-        "prob": 0.0882
+        "prob": 0.0918
+      },
+      {
+        "score": "0-4",
+        "prob": 0.0907
       },
       {
         "score": "1-2",
-        "prob": 0.0725
+        "prob": 0.0755
       }
     ],
     "context": {
@@ -10448,7 +10448,7 @@
       ]
     },
     "elo": {
-      "home": 1832,
+      "home": 1850,
       "away": 2277
     },
     "scorers": {
@@ -10456,54 +10456,54 @@
         {
           "player": "Darwin N\u00fa\u00f1ez",
           "share": 0.1362,
-          "exp_goals": 0.073,
-          "anytime_prob": 0.0701,
-          "anytime_prob_raw": 0.0701,
+          "exp_goals": 0.075,
+          "anytime_prob": 0.0724,
+          "anytime_prob_raw": 0.0724,
           "career_goals": 8,
           "pen_rate": 0.12
         },
         {
           "player": "Giorgian de Arrascaeta",
           "share": 0.1319,
-          "exp_goals": 0.07,
-          "anytime_prob": 0.068,
-          "anytime_prob_raw": 0.068,
+          "exp_goals": 0.073,
+          "anytime_prob": 0.0702,
+          "anytime_prob_raw": 0.0702,
           "career_goals": 9,
           "pen_rate": 0.11
         },
         {
           "player": "Maximiliano Ara\u00fajo",
           "share": 0.1292,
-          "exp_goals": 0.069,
-          "anytime_prob": 0.0667,
-          "anytime_prob_raw": 0.0667,
+          "exp_goals": 0.071,
+          "anytime_prob": 0.0688,
+          "anytime_prob_raw": 0.0688,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Luis Su\u00e1rez",
           "share": 0.1124,
-          "exp_goals": 0.06,
-          "anytime_prob": 0.0583,
-          "anytime_prob_raw": 0.0583,
+          "exp_goals": 0.062,
+          "anytime_prob": 0.0602,
+          "anytime_prob_raw": 0.0602,
           "career_goals": 19,
           "pen_rate": 0.37
         },
         {
           "player": "Rodrigo Aguirre",
           "share": 0.0876,
-          "exp_goals": 0.047,
-          "anytime_prob": 0.0457,
-          "anytime_prob_raw": 0.0457,
+          "exp_goals": 0.048,
+          "anytime_prob": 0.0472,
+          "anytime_prob_raw": 0.0472,
           "career_goals": 3,
           "pen_rate": 0.0
         },
         {
           "player": "Federico Valverde",
           "share": 0.0831,
-          "exp_goals": 0.044,
-          "anytime_prob": 0.0434,
-          "anytime_prob_raw": 0.0434,
+          "exp_goals": 0.046,
+          "anytime_prob": 0.0449,
+          "anytime_prob_raw": 0.0449,
           "career_goals": 6,
           "pen_rate": 0.0
         }
@@ -10512,54 +10512,54 @@
         {
           "player": "Mikel Oyarzabal",
           "share": 0.2052,
-          "exp_goals": 0.593,
-          "anytime_prob": 0.4472,
-          "anytime_prob_raw": 0.4472,
+          "exp_goals": 0.575,
+          "anytime_prob": 0.4372,
+          "anytime_prob_raw": 0.4372,
           "career_goals": 23,
           "pen_rate": 0.17
         },
         {
           "player": "Mikel Merino",
           "share": 0.1288,
-          "exp_goals": 0.372,
-          "anytime_prob": 0.3107,
-          "anytime_prob_raw": 0.3107,
+          "exp_goals": 0.361,
+          "anytime_prob": 0.303,
+          "anytime_prob_raw": 0.303,
           "career_goals": 12,
           "pen_rate": 0.0
         },
         {
           "player": "Ferran Torres",
           "share": 0.1075,
-          "exp_goals": 0.31,
-          "anytime_prob": 0.2669,
-          "anytime_prob_raw": 0.2669,
+          "exp_goals": 0.301,
+          "anytime_prob": 0.26,
+          "anytime_prob_raw": 0.26,
           "career_goals": 22,
           "pen_rate": 0.05
         },
         {
           "player": "\u00c1lvaro Morata",
           "share": 0.0827,
-          "exp_goals": 0.239,
-          "anytime_prob": 0.2124,
-          "anytime_prob_raw": 0.2124,
+          "exp_goals": 0.232,
+          "anytime_prob": 0.2067,
+          "anytime_prob_raw": 0.2067,
           "career_goals": 30,
           "pen_rate": 0.03
         },
         {
           "player": "Lamine Yamal",
           "share": 0.0629,
-          "exp_goals": 0.182,
-          "anytime_prob": 0.1661,
-          "anytime_prob_raw": 0.1661,
+          "exp_goals": 0.176,
+          "anytime_prob": 0.1616,
+          "anytime_prob_raw": 0.1616,
           "career_goals": 7,
           "pen_rate": 0.14
         },
         {
           "player": "Dani Olmo",
           "share": 0.0545,
-          "exp_goals": 0.157,
-          "anytime_prob": 0.1457,
-          "anytime_prob_raw": 0.1457,
+          "exp_goals": 0.153,
+          "anytime_prob": 0.1416,
+          "anytime_prob_raw": 0.1416,
           "career_goals": 10,
           "pen_rate": 0.0
         }
@@ -11410,35 +11410,35 @@
     "home": "Colombia",
     "away": "Portugal",
     "model": {
-      "home_win": 0.3589,
-      "draw": 0.2814,
-      "away_win": 0.3598,
-      "btts": 0.5423,
-      "over_2_5": 0.4822,
-      "exp_home": 1.3,
-      "exp_away": 1.302,
-      "exp_total": 2.602
+      "home_win": 0.3288,
+      "draw": 0.2805,
+      "away_win": 0.3907,
+      "btts": 0.5419,
+      "over_2_5": 0.4828,
+      "exp_home": 1.247,
+      "exp_away": 1.358,
+      "exp_total": 2.605
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.138
-      },
-      {
-        "score": "0-0",
-        "prob": 0.0866
+        "prob": 0.1377
       },
       {
         "score": "0-1",
-        "prob": 0.0839
+        "prob": 0.0879
       },
       {
-        "score": "1-0",
-        "prob": 0.0838
+        "score": "0-0",
+        "prob": 0.0864
       },
       {
         "score": "1-2",
-        "prob": 0.0817
+        "prob": 0.085
+      },
+      {
+        "score": "1-0",
+        "prob": 0.0796
       }
     ],
     "context": {
@@ -11451,61 +11451,61 @@
     },
     "elo": {
       "home": 2000,
-      "away": 1998
+      "away": 2022
     },
     "scorers": {
       "home": [
         {
           "player": "Luis D\u00edaz",
           "share": 0.2265,
-          "exp_goals": 0.295,
-          "anytime_prob": 0.2551,
-          "anytime_prob_raw": 0.2551,
+          "exp_goals": 0.283,
+          "anytime_prob": 0.2461,
+          "anytime_prob_raw": 0.2461,
           "career_goals": 17,
           "pen_rate": 0.06
         },
         {
           "player": "Luis Su\u00e1rez",
           "share": 0.0957,
-          "exp_goals": 0.124,
-          "anytime_prob": 0.117,
-          "anytime_prob_raw": 0.117,
+          "exp_goals": 0.119,
+          "anytime_prob": 0.1125,
+          "anytime_prob_raw": 0.1125,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Daniel Mu\u00f1oz",
           "share": 0.0942,
-          "exp_goals": 0.122,
-          "anytime_prob": 0.1153,
-          "anytime_prob_raw": 0.1153,
+          "exp_goals": 0.117,
+          "anytime_prob": 0.1109,
+          "anytime_prob_raw": 0.1109,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "James Rodr\u00edguez",
           "share": 0.0895,
-          "exp_goals": 0.116,
-          "anytime_prob": 0.1098,
-          "anytime_prob_raw": 0.1098,
+          "exp_goals": 0.112,
+          "anytime_prob": 0.1056,
+          "anytime_prob_raw": 0.1056,
           "career_goals": 14,
           "pen_rate": 0.36
         },
         {
           "player": "Jhon C\u00f3rdoba",
           "share": 0.0794,
-          "exp_goals": 0.103,
-          "anytime_prob": 0.0981,
-          "anytime_prob_raw": 0.0981,
+          "exp_goals": 0.099,
+          "anytime_prob": 0.0943,
+          "anytime_prob_raw": 0.0943,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Miguel Borja",
           "share": 0.0461,
-          "exp_goals": 0.06,
-          "anytime_prob": 0.0582,
-          "anytime_prob_raw": 0.0582,
+          "exp_goals": 0.057,
+          "anytime_prob": 0.0559,
+          "anytime_prob_raw": 0.0559,
           "career_goals": 6,
           "pen_rate": 0.5
         }
@@ -11514,54 +11514,54 @@
         {
           "player": "Cristiano Ronaldo",
           "share": 0.3504,
-          "exp_goals": 0.456,
-          "anytime_prob": 0.3664,
-          "anytime_prob_raw": 0.3664,
+          "exp_goals": 0.476,
+          "anytime_prob": 0.3787,
+          "anytime_prob_raw": 0.3787,
           "career_goals": 83,
           "pen_rate": 0.24
         },
         {
           "player": "Bruno Fernandes",
           "share": 0.1335,
-          "exp_goals": 0.174,
-          "anytime_prob": 0.1595,
-          "anytime_prob_raw": 0.1595,
+          "exp_goals": 0.181,
+          "anytime_prob": 0.1658,
+          "anytime_prob_raw": 0.1658,
           "career_goals": 19,
           "pen_rate": 0.16
         },
         {
           "player": "Gon\u00e7alo Ramos",
           "share": 0.0758,
-          "exp_goals": 0.099,
-          "anytime_prob": 0.094,
-          "anytime_prob_raw": 0.094,
+          "exp_goals": 0.103,
+          "anytime_prob": 0.0978,
+          "anytime_prob_raw": 0.0978,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Jo\u00e3o F\u00e9lix",
           "share": 0.0633,
-          "exp_goals": 0.082,
-          "anytime_prob": 0.0792,
-          "anytime_prob_raw": 0.0792,
+          "exp_goals": 0.086,
+          "anytime_prob": 0.0824,
+          "anytime_prob_raw": 0.0824,
           "career_goals": 9,
           "pen_rate": 0.0
         },
         {
           "player": "Bernardo Silva",
           "share": 0.0599,
-          "exp_goals": 0.078,
-          "anytime_prob": 0.075,
-          "anytime_prob_raw": 0.075,
+          "exp_goals": 0.081,
+          "anytime_prob": 0.0781,
+          "anytime_prob_raw": 0.0781,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Jo\u00e3o Neves",
           "share": 0.0578,
-          "exp_goals": 0.075,
-          "anytime_prob": 0.0725,
-          "anytime_prob_raw": 0.0725,
+          "exp_goals": 0.078,
+          "anytime_prob": 0.0755,
+          "anytime_prob_raw": 0.0755,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -11744,35 +11744,35 @@
     "home": "Algeria",
     "away": "Austria",
     "model": {
-      "home_win": 0.1576,
-      "draw": 0.219,
-      "away_win": 0.6234,
-      "btts": 0.5505,
-      "over_2_5": 0.561,
-      "exp_home": 0.999,
-      "exp_away": 1.93,
-      "exp_total": 2.929
+      "home_win": 0.146,
+      "draw": 0.2122,
+      "away_win": 0.6419,
+      "btts": 0.5468,
+      "over_2_5": 0.5664,
+      "exp_home": 0.975,
+      "exp_away": 1.978,
+      "exp_total": 2.953
     },
     "top_scores": [
       {
         "score": "1-1",
-        "prob": 0.1133
+        "prob": 0.1106
       },
       {
         "score": "0-2",
-        "prob": 0.0996
+        "prob": 0.1021
       },
       {
         "score": "1-2",
-        "prob": 0.0995
+        "prob": 0.0996
       },
       {
         "score": "0-1",
-        "prob": 0.0928
+        "prob": 0.0931
       },
       {
         "score": "0-3",
-        "prob": 0.0641
+        "prob": 0.0674
       }
     ],
     "context": {
@@ -11785,61 +11785,61 @@
     },
     "elo": {
       "home": 1643,
-      "away": 1831
+      "away": 1845
     },
     "scorers": {
       "home": [
         {
           "player": "Riyad Mahrez",
           "share": 0.2126,
-          "exp_goals": 0.212,
-          "anytime_prob": 0.1914,
-          "anytime_prob_raw": 0.1914,
+          "exp_goals": 0.207,
+          "anytime_prob": 0.1872,
+          "anytime_prob_raw": 0.1872,
           "career_goals": 18,
           "pen_rate": 0.11
         },
         {
           "player": "Mohamed Amoura",
           "share": 0.1859,
-          "exp_goals": 0.186,
-          "anytime_prob": 0.1695,
-          "anytime_prob_raw": 0.1695,
+          "exp_goals": 0.181,
+          "anytime_prob": 0.1658,
+          "anytime_prob_raw": 0.1658,
           "career_goals": 8,
           "pen_rate": 0.25
         },
         {
           "player": "Baghdad Bounedjah",
           "share": 0.1202,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.1131,
-          "anytime_prob_raw": 0.1131,
+          "exp_goals": 0.117,
+          "anytime_prob": 0.1105,
+          "anytime_prob_raw": 0.1105,
           "career_goals": 10,
           "pen_rate": 0.2
         },
         {
           "player": "Islam Slimani",
           "share": 0.0722,
-          "exp_goals": 0.072,
-          "anytime_prob": 0.0696,
-          "anytime_prob_raw": 0.0696,
+          "exp_goals": 0.07,
+          "anytime_prob": 0.068,
+          "anytime_prob_raw": 0.068,
           "career_goals": 17,
           "pen_rate": 0.12
         },
         {
           "player": "Ibrahim Maza",
           "share": 0.0537,
-          "exp_goals": 0.054,
-          "anytime_prob": 0.0523,
-          "anytime_prob_raw": 0.0523,
+          "exp_goals": 0.052,
+          "anytime_prob": 0.051,
+          "anytime_prob_raw": 0.051,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Amine Gouiri",
           "share": 0.0523,
-          "exp_goals": 0.052,
-          "anytime_prob": 0.0509,
-          "anytime_prob_raw": 0.0509,
+          "exp_goals": 0.051,
+          "anytime_prob": 0.0497,
+          "anytime_prob_raw": 0.0497,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -11848,54 +11848,54 @@
         {
           "player": "Marko Arnautovi\u0107",
           "share": 0.2828,
-          "exp_goals": 0.546,
-          "anytime_prob": 0.4206,
-          "anytime_prob_raw": 0.4206,
+          "exp_goals": 0.559,
+          "anytime_prob": 0.4284,
+          "anytime_prob_raw": 0.4284,
           "career_goals": 36,
           "pen_rate": 0.25
         },
         {
           "player": "Marcel Sabitzer",
           "share": 0.1665,
-          "exp_goals": 0.321,
-          "anytime_prob": 0.2748,
-          "anytime_prob_raw": 0.2748,
+          "exp_goals": 0.329,
+          "anytime_prob": 0.2806,
+          "anytime_prob_raw": 0.2806,
           "career_goals": 20,
           "pen_rate": 0.2
         },
         {
           "player": "Michael Gregoritsch",
           "share": 0.1572,
-          "exp_goals": 0.303,
-          "anytime_prob": 0.2617,
-          "anytime_prob_raw": 0.2617,
+          "exp_goals": 0.311,
+          "anytime_prob": 0.2673,
+          "anytime_prob_raw": 0.2673,
           "career_goals": 16,
           "pen_rate": 0.0
         },
         {
           "player": "Christoph Baumgartner",
           "share": 0.0993,
-          "exp_goals": 0.192,
-          "anytime_prob": 0.1744,
-          "anytime_prob_raw": 0.1744,
+          "exp_goals": 0.196,
+          "anytime_prob": 0.1784,
+          "anytime_prob_raw": 0.1784,
           "career_goals": 13,
           "pen_rate": 0.0
         },
         {
           "player": "Konrad Laimer",
           "share": 0.0703,
-          "exp_goals": 0.136,
-          "anytime_prob": 0.1269,
-          "anytime_prob_raw": 0.1269,
+          "exp_goals": 0.139,
+          "anytime_prob": 0.1298,
+          "anytime_prob_raw": 0.1298,
           "career_goals": 7,
           "pen_rate": 0.0
         },
         {
           "player": "Romano Schmid",
           "share": 0.0632,
-          "exp_goals": 0.122,
-          "anytime_prob": 0.1149,
-          "anytime_prob_raw": 0.1149,
+          "exp_goals": 0.125,
+          "anytime_prob": 0.1176,
+          "anytime_prob_raw": 0.1176,
           "career_goals": 4,
           "pen_rate": 0.0
         }
@@ -11911,35 +11911,35 @@
     "home": "Jordan",
     "away": "Argentina",
     "model": {
-      "home_win": 0.0102,
-      "draw": 0.045,
-      "away_win": 0.9447,
-      "btts": 0.3857,
-      "over_2_5": 0.7763,
-      "exp_home": 0.5,
-      "exp_away": 3.549,
-      "exp_total": 4.048
+      "home_win": 0.0097,
+      "draw": 0.0433,
+      "away_win": 0.947,
+      "btts": 0.3829,
+      "over_2_5": 0.7807,
+      "exp_home": 0.495,
+      "exp_away": 3.583,
+      "exp_total": 4.077
     },
     "top_scores": [
       {
         "score": "0-3",
-        "prob": 0.13
+        "prob": 0.1299
       },
       {
         "score": "0-4",
-        "prob": 0.1177
+        "prob": 0.1188
       },
       {
         "score": "0-2",
-        "prob": 0.1077
+        "prob": 0.1065
       },
       {
         "score": "0-5",
-        "prob": 0.0852
+        "prob": 0.087
       },
       {
         "score": "1-3",
-        "prob": 0.065
+        "prob": 0.0643
       }
     ],
     "context": {
@@ -11951,7 +11951,7 @@
       "notes": []
     },
     "elo": {
-      "home": 1628,
+      "home": 1622,
       "away": 2173
     },
     "scorers": {
@@ -11959,27 +11959,27 @@
         {
           "player": "Ali Olwan",
           "share": 0.2492,
-          "exp_goals": 0.125,
-          "anytime_prob": 0.1172,
-          "anytime_prob_raw": 0.1172,
+          "exp_goals": 0.123,
+          "anytime_prob": 0.1161,
+          "anytime_prob_raw": 0.1161,
           "career_goals": 10,
           "pen_rate": 0.3
         },
         {
           "player": "Yazan Al-Naimat",
           "share": 0.2401,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.1131,
-          "anytime_prob_raw": 0.1131,
+          "exp_goals": 0.119,
+          "anytime_prob": 0.112,
+          "anytime_prob_raw": 0.112,
           "career_goals": 12,
           "pen_rate": 0.08
         },
         {
           "player": "Musa Al-Taamari",
           "share": 0.2393,
-          "exp_goals": 0.12,
-          "anytime_prob": 0.1128,
-          "anytime_prob_raw": 0.1128,
+          "exp_goals": 0.118,
+          "anytime_prob": 0.1117,
+          "anytime_prob_raw": 0.1117,
           "career_goals": 12,
           "pen_rate": 0.08
         },
@@ -11987,17 +11987,17 @@
           "player": "Nizar Al-Rashdan",
           "share": 0.0586,
           "exp_goals": 0.029,
-          "anytime_prob": 0.0289,
-          "anytime_prob_raw": 0.0289,
+          "anytime_prob": 0.0286,
+          "anytime_prob_raw": 0.0286,
           "career_goals": 2,
           "pen_rate": 0.0
         },
         {
           "player": "Yazan Al-Arab",
           "share": 0.0513,
-          "exp_goals": 0.026,
-          "anytime_prob": 0.0253,
-          "anytime_prob_raw": 0.0253,
+          "exp_goals": 0.025,
+          "anytime_prob": 0.0251,
+          "anytime_prob_raw": 0.0251,
           "career_goals": 3,
           "pen_rate": 0.0
         },
@@ -12005,8 +12005,8 @@
           "player": "Noor Al-Rawabdeh",
           "share": 0.0422,
           "exp_goals": 0.021,
-          "anytime_prob": 0.0209,
-          "anytime_prob_raw": 0.0209,
+          "anytime_prob": 0.0207,
+          "anytime_prob_raw": 0.0207,
           "career_goals": 2,
           "pen_rate": 0.0
         }
@@ -12015,54 +12015,54 @@
         {
           "player": "Lionel Messi",
           "share": 0.3537,
-          "exp_goals": 1.255,
-          "anytime_prob": 0.715,
-          "anytime_prob_raw": 0.715,
+          "exp_goals": 1.267,
+          "anytime_prob": 0.7184,
+          "anytime_prob_raw": 0.7184,
           "career_goals": 50,
           "pen_rate": 0.22
         },
         {
           "player": "Lautaro Mart\u00ednez",
           "share": 0.2072,
-          "exp_goals": 0.735,
-          "anytime_prob": 0.5207,
-          "anytime_prob_raw": 0.5207,
+          "exp_goals": 0.742,
+          "anytime_prob": 0.524,
+          "anytime_prob_raw": 0.524,
           "career_goals": 25,
           "pen_rate": 0.04
         },
         {
           "player": "Juli\u00e1n \u00c1lvarez",
           "share": 0.1182,
-          "exp_goals": 0.419,
-          "anytime_prob": 0.3426,
-          "anytime_prob_raw": 0.3426,
+          "exp_goals": 0.423,
+          "anytime_prob": 0.3452,
+          "anytime_prob_raw": 0.3452,
           "career_goals": 12,
           "pen_rate": 0.0
         },
         {
           "player": "Enzo Fern\u00e1ndez",
           "share": 0.0676,
-          "exp_goals": 0.24,
-          "anytime_prob": 0.2134,
-          "anytime_prob_raw": 0.2134,
+          "exp_goals": 0.242,
+          "anytime_prob": 0.2152,
+          "anytime_prob_raw": 0.2152,
           "career_goals": 5,
           "pen_rate": 0.0
         },
         {
           "player": "Alexis Mac Allister",
           "share": 0.0503,
-          "exp_goals": 0.178,
-          "anytime_prob": 0.1634,
-          "anytime_prob_raw": 0.1634,
+          "exp_goals": 0.18,
+          "anytime_prob": 0.1648,
+          "anytime_prob_raw": 0.1648,
           "career_goals": 4,
           "pen_rate": 0.0
         },
         {
           "player": "Thiago Almada",
           "share": 0.0383,
-          "exp_goals": 0.136,
-          "anytime_prob": 0.1272,
-          "anytime_prob_raw": 0.1272,
+          "exp_goals": 0.137,
+          "anytime_prob": 0.1284,
+          "anytime_prob_raw": 0.1284,
           "career_goals": 3,
           "pen_rate": 0.0
         }
