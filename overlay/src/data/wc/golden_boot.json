@@ -15,13 +15,13 @@
     {
       "player": "Kylian Mbapp\u00e9",
       "team": "France",
-      "exp_goals": 6.0,
+      "exp_goals": 6.19,
       "share": 0.3908
     },
     {
       "player": "Erling Haaland",
       "team": "Norway",
-      "exp_goals": 5.74,
+      "exp_goals": 5.7,
       "share": 0.4997
     },
     {
@@ -63,7 +63,7 @@
     {
       "player": "Romelu Lukaku",
       "team": "Belgium",
-      "exp_goals": 3.46,
+      "exp_goals": 3.33,
       "share": 0.256
     },
     {
@@ -81,7 +81,7 @@
     {
       "player": "Vin\u00edcius J\u00fanior",
       "team": "Brazil",
-      "exp_goals": 3.0,
+      "exp_goals": 3.05,
       "share": 0.2181
     },
     {
@@ -105,7 +105,7 @@
     {
       "player": "Memphis Depay",
       "team": "Netherlands",
-      "exp_goals": 2.66,
+      "exp_goals": 2.67,
       "share": 0.197
     },
     {
@@ -123,8 +123,14 @@
     {
       "player": "Mohamed Salah",
       "team": "Egypt",
-      "exp_goals": 2.55,
+      "exp_goals": 2.59,
       "share": 0.3425
+    },
+    {
+      "player": "Viktor Gy\u00f6keres",
+      "team": "Sweden",
+      "exp_goals": 2.47,
+      "share": 0.3125
     },
     {
       "player": "Ferran Torres",
@@ -139,19 +145,13 @@
       "share": 0.1403
     },
     {
-      "player": "Viktor Gy\u00f6keres",
-      "team": "Sweden",
-      "exp_goals": 2.36,
-      "share": 0.3125
-    },
-    {
       "player": "Juli\u00e1n \u00c1lvarez",
       "team": "Argentina",
       "exp_goals": 2.25,
       "share": 0.1182
     }
   ],
-  "generated": "2026-09-28T20:07:34.537006+00:00",
+  "generated": "2026-09-29T18:36:43.251447+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-19",
