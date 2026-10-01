@@ -1,26 +1,25 @@
 {
-  "generated_at": "2026-10-01T13:58:28.976315+00:00",
+  "generated_at": "2026-10-01T22:58:22.922005+00:00",
   "start_bankroll": 112.0,
   "end_bankroll": 79.23,
-  "n_settled": 57,
-  "n_pending": 883,
+  "n_settled": 59,
+  "n_pending": 881,
   "wins": 14,
   "losses": 30,
-  "staked": 211.68,
+  "staked": 218.02,
   "pnl": -32.77,
-  "expected_pnl": 10.35,
-  "roi_pct": -15.48,
+  "expected_pnl": 10.59,
+  "roi_pct": -15.03,
   "max_drawdown": 47.5,
   "skipped": {
     "high \u2014 taker fills at the quoted ask within depth": 108,
     "exposure cap reached for the slate": 715,
-    "resting order never filled": 55,
-    "not settled yet": 5
+    "resting order never filled": 58
   },
   "significance": {
-    "mean_edge_per_unit": 0.05,
-    "sd_per_unit": 1.5412,
-    "n_for_2sigma": 3802
+    "mean_edge_per_unit": 0.0496,
+    "sd_per_unit": 1.5488,
+    "n_for_2sigma": 3902
   },
   "rows": [
     {
@@ -917,6 +916,38 @@
       "result": "loss",
       "pnl": -3.3,
       "expected_pnl": 0.074,
+      "equity": 79.23
+    },
+    {
+      "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_dane-sweeny_g-cormou-danswe_moneyline_win",
+      "date": "2026-09-01",
+      "team": "Dane Sweeny",
+      "sport": "tennis_atp_us_open",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.28,
+      "fair": 0.2918,
+      "stake": 3.17,
+      "shares": 11.32,
+      "result": "void",
+      "pnl": 0.0,
+      "expected_pnl": 0.134,
+      "equity": 79.23
+    },
+    {
+      "pick_id": "polymarket_ev__tennis_atp_us_open_20260901_arthur-fery_g-lormus-artfer_moneyline_win",
+      "date": "2026-09-01",
+      "team": "Arthur Fery",
+      "sport": "tennis_atp_us_open",
+      "mode": "make",
+      "confidence": "low \u2014 maker fill is an upper-bound estimate",
+      "cost": 0.22,
+      "fair": 0.2275,
+      "stake": 3.17,
+      "shares": 14.41,
+      "result": "void",
+      "pnl": 0.0,
+      "expected_pnl": 0.108,
       "equity": 79.23
     },
     {
