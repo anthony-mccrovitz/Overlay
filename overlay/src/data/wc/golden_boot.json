@@ -3,32 +3,26 @@
     {
       "player": "Harry Kane",
       "team": "England",
-      "exp_goals": 6.77,
+      "exp_goals": 7.2,
       "share": 0.3783
     },
     {
       "player": "Lionel Messi",
       "team": "Argentina",
-      "exp_goals": 6.75,
+      "exp_goals": 6.77,
       "share": 0.3537
     },
     {
       "player": "Kylian Mbapp\u00e9",
       "team": "France",
-      "exp_goals": 6.2,
+      "exp_goals": 6.19,
       "share": 0.3908
     },
     {
       "player": "Erling Haaland",
       "team": "Norway",
-      "exp_goals": 5.53,
+      "exp_goals": 5.52,
       "share": 0.4997
-    },
-    {
-      "player": "Ra\u00fal Jim\u00e9nez",
-      "team": "Mexico",
-      "exp_goals": 4.89,
-      "share": 0.3259
     },
     {
       "player": "Cristiano Ronaldo",
@@ -37,9 +31,15 @@
       "share": 0.3504
     },
     {
+      "player": "Ra\u00fal Jim\u00e9nez",
+      "team": "Mexico",
+      "exp_goals": 4.73,
+      "share": 0.3259
+    },
+    {
       "player": "Mikel Oyarzabal",
       "team": "Spain",
-      "exp_goals": 4.56,
+      "exp_goals": 4.6,
       "share": 0.2052
     },
     {
@@ -51,13 +51,13 @@
     {
       "player": "Enner Valencia",
       "team": "Ecuador",
-      "exp_goals": 3.83,
+      "exp_goals": 3.86,
       "share": 0.4162
     },
     {
       "player": "Jonathan David",
       "team": "Canada",
-      "exp_goals": 3.57,
+      "exp_goals": 3.59,
       "share": 0.307
     },
     {
@@ -69,14 +69,8 @@
     {
       "player": "Breel Embolo",
       "team": "Switzerland",
-      "exp_goals": 3.3,
+      "exp_goals": 3.28,
       "share": 0.1998
-    },
-    {
-      "player": "Juli\u00e1n Qui\u00f1ones",
-      "team": "Mexico",
-      "exp_goals": 3.07,
-      "share": 0.2044
     },
     {
       "player": "Vin\u00edcius J\u00fanior",
@@ -85,9 +79,15 @@
       "share": 0.2181
     },
     {
+      "player": "Juli\u00e1n Qui\u00f1ones",
+      "team": "Mexico",
+      "exp_goals": 2.97,
+      "share": 0.2044
+    },
+    {
       "player": "Mikel Merino",
       "team": "Spain",
-      "exp_goals": 2.86,
+      "exp_goals": 2.89,
       "share": 0.1288
     },
     {
@@ -101,6 +101,12 @@
       "team": "Austria",
       "exp_goals": 2.69,
       "share": 0.2828
+    },
+    {
+      "player": "Jude Bellingham",
+      "team": "England",
+      "exp_goals": 2.67,
+      "share": 0.1403
     },
     {
       "player": "Memphis Depay",
@@ -123,14 +129,8 @@
     {
       "player": "Cyle Larin",
       "team": "Canada",
-      "exp_goals": 2.56,
+      "exp_goals": 2.57,
       "share": 0.22
-    },
-    {
-      "player": "Jude Bellingham",
-      "team": "England",
-      "exp_goals": 2.51,
-      "share": 0.1403
     },
     {
       "player": "Viktor Gy\u00f6keres",
@@ -141,17 +141,17 @@
     {
       "player": "Ferran Torres",
       "team": "Spain",
-      "exp_goals": 2.39,
+      "exp_goals": 2.41,
       "share": 0.1075
     },
     {
-      "player": "Andrej Kramari\u0107",
-      "team": "Croatia",
-      "exp_goals": 2.27,
-      "share": 0.2048
+      "player": "Juli\u00e1n \u00c1lvarez",
+      "team": "Argentina",
+      "exp_goals": 2.26,
+      "share": 0.1182
     }
   ],
-  "generated": "2026-10-03T17:14:36.300885+00:00",
+  "generated": "2026-10-04T17:33:38.288997+00:00",
   "n_sims": 20000,
   "blend_model_weight": 0.4,
   "model_fitted_on": "2026-07-19",
